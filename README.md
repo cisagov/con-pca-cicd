@@ -1,4 +1,4 @@
-# cpa-controller #
+# cpa #
 
 [![GitHub Build Status](https://github.com/cisagov/cpa-controller/workflows/build/badge.svg)](https://github.com/cisagov/cpa-controller/actions)
 
