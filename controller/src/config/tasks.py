@@ -12,7 +12,7 @@ celery.conf.update(
     task_serializer='json',
     accept_content=['json'],
     result_serializer='json',
-    timezone='America/Chicago',
+    timezone='UTC',
     enable_utc=True,
     beat_schedule={
         'example_task': {
