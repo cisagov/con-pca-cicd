@@ -3,6 +3,10 @@ __pycache__
 .python-version
 .DS_Store
 src/.DS_Store
+controller/.env
 
 #Pycharm
 .idea/
+
+#VSCode
+.vscode/
