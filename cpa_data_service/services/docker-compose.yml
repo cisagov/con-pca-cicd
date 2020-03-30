@@ -1,0 +1,12 @@
+---
+version: "3"
+services:
+  data_service:
+    container_name: data_service
+    build:
+      context: .
+      dockerfile: ./deployment/Dockerfile
+    restart: on-failure
+
+    env_file:
+      - .env
