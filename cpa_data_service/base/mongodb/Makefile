@@ -2,6 +2,10 @@
 test:
 	echo "No tests at base level ..."
 
+# target: build = build all containers
+docker-build:
+	docker-compose build
+
 # target: up - Run local web server.
 docker-up:
 	 docker-compose up -d

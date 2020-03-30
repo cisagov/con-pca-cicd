@@ -1,3 +1,23 @@
-# cpa/cpa_data_service #
+# CPA Data Service
 
-This is the cpa_data_service sub-directory
+## Setup
+
+Create your .env file
+`make copy-env`
+
+Build containers
+`make docker-build`
+
+Run data base service application locally
+`make docker-up`
+
+Stop containers
+`make docker-stop`
+
+Remove containers
+`make docker-down`
+
+## Testing
+
+Run tests locally
+`make test`

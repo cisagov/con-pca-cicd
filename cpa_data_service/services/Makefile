@@ -3,16 +3,25 @@ NAME := cpa-data-service
 
 .PHONY: test
 
+# target: build = build all containers
+docker-build:
+	docker-compose build
+
+#target: cp - copy env into correct file
+copy-env:
+	echo "copy file..."
+	cp deployment/env.dist .env
+
 # target: up - Run local web server.
-up:
+docker-up:
 	 docker-compose up -d
 
 # target: stop - Stop all docker containers
-stop:
+docker-stop:
 	docker-compose stop
 
 # target: down - Remove all docker containers
-down:
+docker-down:
 	docker-compose down
 
 test:
