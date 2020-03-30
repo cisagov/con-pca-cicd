@@ -3,13 +3,13 @@ test:
 	echo "No tests at base level ..."
 
 # target: up - Run local web server.
-up:
+docker-up:
 	 docker-compose up -d
 
 # target: stop - Stop all docker containers
-stop:
+docker-stop:
 	docker-compose stop
 
 # target: down - Remove all docker containers
-down:
+docker-down:
 	docker-compose down
