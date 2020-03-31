@@ -1,12 +1,20 @@
 ---
 version: "3"
 services:
-  data_service:
-    container_name: data_service
+  data-service:
+    container_name: data-service
     build:
       context: .
       dockerfile: ./deployment/Dockerfile
     restart: on-failure
-
+    tty: true
+    # Map port 3000 on the host machine to port 3000 of the container.
+    ports:
+      - "3000:3000"
     env_file:
       - .env
+    volumes:
+      - './python-service:/python-service'
+# Host volumes used to store code.
+volumes:
+  data-service:
