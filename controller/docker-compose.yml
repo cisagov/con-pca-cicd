@@ -1,17 +1,16 @@
-  
+---
 version: "3"
-
 services:
   web:
     container_name: cpa_web
     build:
-        context: .
-        dockerfile: ./etc/Dockerfile
+      context: .
+      dockerfile: ./etc/Dockerfile
     restart: on-failure
     ports:
-        - "8080:8080"
+      - "8080:8080"
     env_file:
-        - .env
+      - .env
 
   rabbitmq:
     image: rabbitmq:latest
@@ -30,7 +29,9 @@ services:
     container_name: celery-beat
     hostname: celery-beat
     restart: on-failure
-    entrypoint: "celery beat -A src.config.tasks:celery --schedule=/tmp/celerybeat-schedule --loglevel=INFO --pidfile=/tmp/celerybeat.pid"
+    entrypoint: "celery beat -A src.config.tasks:celery \n
+    --schedule=/tmp/celerybeat-schedule \n
+    --loglevel=INFO --pidfile=/tmp/celerybeat.pid"
     volumes:
       - .:/app
     env_file:
@@ -43,7 +44,8 @@ services:
     container_name: celery-worker
     hostname: celery-worker
     restart: on-failure
-    entrypoint: "celery -A src.config.tasks:celery worker --concurrency 2 --loglevel=info"
+    entrypoint: "celery -A src.config.tasks:celery \n
+    worker --concurrency 2 --loglevel=info"
     volumes:
       - .:/app
     env_file:
