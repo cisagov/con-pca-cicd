@@ -5,39 +5,37 @@ It seems that it has to have THIS docstring with a summary line, a blank line
 and sume more text like here. Wow.
 """
 # Standard Python Libraries
-from datetime import datetime
 import logging
 from os import getenv
-import threading
+
+# Third-Party Libraries
+from db.client import connect_to_mongo
+from rabbit.client import RabbitClient
 
 
-class Service(threading.Thread):
-    """This is the service class."""
-
-    _start_date = datetime.utcnow()
-
-    def __init__(self, name):
-        """This is the init def, on creatin adds self name."""
-        threading.Thread.__init__(self)
-        self.name = name
-
-    def start(self):
-        """Start service."""
-        logging.info("Starting service: {}".format(self.name))
-
-    def stop(self):
-        """Stop Service."""
-        logging.info("Stopping service {}".format(self.name))
+def load_config():
+    """This loads configuration from env."""
+    configs = {"AMQP_URL": getenv("AMQP_URL"), "MONGODB_URL": getenv("MONGODB_URL")}
+    return configs
 
 
 def main():
     """This is the Main method for starting the service."""
+    service_config = load_config()
+
     logging.basicConfig(level=logging.getLevelName(getenv("LOG_LEVEL", "INFO")))
-    service = Service("data-service")
+    logging.info("service_config {}".format(service_config))
+    rabbit_client = RabbitClient("rabbit-client", service_config["AMQP_URL"])
     try:
-        service.start()
+        logging.info("Strating service {}".format("rabbit_client"))
+        db_client = connect_to_mongo()
+        logging.info("server version: {}".format(db_client["version"]))
+        rabbit_client.start("test")
+        logging.info("Strated {}".format("rabbit_client"))
+
     except KeyboardInterrupt:
-        service.stop()
+        logging.info("Stopping service {}".format("name"))
+        rabbit_client.stop()
 
 
 if __name__ == "__main__":
