@@ -3,36 +3,30 @@ version: "3"
 
 services:
   web:
-    container_name: cpa_web
+    container_name: cpa-web
     build:
         context: .
         dockerfile: ./etc/Dockerfile
     restart: on-failure
     ports:
         - "8080:8080"
+    volumes:
+      - ./src:/app
     env_file:
         - .env
-
-  rabbitmq:
-    image: rabbitmq:latest
-    container_name: cpa_rabbitmq
-    hostname: rabbitmq
-    restart: on-failure
-    ports:
-      - "5672:5672"
-    env_file:
-      - .env
 
   celery-beat:
     build:
       context: .
       dockerfile: ./etc/Dockerfile
-    container_name: celery-beat
+    container_name: cpa-beat
     hostname: celery-beat
     restart: on-failure
-    entrypoint: "celery beat -A src.config.tasks:celery --schedule=/tmp/celerybeat-schedule --loglevel=INFO --pidfile=/tmp/celerybeat.pid"
+    entrypoint: celery -A config beat -l info
     volumes:
-      - .:/app
+      - ./src:/app
+    depends_on:
+      - rabbitmq
     env_file:
       - .env
 
@@ -40,11 +34,37 @@ services:
     build:
       context: .
       dockerfile: ./etc/Dockerfile
-    container_name: celery-worker
-    hostname: celery-worker
+    container_name: cpa-worker
     restart: on-failure
-    entrypoint: "celery -A src.config.tasks:celery worker --concurrency 2 --loglevel=info"
+    entrypoint: celery worker --app=config.celery:app --loglevel=info --logfile=tasks/logs/celery.log
     volumes:
-      - .:/app
+      - ./src:/app
+    depends_on:
+      - rabbitmq
+    env_file:
+      - .env
+
+  flower:
+    build:
+      context: .
+      dockerfile: ./etc/Dockerfile
+    container_name: cpa-flower
+    entrypoint: flower -A config --port=5555 --broker=amqp://rabbitmq:5672
+    ports:
+      - 5555:5555
+    depends_on:
+      - web
+      - rabbitmq
+      - celery-worker
+    env_file:
+      - .env
+
+  rabbitmq:
+    image: rabbitmq:latest
+    container_name: cpa-rabbitmq
+    hostname: rabbitmq
+    restart: on-failure
+    ports:
+      - "5672:5672"
     env_file:
       - .env

@@ -4,6 +4,6 @@ from . import views
 
 
 urlpatterns = [
-  path('', views.reports_page, name='reports-page'),
-  path('pdf', views.generate_pdf, name='generate-pdf'),
+  path('', views.run_task, name='run_task'),
+  path("tasks/<task_id>/", views.get_status, name="get_status"),
 ]
