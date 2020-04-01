@@ -1,22 +1,31 @@
 # Bunch of imports for different things I tried. Will clean up later.
 import io
+from weasyprint import HTML
+
+from django.core.files.storage import FileSystemStorage
+from django.views.generic import TemplateView
 from django.shortcuts import render
 from django.urls import path
 from django.conf.urls import url
 from django.template.loader import get_template
-from django.http import HttpResponseRedirect, FileResponse
+from django.http import HttpResponse, FileResponse
+
 from . import views
-from weasyprint import HTML, css
-from django_weasyprint import WeasyTemplateResponseMixin
 
-# Create your views here.
+
+class HomePageView(TemplateView):
+    template_name = "home.html"
+
 def reports_page(request):
-  return render(request, 'reports-page.html')
+  return render(request, 'reports/reports-page.html')
 
-# Function will create two PDF's. One in the downloads folder from the buffer that is empty.
-# A second report (the "real" report will appear under the 'src' folder. Will fix later.)
 def generate_pdf(request):
-  buffer = io.BytesIO()
-  buffer.seek(0)
-  HTML('http://localhost:8000/reports').write_pdf('./reports_test.pdf')
-  return FileResponse(buffer, as_attachment=True, filename='reports_test.pdf')
+  html = HTML('http://localhost:8080/reports')
+  html.write_pdf('/tmp/reports_test.pdf')
+
+  fs = FileSystemStorage('/tmp')
+  with fs.open('reports_test.pdf') as pdf:
+      response = HttpResponse(pdf, content_type='application/pdf')
+      response['Content-Disposition'] = 'attachment; filename="reports_test.pdf"'
+      return response
+  return response

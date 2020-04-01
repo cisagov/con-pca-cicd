@@ -1,15 +1,16 @@
 import os
 
+from celery.schedules import crontab
+
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get("ALLOWED_HOSTS", "changeme")
+SECRET_KEY = os.environ.get("SECRET_KEY")
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get("DEBUG", "True") == "True"
+DEBUG = int(os.environ.get("DEBUG", default=0))
 
-ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "localhost").split(",")
+ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS").split(" ")
 
 # Application definition
 
@@ -21,15 +22,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    # third party
-    
-    # Program will only run on my machine if this is commented out.
-    # Throws "No module named 'rest_framework'"" otherwise
-    #'rest_framework',
-
     # local
     'reports',
     'subscriptions',
+    'tasks',
 ]
 
 MIDDLEWARE = [
@@ -98,16 +94,27 @@ USE_TZ = True
 
 
 # Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/3.0/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL = "/static/"
 
-# API settings
+STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
 
-REST_FRAMEWORK = {
-    "DEFAULT_AUTHENTICATION_CLASSES": [
-        "rest_framework.authentication.BasicAuthentication",
-        "rest_framework.authentication.SessionAuthentication",
-    ],
-    "DEFAULT_RENDERER_CLASSES": ("rest_framework.renderers.JSONRenderer",),
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+
+# Celery
+
+CELERY_BROKER_URL = os.environ.get("CELERY_BROKER", "amqp://rabbitmq:5672")
+CELERY_RESULT_BACKEND = os.environ.get("CELERY_BROKER", "amqp://rabbitmq:5672")
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
+CELERY_IGNORE_RESULT = False
+
+# Celery Beat
+
+CELERY_BEAT_SCHEDULE = {
+    'task-one': {
+        'task': 'tasks.tasks.create_task',
+        'schedule': crontab(minute=59, hour=23),
+    }
 }
