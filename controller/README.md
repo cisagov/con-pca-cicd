@@ -23,3 +23,9 @@ Remove containers
 
 Access Django shell
 - `make shell`
+
+
+### To access the Celery Flower dashboard:
+
+- visit:
+  - `localhost:5555/dashboard`
