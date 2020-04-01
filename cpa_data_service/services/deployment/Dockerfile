@@ -16,4 +16,4 @@ RUN pip install -r requirements.txt
 # Copy project
 COPY ./lib /app/
 
-CMD [ "python", "./service.py" ]
+CMD [ "python3", "./service.py" ]
