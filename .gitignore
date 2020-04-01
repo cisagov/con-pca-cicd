@@ -7,7 +7,8 @@ __pycache__
 # Controller
 controller/.env
 controller/src/staticfiles
-controller/src/tasks/logs/celery.log
+controller/src/celerybeat-schedule
+controller/src/celerybeat.pid
 
 #Pycharm
 .idea/
