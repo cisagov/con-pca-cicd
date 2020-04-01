@@ -4,22 +4,25 @@ This is the RabbitMQ Client.
 This will connect to the rabbitMQ in docker and wait for messages
 """
 # Standard Python Libraries
+import json
 import logging
 
 # Third-Party Libraries
+from db.client import insert_one
 import pika
 
 
 class RabbitClient:
     """This is the client class."""
 
-    def __init__(self, name, host):
+    def __init__(self, name, host, db_client):
         """This is the init def, on creation, takes client-name, amqp_url, and queue to sub to."""
         self.name = name
         self.host = host
         self.connection = pika.BlockingConnection(
-            pika.ConnectionParameters(host="rabbitmq")
+            pika.ConnectionParameters(host=self.host)
         )
+        self.db_client = db_client
 
     def start(self, queue=""):
         """Starting client."""
@@ -38,5 +41,12 @@ class RabbitClient:
         logging.info("Stopping service {}".format(self.name))
 
     def basic_callback(self, ch, method, properties, body):
-        """Basic Service."""
-        print(" [x] {}".format(body))
+        """Basic callback."""
+        json_data = json.loads(body)
+        print(" [x] {}".format(json_data))
+        self.send_db_data(json_data)
+
+    def send_db_data(self, json_data):
+        """Sending data into db."""
+        logging.info("to send to db now: {}".format(json_data))
+        insert_one(self.db_client, json_data["collection"], json_data["data"])

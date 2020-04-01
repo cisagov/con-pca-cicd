@@ -11,6 +11,7 @@ docker-build:
 copy-env:
 	echo "copy file..."
 	cp deployment/env.dist .env
+	cp base/mongodb/env.dist base/mongodb/.env
 
 # target: up - Run local web server.
 docker-up:

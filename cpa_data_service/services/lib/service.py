@@ -9,13 +9,13 @@ import logging
 from os import getenv
 
 # Third-Party Libraries
-from db.client import connect_to_mongo
+from db.client import connect_to_mongo, init_db
 from rabbit.client import RabbitClient
 
 
 def load_config():
     """This loads configuration from env."""
-    configs = {"AMQP_URL": getenv("AMQP_URL"), "MONGODB_URL": getenv("MONGODB_URL")}
+    configs = {"rabbit_host": getenv("RABBIT_HOST"), "mongo_uri": getenv("MONGO_URI")}
     return configs
 
 
@@ -25,12 +25,19 @@ def main():
 
     logging.basicConfig(level=logging.getLevelName(getenv("LOG_LEVEL", "INFO")))
     logging.info("service_config {}".format(service_config))
-    rabbit_client = RabbitClient("rabbit-client", service_config["AMQP_URL"])
+
+    db_client = connect_to_mongo(db_uri=service_config["mongo_uri"])
+    init_db(db_client, "cpa_data_dev")
+
+    rabbit_client = RabbitClient(
+        "rabbit-client", service_config["rabbit_host"], db_client["cpa_data_dev"]
+    )
+
     try:
         logging.info("Strating service {}".format("rabbit_client"))
-        db_client = connect_to_mongo()
         logging.info("server version: {}".format(db_client["version"]))
-        rabbit_client.start("test")
+        logging.info("test db client: {}".format(db_client.list_database_names()))
+        rabbit_client.start("data_queue")
         logging.info("Strated {}".format("rabbit_client"))
 
     except KeyboardInterrupt:
