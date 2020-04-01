@@ -22,7 +22,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # third party
-    'rest_framework',
+    
+    # Program will only run on my machine if this is commented out.
+    # Throws "No module named 'rest_framework'"" otherwise
+    #'rest_framework',
 
     # local
     'reports',
@@ -44,7 +47,9 @@ ROOT_URLCONF = 'config.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            os.path.join(BASE_DIR, 'templates'),
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
