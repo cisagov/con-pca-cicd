@@ -15,3 +15,5 @@ controller/src/celerybeat.pid
 
 #VSCode
 .vscode/
+/controller/src/celerybeat-schedule
+/controller/src/celerybeat-schedule
