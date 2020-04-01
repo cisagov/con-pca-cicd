@@ -15,5 +15,7 @@ stop:
 down:
 	make docker-down -C ./services
 
+redeploy: down build up
+
 copy-env:
 	make copy-env -C ./services

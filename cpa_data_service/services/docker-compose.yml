@@ -11,21 +11,26 @@ services:
     # Map port 3000 on the host machine to port 3000 of the container.
     links:
       - rabbitmq
+      - mongodb
     ports:
       - "3000:3000"
     env_file:
       - .env
 
-  db:
+  mongodb:
     container_name: cpa_mongodb
     hostname: mongodb
     image: "mongo:3.6"
+    # These ports are exposed on the host; 'hostport:containerport'.
+    # You could connect to this server from outside with the *host's*
+    # DNS name or IP address and port 27017 (the left-hand side of the
+    # colon).
     ports:
       - "27017:27017"
     volumes:
-      - "mongodb_data_container:/data/db"
+      - "mongodb:/data/db"
     env_file:
-      - .env
+      - ../base/mongodb/.env
 
   rabbitmq:
     hostname: rabbitmq
@@ -48,4 +53,4 @@ services:
 # Host volumes used to store code.
 volumes:
   data-service:
-  mongodb_data_container:
+  mongodb:
