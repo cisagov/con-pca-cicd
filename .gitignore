@@ -1,9 +1,13 @@
+.venv
 .mypy_cache
 __pycache__
 .python-version
 .DS_Store
-src/.DS_Store
+
+# Controller
 controller/.env
+controller/src/staticfiles
+controller/src/tasks/logs/celery.log
 
 #Pycharm
 .idea/
