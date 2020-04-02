@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from './material.module';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -22,7 +23,9 @@ import { SearchPanelComponent } from './components/search-panel/search-panel.com
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule, 
-    MaterialModule
+    MaterialModule, 
+    FormsModule, 
+    ReactiveFormsModule
   ],
   providers: [
     DashboardService
