@@ -13,8 +13,16 @@
     <button mat-menu-item>Organizations</button>
     <button mat-menu-item>User Admin</button>
   </mat-menu>
-  <span class="filler">
-      <!-- You can place a search bar here or anything you like -->
+  <span class="fill-remaining-space"></span>
+  <span class="loggin-user">
+      Barry Hansen
+      <button mat-icon-button class="menu-button" type="button" aria-label="Toggle sidenav" [matMenuTriggerFor]="userMenu">
+        <i class="material-icons">settings</i>
+      </button>
+      <mat-menu #userMenu="matMenu" yPosition="below" class="mat-menu-custom-header">
+        <button mat-menu-item>Profile</button>
+        <button mat-menu-item>Logout</button>
+      </mat-menu>
   </span>
 </mat-toolbar>
 <mat-sidenav-container class="sidenav-container">

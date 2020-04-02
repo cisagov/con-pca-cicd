@@ -8,27 +8,27 @@
     integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 
 <div class="p-3">
-    <mat-form-field>
+    <mat-form-field appearance="outline"> 
         <mat-label>Search</mat-label>
         <input matInput> 
     </mat-form-field>
 
-    <mat-form-field>
+    <mat-form-field appearance="outline">
         <mat-label>Organization Name</mat-label>
         <input matInput> 
     </mat-form-field>
 
-    <mat-form-field>
+    <mat-form-field appearance="outline">
         <mat-label>Subscription Name</mat-label>
         <input matInput> 
     </mat-form-field>
 
-    <mat-form-field>
+    <mat-form-field appearance="outline">
         <mat-label>Primary Contact</mat-label>
         <input matInput> 
     </mat-form-field>
 
-    <mat-form-field>
+    <mat-form-field appearance="outline">
         <mat-label>Status</mat-label>
         <mat-select [formControl]="status" multiple>
           <mat-option *ngFor="let s of statusList" [value]="s">{{s}}</mat-option>
