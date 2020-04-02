@@ -1,0 +1,84 @@
+.sidenav-container {
+    height: 100%;
+}
+.sidenav-container .sidenav {
+    width: 300px;
+    background-color: #fff;
+    box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
+}
+.sidenav-container .sidenav .home-button {
+    width: 100%;
+    padding-top: 60px;
+    margin-bottom: 30px;
+    display: inline-block;
+}
+.sidenav-container .sidenav .home-button .app-logo {
+    width: 120px;
+    margin: 0 auto;
+    display: block;
+}
+.sidenav-container .sidenav .mat-toolbar {
+    background: inherit;
+}
+.sidenav-container .sidenav .navigation-list {
+    padding-top: 30px;
+}
+.sidenav-container .sidenav .navigation-list .navigation-item.active {
+    background: #dcf0fb;
+    color: #062639;
+}
+.sidenav-container .sidenav .navigation-list .navigation-item .mat-icon {
+    margin-right: 5px;
+}
+.sidenav-container .sidenav .navigation-list .navigation-item .navigation-item-label {
+    padding-top: 2px;
+}
+.sidenav-container .sidenav .navigation-list .navigation-divider {
+    color: #dcf0fb;
+    border-color: #dcf0fb;
+}
+.sidenav-container .sidenav-content .sidenav-content-toolbar {
+    background: #062639;
+    color: #fff;
+    
+}
+.sidenav-container .sidenav-content .sidenav-content-toolbar .menu-button {
+    color: #fff;
+    background: #062639;
+}
+.sidenav-container .sidenav-content .sidenav-content-toolbar .menu-button:focus {
+    outline: none;
+}
+.sidenav-container .sidenav-content .sidenav-content-toolbar .navbar-link {
+    color: #fff;
+    padding-right: 10px;
+cursor: pointer;
+}
+.sidenav-container .sidenav-content .sidenav-content-toolbar .navbar-link:hover {
+    color: #fff;
+}
+.sidenav-container .sidenav-content .sidenav-content-toolbar .navbar-link:focus {
+    outline: none;
+}
+.sidenav-container .sidenav-content .sidenav-content-toolbar .gifts a { 
+    color: #fff;
+    display: inline-block;
+    padding-top: 7px;
+    padding-right: 20px;
+    position: relative;
+}
+.sidenav-container .sidenav-content .sidenav-content-toolbar .gifts a .mat-badge-content {
+    background: #d3544d;
+}
+.sidenav-container .sidenav-content .sidenav-content-toolbar .gifts:focus {
+    outline: none;
+}
+.sidenav-container .sidenav-content .filler {
+    flex: 1 1 auto;
+}
+.sidenav-container .mat-toolbar.mat-primary {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
