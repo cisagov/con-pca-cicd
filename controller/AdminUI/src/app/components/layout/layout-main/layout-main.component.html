@@ -1,9 +1,8 @@
 
 <mat-toolbar class="sidenav-content-toolbar" color="primary">
   <div style="padding-right:10px">
-    <img src="../../../../assets/CPA-logo-white.png" style="height: 4rem">
-  </div>
-  
+    <img src="assets/CPA-logo-white.png" style="height: 4rem">
+  </div>  
   <button mat-icon-button class="menu-button" type="button" aria-label="Toggle sidenav" [matMenuTriggerFor]="belowMenu">
     <i class="material-icons">menu</i>
   </button>
@@ -33,12 +32,9 @@
         [attr.role]="'navigation'"
         mode="side"
         opened="true">
-      
     <app-search-panel></app-search-panel>
-
     </mat-sidenav>
     <mat-sidenav-content class="sidenav-content">
       <router-outlet></router-outlet>
-      
     </mat-sidenav-content>
   </mat-sidenav-container>
