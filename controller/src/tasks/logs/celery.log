@@ -1,0 +1,17 @@
+[2020-04-02 17:44:22,616: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@rabbitmq:5672//: [Errno 111] Connection refused.
+Trying again in 2.00 seconds... (1/100)
+
+[2020-04-02 17:44:24,634: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@rabbitmq:5672//: [Errno 111] Connection refused.
+Trying again in 4.00 seconds... (2/100)
+
+[2020-04-02 17:44:28,647: ERROR/MainProcess] consumer: Cannot connect to amqp://guest:**@rabbitmq:5672//: [Errno 111] Connection refused.
+Trying again in 6.00 seconds... (3/100)
+
+[2020-04-02 17:44:34,664: INFO/MainProcess] Connected to amqp://guest:**@rabbitmq:5672//
+[2020-04-02 17:44:34,692: INFO/MainProcess] mingle: searching for neighbors
+[2020-04-02 17:44:35,785: INFO/MainProcess] mingle: all alone
+[2020-04-02 17:44:35,814: WARNING/MainProcess] /usr/local/lib/python3.8/site-packages/celery/fixups/django.py:202: UserWarning: Using settings.DEBUG leads to a memory
+            leak, never use this setting in production environments!
+  warnings.warn('''Using settings.DEBUG leads to a memory
+[2020-04-02 17:44:35,816: INFO/MainProcess] celery@65c2713e44e4 ready.
+[2020-04-02 17:44:37,921: INFO/MainProcess] Events of group {task} enabled by remote.
