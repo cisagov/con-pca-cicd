@@ -97,23 +97,13 @@ cursor: pointer;
 }
 
 //overrides for mat
-.mat-toolbar.mat-accent{
-    background: #fff;
-    color:black;
-    border-bottom:solid 2px #1694ba;
-}
-.mat-icon-button{
-    border: 1px solid #1694ba;
-    line-height: 0px;
-}
-.mat-menu-custom-header{
-    margin-left:20px !important;
-    margin-top:4px !important;
-    border: 1px solid mat-color($mat-primary, main) !important;
-}
+
 .mat-menu-content{
     margin:10px;
 }
 .mat-menu-item{
     border-radius:5px;
+}
+.header-title{
+    margin-left:20px;
 }
