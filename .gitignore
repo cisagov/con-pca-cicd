@@ -1,36 +1,22 @@
+.venv
 .mypy_cache
 __pycache__
 .python-version
 .DS_Store
 src/.DS_Store
+
+
+# Controller
 controller/.env
+controller/src/staticfiles
+controller/src/celerybeat-schedule
+controller/src/celerybeat.pid
 
 #Pycharm
 .idea/
 
 #VSCode
 .vscode/
-/controller/CPAAdmin/CPAAdmin/AdminAPI/static/vendor-es2015.js.map
-/controller/CPAAdmin/CPAAdmin/AdminAPI/static/favicon.ico
-/controller/CPAAdmin/CPAAdmin/AdminAPI/static/main-es5.js
-/controller/CPAAdmin/CPAAdmin/AdminAPI/static/main-es5.js.map
-/controller/CPAAdmin/CPAAdmin/AdminAPI/static/main-es2015.js
-/controller/CPAAdmin/CPAAdmin/AdminAPI/static/main-es2015.js.map
-/controller/CPAAdmin/CPAAdmin/AdminAPI/static/polyfills-es5.js
-/controller/CPAAdmin/CPAAdmin/AdminAPI/static/polyfills-es5.js.map
-/controller/CPAAdmin/CPAAdmin/AdminAPI/static/polyfills-es2015.js
-/controller/CPAAdmin/CPAAdmin/AdminAPI/static/polyfills-es2015.js.map
-/controller/CPAAdmin/CPAAdmin/AdminAPI/static/runtime-es5.js
-/controller/CPAAdmin/CPAAdmin/AdminAPI/static/runtime-es5.js.map
-/controller/CPAAdmin/CPAAdmin/AdminAPI/static/runtime-es2015.js
-/controller/CPAAdmin/CPAAdmin/AdminAPI/static/runtime-es2015.js.map
-/controller/CPAAdmin/CPAAdmin/AdminAPI/static/styles-es5.js
-/controller/CPAAdmin/CPAAdmin/AdminAPI/static/styles-es5.js.map
-/controller/CPAAdmin/CPAAdmin/AdminAPI/static/styles-es2015.js
-/controller/CPAAdmin/CPAAdmin/AdminAPI/static/styles-es2015.js.map
-/controller/CPAAdmin/CPAAdmin/AdminAPI/static/vendor-es5.js
-/controller/CPAAdmin/CPAAdmin/AdminAPI/static/vendor-es5.js.map
-/controller/CPAAdmin/CPAAdmin/AdminAPI/static/vendor-es2015.js
 /controller/src/celerybeat-schedule
 /controller/src/celerybeat.pid
 /controller/src/tasks/logs/celery.log
