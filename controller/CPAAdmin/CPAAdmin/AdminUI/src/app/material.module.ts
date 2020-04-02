@@ -11,6 +11,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatSelectModule } from '@angular/material/select';
+import { MatTableModule } from '@angular/material/table';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatTreeModule } from '@angular/material/tree';
@@ -49,7 +50,8 @@ import { MatListModule } from '@angular/material/list'
     MatTabsModule,
     MatToolbarModule,
     MatMenuModule,
-    MatSidenavModule
+    MatSidenavModule,
+    MatTableModule
   ],
   exports: [
     MatButtonModule,
@@ -76,7 +78,8 @@ import { MatListModule } from '@angular/material/list'
     MatToolbarModule,
     MatMenuModule,
     MatSidenavModule,
-    MatListModule
+    MatListModule,
+    MatTableModule
   ]
 })
 export class MaterialModule { }
