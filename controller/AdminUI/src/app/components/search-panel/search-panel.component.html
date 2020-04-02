@@ -1,0 +1,87 @@
+<style>
+    *,
+    option {
+        color: #757575
+    }
+
+    .c-turq {
+        color: #1794b4;
+    }
+
+    .bg-turq {
+        background-color: #1794b4;
+    }
+</style>
+
+<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+<div class="p-3">
+    <div class="form-group">
+        <label class="mb-1 c-turq" for="facility">Search</label>
+        <input type="text" maxlength="100" class="form-control" id="facility" name="facility">
+    </div>
+
+    <div class="form-group">
+        <label class="mb-1 c-turq" for="orgName">Organization Name</label>
+        <input type="text" maxlength="100" class="form-control" id="orgName" name="orgName">
+    </div>
+
+    <div class="form-group">
+        <label class="mb-1 c-turq" for="subscriptionName">Subscription Name</label>
+        <input type="text" maxlength="100" class="form-control" id="subscriptionName" name="subscriptionName">
+    </div>
+
+    <div class="form-group">
+        <label class="mb-1 c-turq" for="primaryContact">Primary Contact</label>
+        <input type="text" maxlength="100" class="form-control" id="primaryContact" name="primaryContact"
+            >
+    </div>
+
+    <div class="form-group">
+        <label class="mb-1" for="status">Status</label>
+        <select class="form-control" id="status" name="status">
+            <option value="all">All</option>
+            <option value="wait-srf">Waiting on SRF</option>
+            <option value="wait-roe">Waiting on ROE</option>
+            <option value="play">Play</option>
+            <option value="paused">Paused</option>
+        </select>
+    </div>
+
+    <div class="form-group mb-5">
+        <div>
+            <input type="checkbox" class="mr-2">Non-Government
+        </div>
+        <div>
+            <input type="checkbox" class="mr-2">Federal
+        </div>
+    </div>
+
+    <div class="mb-3">
+        <div><strong>Action Items Pending</strong></div>
+        <div class="mb-2">
+            <a href="#">
+                You have 3 new Users Requesting Service
+            </a>
+        </div>
+
+        <div class="mb-2">
+            <a href="#">
+                You have 2 Users that have been approved and
+                just signed their Rules of engagement.
+            </a>
+        </div>
+
+        <div class="mb-2">
+            <a href="#">
+                You have 1 Campaign that just completed their
+                templates and need to be reviewed.
+            </a>
+        </div>
+    </div>
+
+    <div class="text-center mb-5">
+        <img src="../../../assets/CISA_wordmark-e1584675152693.png" style="width: 10rem">
+    </div>
+</div>

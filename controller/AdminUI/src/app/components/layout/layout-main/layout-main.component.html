@@ -1,7 +1,16 @@
-<mat-toolbar class="sidenav-content-toolbar" color="primary">
-  <button mat-icon-button class="menu-button" type="button" aria-label="Toggle sidenav" (click)="drawer.toggle()">
+<mat-toolbar class="sidenav-content-toolbar" color="accent">
+  <button mat-icon-button class="menu-button" type="button" aria-label="Toggle sidenav" [matMenuTriggerFor]="belowMenu">
     <i class="material-icons">menu</i>
   </button>
+  <span>Subscriptions</span>
+  <mat-menu #belowMenu="matMenu" yPosition="below" class="mat-menu-custom-header">
+    <button mat-menu-item>Subscriptions</button>
+    <button mat-menu-item>Templates</button>
+    <button mat-menu-item>Contacts</button>
+    <button mat-menu-item>Domains</button>
+    <button mat-menu-item>Organizations</button>
+    <button mat-menu-item>User Admin</button>
+  </mat-menu>
   <span class="filler">
       <!-- You can place a search bar here or anything you like -->
   </span>
@@ -11,21 +20,31 @@
         [attr.role]="'navigation'"
         mode="side"
         opened="true">
+        <mat-sidenav-container style="background:transparent;">
+          <div class="drawer-form-container">
+            <mat-form-field appearance="outline" class="drawer-input">
+              <mat-label>Search</mat-label>
+              <input matInput placeholder="Search">
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="drawer-input">
+              <mat-label>Organization Name</mat-label>
+              <input matInput placeholder="Organization Name">
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="drawer-input">
+              <mat-label>Subscription Name</mat-label>
+              <input matInput placeholder="Subscription Name">
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="drawer-input">
+              <mat-label>Primary Contact</mat-label>
+              <input matInput placeholder="Primary Contact">
+            </mat-form-field>
+          </div>
+        </mat-sidenav-container>
       <mat-nav-list class="navigation-list">
-        <a class="navigation-item" mat-list-item routerLink="/route1" routerLinkActive="active">
-          <mat-icon class="material-icons">create</mat-icon><span class="navigation-item-label">My first link</span>
-        </a>
-        <mat-divider class="navigation-divider"></mat-divider>
-        <a class="navigation-item" mat-list-item routerLink="/route2" routerLinkActive="active">
-          <mat-icon class="material-icons">how_to_reg</mat-icon><span class="navigation-item-label">My second link</span>
-        </a>
-        <a class="navigation-item" mat-list-item routerLink="/route3" routerLinkActive="active">
-          <mat-icon class="material-icons">add_comment</mat-icon><span class="navigation-item-label">My third link</span>
-        </a>
+        
       </mat-nav-list>
     </mat-sidenav>
     <mat-sidenav-content class="sidenav-content">
-      
       <router-outlet></router-outlet>
       
     </mat-sidenav-content>
