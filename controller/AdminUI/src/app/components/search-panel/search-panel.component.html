@@ -1,15 +1,6 @@
-<style>
-    *,
-    option {
-        color: #757575
-    }
-
-    .c-turq {
-        color: #1794b4;
-    }
-
-    .bg-turq {
-        background-color: #1794b4;
+<style scoped>
+    .mat-form-field{
+        width:100%;
     }
 </style>
 
@@ -17,48 +8,38 @@
     integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
 
 <div class="p-3">
-    <div class="form-group">
-        <label class="mb-1 c-turq" for="facility">Search</label>
-        <input type="text" maxlength="100" class="form-control" id="facility" name="facility">
-    </div>
+    <mat-form-field>
+        <mat-label>Search</mat-label>
+        <input matInput> 
+    </mat-form-field>
 
-    <div class="form-group">
-        <label class="mb-1 c-turq" for="orgName">Organization Name</label>
-        <input type="text" maxlength="100" class="form-control" id="orgName" name="orgName">
-    </div>
+    <mat-form-field>
+        <mat-label>Organization Name</mat-label>
+        <input matInput> 
+    </mat-form-field>
 
-    <div class="form-group">
-        <label class="mb-1 c-turq" for="subscriptionName">Subscription Name</label>
-        <input type="text" maxlength="100" class="form-control" id="subscriptionName" name="subscriptionName">
-    </div>
+    <mat-form-field>
+        <mat-label>Subscription Name</mat-label>
+        <input matInput> 
+    </mat-form-field>
 
-    <div class="form-group">
-        <label class="mb-1 c-turq" for="primaryContact">Primary Contact</label>
-        <input type="text" maxlength="100" class="form-control" id="primaryContact" name="primaryContact"
-            >
-    </div>
+    <mat-form-field>
+        <mat-label>Primary Contact</mat-label>
+        <input matInput> 
+    </mat-form-field>
 
-    <div class="form-group">
-        <label class="mb-1" for="status">Status</label>
-        <select class="form-control" id="status" name="status">
-            <option value="all">All</option>
-            <option value="wait-srf">Waiting on SRF</option>
-            <option value="wait-roe">Waiting on ROE</option>
-            <option value="play">Play</option>
-            <option value="paused">Paused</option>
-        </select>
-    </div>
+    <mat-form-field>
+        <mat-label>Status</mat-label>
+        <mat-select [formControl]="status" multiple>
+          <mat-option *ngFor="let s of statusList" [value]="s">{{s}}</mat-option>
+        </mat-select>
+      </mat-form-field>
 
-    <div class="form-group mb-5">
-        <div>
-            <input type="checkbox" class="mr-2">Non-Government
-        </div>
-        <div>
-            <input type="checkbox" class="mr-2">Federal
-        </div>
-    </div>
+    <mat-checkbox color="primary" >Non-Government</mat-checkbox> <br>
+    <mat-checkbox color="primary" >Federal</mat-checkbox>
+    
 
-    <div class="mb-3">
+    <div class="mb-3 mt-3">
         <div><strong>Action Items Pending</strong></div>
         <div class="mb-2">
             <a href="#">
