@@ -8,13 +8,15 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { LayoutBlankComponent } from './components/layout/layout-blank/layout-blank.component';
 import { LayoutMainComponent } from './components/layout/layout-main/layout-main.component';
 import { DashboardService } from './components/dashboard/dashboard.service';
+import { SearchPanelComponent } from './components/search-panel/search-panel.component';
 
 @NgModule({
   declarations: [
     AppComponent, 
     DashboardComponent, 
     LayoutBlankComponent, 
-    LayoutMainComponent
+    LayoutMainComponent, 
+    SearchPanelComponent
   ],
   imports: [
     BrowserModule,

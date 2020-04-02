@@ -20,29 +20,9 @@
         [attr.role]="'navigation'"
         mode="side"
         opened="true">
-        <mat-sidenav-container style="background:transparent;">
-          <div class="drawer-form-container">
-            <mat-form-field appearance="outline" class="drawer-input">
-              <mat-label>Search</mat-label>
-              <input matInput placeholder="Search">
-            </mat-form-field>
-            <mat-form-field appearance="outline" class="drawer-input">
-              <mat-label>Organization Name</mat-label>
-              <input matInput placeholder="Organization Name">
-            </mat-form-field>
-            <mat-form-field appearance="outline" class="drawer-input">
-              <mat-label>Subscription Name</mat-label>
-              <input matInput placeholder="Subscription Name">
-            </mat-form-field>
-            <mat-form-field appearance="outline" class="drawer-input">
-              <mat-label>Primary Contact</mat-label>
-              <input matInput placeholder="Primary Contact">
-            </mat-form-field>
-          </div>
-        </mat-sidenav-container>
-      <mat-nav-list class="navigation-list">
-        
-      </mat-nav-list>
+      
+    <app-search-panel></app-search-panel>
+
     </mat-sidenav>
     <mat-sidenav-content class="sidenav-content">
       <router-outlet></router-outlet>

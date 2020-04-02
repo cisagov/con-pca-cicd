@@ -20,3 +20,6 @@ controller/src/celerybeat.pid
 /controller/src/celerybeat-schedule
 /controller/src/celerybeat.pid
 /controller/src/tasks/logs/celery.log
+/controller/CPAAdmin/CPAAdmin/AdminUI/node_modules
+/controller/CPAAdmin/CPAAdmin/AdminUI/node_modules/*
+/controller/CPAAdmin/CPAAdmin/AdminUI/dist
