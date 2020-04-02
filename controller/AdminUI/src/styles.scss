@@ -238,3 +238,9 @@ $altTheme: mat-dark-theme($theme-primary, $theme-accent, $theme-warn);
 .mat-form-field-appearance-outline.mat-focused{
     color: mat-color($mat-primary, darker);
 }
+:focus{
+  outline:none !important;
+}
+.mat-sidenav-container{
+  padding-top:20px;
+}
