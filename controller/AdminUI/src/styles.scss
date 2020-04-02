@@ -231,13 +231,6 @@ $altTheme: mat-dark-theme($theme-primary, $theme-accent, $theme-warn);
     font-family: 'Roboto';
   }
 }
-.mat-form-field-appearance-outline .mat-form-field-outline{
-    color: mat-color($mat-primary, lighter);
-    border-width: 2px;
-}
-.mat-form-field-appearance-outline.mat-focused{
-    color: mat-color($mat-primary, darker);
-}
 :focus{
   outline:none !important;
 }
