@@ -5,8 +5,9 @@ It seems that it has to have THIS docstring with a summary line, a blank line
 and sume more text like here. Wow.
 """
 # Standard Python Libraries
+import json
 import logging
-from os import getenv
+import os
 
 # Third-Party Libraries
 from db.client import connect_to_mongo, init_db
@@ -15,7 +16,21 @@ from rabbit.client import RabbitClient
 
 def load_config():
     """This loads configuration from env."""
-    configs = {"rabbit_host": getenv("RABBIT_HOST"), "mongo_uri": getenv("MONGO_URI")}
+    if os.getenv("RABBIT_HOST") is None:
+        project_root = os.path.abspath(__file__).rsplit("/", 2)[0]
+        config_file = os.getenv(
+            "CPA_DATA_CONFIG_FILE",
+            os.path.join(project_root, "deployment/local_config.json"),
+        )
+        with open(config_file, "r") as f:
+            configs = json.load(f)
+
+    else:
+        configs = {
+            "rabbit_host": os.getenv("RABBIT_HOST"),
+            "mongo_uri": os.getenv("MONGO_URI"),
+        }
+
     return configs
 
 
@@ -23,7 +38,7 @@ def main():
     """This is the Main method for starting the service."""
     service_config = load_config()
 
-    logging.basicConfig(level=logging.getLevelName(getenv("LOG_LEVEL", "INFO")))
+    logging.basicConfig(level=logging.getLevelName(os.getenv("LOG_LEVEL", "INFO")))
     logging.info("service_config {}".format(service_config))
 
     db_client = connect_to_mongo(db_uri=service_config["mongo_uri"])
