@@ -1,6 +1,15 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-sm">
+            <div class="row" style="padding-bottom:10px">
+                <div class="col-6">
+                    <button mat-raised-button color="primary">Create New Subscription</button>
+                    <button mat-raised-button color="accent" style="margin-left:5px">Filters</button>
+                </div>
+                <div class="col-6">
+                    <button mat-raised-button color="primary" class="float-right">Pause All</button>
+                </div>
+            </div>
             <mat-table [dataSource]="subscriptionsData">
                 <ng-container matColumnDef="SubscriptionName"><mat-header-cell *matHeaderCellDef>Subscription Name</mat-header-cell>    <mat-cell *matCellDef="let row"> {{row.SubscriptionName}} </mat-cell></ng-container>
                 <ng-container matColumnDef="Status"><mat-header-cell *matHeaderCellDef>Status </mat-header-cell>    <mat-cell *matCellDef="let row"> {{row.Status }} </mat-cell></ng-container>
