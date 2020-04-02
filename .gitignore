@@ -15,3 +15,6 @@ controller/src/celerybeat.pid
 
 #VSCode
 .vscode/
+
+# Python env
+env/

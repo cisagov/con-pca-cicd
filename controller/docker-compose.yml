@@ -1,19 +1,18 @@
-  
+---
 version: "3"
-
 services:
   web:
     container_name: cpa-web
     build:
-        context: .
-        dockerfile: ./etc/Dockerfile
+      context: .
+      dockerfile: ./etc/Dockerfile
     restart: on-failure
     ports:
-        - "8080:8080"
+      - "8080:8080"
     volumes:
       - ./src:/app
     env_file:
-        - .env
+      - .env
 
   celery-beat:
     build:
