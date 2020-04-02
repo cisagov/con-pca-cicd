@@ -1,0 +1,34 @@
+<mat-sidenav-container class="sidenav-container">
+    <mat-sidenav #drawer class="sidenav" fixedInViewport="true"
+        [attr.role]="'navigation'"
+        mode="side"
+        opened="false">
+      <mat-toolbar>
+        
+      </mat-toolbar>
+      <mat-nav-list class="navigation-list">
+        <a class="navigation-item" mat-list-item routerLink="/route1" routerLinkActive="active">
+          <mat-icon class="material-icons">create</mat-icon><span class="navigation-item-label">My first link</span>
+        </a>
+        <mat-divider class="navigation-divider"></mat-divider>
+        <a class="navigation-item" mat-list-item routerLink="/route2" routerLinkActive="active">
+          <mat-icon class="material-icons">how_to_reg</mat-icon><span class="navigation-item-label">My second link</span>
+        </a>
+        <a class="navigation-item" mat-list-item routerLink="/route3" routerLinkActive="active">
+          <mat-icon class="material-icons">add_comment</mat-icon><span class="navigation-item-label">My third link</span>
+        </a>
+      </mat-nav-list>
+    </mat-sidenav>
+    <mat-sidenav-content class="sidenav-content">
+      <mat-toolbar class="sidenav-content-toolbar" color="primary">
+        <button mat-icon-button class="menu-button" type="button" aria-label="Toggle sidenav" (click)="drawer.toggle()">
+          <i class="material-icons">menu</i>
+        </button>
+        <span class="filler">
+            <!-- You can place a search bar here or anything you like -->
+        </span>
+      </mat-toolbar>
+      <router-outlet></router-outlet>
+      
+    </mat-sidenav-content>
+  </mat-sidenav-container>
