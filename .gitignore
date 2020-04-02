@@ -31,3 +31,6 @@ controller/.env
 /controller/CPAAdmin/CPAAdmin/AdminAPI/static/vendor-es5.js
 /controller/CPAAdmin/CPAAdmin/AdminAPI/static/vendor-es5.js.map
 /controller/CPAAdmin/CPAAdmin/AdminAPI/static/vendor-es2015.js
+/controller/src/celerybeat-schedule
+/controller/src/celerybeat.pid
+/controller/src/tasks/logs/celery.log
