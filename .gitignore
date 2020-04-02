@@ -1,9 +1,14 @@
+.venv
 .mypy_cache
 __pycache__
 .python-version
 .DS_Store
-src/.DS_Store
+
+# Controller
 controller/.env
+controller/src/staticfiles
+controller/src/celerybeat-schedule
+controller/src/celerybeat.pid
 
 #Pycharm
 .idea/
