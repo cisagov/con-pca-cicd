@@ -90,7 +90,13 @@ cursor: pointer;
 .drawer-input{
     width:100%;
 }
-
+.fill-remaining-space{
+    flex:1 1 auto;
+}
+.loggin-user{
+    font-size:16px;
+    font-weight:normal;
+}
 //title
 .title-padding{
     padding-left: 20px;
