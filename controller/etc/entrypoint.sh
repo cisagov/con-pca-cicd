@@ -4,6 +4,6 @@
 echo "Collect static files"
 python manage.py collectstatic --noinput
 
-python manage.py runserver 0.0.0.0:8080
+python manage.py runserver 0.0.0.0:8000
 
-# gunicorn --bind 0.0.0.0:8080 config.wsgi
+# gunicorn --bind 0.0.0.0:8000 config.wsgi
