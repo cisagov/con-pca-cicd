@@ -15,6 +15,7 @@ controller/src/celerybeat.pid
 
 #VSCode
 .vscode/
+controller/src/tasks/logs/celery.log
 
 # Python env
 env/
