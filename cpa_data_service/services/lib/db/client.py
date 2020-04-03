@@ -44,4 +44,5 @@ def insert_one(db_client, collection, data):
     """This is the basic insert_one call useing the mongo client."""
     logging.info("inserting into database colleciton {}!".format(collection))
     collection = db_client[collection]
-    collection.insert_one(data)
+    inserted_id = collection.insert_one(data).inserted_id
+    return {"id": str(inserted_id)}

@@ -52,7 +52,7 @@ def main():
         logging.info("Strating service {}".format("rabbit_client"))
         logging.info("server version: {}".format(db_client["version"]))
         logging.info("test db client: {}".format(db_client.list_database_names()))
-        rabbit_client.start("data_queue")
+        rabbit_client.start(listener_queue="data_queue", sender_queue="db_responce")
         logging.info("Strated {}".format("rabbit_client"))
 
     except KeyboardInterrupt:
