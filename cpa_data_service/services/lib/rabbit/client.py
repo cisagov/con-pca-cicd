@@ -24,15 +24,20 @@ class RabbitClient:
         )
         self.db_client = db_client
 
-    def start(self, queue=""):
+    def start(self, listener_queue="", sender_queue=""):
         """Starting client."""
         logging.info("Starting client: {}".format(self.name))
         self.channel = self.connection.channel()
-        self.channel.queue_declare(queue=queue)
+        self.channel.queue_declare(queue=listener_queue)
+        self.channel.queue_declare(queue=sender_queue)
         self.channel.basic_consume(
-            queue=queue, on_message_callback=self.basic_callback, auto_ack=True
+            queue=listener_queue, on_message_callback=self.basic_callback, auto_ack=True
         )
-        logging.info("[*] Waiting for {}. To exit press CTRL+C'".format(queue))
+        logging.info("[*] Listening on queue: {}".format(listener_queue))
+        logging.info(
+            "[*] Sending on queue: {}. To exit press CTRL+C'".format(sender_queue)
+        )
+
         self.channel.start_consuming()
 
     def stop(self):
@@ -46,7 +51,17 @@ class RabbitClient:
         print(" [x] {}".format(json_data))
         self.send_db_data(json_data)
 
+    def basic_publish_responce(self, routing_key, body):
+        """Basic publish to queue."""
+        logging.info("DB success! responding to queue: {}".format(body))
+        self.channel.basic_publish(
+            exchange="", routing_key=routing_key, body=json.dumps(body)
+        )
+
     def send_db_data(self, json_data):
         """Sending data into db."""
-        logging.info("to send to db now: {}".format(json_data))
-        insert_one(self.db_client, json_data["collection"], json_data["data"])
+        logging.info("Sending to db now: {}".format(json_data))
+        responce = insert_one(
+            self.db_client, json_data["collection"], json_data["data"]
+        )
+        self.basic_publish_responce("db_responce", responce)
