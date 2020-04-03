@@ -2,7 +2,7 @@
 version: "3"
 services:
   data-service:
-    container_name: data-service
+    container_name: cpa-data-service
     build:
       context: .
       dockerfile: ./deployment/Dockerfile
@@ -18,7 +18,7 @@ services:
       - .env
 
   mongodb:
-    container_name: cpa_mongodb
+    container_name: cpa-mongodb
     hostname: mongodb
     image: "mongo:3.6"
     # These ports are exposed on the host; 'hostport:containerport'.
@@ -26,13 +26,14 @@ services:
     # DNS name or IP address and port 27017 (the left-hand side of the
     # colon).
     ports:
-      - "27017:27017"
+      - "127.0.0.1:27017:27017"
     volumes:
       - "mongodb:/data/db"
     env_file:
       - ../base/mongodb/.env
 
   rabbitmq:
+    container_name: cpa-rabbitmq
     hostname: rabbitmq
     # There is a prebuilt RabbitMQ image; see
     # https://hub.docker.com/_/rabbitmq/ for details.
