@@ -4,6 +4,7 @@ import { LayoutBlankComponent } from './components/layout/layout-blank/layout-bl
 import { LayoutMainComponent } from './components/layout/layout-main/layout-main.component';
 import { SubscriptionsComponent } from './components/subscriptions/subscriptions.component';
 import { ServiceSubscriptionComponent } from './components/service-subscription/service-subscription.component';
+import { SearchPanelComponent } from './components/search-panel/search-panel.component';
 
 const routes: Routes = [
   {
@@ -11,6 +12,10 @@ const routes: Routes = [
     children: [
       { path: '', component: SubscriptionsComponent}
     ]
+  },
+  {
+    path:'subscriptions', component: SearchPanelComponent,
+    outlet: "sidebar"
   },
   {
     path:'servicesubscription', component: LayoutMainComponent, 
