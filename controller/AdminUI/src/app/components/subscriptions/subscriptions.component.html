@@ -3,7 +3,7 @@
         <div class="col-sm">
             <div class="row" style="padding-bottom:10px">
                 <div class="col-6">
-                    <button mat-raised-button color="primary">Create New Subscription</button>
+                    <button mat-raised-button color="primary" routerLink="/servicesubscription">Create New Subscription</button>
                     <button mat-raised-button color="accent" style="margin-left:5px">Filters</button>
                 </div>
                 <div class="col-6">
@@ -14,7 +14,7 @@
                 <ng-container matColumnDef="SubscriptionName"><mat-header-cell *matHeaderCellDef>Subscription Name</mat-header-cell>    <mat-cell *matCellDef="let row"> {{row.SubscriptionName}} </mat-cell></ng-container>
                 <ng-container matColumnDef="Status"><mat-header-cell *matHeaderCellDef>Status </mat-header-cell>    <mat-cell *matCellDef="let row"> {{row.Status }} </mat-cell></ng-container>
                 <ng-container matColumnDef="PrimaryContact"><mat-header-cell *matHeaderCellDef>Primary Contact </mat-header-cell>    <mat-cell *matCellDef="let row"> {{row.PrimaryContact }} </mat-cell></ng-container>
-                <ng-container matColumnDef="Customer"><mat-header-cell *matHeaderCellDef>Customer </mat-header-cell>    <mat-cell *matCellDef="let row"> {{row.Customer }} </mat-cell></ng-container>
+                <ng-container matColumnDef="Customer"><mat-header-cell *matHeaderCellDef>Organization </mat-header-cell>    <mat-cell *matCellDef="let row"> {{row.Customer }} </mat-cell></ng-container>
                 <ng-container matColumnDef="LastActionDate"><mat-header-cell *matHeaderCellDef>Last Action Date </mat-header-cell>    <mat-cell *matCellDef="let row"> {{row.LastActionDate }} </mat-cell></ng-container>
                 <ng-container matColumnDef="Active"><mat-header-cell *matHeaderCellDef>Active</mat-header-cell>    <mat-cell *matCellDef="let row"><img src="../../../assets/icon_{{row.Active}}.png" style="height: 1rem;"> </mat-cell></ng-container>
                 <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>

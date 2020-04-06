@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { DashboardService } from './dashboard.service';
+import { SubscriptionsService } from './subscriptions.service';
 
 @Component({
   selector: 'app-dashboard',
-  templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.scss']
+  templateUrl: './subscriptions.component.html',
+  styleUrls: ['./subscriptions.component.scss']
 })
-export class DashboardComponent implements OnInit {
+export class SubscriptionsComponent implements OnInit {
 
   activeStatus = ["prohibit", "hourglass", "pause", "play", "stop"];
 
@@ -36,7 +36,7 @@ export class DashboardComponent implements OnInit {
 
   ];
 
-  constructor(private dashboardService: DashboardService) { }
+  constructor(private subscriptionsSvc: SubscriptionsService) { }
 
   ngOnInit(): void {
     this.subscriptionsData.forEach((s: any) => {
