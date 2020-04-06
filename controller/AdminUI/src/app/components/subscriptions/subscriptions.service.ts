@@ -3,6 +3,6 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from "@angular/router";
 
 @Injectable()
-export class DashboardService {
+export class SubscriptionsService {
    constructor() {}
 }

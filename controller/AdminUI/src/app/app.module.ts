@@ -5,19 +5,21 @@ import { MaterialModule } from './material.module';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { SubscriptionsComponent } from './components/subscriptions/subscriptions.component';
 import { LayoutBlankComponent } from './components/layout/layout-blank/layout-blank.component';
 import { LayoutMainComponent } from './components/layout/layout-main/layout-main.component';
-import { DashboardService } from './components/dashboard/dashboard.service';
+import { SubscriptionsService } from './components/subscriptions/subscriptions.service';
 import { SearchPanelComponent } from './components/search-panel/search-panel.component';
+import { ServiceSubscriptionComponent } from './components/service-subscription/service-subscription.component';
 
 @NgModule({
   declarations: [
     AppComponent, 
-    DashboardComponent, 
+    SubscriptionsComponent, 
     LayoutBlankComponent, 
     LayoutMainComponent, 
-    SearchPanelComponent
+    SearchPanelComponent, 
+    ServiceSubscriptionComponent
   ],
   imports: [
     BrowserModule,
@@ -28,7 +30,7 @@ import { SearchPanelComponent } from './components/search-panel/search-panel.com
     ReactiveFormsModule
   ],
   providers: [
-    DashboardService
+    SubscriptionsService
   ],
   bootstrap: [AppComponent]
 })

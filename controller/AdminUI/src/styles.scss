@@ -229,6 +229,7 @@ $altTheme: mat-dark-theme($theme-primary, $theme-accent, $theme-warn);
   font-family: 'Material Icons', 'Material Icons';  
   .mat-badge-content {
     font-family: 'Roboto';
+    color: '#fff';
   }
 }
 :focus{

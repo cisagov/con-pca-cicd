@@ -25,6 +25,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list'
+import { MatBadgeModule } from '@angular/material/badge';
 
 @NgModule({
   imports: [
@@ -51,7 +52,8 @@ import { MatListModule } from '@angular/material/list'
     MatToolbarModule,
     MatMenuModule,
     MatSidenavModule,
-    MatTableModule
+    MatTableModule,
+    MatBadgeModule
   ],
   exports: [
     MatButtonModule,
@@ -79,7 +81,8 @@ import { MatListModule } from '@angular/material/list'
     MatMenuModule,
     MatSidenavModule,
     MatListModule,
-    MatTableModule
+    MatTableModule,
+    MatBadgeModule
   ]
 })
 export class MaterialModule { }

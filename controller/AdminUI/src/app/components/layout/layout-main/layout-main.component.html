@@ -10,7 +10,7 @@
       </button>
       <div class="header-title">Subscriptions</div>
       <mat-menu #belowMenu="matMenu" yPosition="below" class="mat-menu-custom-header">
-        <button mat-menu-item>Subscriptions</button>
+        <button mat-menu-item routerLink="/subscriptions">Subscriptions</button>
         <button mat-menu-item>Templates</button>
         <button mat-menu-item>Contacts</button>
         <button mat-menu-item>Domains</button>
@@ -29,17 +29,16 @@
           </mat-menu>
       </span>
     </mat-toolbar>
-    <mat-sidenav-container class="sidenav-container">
 
+    <mat-sidenav-container class="sidenav-container">
       <mat-sidenav #drawer class="docs-sidenav"
            mode="side"
           opened="true"
           [fixedInViewport]="false" 
           [fixedTopGap]="0"
           [fixedBottomGap]="0">
-      <app-search-panel></app-search-panel>
+        <app-search-panel></app-search-panel>
       </mat-sidenav>
-      
       <mat-sidenav-content class="sidenav-content">
         <router-outlet></router-outlet>
       </mat-sidenav-content>
