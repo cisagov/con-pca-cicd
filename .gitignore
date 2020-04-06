@@ -23,3 +23,7 @@ controller/src/celerybeat.pid
 /controller/CPAAdmin/CPAAdmin/AdminUI/node_modules
 /controller/CPAAdmin/CPAAdmin/AdminUI/node_modules/*
 /controller/CPAAdmin/CPAAdmin/AdminUI/dist
+controller/src/tasks/logs/celery.log
+
+# Python env
+env/
