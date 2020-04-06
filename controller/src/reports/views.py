@@ -20,7 +20,7 @@ def reports_page(request):
   return render(request, 'reports/reports-page.html')
 
 def generate_pdf(request):
-  html = HTML('http://localhost:8080/reports')
+  html = HTML('http://localhost:8000/reports')
   html.write_pdf('/tmp/reports_test.pdf')
 
   fs = FileSystemStorage('/tmp')

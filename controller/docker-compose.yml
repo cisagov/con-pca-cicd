@@ -1,19 +1,18 @@
-  
+---
 version: "3"
-
 services:
   web:
     container_name: cpa-web
     build:
-        context: .
-        dockerfile: ./etc/Dockerfile
+      context: .
+      dockerfile: ./etc/Dockerfile
     restart: on-failure
     ports:
-        - "8080:8080"
+      - "8000:8000"
     volumes:
       - ./src:/app
     env_file:
-        - .env
+      - .env
 
   celery-beat:
     build:
@@ -66,5 +65,15 @@ services:
     restart: on-failure
     ports:
       - "5672:5672"
+    env_file:
+      - .env
+
+  gophish:
+    image: gophish/gophish:latest
+    container_name: cpa-gophish
+    restart: on-failure
+    ports:
+      - "3333:3333"
+      - "8080:8080"
     env_file:
       - .env
