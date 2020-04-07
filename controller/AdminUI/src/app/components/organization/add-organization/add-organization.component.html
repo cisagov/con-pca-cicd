@@ -10,7 +10,7 @@
             <div class="d-flex flex-row">
                 <mat-form-field appearance="outline" class="flex-grow-1">
                     <mat-label>Organization Id</mat-label>
-                    <input type="text" matInput placeholder="Organization Id" [formControl]="organizationId">
+                    <input type="text" matInput disabled placeholder="Organization Id" [formControl]="organizationId">
                 </mat-form-field>
             </div>
             <div class="d-flex flex-row">
@@ -88,12 +88,74 @@
             <div class="d-flex flex-row">
                 <button mat-raised-button color="primary" (click)="showAddContact()" *ngIf="!addContact">Add Contact</button>
             </div>
+            
             <div class="d-flex flex-row p-2 flex-grow-1" *ngIf="addContact">
                 <mat-card style="width:100%">
                     <mat-card-header>
                         <mat-card-title>Add Contact</mat-card-title>
                     </mat-card-header>
                     <mat-card-content>
+                        <div class="d-flex flex-row">
+                            <div class="d-flex flex-column mr-2">
+                                <mat-form-field appearance="outline">
+                                    <mat-label>First Name</mat-label>
+                                    <input type="text" matInput placeholder="First Name" [formControl]="firstName"
+                                    [errorStateMatcher]="matchFirstName">
+                                    <mat-error *ngIf="firstName.hasError('required')">
+                                        First name <strong>required</strong>
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                            <div class="d-flex flex-column mr-2">
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Last Name</mat-label>
+                                    <input type="text" matInput placeholder="Last Name" [formControl]="lastName"
+                                    [errorStateMatcher]="matchLastName">
+                                    <mat-error *ngIf="lastName.hasError('required')">
+                                        Last name <strong>required</strong>
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                            <div class="d-flex flex-column">
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Title</mat-label>
+                                    <input type="text" matInput placeholder="Title" [formControl]="title">
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="d-flex flex-row">
+                            <div class="d-flex flex-column mr-2">
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Email</mat-label>
+                                    <input type="text" matInput placeholder="Email" [formControl]="email"
+                                    [errorStateMatcher]="matchEmail">
+                                    <mat-error *ngIf="email.hasError('required')">
+                                        Email <strong>required</strong>
+                                    </mat-error>
+                                    <mat-error *ngIf="email.hasError('email')">
+                                        Check email format
+                                    </mat-error>
+                                </mat-form-field>
+                            </div>
+                            <div class="d-flex flex-column mr-2">
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Office Phone</mat-label>
+                                    <input type="text" matInput placeholder="Office Phone" [formControl]="officePhone">
+                                </mat-form-field>
+                            </div>
+                            <div class="d-flex flex-column">
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Mobile Phone</mat-label>
+                                    <input type="text" matInput placeholder="Mobile Phone" [formControl]="mobilePhone">
+                                </mat-form-field>
+                            </div>
+                        </div>
+                        <div class="d-flex flex-row flex-grow-1">
+                            <mat-form-field appearance="outline" class="flex-grow-1">
+                                <mat-label>Contact Notes</mat-label>
+                                <textarea matInput></textarea>
+                            </mat-form-field>
+                        </div>
                         <button mat-raised-button color="primary">Add</button>
                         <button mat-flat-button (click)="showAddContact()">Close</button>
                     </mat-card-content>

@@ -19,7 +19,11 @@ export class AddOrganizationComponent implements OnInit {
    matchState = new MyErrorStateMatcher();
    matchZip = new MyErrorStateMatcher();
    
-   organizationId = new FormControl('');
+   matchFirstName = new MyErrorStateMatcher();
+   matchLastName = new MyErrorStateMatcher();
+   matchEmail = new MyErrorStateMatcher();
+   
+   organizationId = new FormControl({value: '8b045ff5-b60d-4309-926c-a676b4028011', disabled: true});
    organizationName = new FormControl('', [Validators.required]);
    organizationIdentifier = new FormControl('', [Validators.required]);
    address1 = new FormControl('', [Validators.required]);
@@ -27,6 +31,15 @@ export class AddOrganizationComponent implements OnInit {
    city = new FormControl('', [Validators.required]);
    state = new FormControl('', [Validators.required]);
    zip = new FormControl('', [Validators.required]);
+
+   firstName = new FormControl('', [Validators.required]);
+   lastName = new FormControl('', [Validators.required]);
+   title = new FormControl('');
+   email = new FormControl('', [Validators.required, Validators.email]);
+   officePhone = new FormControl('');
+   mobilePhone = new FormControl('');
+   contactNotes = new FormControl('');
+
 
   constructor() { }
 
