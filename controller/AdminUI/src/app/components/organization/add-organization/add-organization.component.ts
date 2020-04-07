@@ -11,6 +11,8 @@ export class AddOrganizationComponent implements OnInit {
 
    model:any;
    addContact:boolean = false;
+   contactDataSource: any = [];
+   displayedColumns: string[] = ['name', 'title', 'email', 'phone'];
 
    matchOrganizationName = new MyErrorStateMatcher();
    matchOrganizationIdentifier = new MyErrorStateMatcher();
@@ -45,6 +47,10 @@ export class AddOrganizationComponent implements OnInit {
 
   showAddContact(){
     this.addContact = this.addContact ? false : true;
+  }
+
+  checkDataSourceLength(){
+    return this.contactDataSource.length > 0;
   }
 
   ngOnInit(): void {

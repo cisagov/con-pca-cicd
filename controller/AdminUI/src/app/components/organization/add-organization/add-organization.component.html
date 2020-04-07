@@ -161,6 +161,39 @@
                     </mat-card-content>
                 </mat-card>
             </div>
+            <div class="d-flex flex-row flex-grow-1 mt-3">
+                <table mat-table [dataSource]="contactDataSource" class="mat-elevation-z1 flex-grow-1" *ngIf="checkDataSourceLength()">                  
+                    <!-- Name Column -->
+                    <ng-container matColumnDef="name">
+                      <th mat-header-cell *matHeaderCellDef> Name </th>
+                      <td mat-cell *matCellDef="let element"> {{element.firstName + element.lastName}} </td>
+                    </ng-container>
+                  
+                    <!-- Title Column -->
+                    <ng-container matColumnDef="title">
+                      <th mat-header-cell *matHeaderCellDef> Title </th>
+                      <td mat-cell *matCellDef="let element"> {{element.title}} </td>
+                    </ng-container>
+                  
+                    <!-- Email Column -->
+                    <ng-container matColumnDef="email">
+                      <th mat-header-cell *matHeaderCellDef> Email </th>
+                      <td mat-cell *matCellDef="let element"> {{element.email}} </td>
+                    </ng-container>
+                  
+                    <!-- Phone Column -->
+                    <ng-container matColumnDef="phone">
+                      <th mat-header-cell *matHeaderCellDef> Phone </th>
+                      <td mat-cell *matCellDef="let element"> {{element.mobilePhone}} </td>
+                    </ng-container>
+                  
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                  </table>
+                  <div class="alert alert-danger flex-grow-1" role="alert" *ngIf="!checkDataSourceLength()">
+                    No contacts Available
+                  </div>
+            </div>
         </div>
     </div>
 </div>
