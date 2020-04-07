@@ -1,0 +1,58 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <h3>Add Coninuous Phishing Organization</h3>
+            <div>
+                <mat-form-field appearance="outline">
+                    <input type="text" matInput placeholder="Orgainization Id" [formControl]="organizationId">
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <input type="text" matInput placeholder="Oranization Name" [formControl]="organizationName"
+                    [errorStateMatcher]="matchOrganizationName">
+                    <mat-error *ngIf="organizationName.hasError('required')">
+                    Organization name is <strong>required</strong>
+                    </mat-error>
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <input type="text" matInput placeholder="Orgainization Identifier" [formControl]="organizationIdentifier"
+                    [errorStateMatcher]="matchOrganizationIdentifier">
+                    <mat-error *ngIf="organizationIdentifier.hasError('required')">
+                    Organization identifier is <strong>required</strong>
+                    </mat-error>
+                </mat-form-field>
+                <!-- Place holder for Government Type -->
+                <mat-form-field appearance="outline">
+                    <input type="text" matInput placeholder="Address 1" [formControl]="address1"
+                    [errorStateMatcher]="matchAddress1">
+                    <mat-error *ngIf="address1.hasError('required')">
+                    Address 1 is <strong>required</strong>
+                    </mat-error>
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <input type="text" matInput placeholder="Address 2" [formControl]="address2">
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <input type="text" matInput placeholder="city" [formControl]="city"
+                    [errorStateMatcher]="matchCity">
+                    <mat-error *ngIf="city.hasError('required')">
+                        City is <strong>required</strong>
+                    </mat-error>
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <input type="text" matInput placeholder="State" [formControl]="state"
+                    [errorStateMatcher]="matchState">
+                    <mat-error *ngIf="state.hasError('required')">
+                        State is <strong>required</strong>
+                    </mat-error>
+                </mat-form-field>
+                <mat-form-field appearance="outline">
+                    <input type="text" matInput placeholder="Zip" [formControl]="zip"
+                    [errorStateMatcher]="matchZip">
+                    <mat-error *ngIf="zip.hasError('required')">
+                        Zip is <strong>required</strong>
+                    </mat-error>
+              </mat-form-field>
+            </div>
+        </div>
+    </div>
+</div>
