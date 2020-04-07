@@ -1,69 +1,80 @@
-<div class="p-3">
+<div class="p-3 pb-5">
     <h1>Create Subscription</h1>
 
     <div class="d-flex flex-row mb-5">
         <div style="border-right: 1px solid #000" class="pr-2">
             <div class="d-flex flex-column">
-                <div class="d-flex flex-row">
+                <div class="d-flex flex-row mb-3">
                     <button mat-raised-button color="primary">Create a Contact/Organization</button>
                     <button mat-icon-button color="primary">
                         <i class="fa fa-search" style="font-size: 1rem;"></i>
                     </button>
                 </div>
-                <mat-form-field>
-                    <mat-select>
-                        <mat-option>Select Contact</mat-option>
+                <mat-form-field appearance="outline">
+                    <mat-select (change)="changeContact($event)">
+                        <mat-option value="" selected>Select Contact</mat-option>
                         <mat-option *ngFor="let c of contactsForOrg" [value]="c.id">{{c.name}}</mat-option>
                     </mat-select>
                 </mat-form-field>
             </div>
         </div>
         <div style="border-right: 1px solid #000" class="pl-2 pr-2">
-            <div>{{orgContact.organization.orgName}}</div>
-            <div>{{orgContact.organization.orgAbbrev}}</div>
-            <div>{{orgContact.organization.orgAddr1}}</div>
-            <div>{{orgContact.organization.orgCity}}, {{orgContact.organization.orgState}}</div>
-            <div>{{orgContact.organization.orgType}}</div>
+            <div>{{currentOrg.orgName}}</div>
+            <div>{{currentOrg.orgAbbrev}}</div>
+            <div>{{currentOrg.orgAddr1}}</div>
+            <div>{{currentOrg.orgCity}}, {{currentOrg.orgState}}</div>
+            <div>{{currentOrg.orgType}}</div>
         </div>
         <div class="pl-2">
-            <div>{{orgContact.contacts[0].firstName}} {{orgContact.contacts[0].lastName}} {{orgContact.contacts[0].title}}</div>
-            <div>{{orgContact.contacts[0].phone}}</div>
-            <div>{{orgContact.contacts[0].email}}</div>
+            <div>{{currentContact.firstName}} {{currentContact.lastName}}
+                {{currentContact.title}}</div>
+            <div>{{currentContact.phone}}</div>
+            <div>{{currentContact.email}}</div>
         </div>
     </div>
 
 
-    <div class="d-flex flex-column mb-3">
-            <mat-label class="h6">Start Date</mat-label>
-            <mat-form-field class="mb-4">
-                <mat-label>Choose the date the Subscription will start</mat-label>
+    <div style="display: block;" class="mb-3">
+        <mat-label class="h6">Start Date</mat-label>
+        <div>
+            <mat-form-field appearance="outline" class="mb-4">
                 <input matInput [matDatepicker]="picker">
                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                 <mat-datepicker #picker></mat-datepicker>
             </mat-form-field>
+        </div>
 
 
-        <mat-label class="h6">Applicability Word Tags</mat-label>
-        <i>Enter words that describe the
-            organization, separated by commas.
-            They will be used to select applicable templates.</i>
-        <textarea autosize class="form-control mb-4"></textarea>
+        <div>
+            <mat-label class="h6">Applicability Word Tags</mat-label>
+            <div class="text-muted">Enter words that describe the
+                organization, separated by commas.
+                They will be used to select applicable templates.</div>
+            <textarea autosize appearance="outline" class="form-control mb-4"></textarea>
+        </div>
 
-        <mat-label class="h6">CSV Content</mat-label>
-        <i>Upload a CSV file containing the list of contacts or enter them
-            directly in the field below.
-        </i>
-        <button mat-raised-button color="primary" class="mb-3 col-4">
-            Upload Email Targets List
-            <i class="fa fa-upload"></i>
+        <div>
+            <div>
+                <mat-label class="h6">CSV Content</mat-label>
+            </div>
+            <div class="text-muted">Upload a CSV file containing the list of contacts or enter them
+                directly in the field below.
+            </div>
+        </div>
+
+        <button mat-raised-button color="primary" class="mb-3">
+            Upload Email Targets List <i class="fa fa-upload"></i>
         </button>
 
-        <i>email,firstname,lastname,position</i>
-        <textarea autosize placeholder="Enter CSV content" class="form-control"></textarea>
+
+        <div class="text-muted">Format: email, firstname, lastname, position</div>
+        <textarea autosize placeholder="Enter targets as CSV" class="form-control"></textarea>
     </div>
 
+
     <div class="text-right">
-        <button mat-raised-button color="primary">Create and Launch Subscription Service</button>
+        <button mat-raised-button color="primary" (click)="createAndLaunchSubscription()">Create and Launch Subscription
+            Service</button>
     </div>
 
 </div>

@@ -3,8 +3,8 @@ import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-service-subscription',
+  styleUrls: ['./service-subscription.component.scss'],
   templateUrl: './service-subscription.component.html',
-  styleUrls: ['./service-subscription.component.scss']
 })
 export class ServiceSubscriptionComponent implements OnInit {
 
