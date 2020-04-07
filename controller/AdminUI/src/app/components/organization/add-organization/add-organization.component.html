@@ -1,3 +1,4 @@
+<<<<<<<
 <div class="container-fluid p-3">
     <div class="row">
         <div class="col-12">
@@ -5,53 +6,102 @@
             <div>
                 <mat-form-field appearance="outline">
                     <input type="text" matInput placeholder="Orgainization Id" [formControl]="organizationId">
+=======
+<div class="p-3">
+    <h1>Add Continuous Phishing Organization</h1>
+    <div class="d-flex flex-row mb-3">
+        <div class="d-flex flex-grow-1 flex-column">
+            <div class="d-flex flex-row">
+                <mat-form-field appearance="outline" class="flex-grow-1">
+                    <mat-label>Organization Id</mat-label>
+                    <input type="text" matInput placeholder="Organization Id" [formControl]="organizationId">
+>>>>>>>
                 </mat-form-field>
-                <mat-form-field appearance="outline">
-                    <input type="text" matInput placeholder="Oranization Name" [formControl]="organizationName"
+            </div>
+            <div class="d-flex flex-row">
+                <mat-form-field appearance="outline" class="flex-grow-1">
+                    <mat-label>Organization Name</mat-label>
+                    <input type="text" matInput placeholder="Organization Name" [formControl]="organizationName"
                     [errorStateMatcher]="matchOrganizationName">
                     <mat-error *ngIf="organizationName.hasError('required')">
                     Organization name is <strong>required</strong>
                     </mat-error>
                 </mat-form-field>
-                <mat-form-field appearance="outline">
-                    <input type="text" matInput placeholder="Orgainization Identifier" [formControl]="organizationIdentifier"
+            </div>
+                <div class="d-flex flex-row" >
+                <mat-form-field appearance="outline" class="flex-grow-1">
+                    <mat-label>Organization Identifier</mat-label>
+                    <input type="text" matInput placeholder="Organization Identifier" [formControl]="organizationIdentifier"
                     [errorStateMatcher]="matchOrganizationIdentifier">
                     <mat-error *ngIf="organizationIdentifier.hasError('required')">
                     Organization identifier is <strong>required</strong>
                     </mat-error>
                 </mat-form-field>
-                <!-- Place holder for Government Type -->
-                <mat-form-field appearance="outline">
+            </div>
+            <!-- Place holder for Government Type -->
+            <div class="d-flex flex-row" >
+                <mat-form-field appearance="outline" class="flex-grow-1">
+                    <mat-label>Address 1</mat-label>
                     <input type="text" matInput placeholder="Address 1" [formControl]="address1"
                     [errorStateMatcher]="matchAddress1">
                     <mat-error *ngIf="address1.hasError('required')">
-                    Address 1 is <strong>required</strong>
+                        Address 1 is <strong>required</strong>
                     </mat-error>
                 </mat-form-field>
-                <mat-form-field appearance="outline">
+            </div>
+            <div class="d-flex flex-row">
+                <mat-form-field appearance="outline" class="flex-grow-1">
+                    <mat-label>Address 2</mat-label>
                     <input type="text" matInput placeholder="Address 2" [formControl]="address2">
                 </mat-form-field>
-                <mat-form-field appearance="outline">
+            </div>
+            <div class="d-flex flex-row">
+                <mat-form-field appearance="outline" class="flex-grow-1">
+                    <mat-label>City</mat-label>
                     <input type="text" matInput placeholder="city" [formControl]="city"
                     [errorStateMatcher]="matchCity">
                     <mat-error *ngIf="city.hasError('required')">
                         City is <strong>required</strong>
                     </mat-error>
                 </mat-form-field>
-                <mat-form-field appearance="outline">
+            </div>
+            <div class="d-flex flex-row">
+                <mat-form-field appearance="outline" class="flex-grow-1">
+                    <mat-label>State</mat-label>
                     <input type="text" matInput placeholder="State" [formControl]="state"
                     [errorStateMatcher]="matchState">
                     <mat-error *ngIf="state.hasError('required')">
                         State is <strong>required</strong>
                     </mat-error>
                 </mat-form-field>
-                <mat-form-field appearance="outline">
+            </div>
+            <div class="d-flex flex-row">
+                <mat-form-field appearance="outline" class="flex-grow-1">
+                    <mat-label>Zip</mat-label>
                     <input type="text" matInput placeholder="Zip" [formControl]="zip"
                     [errorStateMatcher]="matchZip">
                     <mat-error *ngIf="zip.hasError('required')">
                         Zip is <strong>required</strong>
                     </mat-error>
-              </mat-form-field>
+                </mat-form-field>
+            </div>
+        </div>
+    </div>
+    <h1>Organization Contacts</h1>
+    <div class="d-flex flex-row mb-5">
+        <div class="d-flex flex-grow-1 flex-column">
+            <div class="d-flex flex-row">
+                <button mat-raised-button color="primary" (click)="showAddContact()" *ngIf="!addContact">Add Contact</button>
+            </div>
+            <div class="d-flex flex-row p-2 flex-grow-1" *ngIf="addContact">
+                <mat-card style="width:100%">
+                    <mat-card-header>
+                        <mat-card-title>Add Contact</mat-card-title>
+                    </mat-card-header>
+                    <mat-card-content>
+                         <button mat-flat-button (click)="showAddContact()">Close</button>
+                    </mat-card-content>
+                </mat-card>
             </div>
         </div>
     </div>

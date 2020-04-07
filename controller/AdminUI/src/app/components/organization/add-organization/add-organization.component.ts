@@ -10,6 +10,7 @@ import { MyErrorStateMatcher } from '../../../helper/ErrorStateMatcher';
 export class AddOrganizationComponent implements OnInit {
 
    model:any;
+   addContact:boolean = false;
 
    matchOrganizationName = new MyErrorStateMatcher();
    matchOrganizationIdentifier = new MyErrorStateMatcher();
@@ -18,7 +19,7 @@ export class AddOrganizationComponent implements OnInit {
    matchState = new MyErrorStateMatcher();
    matchZip = new MyErrorStateMatcher();
    
-   organizationId = new FormControl('', [Validators.required]);
+   organizationId = new FormControl('');
    organizationName = new FormControl('', [Validators.required]);
    organizationIdentifier = new FormControl('', [Validators.required]);
    address1 = new FormControl('', [Validators.required]);
@@ -28,6 +29,10 @@ export class AddOrganizationComponent implements OnInit {
    zip = new FormControl('', [Validators.required]);
 
   constructor() { }
+
+  showAddContact(){
+    this.addContact = this.addContact ? false : true;
+  }
 
   ngOnInit(): void {
     
