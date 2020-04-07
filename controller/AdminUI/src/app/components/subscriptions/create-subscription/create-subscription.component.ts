@@ -20,9 +20,14 @@ export class CreateSubscriptionComponent implements OnInit {
 
   ngOnInit(): void {
 
+    
     this.orgContact = this.subscriptionSvc.getOrganization();
 
     this.contactsForOrg = this.subscriptionSvc.getContactsForOrg();
+  }
+
+  changeContact(e) {
+    console.log(e);
   }
 
 }

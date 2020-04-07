@@ -15,6 +15,7 @@ import { ServiceSubscriptionComponent } from './components/service-subscription/
 import { CreateSubscriptionComponent } from './components/subscriptions/create-subscription/create-subscription.component';
 import { AutosizeModule } from 'node_modules/ngx-autosize';
 import { MatNativeDateModule } from '@angular/material/core';
+import { AddOrganizationComponent } from './components/organization/add-organization/add-organization.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { MatNativeDateModule } from '@angular/material/core';
     LayoutMainComponent, 
     SearchPanelComponent, 
     ServiceSubscriptionComponent,
-    CreateSubscriptionComponent
+    CreateSubscriptionComponent,
+    AddOrganizationComponent
   ],
   imports: [
     BrowserModule,

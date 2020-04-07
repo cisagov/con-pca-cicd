@@ -1,4 +1,4 @@
-<div class="p-3">
+<div class="p-3 pb-5">
     <h1>Create Subscription</h1>
 
     <div class="d-flex flex-row mb-5">
@@ -11,7 +11,7 @@
                     </button>
                 </div>
                 <mat-form-field>
-                    <mat-select>
+                    <mat-select (change)="changeContact($event)">
                         <mat-option>Select Contact</mat-option>
                         <mat-option *ngFor="let c of contactsForOrg" [value]="c.id">{{c.name}}</mat-option>
                     </mat-select>
@@ -26,41 +26,51 @@
             <div>{{orgContact.organization.orgType}}</div>
         </div>
         <div class="pl-2">
-            <div>{{orgContact.contacts[0].firstName}} {{orgContact.contacts[0].lastName}} {{orgContact.contacts[0].title}}</div>
+            <div>{{orgContact.contacts[0].firstName}} {{orgContact.contacts[0].lastName}}
+                {{orgContact.contacts[0].title}}</div>
             <div>{{orgContact.contacts[0].phone}}</div>
             <div>{{orgContact.contacts[0].email}}</div>
         </div>
     </div>
 
 
-    <div class="d-flex flex-column mb-3">
-            <mat-label class="h6">Start Date</mat-label>
-            <mat-form-field class="mb-4">
-                <mat-label>Choose the date the Subscription will start</mat-label>
+    <div style="display: block;" class="mb-3">
+        <mat-label class="h6">Start Date</mat-label>
+        <div>
+            <mat-form-field class="mb-4">                
                 <input matInput [matDatepicker]="picker">
                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                 <mat-datepicker #picker></mat-datepicker>
             </mat-form-field>
+        </div>
 
 
-        <mat-label class="h6">Applicability Word Tags</mat-label>
-        <i>Enter words that describe the
-            organization, separated by commas.
-            They will be used to select applicable templates.</i>
-        <textarea autosize class="form-control mb-4"></textarea>
+        <div>
+            <mat-label class="h6">Applicability Word Tags</mat-label>
+            <div class="text-muted">Enter words that describe the
+                organization, separated by commas.
+                They will be used to select applicable templates.</div>
+            <textarea autosize class="form-control mb-4"></textarea>
+        </div>
 
-        <mat-label class="h6">CSV Content</mat-label>
-        <i>Upload a CSV file containing the list of contacts or enter them
-            directly in the field below.
-        </i>
-        <button mat-raised-button color="primary" class="mb-3 col-4">
-            Upload Email Targets List
-            <i class="fa fa-upload"></i>
+        <div>
+            <div>
+                <mat-label class="h6">CSV Content</mat-label>
+            </div>
+            <div class="text-muted">Upload a CSV file containing the list of contacts or enter them
+                directly in the field below.
+            </div>
+        </div>
+
+        <button mat-raised-button color="primary" class="mb-3">
+            Upload Email Targets List <i class="fa fa-upload"></i>
         </button>
 
-        <i>email,firstname,lastname,position</i>
-        <textarea autosize placeholder="Enter CSV content" class="form-control"></textarea>
+
+        <div class="text-muted">Format: email,firstname,lastname,position</div>
+        <textarea autosize placeholder="Enter targets as CSV" class="form-control"></textarea>
     </div>
+
 
     <div class="text-right">
         <button mat-raised-button color="primary">Create and Launch Subscription Service</button>
