@@ -24,8 +24,18 @@ Remove containers
 Access Django shell
 - `make shell`
 
+### To access the Angular app:
+  - visit:
+    - `localhost:4200`
+
+### To access the Django API:
+  - visit:
+    - `localhost:8000`
 
 ### To access the Celery Flower dashboard:
-
 - visit:
   - `localhost:5555/dashboard`
+
+### To access the RabbitMQ dashboard:
+- visit:
+  - `localhost:15672`
