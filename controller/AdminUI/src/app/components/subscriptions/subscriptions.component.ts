@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { SubscriptionsService } from './subscriptions.service';
+import { SubscriptionService } from 'src/app/services/subscription.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -36,7 +36,9 @@ export class SubscriptionsComponent implements OnInit {
 
   ];
 
-  constructor(private subscriptionsSvc: SubscriptionsService) { }
+  constructor(
+    private subscriptionsSvc: SubscriptionService
+    ) { }
 
   ngOnInit(): void {
     this.subscriptionsData.forEach((s: any) => {

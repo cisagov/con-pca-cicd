@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
@@ -8,15 +9,17 @@ export class SubscriptionService {
   /**
    * 
    */
-  constructor() { }
+  constructor(
+    private http: HttpClient
+  ) { }
 
   /**
-   * 
+   * In real life, API call happens here and the model
+   * is returned.
+   * For now, a hard-coded model is returned.
    */
   getOrganization() {
-    // in real life, API call happens here...
-    let orgContact =
-    {
+    let fullOrg = {
       organization:
       {
         id: 918,
@@ -63,11 +66,12 @@ export class SubscriptionService {
       ]
     };
 
-    return orgContact;
+    return fullOrg;
   }
 
   /**
-   * 
+   * Returns an array of simple contact
+   * names and IDs for the organization.
    */
   getContactsForOrg() {
     let o = this.getOrganization();
@@ -79,5 +83,13 @@ export class SubscriptionService {
       });
     });
     return a;
+  }
+
+  /**
+   * Sends all information to the API to start a new subscription.
+   * @param s 
+   */
+  submitSubscription(s: any) {
+    return this.http.post('http://bogus.org/subscription/submit', s);
   }
 }
