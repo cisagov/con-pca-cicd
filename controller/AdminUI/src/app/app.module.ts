@@ -11,6 +11,8 @@ import { LayoutMainComponent } from './components/layout/layout-main/layout-main
 import { SubscriptionsService } from './components/subscriptions/subscriptions.service';
 import { SearchPanelComponent } from './components/search-panel/search-panel.component';
 import { ServiceSubscriptionComponent } from './components/service-subscription/service-subscription.component';
+import { CreateSubscriptionComponent } from './components/subscriptions/create-subscription/create-subscription.component';
+import { AutosizeModule } from 'node_modules/ngx-autosize';
 
 @NgModule({
   declarations: [
@@ -19,7 +21,8 @@ import { ServiceSubscriptionComponent } from './components/service-subscription/
     LayoutBlankComponent, 
     LayoutMainComponent, 
     SearchPanelComponent, 
-    ServiceSubscriptionComponent
+    ServiceSubscriptionComponent,
+    CreateSubscriptionComponent
   ],
   imports: [
     BrowserModule,
@@ -27,7 +30,8 @@ import { ServiceSubscriptionComponent } from './components/service-subscription/
     BrowserAnimationsModule, 
     MaterialModule, 
     FormsModule, 
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    AutosizeModule
   ],
   providers: [
     SubscriptionsService
