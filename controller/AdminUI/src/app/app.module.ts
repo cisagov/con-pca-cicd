@@ -2,6 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from './material.module';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -13,6 +14,7 @@ import { SearchPanelComponent } from './components/search-panel/search-panel.com
 import { ServiceSubscriptionComponent } from './components/service-subscription/service-subscription.component';
 import { CreateSubscriptionComponent } from './components/subscriptions/create-subscription/create-subscription.component';
 import { AutosizeModule } from 'node_modules/ngx-autosize';
+import { MatNativeDateModule } from '@angular/material/core';
 
 @NgModule({
   declarations: [
@@ -31,7 +33,9 @@ import { AutosizeModule } from 'node_modules/ngx-autosize';
     MaterialModule, 
     FormsModule, 
     ReactiveFormsModule,
-    AutosizeModule
+    AutosizeModule,
+    MatDatepickerModule,
+    MatNativeDateModule
   ],
   providers: [
     SubscriptionsService

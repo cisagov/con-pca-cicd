@@ -27,35 +27,57 @@ export class SubscriptionService {
         orgState: "GA",
         orgType: "Private Non-Government"
       },
-      contact: {
-        id: 123,
-        firstName: "Mary",
-        lastName: "Stephens",
-        title: "CISO",
-        phone: "208-716-2687",
-        email: "MaryStephens@doe.gov"
-      }
+      contacts: [
+        {
+          id: 127,
+          firstName: "Mary",
+          lastName: "Stephens",
+          title: "CISO",
+          phone: "208-716-2687",
+          email: "MaryStephens@doe.gov"
+        },
+        {
+          id: 123,
+          firstName: "Dean",
+          lastName: "Young",
+          title: "VP Sales",
+          phone: "208-716-0218",
+          email: "DeanYoung@doe.gov"
+        },
+        {
+          id: 141,
+          firstName: "David",
+          lastName: "Merrill",
+          title: "VP R&D",
+          phone: "208-716-8613",
+          email: "DavidMerrill@doe.gov"
+        },
+        {
+          id: 98,
+          firstName: "Ronald",
+          lastName: "Clark",
+          title: "VP Human Resources",
+          phone: "208-716-3310",
+          email: "RonaldClark@doe.gov"
+        }
+      ]
     };
 
     return orgContact;
   }
 
+  /**
+   * 
+   */
   getContactsForOrg() {
-    let a = [
-      {
-        id: 123,
-        name: "Mary Stephens"
-      },{
-        id: 127,
-        name: "David Merrill"
-      },{
-        id: 141,
-        name: "Dean Young"
-      },{
-        id: 98,
-        name: "Ronald Clark"
-      }
-    ];
+    let o = this.getOrganization();
+    let a = [];
+    o.contacts.forEach(x => {
+      a.push({
+        id: x.id,
+        name: x.firstName + ' ' + x.lastName
+      });
+    });
     return a;
   }
 }
