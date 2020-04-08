@@ -2,10 +2,22 @@
 version: "3"
 services:
   web:
+    build:
+      context: ./AdminUI
     container_name: cpa-web
+    restart: unless-stopped
+    ports:
+      - "4200:4200"
+    volumes:
+      - ${PWD}:/app /app/node_modules
+    environment:
+        - NODE_ENV=dev
+
+  api:
     build:
       context: .
       dockerfile: ./etc/Dockerfile
+    container_name: cpa-api
     restart: on-failure
     ports:
       - "8000:8000"
@@ -60,6 +72,7 @@ services:
       - .env
 
   rabbitmq:
+    image: rabbitmq:3.6-management-alpine
     container_name: cpa-rabbitmq
     hostname: rabbitmq
     restart: on-failure
@@ -78,6 +91,7 @@ services:
       - '5672:5672'
       # HTTP management UI
       - '15672:15672'
+
     env_file:
       - .env
 
