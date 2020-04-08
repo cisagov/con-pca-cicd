@@ -95,74 +95,73 @@
                         <mat-card-title>Add Contact</mat-card-title>
                     </mat-card-header>
                     <mat-card-content>
-                        <div class="d-flex flex-row">
-                            <div class="d-flex flex-column mr-2">
+                        <div class="d-flex flex-row" >
+                            <div class="d-flex flex-column mr-2" [formGroup]="contactFormGroup">
                                 <mat-form-field appearance="outline">
-                                    <mat-label>First Name</mat-label>
-                                    <input type="text" matInput placeholder="First Name" [formControl]="firstName"
+                                    <mat-label>First Name*</mat-label>
+                                    <input type="text" matInput placeholder="First Name" formControlName="firstName"
                                     [errorStateMatcher]="matchFirstName">
-                                    <mat-error *ngIf="firstName.hasError('required')">
+                                    <mat-error *ngIf="contactFormGroup.controls.firstName.hasError('required')">
                                         First name <strong>required</strong>
                                     </mat-error>
                                 </mat-form-field>
                             </div>
-                            <div class="d-flex flex-column mr-2">
+                            <div class="d-flex flex-column mr-2" [formGroup]="contactFormGroup">
                                 <mat-form-field appearance="outline">
-                                    <mat-label>Last Name</mat-label>
-                                    <input type="text" matInput placeholder="Last Name" [formControl]="lastName"
+                                    <mat-label>Last Name*</mat-label>
+                                    <input type="text" matInput placeholder="Last Name" formControlName="lastName"
                                     [errorStateMatcher]="matchLastName">
-                                    <mat-error *ngIf="lastName.hasError('required')">
+                                    <mat-error *ngIf="contactFormGroup.controls.lastName.hasError('required')">
                                         Last name <strong>required</strong>
                                     </mat-error>
                                 </mat-form-field>
                             </div>
-                            <div class="d-flex flex-column">
+                            <div class="d-flex flex-column" [formGroup]="contactFormGroup">
                                 <mat-form-field appearance="outline">
                                     <mat-label>Title</mat-label>
-                                    <input type="text" matInput placeholder="Title" [formControl]="title">
+                                    <input type="text" matInput placeholder="Title" formControlName="title">
                                 </mat-form-field>
                             </div>
                         </div>
                         <div class="d-flex flex-row">
-                            <div class="d-flex flex-column mr-2">
+                            <div class="d-flex flex-column mr-2" [formGroup]="contactFormGroup">
                                 <mat-form-field appearance="outline">
-                                    <mat-label>Email</mat-label>
-                                    <input type="text" matInput placeholder="Email" [formControl]="email"
+                                    <mat-label>Email*</mat-label>
+                                    <input type="text" matInput placeholder="Email" formControlName="email"
                                     [errorStateMatcher]="matchEmail">
-                                    <mat-error *ngIf="email.hasError('required')">
+                                    <mat-error *ngIf="contactFormGroup.controls.email.hasError('required')">
                                         Email <strong>required</strong>
                                     </mat-error>
-                                    <mat-error *ngIf="email.hasError('email')">
+                                    <mat-error *ngIf="contactFormGroup.controls.email.hasError('email')">
                                         Check email format
                                     </mat-error>
                                 </mat-form-field>
                             </div>
-                            <div class="d-flex flex-column mr-2">
+                            <div class="d-flex flex-column mr-2" [formGroup]="contactFormGroup">
                                 <mat-form-field appearance="outline">
-                                    <mat-label>Office Phone</mat-label>
-                                    <input type="text" matInput placeholder="Office Phone" [formControl]="officePhone">
-                                </mat-form-field>
-                            </div>
-                            <div class="d-flex flex-column">
-                                <mat-form-field appearance="outline">
-                                    <mat-label>Mobile Phone</mat-label>
-                                    <input type="text" matInput placeholder="Mobile Phone" [formControl]="mobilePhone">
+                                    <mat-label>Phone</mat-label>
+                                    <input type="text" matInput placeholder="Phone" formControlName="phone">
                                 </mat-form-field>
                             </div>
                         </div>
-                        <div class="d-flex flex-row flex-grow-1">
+                        <div class="d-flex flex-row flex-grow-1" [formGroup]="contactFormGroup">
                             <mat-form-field appearance="outline" class="flex-grow-1">
                                 <mat-label>Contact Notes</mat-label>
-                                <textarea matInput></textarea>
+                                <textarea matInput formControlName="contactNotes"></textarea>
                             </mat-form-field>
                         </div>
-                        <button mat-raised-button color="primary">Add</button>
+                        <div class="d-flex flex-row flex-grow-1">
+                            <div class="alert alert-danger flex-grow-1" *ngIf="contactError">
+                                {{contactError}}
+                            </div>
+                        </div>
+                        <button mat-raised-button color="primary" (click)="pushContact()" [disabled]="!contactFormGroup.valid">Add</button>
                         <button mat-flat-button (click)="showAddContact()">Close</button>
                     </mat-card-content>
                 </mat-card>
             </div>
             <div class="d-flex flex-row flex-grow-1 mt-3">
-                <table mat-table [dataSource]="contactDataSource" class="mat-elevation-z1 flex-grow-1" *ngIf="checkDataSourceLength()">                  
+                <table mat-table [dataSource]="contacts" class="mat-elevation-z1 flex-grow-1" *ngIf="checkDataSourceLength()">                  
                     <!-- Name Column -->
                     <ng-container matColumnDef="name">
                       <th mat-header-cell *matHeaderCellDef> Name </th>
@@ -184,7 +183,7 @@
                     <!-- Phone Column -->
                     <ng-container matColumnDef="phone">
                       <th mat-header-cell *matHeaderCellDef> Phone </th>
-                      <td mat-cell *matCellDef="let element"> {{element.mobilePhone}} </td>
+                      <td mat-cell *matCellDef="let element"> {{element.phone}} </td>
                     </ng-container>
                   
                     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>

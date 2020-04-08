@@ -12,7 +12,7 @@ export class SubscriptionService {
    * The service keeps a copy of the Organization
    */
   organization: Organization;
-
+  organizations: Array<Organization> = [];
   /**
    * 
    */
@@ -74,7 +74,8 @@ export class SubscriptionService {
         lastName: 'Stephens',
         title: 'CISO',
         phone: '208-716-2687',
-        email: 'Mary.Stephens@delta.com'
+        email: 'Mary.Stephens@delta.com',
+        contactNotes: ''
       }
     );
 
@@ -85,7 +86,8 @@ export class SubscriptionService {
         lastName: 'Shirlaw',
         title: 'VP R&D',
         phone: '208-921-1010',
-        email: 'John.Shirlaw@delta.com'
+        email: 'John.Shirlaw@delta.com',
+        contactNotes:''
       });
 
     o.contacts.push(
@@ -95,7 +97,8 @@ export class SubscriptionService {
         lastName: 'Zarabraya',
         title: 'VP HR',
         phone: '208-377-9339',
-        email: 'Yanik.Zarabraya@delta.com'
+        email: 'Yanik.Zarabraya@delta.com',
+        contactNotes: ''
       });
 
     console.log(o);
