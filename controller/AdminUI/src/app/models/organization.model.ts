@@ -26,4 +26,5 @@ export class Contact {
     title: string;
     phone: string;
     email: string;
+    contactNotes: string;
 }
