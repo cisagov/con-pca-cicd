@@ -85,12 +85,15 @@ export class AddOrganizationComponent implements OnInit {
     this.contactFormGroup.controls['firstName'].setErrors(null);
     this.contactFormGroup.controls['lastName'].setErrors(null);
     this.contactFormGroup.controls['email'].setErrors(null);
-    this.contactFormGroup.clearValidators();
     this.contactError = '';
   }
 
   showAddContact(){
     this.addContact = this.addContact ? false : true;
+    if(!this.addContact)
+    {
+      this.clearContact();
+    }
   }
 
   checkDataSourceLength(){
