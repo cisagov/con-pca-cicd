@@ -19,6 +19,10 @@ export class Subscription {
     setKeywordsFromCSV(csv: string) {
         this.orgKeywords = [];
 
+        if (!csv) {
+            return;
+        }
+
         let lines = csv.split('\n');
         lines.forEach((line: string) => {
             let words = line.split(',');
