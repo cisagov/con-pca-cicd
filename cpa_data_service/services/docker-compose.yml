@@ -1,24 +1,8 @@
 ---
 version: "3"
 services:
-  data-service:
-    container_name: data-service
-    build:
-      context: .
-      dockerfile: ./deployment/Dockerfile
-    restart: on-failure
-    tty: true
-    # Map port 3000 on the host machine to port 3000 of the container.
-    links:
-      - rabbitmq
-      - mongodb
-    ports:
-      - "3000:3000"
-    env_file:
-      - .env
-
   mongodb:
-    container_name: cpa_mongodb
+    container_name: cpa-mongodb
     hostname: mongodb
     image: "mongo:3.6"
     # These ports are exposed on the host; 'hostport:containerport'.
@@ -26,31 +10,12 @@ services:
     # DNS name or IP address and port 27017 (the left-hand side of the
     # colon).
     ports:
-      - "27017:27017"
+      - "127.0.0.1:27017:27017"
     volumes:
       - "mongodb:/data/db"
     env_file:
       - ../base/mongodb/.env
 
-  rabbitmq:
-    hostname: rabbitmq
-    # There is a prebuilt RabbitMQ image; see
-    # https://hub.docker.com/_/rabbitmq/ for details.
-    # This variant is built on Alpine Linux (it's smaller) and includes
-    # the management UI.
-    image: 'rabbitmq:3.6-management-alpine'
-
-    # These ports are exposed on the host; 'hostport:containerport'.
-    # You could connect to this server from outside with the *host's*
-    # DNS name or IP address and port 5672 (the left-hand side of the
-    # colon).
-    ports:
-      # The standard AMQP protocol port
-      - '5672:5672'
-      # HTTP management UI
-      - '15672:15672'
-
 # Host volumes used to store code.
 volumes:
-  data-service:
   mongodb:

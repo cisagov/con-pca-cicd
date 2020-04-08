@@ -3,6 +3,8 @@
 __pycache__
 .python-version
 .DS_Store
+src/.DS_Store
+
 
 # Controller
 controller/.env
@@ -15,11 +17,13 @@ controller/src/celerybeat.pid
 
 #VSCode
 .vscode/
+/controller/src/celerybeat-schedule
+/controller/src/celerybeat.pid
+/controller/src/tasks/logs/celery.log
+/controller/CPAAdmin/CPAAdmin/AdminUI/node_modules
+/controller/CPAAdmin/CPAAdmin/AdminUI/node_modules/*
+/controller/CPAAdmin/CPAAdmin/AdminUI/dist
+controller/src/tasks/logs/celery.log
 
 # Python env
 env/
-
-controller/CPAAdmin
-
-
-

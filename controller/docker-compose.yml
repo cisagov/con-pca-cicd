@@ -2,13 +2,25 @@
 version: "3"
 services:
   web:
+    build:
+      context: ./AdminUI
     container_name: cpa-web
+    restart: unless-stopped
+    ports:
+      - "4200:4200"
+    volumes:
+      - ${PWD}:/app /app/node_modules
+    environment:
+        - NODE_ENV=dev
+
+  api:
     build:
       context: .
       dockerfile: ./etc/Dockerfile
+    container_name: cpa-api
     restart: on-failure
     ports:
-      - "8080:8080"
+      - "8000:8000"
     volumes:
       - ./src:/app
     env_file:
@@ -35,7 +47,8 @@ services:
       dockerfile: ./etc/Dockerfile
     container_name: cpa-worker
     restart: on-failure
-    entrypoint: celery worker --app=config.celery:app --loglevel=info --logfile=tasks/logs/celery.log
+    entrypoint: celery worker --app=config.celery:app
+      --loglevel=info --logfile=tasks/logs/celery.log
     volumes:
       - ./src:/app
     depends_on:
@@ -59,11 +72,35 @@ services:
       - .env
 
   rabbitmq:
-    image: rabbitmq:latest
+    image: rabbitmq:3.6-management-alpine
     container_name: cpa-rabbitmq
     hostname: rabbitmq
     restart: on-failure
+    # There is a prebuilt RabbitMQ image; see
+    # https://hub.docker.com/_/rabbitmq/ for details.
+    # This variant is built on Alpine Linux (it's smaller) and includes
+    # the management UI.
+    image: 'rabbitmq:3.6-management-alpine'
+
+    # These ports are exposed on the host; 'hostport:containerport'.
+    # You could connect to this server from outside with the *host's*
+    # DNS name or IP address and port 5672 (the left-hand side of the
+    # colon).
     ports:
-      - "5672:5672"
+      # The standard AMQP protocol port
+      - '5672:5672'
+      # HTTP management UI
+      - '15672:15672'
+
+    env_file:
+      - .env
+
+  gophish:
+    image: gophish/gophish:latest
+    container_name: cpa-gophish
+    restart: on-failure
+    ports:
+      - "3333:3333"
+      - "8080:8080"
     env_file:
       - .env
