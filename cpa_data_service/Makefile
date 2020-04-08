@@ -46,8 +46,7 @@ run:
 
 # target: test = run all tests
 test:
-	make test -C ./middlewares
-	make test -C ./services
+	${CURDIR}/env/bin/python3 ${CURDIR}/services/lib/tests.py
 
 # target: build = build all containers
 build:
