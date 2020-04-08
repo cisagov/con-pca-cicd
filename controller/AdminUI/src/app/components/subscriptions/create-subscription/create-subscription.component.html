@@ -11,8 +11,8 @@
                     </button>
                 </div>
                 <mat-form-field appearance="outline">
-                    <mat-select (change)="changeContact($event)">
-                        <mat-option value="" selected>Select Contact</mat-option>
+                    <mat-select (selectionChange)="changeContact($event)">
+                        <mat-option value="0" selected>Select Contact</mat-option>
                         <mat-option *ngFor="let c of contactsForOrg" [value]="c.id">{{c.name}}</mat-option>
                     </mat-select>
                 </mat-form-field>
@@ -38,9 +38,9 @@
         <mat-label class="h6">Start Date</mat-label>
         <div>
             <mat-form-field appearance="outline" class="mb-4">
-                <input matInput [matDatepicker]="picker">
+                <input matInput [matDatepicker]="picker" [min]="startAt" [(ngModel)]="startDate">
                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                <mat-datepicker #picker></mat-datepicker>
+                <mat-datepicker #picker [startAt]="startAt"></mat-datepicker>
             </mat-form-field>
         </div>
 
@@ -50,7 +50,7 @@
             <div class="text-muted">Enter words that describe the
                 organization, separated by commas.
                 They will be used to select applicable templates.</div>
-            <textarea autosize appearance="outline" class="form-control mb-4"></textarea>
+            <textarea autosize appearance="outline" class="form-control mb-4" [(ngModel)]="tags"></textarea>
         </div>
 
         <div>
@@ -68,7 +68,7 @@
 
 
         <div class="text-muted">Format: email, firstname, lastname, position</div>
-        <textarea autosize placeholder="Enter targets as CSV" class="form-control"></textarea>
+        <textarea autosize placeholder="Enter targets as CSV" class="form-control" [(ngModel)]="csvText"></textarea>
     </div>
 
 
