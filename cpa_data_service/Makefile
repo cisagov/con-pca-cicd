@@ -13,9 +13,6 @@ create_env:
 
 # target: install_requirements = installs packages in vertual env
 install_requirements:
-	brew tap mongodb/brew
-	brew install mongodb-community
-	brew install rabbitmq
 	(. ${CURDIR}/env/bin/activate && pip install -r services/requirements-dev.txt)
 
 # target: install = creates local python env and installs packages

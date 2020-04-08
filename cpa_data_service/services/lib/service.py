@@ -23,6 +23,16 @@ class Service:
             GenericRepository(mongo_url, collection_name, model_cls=model)
         )
 
+    async def count(self, parameters=None):
+        """
+        Count.
+
+        Takes in parameters that are field names and values and
+        filters all documents and returns a count of
+        documents matching results.
+        """
+        return await self.service.count(parameters)
+
     async def filter_list(self, parameters=None):
         """
         Filter_list.

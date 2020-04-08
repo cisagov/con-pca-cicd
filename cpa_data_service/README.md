@@ -15,7 +15,6 @@ Required for install:
 <!--Please add required software information here-->
 
 - [Docker](https://docs.docker.com/install/ "Docker")
-- [RabbitMQ](https://www.rabbitmq.com/download.html "RabbitMQ")
 - [MongoDB](https://docs.mongodb.com/manual/installation/ "MongoDB")
 - [Python3+](https://www.python.org/download/releases/3.0/ "Python3+")
 
@@ -90,49 +89,96 @@ Then to run the service use:
 make run
 ```
 
-the output should be something like:
-
-```log
-INFO:root:service_config {'rabbit_host': 'rabbitmq', 'mongo_uri': 'mongodb://root:rootpassword@mongodb:27017/'}
-INFO:root:init database on start...
-INFO:root:data inserted: 5e878b2aa0b714817253e082
-INFO:root:data found: {'_id': ObjectId('5e878b2aa0b714817253e082'), 'user': 'foo', 'text': 'Long text feild for testing!', 'tags': ['one', 'two', 'three'], 'date': datetime.datetime(2020, 4, 3, 19, 14, 50, 146000)}
-INFO:root:DB collection names: ['test_collection']
-INFO:root:init database on finished!
-INFO:pika.adapters.utils.connection_workflow:Pika version 1.1.0 connecting to ('172.28.0.3', 5672)
-...
-INFO:root:Strating service rabbit_client
-INFO:root:server version: Database(MongoClient(host=['mongodb:27017'], document_class=dict, tz_aware=False, connect=True), 'version')
-INFO:root:test db client: ['admin', 'config', 'cpa_data_dev', 'local']
-INFO:root:Starting client: rabbit-client
-INFO:pika.adapters.blocking_connection:Created channel=1
-INFO:root:[*] Listening on queue: data_queue
-INFO:root:[*] Sending on queue: db_responce. To exit press CTRL+C'
-```
-
-now the service is up and running! you can send basic messages over rabbitmq
-and have it entered into the DB.
-
 #### Example
 
-With services up and running, run:
+First you create a model with validator.
+You can see this is `test_validators.py`
 
-```log
-cpa_data_service|develop⚡⇒ python3 services/lib/tests.py
-[x] Sent '{'collection': 'test_collection', 'data':...
+```python
+from repository.models import Model
+from repository.types import DateTimeType, StringType, UUIDType
+
+
+class DemoModel(Model):
+    """
+    This is an example Model.
+
+    This shows basic types that we will use on each model.
+    """
+
+    demo_uuid = UUIDType()
+    name = StringType()
+    enum_type = StringType(required=True, choices=("initial", "post", "pre", "final"))
+    record_tstamp = DateTimeType(required=True)
+    method_of_record_creation = StringType()
+    last_updated_by = StringType(required=False, max_length=255)
+    lub_timestamp = DateTimeType(required=False)
+    method_of_lu = StringType(required=False)
+
+
+def validate_demo(demo):
+    """
+    This is an example validate_demo.
+
+    This shows basic validation for the model.
+    """
+    return DemoModel(demo).validate()
 ```
 
-On the log output you will see:
+```python
 
-```log
-INFO:root:[*] Sending on queue: db_responce. To exit press CTRL+C'
- [x] {'collection': 'test_collection', 'data': {'user': 'bar', 'text': 'Long text feild for testing!', 'tags': ['one', 'two', 'three'], 'date': '2020-04-03 19:18:44.530709'}}
-INFO:root:Sending to db now: {'collection': 'test_collection', 'data': {'user': 'bar', 'text': 'Long text feild for testing!', 'tags': ['one', 'two', 'three'], 'date': '2020-04-03 19:18:44.530709'}}
-INFO:root:inserting into database colleciton test_collection!
-INFO:root:DB success! responding to queue: {'id': '5e878c14a0b714817253e083'}
+import asyncio
+
+from cpa_data_service.services.lib.service import Service
+from {model_path}.test_validators import DemoModel, validate_demo
+
+loop = asyncio.new_event_loop()
+asyncio.set_event_loop(cls.loop)
+
+your_service = Service(
+            mongo_url=your_mongo_url,
+            collection_name=your_collection_name,
+            model=YourModel,
+            model_validation=validate_yourmodel)
 ```
 
-Success!
+And thats it! Method calls are:
+
+Note: This lib is asynchronous thus requires a Loop to be called from a
+synchronous function.
+
+```python
+# Filter_list
+loop.run_until_complete(demo_service.filter_list(parameters=parameters))
+# in: {"field": "value"}
+# out: [ {"field": "value"}, {"field": "value"}... ]
+
+# Create
+loop.run_until_complete(demo_service.create(to_create=to_create))
+# in: to_create_object = {"field": "value"}
+# out: objectID
+
+# Get
+loop.run_until_complete(demo_service.get(uuid=uuid))
+# in: uuid = aaaa-111-222-3333
+# out: object = {"field": "value"}
+
+# Update
+loop.run_until_complete(demo_service.update(to_update=to_update))
+# in: to_update_object = {"field": "value"}
+# out: objectID
+
+# Delete
+loop.run_until_complete(demo_service.delete(uuid=uuid))
+# in: uuid = aaaa-111-222-3333
+# out: true if delete was successful
+
+#Count
+loop.run_until_complete(demo_service.count(parameters=parameters))
+# in: {"field": "value"}
+# out: int: 1
+
+```
 
 ## Docker Install and Deployment
 
@@ -182,9 +228,7 @@ cpa_data_service|develop⚡ ⇒ make up
 make docker-up -C ./services
 docker-compose up -d
 Creating network "services_default" with the default driver
-Creating cpa-rabbitmq ... done
 Creating cpa-mongodb  ... done
-Creating cpa-data-service ... done
 ```
 
 you can then check the status of the services via `docker ps`
@@ -192,14 +236,8 @@ you can then check the status of the services via `docker ps`
 ```shell
 cpa_data_service|feature/dataservice-devdocs⚡ ⇒ docker ps
 CONTAINER ID        IMAGE                            COMMAND                  CREATED             STATUS PORTS                                                                                        NAMES
-<CONTAINER ID>        services_data-service            "python3 ./service.py"   6 minutes ago       Up 6 minutes        0.0.0.0:3000->3000/tcp                                                                       cpa-data-service
-<CONTAINER ID>         rabbitmq:3.6-management-alpine   "docker-entrypoint.s…"   6 minutes ago       Up 6 minutes        4369/tcp, 5671/tcp, 0.0.0.0:5672->5672/tcp, 15671/tcp, 25672/tcp, 0.0.0.0:15672->15672/tcp   cpa-rabbitmq
 <CONTAINER ID>         mongo:3.6                        "docker-entrypoint.s…"   6 minutes ago       Up 6 minutes        127.0.0.1:27017->27017/tcp                                                                   cpa-mongodb
 ```
-
-Note: `services_data-service` might restart a few times waiting for rabbitmq
-service to start. currently this service depends on rabbitmq to be up and
-connected before running.
 
 Success! all services are running.
 
@@ -227,11 +265,7 @@ This will look like:
 cpa_data_service|develop⚡ ⇒ make down
 make docker-down -C ./services
 docker-compose down
-Stopping cpa-data-service ... done
-Stopping cpa-rabbitmq     ... done
 Stopping cpa-mongodb      ... done
-Removing cpa-data-service ... done
-Removing cpa-rabbitmq     ... done
 Removing cpa-mongodb      ... done
 Removing network services_default
 ```
@@ -265,9 +299,6 @@ target: install_requirements = installs packages in vertual env
 
 ```shell
 install_requirements:
-    brew tap mongodb/brew
-    brew install mongodb-community
-    brew install rabbitmq
     (. ${CURDIR}/env/bin/activate && pip install -r services/requirements-dev.txt)
 ```
 
@@ -297,7 +328,6 @@ target: local_services_start = run local mongodb and rabbitmq services
 ```shell
 local_services_start:
     brew services start mongodb-community
-    brew services start rabbitmq
 ```
 
 target: local_services_start = stop local mongodb and rabbitmq services
@@ -305,7 +335,6 @@ target: local_services_start = stop local mongodb and rabbitmq services
 ```shell
 local_services_stop:
     brew services stop mongodb-community
-    brew services stop rabbitmq
 ```
 
 target: run = run service in local python env
@@ -319,8 +348,7 @@ target: test = run all tests
 
 ```shell
 test:
-    make test -C ./middlewares
-    make test -C ./services
+    ${CURDIR}/env/bin/python3 ${CURDIR}/services/lib/tests.py
 ```
 
 target: build = build all containers
