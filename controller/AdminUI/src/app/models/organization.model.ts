@@ -20,7 +20,7 @@ export class Organization {
  * A point of contact within an Organization
  */
 export class Contact {
-    id: number;
+    id: string;
     firstName: string;
     lastName: string;
     title: string;
