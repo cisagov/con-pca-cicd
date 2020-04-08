@@ -1,6 +1,6 @@
 --requirement requirements-test.txt
-motor
+motor==2.0.0
 pika
 pymongo
 pyyaml
-schematics
+schematics==2.1.0
