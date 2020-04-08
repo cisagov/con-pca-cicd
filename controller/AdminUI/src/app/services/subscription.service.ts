@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Organization } from '../models/organization.model';
 import { Observable } from 'rxjs';
-import { Subscription } from '../models/subscription.model';
+import { Subscription } from 'src/app/models/subscription.model';
 
 @Injectable({
   providedIn: 'root'
@@ -14,16 +14,11 @@ export class SubscriptionService {
    */
   organization: Organization;
   organizations: Array<Organization> = [];
-
-  /**
-   * The current subscription being administered
-   * by the operator.
-   */
-  subscription: Subscription;
-
   /**
    * 
    */
+
+   subscription: Subscription;
   constructor(
     private http: HttpClient
   ) { 
@@ -45,6 +40,11 @@ export class SubscriptionService {
     return this.http.get('http://bogus.org/subscription/getorg?id=' + orgId);
   }
 
+  /**
+   * In real life, API call happens here and the new
+   * organization is created.
+   * For now, a hard-coded model is returned.
+   */
   postOrganization(org: Organization){
     this.organizations.push(org);
     return new Observable<Organization>();
@@ -100,25 +100,26 @@ export class SubscriptionService {
     o.contacts.push(
       {
         id: '202',
-        firstName: 'Ward',
-        lastName: 'Abbott',
+        firstName: 'John',
+        lastName: 'Shirlaw',
         title: 'VP R&D',
         phone: '208-921-1010',
-        email: 'WardAbbott@delta.com',
+        email: 'John.Shirlaw@delta.com',
         contactNotes:''
       });
 
     o.contacts.push(
       {
         id: '203',
-        firstName: 'Ladislas',
-        lastName: 'Krstic',
+        firstName: 'Yanik',
+        lastName: 'Zarabraya',
         title: 'VP HR',
         phone: '208-377-9339',
-        email: 'Ladislas.Krstic@delta.com',
+        email: 'Yanik.Zarabraya@delta.com',
         contactNotes: ''
       });
 
+    console.log(o);
     return o;
   }
 
@@ -127,11 +128,10 @@ export class SubscriptionService {
    * @param s 
    */
   submitSubscription() {
-    console.log(this);
-
     // TEMP
     return new Observable();
 
-    return this.http.post('http://bogus.org/subscription/submit', this.subscription);
+    let s = {};
+    return this.http.post('http://bogus.org/subscription/submit', s);
   }
 }
