@@ -76,6 +76,20 @@ class TestStringMethods(unittest.TestCase):
             model_validation=validate_demo,
         )
 
+    @classmethod
+    def tearDownClass(cls):
+        """
+        TearDownClass.
+
+        This is run at the very end of the tests for cleanup.
+        This will query the test DB and remove all documents found from testing.
+        """
+        results = cls.loop.run_until_complete(
+            cls.demo_service.filter_list(parameters={})
+        )
+        for doc in results:
+            cls.loop.run_until_complete(cls.demo_service.delete(uuid=doc["demo_uuid"]))
+
     def test_create(self):
         """
         Test Case: Create.
@@ -107,7 +121,48 @@ class TestStringMethods(unittest.TestCase):
 
         This is to test the filter method on service.
         """
-        self.assertEqual("foo".upper(), "FOO")
+        to_create_data = [
+            {
+                "demo_uuid": str(uuid.uuid4()),
+                "name": "demo 1",
+                "enum_type": "initial",
+                "record_tstamp": datetime.utcnow(),
+                "method_of_record_creation": "CLI",
+                "last_updated_by": "test user 1",
+            },
+            {
+                "demo_uuid": str(uuid.uuid4()),
+                "name": "demo 2",
+                "enum_type": "initial",
+                "record_tstamp": datetime.utcnow(),
+                "method_of_record_creation": "CLI",
+                "last_updated_by": "test user 2",
+            },
+            {
+                "demo_uuid": str(uuid.uuid4()),
+                "name": "demo 3",
+                "enum_type": "initial",
+                "record_tstamp": datetime.utcnow(),
+                "method_of_record_creation": "CLI",
+                "last_updated_by": "test user 1",
+            },
+        ]
+
+        for item in to_create_data:
+            self.loop.run_until_complete(self.demo_service.create(to_create=item))
+
+        filter_params = {"last_updated_by": "test user 1"}
+
+        results = self.loop.run_until_complete(
+            self.demo_service.filter_list(parameters=filter_params)
+        )
+
+        self.assertEqual(len(results), 2)
+
+        for item in to_create_data:
+            self.loop.run_until_complete(
+                self.demo_service.delete(uuid=item["demo_uuid"])
+            )
 
     def test_get(self):
         """
@@ -115,7 +170,22 @@ class TestStringMethods(unittest.TestCase):
 
         This is to test the get method on service.
         """
-        self.assertEqual("foo".upper(), "FOO")
+        demo_id = str(uuid.uuid4())
+        create_object = {
+            "demo_uuid": demo_id,
+            "name": "demo 1",
+            "enum_type": "initial",
+            "record_tstamp": datetime.utcnow(),
+            "method_of_record_creation": "CLI",
+            "last_updated_by": "test user 1",
+        }
+
+        self.loop.run_until_complete(self.demo_service.create(to_create=create_object))
+        get_object = self.loop.run_until_complete(self.demo_service.get(uuid=demo_id))
+
+        self.assertEqual(get_object["demo_uuid"], demo_id)
+
+        self.loop.run_until_complete(self.demo_service.delete(uuid=demo_id))
 
     def test_count(self):
         """
@@ -131,7 +201,32 @@ class TestStringMethods(unittest.TestCase):
 
         This is to test the update method on service.
         """
-        self.assertEqual("foo".upper(), "FOO")
+        demo_id = str(uuid.uuid4())
+        create_object = {
+            "demo_uuid": demo_id,
+            "name": "demo 1",
+            "enum_type": "initial",
+            "record_tstamp": datetime.utcnow(),
+            "method_of_record_creation": "CLI",
+            "last_updated_by": "test user 1",
+        }
+
+        self.loop.run_until_complete(self.demo_service.create(to_create=create_object))
+
+        updated_object = {
+            "demo_uuid": demo_id,
+            "name": "updated demo now",
+            "enum_type": "initial",
+            "record_tstamp": datetime.utcnow(),
+        }
+
+        self.loop.run_until_complete(self.demo_service.update(to_update=updated_object))
+
+        get_object = self.loop.run_until_complete(self.demo_service.get(uuid=demo_id))
+
+        self.assertEqual(get_object["name"], updated_object["name"])
+
+        self.loop.run_until_complete(self.demo_service.delete(uuid=demo_id))
 
     def test_delete(self):
         """
@@ -139,7 +234,23 @@ class TestStringMethods(unittest.TestCase):
 
         This is to test the delete method on service.
         """
-        self.assertEqual("foo".upper(), "FOO")
+        demo_id = str(uuid.uuid4())
+        create_object = {
+            "demo_uuid": demo_id,
+            "name": "demo 1",
+            "enum_type": "initial",
+            "record_tstamp": datetime.utcnow(),
+            "method_of_record_creation": "CLI",
+            "last_updated_by": "test user 1",
+        }
+
+        self.loop.run_until_complete(self.demo_service.create(to_create=create_object))
+
+        delete_result = self.loop.run_until_complete(
+            self.demo_service.delete(uuid=demo_id)
+        )
+
+        self.assertEqual(delete_result, True)
 
 
 if __name__ == "__main__":
