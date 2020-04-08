@@ -11,6 +11,8 @@ export class AddOrganizationComponent implements OnInit {
 
    model:any;
    addContact:boolean = false;
+   contactDataSource: any = [];
+   displayedColumns: string[] = ['name', 'title', 'email', 'phone'];
 
    matchOrganizationName = new MyErrorStateMatcher();
    matchOrganizationIdentifier = new MyErrorStateMatcher();
@@ -19,7 +21,11 @@ export class AddOrganizationComponent implements OnInit {
    matchState = new MyErrorStateMatcher();
    matchZip = new MyErrorStateMatcher();
    
-   organizationId = new FormControl('');
+   matchFirstName = new MyErrorStateMatcher();
+   matchLastName = new MyErrorStateMatcher();
+   matchEmail = new MyErrorStateMatcher();
+   
+   organizationId = new FormControl({value: '8b045ff5-b60d-4309-926c-a676b4028011', disabled: true});
    organizationName = new FormControl('', [Validators.required]);
    organizationIdentifier = new FormControl('', [Validators.required]);
    address1 = new FormControl('', [Validators.required]);
@@ -28,10 +34,23 @@ export class AddOrganizationComponent implements OnInit {
    state = new FormControl('', [Validators.required]);
    zip = new FormControl('', [Validators.required]);
 
+   firstName = new FormControl('', [Validators.required]);
+   lastName = new FormControl('', [Validators.required]);
+   title = new FormControl('');
+   email = new FormControl('', [Validators.required, Validators.email]);
+   officePhone = new FormControl('');
+   mobilePhone = new FormControl('');
+   contactNotes = new FormControl('');
+
+
   constructor() { }
 
   showAddContact(){
     this.addContact = this.addContact ? false : true;
+  }
+
+  checkDataSourceLength(){
+    return this.contactDataSource.length > 0;
   }
 
   ngOnInit(): void {
