@@ -18,7 +18,10 @@ export class SubscriptionService {
    */
   constructor(
     private http: HttpClient
-  ) { }
+  ) { 
+    //temp initialize organization with mock data
+    this.organizations.push(this.TEMPGETORG());
+  }
 
   /**
    * In real life, API call happens here and the model
@@ -32,6 +35,13 @@ export class SubscriptionService {
 
 
     return this.http.get('http://bogus.org/subscription/getorg?id=' + orgId);
+  }
+
+  postOrganization(org: Organization){
+    this.organizations.push(org);
+    return new Observable<Organization>();
+
+    return this.http.post('http://bogus.org/subscription/postOrg', org);
   }
 
   /**
@@ -69,7 +79,7 @@ export class SubscriptionService {
     o.contacts = [];
     o.contacts.push(
       {
-        id: 201,
+        id: '201',
         firstName: 'Mary',
         lastName: 'Stephens',
         title: 'CISO',
@@ -81,7 +91,7 @@ export class SubscriptionService {
 
     o.contacts.push(
       {
-        id: 202,
+        id: '202',
         firstName: 'John',
         lastName: 'Shirlaw',
         title: 'VP R&D',
@@ -92,7 +102,7 @@ export class SubscriptionService {
 
     o.contacts.push(
       {
-        id: 203,
+        id: '203',
         firstName: 'Yanik',
         lastName: 'Zarabraya',
         title: 'VP HR',

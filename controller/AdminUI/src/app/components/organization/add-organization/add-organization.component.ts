@@ -3,6 +3,7 @@ import { FormControl, NgForm, FormGroupDirective, Validators, FormGroup } from '
 import { MyErrorStateMatcher } from '../../../helper/ErrorStateMatcher';
 import { SubscriptionService } from 'src/app/services/subscription.service';
 import { Contact, Organization } from 'src/app/models/organization.model';
+import { Guid } from 'guid-typescript';
 
 @Component({
   selector: 'app-add-organization',
@@ -16,6 +17,7 @@ export class AddOrganizationComponent implements OnInit {
    contactDataSource: any = [];
    displayedColumns: string[] = ['name', 'title', 'email', 'phone'];
    contactError='';
+   orgError='';
    contacts:Array<Contact> = [];
 
    matchOrganizationName = new MyErrorStateMatcher();
@@ -29,16 +31,16 @@ export class AddOrganizationComponent implements OnInit {
    matchLastName = new MyErrorStateMatcher();
    matchEmail = new MyErrorStateMatcher();
    
-   organizationId = new FormControl({value: '8b045ff5-b60d-4309-926c-a676b4028011', disabled: true});
-   organizationName = new FormControl('', [Validators.required]);
-   organizationIdentifier = new FormControl('', [Validators.required]);
-   address1 = new FormControl('', [Validators.required]);
-   address2 = new FormControl('');
-   city = new FormControl('', [Validators.required]);
-   state = new FormControl('', [Validators.required]);
-   zip = new FormControl('', [Validators.required]);
-
-   
+   organizationFormGroup = new FormGroup({
+    organizationId: new FormControl({value: '', disabled: true}),
+    organizationName: new FormControl('', [Validators.required]),
+    organizationIdentifier: new FormControl('', [Validators.required]),
+    address1: new FormControl('', [Validators.required]),
+    address2: new FormControl(''),
+    city: new FormControl('', [Validators.required]),
+    state: new FormControl('', [Validators.required]),
+    zip: new FormControl('', [Validators.required]),
+   });
 
    contactFormGroup = new FormGroup({
     firstName: new FormControl('', [Validators.required]),
@@ -50,13 +52,46 @@ export class AddOrganizationComponent implements OnInit {
    });
 
 
-  constructor( public subSvc: SubscriptionService) { }
+  constructor( public subscriptionSvc: SubscriptionService) { 
+    this.organizationFormGroup.controls["organizationId"].setValue(Guid.create());
+  }
+
+  createNew(){
+    this.clearOrganization();
+  }
+
+  pushOrganization(){
+    if(this.organizationFormGroup.valid && this.contacts.length > 0)
+    {
+      var organization: Organization = {
+        id: this.organizationFormGroup.controls["organizationId"].value,
+        orgName: this.organizationFormGroup.controls["organizationName"].value,
+        orgAbbrev: this.organizationFormGroup.controls["organizationIdentifier"].value,
+        orgAddress1: this.organizationFormGroup.controls["address1"].value,
+        orgAddress2: this.organizationFormGroup.controls["address2"].value,
+        orgCity: this.organizationFormGroup.controls["city"].value,
+        orgState: this.organizationFormGroup.controls["state"].value,
+        orgZip: this.organizationFormGroup.controls["zip"].value,
+        orgType: "",
+        contacts: this.contacts
+      }
+
+      this.subscriptionSvc.postOrganization(organization).subscribe((o:Organization) => {
+        this.clearOrganization();
+      });
+    } else if( !this.organizationFormGroup.valid )
+    {
+      this.orgError = "Fix required fields";
+    } else if( this.contacts.length < 1){
+      this.orgError = "Please add at least one contact";
+    }
+  }
 
   pushContact(){
     if(this.contactFormGroup.valid)
     {
       var contact: Contact = {
-        id: null,
+        id: Guid.create().toString(),
         phone: this.contactFormGroup.controls['phone'].value,
         email: this.contactFormGroup.controls['email'].value,
         firstName: this.contactFormGroup.controls['firstName'].value,
@@ -73,19 +108,18 @@ export class AddOrganizationComponent implements OnInit {
     }
   }
 
+  clearOrganization(){
+
+    this.organizationFormGroup.reset();
+    this.organizationFormGroup.controls["organizationId"].setValue(Guid.create());
+    this.contacts = [];
+    this.orgError = '';
+  }
+
   clearContact(){
-    this.contactFormGroup.setValue({
-      firstName: '',
-      lastName: '',
-      title: '',
-      email: '',
-      phone: '',
-      contactNotes: '',
-    });
-    this.contactFormGroup.controls['firstName'].setErrors(null);
-    this.contactFormGroup.controls['lastName'].setErrors(null);
-    this.contactFormGroup.controls['email'].setErrors(null);
+    this.contactFormGroup.reset();
     this.contactError = '';
+    this.contactFormGroup.markAsUntouched();
   }
 
   showAddContact(){
