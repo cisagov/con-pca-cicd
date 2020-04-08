@@ -1,64 +1,88 @@
 """
-This is an example script.
+This is the main service for cpa_data_service.
 
-It seems that it has to have THIS docstring with a summary line, a blank line
-and sume more text like here. Wow.
+This is the toplevel service that should be imported for connecting with mongodb.
+This creates a Service class that is given:
+    mongo_url, collection_name, model, model_validation
+on init.
+this will then handle all transacations for the given collection and model.
 """
-# Standard Python Libraries
-import json
-import logging
-import os
-
 # Third-Party Libraries
-from db.client import connect_to_mongo, init_db
-from rabbit.client import RabbitClient
+from repository.generics import GenericRepository, GenericRepositoryInterface
+from schematics.exceptions import DataError
 
 
-def load_config():
+class Service:
     """This loads configuration from env."""
-    if os.getenv("RABBIT_HOST") is None:
-        project_root = os.path.abspath(__file__).rsplit("/", 2)[0]
-        config_file = os.getenv(
-            "CPA_DATA_CONFIG_FILE",
-            os.path.join(project_root, "deployment/local_config.json"),
+
+    def __init__(self, mongo_url, collection_name, model, model_validation):
+        """Init for service creation."""
+        self.model = model
+        self.model_validation = model_validation
+        self.service = GenericRepositoryInterface(
+            GenericRepository(mongo_url, collection_name, model_cls=model)
         )
-        with open(config_file, "r") as f:
-            configs = json.load(f)
 
-    else:
-        configs = {
-            "rabbit_host": os.getenv("RABBIT_HOST"),
-            "mongo_uri": os.getenv("MONGO_URI"),
-        }
+    async def count(self, parameters=None):
+        """
+        Count.
 
-    return configs
+        Takes in parameters that are field names and values and
+        filters all documents and returns a count of
+        documents matching results.
+        """
+        return await self.service.count(parameters)
 
+    async def filter_list(self, parameters=None):
+        """
+        Filter_list.
 
-def main():
-    """This is the Main method for starting the service."""
-    service_config = load_config()
+        Takes in parameters that are field names and values and
+        filters all documents and returns list of results.
+        """
+        return await self.service.filter(parameters)
 
-    logging.basicConfig(level=logging.getLevelName(os.getenv("LOG_LEVEL", "INFO")))
-    logging.info("service_config {}".format(service_config))
+    async def get(self, uuid):
+        """
+        Get.
 
-    db_client = connect_to_mongo(db_uri=service_config["mongo_uri"])
-    init_db(db_client, "cpa_data_dev")
+        Given a uuid of object, will return document with unique uuid.
+        """
+        return await self.service.get(uuid)
 
-    rabbit_client = RabbitClient(
-        "rabbit-client", service_config["rabbit_host"], db_client["cpa_data_dev"]
-    )
+    async def create(self, to_create):
+        """
+        Create.
 
-    try:
-        logging.info("Strating service {}".format("rabbit_client"))
-        logging.info("server version: {}".format(db_client["version"]))
-        logging.info("test db client: {}".format(db_client.list_database_names()))
-        rabbit_client.start("data_queue")
-        logging.info("Strated {}".format("rabbit_client"))
+        Given a json object, it wil validate the fields and create a db entrie.
+        This will return the objectID of the created object
+        """
+        try:
+            to_create = self.model_validation(to_create)
+        except DataError as e:
+            return {"errors": {"validation_error": e.to_primitive()}}
 
-    except KeyboardInterrupt:
-        logging.info("Stopping service {}".format("name"))
-        rabbit_client.stop()
+        return await self.service.create(to_create)
 
+    async def update(self, to_update):
+        """
+        Update.
 
-if __name__ == "__main__":
-    main()
+        Given a json object, it wil validate the fields and update a db entrie.
+        This will return the objectID of the updated object
+        """
+        try:
+            to_update = self.model_validation(to_update)
+        except DataError as e:
+            return {"errors": {"validation_error": e.to_primitive()}}
+
+        return await self.service.update(to_update)
+
+    async def delete(self, uuid):
+        """
+        Delete.
+
+        Given a uuid of object deleteted
+        Returns bool of acknowledged of object being deleted.
+        """
+        return await self.service.delete(uuid)

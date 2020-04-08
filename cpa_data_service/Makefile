@@ -27,14 +27,23 @@ cleanall:	clean
 	# Nuke the env
 	rm -rf ${CURDIR}/env
 
+# target: local_services_start = run local mongodb and rabbitmq services
+local_services_start:
+	brew services start mongodb-community
+	brew services start rabbitmq
+
+# target: local_services_start = stop local mongodb and rabbitmq services
+local_services_stop:
+	brew services stop mongodb-community
+	brew services stop rabbitmq
+
 # target: run = run service in local python env
 run:
 	${CURDIR}/env/bin/python3 ${CURDIR}/services/lib/service.py
 
 # target: test = run all tests
 test:
-	make test -C ./middlewares
-	make test -C ./services
+	${CURDIR}/env/bin/python3 ${CURDIR}/services/lib/tests.py
 
 # target: build = build all containers
 build:
@@ -59,5 +68,3 @@ redeploy: down build up
 # target: copy-env = create end files for all containers
 copy-env:
 	make copy-env -C ./services
-
-install:
