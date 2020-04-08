@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Organization } from '../models/organization.model';
 import { Observable } from 'rxjs';
+import { Subscription } from '../models/subscription.model';
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +14,13 @@ export class SubscriptionService {
    */
   organization: Organization;
   organizations: Array<Organization> = [];
+
+  /**
+   * The current subscription being administered
+   * by the operator.
+   */
+  subscription: Subscription;
+
   /**
    * 
    */
@@ -82,26 +90,25 @@ export class SubscriptionService {
     o.contacts.push(
       {
         id: 202,
-        firstName: 'John',
-        lastName: 'Shirlaw',
+        firstName: 'Ward',
+        lastName: 'Abbott',
         title: 'VP R&D',
         phone: '208-921-1010',
-        email: 'John.Shirlaw@delta.com',
+        email: 'WardAbbott@delta.com',
         contactNotes:''
       });
 
     o.contacts.push(
       {
         id: 203,
-        firstName: 'Yanik',
-        lastName: 'Zarabraya',
+        firstName: 'Ladislas',
+        lastName: 'Krstic',
         title: 'VP HR',
         phone: '208-377-9339',
-        email: 'Yanik.Zarabraya@delta.com',
+        email: 'Ladislas.Krstic@delta.com',
         contactNotes: ''
       });
 
-    console.log(o);
     return o;
   }
 
@@ -110,10 +117,11 @@ export class SubscriptionService {
    * @param s 
    */
   submitSubscription() {
+    console.log(this);
+
     // TEMP
     return new Observable();
 
-    let s = {};
-    return this.http.post('http://bogus.org/subscription/submit', s);
+    return this.http.post('http://bogus.org/subscription/submit', this.subscription);
   }
 }
