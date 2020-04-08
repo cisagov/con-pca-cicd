@@ -35,7 +35,8 @@ services:
       dockerfile: ./etc/Dockerfile
     container_name: cpa-worker
     restart: on-failure
-    entrypoint: celery worker --app=config.celery:app --loglevel=info --logfile=tasks/logs/celery.log
+    entrypoint: celery worker --app=config.celery:app
+      --loglevel=info --logfile=tasks/logs/celery.log
     volumes:
       - ./src:/app
     depends_on:
@@ -59,12 +60,24 @@ services:
       - .env
 
   rabbitmq:
-    image: rabbitmq:latest
     container_name: cpa-rabbitmq
     hostname: rabbitmq
     restart: on-failure
+    # There is a prebuilt RabbitMQ image; see
+    # https://hub.docker.com/_/rabbitmq/ for details.
+    # This variant is built on Alpine Linux (it's smaller) and includes
+    # the management UI.
+    image: 'rabbitmq:3.6-management-alpine'
+
+    # These ports are exposed on the host; 'hostport:containerport'.
+    # You could connect to this server from outside with the *host's*
+    # DNS name or IP address and port 5672 (the left-hand side of the
+    # colon).
     ports:
-      - "5672:5672"
+      # The standard AMQP protocol port
+      - '5672:5672'
+      # HTTP management UI
+      - '15672:15672'
     env_file:
       - .env
 
