@@ -244,7 +244,7 @@ class GenericRepository(object):
         single document by a given object.
         """
         result = await self.collection.insert_one(object)
-        return str(result.inserted_id)
+        return bool(result.acknowledged)
 
     async def update(self, object):
         """
