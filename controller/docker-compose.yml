@@ -11,7 +11,7 @@ services:
     volumes:
       - ${PWD}:/app /app/node_modules
     environment:
-        - NODE_ENV=dev
+      - NODE_ENV=dev
 
   api:
     build:
@@ -21,6 +21,8 @@ services:
     tty: true
     container_name: cpa-api
     restart: on-failure
+    links:
+      - mongodb
     ports:
       - "8000:8000"
     volumes:
@@ -95,12 +97,21 @@ services:
     env_file:
       - .env
 
-  gophish:
-    image: gophish/gophish:latest
-    container_name: cpa-gophish
-    restart: on-failure
+  mongodb:
+    container_name: cpa-mongodb
+    hostname: mongodb
+    image: "mongo:3.6"
+    # These ports are exposed on the host; 'hostport:containerport'.
+    # You could connect to this server from outside with the *host's*
+    # DNS name or IP address and port 27017 (the left-hand side of the
+    # colon).
     ports:
-      - "3333:3333"
-      - "8080:8080"
+      - "27017:27017"
+    volumes:
+      - "mongodb:/data/db"
     env_file:
       - .env
+
+# Host volumes used to store code.
+volumes:
+  mongodb:
