@@ -41,7 +41,7 @@ class SubscriptionsView(APIView):
         to_create["subscription_uuid"] = str(uuid.uuid4())
 
         created_responce = loop.run_until_complete(service.create(to_create=to_create))
-        print(created_responce)
-        if created_responce:
-            return Response(to_create, status=status.HTTP_201_CREATED)
-        return Response(created_responce, status=status.HTTP_400_BAD_REQUEST)
+        print("created responce: {}".format(created_responce))
+        if created_responce["errors"]:
+            return Response(created_responce, status=status.HTTP_400_BAD_REQUEST)
+        return Response(to_create, status=status.HTTP_201_CREATED)
