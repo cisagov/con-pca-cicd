@@ -11,7 +11,7 @@ class SubscriptionModel(Model):
     This shows basic types that we will use on each model.
     """
 
-    demo_uuid = UUIDType()
+    subscription_uuid = UUIDType()
     name = StringType()
     enum_type = StringType(required=True, choices=("initial", "post", "pre", "final"))
     record_tstamp = DateTimeType(required=True)
