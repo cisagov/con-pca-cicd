@@ -43,4 +43,4 @@ class SubscriptionsView(APIView):
         print("created responce: {}".format(created_responce))
         if "errors" in created_responce:
             return Response(created_responce, status=status.HTTP_400_BAD_REQUEST)
-        return Response(to_create, status=status.HTTP_201_CREATED)
+        return Response(created_responce, status=status.HTTP_201_CREATED)
