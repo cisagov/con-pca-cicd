@@ -39,7 +39,6 @@ class SubscriptionsView(APIView):
         service = db_service("subscription", SubscriptionModel, validate_subscription)
         to_create = request.data.copy()
         to_create["subscription_uuid"] = str(uuid.uuid4())
-
         created_responce = loop.run_until_complete(service.create(to_create=to_create))
         print("created responce: {}".format(created_responce))
         if "errors" in created_responce:

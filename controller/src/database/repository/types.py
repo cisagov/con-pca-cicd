@@ -12,10 +12,8 @@ import uuid
 # These imports are so models.py can import all its types from this file.
 from schematics.types import BooleanType as BaseBooleanType
 from schematics.types import DateTimeType as BaseDateTimeType
-from schematics.types import DictType as BaseDictType
 from schematics.types import FloatType as BaseFloatType
 from schematics.types import IntType as BaseIntType
-from schematics.types import ListType as BaseListType
 from schematics.types import ModelType as BaseModelType
 from schematics.types import StringType as BaseStringType
 
@@ -178,48 +176,6 @@ class BooleanType(BaseBooleanType):
     BooleanType.
 
     Base class for BooleanType.
-    """
-
-    def __init__(self, *arg, **kwargs):
-        """
-        Init.
-
-        Adding required checking.
-        """
-        try:
-            self.example = kwargs.pop("example")
-        except KeyError:
-            # raise TypeError("Example is a required parameter.")
-            pass
-        super().__init__(**kwargs)
-
-
-class DictType(BaseDictType):
-    """
-    DictType.
-
-    Base class for DictType.
-    """
-
-    def __init__(self, *arg, **kwargs):
-        """
-        Init.
-
-        Adding required checking.
-        """
-        try:
-            self.example = kwargs.pop("example")
-        except KeyError:
-            # raise TypeError("Example is a required parameter.")
-            pass
-        super().__init__(**kwargs)
-
-
-class ListType(BaseListType):
-    """
-    ListType.
-
-    Base class for ListType.
     """
 
     def __init__(self, *arg, **kwargs):
