@@ -3,11 +3,19 @@ Models.
 
 These are not Django Models, there are created using Schematics Models
 """
+# Standard Python Libraries
+import datetime
+
 # Third-Party Libraries
 from database.repository.models import Model
-from database.repository.types import BooleanType, DateTimeType, StringType, UUIDType
-from schematics.types import DictType
-from schematics.types.compound import ListType
+from database.repository.types import (
+    BooleanType,
+    DateTimeType,
+    DictType,
+    ListType,
+    StringType,
+    UUIDType,
+)
 
 
 class SubscriptionModel(Model):
@@ -24,7 +32,7 @@ class SubscriptionModel(Model):
     primary_contact = StringType()
     additional_contacts = ListType(DictType(StringType))
     customer = StringType()
-    last_action = DateTimeType(required=False)
+    last_action = DateTimeType(default=datetime.datetime.now)
     start_date = DateTimeType(required=False)
     end_date = DateTimeType(required=False)
     active = BooleanType()
