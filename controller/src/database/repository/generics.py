@@ -243,8 +243,8 @@ class GenericRepository(object):
         Generic method that can be used to create a
         single document by a given object.
         """
-        result = await self.collection.insert_one(object)
-        return bool(result.acknowledged)
+        await self.collection.insert_one(object)
+        return {self.uuid_name: object[self.uuid_name]}
 
     async def update(self, object):
         """
