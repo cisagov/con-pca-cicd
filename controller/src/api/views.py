@@ -1,33 +1,46 @@
-import json
-from datetime import datetime, date
+"""
+This is the main views for api.
 
-from rest_framework.views import APIView
-from rest_framework.response import Response
+This handles api views
+"""
+# Standard Python Libraries
+import asyncio
+import uuid
+
+# Third-Party Libraries
 from rest_framework import status
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
-from . import serializers
-from .utils import Subscription
+from .models import SubscriptionModel, validate_subscription
+from .utils import db_service
 
 
 class SubscriptionsView(APIView):
+    """
+    This is the SubscriptionsView APIView.
+
+    This handles the API for the Substriptions.
+    """
+
     def get(self, request):
+        """Get method."""
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        service = db_service("subscription", SubscriptionModel, validate_subscription)
+        subscription_list = loop.run_until_complete(service.filter_list(parameters={}))
 
-        subscriptions = Subscription(
-            name="SC-1031.Matt-Daemon.1.1",
-            status="Waiting on SRF",
-            primary_contact="Matt Daemon",
-            customer="Some Company.2com",
-            last_action=date.today(),
-            active=True
-        )
-
-        serializer = serializers.SubscriptionSerializer(subscriptions)
-
-        return Response(serializer.data)
+        return Response(subscription_list)
 
     def post(self, request, format=None):
-        serializer = serializers.SubscriptionSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        """Post method."""
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        service = db_service("subscription", SubscriptionModel, validate_subscription)
+        to_create = request.data.copy()
+        to_create["subscription_uuid"] = str(uuid.uuid4())
+        created_responce = loop.run_until_complete(service.create(to_create=to_create))
+        print("created responce: {}".format(created_responce))
+        if "errors" in created_responce:
+            return Response(created_responce, status=status.HTTP_400_BAD_REQUEST)
+        return Response(created_responce, status=status.HTTP_201_CREATED)

@@ -33,6 +33,9 @@ stop:
 down:
 	docker-compose down
 
+# target: redeploy = bring down, rebuild and redeploy all containers
+redeploy: down build up
+
 # target: shell - django shell within container
 shell:
 	docker exec -it cpa-web python manage.py shell
