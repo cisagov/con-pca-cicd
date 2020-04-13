@@ -60,21 +60,6 @@ services:
     env_file:
       - .env
 
-  flower:
-    build:
-      context: .
-      dockerfile: ./etc/Dockerfile
-    container_name: cpa-flower
-    entrypoint: flower -A config --port=5555 --broker=amqp://rabbitmq:5672
-    ports:
-      - 5555:5555
-    depends_on:
-      - web
-      - rabbitmq
-      - celery-worker
-    env_file:
-      - .env
-
   rabbitmq:
     image: rabbitmq:3.6-management-alpine
     # There is a prebuilt RabbitMQ image; see
@@ -106,7 +91,7 @@ services:
     # DNS name or IP address and port 27017 (the left-hand side of the
     # colon).
     ports:
-      - "127.0.0.1:27017:27017"
+      - "27017:27017"
     volumes:
       - "mongodb:/data/db"
     env_file:
