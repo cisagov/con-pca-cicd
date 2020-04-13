@@ -5,7 +5,6 @@ Here we define types to be imported into models and used for validation.
 This is using schematics.type as a base
 """
 # Standard Python Libraries
-import datetime
 import uuid
 
 # Third-Party Libraries
@@ -127,7 +126,7 @@ class EmailType(BaseStringType):
             self.regex = kwargs.pop("regex")
         else:
             self.regex = r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$"
-        super().__init__(required=self.required, regex=self.regex)
+        super().__init__(regex=self.regex)
 
 
 class DateTimeType(BaseDateTimeType):
@@ -136,41 +135,6 @@ class DateTimeType(BaseDateTimeType):
 
     Base class for DateTimeType.
     """
-
-    def _mock(self, context=None):
-        """
-        A wrapper function.
-
-        Around the the BaseDateTimeType class' _mock
-        function that truncates the datetime object's microseconds to a
-        precision tolerable by MongoDB's DateTime native type
-        :param context:
-        :return: python native datetime object
-        :rtype: datetime.dateime
-
-        To ensure we can compare the return value of tests
-        for now let's just generate everything in utc
-        """
-        dt = super(DateTimeType, self)._mock(context).astimezone(datetime.timezone.utc)
-        return dt.replace(microsecond=int(dt.microsecond / 1000) * 1000)
-
-    def to_primitive(self, value, context=None):
-        """
-        To_primitive.
-
-        Circumvent around the inherited to_primitive function to ensure that serialized
-        datetime str is in the format that matches ``datetime.datetime.astimzezone(datetime.timezone.utc).isformat()``
-        :param value: Native value of this field in the model's object
-        :param context: Optional context can be none
-        :return: Serialized string containing datetime in the following ISO format ``<YYYY>-<MM>-<DD>T<hh>:<mm>[:<ss.ssssss>]±<hh>[:][<mm>].
-        :rtype: str
-        """
-        if isinstance(value, datetime.datetime):
-            return value.astimezone(datetime.timezone.utc).isoformat()
-        else:
-            # huh it is NOT an instance of datetime.datetime?
-            # ok let the super method deal with this
-            return super(DateTimeType, self).to_primitive(value, context)
 
 
 class BooleanType(BaseBooleanType):
@@ -200,19 +164,6 @@ class ModelType(BaseModelType):
 
     Base class for ModelType.
     """
-
-    def __init__(self, *arg, **kwargs):
-        """
-        Init.
-
-        Adding required checking.
-        """
-        try:
-            self.example = kwargs.pop("example")
-        except KeyError:
-            # raise TypeError("Example is a required parameter.")
-            pass
-        super().__init__(**kwargs)
 
 
 class DictType(BaseDictType):

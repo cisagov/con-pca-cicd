@@ -5,6 +5,7 @@ This handles api views
 """
 # Standard Python Libraries
 import asyncio
+import logging
 import uuid
 
 # Third-Party Libraries
@@ -14,6 +15,8 @@ from rest_framework.views import APIView
 
 from .models import SubscriptionModel, validate_subscription
 from .utils import db_service
+
+logger = logging.getLogger(__name__)
 
 
 class SubscriptionsView(APIView):
@@ -40,7 +43,7 @@ class SubscriptionsView(APIView):
         to_create = request.data.copy()
         to_create["subscription_uuid"] = str(uuid.uuid4())
         created_responce = loop.run_until_complete(service.create(to_create=to_create))
-        print("created responce: {}".format(created_responce))
+        logging.info("created responce {}".format(created_responce))
         if "errors" in created_responce:
             return Response(created_responce, status=status.HTTP_400_BAD_REQUEST)
         return Response(created_responce, status=status.HTTP_201_CREATED)
