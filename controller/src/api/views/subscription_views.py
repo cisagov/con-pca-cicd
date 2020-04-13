@@ -9,21 +9,20 @@ import logging
 import uuid
 
 # Third-Party Libraries
+from api.models.subscription_models import SubscriptionModel, validate_subscription
+from api.utils import db_service
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from .models import SubscriptionModel, validate_subscription
-from .utils import db_service
-
 logger = logging.getLogger(__name__)
 
 
-class SubscriptionsView(APIView):
+class SubscriptionsListView(APIView):
     """
-    This is the SubscriptionsView APIView.
+    This is the SubscriptionsListView APIView.
 
-    This handles the API for the Substriptions.
+    This handles the API to get a List of Subscriptions.
     """
 
     def get(self, request):
@@ -47,3 +46,24 @@ class SubscriptionsView(APIView):
         if "errors" in created_responce:
             return Response(created_responce, status=status.HTTP_400_BAD_REQUEST)
         return Response(created_responce, status=status.HTTP_201_CREATED)
+
+
+class SubscriptionView(APIView):
+    """
+    This is the SubscriptionsView APIView.
+
+    This handles the API for the Get a Substription with subscription_uuid.
+    """
+
+    def get(self, request, subscription_uuid):
+        """Get method."""
+        logging.debug("get subscription_uuid {}".format(subscription_uuid))
+        print("get subscription_uuid {}".format(subscription_uuid))
+
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        service = db_service("subscription", SubscriptionModel, validate_subscription)
+
+        subscription = loop.run_until_complete(service.get(uuid=subscription_uuid))
+
+        return Response(subscription)
