@@ -12,6 +12,9 @@ controller/src/staticfiles
 controller/src/celerybeat-schedule
 controller/src/celerybeat.pid
 
+# Gophish
+gophish/.env
+
 #Pycharm
 .idea/
 
