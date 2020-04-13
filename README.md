@@ -1,16 +1,39 @@
-# cpa #
+# CPA
+## Continuous Phishing Assessment
 
-[![GitHub Build Status](https://github.com/cisagov/cpa-controller/workflows/build/badge.svg)](https://github.com/cisagov/cpa-controller/actions)
+### Project Directory
+- [Client](https://github.com/cisagov/cpa/tree/develop/client)
+- [Controller](https://github.com/cisagov/cpa/tree/develop/controller)
+- [GoPhish](https://github.com/cisagov/cpa/tree/develop/gophish)
 
-This is a generic skeleton project that can be used to quickly get a
-new [cisagov](https://github.com/cisagov) GitHub project started.
-This skeleton project contains [licensing information](LICENSE), as
-well as [pre-commit hooks](https://pre-commit.com) and
-[GitHub Actions](https://github.com/features/actions) configurations
-appropriate for the major languages that we use.
+### Requirements
+* For local setup, Get the right flavor of Docker for your OS...
+    - [Docker for Mac](https://docs.docker.com/docker-for-mac/install/)
+    - [Docker for Ubuntu](https://docs.docker.com/install/linux/docker-ce/ubuntu/)
+    - [Docker for Windows](https://docs.docker.com/docker-for-windows/install/)
 
-In many cases you will instead want to use one of the more specific
-skeleton projects derived from this one.
+    **Note:** The recommended requirement for deployment of this project is 4 GB RAM.
+    For Docker for Mac, this can be set by following these steps:
+
+    Open Docker > Preferences > Advanced tab, then set memory to 4.0 GiB
+
+## Local project setup:
+
+Create your .env files
+- `cp ./controller/etc/env.dist .env`
+- `cp ./gophish/etc/env.dist .env`
+
+Build containers
+- `make build`
+
+Run your web application locally
+- `make up`
+
+Stop containers
+- `make stop`
+
+Remove containers
+- `make down`
 
 ## Contributing ##
 

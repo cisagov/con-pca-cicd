@@ -2,7 +2,7 @@
 
 # make all - Default Target. Does nothing.
 all:
-	@echo "Django helper commands."
+	@echo "Helper commands."
 	@echo "For more information try 'make help'."
 
 # target: help - Display callable targets.
