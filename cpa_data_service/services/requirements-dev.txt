@@ -1,6 +1,0 @@
---requirement requirements-test.txt
-motor==2.0.0
-pika
-pymongo
-pyyaml
-schematics==2.1.0
