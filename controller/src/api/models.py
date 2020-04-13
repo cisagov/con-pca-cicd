@@ -57,7 +57,7 @@ class SubscriptionModel(Model):
     """
 
     subscription_uuid = UUIDType()
-    organziation = StringType()
+    organization = StringType()
     primary_contact = ModelType(SubscriptionContactModel)
     additional_contact_list = ListType(ModelType(SubscriptionContactModel))
     status = StringType()
