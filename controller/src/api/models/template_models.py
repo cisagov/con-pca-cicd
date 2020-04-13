@@ -24,7 +24,7 @@ class TemplateModel(Model):
     name = StringType()
     system_path = StringType()
     deception_score = IntType()
-    descriptive_words = DictType()
+    descriptive_words = DictType(IntType)
 
 
 def validate_template(data_object):
