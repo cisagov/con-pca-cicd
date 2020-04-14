@@ -39,8 +39,8 @@ INSTALLED_APPS = [
     "rest_framework",
     # local
     "reports",
-    "subscriptions",
     "tasks",
+    "api",
 ]
 
 MIDDLEWARE = [

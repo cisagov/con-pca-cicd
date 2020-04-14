@@ -12,7 +12,7 @@ Required for install:
 
 ## Additional Suggestions
 
-Here are some additinal software to use along with develpment.
+Here are some additional software to use along with develpment.
 These items are not required for development.
 
 <!--Please add addational software information here-->
@@ -29,7 +29,7 @@ data.
 
 <!--Please add steps for local deployment of software information here-->
 
-Note: Currently this is forcused on running localy on a Mac using Python3.
+Note: Currently this is forcused on running locally on a Mac using Python3.
 
 ### Git Clone Project
 
@@ -77,26 +77,18 @@ Access Django shell
 
 - `make shell`
 
-### To access the Angular app
-
-Angular app located at [localhost:4200](http://localhost:4200)
-
 ### To access the Django API
 
 Django base app located at [localhost:8000](http://localhost:8000)
 
-### To access the Celery Flower dashboard
-
-Celery Flower dashboard located at [localhost:5555/dashboard](http://localhost:5555/dashboard)
-
 ### To access the RabbitMQ dashboard
 
-Celery Flower dashboard located at [localhost:15672](http://localhost:15672)
+RabbitMQ management dashboard located at [localhost:15672](http://localhost:15672)
 
 ## Api Usage
 
 To run the containers, use:
-`make up`
+- `make up`
 
 Your output will look like:
 
@@ -106,16 +98,14 @@ docker-compose up -d
 Creating network "controller_default" with the default driver
 Creating cpa-rabbitmq ... done
 Creating cpa-mongodb  ... done
-Creating cpa-web      ... done
 Creating cpa-worker   ... done
 Creating cpa-beat     ... done
 Creating cpa-api      ... done
-Creating cpa-flower   ... done
 ```
 
 Dev Access
 
-You can use these enpoints to debug and devleop, suggested access:
+You can use these endpoints to debug and develop, suggested access:
 
 - [curl](https://curl.haxx.se/docs/manpage.html)
 
@@ -267,7 +257,7 @@ Example JSON for POST:
 
 When running and calling api:
 
-`Unathorized`
+`Unauthorized`
 
 This is due to the DB not having the correct creds.
 
