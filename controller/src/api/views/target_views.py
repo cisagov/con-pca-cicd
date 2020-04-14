@@ -10,7 +10,7 @@ import logging
 import uuid
 
 # Third-Party Libraries
-from api.models.subscription_models import SubscriptionModel, validate_subscription
+from api.models.target_models import TargetModel, validate_target
 from api.utils import db_service
 from rest_framework import status
 from rest_framework.response import Response
@@ -19,11 +19,11 @@ from rest_framework.views import APIView
 logger = logging.getLogger(__name__)
 
 
-class SubscriptionsListView(APIView):
+class TargetListView(APIView):
     """
-    This is the SubscriptionsListView APIView.
+    This is the TargetListView APIView.
 
-    This handles the API to get a List of Subscriptions.
+    This handles the API to get a List of Targets.
     """
 
     def get(self, request):
@@ -31,20 +31,20 @@ class SubscriptionsListView(APIView):
         filter_map = request.data.copy()
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
-        service = db_service("subscription", SubscriptionModel, validate_subscription)
-        subscription_list = loop.run_until_complete(
+        service = db_service("target", TargetModel, validate_target)
+        target_list = loop.run_until_complete(
             service.filter_list(parameters=filter_map)
         )
 
-        return Response(subscription_list)
+        return Response(target_list)
 
     def post(self, request, format=None):
         """Post method."""
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
-        service = db_service("subscription", SubscriptionModel, validate_subscription)
+        service = db_service("target", TargetModel, validate_target)
         to_create = request.data.copy()
-        to_create["subscription_uuid"] = str(uuid.uuid4())
+        to_create["target_uuid"] = str(uuid.uuid4())
         # ToDo: update with current_user
         create_timestamp = datetime.datetime.utcnow()
         current_user = "dev user"
@@ -57,22 +57,22 @@ class SubscriptionsListView(APIView):
         return Response(created_responce, status=status.HTTP_201_CREATED)
 
 
-class SubscriptionView(APIView):
+class TargetView(APIView):
     """
-    This is the SubscriptionsView APIView.
+    This is the TargetView APIView.
 
-    This handles the API for the Get a Substription with subscription_uuid.
+    This handles the API for the Get a Target with target_uuid.
     """
 
-    def get(self, request, subscription_uuid):
+    def get(self, request, target_uuid):
         """Get method."""
-        logging.debug("get subscription_uuid {}".format(subscription_uuid))
-        print("get subscription_uuid {}".format(subscription_uuid))
+        logging.debug("get target_uuid {}".format(target_uuid))
+        print("get target_uuid {}".format(target_uuid))
 
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
-        service = db_service("subscription", SubscriptionModel, validate_subscription)
+        service = db_service("target", TargetModel, validate_target)
 
-        subscription = loop.run_until_complete(service.get(uuid=subscription_uuid))
+        target = loop.run_until_complete(service.get(uuid=target_uuid))
 
-        return Response(subscription)
+        return Response(target)
