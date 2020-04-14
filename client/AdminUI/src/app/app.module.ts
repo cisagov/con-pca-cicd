@@ -1,4 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
+import { HttpClientModule, HttpClient } from '@angular/common/http'; 
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MaterialModule } from './material.module';
@@ -23,6 +24,7 @@ import { ServiceSubscriptionComponent } from './components/service-subscription/
   ],
   imports: [
     BrowserModule,
+    HttpClientModule,
     AppRoutingModule,
     BrowserAnimationsModule, 
     MaterialModule, 
@@ -30,7 +32,8 @@ import { ServiceSubscriptionComponent } from './components/service-subscription/
     ReactiveFormsModule
   ],
   providers: [
-    SubscriptionsService
+    SubscriptionsService,    
+    HttpClient
   ],
   bootstrap: [AppComponent]
 })

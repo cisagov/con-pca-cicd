@@ -19,6 +19,8 @@ DEBUG = int(os.environ.get("DEBUG", default=0))
 
 ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS").split(" ")
 
+CORS_ORIGIN_ALLOW_ALL=True
+
 DB_CONFIG = {
     "DB_HOST": os.getenv("DB_HOST"),
     "DB_USER": os.getenv("DB_USER"),
@@ -35,6 +37,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "corsheaders",
     # third party
     "rest_framework",
     # local

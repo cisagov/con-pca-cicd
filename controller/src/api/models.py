@@ -39,6 +39,16 @@ class SubscriptionTargetModel(Model):
     sent_date = DateTimeType()
 
 
+class GoPhishCampaigns(Model):
+    template_email = UUIDType()
+    template_landing_page = UUIDType()
+    start_date = DateTimeType()
+    end_date = DateTimeType()
+    target_email_list = ListType(ModelType(SubscriptionTargetModel))
+
+
+
+
 class SubscriptionModel(Model):
     """
     This is the Subscription Model.
@@ -63,6 +73,7 @@ class SubscriptionModel(Model):
     status = StringType()
     target_email_list = ListType(ModelType(SubscriptionTargetModel))
     templates_selected = ListType(UUIDType)
+    #gophish_campaigns = ListType(ModelType(GoPhishCampaigns))
     start_date = DateTimeType()
     end_date = DateTimeType()
     active = BooleanType()
