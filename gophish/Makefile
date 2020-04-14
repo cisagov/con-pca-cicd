@@ -11,7 +11,7 @@ help:
 
 init:
 	sudo chmod u+x init.sh
-	echo -e "yes\nyes\nyes" | ./init.sh
+	./init.sh
 
 # target: build = build all containers
 build:
