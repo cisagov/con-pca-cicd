@@ -4,7 +4,7 @@ API URLs.
 This lists all urls under the API app.
 """
 # Third-Party Libraries
-from api.views import subscription_views, template_views
+from api.views import subscription_views, target_views, template_views
 from django.urls import path
 
 urlpatterns = [
@@ -27,5 +27,11 @@ urlpatterns = [
         "v1/template/<template_uuid>/",
         template_views.TemplateView.as_view(),
         name="template_get_api",
+    ),
+    path("v1/targets/", target_views.TargetListView.as_view(), name="target_list_api",),
+    path(
+        "v1/targets/<target_uuid>/",
+        target_views.TargetView.as_view(),
+        name="target_get_api",
     ),
 ]

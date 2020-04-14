@@ -5,6 +5,7 @@ This handles api views
 """
 # Standard Python Libraries
 import asyncio
+import datetime
 import logging
 import uuid
 
@@ -27,12 +28,15 @@ class TemplatesListView(APIView):
 
     def get(self, request):
         """Get method."""
+        filter_map = request.data.copy()
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
         service = db_service("template", TemplateModel, validate_template)
-        subscription_list = loop.run_until_complete(service.filter_list(parameters={}))
+        template_list = loop.run_until_complete(
+            service.filter_list(parameters=filter_map)
+        )
 
-        return Response(subscription_list)
+        return Response(template_list)
 
     def post(self, request, format=None):
         """Post method."""
@@ -41,6 +45,11 @@ class TemplatesListView(APIView):
         service = db_service("template", TemplateModel, validate_template)
         to_create = request.data.copy()
         to_create["template_uuid"] = str(uuid.uuid4())
+        # ToDo: update with current_user
+        create_timestamp = datetime.datetime.utcnow()
+        current_user = "dev user"
+        to_create["created_by"] = to_create["last_updated_by"] = current_user
+        to_create["cb_timestamp"] = to_create["lub_timestamp"] = create_timestamp
         created_responce = loop.run_until_complete(service.create(to_create=to_create))
         logging.info("created responce {}".format(created_responce))
         if "errors" in created_responce:
@@ -64,6 +73,6 @@ class TemplateView(APIView):
         asyncio.set_event_loop(loop)
         service = db_service("template", TemplateModel, validate_template)
 
-        subscription = loop.run_until_complete(service.get(uuid=template_uuid))
+        template = loop.run_until_complete(service.get(uuid=template_uuid))
 
-        return Response(subscription)
+        return Response(template)
