@@ -10,8 +10,8 @@ services:
     volumes:
       - /app/node_modules
       - ./AdminUI:/app
-    environment:
-      - NODE_ENV=dev
+    env_file:
+      - .env
 
 networks:
   default:
