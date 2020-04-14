@@ -35,11 +35,6 @@ services:
       - ./etc/mysql/my.cnf:/etc/mysql/my.cnf
     networks:
       - default
-    environment:
-      MYSQL_DATABASE: gophish
-      MYSQL_USER: gophish
-      MYSQL_PASSWORD: password
-      MYSQL_ROOT_PASSWORD: password
     env_file:
       - .env
   adminer:
