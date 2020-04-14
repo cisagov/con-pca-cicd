@@ -9,6 +9,7 @@ src/.DS_Store
 /client/AdminUI/node_modules
 /client/AdminUI/node_modules/*
 /client/AdminUI/dist
+client/.env
 
 # Controller
 controller/.env
