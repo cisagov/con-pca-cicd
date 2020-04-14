@@ -1,23 +1,23 @@
-.PHONY: all help build logs loc up stop down
+.PHONY: all help build logs up stop down redeploy
 
 # make all - Default Target. Does nothing.
 all:
-	@echo "Helper commands."
+	@echo "Angular helper commands."
 	@echo "For more information try 'make help'."
 
 # target: help - Display callable targets.
 help:
 	@egrep "^# target:" [Mm]akefile
 
-init:
-	sudo chmod u+x init.sh
-	echo -e "yes\nyes\nyes" | ./init.sh
-
 # target: build = build all containers
 build:
 	docker-compose build
 
-# target: up - Run GoPhish.
+# target: app logs - Runs angular logs in the terminal
+logs:
+	 docker attach --sig-proxy=false cpa-web
+
+# target: up - Run local web server.
 up:
 	 docker-compose up -d
 
@@ -28,3 +28,6 @@ stop:
 # target: down - Remove all docker containers
 down:
 	docker-compose down
+
+# target: redeploy = bring down, rebuild and redeploy all containers
+redeploy: down build up
