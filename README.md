@@ -17,23 +17,66 @@
 
     Open Docker > Preferences > Advanced tab, then set memory to 4.0 GiB
 
-## Local project setup:
+## Local Install and Deployment:
+
+### Git Clone Project
+
+Make sure you have a github account and access to the correct repo.
+
+To install project run
+
+```shell
+git clone git@github.com:cisagov/cpa.git
+```
+
+Use `Makefile` to install and run all services.
+
+### Setup and Build
 
 Create your .env files
-- `cp ./controller/etc/env.dist .env`
-- `cp ./gophish/etc/env.dist .env`
+- `cp ./client/etc/env.dist ./client/.env`
+- `cp ./controller/etc/env.dist ./controller/.env`
+- `cp ./gophish/etc/env.dist ./gophish/.env`
 
-Build containers
+Build containers:
 - `make build`
 
-Run your web application locally
+To run the containers, use:
 - `make up`
+
+Your output will look like:
+
+```shell
+-> % make up
+Creating cpa-rabbitmq ... done
+Creating cpa-mongodb  ... done
+Creating cpa-web      ... done
+Creating cpa-worker   ... done
+Creating cpa-beat     ... done
+Creating cpa-api      ... done
+```
 
 Stop containers
 - `make stop`
 
 Remove containers
 - `make down`
+
+## Project Components
+
+For more information regarding each component,
+
+- Please see [here](client/README.md) for the client service
+- Please see [here](controller/README.md) for the controller service
+- Please see [here](gophish/README.md) for the gophish service
+
+## Dev Access
+
+You can use these enpoints to debug and develop, suggested access:
+
+- [curl](https://curl.haxx.se/docs/manpage.html)
+
+- [PostMan](https://www.postman.com/)
 
 ## Contributing ##
 

@@ -117,8 +117,8 @@ The current api url endpoints are:
 
 | URL | ACTIONS |
 | ----------- | ----------- |
-| <host:port>/api/v1/substriptions/ | [GET, POST] |
-| <host:port>/api/v1/substription/<subscription_uuid> | [GET] |
+| <host:port>/api/v1/subscriptions/ | [GET, POST] |
+| <host:port>/api/v1/subscription/<subscription_uuid> | [GET] |
 | <host:port>/api/v1/templates/ | [GET, POST] |
 | <host:port>/api/v1/template/<template_uuid> | [GET] |
 | <host:port>/api/v1/targets/ | [GET, POST] |
