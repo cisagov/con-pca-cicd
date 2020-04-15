@@ -77,6 +77,37 @@ Access Django shell
 
 - `make shell`
 
+Generate and load Random Data into DB
+
+- `make db_load_dummy`
+
+### Creating and loading random data
+
+Using the makefile command: `make db_load_dummy` you can create data in
+the db and get an output file containing all the id's of the created data.
+
+### Example
+
+```shell
+-> % make db_load_dummy
+python scripts/create_dummy_data.py
+loading dummy json data
+done loading data
+Step 1/3: create templates...
+created tempaltes_list: [u'883e0f1f-2b7a-44e9-a49d-5d9d231fd943', u'0a4ab912-25de-4e9c-bcc7-fb9a88427e36']
+Step 2/3: create targets...
+created target_list: [u'9079a1ad-3ed0-4ee8-a181-57bec0005f5a', u'd504b75a-4331-47a0-bfd7-c2e7c03540fe', u'32f16b48-3eec-4fc9-8dd6-cd07333daa26', u'23cd3a99-192f-4874-999f-2d9aa18b45ed', u'3d625281-e0bf-4d13-a07d-9e83139fc412', u'ee4d6547-4701-4286-ac27-c690625c1c76', u'8f993439-3046-4217-bcea-c771c33cae7f']
+Step 3/3: create subscriptions...
+created subcription_list: [u'd25ae2c4-0f0a-4bf3-a86e-9c4f5950b2ca', u'aef12cdb-bb42-48d4-9a85-345a1f0e9967', u'763daf22-8f9d-4a0a-bc95-12538cd391a5', u'cd71d0ce-b61f-4763-a7d8-c7f01d411b05', u'a34869b0-ebf8-44bb-9b9e-ebd4f12a0b07', u'e494b918-052f-4e78-92a5-034d477b83d0', u'5d2b8b9e-12c9-4f3e-a76d-2a6bf54be5b0', u'1e79bfb1-6ef8-4671-9413-45015263d29f', u'c74cf69d-634d-4f77-a93a-d96c072ea2f9', u'95db5067-a9ac-4865-978d-c6753e39edb8', u'3f4f712a-25cf-4357-98ab-1a33037375fa', u'd83d7ad0-9feb-4471-8705-8af80580fe59', u'3af315cf-30c8-4123-ab37-bdd295325701']
+writting values to file: /.../cpa/controller/scripts/data/created_dummy_data_2020_04_15_155141.json...
+Finished.....
+```
+
+As seen this will output data files into
+`scripts/data/created_dummy_data_2020_04_15_155141.json.` location and
+will genrate a new file every time it is ran. These files will not be
+checked into github and will remain on a devs system.
+
 ### To access the Django API
 
 Django base app located at [localhost:8000](http://localhost:8000)
@@ -88,6 +119,7 @@ RabbitMQ management dashboard located at [localhost:15672](http://localhost:1567
 ## Api Usage
 
 To run the containers, use:
+
 - `make up`
 
 Your output will look like:
