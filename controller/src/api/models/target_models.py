@@ -27,6 +27,8 @@ class TargetModel(Model):
 
     target_uuid = UUIDType()
     customer_uuid = UUIDType()
+    first_name = StringType()
+    last_name = StringType()
     email = EmailType(required=True)
     # db tracking added below.
     created_by = StringType()
