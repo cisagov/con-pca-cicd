@@ -1,0 +1,22 @@
+{
+        "admin_server": {
+                "listen_url": "0.0.0.0:3333",
+                "use_tls": false,
+                "cert_path": "gophish_admin.crt",
+                "key_path": "gophish_admin.key"
+        },
+        "phish_server": {
+                "listen_url": "0.0.0.0:8080",
+                "use_tls": false,
+                "cert_path": "example.crt",
+                "key_path": "example.key"
+        },
+        "db_name": "mysql",
+        "db_path": "gophish:password@(mysql:3306)/gophish?charset=utf8&parseTime=True&loc=UTC",
+        "migrations_prefix": "db/db_",
+        "contact_address": "name@example.com",
+        "logging": {
+                "filename": "",
+                "level": ""
+        }
+}

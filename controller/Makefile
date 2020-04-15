@@ -15,7 +15,7 @@ build:
 
 # target: app logs - Runs django logs in the terminal
 logs:
-	 docker attach --sig-proxy=false cpa-web
+	 docker attach --sig-proxy=false cpa-api
 
 # target: loc - Count lines of code.
 loc:
@@ -33,11 +33,14 @@ stop:
 down:
 	docker-compose down
 
+# target: redeploy = bring down, rebuild and redeploy all containers
+redeploy: down build up
+
 # target: shell - django shell within container
 shell:
-	docker exec -it cpa-web python manage.py shell
+	docker exec -it cpa-api python manage.py shell
 
 # target: format - Format Python code
 format:
-	docker exec cpa-web isort --multi-line=3 --trailing-comma --force-grid-wrap=0 --use-parentheses --line-width=100 -rc .
-	docker exec cpa-web black -l 100 .
+	docker exec cpa-api isort --multi-line=3 --trailing-comma --force-grid-wrap=0 --use-parentheses --line-width=100 -rc .
+	docker exec cpa-api black -l 100 .
