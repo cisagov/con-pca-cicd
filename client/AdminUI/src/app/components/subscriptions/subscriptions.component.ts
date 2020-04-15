@@ -43,16 +43,15 @@ export class SubscriptionsComponent implements OnInit {
     ) { }
 
   ngOnInit(): void {
-    this.subscriptionsSvc.getSubscriptionsData().subscribe((data: any) => {
-      console.log(data);
-      this.subscriptionsData = data;      
+    this.subscriptionsSvc.getSubscriptionsData().subscribe((data: any) => {      
+      this.subscriptionsData = data;    
+      this.getRandomStatusIcon();  
     });
   }
 
-  getRandomStatusIcon(): string {
+  getRandomStatusIcon() {
     this.subscriptionsData.forEach((s: any) => {
-      s.Active = this.getRandomStatusIcon();
+      s.Active = this.activeStatus[Math.floor((Math.random() * this.activeStatus.length))];
     });
-    return this.activeStatus[Math.floor((Math.random() * this.activeStatus.length))];
   }
 }
