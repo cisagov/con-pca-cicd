@@ -19,3 +19,7 @@ ADD ./src /app
 COPY ./etc/entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod a+x /usr/local/bin/entrypoint.sh
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+
+# During debugging, this entry point will be overridden. For more information, refer to https://aka.ms/vscode-docker-python-debug
+# File wsgi.py was not found in subfolder:controller. Please enter the Python path to wsgi file.
+CMD ["gunicorn", "--bind", "0.0.0.0:8000", "pythonPath.to.wsgi"]
