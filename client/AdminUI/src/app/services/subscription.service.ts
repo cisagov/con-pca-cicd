@@ -3,6 +3,14 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Organization } from '../models/organization.model';
 import { Observable } from 'rxjs';
 import { Subscription } from 'src/app/models/subscription.model';
+import { Router } from "@angular/router";
+
+const headers = {
+   headers: new HttpHeaders()
+     .set('Content-Type', 'application/json'),
+   params: new HttpParams()
+ };
+
 
 @Injectable({
   providedIn: 'root'
@@ -25,6 +33,10 @@ export class SubscriptionService {
     //temp initialize organization with mock data
     this.organizations.push(this.TEMPGETORG());
   }
+
+  getSubscriptionsData(){
+     return this.http.get('http://localhost:8000/api/v1/subscriptions/', headers);
+   }
 
   /**
    * In real life, API call happens here and the model
