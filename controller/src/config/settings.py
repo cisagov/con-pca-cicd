@@ -17,7 +17,11 @@ SECRET_KEY = os.environ.get("SECRET_KEY")
 
 DEBUG = int(os.environ.get("DEBUG", default=0))
 
-ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS").split(" ")
+tmp_allowed_hosts = os.environ.get("DJANGO_ALLOWED_HOSTS")
+if tmp_allowed_hosts:
+    ALLOWED_HOSTS = tmp_allowed_hosts.split(" ")
+else:
+    ALLOWED_HOSTS = ["localhost","127.0.0.1", "[::1]"]
 
 CORS_ORIGIN_ALLOW_ALL=True
 
