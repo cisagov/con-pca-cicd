@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { SubscriptionService } from 'src/app/services/subscription.service';
 
+
+
+
 @Component({
   selector: 'app-dashboard',
   templateUrl: './subscriptions.component.html',
@@ -33,7 +36,6 @@ export class SubscriptionsComponent implements OnInit {
     { "SubscriptionName": "STO-1.Sefina.1.1", "Status": " Waiting for New Templates", "PrimaryContact": "Sefina CISO", "Customer": "Samoa Territorial Office", "LastActionDate": "4/2/2020", "Active": true },
     { "SubscriptionName": "DEdu.Sarah-Jones.1.1", "Status": "Paused", "PrimaryContact": "Sarah Jones", "Customer": "Department of Eduation", "LastActionDate": "4/2/2020", "Active": true },
     { "SubscriptionName": "FORD-1.Jerry-Ford.1.1", "Status": "Stopped", "PrimaryContact": "Jerry Ford", "Customer": "Ford New Cars", "LastActionDate": "4/2/2020", "Active": true },
-
   ];
 
   constructor(
@@ -41,13 +43,16 @@ export class SubscriptionsComponent implements OnInit {
     ) { }
 
   ngOnInit(): void {
-    this.subscriptionsData.forEach((s: any) => {
-      s.Active = this.getRandomStatusIcon();
+    this.subscriptionsSvc.getSubscriptionsData().subscribe((data: any) => {
+      console.log(data);
+      this.subscriptionsData = data;      
     });
   }
 
-
   getRandomStatusIcon(): string {
+    this.subscriptionsData.forEach((s: any) => {
+      s.Active = this.getRandomStatusIcon();
+    });
     return this.activeStatus[Math.floor((Math.random() * this.activeStatus.length))];
   }
 }

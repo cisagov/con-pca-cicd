@@ -9,6 +9,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SubscriptionsComponent } from './components/subscriptions/subscriptions.component';
 import { LayoutBlankComponent } from './components/layout/layout-blank/layout-blank.component';
 import { LayoutMainComponent } from './components/layout/layout-main/layout-main.component';
+import { SubscriptionsService } from './components/subscriptions/subscriptions.service';
 import { SearchPanelComponent } from './components/search-panel/search-panel.component';
 import { ServiceSubscriptionComponent } from './components/service-subscription/service-subscription.component';
 import { CreateSubscriptionComponent } from './components/subscriptions/create-subscription/create-subscription.component';
@@ -30,6 +31,7 @@ import { SubscriptionService } from './services/subscription.service';
   ],
   imports: [
     BrowserModule,
+    HttpClientModule,
     AppRoutingModule,
     BrowserAnimationsModule, 
     MaterialModule, 
@@ -39,7 +41,8 @@ import { SubscriptionService } from './services/subscription.service';
     HttpClientModule
   ],
   providers: [
-    SubscriptionService
+    SubscriptionsService,    
+    HttpClient
   ],
   bootstrap: [AppComponent]
 })
