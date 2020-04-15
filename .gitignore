@@ -28,6 +28,7 @@ gophish/.env
 /controller/src/celerybeat-schedule
 /controller/src/celerybeat.pid
 /controller/src/tasks/logs/celery.log
+/controller/scripts/data/created_*
 
 # Python env
 env/

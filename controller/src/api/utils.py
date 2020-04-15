@@ -1,7 +1,7 @@
 """Utils file for api."""
+from django.conf import settings
 
 # Third-Party Libraries
-from config.settings import DB_CONFIG
 from database.service import Service
 
 
@@ -13,10 +13,10 @@ def db_service(collection_name, model, validate_model):
     Might refactor this into database lib.
     """
     mongo_uri = "mongodb://{}:{}@{}:{}/".format(
-        DB_CONFIG["DB_USER"],
-        DB_CONFIG["DB_PW"],
-        DB_CONFIG["DB_HOST"],
-        DB_CONFIG["DB_PORT"],
+        settings.DB_CONFIG["DB_USER"],
+        settings.DB_CONFIG["DB_PW"],
+        settings.DB_CONFIG["DB_HOST"],
+        settings.DB_CONFIG["DB_PORT"],
     )
 
     service = Service(

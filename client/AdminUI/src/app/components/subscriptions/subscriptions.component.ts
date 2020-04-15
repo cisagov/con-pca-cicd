@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { SubscriptionsService } from './subscriptions.service';
+import { SubscriptionService } from 'src/app/services/subscription.service';
 
 
 
@@ -38,7 +38,9 @@ export class SubscriptionsComponent implements OnInit {
     { "SubscriptionName": "FORD-1.Jerry-Ford.1.1", "Status": "Stopped", "PrimaryContact": "Jerry Ford", "Customer": "Ford New Cars", "LastActionDate": "4/2/2020", "Active": true },
   ];
 
-  constructor(private subscriptionsSvc: SubscriptionsService) { }
+  constructor(
+    private subscriptionsSvc: SubscriptionService
+    ) { }
 
   ngOnInit(): void {
     this.subscriptionsSvc.getSubscriptionsData().subscribe((data: any) => {

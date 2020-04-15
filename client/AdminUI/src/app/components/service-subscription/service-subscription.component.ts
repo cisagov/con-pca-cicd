@@ -3,11 +3,11 @@ import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-service-subscription',
-  templateUrl: './service-subscription.component.html', 
-  styleUrls: ['./service-subscription.component.scss']
+  styleUrls: ['./service-subscription.component.scss'],
+  templateUrl: './service-subscription.component.html',
 })
 export class ServiceSubscriptionComponent implements OnInit {
-   
+
   constructor() { }
 
   ngOnInit(): void {
