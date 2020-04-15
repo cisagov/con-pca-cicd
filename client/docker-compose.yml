@@ -1,0 +1,17 @@
+version: "3"
+services:
+  web:
+    build:
+      context: ./AdminUI
+    container_name: cpa-web
+    restart: unless-stopped
+    ports:
+      - "4200:4200"
+    volumes:
+      - /app/node_modules
+      - ./AdminUI:/app
+    env_file:
+      - .env
+
+networks:
+  default:

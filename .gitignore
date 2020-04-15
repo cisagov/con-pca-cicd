@@ -5,12 +5,20 @@ __pycache__
 .DS_Store
 src/.DS_Store
 
+# Client
+/client/AdminUI/node_modules
+/client/AdminUI/node_modules/*
+/client/AdminUI/dist
+client/.env
 
 # Controller
 controller/.env
 controller/src/staticfiles
 controller/src/celerybeat-schedule
 controller/src/celerybeat.pid
+
+# Gophish
+gophish/.env
 
 #Pycharm
 .idea/
@@ -20,10 +28,6 @@ controller/src/celerybeat.pid
 /controller/src/celerybeat-schedule
 /controller/src/celerybeat.pid
 /controller/src/tasks/logs/celery.log
-/controller/CPAAdmin/CPAAdmin/AdminUI/node_modules
-/controller/CPAAdmin/CPAAdmin/AdminUI/node_modules/*
-/controller/CPAAdmin/CPAAdmin/AdminUI/dist
-controller/src/tasks/logs/celery.log
 
 # Python env
 env/
