@@ -22,6 +22,9 @@
     "@angular/platform-browser-dynamic": "~9.1.0",
     "@angular/router": "~9.1.0",
     "bootstrap": "^4.4.1",
+    "font-awesome": "^4.7.0",
+    "guid-typescript": "^1.0.9",
+    "ngx-autosize": "^1.7.5",
     "rxjs": "~6.5.4",
     "tslib": "^1.10.0",
     "zone.js": "~0.10.2"
