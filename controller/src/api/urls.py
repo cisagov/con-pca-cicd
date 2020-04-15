@@ -30,7 +30,7 @@ urlpatterns = [
     ),
     path("v1/targets/", target_views.TargetListView.as_view(), name="target_list_api",),
     path(
-        "v1/targets/<target_uuid>/",
+        "v1/target/<target_uuid>/",
         target_views.TargetView.as_view(),
         name="target_get_api",
     ),

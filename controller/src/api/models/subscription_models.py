@@ -59,8 +59,8 @@ class GoPhishCampaignsModel(Model):
     This is a format to hold GophishCampaign information in the subscription model.
     """
 
-    template_email_id = UUIDType()
-    template_landing_page_id = UUIDType()
+    template_email_uuid = UUIDType()
+    template_landing_page_uuid = UUIDType()
     start_date = DateTimeType()
     end_date = DateTimeType()
     target_email_list = ListType(ModelType(SubscriptionTargetModel))
@@ -70,21 +70,12 @@ class SubscriptionModel(Model):
     """
     This is the Subscription Model.
 
-    This controls all data needed in saving the model. Current fields are:
-    subscription_uuid
-    organziation,
-    primary contact,
-    additional contacts,
-    status,
-    target emails list,
-    templates selected,
-    start date,
-    end date,
-    active
+    This controls all data needed in saving the model.
     """
 
     subscription_uuid = UUIDType()
     customer_uuid = UUIDType()
+    name = StringType()
     organization = StringType()
     start_date = DateTimeType()
     end_date = DateTimeType()
@@ -94,7 +85,7 @@ class SubscriptionModel(Model):
     primary_contact = ModelType(SubscriptionContactModel)
     additional_contact_list = ListType(ModelType(SubscriptionContactModel))
     status = StringType()
-    target_email_list = ListType(ModelType(SubscriptionTargetModel))
+    target_email_list = ListType(UUIDType)
     click_list = ListType(ModelType(SubscriptionClicksModel))
     templates_selected = ListType(UUIDType)
     active = BooleanType()
