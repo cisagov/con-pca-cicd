@@ -134,3 +134,7 @@ CELERY_BEAT_SCHEDULE = {
         "schedule": crontab(minute=59, hour=23),
     }
 }
+
+# GoPhish
+GP_URL = os.environ.get("GP_URL", "")
+GP_API_KEY = os.environ.get("GP_API_KEY", "")
