@@ -1,15 +1,47 @@
 import { Organization } from './organization.model';
-/**
+export class GoPhishCampaignsModel{
 
+}
+
+export class SubscriptionContactModel{
+
+}
+
+export interface SubscriptionClicksModel{
+
+}
+
+/**
  * The ongoing agreement to be phished.
  */
 export class Subscription {
-    organization: Organization;
+    //TODO: need to deal with the duplication 
+    //From organization
+    //organization_structure: Organization;
     startDate: Date;
+    //orgKeywords: string[] = [];    
 
-    orgKeywords: string[] = [];
-
-    targets: Target[] = [];
+    subscription_uuid: string;    
+    customer_uuid: string;
+    name: string;
+    organization: string;
+    start_date: Date;
+    end_date: Date;
+    report_count: number;
+    gophish_campaign_list: GoPhishCampaignsModel[];
+    first_report_timestamp: Date;
+    primary_contact: SubscriptionContactModel;
+    additional_contact_list: SubscriptionContactModel[];
+    status: string;
+    //target_email_list: string[];
+    target_email_list: Target[] = [];
+    click_list: SubscriptionClicksModel[];
+    templates_selected: string[];
+    active: boolean;
+    created_by: string
+    cb_timestamp: Date;
+    last_updated_by:string;
+    lub_timestamp:Date;
 
 
     /**
@@ -17,22 +49,24 @@ export class Subscription {
      * @param csv 
      */
     setKeywordsFromCSV(csv: string) {
-        this.orgKeywords = [];
+        //TODO: fix the api call to allow for these 
+        //things
+        // this.orgKeywords = [];
 
-        if (!csv) {
-            return;
-        }
+        // if (!csv) {
+        //     return;
+        // }
 
-        let lines = csv.split('\n');
-        lines.forEach((line: string) => {
-            let words = line.split(',');
-            words.forEach(w => {
-                w = w.trim();
-                if (w != '') {
-                    this.orgKeywords.push(w);
-                }
-            });
-        });
+        // let lines = csv.split('\n');
+        // lines.forEach((line: string) => {
+        //     let words = line.split(',');
+        //     words.forEach(w => {
+        //         w = w.trim();
+        //         if (w != '') {
+        //             this.orgKeywords.push(w);
+        //         }
+        //     });
+        // });
     }
 
     /**
@@ -41,7 +75,7 @@ export class Subscription {
      * @param csv 
      */
     setTargetsFromCSV(csv: string) {
-        this.targets = [];
+        this.target_email_list = [];
 
         if (!csv) {
             return;
@@ -56,10 +90,9 @@ export class Subscription {
                 t.firstName = parts[1].trim();
                 t.lastName = parts[2].trim();
                 t.position = parts[3].trim();
-
-                this.targets.push(t);
+                this.target_email_list.push(t);
             }
-        });
+        });        
     }
 }
 

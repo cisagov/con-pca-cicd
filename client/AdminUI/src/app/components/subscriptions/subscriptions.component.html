@@ -11,11 +11,11 @@
                 </div>
             </div>
             <mat-table [dataSource]="subscriptionsData">
-                <ng-container matColumnDef="SubscriptionName"><mat-header-cell *matHeaderCellDef>Subscription Name</mat-header-cell>    <mat-cell *matCellDef="let row"> {{row.SubscriptionName}} </mat-cell></ng-container>
+                <ng-container matColumnDef="SubscriptionName"><mat-header-cell *matHeaderCellDef>Subscription Name</mat-header-cell>    <mat-cell *matCellDef="let row"> {{row.name}} </mat-cell></ng-container>
                 <ng-container matColumnDef="Status"><mat-header-cell *matHeaderCellDef>Status </mat-header-cell>    <mat-cell *matCellDef="let row"> {{row.Status }} </mat-cell></ng-container>
-                <ng-container matColumnDef="PrimaryContact"><mat-header-cell *matHeaderCellDef>Primary Contact </mat-header-cell>    <mat-cell *matCellDef="let row"> {{row.PrimaryContact }} </mat-cell></ng-container>
-                <ng-container matColumnDef="Customer"><mat-header-cell *matHeaderCellDef>Organization </mat-header-cell>    <mat-cell *matCellDef="let row"> {{row.Customer }} </mat-cell></ng-container>
-                <ng-container matColumnDef="LastActionDate"><mat-header-cell *matHeaderCellDef>Last Action Date </mat-header-cell>    <mat-cell *matCellDef="let row"> {{row.LastActionDate }} </mat-cell></ng-container>
+                <ng-container matColumnDef="PrimaryContact"><mat-header-cell *matHeaderCellDef>Primary Contact </mat-header-cell>    <mat-cell *matCellDef="let row"> {{row.primary_contact?.name}} </mat-cell></ng-container>
+                <ng-container matColumnDef="Customer"><mat-header-cell *matHeaderCellDef>Organization </mat-header-cell>    <mat-cell *matCellDef="let row"> {{row.organization }} </mat-cell></ng-container>
+                <ng-container matColumnDef="LastActionDate"><mat-header-cell *matHeaderCellDef>Last Action Date </mat-header-cell>    <mat-cell *matCellDef="let row"> {{row.lub_timestamp}} </mat-cell></ng-container>
                 <ng-container matColumnDef="Active"><mat-header-cell *matHeaderCellDef>Active</mat-header-cell>    <mat-cell *matCellDef="let row"><img src="../../../assets/icon_{{row.Active}}.png" style="height: 1rem;"> </mat-cell></ng-container>
                 <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
                 <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
