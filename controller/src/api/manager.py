@@ -1,3 +1,5 @@
+from typing import Dict, List
+
 from gophish import Gophish
 from gophish.models import Campaign, Group, Page, SMTP, Template, User, Stat
 from faker import Faker
@@ -18,15 +20,25 @@ class CampaignManager:
 
     def create(self, method, **kwargs):
         if method == "email_template":
-            self.generate_email_template(kwargs.get("name"), kwargs.get("template"))
+            return self.generate_email_template(
+                kwargs.get("name"), kwargs.get("template")
+            )
         elif method == "landing_page":
-            self.generate_landing_page(kwargs.get("name"), kwargs.get("template"))
+            return self.generate_landing_page(
+                kwargs.get("name"), kwargs.get("template")
+            )
         elif method == "user_group":
-            self.generate_user_group()
+            return self.generate_user_group(
+                kwargs.get("group_name"), kwargs.get("target_list")
+            )
         elif method == "sending_profile":
-            self.generate_sending_profile()
+            return self.generate_sending_profile()
         elif method == "campaign":
-            self.generate_campaign()
+            return self.generate_campaign(
+                kwargs.get("campaign_name"),
+                kwargs.get("user_group"),
+                kwargs.get("email_template"),
+            )
 
     def get(self, method, **kwargs):
         if method == "email_template":
@@ -43,15 +55,15 @@ class CampaignManager:
             return "method not found"
 
     # Create methods
-    def generate_campaign(self):
+    def generate_campaign(
+        self, campaign_name: str = None, user_group=None, email_template=None
+    ):
         smtp = SMTP(name="HyreGuard")
-        group = [Group(name="Email Group 1")]
-        landing_page = Page(name="Name")
-        email_template = Template(name="Name")
+        landing_page = Page(name="Landing Page")
 
         campaign = Campaign(
-            name="Test Campaign",
-            groups=group,
+            name=campaign_name,
+            groups=[user_group],
             page=landing_page,
             template=email_template,
             smtp=smtp,
@@ -59,7 +71,7 @@ class CampaignManager:
 
         campaign = self.gp_api.campaigns.post(campaign)
 
-        print("success")
+        return campaign
 
     def generate_sending_profile(self):
         smtp = SMTP(name="HyreGuard")
@@ -73,28 +85,20 @@ class CampaignManager:
         landing_page = Page(name=name, html=template)
         return self.gp_api.pages.post(landing_page)
 
-    def generate_user_group(self, num_groups=3, num_members=100):
-        print("Creating new email groups...")
-        group_names = []
-        for group_index in range(0, num_groups):
-            targets = []
-            for target_index in range(0, num_members):
-                first_name = faker.first_name()
-                last_name = faker.last_name()
-                email = "{}.{}@example.com".format(first_name, last_name)
-                targets.append(
-                    User(first_name=first_name, last_name=last_name, email=email)
-                )
-            group = Group(
-                name="Email Group {}".format(group_index + 1), targets=targets
+    def generate_user_group(self, group_name: str = None, target_list: Dict = None):
+        users = [
+            User(
+                first_name=target.get("first_name"),
+                last_name=target.get("last_name"),
+                email=target.get("email"),
+                position=target.get("position"),
             )
-            try:
-                group = self.gp_api.groups.post(group)
-            except Exception as e:
-                print("Unable to post group: {}".format(e))
-                break
-            group_names.append(group.name)
-        return group_names
+            for target in target_list
+        ]
+
+        target_group = Group(name=group_name, targets=users)
+        group = self.gp_api.groups.post(target_group)
+        return target_group
 
     # Get methods
     def get_campaign(self, campaign_id: int = None):
