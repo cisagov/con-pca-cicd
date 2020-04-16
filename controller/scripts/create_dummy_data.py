@@ -9,12 +9,12 @@ First create templates,
 then create targets,
 then add targets and templates to subscriptions.
 
+ToDo: create delete script to get all uuid's of dummy data and delete.
 """
 # Standard Python Libraries
 from datetime import datetime
 import json
 import os
-import random
 
 # Third-Party Libraries
 import requests
@@ -44,14 +44,9 @@ def main():
         created_template_uuids.append(rep_json["template_uuid"])
 
     print("created tempaltes_list: {}".format(created_template_uuids))
-    print("Step 2/3: create targets...")
-
-    targets = json_data["target_data"]
+    print("Step 2/3: create targets...(Skipping)")
+    # Currently Targets are not being creating into their own collections.
     created_targets_uuids = []
-    for target in targets:
-        resp = requests.post("http://localhost:8000/api/v1/targets/", json=target)
-        rep_json = resp.json()
-        created_targets_uuids.append(rep_json["target_uuid"])
 
     print("created target_list: {}".format(created_targets_uuids))
 
@@ -59,33 +54,8 @@ def main():
 
     subscriptions = json_data["subscription_data"]
     created_subcription_uuids = []
-    secure_random = random.SystemRandom()
-    target_1 = secure_random.choice(created_targets_uuids)
-    target_2 = secure_random.choice(created_targets_uuids)
-
-    gophish_campaign_list = {
-        "template_email_uuid": created_template_uuids[1],
-        "template_landing_page_uuid": created_template_uuids[0],
-        "start_date": "2020-03-19T09:30:25",
-        "end_date": "2020-03-29T00:00:00",
-        "target_email_list": [
-            {
-                "target_uuid": target_1,
-                "status": "sent",
-                "sent_date": "2020-03-20T09:30:25",
-            },
-            {
-                "target_uuid": target_2,
-                "status": "sent",
-                "sent_date": "2020-03-25T09:30:25",
-            },
-        ],
-    }
 
     for subscription in subscriptions:
-        subscription["templates_selected"] = created_template_uuids
-        subscription["target_email_list"] = created_targets_uuids
-        subscription["gophish_campaign_list"] = [gophish_campaign_list]
         resp = requests.post(
             "http://localhost:8000/api/v1/subscriptions/", json=subscription
         )

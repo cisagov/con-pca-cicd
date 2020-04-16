@@ -25,10 +25,13 @@ class TargetModel(Model):
     active
     """
 
+    # Created by mongodb
     target_uuid = UUIDType()
+    # Values being passed in
     customer_uuid = UUIDType()
     first_name = StringType()
     last_name = StringType()
+    position = StringType()
     email = EmailType(required=True)
     # db tracking added below.
     created_by = StringType()
