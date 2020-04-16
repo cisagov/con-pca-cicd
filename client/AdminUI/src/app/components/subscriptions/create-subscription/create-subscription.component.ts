@@ -89,8 +89,7 @@ export class CreateSubscriptionComponent implements OnInit {
     subscription.click_list = [];
     //TODO Need service to get the current user
     //Ask Jason.
-    subscription.created_by = "Test User REPLACEME";
-    subscription.customer_uuid = "";
+    subscription.created_by = "Test User REPLACEME";    
     //no end date at this time 
     
     subscription.end_date =  this.addDays(new Date(),90);
@@ -100,7 +99,7 @@ export class CreateSubscriptionComponent implements OnInit {
     //Ask Jason.    
     subscription.last_updated_by = "Test User REPLACEME";
     subscription.lub_timestamp = new Date();
-    subscription.name = "SC-1031.Matt-Daemon.1.1"; //auto generated name
+    subscription.name = "SC-1.Matt-Daemon.1.1"; //auto generated name
     //subscription.orgKeywords = ["Test", "Debug", "Dummy Org"];
     //subscription.organization_structure = new Organization();
     subscription.primary_contact = new SubscriptionContactModel();
