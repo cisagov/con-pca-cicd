@@ -4,579 +4,157 @@
       "active": true,
       "additional_contact_list": [
         {
+          "customer": "Sams Snacks",
           "email": "foo.bar@example.com",
-          "name": "foo"
-        }
-      ],
-      "click_list": [
+          "first_name": "foo",
+          "last_name": "bar",
+          "mobile_phone": "555-555-5555",
+          "office_phone": "555-555-5555"
+        },
         {
-          "source_ip": "123.12.12.1",
-          "target_uuid": "f9850a78-bc5e-44a7-8a00-2136fd93a894",
-          "timestamp": "2020-04-13T09:30:25"
+          "customer": "Sams Snacks",
+          "email": "biz.baz@example.com",
+          "first_name": "biz",
+          "last_name": "baz",
+          "mobile_phone": "555-555-5555",
+          "office_phone": "555-555-5555"
         }
       ],
       "customer_uuid": "0bd5b1c8-3f9c-482e-afe5-c9f865f890a1",
-      "end_date": "2020-04-20T00:00:00",
-      "first_report_timestamp": "2020-04-20T00:00:00",
-      "gophish_campaign_list": [
-        {
-          "end_date": "2020-04-20T00:00:00",
-          "start_date": "2020-04-10T09:30:25",
-          "target_email_list": [
-            {
-              "sent_date": "2020-04-13T09:30:25",
-              "status": "sent",
-              "target_uuid": "f9850a78-bc5e-44a7-8a00-2136fd93a894"
-            },
-            {
-              "sent_date": "2020-04-13T09:30:25",
-              "status": "sent",
-              "target_uuid": "6ab151fa-4a40-44c6-8234-9be087d1bab9"
-            }
-          ],
-          "template_email_uuid": "35523b9f-8bee-42b0-a617-52651a2fc466",
-          "template_landing_page_uuid": "0d992ead-49aa-45d9-a73c-feffb9a26c55"
-        }
-      ],
+      "gophish_campaign_list": [],
       "name": "SC-1031.Matt-Daemon.1.1",
-      "organization": "Some Company.2com",
       "primary_contact": {
+        "customer": "Matts Damons",
         "email": "Matt.Daemon@example.com",
-        "name": " Matt Daemon"
+        "first_name": "Matt",
+        "last_name": "Daemon",
+        "mobile_phone": "555-555-5555",
+        "office_phone": "555-555-5555"
       },
-      "report_count": 3,
       "start_date": "2020-04-10T09:30:25",
       "status": "  Waiting on SRF",
-      "target_email_list": [],
-      "templates_selected": []
+      "target_email_list": [
+        {
+          "email": "Bat.Man@example.com",
+          "first_name": "Bat",
+          "last_name": "Man",
+          "position": "admin"
+        },
+        {
+          "email": "Ben.Aflex@example.com",
+          "first_name": "Ben",
+          "last_name": "Aflex",
+          "position": "admin"
+        },
+        {
+          "email": "David.Young@example.com",
+          "first_name": "David",
+          "last_name": "Young",
+          "position": "intern"
+        },
+        {
+          "email": "George.Clooney@example.com",
+          "first_name": "George",
+          "last_name": "Clooney",
+          "position": "intern"
+        },
+        {
+          "email": "Jane.Doe@example.com",
+          "first_name": "Jane",
+          "last_name": "Doe",
+          "position": "intern"
+        },
+        {
+          "email": "Jane.Moore@example.com",
+          "first_name": "Jane",
+          "last_name": "Moore",
+          "position": "manager"
+        },
+        {
+          "email": "John.Smith@example.com",
+          "first_name": "John",
+          "last_name": "Smith",
+          "position": "manager"
+        }
+      ]
     },
     {
       "active": true,
       "additional_contact_list": [
         {
-          "email": "Bat.M@example.com",
-          "name": "Bat Man"
-        }
-      ],
-      "click_list": [],
-      "customer_uuid": "6068d85a-4f83-4b5a-958e-a179e5b4c205",
-      "end_date": "2020-03-20T00:00:00",
-      "first_report_timestamp": "2020-04-20T00:00:00",
-      "gophish_campaign_list": [
+          "customer": "Sams Snacks",
+          "email": "foo.bar@example.com",
+          "first_name": "foo",
+          "last_name": "bar",
+          "mobile_phone": "555-555-5555",
+          "office_phone": "555-555-5555"
+        },
         {
-          "end_date": "2020-03-29T00:00:00",
-          "start_date": "2020-03-19T09:30:25",
-          "target_email_list": [
-            {
-              "sent_date": "2020-03-20T09:30:25",
-              "status": "sent",
-              "target_uuid": "7477ccd8-ebed-47e1-be47-fbe644926b62"
-            },
-            {
-              "sent_date": "2020-03-25T09:30:25",
-              "status": "sent",
-              "target_uuid": "2e9bbdc2-04b3-42e3-9cdf-2925e2d73769"
-            }
-          ],
-          "template_email_uuid": "4147395f-5679-4332-8340-6a62cddcd41a",
-          "template_landing_page_uuid": "e8c009e1-e981-4b30-8d86-63ea3d2cc9be"
+          "customer": "Sams Snacks",
+          "email": "biz.baz@example.com",
+          "first_name": "biz",
+          "last_name": "baz",
+          "mobile_phone": "555-555-5555",
+          "office_phone": "555-555-5555"
         }
       ],
+      "customer_uuid": "6068d85a-4f83-4b5a-958e-a179e5b4c205",
+      "gophish_campaign_list": [],
       "name": "SC-1221.Ben-Aflex.1.1",
-      "organization": "Some Company.3com",
       "primary_contact": {
-        "email": "Ben.Aflex@example.com",
-        "name": " Ben Aflex"
+        "customer": "Sams Snacks",
+        "email": "foo.bar@example.com",
+        "first_name": "foo",
+        "last_name": "bar",
+        "mobile_phone": "555-555-5555",
+        "office_phone": "555-555-5555"
       },
-      "report_count": 3,
       "start_date": "2020-03-10T09:30:25",
       "status": "Waiting on SRF",
-      "target_email_list": [],
-      "templates_selected": []
-    },
-    {
-      "active": true,
-      "additional_contact_list": [
+      "target_email_list": [
         {
-          "email": "Sean.Clooney@example.com",
-          "name": "Sean Clooney"
-        }
-      ],
-      "click_list": [],
-      "customer_uuid": "6068d85a-4f83-4b5a-958e-a179e5b4c205",
-      "end_date": "2020-03-30T00:00:00",
-      "first_report_timestamp": "2020-04-20T00:00:00",
-      "gophish_campaign_list": [
+          "email": "Bat.Man@example.com",
+          "first_name": "Bat",
+          "last_name": "Man",
+          "position": "admin"
+        },
         {
-          "end_date": "2020-03-29T00:00:00",
-          "start_date": "2020-03-19T09:30:25",
-          "target_email_list": [
-            {
-              "sent_date": "2020-03-20T09:30:25",
-              "status": "sent",
-              "target_uuid": "7477ccd8-ebed-47e1-be47-fbe644926b62"
-            },
-            {
-              "sent_date": "2020-03-25T09:30:25",
-              "status": "sent",
-              "target_uuid": "2e9bbdc2-04b3-42e3-9cdf-2925e2d73769"
-            }
-          ],
-          "template_email_uuid": "4147395f-5679-4332-8340-6a62cddcd41a",
-          "template_landing_page_uuid": "e8c009e1-e981-4b30-8d86-63ea3d2cc9be"
-        }
-      ],
-      "name": "SC-654.George-Clooney.1.1",
-      "organization": "Some Company.1com",
-      "primary_contact": {
-        "email": "George.Clooney@example.com",
-        "name": " George Clooney"
-      },
-      "report_count": 3,
-      "start_date": "2020-03-20T09:30:25",
-      "status": "Stopped",
-      "target_email_list": [],
-      "templates_selected": []
-    },
-    {
-      "active": true,
-      "additional_contact_list": [
+          "email": "Ben.Aflex@example.com",
+          "first_name": "Ben",
+          "last_name": "Aflex",
+          "position": "admin"
+        },
         {
-          "email": "Sean.Clooney@example.com",
-          "name": "Sean Clooney"
-        }
-      ],
-      "click_list": [],
-      "customer_uuid": "6068d85a-4f83-4b5a-958e-a179e5b4c205",
-      "end_date": "2020-04-05T00:00:00",
-      "first_report_timestamp": "2020-04-20T00:00:00",
-      "gophish_campaign_list": [
+          "email": "David.Young@example.com",
+          "first_name": "David",
+          "last_name": "Young",
+          "position": "intern"
+        },
         {
-          "end_date": "2020-03-29T00:00:00",
-          "start_date": "2020-03-19T09:30:25",
-          "target_email_list": [
-            {
-              "sent_date": "2020-03-20T09:30:25",
-              "status": "sent",
-              "target_uuid": "7477ccd8-ebed-47e1-be47-fbe644926b62"
-            },
-            {
-              "sent_date": "2020-03-25T09:30:25",
-              "status": "sent",
-              "target_uuid": "2e9bbdc2-04b3-42e3-9cdf-2925e2d73769"
-            }
-          ],
-          "template_email_uuid": "4147395f-5679-4332-8340-6a62cddcd41a",
-          "template_landing_page_uuid": "e8c009e1-e981-4b30-8d86-63ea3d2cc9be"
-        }
-      ],
-      "name": "SC-654.George-Clooney.1.2",
-      "organization": "Some Company.1com",
-      "primary_contact": {
-        "email": "George.Clooney@example.com",
-        "name": " George Clooney"
-      },
-      "report_count": 3,
-      "start_date": "2020-03-25T09:30:25",
-      "status": "Stopped",
-      "target_email_list": [],
-      "templates_selected": []
-    },
-    {
-      "active": true,
-      "additional_contact_list": [
+          "email": "George.Clooney@example.com",
+          "first_name": "George",
+          "last_name": "Clooney",
+          "position": "intern"
+        },
         {
-          "email": "Sean.Clooney@example.com",
-          "name": "Sean Clooney"
-        }
-      ],
-      "click_list": [],
-      "customer_uuid": "6068d85a-4f83-4b5a-958e-a179e5b4c205",
-      "end_date": "2020-04-10T00:00:00",
-      "first_report_timestamp": "2020-04-20T00:00:00",
-      "gophish_campaign_list": [
+          "email": "Jane.Doe@example.com",
+          "first_name": "Jane",
+          "last_name": "Doe",
+          "position": "intern"
+        },
         {
-          "end_date": "2020-03-29T00:00:00",
-          "start_date": "2020-03-19T09:30:25",
-          "target_email_list": [
-            {
-              "sent_date": "2020-03-20T09:30:25",
-              "status": "sent",
-              "target_uuid": "7477ccd8-ebed-47e1-be47-fbe644926b62"
-            },
-            {
-              "sent_date": "2020-03-25T09:30:25",
-              "status": "sent",
-              "target_uuid": "2e9bbdc2-04b3-42e3-9cdf-2925e2d73769"
-            }
-          ],
-          "template_email_uuid": "4147395f-5679-4332-8340-6a62cddcd41a",
-          "template_landing_page_uuid": "e8c009e1-e981-4b30-8d86-63ea3d2cc9be"
-        }
-      ],
-      "name": "SC-654.George-Clooney.1.3",
-      "organization": "Some Company.1com",
-      "primary_contact": {
-        "email": "George.Clooney@example.com",
-        "name": " George Clooney"
-      },
-      "report_count": 3,
-      "start_date": "2020-04-01T09:30:25",
-      "status": "Stopped",
-      "target_email_list": [],
-      "templates_selected": []
-    },
-    {
-      "active": true,
-      "additional_contact_list": [
-        {
-          "email": "Sean.Clooney@example.com",
-          "name": "Sean Clooney"
-        }
-      ],
-      "click_list": [],
-      "customer_uuid": "6068d85a-4f83-4b5a-958e-a179e5b4c205",
-      "end_date": "2020-04-10T00:00:00",
-      "first_report_timestamp": "2020-04-20T00:00:00",
-      "gophish_campaign_list": [
-        {
-          "end_date": "2020-03-29T00:00:00",
-          "start_date": "2020-03-19T09:30:25",
-          "target_email_list": [
-            {
-              "sent_date": "2020-03-20T09:30:25",
-              "status": "sent",
-              "target_uuid": "7477ccd8-ebed-47e1-be47-fbe644926b62"
-            },
-            {
-              "sent_date": "2020-03-25T09:30:25",
-              "status": "sent",
-              "target_uuid": "2e9bbdc2-04b3-42e3-9cdf-2925e2d73769"
-            }
-          ],
-          "template_email_uuid": "4147395f-5679-4332-8340-6a62cddcd41a",
-          "template_landing_page_uuid": "e8c009e1-e981-4b30-8d86-63ea3d2cc9be"
-        }
-      ],
-      "name": "SC-654.George-Clooney.2.1",
-      "organization": "Some Company.1com",
-      "primary_contact": {
-        "email": "George.Clooney@example.com",
-        "name": " George Clooney"
-      },
-      "report_count": 3,
-      "start_date": "2020-03-30T09:30:25",
-      "status": "Stopped",
-      "target_email_list": [],
-      "templates_selected": []
-    },
-    {
-      "active": true,
-      "additional_contact_list": [
-        {
-          "email": "Sean.Clooney@example.com",
-          "name": "Sean Clooney"
-        }
-      ],
-      "click_list": [],
-      "customer_uuid": "6068d85a-4f83-4b5a-958e-a179e5b4c205",
-      "end_date": "2020-04-10T00:00:00",
-      "first_report_timestamp": "2020-04-20T00:00:00",
-      "gophish_campaign_list": [
-        {
-          "end_date": "2020-03-29T00:00:00",
-          "start_date": "2020-03-19T09:30:25",
-          "target_email_list": [
-            {
-              "sent_date": "2020-03-20T09:30:25",
-              "status": "sent",
-              "target_uuid": "7477ccd8-ebed-47e1-be47-fbe644926b62"
-            },
-            {
-              "sent_date": "2020-03-25T09:30:25",
-              "status": "sent",
-              "target_uuid": "2e9bbdc2-04b3-42e3-9cdf-2925e2d73769"
-            }
-          ],
-          "template_email_uuid": "4147395f-5679-4332-8340-6a62cddcd41a",
-          "template_landing_page_uuid": "e8c009e1-e981-4b30-8d86-63ea3d2cc9be"
-        }
-      ],
-      "name": "SC-654.George-Clooney.2.2",
-      "organization": "Some Company.1com",
-      "primary_contact": {
-        "email": "George.Clooney@example.com",
-        "name": " George Clooney"
-      },
-      "report_count": 3,
-      "start_date": "2020-04-05T09:30:25",
-      "status": "Stopped",
-      "target_email_list": [],
-      "templates_selected": []
-    },
-    {
-      "active": true,
-      "additional_contact_list": [
-        {
-          "email": "Sean.Clooney@example.com",
-          "name": "Sean Clooney"
-        }
-      ],
-      "click_list": [],
-      "customer_uuid": "9a65ace0-09a6-4b1c-b858-1db7648647a9",
-      "end_date": "2020-04-10T00:00:00",
-      "first_report_timestamp": "2020-04-20T00:00:00",
-      "gophish_campaign_list": [
-        {
-          "end_date": "2020-03-29T00:00:00",
-          "start_date": "2020-03-19T09:30:25",
-          "target_email_list": [
-            {
-              "sent_date": "2020-03-20T09:30:25",
-              "status": "sent",
-              "target_uuid": "7477ccd8-ebed-47e1-be47-fbe644926b62"
-            },
-            {
-              "sent_date": "2020-03-25T09:30:25",
-              "status": "sent",
-              "target_uuid": "2e9bbdc2-04b3-42e3-9cdf-2925e2d73769"
-            }
-          ],
-          "template_email_uuid": "4147395f-5679-4332-8340-6a62cddcd41a",
-          "template_landing_page_uuid": "e8c009e1-e981-4b30-8d86-63ea3d2cc9be"
-        }
-      ],
-      "name": "IDEQ-1234.Mary-Stephens.1.1",
-      "organization": "Idaho DEQ State Agency",
-      "primary_contact": {
-        "email": "Mary.Stephens@example.com",
-        "name": "Mary Stephens"
-      },
-      "report_count": 3,
-      "start_date": "2020-04-05T09:30:25",
-      "status": "Waiting on ROE",
-      "target_email_list": [],
-      "templates_selected": []
-    },
-    {
-      "active": true,
-      "additional_contact_list": [
-        {
-          "email": "Tom.Foolerly@example.com",
-          "name": "Tom Foolerly"
-        }
-      ],
-      "click_list": [],
-      "customer_uuid": "9a65ace0-09a6-4b1c-b858-1db7648647a9",
-      "end_date": "2020-04-10T00:00:00",
-      "first_report_timestamp": "2020-04-20T00:00:00",
-      "gophish_campaign_list": [
-        {
-          "end_date": "2020-03-29T00:00:00",
-          "start_date": "2020-03-19T09:30:25",
-          "target_email_list": [
-            {
-              "sent_date": "2020-03-20T09:30:25",
-              "status": "sent",
-              "target_uuid": "7477ccd8-ebed-47e1-be47-fbe644926b62"
-            },
-            {
-              "sent_date": "2020-03-25T09:30:25",
-              "status": "sent",
-              "target_uuid": "2e9bbdc2-04b3-42e3-9cdf-2925e2d73769"
-            }
-          ],
-          "template_email_uuid": "4147395f-5679-4332-8340-6a62cddcd41a",
-          "template_landing_page_uuid": "e8c009e1-e981-4b30-8d86-63ea3d2cc9be"
-        }
-      ],
-      "name": "DOE-1.Don-Mann.1.1",
-      "organization": "Idaho DEQ State Agency",
-      "primary_contact": {
-        "email": "Don.Mann@example.com",
-        "name": "Don Mann"
-      },
-      "report_count": 3,
-      "start_date": "2020-04-05T09:30:25",
-      "status": "Waiting on Domain Approval",
-      "target_email_list": [],
-      "templates_selected": []
-    },
-    {
-      "active": true,
-      "additional_contact_list": [
+          "email": "Jane.Moore@example.com",
+          "first_name": "Jane",
+          "last_name": "Moore",
+          "position": "manager"
+        },
         {
           "email": "John.Smith@example.com",
-          "name": "John Smith"
+          "first_name": "John",
+          "last_name": "Smith",
+          "position": "manager"
         }
-      ],
-      "click_list": [],
-      "customer_uuid": "9a65ace0-09a6-4b1c-b858-1db7648647a9",
-      "end_date": "2020-04-10T00:00:00",
-      "first_report_timestamp": "2020-04-20T00:00:00",
-      "gophish_campaign_list": [
-        {
-          "end_date": "2020-03-29T00:00:00",
-          "start_date": "2020-03-19T09:30:25",
-          "target_email_list": [
-            {
-              "sent_date": "2020-03-20T09:30:25",
-              "status": "sent",
-              "target_uuid": "7477ccd8-ebed-47e1-be47-fbe644926b62"
-            },
-            {
-              "sent_date": "2020-03-25T09:30:25",
-              "status": "sent",
-              "target_uuid": "2e9bbdc2-04b3-42e3-9cdf-2925e2d73769"
-            }
-          ],
-          "template_email_uuid": "4147395f-5679-4332-8340-6a62cddcd41a",
-          "template_landing_page_uuid": "e8c009e1-e981-4b30-8d86-63ea3d2cc9be"
-        }
-      ],
-      "name": "DOE-1.Jane-Doe.1.1",
-      "organization": "DOE Federal",
-      "primary_contact": {
-        "email": "Jane.Doe@example.com",
-        "name": "Jane Doe"
-      },
-      "report_count": 3,
-      "start_date": "2020-04-05T09:30:25",
-      "status": "90 Day Cycle Ended",
-      "target_email_list": [],
-      "templates_selected": []
-    },
-    {
-      "active": true,
-      "additional_contact_list": [
-        {
-          "email": "John.Smith@example.com",
-          "name": "John Smith"
-        }
-      ],
-      "click_list": [],
-      "customer_uuid": "9a65ace0-09a6-4b1c-b858-1db7648647a9",
-      "end_date": "2020-04-10T00:00:00",
-      "first_report_timestamp": "2020-04-20T00:00:00",
-      "gophish_campaign_list": [
-        {
-          "end_date": "2020-03-29T00:00:00",
-          "start_date": "2020-03-19T09:30:25",
-          "target_email_list": [
-            {
-              "sent_date": "2020-03-20T09:30:25",
-              "status": "sent",
-              "target_uuid": "7477ccd8-ebed-47e1-be47-fbe644926b62"
-            },
-            {
-              "sent_date": "2020-03-25T09:30:25",
-              "status": "sent",
-              "target_uuid": "2e9bbdc2-04b3-42e3-9cdf-2925e2d73769"
-            }
-          ],
-          "template_email_uuid": "4147395f-5679-4332-8340-6a62cddcd41a",
-          "template_landing_page_uuid": "e8c009e1-e981-4b30-8d86-63ea3d2cc9be"
-        }
-      ],
-      "name": "DOE-1.Jane-Moore.1.1",
-      "organization": "DOD Little Office Federal",
-      "primary_contact": {
-        "email": "Jane.Moore@example.com",
-        "name": "Jane Moore"
-      },
-      "report_count": 3,
-      "start_date": "2020-04-05T09:30:25",
-      "status": "Waiting on Template Approval",
-      "target_email_list": [],
-      "templates_selected": []
-    },
-    {
-      "active": true,
-      "additional_contact_list": [
-        {
-          "email": "John.Smith@example.com",
-          "name": "John Smith"
-        }
-      ],
-      "click_list": [],
-      "customer_uuid": "9a65ace0-09a6-4b1c-b858-1db7648647a9",
-      "end_date": "2020-04-10T00:00:00",
-      "first_report_timestamp": "2020-04-20T00:00:00",
-      "gophish_campaign_list": [
-        {
-          "end_date": "2020-03-29T00:00:00",
-          "start_date": "2020-03-19T09:30:25",
-          "target_email_list": [
-            {
-              "sent_date": "2020-03-20T09:30:25",
-              "status": "sent",
-              "target_uuid": "7477ccd8-ebed-47e1-be47-fbe644926b62"
-            },
-            {
-              "sent_date": "2020-03-25T09:30:25",
-              "status": "sent",
-              "target_uuid": "2e9bbdc2-04b3-42e3-9cdf-2925e2d73769"
-            }
-          ],
-          "template_email_uuid": "4147395f-5679-4332-8340-6a62cddcd41a",
-          "template_landing_page_uuid": "e8c009e1-e981-4b30-8d86-63ea3d2cc9be"
-        }
-      ],
-      "name": "MDMV-1.David-Young.1.1",
-      "organization": "Maryland DMV State Agency",
-      "primary_contact": {
-        "email": "David.Young@example.com",
-        "name": "David Young"
-      },
-      "report_count": 3,
-      "start_date": "2020-04-05T09:30:25",
-      "status": "Starting Campaigns",
-      "target_email_list": [],
-      "templates_selected": []
-    },
-    {
-      "active": true,
-      "additional_contact_list": [
-        {
-          "email": "John.Smith@example.com",
-          "name": "John Smith"
-        }
-      ],
-      "click_list": [],
-      "customer_uuid": "9a65ace0-09a6-4b1c-b858-1db7648647a9",
-      "end_date": "2020-04-10T00:00:00",
-      "first_report_timestamp": "2020-04-20T00:00:00",
-      "gophish_campaign_list": [
-        {
-          "end_date": "2020-03-29T00:00:00",
-          "start_date": "2020-03-19T09:30:25",
-          "target_email_list": [
-            {
-              "sent_date": "2020-03-20T09:30:25",
-              "status": "sent",
-              "target_uuid": "7477ccd8-ebed-47e1-be47-fbe644926b62"
-            },
-            {
-              "sent_date": "2020-03-25T09:30:25",
-              "status": "sent",
-              "target_uuid": "2e9bbdc2-04b3-42e3-9cdf-2925e2d73769"
-            }
-          ],
-          "template_email_uuid": "4147395f-5679-4332-8340-6a62cddcd41a",
-          "template_landing_page_uuid": "e8c009e1-e981-4b30-8d86-63ea3d2cc9be"
-        }
-      ],
-      "name": "STO-1.Sefina.1.1",
-      "organization": "Samoa Territorial Office",
-      "primary_contact": {
-        "email": "Sefina@example.com",
-        "name": "Sefina CISO"
-      },
-      "report_count": 3,
-      "start_date": "2020-04-05T09:30:25",
-      "status": "Waiting for New Templates",
-      "target_email_list": [],
-      "templates_selected": []
+      ]
     }
   ],
   "target_data": [
@@ -584,43 +162,50 @@
       "customer_uuid": "0bd5b1c8-3f9c-482e-afe5-c9f865f890a1",
       "email": "Bat.Man@example.com",
       "first_name": "Bat",
-      "last_name": "Man"
+      "last_name": "Man",
+      "position": "admin"
     },
     {
       "customer_uuid": "6068d85a-4f83-4b5a-958e-a179e5b4c205",
       "email": "Ben.Aflex@example.com",
       "first_name": "Ben",
-      "last_name": "Aflex"
+      "last_name": "Aflex",
+      "position": "admin"
     },
     {
       "customer_uuid": "0bd5b1c8-3f9c-482e-afe5-c9f865f890a1",
       "email": "David.Young@example.com",
       "first_name": "David",
-      "last_name": "Young"
+      "last_name": "Young",
+      "position": "intern"
     },
     {
       "customer_uuid": "0bd5b1c8-3f9c-482e-afe5-c9f865f890a1",
       "email": "George.Clooney@example.com",
       "first_name": "George",
-      "last_name": "Clooney"
+      "last_name": "Clooney",
+      "position": "intern"
     },
     {
       "customer_uuid": "0bd5b1c8-3f9c-482e-afe5-c9f865f890a1",
       "email": "Jane.Doe@example.com",
       "first_name": "Jane",
-      "last_name": "Doe"
+      "last_name": "Doe",
+      "position": "intern"
     },
     {
       "customer_uuid": "0bd5b1c8-3f9c-482e-afe5-c9f865f890a1",
       "email": "Jane.Moore@example.com",
       "first_name": "Jane",
-      "last_name": "Moore"
+      "last_name": "Moore",
+      "position": "manager"
     },
     {
       "customer_uuid": "0bd5b1c8-3f9c-482e-afe5-c9f865f890a1",
       "email": "John.Smith@example.com",
       "first_name": "John",
-      "last_name": "Smith"
+      "last_name": "Smith",
+      "position": "manager"
     }
   ],
   "template_data": [
