@@ -21,6 +21,12 @@ class SubscriptionContactModel(Model):
     This is the SubscriptionContact Model.
 
     This is a format to hold contact information in the subscription model.
+    first_name = StringType(required=True)
+    last_name = StringType(required=True)
+    office_phone = StringType(required=True)
+    mobile_phone = StringType()
+    customer = StringType()
+    email = EmailType(required=True)
     """
 
     first_name = StringType(required=True)
@@ -36,19 +42,12 @@ class SubscriptionTargetModel(Model):
     This is the Target Model.
 
     This controls all data needed in saving the model. Current fields are:
-    subscription_uuid
-    organziation,
-    primary contact,
-    additional contacts,
-    status,
-    target emails list,
-    templates selected,
-    start date,
-    end date,
-    active
+    first_name = StringType()
+    last_name = StringType()
+    position = StringType()
+    email = EmailType(required=True)
     """
 
-    # Values being passed in
     first_name = StringType()
     last_name = StringType()
     position = StringType()
