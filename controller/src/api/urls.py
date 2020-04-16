@@ -39,7 +39,7 @@ urlpatterns = [
     ),
     path(
         "v1/campaign/<campaign_id>/",
-        campaign_views.CampaignView.as_view(),
+        campaign_views.CampaignDetailView.as_view(),
         name="campaign_detail",
     ),
 ]
