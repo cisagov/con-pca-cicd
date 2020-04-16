@@ -10,13 +10,20 @@ import logging
 import uuid
 
 # Third-Party Libraries
-from api.models.subscription_models import SubscriptionModel, validate_subscription
-from api.utils import db_service
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+# Local
+from api.manager import CampaignManager
+from api.models.subscription_models import SubscriptionModel, validate_subscription
+from api.utils import db_service
+
+
 logger = logging.getLogger(__name__)
+
+# GoPhish API Manager
+manager = CampaignManager()
 
 
 class SubscriptionsListView(APIView):
@@ -35,25 +42,36 @@ class SubscriptionsListView(APIView):
     def post(self, request, format=None):
         """
         Post method.
-
-        ToDo:
-        Create gophish calls and data here before saving to db.
-        post_data["gophish_campaign_list"] = [{
-            "template_email": "",
-            "template_landing_page": "",
-            "start_date": "2020-03-19T09:30:25",
-            "target_email_list": [
-                {"group": "name", "emails": [....]
-            ],
-            }
-            ]
         """
         post_data = request.data.copy()
-        created_responce = self.__save_data(post_data)
-        print("created responce: {}".format(created_responce))
-        if "errors" in created_responce:
-            return Response(created_responce, status=status.HTTP_400_BAD_REQUEST)
-        return Response(created_responce, status=status.HTTP_201_CREATED)
+        created_response = self.__save_data(post_data)
+
+        first_name = post_data.get("primary_contact").get("first_name", "")
+        last_name = post_data.get("primary_contact").get("last_name", "")
+        templates = manager.get("email_template")
+
+        # Create a User Group
+        group_name = f"{last_name}'s Targets"
+        target_list = post_data.get("target_email_list")
+
+        target = manager.create(
+            "user_group", group_name=group_name, target_list=target_list
+        )
+
+        # Create a GoPhish Campaigns
+        for template in templates:
+            template_name = template.name
+            campaign_name = f"{first_name}.{last_name}.1.1 {template_name}"
+            campaign = manager.create(
+                "campaign",
+                campaign_name=campaign_name,
+                user_group=target,
+                email_template=template,
+            )
+
+        if "errors" in created_response:
+            return Response(created_response, status=status.HTTP_400_BAD_REQUEST)
+        return Response(created_response, status=status.HTTP_201_CREATED)
 
     def __get_data(self, parameters):
         """
