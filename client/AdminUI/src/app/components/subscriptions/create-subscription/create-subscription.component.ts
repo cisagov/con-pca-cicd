@@ -3,7 +3,8 @@ import { FormGroup, FormControl } from '@angular/forms';
 import { SubscriptionService } from 'src/app/services/subscription.service';
 import { Router } from '@angular/router';
 import { Organization, Contact } from 'src/app/models/organization.model';
-import { Subscription } from 'src/app/models/subscription.model';
+import { Subscription, SubscriptionContactModel, SubscriptionClicksModel } from 'src/app/models/subscription.model';
+import { Guid } from 'guid-typescript';
 
 @Component({
   selector: 'app-create-subscription',
@@ -77,28 +78,56 @@ export class CreateSubscriptionComponent implements OnInit {
     console.log('createAndLaunchSubscription');
 
     // set up the subscription and persist it in the service
-    let subscription = new Subscription();
-    this.subscriptionSvc.subscription = subscription;
+    let subscription = new Subscription();    
 
-    subscription.organization = this.currentOrg;
-
-    // start date
-    subscription.startDate = this.startDate;
-
+    //subscription.organization_structure = this.currentOrg;
+    subscription.customer_uuid = "0bd5b1c8-3f9c-482e-afe5-c9f865f890a1";
+    subscription.organization = "Some Company.1com";
+    subscription.active = true;
+    subscription.additional_contact_list = [];
+    subscription.cb_timestamp = new Date();
+    subscription.click_list = [];
+    //TODO Need service to get the current user
+    //Ask Jason.
+    subscription.created_by = "Test User REPLACEME";    
+    //no end date at this time 
+    
+    subscription.end_date =  this.addDays(new Date(),90);
+    subscription.first_report_timestamp = null;
+    subscription.gophish_campaign_list = [];
+    //TODO Need service to get the current user
+    //Ask Jason.    
+    subscription.last_updated_by = "Test User REPLACEME";
+    subscription.lub_timestamp = new Date();
+    subscription.name = "SC-1.Matt-Daemon.1.1"; //auto generated name
+    //subscription.orgKeywords = ["Test", "Debug", "Dummy Org"];
+    //subscription.organization_structure = new Organization();
+    subscription.primary_contact = new SubscriptionContactModel();
+    subscription.report_count = 0;
+    subscription.start_date = this.startDate;
+    subscription.status = "New Not Started";
+    subscription.subscription_uuid = Guid.create().toString();
+    // set the target list
+    subscription.setTargetsFromCSV(this.csvText);
+    subscription.templates_selected = [];    
     // tags / keywords
     subscription.setKeywordsFromCSV(this.tags);
 
-    // set the target list
-    subscription.setTargetsFromCSV(this.csvText);
 
     // call service with everything needed to start the subscription
-    this.subscriptionSvc.submitSubscription().subscribe(
+    this.subscriptionSvc.submitSubscription(subscription).subscribe(
       resp => {
         this.router.navigate(['subscription']);
       });
 
     // DUMMY LINE - in real life it will happen above in the subscribe
-    this.router.navigate(['subscription']);
+    // this.router.navigate(['subscription']);
 
+  }
+
+  addDays(date, days) {
+    var result = new Date(date);
+    result.setDate(result.getDate() + days);
+    return result;
   }
 }

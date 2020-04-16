@@ -25,8 +25,6 @@ export class SubscriptionService {
   /**
    * 
    */
-
-   subscription: Subscription;
   constructor(
     private http: HttpClient
   ) { 
@@ -139,11 +137,8 @@ export class SubscriptionService {
    * Sends all information to the API to start a new subscription.
    * @param s 
    */
-  submitSubscription() {
-    // TEMP
-    return new Observable();
-
-    let s = {};
-    return this.http.post('http://bogus.org/subscription/submit', s);
+  submitSubscription(subscription) {
+    //NEED TO MAKE THIS LOOK at the 
+    return this.http.post('http://localhost:8000/api/v1/subscriptions/', subscription);
   }
 }
