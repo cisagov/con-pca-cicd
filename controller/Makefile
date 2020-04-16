@@ -48,3 +48,7 @@ format:
 # target: db_load_dummy - connects to db and creates dummy-data and dumps file with id's
 db_load_dummy:
 	python scripts/create_dummy_data.py
+
+# target: db_drop_mongo - connects to db and drops mongo volume
+db_drop_mongo:
+	docker volume rm controller_mongodb
