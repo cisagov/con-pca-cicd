@@ -81,10 +81,18 @@ Generate and load Random Data into DB
 
 - `make db_load_dummy`
 
+Drop DB of all data
+
+- `make db_drop_mongo`
+
 ### Creating and loading random data
 
 Using the makefile command: `make db_load_dummy` you can create data in
 the db and get an output file containing all the id's of the created data.
+
+Incase you want to clear out all data in the DB, use: `make db_drop_mongo`
+
+WARNING: This will drop ALL DATA in the connected docker mongodb
 
 ### Example
 
