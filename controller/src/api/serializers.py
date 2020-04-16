@@ -11,4 +11,4 @@ class SubscriptionSerializer(serializers.Serializer):
     last_action = serializers.DateField()
     active = serializers.BooleanField
 
-        return subscription
+    return subscription
