@@ -9,7 +9,6 @@ from database.repository.types import (
     BooleanType,
     DateTimeType,
     EmailType,
-    IntType,
     ListType,
     ModelType,
     StringType,
@@ -24,20 +23,36 @@ class SubscriptionContactModel(Model):
     This is a format to hold contact information in the subscription model.
     """
 
-    name = StringType()
+    first_name = StringType(required=True)
+    last_name = StringType(required=True)
+    office_phone = StringType(required=True)
+    mobile_phone = StringType()
+    customer = StringType()
     email = EmailType(required=True)
 
 
 class SubscriptionTargetModel(Model):
     """
-    This is the SubscriptionTarget Model.
+    This is the Target Model.
 
-    This is a format to hold target information in the subscription model.
+    This controls all data needed in saving the model. Current fields are:
+    subscription_uuid
+    organziation,
+    primary contact,
+    additional contacts,
+    status,
+    target emails list,
+    templates selected,
+    start date,
+    end date,
+    active
     """
 
-    target_uuid = UUIDType()
-    status = StringType()
-    sent_date = DateTimeType()
+    # Values being passed in
+    first_name = StringType()
+    last_name = StringType()
+    position = StringType()
+    email = EmailType(required=True)
 
 
 class SubscriptionClicksModel(Model):
@@ -59,6 +74,7 @@ class GoPhishCampaignsModel(Model):
     This is a format to hold GophishCampaign information in the subscription model.
     """
 
+    name = StringType()
     template_email_uuid = UUIDType()
     template_landing_page_uuid = UUIDType()
     start_date = DateTimeType()
@@ -73,21 +89,23 @@ class SubscriptionModel(Model):
     This controls all data needed in saving the model.
     """
 
+    # created by mongodb
     subscription_uuid = UUIDType()
+    # values being passed in.
     customer_uuid = UUIDType()
     name = StringType()
-    organization = StringType()
     start_date = DateTimeType()
-    end_date = DateTimeType()
-    report_count = IntType()
+    # commented out feilds for now are unused for the time
+    # end_date = DateTimeType()
+    # report_count = IntType()
     gophish_campaign_list = ListType(ModelType(GoPhishCampaignsModel))
-    first_report_timestamp = DateTimeType()
+    # first_report_timestamp = DateTimeType()
     primary_contact = ModelType(SubscriptionContactModel)
     additional_contact_list = ListType(ModelType(SubscriptionContactModel))
     status = StringType()
-    target_email_list = ListType(UUIDType)
-    click_list = ListType(ModelType(SubscriptionClicksModel))
-    templates_selected = ListType(UUIDType)
+    target_email_list = ListType(ModelType(SubscriptionTargetModel))
+    # click_list = ListType(ModelType(SubscriptionClicksModel))
+    # templates_selected_uuid_list = ListType(UUIDType)
     active = BooleanType()
     # db data tracking added below
     created_by = StringType()
