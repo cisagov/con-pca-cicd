@@ -74,8 +74,8 @@ class GoPhishCampaignsModel(Model):
     """
 
     name = StringType()
-    template_email_uuid = UUIDType()
-    template_landing_page_uuid = UUIDType()
+    email_template = StringType()
+    landing_page_template = StringType()
     start_date = DateTimeType()
     end_date = DateTimeType()
     target_email_list = ListType(ModelType(SubscriptionTargetModel))
