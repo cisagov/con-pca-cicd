@@ -38,6 +38,7 @@ class CampaignManager:
                 kwargs.get("campaign_name"),
                 kwargs.get("user_group"),
                 kwargs.get("email_template"),
+                kwargs.get("phish_url"),
             )
 
     def get(self, method, **kwargs):
@@ -56,7 +57,11 @@ class CampaignManager:
 
     # Create methods
     def generate_campaign(
-        self, campaign_name: str = None, user_group=None, email_template=None
+        self,
+        campaign_name: str = None,
+        user_group=None,
+        email_template=None,
+        phish_url=None,
     ):
         smtp = SMTP(name="HyreGuard")
         landing_page = Page(name="Landing Page")
@@ -67,6 +72,7 @@ class CampaignManager:
             page=landing_page,
             template=email_template,
             smtp=smtp,
+            url=phish_url,
         )
 
         campaign = self.gp_api.campaigns.post(campaign)
