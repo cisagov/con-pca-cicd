@@ -139,6 +139,6 @@ export class SubscriptionService {
    */
   submitSubscription(subscription) {
     //NEED TO MAKE THIS LOOK at the 
-    return this.http.post('http://localhost:8000/api/v1/subscriptions/', subscription);
+    return this.http.post('http://localhost:8000/api/v1/subscriptions/', subscription)
   }
 }
