@@ -56,6 +56,7 @@ class SubscriptionsListView(APIView):
             target = manager.get("user_group")[0]
 
         gophish_campaign_list = []
+
         # Create a GoPhish Campaigns
         for template in templates:
             template_name = template.name
