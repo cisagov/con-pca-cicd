@@ -4,7 +4,9 @@ export class GoPhishCampaignsModel{
 }
 
 export class SubscriptionContactModel{
-
+    first_name: string;
+    last_name: string;
+    office_phone: string;    
 }
 
 export interface SubscriptionClicksModel{
@@ -24,19 +26,19 @@ export class Subscription {
     subscription_uuid: string;    
     customer_uuid: string;
     name: string;
-    organization: string;
+    //organization: string;
     start_date: Date;
-    end_date: Date;
-    report_count: number;
+    //end_date: Date;
+    //report_count: number;
     gophish_campaign_list: GoPhishCampaignsModel[];
-    first_report_timestamp: Date;
+    //first_report_timestamp: Date;
     primary_contact: SubscriptionContactModel;
     additional_contact_list: SubscriptionContactModel[];
     status: string;
     //target_email_list: string[];
     target_email_list: Target[] = [];
-    click_list: SubscriptionClicksModel[];
-    templates_selected: string[];
+    //click_list: SubscriptionClicksModel[];
+    //templates_selected: string[];
     active: boolean;
     created_by: string
     cb_timestamp: Date;
@@ -87,8 +89,8 @@ export class Subscription {
             if (parts.length == 4) {
                 let t = new Target();
                 t.email = parts[0].trim();
-                t.firstName = parts[1].trim();
-                t.lastName = parts[2].trim();
+                t.first_name = parts[1].trim();
+                t.last_name = parts[2].trim();
                 t.position = parts[3].trim();
                 this.target_email_list.push(t);
             }
@@ -100,8 +102,8 @@ export class Subscription {
  * An individual being phished.
  */
 export class Target {
-    firstName: string;
-    lastName: string;
+    first_name: string;
+    last_name: string;
     position: string;
     email: string;
 }
