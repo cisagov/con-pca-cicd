@@ -10,15 +10,13 @@ import logging
 import uuid
 
 # Third-Party Libraries
-from rest_framework import status
-from rest_framework.response import Response
-from rest_framework.views import APIView
-
 # Local
 from api.manager import CampaignManager
 from api.models.subscription_models import SubscriptionModel, validate_subscription
 from api.utils import db_service
-
+from rest_framework import status
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
 logger = logging.getLogger(__name__)
 
@@ -40,12 +38,8 @@ class SubscriptionsListView(APIView):
         return Response(subscription_list)
 
     def post(self, request, format=None):
-        """
-        Post method.
-        """
+        """Post method."""
         post_data = request.data.copy()
-        created_response = self.__save_data(post_data)
-
         first_name = post_data.get("primary_contact").get("first_name", "")
         last_name = post_data.get("primary_contact").get("last_name", "")
         templates = manager.get("email_template")
@@ -54,13 +48,14 @@ class SubscriptionsListView(APIView):
         existing_group_names = [group.name for group in manager.get("user_group")]
         group_name = f"{last_name}'s Targets"
         target_list = post_data.get("target_email_list")
-
-        if not group_name in existing_group_names:
+        if group_name not in existing_group_names:
             target = manager.create(
                 "user_group", group_name=group_name, target_list=target_list
             )
         else:
             target = manager.get("user_group")[0]
+
+        gophish_campaign_list = []
 
         # Create a GoPhish Campaigns
         for template in templates:
@@ -72,6 +67,18 @@ class SubscriptionsListView(APIView):
                 user_group=target,
                 email_template=template,
             )
+            logger.info("campaign created: {}".format(campaign))
+            created_campaign = {
+                "name": campaign_name,
+                "email_template": template.name,
+                "landing_page_template": "",
+                "target_email_list": target_list,
+            }
+            gophish_campaign_list.append(created_campaign)
+
+        post_data["gophish_campaign_list"] = gophish_campaign_list
+
+        created_response = self.__save_data(post_data)
 
         if "errors" in created_response:
             return Response(created_response, status=status.HTTP_400_BAD_REQUEST)
