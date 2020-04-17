@@ -40,10 +40,12 @@ class SubscriptionsListView(APIView):
     def post(self, request, format=None):
         """Post method."""
         post_data = request.data.copy()
+
+        # Data for GoPhish
         first_name = post_data.get("primary_contact").get("first_name", "")
         last_name = post_data.get("primary_contact").get("last_name", "")
         templates = manager.get("email_template")
-
+        phish_url = "https://phish.hyreguard.com/"
         # Create a User Group
         existing_group_names = [group.name for group in manager.get("user_group")]
         group_name = f"{last_name}'s Targets"
@@ -66,6 +68,7 @@ class SubscriptionsListView(APIView):
                 campaign_name=campaign_name,
                 user_group=target,
                 email_template=template,
+                phish_url=phish_url,
             )
             logger.info("campaign created: {}".format(campaign))
             created_campaign = {
