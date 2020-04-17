@@ -82,18 +82,18 @@ export class CreateSubscriptionComponent implements OnInit {
 
     //subscription.organization_structure = this.currentOrg;
     subscription.customer_uuid = "0bd5b1c8-3f9c-482e-afe5-c9f865f890a1";
-    subscription.organization = "Some Company.1com";
+    //subscription.organization = "Some Company.1com";
     subscription.active = true;
     subscription.additional_contact_list = [];
     subscription.cb_timestamp = new Date();
-    subscription.click_list = [];
+    //subscription.click_list = [];
     //TODO Need service to get the current user
     //Ask Jason.
     subscription.created_by = "Test User REPLACEME";    
     //no end date at this time 
     
-    subscription.end_date =  this.addDays(new Date(),90);
-    subscription.first_report_timestamp = null;
+    //subscription.end_date =  this.addDays(new Date(),90);
+    //subscription.first_report_timestamp = null;
     subscription.gophish_campaign_list = [];
     //TODO Need service to get the current user
     //Ask Jason.    
@@ -103,13 +103,17 @@ export class CreateSubscriptionComponent implements OnInit {
     //subscription.orgKeywords = ["Test", "Debug", "Dummy Org"];
     //subscription.organization_structure = new Organization();
     subscription.primary_contact = new SubscriptionContactModel();
-    subscription.report_count = 0;
+    subscription.primary_contact.first_name = "Barry";
+    subscription.primary_contact.last_name = "Hansen";
+    subscription.primary_contact.office_phone = "208-716-2687";
+    
+    //subscription.report_count = 0;
     subscription.start_date = this.startDate;
     subscription.status = "New Not Started";
     subscription.subscription_uuid = Guid.create().toString();
     // set the target list
     subscription.setTargetsFromCSV(this.csvText);
-    subscription.templates_selected = [];    
+    //subscription.templates_selected = [];    
     // tags / keywords
     subscription.setKeywordsFromCSV(this.tags);
 
@@ -117,6 +121,7 @@ export class CreateSubscriptionComponent implements OnInit {
     // call service with everything needed to start the subscription
     this.subscriptionSvc.submitSubscription(subscription).subscribe(
       resp => {
+        alert("Your subscription was created as "+subscription.name);
         this.router.navigate(['subscription']);
       });
 
