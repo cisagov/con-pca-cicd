@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { LayoutMainComponent } from './components/layout/layout-main/layout-main.component';
 import { SubscriptionsComponent } from './components/subscriptions/subscriptions.component';
 import { ServiceSubscriptionComponent } from './components/service-subscription/service-subscription.component';
+import { DeceptionCalculatorComponent } from './components/deception-calculator/deception-calculator.component';
 import { SearchPanelComponent } from './components/search-panel/search-panel.component';
 
 const routes: Routes = [
@@ -17,6 +18,12 @@ const routes: Routes = [
     path:'servicesubscription', component: LayoutMainComponent, 
     children: [
       { path: '', component: ServiceSubscriptionComponent}
+    ]
+  },
+  {
+    path:'deceptioncalculator', component: LayoutMainComponent, 
+    children: [
+      { path: '', component: DeceptionCalculatorComponent}
     ]
   },
   {
