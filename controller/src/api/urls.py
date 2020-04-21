@@ -12,12 +12,13 @@ from rest_framework import permissions
 
 schema_view = get_schema_view(
     openapi.Info(
-        title="SPA API",
+        title="CPA API",
         default_version="v1",
-        description="Test description",
-        terms_of_service="https://www.google.com/policies/terms/",
-        contact=openapi.Contact(email="contact@snippets.local"),
-        license=openapi.License(name="BSD License"),
+        description="""This is the API documentation for CPA.
+        This was created to define all API calls and repsonses.""",
+        terms_of_service="https://github.com/cisagov/cpa/blob/develop/LICENSE",
+        contact=openapi.Contact(email="peter.mercado255@gmail.com"),
+        license=openapi.License(name="Creative Commons Zero v1.0 Universal"),
     ),
     public=True,
     permission_classes=(permissions.AllowAny,),
