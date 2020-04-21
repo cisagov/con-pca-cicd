@@ -13,7 +13,21 @@ const headers = {
 export class DeceptionCalculatorService {
    constructor(private http: HttpClient) {}
 
+    //Update the final deception score of the provided DeceptionCalculation model
+    updateDeceptionScore(deception_calculation: DeceptionCalculation){
+    deception_calculation.final_deception_score = 
+        deception_calculation.authoritative + 
+        deception_calculation.grammar + 
+        deception_calculation.internal +
+        deception_calculation.link_domain + 
+        deception_calculation.logo_graphics +
+        deception_calculation.public_news + 
+        deception_calculation.relevancy_organization + 
+        deception_calculation.sender_external
+}
+
    //Testing method
+   //Get a blank DeceptionCalculation model for form population
     getBaseDeceptionCalculation(){
         var decep_calc = new DeceptionCalculation();
 
@@ -41,20 +55,9 @@ export class DeceptionCalculatorService {
         return decep_calc
     } 
 
-    updateDeceptionScore(deception_calculation: DeceptionCalculation){
-        deception_calculation.final_deception_score = 
-            deception_calculation.authoritative + 
-            deception_calculation.grammar + 
-            deception_calculation.internal +
-            deception_calculation.link_domain + 
-            deception_calculation.logo_graphics +
-            deception_calculation.public_news + 
-            deception_calculation.relevancy_organization + 
-            deception_calculation.sender_external
-   }
-
-
-   getEmailPreview(){
+    //Testing Method
+    //Get a Html formatted string for display 
+    getEmailPreview(){
         //var email_preview = return this.http.get('http://localhost:8000/api/v1/ EMAIL URL HERE /', headers);
         var email_preview = `
             <h1> Email Header </h1>

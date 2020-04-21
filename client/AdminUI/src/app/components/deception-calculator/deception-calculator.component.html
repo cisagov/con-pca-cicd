@@ -7,10 +7,13 @@
     <div class="col-7 h-100 overflow-auto">
         <div class="p-3">
             <h1>Deception Calculations</h1>
-            <div class="d-flex flex-row mb-3">
+            <div class="mb-3">
                 <!-- <div class="d-flex flex-grow-1 flex-column row"> -->
                 <div class="row">
-                    
+                    <b> Instructions: </b>
+                    <p> The higher the score the greater perceived deception level</p>
+                </div>
+                <div class="row">
                     <!-- Left Column Calcs -->
                     <div class="d-flex flex-column col-md-12 col-lg-5">
                         <div class="" [formGroup]="deceptionFormGroup">
@@ -107,7 +110,7 @@
                                 </mat-form-field>
                             </div>
                             <div class="d-flex flex-row ml-auto">
-                                <button mat-raised-button color="primary" (click)="testingMethod()">Save and Return to Template Editor</button>
+                                <button mat-raised-button color="primary" (click)="saveAndReturn()">Save and Return to Template Editor</button>
                             </div>
                         </div>
                     </div>   

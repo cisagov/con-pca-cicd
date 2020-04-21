@@ -3,8 +3,6 @@ import { FormControl, NgForm, FormGroupDirective, Validators, FormGroup, FormBui
 import { MyErrorStateMatcher } from 'src/app/helper/ErrorStateMatcher';
 import { DeceptionCalculatorService } from 'src/app/components/deception-calculator/deception-calculator.service';
 import { DeceptionCalculation } from 'src/app/models/deception-calculator.model';
-import { MatSidenav } from '@angular/material/sidenav';
-import { MAT_DRAWER_CONTAINER } from '@angular/material/sidenav/drawer';
 
 @Component({
   selector: 'deception-calculator',
@@ -21,10 +19,6 @@ export class DeceptionCalculatorComponent implements OnInit {
     deceptionFormGroup: FormGroup
     emailPreivew: string
 
-    @ViewChild('drawer')
-    drawer: MatSidenav;
-
-
     constructor(
         public deceptionService : DeceptionCalculatorService,
         private fb: FormBuilder,
@@ -32,9 +26,6 @@ export class DeceptionCalculatorComponent implements OnInit {
     }
 
     ngOnInit(): void {
-        console.log("Deception Calculator Init Test")
-        
-        
         this.decpeption_calculation = this.deceptionService.getBaseDeceptionCalculation()
         this.deceptionFormGroup = this.setDeceptionFormFromModel(this.decpeption_calculation);
         this.emailPreivew = this.deceptionService.getEmailPreview();
@@ -45,18 +36,38 @@ export class DeceptionCalculatorComponent implements OnInit {
 
     ngAfterViewInit(){
         
-        console.log(this.drawer)
+    }
+
+    saveDeceptionCalculation(){
+        console.log("Data to Save :")
+        console.log(this.decpeption_calculation)
+        //this.deceptionService.save(this.decpeption_calculation)
     }
 
     onValueChanges(): void {
+        console.log("val change")
         this.deceptionFormGroup.valueChanges.subscribe( val => {
-            this.decpeption_calculation  =  val
+            //Convert form to model and save 
+            
+            this.decpeption_calculation = this.getDeceptionModelFromForm(this.deceptionFormGroup)
             this.deceptionService.updateDeceptionScore(this.decpeption_calculation)
+            
             //call save method here if saving on change 
+            //this.deceptionService.save(this.decpeption_calculation)
+            
+            //Update deception total score in the form for display
             this.deceptionFormGroup.patchValue({final_deception_score: this.decpeption_calculation.final_deception_score},{emitEvent: false})
         })
     }
     
+    //Helper method if further csv/string cleaning is needed
+    csvToArray(inputCSV: string){
+        return inputCSV.split(',');
+    }
+
+  /**
+   * Set the angular form data from the provided DeceptionCalculation model
+   */
     setDeceptionFormFromModel(decep_calc_model: DeceptionCalculation){
         var csv = "";
         decep_calc_model.additional_word_tags.forEach(item => {
@@ -80,12 +91,43 @@ export class DeceptionCalculatorComponent implements OnInit {
             //final_deception_score: new FormControl({value: decep_calc_model.final_deception_score, disabled:true}),
             final_deception_score: new FormControl(decep_calc_model.final_deception_score),
         })
-
     }
 
-    testingMethod(){
-        console.log("testing method called")
-        console.log(this.deceptionFormGroup)
+    /**
+     * Get the deception calculation model from the suppied form
+     */
+    getDeceptionModelFromForm(decep_form: FormGroup){
+        if(this.deceptionFormGroup.valid){
+            var decep_model : DeceptionCalculation = {
+                grammar:  this.deceptionFormGroup.controls['grammar'].value,
+                internal: this.deceptionFormGroup.controls['internal'].value,
+                authoritative:  this.deceptionFormGroup.controls['authoritative'].value,
+                link_domain: this.deceptionFormGroup.controls['link_domain'].value,
+                logo_graphics: this.deceptionFormGroup.controls['logo_graphics'].value,
+                sender_external: this.deceptionFormGroup.controls['sender_external'].value,
+                relevancy_organization: this.deceptionFormGroup.controls['relevancy_organization'].value,
+                public_news: this.deceptionFormGroup.controls['public_news'].value,
+                behavior_fear: this.deceptionFormGroup.controls['behavior_fear'].value,
+                duty_obligation: this.deceptionFormGroup.controls['duty_obligation'].value,
+                curiosity: this.deceptionFormGroup.controls['curiosity'].value,
+                greed: this.deceptionFormGroup.controls['greed'].value,
+                additional_word_tags: this.csvToArray(this.deceptionFormGroup.controls['additional_word_tags'].value),
+                final_deception_score: this.deceptionFormGroup.controls['final_deception_score'].value
+            };
+            return decep_model
+        } else {
+            console.log(this.deceptionFormGroup.errors)
+            return
+        }
+    }
+
+    /**
+     * Called to save and redirect to proper page
+     */
+    saveAndReturn(){
+        console.log("Save and Return Called")
+        this.saveDeceptionCalculation()
+        //redirect("template-page")
     }
 
     

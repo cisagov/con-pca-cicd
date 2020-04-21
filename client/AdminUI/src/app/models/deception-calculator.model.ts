@@ -29,25 +29,25 @@ export class DeceptionCalculation {
      * Converts a list of csv into an array
      * @param csv 
      */
-    setAdditionalWordTags(csv: string){
-            this.additional_word_tags = []    
+    // setAdditionalWordTags(csv: string){
+    //         this.additional_word_tags = []    
 
-            if (!csv) {
-                return;
-            }
+    //         if (!csv) {
+    //             return;
+    //         }
     
-            let lines = csv.split('\n');
-            lines.forEach((line: string) => {
-                let words = line.split(',');
-                words.forEach(w => {
-                    w.trim();
-                    if(w != '') {
-                        this.additional_word_tags.push(w)
-                    }
-                })
-            });     
-            console.log(this.additional_word_tags)
-    }
+    //         let lines = csv.split('\n');
+    //         lines.forEach((line: string) => {
+    //             let words = line.split(',');
+    //             words.forEach(w => {
+    //                 w.trim();
+    //                 if(w != '') {
+    //                     this.additional_word_tags.push(w)
+    //                 }
+    //             })
+    //         });     
+    //         console.log(this.additional_word_tags)
+    // }
 
     
 
