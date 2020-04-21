@@ -18,7 +18,7 @@ schema_view = get_schema_view(
         This was created to define all API calls and repsonses.""",
         terms_of_service="https://github.com/cisagov/cpa/blob/develop/LICENSE",
         contact=openapi.Contact(email="peter.mercado255@gmail.com"),
-        license=openapi.License(name="Creative Commons Zero v1.0 Universal"),
+        license=openapi.License(name="Public Domain"),
     ),
     public=True,
     permission_classes=(permissions.AllowAny,),
@@ -27,6 +27,9 @@ schema_view = get_schema_view(
 urlpatterns = [
     path(
         "v1/swagger.json", schema_view.without_ui(cache_timeout=0), name="schema-json"
+    ),
+    path(
+        "v1/swagger.yaml", schema_view.without_ui(cache_timeout=0), name="schema-yaml"
     ),
     path(
         "v1/swagger/",

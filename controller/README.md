@@ -147,149 +147,31 @@ Dev Access
 
 You can use these endpoints to debug and develop, suggested access:
 
+- [drf-yasg - Yet another Swagger generator](https://drf-yasg.readthedocs.io/en/latest/)
+
 - [curl](https://curl.haxx.se/docs/manpage.html)
 
 - [PostMan](https://www.postman.com/)
 
-### API URLS
+### drf-yasg / Swagger
 
-The current api url endpoints are:
+Here we are using genrated docs via swagger that also give us a
+few ways of viewing them.
 
-| URL | ACTIONS |
-| ----------- | ----------- |
-| <host:port>/api/v1/subscriptions/ | [GET, POST] |
-| <host:port>/api/v1/subscription/<subscription_uuid> | [GET] |
-| <host:port>/api/v1/templates/ | [GET, POST] |
-| <host:port>/api/v1/template/<template_uuid> | [GET] |
-| <host:port>/api/v1/targets/ | [GET, POST] |
-| <host:port>/api/v1/target/<target_uuid> | [GET] |
+Once running, navigate to the
+[Api Swagger UI](http://localhost:8000/api/v1/swagger/)
+located at: `http://localhost:8000/api/v1/swagger/`
 
-## Examples
+You can also see the redoc version of the api at, navigate to the
+[Api redoc UI](http://localhost:8000/api/v1/redoc/)
+located at: `http://localhost:8000/api/v1/redoc/`
 
-The following are examples of URL calls.
+To download the api docs as yaml or json, use the following enpoints:
+[Api Swagger json](http://localhost:8000/api/v1/swagger.json)
+[Api Swagger YAML](http://localhost:8000/api/v1/swagger.yaml)
 
-When running locally, host:port = `http://localhost:8000/api/v1/subscriptions/`
-
-### GET
-
-```shell
--> % curl -i -H "Accept: application/json" -H "Content-Type: application/json" http://localhost:8000/api/v1/subscriptions/
-HTTP/1.1 200 OK
-Date: Tue, 14 Apr 2020 17:25:34 GMT
-Server: WSGIServer/0.2 CPython/3.8.2
-Content-Type: application/json
-Allow: GET, POST, HEAD, OPTIONS
-X-Frame-Options: DENY
-Content-Length: 2859
-X-Content-Type-Options: nosniff
-
-[{"subscription_uuid":"0cb84ded-a86d-4332-932c-d9db9815ff20","organziation":"Some Company.1com", ...} ....]
-```
-
-Example JSON for GET Query:
-
-```json
-{
-  "organization": "Some Company.1com"
-}
-```
-
-This will query for objects with `organization` = `Some Company.1com`
-
-### POST
-
-```shell
-curl --header "Content-Type: application/json" \
-  --request POST \
-  --data '{
-    "customer_uuid":  "0bd5b1c8-3f9c-482e-afe5-c9f865f890a1",
-     "organization": "Some Company.1com",
-     "start_date":  "2020-04-10T09:30:25",
-     "end_date": "2020-04-20T00:00:00",
-     "report_count": 3,
-     "first_report_timestamp": "2020-04-20T00:00:00",
-     "primary_contact": {
-        "name": "phill",
-        "email": "phill@example.com"
-     },
-     "additional_contact_list": [{
-        "name": "bob",
-        "email": "foo.bar@example.com"
-     }, {
-        "name": "bill",
-        "email": "bill.dolla@example.com"
-     }],
-     "status": "Running",
-     "target_email_list": [{
-        "target_uuid": "0bd5b1c8-3f9c-482e-afe5-c9f865f890a1",
-        "status": "sent",
-        "sent_date": "2020-04-13T09:30:25"
-     }, {
-        "target_uuid": "0bd5b1c8-3f9c-482e-afe5-c9f865f890a1",
-        "status": "sent",
-        "sent_date": "2020-04-13T09:30:25"
-     }],
-     "templates_selected": [
-        "0bd5b1c8-3f9c-482e-afe5-c9f865f890a1"
-        ],
-     "click_list": [{
-         "source_ip": "127.1.1.12",
-         "timestamp": "2020-04-13T09:30:25",
-         "target_uuid": "0bd5b1c8-3f9c-482e-afe5-c9f865f890a1"
-      }],
-     "active": "True"}' \
-  http://localhost:8000/api/v1/subscriptions/
-
-  {
-    "subscription_uuid": "cb63e7c9-2b1d-494f-b3ca-3c942bbcaaa1"
-}
-```
-
-Example JSON for POST:
-
-```json
-{
-   "customer_uuid":  "0bd5b1c8-3f9c-482e-afe5-c9f865f890a1",
-   "organization": "Some Company.1com",
-   "start_date":  "2020-04-10T09:30:25",
-   "end_date": "2020-04-20T00:00:00",
-   "report_count": 3,
-   "first_report_timestamp": "2020-04-20T00:00:00",
-   "primary_contact": {
-      "name": "phill",
-      "email": "phill@example.com"
-   },
-   "additional_contact_list": [{
-      "name": "bob",
-      "email": "foo.bar@example.com"
-   }, {
-      "name": "bill",
-      "email": "bill.dolla@example.com"
-   }],
-   "status": "Running",
-   "target_email_list": [{
-      "target_uuid": "0bd5b1c8-3f9c-482e-afe5-c9f865f890a1",
-      "status": "sent",
-      "sent_date": "2020-04-13T09:30:25"
-   },
-   {
-      "target_uuid": "0bd5b1c8-3f9c-482e-afe5-c9f865f890a1",
-      "status": "sent",
-      "sent_date": "2020-04-13T09:30:25"
-   }],
-   "templates_selected": [
-      "0bd5b1c8-3f9c-482e-afe5-c9f865f890a1"
-      ],
-
-   "click_list": [
-      {
-         "source_ip": "123.12.12.1",
-         "timestamp": "2020-04-13T09:30:25",
-         "target_uuid": "0bd5b1c8-3f9c-482e-afe5-c9f865f890a1"
-      }],
-   "active": "True"
-}
-```
+Here you can see how the calls are defined. These objects are defined under `api.serializers.*`
+When created, it is genrated from those files and is validated when sending.
 
 ## Troubleshooting
 

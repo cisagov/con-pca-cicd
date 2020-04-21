@@ -1,23 +1,27 @@
 # CPA
+
 ## Continuous Phishing Assessment
 
 ### Project Directory
+
 - [Client](https://github.com/cisagov/cpa/tree/develop/client)
 - [Controller](https://github.com/cisagov/cpa/tree/develop/controller)
 - [GoPhish](https://github.com/cisagov/cpa/tree/develop/gophish)
 
 ### Requirements
-* For local setup, Get the right flavor of Docker for your OS...
-    - [Docker for Mac](https://docs.docker.com/docker-for-mac/install/)
-    - [Docker for Ubuntu](https://docs.docker.com/install/linux/docker-ce/ubuntu/)
-    - [Docker for Windows](https://docs.docker.com/docker-for-windows/install/)
 
-    **Note:** The recommended requirement for deployment of this project is 4 GB RAM.
-    For Docker for Mac, this can be set by following these steps:
+For local setup, Get the right flavor of Docker for your OS...
 
-    Open Docker > Preferences > Advanced tab, then set memory to 4.0 GiB
+- [Docker for Mac](https://docs.docker.com/docker-for-mac/install/)
+- [Docker for Ubuntu](https://docs.docker.com/install/linux/docker-ce/ubuntu/)
+- [Docker for Windows](https://docs.docker.com/docker-for-windows/install/)
 
-## Local Install and Deployment:
+**Note:** The recommended requirement for deployment of this project is 4 GB RAM.
+For Docker for Mac, this can be set by following these steps:
+
+Open Docker > Preferences > Advanced tab, then set memory to 4.0 GiB
+
+## Local Install and Deployment
 
 ### Git Clone Project
 
@@ -34,14 +38,17 @@ Use `Makefile` to install and run all services.
 ### Setup and Build
 
 Create your .env files
+
 - `cp ./client/etc/env.dist ./client/.env`
 - `cp ./controller/etc/env.dist ./controller/.env`
 - `cp ./gophish/etc/env.dist ./gophish/.env`
 
 Build containers:
+
 - `make build`
 
 To run the containers, use:
+
 - `make up`
 
 Your output will look like:
@@ -57,9 +64,11 @@ Creating cpa-api      ... done
 ```
 
 Stop containers
+
 - `make stop`
 
 Remove containers
+
 - `make down`
 
 ## Project Components
@@ -78,12 +87,61 @@ You can use these enpoints to debug and develop, suggested access:
 
 - [PostMan](https://www.postman.com/)
 
-## Contributing ##
+## Api
+
+To run the containers, use:
+
+- `make up`
+
+Your output will look like:
+
+```shell
+-> % make up
+docker-compose up -d
+Creating network "controller_default" with the default driver
+Creating cpa-rabbitmq ... done
+Creating cpa-mongodb  ... done
+Creating cpa-worker   ... done
+Creating cpa-beat     ... done
+Creating cpa-api      ... done
+```
+
+Dev Access
+
+You can use these endpoints to debug and develop, suggested access:
+
+- [drf-yasg - Yet another Swagger generator](https://drf-yasg.readthedocs.io/en/latest/)
+
+- [curl](https://curl.haxx.se/docs/manpage.html)
+
+- [PostMan](https://www.postman.com/)
+
+### drf-yasg / Swagger
+
+Here we are using genrated docs via swagger that also give us a
+few ways of viewing them.
+
+Once running, navigate to the
+[Api Swagger UI](http://localhost:8000/api/v1/swagger/)
+located at: `http://localhost:8000/api/v1/swagger/`
+
+You can also see the redoc version of the api at, navigate to the
+[Api redoc UI](http://localhost:8000/api/v1/redoc/)
+located at: `http://localhost:8000/api/v1/redoc/`
+
+To download the api docs as yaml or json, use the following enpoints:
+[Api Swagger json](http://localhost:8000/api/v1/swagger.json)
+[Api Swagger YAML](http://localhost:8000/api/v1/swagger.yaml)
+
+Here you can see how the calls are defined. These objects are defined under `api.serializers.*`
+When created, it is genrated from those files and is validated when sending.
+
+## Contributing
 
 We welcome contributions!  Please see [here](CONTRIBUTING.md) for
 details.
 
-## License ##
+## License
 
 This project is in the worldwide [public domain](LICENSE).
 
