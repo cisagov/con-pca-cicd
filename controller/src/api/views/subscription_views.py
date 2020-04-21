@@ -1,7 +1,7 @@
 """
-This is the main views for api.
+Subscription Views.
 
-This handles api views
+This handles the api for all the Subscription urls.
 """
 # Standard Python Libraries
 import asyncio
@@ -13,7 +13,13 @@ import uuid
 # Local
 from api.manager import CampaignManager
 from api.models.subscription_models import SubscriptionModel, validate_subscription
+from api.serializers.subscriptions_serializers import (
+    SubscriptionGetSerializer,
+    SubscriptionPostResponseSerializer,
+    SubscriptionPostSerializer,
+)
 from api.utils import db_service
+from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -31,12 +37,26 @@ class SubscriptionsListView(APIView):
     This handles the API to get a List of Subscriptions.
     """
 
+    @swagger_auto_schema(
+        responses={"200": SubscriptionGetSerializer, "400": "Bad Request"},
+        security=[],
+        operation_id="List of Subscriptions",
+        operation_description="This handles the API to get a List of Subscriptions.",
+    )
     def get(self, request):
         """Get method."""
         parameters = request.data.copy()
         subscription_list = self.__get_data(parameters)
-        return Response(subscription_list)
+        serializer = SubscriptionGetSerializer(subscription_list, many=True)
+        return Response(serializer.data)
 
+    @swagger_auto_schema(
+        request_body=SubscriptionPostSerializer,
+        responses={"201": SubscriptionPostResponseSerializer, "400": "Bad Request"},
+        security=[],
+        operation_id="Create Subscription",
+        operation_description="This handles Creating a Subscription and launching a Campaign.",
+    )
     def post(self, request, format=None):
         """Post method."""
         post_data = request.data.copy()
@@ -85,7 +105,8 @@ class SubscriptionsListView(APIView):
 
         if "errors" in created_response:
             return Response(created_response, status=status.HTTP_400_BAD_REQUEST)
-        return Response(created_response, status=status.HTTP_201_CREATED)
+        serializer = SubscriptionPostResponseSerializer(created_response)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     def __get_data(self, parameters):
         """
@@ -109,7 +130,6 @@ class SubscriptionsListView(APIView):
         post_data and saves it to the db with the required feilds.
         ToDo: break out the email data into its own collection or keep flat as is.
         """
-        print("post object: {}".format(post_data))
         create_timestamp = datetime.datetime.utcnow()
         current_user = "dev user"
         post_data["subscription_uuid"] = str(uuid.uuid4())
@@ -129,12 +149,18 @@ class SubscriptionView(APIView):
     This handles the API for the Get a Substription with subscription_uuid.
     """
 
+    @swagger_auto_schema(
+        responses={"200": SubscriptionGetSerializer, "400": "Bad Request"},
+        security=[],
+        operation_id="Get single Subscription",
+        operation_description="This handles the API for the Get a Substription with subscription_uuid.",
+    )
     def get(self, request, subscription_uuid):
         """Get method."""
         print("get subscription_uuid {}".format(subscription_uuid))
         subscription = self.__get_single(subscription_uuid)
-
-        return Response(subscription)
+        serializer = SubscriptionGetSerializer(subscription)
+        return Response(serializer.data)
 
     def __get_single(self, subscription_uuid):
         """

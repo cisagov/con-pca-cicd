@@ -21,9 +21,9 @@ tmp_allowed_hosts = os.environ.get("DJANGO_ALLOWED_HOSTS")
 if tmp_allowed_hosts:
     ALLOWED_HOSTS = tmp_allowed_hosts.split(" ")
 else:
-    ALLOWED_HOSTS = ["localhost","127.0.0.1", "[::1]"]
+    ALLOWED_HOSTS = ["localhost", "127.0.0.1", "[::1]"]
 
-CORS_ORIGIN_ALLOW_ALL=True
+CORS_ORIGIN_ALLOW_ALL = True
 
 DB_CONFIG = {
     "DB_HOST": os.getenv("DB_HOST"),
@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     "corsheaders",
     # third party
     "rest_framework",
+    "drf_yasg",
     # local
     "reports",
     "tasks",
@@ -51,8 +52,8 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    'corsheaders.middleware.CorsMiddleware',
-    'django.middleware.common.CommonMiddleware',
+    "corsheaders.middleware.CorsMiddleware",
+    "django.middleware.common.CommonMiddleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
