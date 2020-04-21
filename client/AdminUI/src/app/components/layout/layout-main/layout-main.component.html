@@ -10,11 +10,12 @@
       </button>
       <div class="header-title">Subscriptions</div>
       <mat-menu #belowMenu="matMenu" yPosition="below" class="mat-menu-custom-header">
-        <button mat-menu-item routerLink="/subscriptions">Subscriptions</button>
+        <button mat-menu-item routerLink="/subscription">Subscriptions</button>
         <button mat-menu-item>Templates</button>
         <button mat-menu-item>Contacts</button>
         <button mat-menu-item>Domains</button>
         <button mat-menu-item>Organizations</button>
+        <button mat-menu-item routerLink="/deceptioncalculator">Deception Calculator</button>
         <button mat-menu-item>User Admin</button>
       </mat-menu>
       <span class="fill-remaining-space"></span>
@@ -32,7 +33,7 @@
 
     <mat-sidenav-container class="sidenav-container">
       <mat-sidenav #drawer class="docs-sidenav"
-           mode="side"
+          mode="side"
           opened="true"
           [fixedInViewport]="false" 
           [fixedTopGap]="0"

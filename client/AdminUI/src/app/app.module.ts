@@ -13,6 +13,8 @@ import { SubscriptionsService } from './components/subscriptions/subscriptions.s
 import { SearchPanelComponent } from './components/search-panel/search-panel.component';
 import { ServiceSubscriptionComponent } from './components/service-subscription/service-subscription.component';
 import { CreateSubscriptionComponent } from './components/subscriptions/create-subscription/create-subscription.component';
+import { DeceptionCalculatorComponent } from './components/deception-calculator/deception-calculator.component';
+import { DeceptionCalculatorService } from './components/deception-calculator/deception-calculator.service';
 import { AutosizeModule } from 'node_modules/ngx-autosize';
 import { AddOrganizationComponent } from './components/organization/add-organization/add-organization.component';
 import { SubscriptionService } from './services/subscription.service';
@@ -27,7 +29,8 @@ import { SubscriptionService } from './services/subscription.service';
     SearchPanelComponent, 
     ServiceSubscriptionComponent,
     AddOrganizationComponent,
-    CreateSubscriptionComponent
+    CreateSubscriptionComponent,
+    DeceptionCalculatorComponent,
   ],
   imports: [
     BrowserModule,
@@ -42,7 +45,8 @@ import { SubscriptionService } from './services/subscription.service';
   ],
   providers: [
     SubscriptionsService,    
-    HttpClient
+    DeceptionCalculatorService,
+    HttpClient,
   ],
   bootstrap: [AppComponent]
 })
