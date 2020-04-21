@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormControl, NgForm, FormGroupDirective, Validators, FormGroup, FormBuilder } from '@angular/forms';
 import { MyErrorStateMatcher } from 'src/app/helper/ErrorStateMatcher';
 import { DeceptionCalculatorService } from 'src/app/components/deception-calculator/deception-calculator.service';
 import { DeceptionCalculation } from 'src/app/models/deception-calculator.model';
+import { MatSidenav } from '@angular/material/sidenav';
+import { MAT_DRAWER_CONTAINER } from '@angular/material/sidenav/drawer';
 
 @Component({
   selector: 'deception-calculator',
@@ -19,18 +21,40 @@ export class DeceptionCalculatorComponent implements OnInit {
     deceptionFormGroup: FormGroup
     emailPreivew: string
 
+    @ViewChild('drawer')
+    drawer: MatSidenav;
+
+
     constructor(
         public deceptionService : DeceptionCalculatorService,
-        private fb: FormBuilder
+        private fb: FormBuilder,
     ) { 
-        this.decpeption_calculation = this.deceptionService.getBaseDeceptionCalculation()
-        this.deceptionFormGroup = this.setDeceptionFormFromModel(this.decpeption_calculation);
-        this.emailPreivew = this.deceptionService.getEmailPreview();
     }
 
     ngOnInit(): void {
         console.log("Deception Calculator Init Test")
-        console.log(this.deceptionFormGroup)
+        
+        
+        this.decpeption_calculation = this.deceptionService.getBaseDeceptionCalculation()
+        this.deceptionFormGroup = this.setDeceptionFormFromModel(this.decpeption_calculation);
+        this.emailPreivew = this.deceptionService.getEmailPreview();
+        
+        this.onValueChanges()
+
+    }
+
+    ngAfterViewInit(){
+        
+        console.log(this.drawer)
+    }
+
+    onValueChanges(): void {
+        this.deceptionFormGroup.valueChanges.subscribe( val => {
+            this.decpeption_calculation  =  val
+            this.deceptionService.updateDeceptionScore(this.decpeption_calculation)
+            //call save method here if saving on change 
+            this.deceptionFormGroup.patchValue({final_deception_score: this.decpeption_calculation.final_deception_score},{emitEvent: false})
+        })
     }
     
     setDeceptionFormFromModel(decep_calc_model: DeceptionCalculation){
@@ -52,28 +76,11 @@ export class DeceptionCalculatorComponent implements OnInit {
             duty_obligation: new FormControl(decep_calc_model.duty_obligation),
             curiosity: new FormControl(decep_calc_model.curiosity),
             greed: new FormControl(decep_calc_model.greed),
-            additional_word_tags: new FormControl(csv)
+            additional_word_tags: new FormControl(csv, {updateOn: 'blur'}),
+            //final_deception_score: new FormControl({value: decep_calc_model.final_deception_score, disabled:true}),
+            final_deception_score: new FormControl(decep_calc_model.final_deception_score),
         })
 
-    }
-
-    //Used for testing purposes
-    setDeceptionFormEmpty(){
-        return new FormGroup({
-            authoritative: new FormControl(0),
-            grammar: new FormControl(0),
-            internal: new FormControl(0),
-            link_domain: new FormControl(0),
-            logo_graphics: new FormControl(0),
-            sender_external: new FormControl(0),
-            relevancy_organization: new FormControl(0),
-            public_news: new FormControl(0),
-            behavior_fear: new FormControl(false),
-            duty_obligation: new FormControl(false),
-            curiosity: new FormControl(false),
-            greed: new FormControl(false),
-            additional_word_tags: new FormControl('')
-        })
     }
 
     testingMethod(){

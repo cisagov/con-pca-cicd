@@ -1,19 +1,18 @@
 <div class="d-flex flex-row container-fluid row deception_calc_content">
     <!-- Left Column - Template Preview -->
-    <div class="col-5 border-right">
+    <div class="col-5 border-right h-100 overflow-auto p-5">
         <div [innerHTML]="emailPreivew" >template</div>
     </div>
     <!-- Right Column - Calculation -->
-    <div class="col-7">
+    <div class="col-7 h-100 overflow-auto">
         <div class="p-3">
             <h1>Deception Calculations</h1>
             <div class="d-flex flex-row mb-3">
-                <div class="d-flex flex-grow-1 flex-column row">
-                    <div class="d-flex flex-row mb-3">
-                        <button mat-raised-button color="primary" (click)="testingMethod()">Test</button>
-                    </div>
+                <!-- <div class="d-flex flex-grow-1 flex-column row"> -->
+                <div class="row">
+                    
                     <!-- Left Column Calcs -->
-                    <div class="d-flex flex-column col-5">
+                    <div class="d-flex flex-column col-md-12 col-lg-5">
                         <div class="" [formGroup]="deceptionFormGroup">
                             <mat-label class="mb-3">Apperance & Grammar</mat-label>
                             <mat-radio-group appearance="outline" class="row radio_selection_group"  formControlName="grammar">
@@ -63,7 +62,7 @@
                     </div>
 
                     <!-- Right column Calcs -->
-                    <div class="d-flex flex-column col-7 ">
+                    <div class="d-flex flex-column col-md-12 col-lg-7 ">
                         <div class="" [formGroup]="deceptionFormGroup">
                             <mat-label class="mb-3">Relevancy Organization</mat-label>
                             <mat-radio-group appearance="outline" class="row radio_selection_group"  formControlName="relevancy_organization">
@@ -99,8 +98,17 @@
                                 ></textarea>
                             </mat-form-field>
                         </div>
-                        <div class="d-flex flex-column align-self-end"> 
-                            TEst
+                        <div class="d-flex flex-column mt-auto"> 
+
+                            <div class="d-flex flex-row">
+                                <mat-form-field appearance="outline" class="flex-grow-1" [formGroup]="deceptionFormGroup">
+                                    <mat-label>Final Deception Score</mat-label>
+                                    <input type="text" disabled matInput placeholder="Organization Name" formControlName="final_deception_score">
+                                </mat-form-field>
+                            </div>
+                            <div class="d-flex flex-row ml-auto">
+                                <button mat-raised-button color="primary" (click)="testingMethod()">Save and Return to Template Editor</button>
+                            </div>
                         </div>
                     </div>   
                 </div>  

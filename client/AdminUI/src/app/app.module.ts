@@ -46,7 +46,7 @@ import { SubscriptionService } from './services/subscription.service';
   providers: [
     SubscriptionsService,    
     DeceptionCalculatorService,
-    HttpClient
+    HttpClient,
   ],
   bootstrap: [AppComponent]
 })
