@@ -1,6 +1,11 @@
 .testing {
     outline: solid 1px red
 }
+
+.deception_calc_content {
+    height: 100%
+}
+
 .radio_selection {
     width: 100%;
     padding-left: 2em;
@@ -13,4 +18,16 @@
 
 .radio_selection_group mat-radio-button {
     width: 100%;
+}
+
+.check-box-wrapper {
+    display: inline-block;
+}
+
+.deception_checkboxes {
+    display: flex;
+    flex-direction: column;
+}
+.deception_checkboxes mat-checkbox {
+    // display: block;
 }

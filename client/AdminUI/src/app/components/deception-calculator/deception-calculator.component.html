@@ -1,10 +1,10 @@
-<div class="d-flex flex-row container-fluid testing row">
+<div class="d-flex flex-row container-fluid row deception_calc_content">
     <!-- Left Column - Template Preview -->
-    <div class="col-6 border-right">
-        <p>template</p>
+    <div class="col-5 border-right">
+        <div [innerHTML]="emailPreivew" >template</div>
     </div>
     <!-- Right Column - Calculation -->
-    <div class="col-6">
+    <div class="col-7">
         <div class="p-3">
             <h1>Deception Calculations</h1>
             <div class="d-flex flex-row mb-3">
@@ -13,7 +13,7 @@
                         <button mat-raised-button color="primary" (click)="testingMethod()">Test</button>
                     </div>
                     <!-- Left Column Calcs -->
-                    <div class="d-flex flex-column col-6">
+                    <div class="d-flex flex-column col-5">
                         <div class="" [formGroup]="deceptionFormGroup">
                             <mat-label class="mb-3">Apperance & Grammar</mat-label>
                             <mat-radio-group appearance="outline" class="row radio_selection_group"  formControlName="grammar">
@@ -63,7 +63,7 @@
                     </div>
 
                     <!-- Right column Calcs -->
-                    <div class="d-flex flex-column col-6 ">
+                    <div class="d-flex flex-column col-7 ">
                         <div class="" [formGroup]="deceptionFormGroup">
                             <mat-label class="mb-3">Relevancy Organization</mat-label>
                             <mat-radio-group appearance="outline" class="row radio_selection_group"  formControlName="relevancy_organization">
@@ -77,6 +77,30 @@
                                 <mat-radio-button [value]=0 radioGroup="publicNewsGroup">0 = No</mat-radio-button>
                                 <mat-radio-button [value]=1 radioGroup="publicNewsGroup">1 = Yes</mat-radio-button>
                             </mat-radio-group>
+                        </div>
+                        <div class="check-box-wrapper">
+                            <div class="deception_checkboxes mt-2" [formGroup]="deceptionFormGroup">
+                                <mat-checkbox formControlName="behavior_fear">Behavior Fear inline</mat-checkbox>
+                                <mat-checkbox formControlName="curiosity">Duty or Obligation</mat-checkbox>
+                                <mat-checkbox formControlName="duty_obligation">Curiosity</mat-checkbox>
+                                <mat-checkbox formControlName="greed">Greed</mat-checkbox>
+                            </div>
+                        </div>
+                        <div class="d-flex flex-column mt-2">
+                            <mat-form-field appearance="outline" class="flex-grow-1" [formGroup]="deceptionFormGroup">
+                                <mat-label>Template Additional Word Tags*</mat-label>
+                                <textarea matInput 
+                                cdkTextareaAutosize
+                                cdkAutosizeMinRows="2"
+                                cdkAutosizeMaxRows="5"
+                                placeholder="Additional Word Tags" 
+                                formControlName="additional_word_tags"
+                                
+                                ></textarea>
+                            </mat-form-field>
+                        </div>
+                        <div class="d-flex flex-column align-self-end"> 
+                            TEst
                         </div>
                     </div>   
                 </div>  

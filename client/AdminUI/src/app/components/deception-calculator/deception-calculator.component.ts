@@ -12,14 +12,12 @@ import { DeceptionCalculation } from 'src/app/models/deception-calculator.model'
 
 export class DeceptionCalculatorComponent implements OnInit {
     
-
+    //models
     decpeption_calculation: DeceptionCalculation
-
-    radioOptionsTwo: number[] = [0,1]
-    radioOptionsThree: number[] = [0,1,2]
     
-
+    //Forms and presentation elements
     deceptionFormGroup: FormGroup
+    emailPreivew: string
 
     constructor(
         public deceptionService : DeceptionCalculatorService,
@@ -27,13 +25,12 @@ export class DeceptionCalculatorComponent implements OnInit {
     ) { 
         this.decpeption_calculation = this.deceptionService.getBaseDeceptionCalculation()
         this.deceptionFormGroup = this.setDeceptionFormFromModel(this.decpeption_calculation);
+        this.emailPreivew = this.deceptionService.getEmailPreview();
     }
 
     ngOnInit(): void {
-        //this.deceptionCalcService.getBase()
         console.log("Deception Calculator Init Test")
         console.log(this.deceptionFormGroup)
-
     }
     
     setDeceptionFormFromModel(decep_calc_model: DeceptionCalculation){
@@ -83,5 +80,7 @@ export class DeceptionCalculatorComponent implements OnInit {
         console.log("testing method called")
         console.log(this.deceptionFormGroup)
     }
+
+    
 
 }
