@@ -1,4 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
+import { ThemeService } from '../app/services/theme.service';
 
 @Component({
   selector: 'app-root',
@@ -7,13 +8,16 @@ import { Component, ViewChild } from '@angular/core';
 })
 export class AppComponent {
   
-  title = 'AdminUI';
-
-  
+  title = 'AdminUI';  
 
   constructor(
+    private themeSvc: ThemeService
   ) {
 
+  }
+
+  getTheme(){
+    return this.themeSvc.getStoredTheme();
   }
 
   ngAfterViewInit(): void {

@@ -18,6 +18,7 @@ import { DeceptionCalculatorService } from './components/deception-calculator/de
 import { AutosizeModule } from 'node_modules/ngx-autosize';
 import { AddOrganizationComponent } from './components/organization/add-organization/add-organization.component';
 import { SubscriptionService } from './services/subscription.service';
+import { ThemeService } from './services/theme.service';
 
 
 @NgModule({
@@ -46,6 +47,7 @@ import { SubscriptionService } from './services/subscription.service';
   providers: [
     SubscriptionsService,    
     DeceptionCalculatorService,
+    ThemeService,
     HttpClient,
   ],
   bootstrap: [AppComponent]

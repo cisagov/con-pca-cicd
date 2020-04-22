@@ -27,6 +27,7 @@
           <mat-menu #userMenu="matMenu" yPosition="below" class="mat-menu-custom-header">
             <button mat-menu-item>Profile</button>
             <button mat-menu-item>Logout</button>
+            <mat-slide-toggle [checked]="isDark" (change)="setTheme($event)">dark</mat-slide-toggle>
           </mat-menu>
       </span>
     </mat-toolbar>
