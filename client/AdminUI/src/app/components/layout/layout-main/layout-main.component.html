@@ -8,7 +8,7 @@
       <button mat-icon-button class="menu-button" type="button" aria-label="Toggle sidenav" [matMenuTriggerFor]="belowMenu">
         <i class="material-icons">menu</i>
       </button>
-      <div class="header-title">Subscriptions</div>
+      <div class="header-title">{{layoutSvc.getTitle()}}</div>
       <mat-menu #belowMenu="matMenu" yPosition="below" class="mat-menu-custom-header">
         <button mat-menu-item routerLink="/subscription">Subscriptions</button>
         <button mat-menu-item>Templates</button>

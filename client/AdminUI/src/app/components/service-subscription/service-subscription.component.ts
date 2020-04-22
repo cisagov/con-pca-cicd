@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { LayoutMainService } from 'src/app/services/layout-main.service';
 
 @Component({
   selector: 'app-service-subscription',
@@ -8,7 +9,11 @@ import { FormControl } from '@angular/forms';
 })
 export class ServiceSubscriptionComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private layoutSvc: LayoutMainService
+  ) { 
+    layoutSvc.setTitle("Create Subscription");
+  }
 
   ngOnInit(): void {
   }
