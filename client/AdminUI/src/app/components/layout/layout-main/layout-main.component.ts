@@ -25,10 +25,6 @@ export class LayoutMainComponent implements OnInit {
     this.themeSvc.storeTheme(event.checked);
   }
 
-  getTitle(){
-    this.layoutSvc.getTitle();
-  }
-
   ngOnInit(): void {
   }
 }
