@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
+import { ThemeService } from '../../../services/theme.service';
 
 @Component({
   selector: 'app-layout-main',
@@ -9,13 +10,19 @@ import { MatSidenav } from '@angular/material/sidenav';
 })
 
 export class LayoutMainComponent implements OnInit {
+  isDark: boolean = false;
 
-  constructor() {
+  constructor(private themeSvc: ThemeService) {
+    this.isDark = themeSvc.getStoredTheme();
   }
 
   @ViewChild('drawer', { static: false }) 
   drawer: MatSidenav;
 
+  setTheme(event){
+    this.themeSvc.storeTheme(event.checked);
+  }
+  
   ngOnInit(): void {
   }
 }
