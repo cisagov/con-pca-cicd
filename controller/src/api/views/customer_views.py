@@ -1,5 +1,5 @@
 """
-Template Views.
+Customer Views.
 
 This handles the api for all the Template urls.
 """
@@ -10,11 +10,11 @@ import logging
 import uuid
 
 # Third-Party Libraries
-from api.models.template_models import TemplateModel, validate_template
-from api.serializers.template_serializers import (
-    TemplateGetSerializer,
-    TemplatePostResponseSerializer,
-    TemplatePostSerializer,
+from api.models.customer_models import CustomerModel, validate_customer
+from api.serializers.customer_serializers import (
+    CustomerGetSerializer,
+    CustomerPostResponseSerializer,
+    CustomerPostSerializer,
 )
 from api.utils import db_service
 from drf_yasg.utils import swagger_auto_schema
@@ -25,32 +25,32 @@ from rest_framework.views import APIView
 logger = logging.getLogger(__name__)
 
 
-class TemplatesListView(APIView):
+class CustomerListView(APIView):
     """
-    This is the TemplatesListView APIView.
+    This is the CustomerListView APIView.
 
     This handles the API to get a List of Templates.
     """
 
     @swagger_auto_schema(
-        responses={"200": TemplateGetSerializer, "400": "Bad Request"},
+        responses={"200": CustomerGetSerializer, "400": "Bad Request"},
         security=[],
-        operation_id="List of Templates",
-        operation_description="This handles the API to get a List of Templates.",
+        operation_id="List of Customers",
+        operation_description="This handles the API to get a List of Customers.",
     )
     def get(self, request):
         """Get method."""
         parameters = request.data.copy()
-        template_list = self.__get_data(parameters)
-        serializer = TemplateGetSerializer(template_list, many=True)
+        customer_list = self.__get_data(parameters)
+        serializer = CustomerGetSerializer(customer_list, many=True)
         return Response(serializer.data)
 
     @swagger_auto_schema(
-        request_body=TemplatePostSerializer,
-        responses={"201": TemplatePostResponseSerializer, "400": "Bad Request"},
+        request_body=CustomerPostSerializer,
+        responses={"201": CustomerPostResponseSerializer, "400": "Bad Request"},
         security=[],
-        operation_id="Create Template",
-        operation_description="This handles Creating a Templates.",
+        operation_id="Create Customer",
+        operation_description="This handles Creating a Customers.",
     )
     def post(self, request, format=None):
         """Post method."""
@@ -59,7 +59,7 @@ class TemplatesListView(APIView):
         logging.info("created responce {}".format(created_response))
         if "errors" in created_response:
             return Response(created_response, status=status.HTTP_400_BAD_REQUEST)
-        serializer = TemplatePostResponseSerializer(created_response)
+        serializer = CustomerPostResponseSerializer(created_response)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     def __get_data(self, parameters):
@@ -70,11 +70,11 @@ class TemplatesListView(APIView):
         """
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
-        service = db_service("template", TemplateModel, validate_template)
-        template_list = loop.run_until_complete(
+        service = db_service("customer", CustomerModel, validate_customer)
+        customer_list = loop.run_until_complete(
             service.filter_list(parameters=parameters)
         )
-        return template_list
+        return customer_list
 
     def __save_data(self, post_data):
         """
@@ -86,38 +86,38 @@ class TemplatesListView(APIView):
         """
         create_timestamp = datetime.datetime.utcnow()
         current_user = "dev user"
-        post_data["template_uuid"] = str(uuid.uuid4())
+        post_data["customer_uuid"] = str(uuid.uuid4())
         post_data["created_by"] = post_data["last_updated_by"] = current_user
         post_data["cb_timestamp"] = post_data["lub_timestamp"] = create_timestamp
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
-        service = db_service("template", TemplateModel, validate_template)
+        service = db_service("customer", CustomerModel, validate_customer)
         created_response = loop.run_until_complete(service.create(to_create=post_data))
         return created_response
 
 
-class TemplateView(APIView):
+class CustomerView(APIView):
     """
-    This is the TemplateView APIView.
+    This is the CustomerView APIView.
 
-    This handles the API for the Get a Template with template_uuid.
+    This handles the API for the Get a Customer with customer_uuid.
     """
 
     @swagger_auto_schema(
-        responses={"200": TemplateGetSerializer, "400": "Bad Request"},
+        responses={"200": CustomerGetSerializer, "400": "Bad Request"},
         security=[],
-        operation_id="Get single Template",
-        operation_description="This handles the API for the Get a Template with template_uuid.",
+        operation_id="Get single Customer",
+        operation_description="This handles the API for the Get a Customer with customer_uuid.",
     )
-    def get(self, request, template_uuid):
+    def get(self, request, customer_uuid):
         """Get method."""
-        logging.debug("get template_uuid {}".format(template_uuid))
-        print("get template_uuid {}".format(template_uuid))
-        template = self.__get_single(template_uuid)
-        serializer = TemplateGetSerializer(template)
+        logging.debug("get template_uuid {}".format(customer_uuid))
+        print("get template_uuid {}".format(customer_uuid))
+        customer = self.__get_single(customer_uuid)
+        serializer = CustomerGetSerializer(customer)
         return Response(serializer.data)
 
-    def __get_single(self, template_uuid):
+    def __get_single(self, customer_uuid):
         """
         Get_single private method.
 
@@ -125,6 +125,6 @@ class TemplateView(APIView):
         """
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
-        service = db_service("template", TemplateModel, validate_template)
-        template = loop.run_until_complete(service.get(uuid=template_uuid))
-        return template
+        service = db_service("customer", CustomerModel, validate_customer)
+        customer = loop.run_until_complete(service.get(uuid=customer_uuid))
+        return customer

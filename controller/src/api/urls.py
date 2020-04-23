@@ -4,7 +4,7 @@ API URLs.
 This lists all urls under the API app.
 """
 # Third-Party Libraries
-from api.views import campaign_views, subscription_views, template_views
+from api.views import campaign_views, customer_views, subscription_views, template_views
 from django.urls import path
 from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
@@ -66,5 +66,15 @@ urlpatterns = [
         "v1/campaign/<campaign_id>/",
         campaign_views.CampaignDetailView.as_view(),
         name="campaign_detail",
+    ),
+    path(
+        "v1/customers/",
+        customer_views.CustomerListView.as_view(),
+        name="customer_list_api",
+    ),
+    path(
+        "v1/customer/<customer_uuid>/",
+        customer_views.CustomerView.as_view(),
+        name="customer_get_api",
     ),
 ]
