@@ -19,6 +19,7 @@ import { AutosizeModule } from 'node_modules/ngx-autosize';
 import { AddOrganizationComponent } from './components/organization/add-organization/add-organization.component';
 import { SubscriptionService } from './services/subscription.service';
 import { ThemeService } from './services/theme.service';
+import { LayoutMainService } from './services/layout-main.service';
 
 
 @NgModule({
@@ -48,6 +49,7 @@ import { ThemeService } from './services/theme.service';
     SubscriptionsService,    
     DeceptionCalculatorService,
     ThemeService,
+    LayoutMainService,
     HttpClient,
   ],
   bootstrap: [AppComponent]

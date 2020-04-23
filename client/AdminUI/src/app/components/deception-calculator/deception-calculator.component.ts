@@ -3,6 +3,7 @@ import { FormControl, NgForm, FormGroupDirective, Validators, FormGroup, FormBui
 import { MyErrorStateMatcher } from 'src/app/helper/ErrorStateMatcher';
 import { DeceptionCalculatorService } from 'src/app/components/deception-calculator/deception-calculator.service';
 import { DeceptionCalculation } from 'src/app/models/deception-calculator.model';
+import { LayoutMainService } from 'src/app/services/layout-main.service';
 
 @Component({
   selector: 'deception-calculator',
@@ -21,8 +22,10 @@ export class DeceptionCalculatorComponent implements OnInit {
 
     constructor(
         public deceptionService : DeceptionCalculatorService,
+        private layoutSvc: LayoutMainService,
         private fb: FormBuilder,
     ) { 
+        layoutSvc.setTitle("Deception Calculator");
     }
 
     ngOnInit(): void {

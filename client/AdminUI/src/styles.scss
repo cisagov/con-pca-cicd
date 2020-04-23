@@ -1,3 +1,4 @@
+@use "sass:map";
 @import '~@angular/material/theming';
 // Include the common styles for Angular Material. We include this here so that you only
 // have to load a single css file for Angular Material in your app.
@@ -5,6 +6,8 @@
 // Fonts
 @import 'https://fonts.googleapis.com/css?family=Material+Icons';
 @import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500');
+
+
      
 $fontConfig: (
   display-4: mat-typography-level(112px, 112px, 300, 'Roboto', -0.0134em),
@@ -95,7 +98,7 @@ $mat-light-theme-background: (
   status-bar:               $light-bg-darker-20,
   app-bar:                  $light-bg-darker-5,
   hover:                    $dark-bg-alpha-4,
-  card:                     $light-bg-lighter-5,
+  card:                     $light-background,
   dialog:                   $light-bg-lighter-5,
   tooltip:                  $dark-bg-tooltip,
   disabled-button:          $dark-bg-alpha-12,
@@ -267,6 +270,14 @@ $altTheme: mat-dark-theme($theme-primary, $theme-accent, $theme-warn);
 // Specific component overrides, pieces that are not in line with the general theming
 
 // Handle buttons appropriately, with respect to line-height
+.mat-drawer-container{
+  background-color:lighten(#c5d4dd, 10%);
+}
+
+.mat-drawer-side{
+  border:1 solid #c5d4dd;
+}
+
 .mat-raised-button, .mat-stroked-button, .mat-flat-button {
   padding: 0 1.15em;
   margin: 0 .65em;
@@ -290,9 +301,15 @@ $altTheme: mat-dark-theme($theme-primary, $theme-accent, $theme-warn);
 :focus{
   outline:none !important;
 }
-.mat-sidenav-container{
-  padding-top:20px;
-}
+
 .mat-button-base { 
   margin-right:5px !important;
+}
+
+.mat-header-row{
+  background-color: $dark-background !important;
+}
+
+.mat-header-cell{ 
+  color:  $light-text !important;
 }
