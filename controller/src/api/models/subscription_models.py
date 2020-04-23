@@ -9,6 +9,7 @@ from database.repository.types import (
     BooleanType,
     DateTimeType,
     EmailType,
+    IntType,
     ListType,
     ModelType,
     StringType,
@@ -73,6 +74,7 @@ class GoPhishCampaignsModel(Model):
     This is a format to hold GophishCampaign information in the subscription model.
     """
 
+    campaign_id = IntType()
     name = StringType()
     email_template = StringType()
     landing_page_template = StringType()

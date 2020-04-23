@@ -55,6 +55,7 @@ class GoPhishCampaignsSerializer(serializers.Serializer):
     This is a formats the data coming out of the Db.
     """
 
+    campaign_id = serializers.IntegerField(required=False)
     name = serializers.CharField(max_length=100)
     email_template = serializers.CharField(max_length=100)
     landing_page_template = serializers.CharField(max_length=100)
