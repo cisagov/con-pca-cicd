@@ -12,8 +12,8 @@ help:
 # target: build = build all containers
 build:
 	docker-compose -f ./client/docker-compose.yml build
-	docker-compose -f ./controller/docker-compose.yml build
 	docker-compose -f ./gophish/docker-compose.yml build
+	docker-compose -f ./controller/docker-compose.yml build
 
 # target: up - Run GoPhish.
 up:
@@ -24,11 +24,11 @@ up:
 # target: stop - Stop all docker containers
 stop:
 	docker-compose -f ./client/docker-compose.yml stop
-	docker-compose -f ./controller/docker-compose.yml stop
 	docker-compose -f ./gophish/docker-compose.yml stop
+	docker-compose -f ./controller/docker-compose.yml stop
 
 # target: down - Remove all docker containers
 down:
 	docker-compose -f ./client/docker-compose.yml down
-	docker-compose -f ./controller/docker-compose.yml down
 	docker-compose -f ./gophish/docker-compose.yml down
+	docker-compose -f ./controller/docker-compose.yml down

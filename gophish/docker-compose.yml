@@ -5,6 +5,7 @@ services:
     build:
       context: ./etc/gophish/
     container_name: cpa-gophish
+    hostname: gophish
     restart: unless-stopped
     ports:
       - "3333:3333"
@@ -51,3 +52,5 @@ volumes:
 
 networks:
   default:
+    external:
+      name: controller_default
