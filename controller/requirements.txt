@@ -17,10 +17,12 @@ importlib-metadata==1.5.2
 ipdb==0.13.2
 isort==4.3.21
 kombu==4.6.8
+git+git://github.com/cisagov/lcgit.git@7360374e78661d8dfa5ec550337a4e398c3bb4e8#egg=lcgit
 motor==2.0.0
 pathspec==0.7.0
 ptvsd>=4.3.2
 pymongo==3.10.1
+pytest==5.4.1
 pytz==2019.3
 pyyaml
 regex==2020.2.20
