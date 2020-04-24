@@ -65,7 +65,6 @@ class SubscriptionsListView(APIView):
         first_name = post_data.get("primary_contact").get("first_name", "")
         last_name = post_data.get("primary_contact").get("last_name", "")
         templates = manager.get("email_template")
-        phish_url = "https://phish.hyreguard.com/"
         # get User Groups
         user_groups = manager.get("user_group")
         group_name = f"{last_name}'s Targets"
@@ -94,7 +93,6 @@ class SubscriptionsListView(APIView):
                 campaign_name=campaign_name,
                 user_group=target,
                 email_template=template,
-                phish_url=phish_url,
             )
             logger.info("campaign created: {}".format(campaign))
             created_campaign = {
