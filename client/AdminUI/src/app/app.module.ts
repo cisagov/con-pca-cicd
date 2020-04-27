@@ -20,7 +20,10 @@ import { AddOrganizationComponent } from './components/organization/add-organiza
 import { SubscriptionService } from './services/subscription.service';
 import { ThemeService } from './services/theme.service';
 import { LayoutMainService } from './services/layout-main.service';
-
+import { ContactsComponent } from './components/contacts/contacts.component';
+import { DomainsComponent } from './components/domains/domains.component';
+import { TemplatesPageComponent } from './components/templates-page/templates-page.component';
+import { UserAdminComponent } from './components/user-admin/user-admin.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +36,10 @@ import { LayoutMainService } from './services/layout-main.service';
     AddOrganizationComponent,
     CreateSubscriptionComponent,
     DeceptionCalculatorComponent,
+    ContactsComponent,
+    DomainsComponent,
+    TemplatesPageComponent,
+    UserAdminComponent
   ],
   imports: [
     BrowserModule,
