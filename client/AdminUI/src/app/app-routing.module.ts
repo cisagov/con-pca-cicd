@@ -51,7 +51,7 @@ const routes: Routes = [
     ]
   },
   {
-    path:'organizations', component: LayoutMainComponent, 
+    path:'organizationspage', component: LayoutMainComponent, 
     children: [
       { path: '', component: OrganizationsPageComponent}
     ]
