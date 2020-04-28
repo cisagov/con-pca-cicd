@@ -1,8 +1,10 @@
 """
-Campaign Serializers.
+GoPhish Campaign Serializers.
 
-These are Django Rest Famerwork Serializers. These are used for
-serializing data coming from the db into a request responce.
+These are Django Rest Famerwork Serializers.
+These are used for serializing data coming in from gophish.
+API Docs:
+https://docs.getgophish.com/api-documentation/campaigns
 """
 # Third-Party Libraries
 from rest_framework import serializers
@@ -38,19 +40,40 @@ class CampaignResultSerializer(serializers.Serializer):
     reported = serializers.BooleanField(required=False)
 
 
+class CampaignGroupTargetSerializer(serializers.Serializer):
+    """
+    Campaign Group Target Serializer.
+
+    This is the data returned from Gophish's Campaigns API
+
+    email           : string
+    first_name      : string
+    last_name       : string
+    position        : string
+    """
+
+    email = serializers.EmailField()
+    first_name = serializers.CharField()
+    last_name = serializers.CharField()
+    position = serializers.CharField()
+
+
 class CampaignGroupSerializer(serializers.Serializer):
     """
     Campaign Groups Serializer.
 
     This is the data returned from Gophish's Campaigns API
 
-    email                : string
-    time                 : string(datetime)
-    message              : string
-    details              : string(JSON)
+    id              : int64
+    name            : string
+    targets         : array(Target)
+    modified_date   : string(datetime)
     """
 
-    name = serializers.CharField(required=True, max_length=250)
+    id = serializers.IntegerField(read_only=True)
+    name = serializers.CharField(required=True)
+    targets = CampaignGroupTargetSerializer(many=True)
+    modified_date = serializers.DateTimeField()
 
 
 class CampaignEventSerializer(serializers.Serializer):
