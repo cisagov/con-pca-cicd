@@ -65,17 +65,22 @@ class SubscriptionsListView(APIView):
         first_name = post_data.get("primary_contact").get("first_name", "")
         last_name = post_data.get("primary_contact").get("last_name", "")
         templates = manager.get("email_template")
-        phish_url = "https://phish.hyreguard.com/"
-        # Create a User Group
-        existing_group_names = [group.name for group in manager.get("user_group")]
+        # get User Groups
+        user_groups = manager.get("user_group")
         group_name = f"{last_name}'s Targets"
         target_list = post_data.get("target_email_list")
-        if group_name not in existing_group_names:
+
+        # Note: this could be refactored later
+        if group_name not in [group.name for group in user_groups]:
             target = manager.create(
                 "user_group", group_name=group_name, target_list=target_list
             )
         else:
-            target = manager.get("user_group")[0]
+            # get group from list
+            for user_group in user_groups:
+                if user_group.name == group_name:
+                    target = user_group
+                    break
 
         gophish_campaign_list = []
 
@@ -88,10 +93,10 @@ class SubscriptionsListView(APIView):
                 campaign_name=campaign_name,
                 user_group=target,
                 email_template=template,
-                phish_url=phish_url,
             )
             logger.info("campaign created: {}".format(campaign))
             created_campaign = {
+                "campaign_id": campaign.id,
                 "name": campaign_name,
                 "email_template": template.name,
                 "landing_page_template": "",

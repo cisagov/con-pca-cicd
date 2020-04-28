@@ -1,24 +1,28 @@
-from typing import Dict, List
+"""GoPhish API Manager."""
 
-from gophish import Gophish
-from gophish.models import Campaign, Group, Page, SMTP, Template, User, Stat
+# Standard Python Libraries
+from typing import Dict
+
+# Third-Party Libraries
+from django.conf import settings
 from faker import Faker
 
-from django.conf import settings
-
+# cisagov Libraries
+from gophish import Gophish
+from gophish.models import SMTP, Campaign, Group, Page, Template, User
 
 faker = Faker()
 
 
 class CampaignManager:
-    """
-    GoPhish API Manager. TODO: create put and delete methods
-    """
+    """GoPhish API Manager. TODO: create put and delete methods."""
 
     def __init__(self):
+        """Init."""
         self.gp_api = Gophish(settings.GP_API_KEY, host=settings.GP_URL, verify=True)
 
     def create(self, method, **kwargs):
+        """Create Method."""
         if method == "email_template":
             return self.generate_email_template(
                 kwargs.get("name"), kwargs.get("template")
@@ -38,10 +42,10 @@ class CampaignManager:
                 kwargs.get("campaign_name"),
                 kwargs.get("user_group"),
                 kwargs.get("email_template"),
-                kwargs.get("phish_url"),
             )
 
     def get(self, method, **kwargs):
+        """GET Method."""
         if method == "email_template":
             return self.get_email_template(kwargs.get("template_id", None))
         elif method == "landing_page":
@@ -57,12 +61,9 @@ class CampaignManager:
 
     # Create methods
     def generate_campaign(
-        self,
-        campaign_name: str = None,
-        user_group=None,
-        email_template=None,
-        phish_url=None,
+        self, campaign_name: str = None, user_group=None, email_template=None
     ):
+        """Generate campaign Method."""
         smtp = SMTP(name="HyreGuard")
         landing_page = Page(name="Landing Page")
 
@@ -72,7 +73,7 @@ class CampaignManager:
             page=landing_page,
             template=email_template,
             smtp=smtp,
-            url=phish_url,
+            url=settings.PHISH_URL,
         )
 
         campaign = self.gp_api.campaigns.post(campaign)
@@ -80,18 +81,22 @@ class CampaignManager:
         return campaign
 
     def generate_sending_profile(self):
+        """Generate Sending Profiles."""
         smtp = SMTP(name="HyreGuard")
         return self.gp_api.smtp.post(smtp=smtp)
 
     def generate_email_template(self, name: str, template: str):
+        """Generate Email Templates."""
         email_template = Template(name=name, html=template)
         return self.gp_api.templates.post(email_template)
 
     def generate_landing_page(self, name: str, template: str):
+        """Generate Landing Page."""
         landing_page = Page(name=name, html=template)
         return self.gp_api.pages.post(landing_page)
 
     def generate_user_group(self, group_name: str = None, target_list: Dict = None):
+        """Generate User Group."""
         users = [
             User(
                 first_name=target.get("first_name"),
@@ -103,11 +108,12 @@ class CampaignManager:
         ]
 
         target_group = Group(name=group_name, targets=users)
-        group = self.gp_api.groups.post(target_group)
+        self.gp_api.groups.post(target_group)
         return target_group
 
     # Get methods
     def get_campaign(self, campaign_id: int = None):
+        """GET Campaign."""
         if campaign_id:
             campaign = self.gp_api.campaigns.get(campaign_id=campaign_id)
         else:
@@ -115,6 +121,7 @@ class CampaignManager:
         return campaign
 
     def get_sending_profile(self, smtp_id: int = None):
+        """GET Sending Profile."""
         if smtp_id:
             sending_profile = self.gp_api.smtp.get(smtp_id=smtp_id)
         else:
@@ -122,6 +129,7 @@ class CampaignManager:
         return sending_profile
 
     def get_email_template(self, template_id: int = None):
+        """GET Email Temp."""
         if template_id:
             template = self.gp_api.templates.get(template_id=template_id)
         else:
@@ -129,6 +137,7 @@ class CampaignManager:
         return template
 
     def get_landing_page(self, page_id: int = None):
+        """GET landingpage."""
         if page_id:
             landing_page = self.gp_api.pages.get(page_id=page_id)
         else:
@@ -136,6 +145,7 @@ class CampaignManager:
         return landing_page
 
     def get_user_group(self, group_id: int = None):
+        """GET User group."""
         if group_id:
             user_group = self.gp_api.groups.get(group_id=group_id)
         else:
