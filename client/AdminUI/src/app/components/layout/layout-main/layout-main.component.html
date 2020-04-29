@@ -1,53 +1,78 @@
-
-  
-  <ng-container>
-    <mat-toolbar class="docs-header" color="primary">
-      <div style="padding-right:10px">
-        <img src="assets/CPA-logo-white.png" style="height: 3rem">
-      </div>  
-      <button mat-icon-button class="menu-button" type="button" aria-label="Toggle sidenav" [matMenuTriggerFor]="belowMenu">
-        <i class="material-icons">menu</i>
+<ng-container>
+  <mat-toolbar class="docs-header" color="primary">
+    <div style="padding-right:10px">
+      <img src="assets/CPA-logo-white.png" style="height: 3rem" />
+    </div>
+    <button
+      mat-icon-button
+      class="menu-button"
+      type="button"
+      aria-label="Toggle sidenav"
+      [matMenuTriggerFor]="belowMenu"
+    >
+      <i class="material-icons">menu</i>
+    </button>
+    <div class="header-title">{{ layoutSvc.getTitle() }}</div>
+    <mat-menu
+      #belowMenu="matMenu"
+      yPosition="below"
+      class="mat-menu-custom-header"
+    >
+      <button mat-menu-item routerLink="/subscription">Subscriptions</button>
+      <button mat-menu-item>Templates</button>
+      <button mat-menu-item>Contacts</button>
+      <button mat-menu-item>Domains</button>
+      <button mat-menu-item>Organizations</button>
+      <button mat-menu-item routerLink="/templatemanager">
+        Template Manager
       </button>
-      <div class="header-title">{{layoutSvc.getTitle()}}</div>
-      <mat-menu #belowMenu="matMenu" yPosition="below" class="mat-menu-custom-header">
-        <button mat-menu-item routerLink="/subscription">Subscriptions</button>
-        <button mat-menu-item>Templates</button>
-        <button mat-menu-item>Contacts</button>
-        <button mat-menu-item>Domains</button>
-        <button mat-menu-item>Organizations</button>
-        <button mat-menu-item routerLink="/deceptioncalculator">Deception Calculator</button>
-        <button mat-menu-item>User Admin</button>
+      <button mat-menu-item>User Admin</button>
+    </mat-menu>
+    <span class="fill-remaining-space"></span>
+    <span class="loggin-user">
+      Barry Hansen
+      <button
+        mat-icon-button
+        class="menu-button"
+        type="button"
+        aria-label="Toggle sidenav"
+        [matMenuTriggerFor]="userMenu"
+      >
+        <i class="material-icons">settings</i>
+      </button>
+      <mat-menu
+        #userMenu="matMenu"
+        yPosition="below"
+        class="mat-menu-custom-header"
+      >
+        <button mat-menu-item>Profile</button>
+        <button mat-menu-item>Logout</button>
+        <mat-slide-toggle [checked]="isDark" (change)="setTheme($event)"
+          >dark</mat-slide-toggle
+        >
       </mat-menu>
-      <span class="fill-remaining-space"></span>
-      <span class="loggin-user">
-          Barry Hansen
-          <button mat-icon-button class="menu-button" type="button" aria-label="Toggle sidenav" [matMenuTriggerFor]="userMenu">
-            <i class="material-icons">settings</i>
-          </button>
-          <mat-menu #userMenu="matMenu" yPosition="below" class="mat-menu-custom-header">
-            <button mat-menu-item>Profile</button>
-            <button mat-menu-item>Logout</button>
-            <mat-slide-toggle [checked]="isDark" (change)="setTheme($event)">dark</mat-slide-toggle>
-          </mat-menu>
-      </span>
-    </mat-toolbar>
+    </span>
+  </mat-toolbar>
 
-    <mat-sidenav-container class="sidenav-container">
-      <mat-sidenav #drawer class="docs-sidenav"
-          mode="side"
-          opened="true"
-          [fixedInViewport]="false" 
-          [fixedTopGap]="0"
-          [fixedBottomGap]="0">
-        <router-outlet name="sidebar"></router-outlet>
-      </mat-sidenav>
-      <mat-sidenav-content class="sidenav-content">
-        <mat-card>
-          <mat-card-content>
-            <router-outlet></router-outlet>
-          </mat-card-content>
-        </mat-card>
-      </mat-sidenav-content>
-    </mat-sidenav-container>
-    <mat-toolbar color="primary" class="docs-footer"></mat-toolbar>
-    </ng-container>
+  <mat-sidenav-container class="sidenav-container">
+    <mat-sidenav
+      #drawer
+      class="docs-sidenav"
+      mode="side"
+      opened="true"
+      [fixedInViewport]="false"
+      [fixedTopGap]="0"
+      [fixedBottomGap]="0"
+    >
+      <router-outlet name="sidebar"></router-outlet>
+    </mat-sidenav>
+    <mat-sidenav-content #mainContent class="sidenav-content">
+      <mat-card>
+        <mat-card-content #matCard>
+          <router-outlet></router-outlet>
+        </mat-card-content>
+      </mat-card>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+  <mat-toolbar color="primary" class="docs-footer"></mat-toolbar>
+</ng-container>

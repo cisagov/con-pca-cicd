@@ -1,7 +1,12 @@
-import { HttpClientModule, HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
+import {
+  HttpClientModule,
+  HTTP_INTERCEPTORS,
+  HttpClient
+} from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AngularEditorModule } from '@kolkov/angular-editor';
 import { MaterialModule } from './material.module';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -14,44 +19,50 @@ import { SearchPanelComponent } from './components/search-panel/search-panel.com
 import { ServiceSubscriptionComponent } from './components/service-subscription/service-subscription.component';
 import { CreateSubscriptionComponent } from './components/subscriptions/create-subscription/create-subscription.component';
 import { DeceptionCalculatorComponent } from './components/deception-calculator/deception-calculator.component';
-import { DeceptionCalculatorService } from './components/deception-calculator/deception-calculator.service';
+import { DeceptionCalculatorService } from './services/deception-calculator.service';
+import { TempalteManagerComponent } from './components/template-manager/template-manager.component';
+import { TemplateManagerService } from './services/template-manager.service';
+import { ListFilterPipe } from './pipes/list-filter.pipe';
 import { AutosizeModule } from 'node_modules/ngx-autosize';
 import { AddOrganizationComponent } from './components/organization/add-organization/add-organization.component';
 import { SubscriptionService } from './services/subscription.service';
 import { ThemeService } from './services/theme.service';
 import { LayoutMainService } from './services/layout-main.service';
 
-
 @NgModule({
   declarations: [
-    AppComponent, 
-    SubscriptionsComponent, 
-    LayoutBlankComponent, 
-    LayoutMainComponent, 
-    SearchPanelComponent, 
+    AppComponent,
+    SubscriptionsComponent,
+    LayoutBlankComponent,
+    LayoutMainComponent,
+    SearchPanelComponent,
     ServiceSubscriptionComponent,
     AddOrganizationComponent,
     CreateSubscriptionComponent,
     DeceptionCalculatorComponent,
+    TempalteManagerComponent,
+    ListFilterPipe
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
+    AngularEditorModule,
     AppRoutingModule,
-    BrowserAnimationsModule, 
-    MaterialModule, 
-    FormsModule, 
+    BrowserAnimationsModule,
+    MaterialModule,
+    FormsModule,
     ReactiveFormsModule,
     AutosizeModule,
     HttpClientModule
   ],
   providers: [
-    SubscriptionsService,    
+    SubscriptionsService,
     DeceptionCalculatorService,
+    TemplateManagerService,
     ThemeService,
     LayoutMainService,
-    HttpClient,
+    HttpClient
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}

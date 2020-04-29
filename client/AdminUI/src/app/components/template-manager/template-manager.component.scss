@@ -1,0 +1,41 @@
+.testing {
+  outline: solid red 1px;
+}
+.testing::after {
+  content: "*";
+  color: red;
+}
+.tab-form-error {
+}
+
+.tab-form-error::after {
+  content: "*";
+  color: red;
+}
+
+.template-list {
+  border: rgba(0, 0, 0, 0.15) solid 1px;
+  border-radius: 7px;
+}
+
+.selected_template_title div {
+  padding-bottom: 0em;
+}
+:host ::ng-deep .mat-form-field-wrapper {
+  margin: 0 !important;
+  padding: 0;
+}
+
+.selected-template button {
+  display: flex;
+  justify-content: center;
+  padding: 0em 3em;
+}
+.save_container {
+  align-items: flex-end;
+  flex: auto;
+}
+// mat-list-item:hover{
+//     background-color: blue($color: #000000);
+//     outline: gray solid 1px;
+// }
