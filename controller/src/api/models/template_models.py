@@ -65,6 +65,17 @@ class TemplateBehaviorModel(Model):
     greed = IntType()
 
 
+class TemplateImageModel(Model):
+    """
+    This is the Template Image Model.
+
+    This holds values for template Image Data.
+    """
+
+    file_name = StringType()
+    file_url = StringType()
+
+
 class TemplateModel(Model):
     """
     This is the Template Model.
@@ -95,7 +106,7 @@ class TemplateModel(Model):
     deception_score = IntType()
     descriptive_words = DictType(IntType)
     description = StringType()
-    display_link = StringType()
+    image_list = ListType(ModelType(TemplateImageModel))
     from_address = StringType()
     retired = BooleanType()
     subject = StringType()

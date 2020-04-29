@@ -56,6 +56,17 @@ class TemplateBehaviorSerializer(serializers.Serializer):
     greed = serializers.IntegerField()
 
 
+class TemplateImageSerializer(serializers.Serializer):
+    """
+    This is the Template Image Model.
+
+    This holds values for template Image data.
+    """
+
+    file_name = serializers.CharField()
+    file_url = serializers.CharField()
+
+
 class TemplateGetSerializer(serializers.Serializer):
     """
     This is the Template GET Serializer.
@@ -68,7 +79,7 @@ class TemplateGetSerializer(serializers.Serializer):
     deception_score = serializers.IntegerField()
     descriptive_words = serializers.DictField()
     description = serializers.CharField()
-    display_link = serializers.CharField(max_length=200)
+    image_list = TemplateImageSerializer(many=True)
     from_address = serializers.EmailField()
     retired = serializers.BooleanField()
     subject = serializers.CharField(max_length=200)
@@ -98,7 +109,7 @@ class TemplatePostSerializer(serializers.Serializer):
     deception_score = serializers.IntegerField()
     descriptive_words = serializers.DictField()
     description = serializers.CharField()
-    display_link = serializers.CharField(max_length=200)
+    image_list = TemplateImageSerializer(many=True)
     from_address = serializers.EmailField()
     retired = serializers.BooleanField()
     subject = serializers.CharField(max_length=200)
