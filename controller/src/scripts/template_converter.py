@@ -102,7 +102,7 @@ def main(argv):
 
     with open(output_file, "w") as outfile:
         data = output_list
-        json.dump(data, outfile, indent=2)
+        json.dump(data, outfile, indent=2, sort_keys=True)
     print("Finished.....")
 
 
