@@ -22,26 +22,21 @@ def load_data(data_file):
 def main(argv):
     """This is the Main method of coverting the json file."""
     inputfile = ""
-    outputfile = ""
     try:
-        opts, _ = getopt.getopt(argv, "hi:o:", ["ifile=", "ofile="])
+        opts, _ = getopt.getopt(argv, "hi:o:", ["ifile="])
     except getopt.GetoptError:
-        print("template_converter.py -i <inputfile> -o <outputfile>")
+        print("template_converter.py -i <inputfile> ")
         sys.exit(2)
     for opt, arg in opts:
         if opt == "-h":
-            print("template_converter.py -i <inputfile> -o <outputfile>")
+            print("template_converter.py -i <inputfile> ")
             sys.exit()
         elif opt in ("-i", "--ifile"):
             inputfile = arg
-        elif opt in ("-o", "--ofile"):
-            outputfile = arg
 
     print("Input file is: {}".format(inputfile))
-    print("Output file is: {}".format(outputfile))
     """This if the main def that runs creating data."""
     print("loading {}".format(inputfile))
-    print("file is here: {}".format(os.path.exists(inputfile)))
     json_data = load_data(inputfile)
     print("done loading data")
     output_list = []
@@ -53,7 +48,6 @@ def main(argv):
         if "Subject:" in postString[1]:
             message_subject = postString[1].replace("Subject: ", "")
         message_text = postString[2]
-        # print("<br />".join(message_text.split("\n")))
         message_html = "<br>".join(message_text.split("\n"))
         template = {
             "name": temp["name"],
