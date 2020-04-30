@@ -7,6 +7,70 @@ serializing data coming from the db into a request responce.
 # Third-Party Libraries
 from rest_framework import serializers
 
+TEMPLATE_TYPE_CHOICES = (
+    ("Email", "Email"),
+    ("Landing", "Landing Page"),
+)
+
+
+class TemplateAppearanceSerializer(serializers.Serializer):
+    """
+    This is the Template Serializer.
+
+    This holds values for template Appearance Score.
+    """
+
+    grammar = serializers.IntegerField()
+    link_domain = serializers.IntegerField()
+    logo_graphics = serializers.IntegerField()
+
+
+class TemplateSenderSerializer(serializers.Serializer):
+    """
+    This is the Template Sender Serializer.
+
+    This holds values for template Sender Score.
+    """
+
+    external = serializers.IntegerField()
+    internal = serializers.IntegerField()
+    authoritative = serializers.IntegerField()
+
+
+class TemplateRelevancySerializer(serializers.Serializer):
+    """
+    This is the Template Relevancy Serializer.
+
+    This holds values for template Relevancy Score.
+    """
+
+    organization = serializers.IntegerField()
+    public_news = serializers.IntegerField()
+
+
+class TemplateBehaviorSerializer(serializers.Serializer):
+    """
+    This is the Template Behavior Model.
+
+    This holds values for template Behavior Score.
+    """
+
+    fear = serializers.IntegerField()
+    duty_obligation = serializers.IntegerField()
+    curiosity = serializers.IntegerField()
+    greed = serializers.IntegerField()
+
+
+class TemplateImageSerializer(serializers.Serializer):
+    """
+    This is the Template Image Model.
+
+    This holds values for template Image data.
+    """
+
+    file_name = serializers.CharField()
+    file_url = serializers.CharField()
+
 
 class TemplateGetSerializer(serializers.Serializer):
     """
@@ -16,29 +80,25 @@ class TemplateGetSerializer(serializers.Serializer):
     """
 
     template_uuid = serializers.UUIDField()
-    name = serializers.CharField(max_length=200)
-    system_path = serializers.CharField(max_length=200)
+    gophish_template_id = serializers.IntegerField()
+    name = serializers.CharField()
+    template_type = serializers.ChoiceField(choices=TEMPLATE_TYPE_CHOICES)
     deception_score = serializers.IntegerField()
-    descriptive_words = serializers.DictField()
-    description = serializers.CharField(max_length=200)
-    display_link = serializers.CharField(max_length=200)
-    from_address = serializers.CharField(max_length=200)
+    descriptive_words = serializers.CharField()
+    description = serializers.CharField()
+    image_list = TemplateImageSerializer(many=True)
+    from_address = serializers.EmailField()
     retired = serializers.BooleanField()
     subject = serializers.CharField(max_length=200)
-    text = serializers.CharField(max_length=200)
+    text = serializers.CharField()
+    html = serializers.CharField()
     topic_list = serializers.ListField()
-    grammer = serializers.IntegerField()
-    link_domain = serializers.IntegerField()
-    logo_graphics = serializers.IntegerField()
-    external = serializers.IntegerField()
-    internal = serializers.IntegerField()
-    authoritative = serializers.IntegerField()
-    organization = serializers.IntegerField()
-    public_news = serializers.IntegerField()
-    fear = serializers.IntegerField()
-    duty_obligation = serializers.IntegerField()
-    curiosity = serializers.IntegerField()
-    greed = serializers.IntegerField()
+    # Score data
+    appearance = TemplateAppearanceSerializer()
+    sender = TemplateSenderSerializer()
+    relevancy = TemplateRelevancySerializer()
+    behavior = TemplateBehaviorSerializer()
+    complexity = serializers.IntegerField()
     # db_tracting data added below
     created_by = serializers.CharField(max_length=200)
     cb_timestamp = serializers.DateTimeField()
@@ -53,29 +113,25 @@ class TemplatePostSerializer(serializers.Serializer):
     This is a formats the data coming out of the Db.
     """
 
-    name = serializers.CharField(max_length=200)
-    system_path = serializers.CharField(max_length=200)
+    gophish_template_id = serializers.IntegerField()
+    name = serializers.CharField()
+    template_type = serializers.ChoiceField(choices=TEMPLATE_TYPE_CHOICES)
     deception_score = serializers.IntegerField()
-    descriptive_words = serializers.DictField()
-    description = serializers.CharField(max_length=200)
-    display_link = serializers.CharField(max_length=200)
-    from_address = serializers.CharField(max_length=200)
+    descriptive_words = serializers.CharField()
+    description = serializers.CharField()
+    image_list = TemplateImageSerializer(many=True)
+    from_address = serializers.EmailField()
     retired = serializers.BooleanField()
     subject = serializers.CharField(max_length=200)
-    text = serializers.CharField(max_length=200)
+    text = serializers.CharField()
+    html = serializers.CharField()
     topic_list = serializers.ListField()
-    grammer = serializers.IntegerField()
-    link_domain = serializers.IntegerField()
-    logo_graphics = serializers.IntegerField()
-    external = serializers.IntegerField()
-    internal = serializers.IntegerField()
-    authoritative = serializers.IntegerField()
-    organization = serializers.IntegerField()
-    public_news = serializers.IntegerField()
-    fear = serializers.IntegerField()
-    duty_obligation = serializers.IntegerField()
-    curiosity = serializers.IntegerField()
-    greed = serializers.IntegerField()
+    # Score data
+    appearance = TemplateAppearanceSerializer()
+    sender = TemplateSenderSerializer()
+    relevancy = TemplateRelevancySerializer()
+    behavior = TemplateBehaviorSerializer()
+    complexity = serializers.IntegerField()
 
 
 class TemplatePostResponseSerializer(serializers.Serializer):
