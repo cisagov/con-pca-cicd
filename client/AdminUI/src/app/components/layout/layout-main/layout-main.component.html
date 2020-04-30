@@ -19,14 +19,14 @@
       class="mat-menu-custom-header"
     >
       <button mat-menu-item routerLink="/subscription">Subscriptions</button>
-      <button mat-menu-item>Templates</button>
-      <button mat-menu-item>Contacts</button>
-      <button mat-menu-item>Domains</button>
-      <button mat-menu-item>Organizations</button>
-      <button mat-menu-item routerLink="/templatemanager">
-        Template Manager
+      <button mat-menu-item routerLink="/templatemanager">Templates</button>
+      <button mat-menu-item routerLink="/contacts">Contacts</button>
+      <button mat-menu-item routerLink="/domains">Domains</button>
+      <button mat-menu-item routerLink="/organizations">Organizations</button>
+      <button mat-menu-item routerLink="/deceptioncalculator">
+        Deception Calculator
       </button>
-      <button mat-menu-item>User Admin</button>
+      <button mat-menu-item routerLink="/useradmin">User Admin</button>
     </mat-menu>
     <span class="fill-remaining-space"></span>
     <span class="loggin-user">
@@ -40,16 +40,16 @@
       >
         <i class="material-icons">settings</i>
       </button>
-      <div class="header-title">{{layoutSvc.getTitle()}}</div>
-      <mat-menu #belowMenu="matMenu" yPosition="below" class="mat-menu-custom-header">
-        <button mat-menu-item routerLink="/subscription">Subscriptions</button>
-        <button mat-menu-item routerLink="/templatemanager">Templates</button>
-        <button mat-menu-item routerLink="/contacts">Contacts</button>
-        <button mat-menu-item routerLink="/domains">Domains</button>
-        <button mat-menu-item routerLink="/organizationspage">Organizations</button>
-        <button mat-menu-item routerLink="/deceptioncalculator">Deception Calculator</button>
-        <button mat-menu-item routerLink="/useradmin">User Admin</button>
-
+      <mat-menu
+        #userMenu="matMenu"
+        yPosition="below"
+        class="mat-menu-custom-header"
+      >
+        <button mat-menu-item>Profile</button>
+        <button mat-menu-item>Logout</button>
+        <mat-slide-toggle [checked]="isDark" (change)="setTheme($event)"
+          >dark</mat-slide-toggle
+        >
       </mat-menu>
     </span>
   </mat-toolbar>
