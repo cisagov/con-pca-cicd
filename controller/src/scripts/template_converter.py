@@ -53,8 +53,10 @@ def main(argv):
         if "Subject:" in postString[1]:
             message_subject = postString[1].replace("Subject: ", "")
         message_text = postString[2]
+        # print("<br />".join(message_text.split("\n")))
         new_format = {
             "name": temp["name"],
+            "type": "Email",
             "deception_score": 0,
             "descriptive_words": {},
             "description": temp["name"],
@@ -63,6 +65,7 @@ def main(argv):
             "retired": False,
             "subject": message_subject,
             "text": message_text,
+            "html": "",
             "topic_list": [],
             "appearance": {
                 "grammar": temp["appearance"]["grammar"],
@@ -87,9 +90,6 @@ def main(argv):
             "complexity": temp["complexity"],
         }
         output_list.append(new_format)
-        json_formatted_str = json.dumps(new_format, indent=2)
-        print(json_formatted_str)
-        print("--------")
 
     print(len(json_data))
     print(len(output_list))

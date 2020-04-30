@@ -34,7 +34,7 @@ def main():
     print("loading dummy json data")
     json_data = load_data()
     print("done loading data")
-    print("Step 1/3: create templates... (Skipping use template script...)")
+    print("Step 1/3: create templates...")
 
     templates = json_data["template_data"]
     created_template_uuids = []

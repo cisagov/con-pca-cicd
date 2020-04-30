@@ -7,6 +7,11 @@ serializing data coming from the db into a request responce.
 # Third-Party Libraries
 from rest_framework import serializers
 
+TEMPLATE_TYPE_CHOICES = (
+    ("Email", "Email"),
+    ("Landing", "Landing Page"),
+)
+
 
 class TemplateAppearanceSerializer(serializers.Serializer):
     """
@@ -75,15 +80,18 @@ class TemplateGetSerializer(serializers.Serializer):
     """
 
     template_uuid = serializers.UUIDField()
+    gophish_template_id = serializers.IntegerField()
     name = serializers.CharField()
+    template_type = serializers.ChoiceField(choices=TEMPLATE_TYPE_CHOICES)
     deception_score = serializers.IntegerField()
-    descriptive_words = serializers.DictField()
+    descriptive_words = serializers.CharField()
     description = serializers.CharField()
     image_list = TemplateImageSerializer(many=True)
     from_address = serializers.EmailField()
     retired = serializers.BooleanField()
     subject = serializers.CharField(max_length=200)
     text = serializers.CharField()
+    html = serializers.CharField()
     topic_list = serializers.ListField()
     # Score data
     appearance = TemplateAppearanceSerializer()
@@ -105,15 +113,18 @@ class TemplatePostSerializer(serializers.Serializer):
     This is a formats the data coming out of the Db.
     """
 
+    gophish_template_id = serializers.IntegerField()
     name = serializers.CharField()
+    template_type = serializers.ChoiceField(choices=TEMPLATE_TYPE_CHOICES)
     deception_score = serializers.IntegerField()
-    descriptive_words = serializers.DictField()
+    descriptive_words = serializers.CharField()
     description = serializers.CharField()
     image_list = TemplateImageSerializer(many=True)
     from_address = serializers.EmailField()
     retired = serializers.BooleanField()
     subject = serializers.CharField(max_length=200)
     text = serializers.CharField()
+    html = serializers.CharField()
     topic_list = serializers.ListField()
     # Score data
     appearance = TemplateAppearanceSerializer()

@@ -8,7 +8,6 @@ from database.repository.models import Model
 from database.repository.types import (
     BooleanType,
     DateTimeType,
-    DictType,
     IntType,
     ListType,
     ModelType,
@@ -101,16 +100,20 @@ class TemplateModel(Model):
 
     # Created via service
     template_uuid = UUIDType()
+    # Created by Gophish
+    gophish_template_id = IntType()
     # User Creataed
     name = StringType()
+    template_type = StringType()
     deception_score = IntType()
-    descriptive_words = DictType(IntType)
+    descriptive_words = StringType()
     description = StringType()
     image_list = ListType(ModelType(TemplateImageModel))
     from_address = StringType()
     retired = BooleanType()
     subject = StringType()
     text = StringType()
+    html = StringType()
     topic_list = ListType(StringType)
     # Score data
     appearance = ModelType(TemplateAppearanceModel)
