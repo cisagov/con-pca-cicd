@@ -51,9 +51,10 @@ def main(argv):
         message_html = "<br>".join(message_text.split("\n"))
         template = {
             "name": temp["name"],
-            "type": "Email",
+            "gophish_template_id": 0,
+            "template_type": "Email",
             "deception_score": 0,
-            "descriptive_words": {},
+            "descriptive_words": "",
             "description": temp["name"],
             "image_list": [],
             "from_address": message_from,
@@ -102,9 +103,10 @@ def main(argv):
             template_name = file.split(".")[0]
             template = {
                 "name": template_name,
-                "type": "Email",
+                "gophish_template_id": 0,
+                "template_type": "Email",
                 "deception_score": 0,
-                "descriptive_words": {},
+                "descriptive_words": "",
                 "description": "GoPhish formated {}".format(file),
                 "image_list": [],
                 "from_address": "",
@@ -113,9 +115,9 @@ def main(argv):
                 "text": "",
                 "html": html_string,
                 "topic_list": [],
-                "appearance": {"grammar": 0, "link_domain": 0, "logo_graphics": 0,},
-                "sender": {"external": 0, "internal": 0, "authoritative": 0,},
-                "relevancy": {"organization": 0, "public_news": 0,},
+                "appearance": {"grammar": 0, "link_domain": 0, "logo_graphics": 0},
+                "sender": {"external": 0, "internal": 0, "authoritative": 0},
+                "relevancy": {"organization": 0, "public_news": 0},
                 "behavior": {
                     "fear": 0,
                     "duty_obligation": 0,

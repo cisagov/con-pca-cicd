@@ -20,7 +20,7 @@
           "office_phone": "555-555-5555"
         }
       ],
-      "customer_uuid": "0bd5b1c8-3f9c-482e-afe5-c9f865f890a1",
+      "customer_uuid": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
       "gophish_campaign_list": [],
       "name": "SC-1031.Matt-Daemon.1.1",
       "primary_contact": {
@@ -154,121 +154,6 @@
           "last_name": "Smith",
           "position": "manager"
         }
-      ]
-    }
-  ],
-  "target_data": [
-    {
-      "customer_uuid": "0bd5b1c8-3f9c-482e-afe5-c9f865f890a1",
-      "email": "Bat.Man@example.com",
-      "first_name": "Bat",
-      "last_name": "Man",
-      "position": "admin"
-    },
-    {
-      "customer_uuid": "6068d85a-4f83-4b5a-958e-a179e5b4c205",
-      "email": "Ben.Aflex@example.com",
-      "first_name": "Ben",
-      "last_name": "Aflex",
-      "position": "admin"
-    },
-    {
-      "customer_uuid": "0bd5b1c8-3f9c-482e-afe5-c9f865f890a1",
-      "email": "David.Young@example.com",
-      "first_name": "David",
-      "last_name": "Young",
-      "position": "intern"
-    },
-    {
-      "customer_uuid": "0bd5b1c8-3f9c-482e-afe5-c9f865f890a1",
-      "email": "George.Clooney@example.com",
-      "first_name": "George",
-      "last_name": "Clooney",
-      "position": "intern"
-    },
-    {
-      "customer_uuid": "0bd5b1c8-3f9c-482e-afe5-c9f865f890a1",
-      "email": "Jane.Doe@example.com",
-      "first_name": "Jane",
-      "last_name": "Doe",
-      "position": "intern"
-    },
-    {
-      "customer_uuid": "0bd5b1c8-3f9c-482e-afe5-c9f865f890a1",
-      "email": "Jane.Moore@example.com",
-      "first_name": "Jane",
-      "last_name": "Moore",
-      "position": "manager"
-    },
-    {
-      "customer_uuid": "0bd5b1c8-3f9c-482e-afe5-c9f865f890a1",
-      "email": "John.Smith@example.com",
-      "first_name": "John",
-      "last_name": "Smith",
-      "position": "manager"
-    }
-  ],
-  "template_data": [
-    {
-      "authoritative": 3,
-      "curiosity": 1,
-      "deception_score": 1,
-      "description": "Langing Page Template",
-      "descriptive_words": {
-        "hello": 2,
-        "world": 1
-      },
-      "display_link": "dispay",
-      "duty_obligation": 1,
-      "external": 5,
-      "fear": 1,
-      "from_address": "Scam.Likely@totallylegit.com",
-      "grammer": 2,
-      "greed": 1,
-      "internal": 6,
-      "link_domain": 3,
-      "logo_graphics": 4,
-      "name": "Langing Page",
-      "organization": 1,
-      "public_news": 6,
-      "retired": false,
-      "subject": "LeGiT EmAiL FrOm StEvE",
-      "system_path": "templates/storage/path/location",
-      "text": "text",
-      "topic_list": [
-        "topic 1",
-        "topic 2"
-      ]
-    },
-    {
-      "authoritative": 3,
-      "curiosity": 1,
-      "deception_score": 1,
-      "description": "Email Page Template",
-      "descriptive_words": {
-        "hello": 2,
-        "world": 1
-      },
-      "display_link": "dispay",
-      "duty_obligation": 1,
-      "external": 5,
-      "fear": 1,
-      "from_address": "Scam.Likely@totallylegit.com",
-      "grammer": 2,
-      "greed": 1,
-      "internal": 6,
-      "link_domain": 3,
-      "logo_graphics": 4,
-      "name": "Email Template",
-      "organization": 1,
-      "public_news": 6,
-      "retired": false,
-      "subject": "LeGiT EmAiL FrOm StEvE",
-      "system_path": "templates/storage/path/location",
-      "text": "text",
-      "topic_list": [
-        "topic 1",
-        "topic 2"
       ]
     }
   ]
