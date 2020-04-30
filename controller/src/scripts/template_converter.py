@@ -54,7 +54,8 @@ def main(argv):
             message_subject = postString[1].replace("Subject: ", "")
         message_text = postString[2]
         # print("<br />".join(message_text.split("\n")))
-        new_format = {
+        message_html = "<br>".join(message_text.split("\n"))
+        template = {
             "name": temp["name"],
             "type": "Email",
             "deception_score": 0,
@@ -65,7 +66,7 @@ def main(argv):
             "retired": False,
             "subject": message_subject,
             "text": message_text,
-            "html": "",
+            "html": message_html,
             "topic_list": [],
             "appearance": {
                 "grammar": temp["appearance"]["grammar"],
@@ -89,10 +90,47 @@ def main(argv):
             },
             "complexity": temp["complexity"],
         }
-        output_list.append(new_format)
+        output_list.append(template)
 
-    print(len(json_data))
-    print(len(output_list))
+    print("now walk over created templates in ../templetes/emails")
+    current_dir = os.path.dirname(os.path.abspath(__file__)).rsplit("/", 1)[0]
+    template_dir = os.path.join(current_dir, "templates/emails")
+    print(template_dir)
+
+    for (_, _, filenames) in os.walk(template_dir):
+        print(filenames)
+        break
+
+    for file in filenames:
+        template_file = os.path.join(template_dir, file)
+        with open(template_file, "r") as f:
+            html_string = f.read()
+            template_name = file.split(".")[0]
+            template = {
+                "name": template_name,
+                "type": "Email",
+                "deception_score": 0,
+                "descriptive_words": {},
+                "description": "GoPhish formated {}".format(file),
+                "image_list": [],
+                "from_address": "",
+                "retired": False,
+                "subject": "",
+                "text": "",
+                "html": html_string,
+                "topic_list": [],
+                "appearance": {"grammar": 0, "link_domain": 0, "logo_graphics": 0,},
+                "sender": {"external": 0, "internal": 0, "authoritative": 0,},
+                "relevancy": {"organization": 0, "public_news": 0,},
+                "behavior": {
+                    "fear": 0,
+                    "duty_obligation": 0,
+                    "curiosity": 0,
+                    "greed": 0,
+                },
+                "complexity": 0,
+            }
+        output_list.append(template)
 
     print("Now saving new json file...")
 
