@@ -18,9 +18,9 @@ from rest_framework import permissions
 
 schema_view = get_schema_view(
     openapi.Info(
-        title="CPA API",
+        title="Con-PCA API",
         default_version="v1",
-        description="""This is the API documentation for CPA.
+        description="""This is the API documentation for Con-PCA.
         This was created to define all API calls and repsonses.""",
         terms_of_service="https://github.com/cisagov/cpa/blob/develop/LICENSE",
         contact=openapi.Contact(email="peter.mercado255@gmail.com"),

@@ -9,7 +9,13 @@ into a usable json format for importing into cpa.
 import getopt
 import json
 import os
+import re
 import sys
+
+# Third-Party Libraries
+from bs4 import BeautifulSoup
+from nltk.corpus import stopwords
+from nltk.tokenize import word_tokenize
 
 
 def load_data(data_file):
@@ -40,6 +46,7 @@ def main(argv):
     json_data = load_data(inputfile)
     print("done loading data")
     output_list = []
+    stop_words = set(stopwords.words("english"))
     for temp in json_data:
         text = temp["text"]
         postString = text.split("\n", 2)
@@ -49,12 +56,18 @@ def main(argv):
             message_subject = postString[1].replace("Subject: ", "")
         message_text = postString[2]
         message_html = "<br>".join(message_text.split("\n"))
+        message_cleaned = " ".join(message_text.split("\n"))
+
+        message_cleaned_more = re.sub(r"[^A-Za-z]+", " ", message_cleaned.lower())
+        word_tokens = word_tokenize(message_cleaned_more)
+        filtered_sentence = [w for w in word_tokens if w not in stop_words]
+        descriptive_words = " ".join(filtered_sentence)
         template = {
             "name": temp["name"],
             "gophish_template_id": 0,
             "template_type": "Email",
             "deception_score": 0,
-            "descriptive_words": "",
+            "descriptive_words": descriptive_words,
             "description": temp["name"],
             "image_list": [],
             "from_address": message_from,
@@ -90,8 +103,6 @@ def main(argv):
     print("now walk over created templates in ../templetes/emails")
     current_dir = os.path.dirname(os.path.abspath(__file__)).rsplit("/", 1)[0]
     template_dir = os.path.join(current_dir, "templates/emails")
-    print(template_dir)
-
     for (_, _, filenames) in os.walk(template_dir):
         print(filenames)
         break
@@ -100,13 +111,20 @@ def main(argv):
         template_file = os.path.join(template_dir, file)
         with open(template_file, "r") as f:
             html_string = f.read()
+            soup = BeautifulSoup(html_string, "html.parser")
+            cleantext = re.sub(r"[^A-Za-z]+", " ", soup.get_text().lower())
+
+            word_tokens = word_tokenize(cleantext)
+            filtered_sentence = [w for w in word_tokens if w not in stop_words]
+            descriptive_words = " ".join(filtered_sentence)
+
             template_name = file.split(".")[0]
             template = {
                 "name": template_name,
                 "gophish_template_id": 0,
                 "template_type": "Email",
                 "deception_score": 0,
-                "descriptive_words": "",
+                "descriptive_words": descriptive_words,
                 "description": "GoPhish formated {}".format(file),
                 "image_list": [],
                 "from_address": "",
