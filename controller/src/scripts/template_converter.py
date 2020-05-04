@@ -9,6 +9,7 @@ into a usable json format for importing into cpa.
 import getopt
 import json
 import os
+import re
 import sys
 
 
@@ -49,6 +50,10 @@ def main(argv):
             message_subject = postString[1].replace("Subject: ", "")
         message_text = postString[2]
         message_html = "<br>".join(message_text.split("\n"))
+        message_cleaned = " ".join(message_text.split("\n"))
+
+        message_cleaned_more = re.sub(r"[^A-Za-z]+", " ", message_cleaned.lower())
+        print(message_cleaned_more)
         template = {
             "name": temp["name"],
             "gophish_template_id": 0,
