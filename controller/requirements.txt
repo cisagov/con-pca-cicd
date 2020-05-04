@@ -4,6 +4,7 @@ asgiref==3.2.7
 attrs==19.3.0
 billiard==3.6.3.0
 black==19.10b0
+bs4==4.9.0
 celery==4.4.2
 click==7.1.1
 Django==3.0.4
@@ -18,6 +19,7 @@ ipdb==0.13.2
 isort==4.3.21
 kombu==4.6.8
 motor==2.0.0
+nltk==3.5.0
 pathspec==0.7.0
 ptvsd>=4.3.2
 pymongo==3.10.1

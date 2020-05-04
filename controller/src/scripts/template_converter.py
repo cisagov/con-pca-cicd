@@ -12,6 +12,11 @@ import os
 import re
 import sys
 
+# Third-Party Libraries
+from bs4 import BeautifulSoup
+from nltk.corpus import stopwords
+from nltk.tokenize import word_tokenize
+
 
 def load_data(data_file):
     """This loads json file of data_file."""
@@ -41,6 +46,8 @@ def main(argv):
     json_data = load_data(inputfile)
     print("done loading data")
     output_list = []
+    stop_words = set(stopwords.words("english"))
+    print(stop_words)
     for temp in json_data:
         text = temp["text"]
         postString = text.split("\n", 2)
@@ -53,13 +60,15 @@ def main(argv):
         message_cleaned = " ".join(message_text.split("\n"))
 
         message_cleaned_more = re.sub(r"[^A-Za-z]+", " ", message_cleaned.lower())
-        print(message_cleaned_more)
+        word_tokens = word_tokenize(message_cleaned_more)
+        filtered_sentence = [w for w in word_tokens if w not in stop_words]
+        descriptive_words = " ".join(filtered_sentence)
         template = {
             "name": temp["name"],
             "gophish_template_id": 0,
             "template_type": "Email",
             "deception_score": 0,
-            "descriptive_words": "",
+            "descriptive_words": descriptive_words,
             "description": temp["name"],
             "image_list": [],
             "from_address": message_from,
@@ -105,13 +114,20 @@ def main(argv):
         template_file = os.path.join(template_dir, file)
         with open(template_file, "r") as f:
             html_string = f.read()
+            soup = BeautifulSoup(html_string, "html.parser")
+            cleantext = re.sub(r"[^A-Za-z]+", " ", soup.get_text().lower())
+
+            word_tokens = word_tokenize(cleantext)
+            filtered_sentence = [w for w in word_tokens if w not in stop_words]
+            descriptive_words = " ".join(filtered_sentence)
+
             template_name = file.split(".")[0]
             template = {
                 "name": template_name,
                 "gophish_template_id": 0,
                 "template_type": "Email",
                 "deception_score": 0,
-                "descriptive_words": "",
+                "descriptive_words": descriptive_words,
                 "description": "GoPhish formated {}".format(file),
                 "image_list": [],
                 "from_address": "",
