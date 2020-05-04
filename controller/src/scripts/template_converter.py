@@ -47,7 +47,6 @@ def main(argv):
     print("done loading data")
     output_list = []
     stop_words = set(stopwords.words("english"))
-    print(stop_words)
     for temp in json_data:
         text = temp["text"]
         postString = text.split("\n", 2)
@@ -104,8 +103,6 @@ def main(argv):
     print("now walk over created templates in ../templetes/emails")
     current_dir = os.path.dirname(os.path.abspath(__file__)).rsplit("/", 1)[0]
     template_dir = os.path.join(current_dir, "templates/emails")
-    print(template_dir)
-
     for (_, _, filenames) in os.walk(template_dir):
         print(filenames)
         break
