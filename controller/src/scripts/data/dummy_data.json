@@ -33,6 +33,7 @@
       },
       "start_date": "2020-04-10T09:30:25",
       "status": "  Waiting on SRF",
+      "templates_selected_uuid_list": [],
       "target_email_list": [
         {
           "email": "Bat.Man@example.com",
@@ -111,6 +112,7 @@
       },
       "start_date": "2020-03-10T09:30:25",
       "status": "Waiting on SRF",
+      "templates_selected_uuid_list": [],
       "target_email_list": [
         {
           "email": "Bat.Man@example.com",

@@ -124,8 +124,8 @@ class TemplateView(APIView):
         request_body=TemplatePatchSerializer, 
         responses={"202": TemplatePatchResponseSerializer, "400": "Bad Request"},
         security=[],
-        operation_id="Update and Patch single Customer",
-        operation_description="This handles the API for the Update Customer with customer_uuid.",
+        operation_id="Update and Patch single Template",
+        operation_description="This handles the API for the Update Template with template_uuid.",
     )
     def patch(self, request, template_uuid):
         """Patch method."""
@@ -142,12 +142,12 @@ class TemplateView(APIView):
     @swagger_auto_schema(
         responses={"200": TemplateDeleteResponseSerializer, "400": "Bad Request"},
         security=[],
-        operation_id="Update and Patch single Customer",
-        operation_description="This handles the API for the Update Customer with customer_uuid.",
+        operation_id="Delete single Template",
+        operation_description="This handles the API for the Delete of a  Template with template_uuid.",
     )
     def delete(self, request, template_uuid):
         """delete method."""
-        logging.debug("delete customer_uuid {}".format(template_uuid))
+        logging.debug("delete template_uuid {}".format(template_uuid))
         delete_response = self.__delete_single(template_uuid)
         logging.info("delete responce {}".format(delete_response))
         if "errors" in delete_response:

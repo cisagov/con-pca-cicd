@@ -17,6 +17,9 @@ from api.serializers.subscriptions_serializers import (
     SubscriptionGetSerializer,
     SubscriptionPostResponseSerializer,
     SubscriptionPostSerializer,
+    SubscriptionPatchResponseSerializer,
+    SubscriptionPatchSerializer,
+    SubscriptionDeleteResponseSerializer,
 )
 from api.utils import db_service
 from drf_yasg.utils import swagger_auto_schema
@@ -167,6 +170,41 @@ class SubscriptionView(APIView):
         serializer = SubscriptionGetSerializer(subscription)
         return Response(serializer.data)
 
+    @swagger_auto_schema(
+        request_body=SubscriptionPatchSerializer, 
+        responses={"202": SubscriptionPatchResponseSerializer, "400": "Bad Request"},
+        security=[],
+        operation_id="Update and Patch single subscription",
+        operation_description="This handles the API for the Update subscription with subscription_uuid.",
+    )
+    def patch(self, request, subscription_uuid):
+        """Patch method."""
+        logging.debug("update subscription_uuid {}".format(subscription_uuid))
+        put_data = request.data.copy()
+        serialized_data = SubscriptionPatchSerializer(put_data)
+        updated_response = self.__update_single(uuid=subscription_uuid, put_data=serialized_data.data)
+        logging.info("created responce {}".format(updated_response))
+        if "errors" in updated_response:
+            return Response(updated_response, status=status.HTTP_400_BAD_REQUEST)
+        serializer = SubscriptionPatchResponseSerializer(updated_response)
+        return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
+    
+    @swagger_auto_schema(
+        responses={"200": SubscriptionDeleteResponseSerializer, "400": "Bad Request"},
+        security=[],
+        operation_id="Delete single subscription",
+        operation_description="This handles the API for the Delete of a  subscription with subscription_uuid.",
+    )
+    def delete(self, request, subscription_uuid):
+        """delete method."""
+        logging.debug("delete subscription_uuid {}".format(subscription_uuid))
+        delete_response = self.__delete_single(subscription_uuid)
+        logging.info("delete responce {}".format(delete_response))
+        if "errors" in delete_response:
+            return Response(delete_response, status=status.HTTP_400_BAD_REQUEST)
+        serializer = SubscriptionDeleteResponseSerializer(delete_response)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
     def __get_single(self, subscription_uuid):
         """
         Get_single private method.
@@ -178,3 +216,39 @@ class SubscriptionView(APIView):
         service = db_service("subscription", SubscriptionModel, validate_subscription)
         subscription = loop.run_until_complete(service.get(uuid=subscription_uuid))
         return subscription
+
+    def __update_single(self, uuid, put_data):
+        """
+        Update_single private method.
+
+        This handles getting the data from the db.
+        """            
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        service = db_service("subscription", SubscriptionModel, validate_subscription)
+
+        updated_timestamp = datetime.datetime.utcnow()
+        current_user = "dev user"
+        put_data["subscription_uuid"] = uuid
+        put_data["last_updated_by"] = current_user
+        put_data["lub_timestamp"] = updated_timestamp
+
+        subscription = loop.run_until_complete(service.get(uuid=uuid))
+        subscription.update(put_data)
+        update_response = loop.run_until_complete(service.update(subscription))
+        if "errors" in update_response:
+            return update_response
+        return subscription
+    
+    def __delete_single(self, uuid):
+        """
+        Get_single private method.
+
+        This handles getting the data from the db.
+        """
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        service = db_service("subscription", SubscriptionModel, validate_subscription)
+
+        delete_response = loop.run_until_complete(service.delete(uuid=uuid))
+        return delete_response
