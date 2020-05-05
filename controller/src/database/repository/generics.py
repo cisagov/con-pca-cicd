@@ -253,10 +253,10 @@ class GenericRepository(object):
         Generic method that can be used to update a
         single document by a given object.
         """
-        result = await self.collection.update_one(
+        await self.collection.update_one(
             {self.uuid_name: object[self.uuid_name]}, {"$set": object}
         )
-        return str(result.upserted_id)
+        return {self.uuid_name: object[self.uuid_name]}
 
     async def delete(self, uuid):
         """
