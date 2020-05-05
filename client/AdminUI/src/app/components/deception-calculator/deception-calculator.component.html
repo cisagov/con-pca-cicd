@@ -1,7 +1,9 @@
 <div class="d-flex flex-row container-fluid row deception_calc_content">
     <!-- Left Column - Template Preview -->
-    <div class="col-5 border-right h-100 overflow-auto p-5">
-        <div [innerHTML]="emailPreivew" >template</div>
+    <div class="col-5 border-right h-100 overflow-auto p-3">
+        <h1>Template: {{templateName}}</h1>
+        <h4>Subject: {{templateSubject}}</h4>
+        <div [innerHTML]="templateHTML" >template</div>
     </div>
     <!-- Right Column - Calculation -->
     <div class="col-7 h-100 overflow-auto">
@@ -82,7 +84,7 @@
                         </div>
                         <div class="check-box-wrapper">
                             <div class="deception_checkboxes mt-2" [formGroup]="deceptionFormGroup">
-                                <mat-checkbox formControlName="behavior_fear">Behavior Fear inline</mat-checkbox>
+                                <mat-checkbox formControlName="behavior_fear">Behavior Fear </mat-checkbox>
                                 <mat-checkbox formControlName="curiosity">Duty or Obligation</mat-checkbox>
                                 <mat-checkbox formControlName="duty_obligation">Curiosity</mat-checkbox>
                                 <mat-checkbox formControlName="greed">Greed</mat-checkbox>
@@ -106,7 +108,7 @@
                             <div class="d-flex flex-row">
                                 <mat-form-field appearance="outline" class="flex-grow-1" [formGroup]="deceptionFormGroup">
                                     <mat-label>Final Deception Score</mat-label>
-                                    <input type="text" disabled matInput placeholder="Organization Name" formControlName="final_deception_score">
+                                    <input type="text" matInput placeholder="DeceptionScore" formControlName="final_deception_score">
                                 </mat-form-field>
                             </div>
                             <div class="d-flex flex-row ml-auto">

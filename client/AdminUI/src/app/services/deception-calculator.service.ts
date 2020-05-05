@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { DeceptionCalculation } from 'src/app/models/deception-calculator.model';
+import { Template } from 'src/app/models/template.model'
 import { templateJitUrl } from '@angular/compiler';
 import { Observable } from 'rxjs';
 
@@ -14,9 +15,16 @@ const headers = {
 export class DeceptionCalculatorService {
   constructor(private http: HttpClient) {}
 
+  getDeception(templateUUID: string){
+    return this.http.get(
+      `http://localhost:8000/api/v1/template/${templateUUID}`,
+      headers
+    );
+  }
+
   //Update the final deception score of the provided DeceptionCalculation model
   updateDeceptionScore(deception_calculation: DeceptionCalculation) {
-    deception_calculation.final_deception_score =
+    return
       deception_calculation.authoritative +
       deception_calculation.grammar +
       deception_calculation.internal +
@@ -25,6 +33,34 @@ export class DeceptionCalculatorService {
       deception_calculation.public_news +
       deception_calculation.relevancy_organization +
       deception_calculation.sender_external;
+  }
+  
+  deceptionModelFromTemplate(template: Template){
+
+    let retVal: DeceptionCalculation = new DeceptionCalculation()
+
+    //Template Display Contents
+    retVal.temlpateName = template.name
+    retVal.templateBody = template.html
+    retVal.templateSubject = template.subject
+
+    //Deception Calc Components
+    retVal.grammar = template.appearance.grammar
+    retVal.link_domain = template.appearance.link_domain
+    retVal.logo_graphics = template.appearance.logo_graphics
+    retVal.sender_external = template.sender.external
+    retVal.internal = template.sender.internal
+    retVal.authoritative = template.sender.authoritative
+    retVal.relevancy_organization = template.relevancy.organization
+    retVal.public_news = template.relevancy.public_news
+    retVal.behavior_fear = !!template.behavior.fear
+    retVal.duty_obligation = !!template.behavior.duty_obligation
+    retVal.curiosity = !!template.behavior.curiosity
+    retVal.greed = !!template.behavior.greed
+    retVal.final_deception_score = template.deception_score
+
+    return retVal
+
   }
 
   //Testing method
@@ -50,7 +86,7 @@ export class DeceptionCalculatorService {
     decep_calc.sender_external = 0;
 
     //Text array
-    decep_calc.additional_word_tags = ['test', 'values', 'here'];
+    decep_calc.additional_word_tags = "Test, Values, Here";
 
     this.updateDeceptionScore(decep_calc);
 

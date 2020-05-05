@@ -9,31 +9,45 @@ export class TemplateShort {
 }
 
 export class Template {
+  //EMail Data
   template_uuid: string;
+  gophish_template_id : number;
   name: string;
-  system_path: string;
+  template_type : string;
+  //system_path: string;
   deception_score: number;
   descriptive_words: Array<string>;
   description: string;
-  display_link: string;
+  image_list: Array<TemplateImageModel>;
   from_address: string;
+  //display_link: string;
   retired: boolean;
   subject: string;
   text: string;
   html: string;
   topic_list: Array<string>;
+
+  //Deception Score
+  appearance: TemplateAppearanceModel;
   grammer: number;
   link_domain: number;
-  logo_graphics: string; //URL to image?
+  logo_graphics: string;
+
+  sender: TemplateSenderModel;
   external: string;
   internal: string;
   authoritative: number;
+
+  relevancy: TemplateRelevancyModel;
   organization: number;
   public_news: number;
+
+  behavior: TemplateBehaviorModel;
   fear: number;
   duty_obligation: number;
   curiosity: number;
   greed: number;
+
 
   //DB tracking variables
   created_by?: string;
@@ -44,4 +58,33 @@ export class Template {
   public constructor(init?: Partial<Template>) {
     Object.assign(this, init);
   }
+}
+
+export class TemplateAppearanceModel{
+    grammar : number
+    link_domain : number
+    logo_graphics : number
+}
+
+export class TemplateSenderModel{
+    external : number
+    internal : number
+    authoritative : number
+}
+
+export class TemplateRelevancyModel{
+    organization : number
+    public_news : number
+}
+
+export class TemplateBehaviorModel{
+    fear : number
+    duty_obligation : number
+    curiosity : number
+    greed : number
+}
+
+export class TemplateImageModel{
+    file_name : string
+    file_url : string
 }
