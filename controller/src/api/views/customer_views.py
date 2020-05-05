@@ -126,12 +126,12 @@ class CustomerView(APIView):
         operation_id="Update and Patch single Customer",
         operation_description="This handles the API for the Update Customer with customer_uuid.",
     )
-    def put(self, request, customer_uuid):
-        """Put method."""
+    def patch(self, request, customer_uuid):
+        """Patch method."""
         logging.debug("get customer_uuid {}".format(customer_uuid))
         put_data = request.data.copy()
         serialized_data = CustomerPatchSerializer(put_data)
-        updated_response = self.__update_single(customer_uuid, serialized_data.data)
+        updated_response = self.__update_single(uuid=customer_uuid, put_data=serialized_data.data)
         logging.info("created responce {}".format(updated_response))
         if "errors" in updated_response:
             return Response(updated_response, status=status.HTTP_400_BAD_REQUEST)
@@ -154,7 +154,7 @@ class CustomerView(APIView):
         serializer = CustomerDeleteResponseSerializer(delete_response)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-    def __get_single(self, customer_uuid):
+    def __get_single(self, uuid):
         """
         Get_single private method.
 
@@ -163,7 +163,7 @@ class CustomerView(APIView):
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
         service = db_service("customer", CustomerModel, validate_customer)
-        customer = loop.run_until_complete(service.get(uuid=customer_uuid))
+        customer = loop.run_until_complete(service.get(uuid=uuid))
         return customer
     
     def __update_single(self, uuid, put_data):
@@ -189,7 +189,7 @@ class CustomerView(APIView):
             return update_response
         return customer
     
-    def __delete_single(self, customer_uuid):
+    def __delete_single(self, uuid):
         """
         Get_single private method.
 
@@ -199,5 +199,5 @@ class CustomerView(APIView):
         asyncio.set_event_loop(loop)
         service = db_service("customer", CustomerModel, validate_customer)
 
-        delete_response = loop.run_until_complete(service.delete(uuid=customer_uuid))
+        delete_response = loop.run_until_complete(service.delete(uuid=uuid))
         return delete_response
