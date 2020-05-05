@@ -6,6 +6,7 @@ import {
   HostListener
 } from '@angular/core';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
+// @ts-ignore
 import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { ActivatedRoute } from '@angular/router';
 import { MyErrorStateMatcher } from 'src/app/helper/ErrorStateMatcher';
@@ -13,6 +14,7 @@ import { LayoutMainService } from 'src/app/services/layout-main.service';
 import { TemplateManagerService } from 'src/app/services/template-manager.service';
 import { Template } from 'src/app/models/template.model';
 import { Subscription } from 'rxjs';
+// @ts-ignore
 import $ from 'jquery';
 import 'src/app/helper/csvToArray';
 
@@ -32,9 +34,11 @@ export class TempalteManagerComponent implements OnInit {
   matchSubject = new MyErrorStateMatcher();
   matchFromAddress = new MyErrorStateMatcher();
   matchTemplateName = new MyErrorStateMatcher();
+  matchTemplateHTML = new MyErrorStateMatcher();
 
   //Subscriptions
   subscriptions = Array<Subscription>();
+  selectedTemplateSub: Subscription;
 
   //Styling variables, required to properly size and display the angular-editor import
   body_content_height: number;
@@ -88,6 +92,7 @@ export class TempalteManagerComponent implements OnInit {
     this.subscriptions.forEach(sub => {
       sub.unsubscribe();
     });
+    this.selectedTemplateSub.unsubscribe();
   }
 
   ngAfterViewInit() {
@@ -95,7 +100,30 @@ export class TempalteManagerComponent implements OnInit {
   }
 
   getAllTemplates() {
-    this.template_list = this.templateManagerSvc.getAllTemplates();
+    this.subscriptions.push(
+      this.templateManagerSvc.getAllTemplates().subscribe((data: any) => {
+        this.template_list = data;
+        console.log(this.template_list);
+      })
+    );
+  }
+
+  selectTemplate(template_uuid: string) {
+    if (this.currentTemplateFormGroup.dirty) {
+      // alert(
+      //   'Values not saved for ' +
+      //     this.currentTemplateFormGroup.controls['templateName'].value
+      // );
+    }
+    console.log(template_uuid);
+
+    console.log(template_uuid);
+    this.selectedTemplateSub = this.templateManagerSvc
+      .getTemlpate(template_uuid)
+      .subscribe((data: any) => {
+        console.log(data);
+        this.setTemplateForm(data);
+      });
   }
 
   setEmptyTemplateForm() {
@@ -105,24 +133,25 @@ export class TempalteManagerComponent implements OnInit {
       templateDeceptionScore: new FormControl(0),
       templateDescriptiveWords: new FormControl(''),
       templateDescription: new FormControl(''),
-      templateDisplayLink: new FormControl(''),
+      //templateDisplayLink: new FormControl(''),
       templateFromAddress: new FormControl('', [Validators.required]),
       templateRetired: new FormControl(false),
       templateSubject: new FormControl('', [Validators.required]),
-      templateText: new FormControl('', [Validators.required]),
-      templateTopicList: new FormControl(''),
-      templateGrammer: new FormControl(''),
-      templateLinkDomain: new FormControl(''),
-      templateLogoGraphics: new FormControl(''),
-      templateExternal: new FormControl(''),
-      templateInternal: new FormControl(''),
-      templateAuthoratative: new FormControl(''),
-      templateOrganization: new FormControl(''),
-      templatePublicNews: new FormControl(''),
-      templateFear: new FormControl(''),
-      templateDutyObligation: new FormControl(''),
-      templateCuriosity: new FormControl(''),
-      templateGreed: new FormControl('')
+      templateText: new FormControl(''),
+      templateHTML: new FormControl('', [Validators.required])
+      // templateTopicList: new FormControl(''),
+      // templateGrammer: new FormControl(''),
+      // templateLinkDomain: new FormControl(''),
+      // templateLogoGraphics: new FormControl(''),
+      // templateExternal: new FormControl(''),
+      // templateInternal: new FormControl(''),
+      // templateAuthoratative: new FormControl(''),
+      // templateOrganization: new FormControl(''),
+      // templatePublicNews: new FormControl(''),
+      // templateFear: new FormControl(''),
+      // templateDutyObligation: new FormControl(''),
+      // templateCuriosity: new FormControl(''),
+      // templateGreed: new FormControl('')
     });
   }
 
@@ -133,31 +162,32 @@ export class TempalteManagerComponent implements OnInit {
       ]),
       templateName: new FormControl(template.name, [Validators.required]),
       templateDeceptionScore: new FormControl(template.deception_score),
-      templateDescriptiveWords: new FormControl(
-        template.descriptive_words?.join(', ')
-      ),
+      templateDescriptiveWords: new FormControl(template.descriptive_words),
       templateDescription: new FormControl(template.description),
-      templateDisplayLink: new FormControl(template.display_link),
+      //templateDisplayLink: new FormControl(template.display_link),
       templateFromAddress: new FormControl(template.from_address, [
         Validators.required
       ]),
       templateRetired: new FormControl(template.retired),
       templateSubject: new FormControl(template.subject, [Validators.required]),
-      templateText: new FormControl(template.text, [Validators.required]),
-      templateTopicList: new FormControl(template.topic_list?.join(', ')),
-      templateGrammer: new FormControl(template.grammer),
-      templateLinkDomain: new FormControl(template.link_domain),
-      templateLogoGraphics: new FormControl(template.logo_graphics),
-      templateExternal: new FormControl(template.external),
-      templateInternal: new FormControl(template.internal),
-      templateAuthoratative: new FormControl(template.authoritative),
-      templateOrganization: new FormControl(template.organization),
-      templatePublicNews: new FormControl(template.public_news),
-      templateFear: new FormControl(template.fear),
-      templateDutyObligation: new FormControl(template.duty_obligation),
-      templateCuriosity: new FormControl(template.curiosity),
-      templateGreed: new FormControl(template.greed)
+      templateText: new FormControl(template.text),
+      templateHTML: new FormControl(template.html, [Validators.required])
+      // templateTopicList: new FormControl(template.topic_list?.join(', ')),
+      // templateGrammer: new FormControl(template.grammer),
+      // templateLinkDomain: new FormControl(template.link_domain),
+      // templateLogoGraphics: new FormControl(template.logo_graphics),
+      // templateExternal: new FormControl(template.external),
+      // templateInternal: new FormControl(template.internal),
+      // templateAuthoratative: new FormControl(template.authoritative),
+      // templateOrganization: new FormControl(template.organization),
+      // templatePublicNews: new FormControl(template.public_news),
+      // templateFear: new FormControl(template.fear),
+      // templateDutyObligation: new FormControl(template.duty_obligation),
+      // templateCuriosity: new FormControl(template.curiosity),
+      // templateGreed: new FormControl(template.greed)
     });
+    console.log(this.currentTemplateFormGroup);
+    console.log(this.currentTemplateFormGroup);
   }
 
   getTemplateFromForm(form: FormGroup) {
@@ -165,43 +195,32 @@ export class TempalteManagerComponent implements OnInit {
       template_uuid: form.controls['templateUUID'].value,
       name: form.controls['templateName'].value,
       deception_score: form.controls['templateDeceptionScore'].value,
-      descriptive_words: form.controls[
-        'templateDescriptiveWords'
-      ].value?.csvToArray(),
+      descriptive_words: form.controls['templateDescriptiveWords'].value,
       description: form.controls['templateDescription'].value,
-      display_link: form.controls['templateDisplayLink'].value,
+      //display_link: form.controls['templateDisplayLink'].value,
       from_address: form.controls['templateFromAddress'].value,
       retired: form.controls['templateRetired'].value,
       subject: form.controls['templateSubject'].value,
       text: form.controls['templateText'].value,
-      topic_list: form.controls['templateTopicList'].value?.csvToArray(),
-      grammer: form.controls['templateGrammer'].value,
-      link_domain: form.controls['templateLinkDomain'].value,
-      logo_graphics: form.controls['templateLogoGraphics'].value,
-      external: form.controls['templateExternal'].value,
-      internal: form.controls['templateInternal'].value,
-      authoritative: form.controls['templateAuthoratative'].value,
-      organization: form.controls['templateOrganization'].value,
-      public_news: form.controls['templatePublicNews'].value,
-      fear: form.controls['templateFear'].value,
-      duty_obligation: form.controls['templateDutyObligation'].value,
-      curiosity: form.controls['templateCuriosity'].value,
-      greed: form.controls['templateGreed'].value
+      html: form.controls['templateHTML'].value
+      // topic_list: form.controls['templateTopicList'].value?.csvToArray(),
+      // grammer: form.controls['templateGrammer'].value,
+      // link_domain: form.controls['templateLinkDomain'].value,
+      // logo_graphics: form.controls['templateLogoGraphics'].value,
+      // external: form.controls['templateExternal'].value,
+      // internal: form.controls['templateInternal'].value,
+      // authoritative: form.controls['templateAuthoratative'].value,
+      // organization: form.controls['templateOrganization'].value,
+      // public_news: form.controls['templatePublicNews'].value,
+      // fear: form.controls['templateFear'].value,
+      // duty_obligation: form.controls['templateDutyObligation'].value,
+      // curiosity: form.controls['templateCuriosity'].value,
+      // greed: form.controls['templateGreed'].value
     });
   }
 
   newTemplate() {
     this.setEmptyTemplateForm();
-  }
-  selectTemplate(template_uuid: string) {
-    if (this.currentTemplateFormGroup.dirty) {
-      // alert(
-      //   'Values not saved for ' +
-      //     this.currentTemplateFormGroup.controls['templateName'].value
-      // );
-    }
-    let selected_template = this.templateManagerSvc.getTemlpate(template_uuid);
-    this.setTemplateForm(selected_template);
   }
 
   saveTemplate() {
@@ -244,8 +263,8 @@ export class TempalteManagerComponent implements OnInit {
   onTabChanged($event) {
     //Required because the angular-editor library can not bind to [value].
     //Set the formGroups template text value to itself to force an update on tab switch
-    this.currentTemplateFormGroup.controls['templateText'].setValue(
-      this.currentTemplateFormGroup.controls['templateText'].value
+    this.currentTemplateFormGroup.controls['templateHTML'].setValue(
+      this.currentTemplateFormGroup.controls['templateHTML'].value
     );
   }
 

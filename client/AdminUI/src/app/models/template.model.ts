@@ -20,6 +20,7 @@ export class Template {
   retired: boolean;
   subject: string;
   text: string;
+  html: string;
   topic_list: Array<string>;
   grammer: number;
   link_domain: number;
