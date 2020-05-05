@@ -265,5 +265,5 @@ class GenericRepository(object):
         Generic method that can be used to delete a
         single document by a given uuid.
         """
-        result = await self.collection.delete_one({self.uuid_name: uuid})
-        return result.acknowledged
+        await self.collection.delete_one({self.uuid_name: uuid})
+        return {self.uuid_name: uuid}

@@ -16,7 +16,8 @@ from api.serializers.customer_serializers import (
     CustomerPostResponseSerializer,
     CustomerPostSerializer,
     CustomerPatchResponseSerializer,
-    CustomerPatchSerializer
+    CustomerPatchSerializer,
+    CustomerDeleteResponseSerializer
 )
 from api.utils import db_service
 from drf_yasg.utils import swagger_auto_schema
@@ -137,6 +138,22 @@ class CustomerView(APIView):
         serializer = CustomerPatchResponseSerializer(updated_response)
         return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
 
+    @swagger_auto_schema(
+        responses={"200": CustomerDeleteResponseSerializer, "400": "Bad Request"},
+        security=[],
+        operation_id="Update and Patch single Customer",
+        operation_description="This handles the API for the Update Customer with customer_uuid.",
+    )
+    def delete(self, request, customer_uuid):
+        """delete method."""
+        logging.debug("delete customer_uuid {}".format(customer_uuid))
+        delete_response = self.__delete_single(customer_uuid)
+        logging.info("delete responce {}".format(delete_response))
+        if "errors" in delete_response:
+            return Response(delete_response, status=status.HTTP_400_BAD_REQUEST)
+        serializer = CustomerDeleteResponseSerializer(delete_response)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
     def __get_single(self, customer_uuid):
         """
         Get_single private method.
@@ -171,3 +188,16 @@ class CustomerView(APIView):
         if "errors" in update_response:
             return update_response
         return customer
+    
+    def __delete_single(self, customer_uuid):
+        """
+        Get_single private method.
+
+        This handles getting the data from the db.
+        """
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        service = db_service("customer", CustomerModel, validate_customer)
+
+        delete_response = loop.run_until_complete(service.delete(uuid=customer_uuid))
+        return delete_response

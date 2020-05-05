@@ -118,3 +118,14 @@ class CustomerPatchResponseSerializer(serializers.Serializer):
     cb_timestamp = serializers.DateTimeField()
     last_updated_by = serializers.CharField(max_length=100)
     lub_timestamp = serializers.DateTimeField()
+
+
+class CustomerDeleteResponseSerializer(serializers.Serializer):
+    """
+    This is the Customer Delete Response Serializer .
+
+    This is a formats the data coming out of the Db from a create.
+    """
+
+    # created by mongodb
+    customer_uuid = serializers.UUIDField()
