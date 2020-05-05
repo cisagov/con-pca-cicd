@@ -1,4 +1,4 @@
-# CPA GoPhish
+# Con-PCA GoPhish
 
 ## Features
 - [Docker](https://www.docker.com/)

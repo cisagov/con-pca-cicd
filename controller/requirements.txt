@@ -4,7 +4,7 @@ asgiref==3.2.7
 attrs==19.3.0
 billiard==3.6.3.0
 black==19.10b0
-bs4==4.9.0
+beautifulsoup4==4.9.0
 celery==4.4.2
 click==7.1.1
 Django==3.0.4
