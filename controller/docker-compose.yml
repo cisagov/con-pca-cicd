@@ -7,7 +7,7 @@
         dockerfile: ./etc/Dockerfile
       stdin_open: true
       tty: true
-      container_name: cpa-api
+      container_name: pca-api
       restart: on-failure
       links:
         - mongodb
@@ -22,7 +22,7 @@
       build:
         context: .
         dockerfile: ./etc/Dockerfile
-      container_name: cpa-beat
+      container_name: pca-beat
       hostname: celery-beat
       restart: on-failure
       entrypoint: celery -A config beat -l info
@@ -37,7 +37,7 @@
       build:
         context: .
         dockerfile: ./etc/Dockerfile
-      container_name: cpa-worker
+      container_name: pca-worker
       restart: on-failure
       entrypoint: celery worker --app=config.celery:app
         --loglevel=info --logfile=tasks/logs/celery.log
@@ -54,7 +54,7 @@
       # https://hub.docker.com/_/rabbitmq/ for details.
       # This variant is built on Alpine Linux (it's smaller) and includes
       # the management UI.
-      container_name: cpa-rabbitmq
+      container_name: pca-rabbitmq
       hostname: rabbitmq
       restart: on-failure
       # These ports are exposed on the host; 'hostport:containerport'.
@@ -71,7 +71,7 @@
         - .env
   
     mongodb:
-      container_name: cpa-mongodb
+      container_name: pca-mongodb
       hostname: mongodb
       image: "mongo:3.6"
       # These ports are exposed on the host; 'hostport:containerport'.

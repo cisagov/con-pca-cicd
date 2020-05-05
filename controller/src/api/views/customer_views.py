@@ -141,7 +141,7 @@ class CustomerView(APIView):
     @swagger_auto_schema(
         responses={"200": CustomerDeleteResponseSerializer, "400": "Bad Request"},
         security=[],
-        operation_id="Update and Patch single Customer",
+        operation_id="Delete single Customer",
         operation_description="This handles the API for the Update Customer with customer_uuid.",
     )
     def delete(self, request, customer_uuid):

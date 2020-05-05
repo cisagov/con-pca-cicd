@@ -30,7 +30,7 @@ Make sure you have a github account and access to the correct repo.
 To install project run
 
 ```shell
-git clone git@github.com:cisagov/cpa.git
+git clone git@github.com:cisagov/con-pca.git
 ```
 
 Use `Makefile` to install and run all services.
@@ -55,7 +55,7 @@ Your output will look like:
 
 ```shell
 -> % make up
-Creating cpa-rabbitmq ... done
+Creating pca-rabbitmq ... done
 Creating cpa-mongodb  ... done
 Creating cpa-web      ... done
 Creating cpa-worker   ... done

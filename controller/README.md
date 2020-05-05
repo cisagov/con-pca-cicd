@@ -38,8 +38,8 @@ Make sure you have a github account and access to the correct repo.
 To install project run
 
 ```shell
-git clone git@github.com:cisagov/cpa.git
-cd cpa/controller
+git clone git@github.com:cisagov/con-pca.git
+cd con-pca/controller
 ```
 
 Use `Makefile` to install and run `controller` services.
@@ -136,11 +136,11 @@ Your output will look like:
 -> % make up
 docker-compose up -d
 Creating network "controller_default" with the default driver
-Creating cpa-rabbitmq ... done
-Creating cpa-mongodb  ... done
-Creating cpa-worker   ... done
-Creating cpa-beat     ... done
-Creating cpa-api      ... done
+Creating pca-rabbitmq ... done
+Creating pca-mongodb  ... done
+Creating pca-worker   ... done
+Creating pca-beat     ... done
+Creating pca-api      ... done
 ```
 
 Dev Access
