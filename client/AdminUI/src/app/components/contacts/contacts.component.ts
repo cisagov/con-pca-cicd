@@ -9,6 +9,7 @@ import { LayoutMainService } from 'src/app/services/layout-main.service';
 
 export class ContactsComponent implements OnInit {
   body_content_height: number;
+  advancedSearch:boolean = false;
 
   activeStatus = ["prohibit", "hourglass", "pause", "play", "stop"];
 
@@ -35,11 +36,15 @@ export class ContactsComponent implements OnInit {
     { "CompanyName": "Next Level Tech", "FirstName": "  Cody", "LastName": " Smith", "Position": "IT Manager", "PrimaryContact": " No", "PhoneNumber": "(877)503-2280", },
   ];
 
-  constructor(
-    private layoutSvc: LayoutMainService
-  ) {
+  constructor(private layoutSvc: LayoutMainService) {
     layoutSvc.setTitle('Con-PCA Contacts Page');
-   }
+  }
+
+  showAdvancedSearch() {
+    this.advancedSearch = true;
+  }
+
+  
 
   ngOnInit() {
   }

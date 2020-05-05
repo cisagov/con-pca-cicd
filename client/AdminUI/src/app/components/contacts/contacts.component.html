@@ -9,22 +9,106 @@
   <div class="container-fluid" [style.height.px]="body_content_height">
     <p>Welcome to the contacts page!</p>
 
+    <!-- Search Bar -->
     <div class="row">
-      <div class="col text-right">
-        <button mat-raised-button color="primary" class="search-button">Basic Search</button>
+      <div class="col-10">
+        <mat-form-field class="search-bar" appearance="outline">
+          <mat-label>Search</mat-label>
+          <input matInput>
+          <mat-icon matSuffix>search</mat-icon>
+        </mat-form-field>
       </div>
       <div class="col">
-        <button mat-raised-button color="primary" class="search-button">Advanced Search</button>
+        <button mat-raised-button color="primary" class="search-button" (click)=showAdvancedSearch()>Advanced Search</button>
       </div>
     </div>
 
-    <div class="p-3 w-100">
-      <mat-form-field class="search-bar" appearance="outline">
-        <mat-label>Search</mat-label>
-        <input matInput>
-      </mat-form-field>
+    <!-- Advanced Search Div -->
+    <div *ngIf="advancedSearch">
+      <div class="row">
+        <!-- First Name Advanced Search -->
+        <div class="col-6">
+          <mat-form-field appearance="outline">
+            <mat-label>First Name</mat-label>
+            <input type="text" matInput placeholder="First Name">
+          </mat-form-field>
+        </div>
+      </div>
+      <!-- Last Name Advanced Search -->
+      <div class="row">
+        <div class="col">
+          <mat-form-field appearance="outline">
+            <mat-label>Last Name</mat-label>
+            <input type="text" matInput placeholder="Last Name">
+          </mat-form-field>
+        </div>
+      </div>
+      <!-- Company Advanced Search -->
+      <div class="row">
+        <div class="col">
+          <mat-form-field appearance="outline">
+            <mat-label>Company</mat-label>
+            <input type="text" matInput placeholder="Company Name">
+          </mat-form-field>
+        </div>
+      </div>
+      <!-- Position Advanced Search -->
+      <div class="row">
+        <div class="col">
+          <mat-form-field appearance="outline">
+            <mat-label>Position</mat-label>
+            <input type="text" matInput placeholder="Position Title">
+          </mat-form-field>
+        </div>
+      </div>
+      <!-- Phone Advanced Search -->
+      <div class="row">
+        <div class="col">
+          <mat-form-field appearance="outline">
+            <mat-label>Phone Number</mat-label>
+            <input type="text" matInput placeholder="Phone Number">
+          </mat-form-field>
+        </div>
+      </div>
+      <!-- Primary Contacts Advanced Search -->
+      <div class="row">
+        <div class="col">
+          <mat-slide-toggle labelPosition="before">Only Search Primary Contacts:</mat-slide-toggle>
+        </div>
+      </div>
+      <!-- Exact Matches Advanced Search -->
+      <div class="row">
+        <div class="col">
+          <mat-slide-toggle labelPosition="before">Exact Matches Only:</mat-slide-toggle>
+        </div>
+      </div>
+      <!-- Date contact was added - between two dates -->
+      <div class="row">
+        <div class="col">
+          Date Contact was Added:
+          <mat-form-field>
+            <input matInput [matDatepicker]="picker" placeholder="Start Date">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+          To
+          <mat-form-field>
+            <input matInput [matDatepicker]="picker" placeholder="End Date">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+        </div>
+      </div>
+      <!-- Search Button -->
+      <div class="row">
+        <div class="col">
+          <button mat-raised-button color="primary" class="search-button">Search</button>
+        </div>
+      </div>
     </div>
+    
 
+    <!-- Contacts Table -->
     <mat-table [dataSource]="contactsData">
       <ng-container matColumnDef="CompanyName">
         <mat-header-cell *matHeaderCellDef>Company Name</mat-header-cell>
