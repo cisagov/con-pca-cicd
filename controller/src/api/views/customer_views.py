@@ -15,6 +15,9 @@ from api.serializers.customer_serializers import (
     CustomerGetSerializer,
     CustomerPostResponseSerializer,
     CustomerPostSerializer,
+    CustomerPatchResponseSerializer,
+    CustomerPatchSerializer,
+    CustomerDeleteResponseSerializer
 )
 from api.utils import db_service
 from drf_yasg.utils import swagger_auto_schema
@@ -111,13 +114,47 @@ class CustomerView(APIView):
     )
     def get(self, request, customer_uuid):
         """Get method."""
-        logging.debug("get template_uuid {}".format(customer_uuid))
-        print("get template_uuid {}".format(customer_uuid))
+        logging.debug("get customer_uuid {}".format(customer_uuid))
         customer = self.__get_single(customer_uuid)
         serializer = CustomerGetSerializer(customer)
         return Response(serializer.data)
 
-    def __get_single(self, customer_uuid):
+    @swagger_auto_schema(
+        request_body=CustomerPatchSerializer, 
+        responses={"202": CustomerPatchResponseSerializer, "400": "Bad Request"},
+        security=[],
+        operation_id="Update and Patch single Customer",
+        operation_description="This handles the API for the Update Customer with customer_uuid.",
+    )
+    def patch(self, request, customer_uuid):
+        """Patch method."""
+        logging.debug("get customer_uuid {}".format(customer_uuid))
+        put_data = request.data.copy()
+        serialized_data = CustomerPatchSerializer(put_data)
+        updated_response = self.__update_single(uuid=customer_uuid, put_data=serialized_data.data)
+        logging.info("created responce {}".format(updated_response))
+        if "errors" in updated_response:
+            return Response(updated_response, status=status.HTTP_400_BAD_REQUEST)
+        serializer = CustomerPatchResponseSerializer(updated_response)
+        return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
+
+    @swagger_auto_schema(
+        responses={"200": CustomerDeleteResponseSerializer, "400": "Bad Request"},
+        security=[],
+        operation_id="Delete single Customer",
+        operation_description="This handles the API for the Update Customer with customer_uuid.",
+    )
+    def delete(self, request, customer_uuid):
+        """delete method."""
+        logging.debug("delete customer_uuid {}".format(customer_uuid))
+        delete_response = self.__delete_single(customer_uuid)
+        logging.info("delete responce {}".format(delete_response))
+        if "errors" in delete_response:
+            return Response(delete_response, status=status.HTTP_400_BAD_REQUEST)
+        serializer = CustomerDeleteResponseSerializer(delete_response)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def __get_single(self, uuid):
         """
         Get_single private method.
 
@@ -126,5 +163,41 @@ class CustomerView(APIView):
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
         service = db_service("customer", CustomerModel, validate_customer)
-        customer = loop.run_until_complete(service.get(uuid=customer_uuid))
+        customer = loop.run_until_complete(service.get(uuid=uuid))
         return customer
+    
+    def __update_single(self, uuid, put_data):
+        """
+        Update_single private method.
+
+        This handles getting the data from the db.
+        """            
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        service = db_service("customer", CustomerModel, validate_customer)
+
+        updated_timestamp = datetime.datetime.utcnow()
+        current_user = "dev user"
+        put_data["customer_uuid"] = uuid
+        put_data["last_updated_by"] = current_user
+        put_data["lub_timestamp"] = updated_timestamp
+
+        customer = loop.run_until_complete(service.get(uuid=uuid))
+        customer.update(put_data)
+        update_response = loop.run_until_complete(service.update(customer))
+        if "errors" in update_response:
+            return update_response
+        return customer
+    
+    def __delete_single(self, uuid):
+        """
+        Get_single private method.
+
+        This handles getting the data from the db.
+        """
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        service = db_service("customer", CustomerModel, validate_customer)
+
+        delete_response = loop.run_until_complete(service.delete(uuid=uuid))
+        return delete_response

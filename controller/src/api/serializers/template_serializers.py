@@ -108,7 +108,7 @@ class TemplateGetSerializer(serializers.Serializer):
 
 class TemplatePostSerializer(serializers.Serializer):
     """
-    This is the Template GET Serializer.
+    This is the Template POST Serializer.
 
     This is a formats the data coming out of the Db.
     """
@@ -137,6 +137,75 @@ class TemplatePostSerializer(serializers.Serializer):
 class TemplatePostResponseSerializer(serializers.Serializer):
     """
     This is the Template Post Response Serializer.
+
+    This is a formats the data coming out of the Db.
+    """
+
+    template_uuid = serializers.UUIDField()
+
+
+class TemplatePatchSerializer(serializers.Serializer):
+    """
+    This is the Template PATCH Serializer.
+
+    This is a formats the data coming out of the Db.
+    """
+
+    name = serializers.CharField(required=False)
+    template_type = serializers.ChoiceField(choices=TEMPLATE_TYPE_CHOICES, required=False)
+    deception_score = serializers.IntegerField(required=False)
+    descriptive_words = serializers.CharField(required=False)
+    description = serializers.CharField(required=False)
+    image_list = TemplateImageSerializer(many=True, required=False)
+    from_address = serializers.EmailField(required=False)
+    retired = serializers.BooleanField(required=False)
+    subject = serializers.CharField(max_length=200, required=False)
+    text = serializers.CharField(required=False)
+    html = serializers.CharField(required=False)
+    topic_list = serializers.ListField(required=False)
+    # Score data
+    appearance = TemplateAppearanceSerializer(required=False)
+    sender = TemplateSenderSerializer(required=False)
+    relevancy = TemplateRelevancySerializer(required=False)
+    behavior = TemplateBehaviorSerializer(required=False)
+    complexity = serializers.IntegerField(required=False)
+
+
+class TemplatePatchResponseSerializer(serializers.Serializer):
+    """
+    This is the Template PATCH Response Serializer.
+
+    This is a formats the data coming out of the Db.
+    """
+
+    template_uuid = serializers.UUIDField()
+    gophish_template_id = serializers.IntegerField()
+    name = serializers.CharField()
+    template_type = serializers.ChoiceField(choices=TEMPLATE_TYPE_CHOICES)
+    deception_score = serializers.IntegerField()
+    descriptive_words = serializers.CharField()
+    description = serializers.CharField()
+    image_list = TemplateImageSerializer(many=True)
+    from_address = serializers.EmailField()
+    retired = serializers.BooleanField()
+    subject = serializers.CharField(max_length=200)
+    text = serializers.CharField()
+    html = serializers.CharField()
+    topic_list = serializers.ListField()
+    appearance = TemplateAppearanceSerializer()
+    sender = TemplateSenderSerializer()
+    relevancy = TemplateRelevancySerializer()
+    behavior = TemplateBehaviorSerializer()
+    complexity = serializers.IntegerField()
+    created_by = serializers.CharField(max_length=200)
+    cb_timestamp = serializers.DateTimeField()
+    last_updated_by = serializers.CharField(max_length=200)
+    lub_timestamp = serializers.DateTimeField()
+
+
+class TemplateDeleteResponseSerializer(serializers.Serializer):
+    """
+    This is the Template DELETE Response Serializer.
 
     This is a formats the data coming out of the Db.
     """

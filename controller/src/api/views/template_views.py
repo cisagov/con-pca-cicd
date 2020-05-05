@@ -15,6 +15,9 @@ from api.serializers.template_serializers import (
     TemplateGetSerializer,
     TemplatePostResponseSerializer,
     TemplatePostSerializer,
+    TemplatePatchResponseSerializer,
+    TemplatePatchSerializer,
+    TemplateDeleteResponseSerializer
 )
 from api.utils import db_service
 from drf_yasg.utils import swagger_auto_schema
@@ -116,8 +119,43 @@ class TemplateView(APIView):
         template = self.__get_single(template_uuid)
         serializer = TemplateGetSerializer(template)
         return Response(serializer.data)
+    
+    @swagger_auto_schema(
+        request_body=TemplatePatchSerializer, 
+        responses={"202": TemplatePatchResponseSerializer, "400": "Bad Request"},
+        security=[],
+        operation_id="Update and Patch single Template",
+        operation_description="This handles the API for the Update Template with template_uuid.",
+    )
+    def patch(self, request, template_uuid):
+        """Patch method."""
+        logging.debug("patch template_uuid {}".format(template_uuid))
+        put_data = request.data.copy()
+        serialized_data = TemplatePatchSerializer(put_data)
+        updated_response = self.__update_single(uuid=template_uuid, put_data=serialized_data.data)
+        logging.info("created responce {}".format(updated_response))
+        if "errors" in updated_response:
+            return Response(updated_response, status=status.HTTP_400_BAD_REQUEST)
+        serializer = TemplatePatchResponseSerializer(updated_response)
+        return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
+    
+    @swagger_auto_schema(
+        responses={"200": TemplateDeleteResponseSerializer, "400": "Bad Request"},
+        security=[],
+        operation_id="Delete single Template",
+        operation_description="This handles the API for the Delete of a  Template with template_uuid.",
+    )
+    def delete(self, request, template_uuid):
+        """delete method."""
+        logging.debug("delete template_uuid {}".format(template_uuid))
+        delete_response = self.__delete_single(template_uuid)
+        logging.info("delete responce {}".format(delete_response))
+        if "errors" in delete_response:
+            return Response(delete_response, status=status.HTTP_400_BAD_REQUEST)
+        serializer = TemplateDeleteResponseSerializer(delete_response)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
-    def __get_single(self, template_uuid):
+    def __get_single(self, uuid):
         """
         Get_single private method.
 
@@ -126,5 +164,41 @@ class TemplateView(APIView):
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
         service = db_service("template", TemplateModel, validate_template)
-        template = loop.run_until_complete(service.get(uuid=template_uuid))
+        template = loop.run_until_complete(service.get(uuid=uuid))
         return template
+    
+    def __update_single(self, uuid, put_data):
+        """
+        Update_single private method.
+
+        This handles getting the data from the db.
+        """    
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        service = db_service("template", TemplateModel, validate_template)
+
+        updated_timestamp = datetime.datetime.utcnow()
+        current_user = "dev user"
+        put_data["template_uuid"] = uuid
+        put_data["last_updated_by"] = current_user
+        put_data["lub_timestamp"] = updated_timestamp
+
+        template = loop.run_until_complete(service.get(uuid=uuid))
+        template.update(put_data)
+        update_response = loop.run_until_complete(service.update(template))
+        if "errors" in update_response:
+            return update_response
+        return template
+    
+    def __delete_single(self, uuid):
+        """
+        Get_single private method.
+
+        This handles getting the data from the db.
+        """
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        service = db_service("template", TemplateModel, validate_template)
+
+        delete_response = loop.run_until_complete(service.delete(uuid=uuid))
+        return delete_response
