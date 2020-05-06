@@ -53,7 +53,9 @@ class SubscriptionsListView(APIView):
     def get(self, request):
         """Get method."""
         parameters = request.data.copy()
-        subscription_list = self.__get_data(parameters, "subscription", SubscriptionModel, validate_subscription)
+        subscription_list = self.__get_data(
+            parameters, "subscription", SubscriptionModel, validate_subscription
+        )
         serializer = SubscriptionGetSerializer(subscription_list, many=True)
         return Response(serializer.data)
 
@@ -69,7 +71,9 @@ class SubscriptionsListView(APIView):
         post_data = request.data.copy()
 
         # Get all templates for calc
-        template_list = self.__get_data(None, "template", TemplateModel, validate_template)
+        template_list = self.__get_data(
+            None, "template", TemplateModel, validate_template
+        )
 
         template_data = {
             i.get("template_uuid"): i.get("descriptive_words") for i in template_list
@@ -79,7 +83,9 @@ class SubscriptionsListView(APIView):
         relevant_templates = template_manager.get_templates(
             post_data.get("url"), post_data.get("keywords"), template_data
         )
-        print(len(relevant_templates))
+
+        # Return 15 of the most relevant templates
+        post_data["templates_selected_uuid_list"] = relevant_templates[:15]
 
         # Data for GoPhish
         first_name = post_data.get("primary_contact").get("first_name", "")
