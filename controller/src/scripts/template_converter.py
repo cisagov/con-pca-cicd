@@ -2,7 +2,7 @@
 Template Converter.
 
 This script is to take in a json file of tempate data and parse it
-into a usable json format for importing into cpa.
+into a usable json format for importing into pca.
 
 """
 # Standard Python Libraries

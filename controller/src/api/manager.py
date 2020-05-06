@@ -1,17 +1,58 @@
 """GoPhish API Manager."""
 
 # Standard Python Libraries
+import re
 from typing import Dict
 
 # Third-Party Libraries
-from django.conf import settings
+import requests
 from faker import Faker
+from django.conf import settings
+from bs4 import BeautifulSoup
+from sklearn.feature_extraction.text import TfidfVectorizer, CountVectorizer
+from sklearn.metrics.pairwise import cosine_similarity, linear_kernel
 
 # cisagov Libraries
 from gophish import Gophish
 from gophish.models import SMTP, Campaign, Group, Page, Template, User
 
+
 faker = Faker()
+vectorizer = TfidfVectorizer()
+
+
+class TemplateManager:
+    """Template calculator"""
+
+    def __init__(self):
+        pass
+
+    def preprocess_keywords(self, url: str, keywords: str):
+        """
+        Extract text from the given url
+        Concatenate a bag of keywords from user input
+        clean text by converting words to lower case,
+        removing punctuation and numbers
+        """
+        headers = {"Content-Type": "text/html"}
+        resp = requests.get(url, headers=headers)
+        soup = BeautifulSoup(resp.text, "lxml")
+        text = re.sub(r"[^A-Za-z]+", " ", soup.get_text().lower())
+        return text + keywords
+
+    def get_templates(self, url: str, keywords: str, template_data):
+        """
+        Return relative templates based on customer keywords
+        """
+        template_uuids = [*template_data.keys()]
+        preprocessed_data = [self.preprocess_keywords(url, keywords)] + [
+            *template_data.values()
+        ]
+        docs_tfidf = vectorizer.fit_transform(preprocessed_data)
+        cosine_similarities = cosine_similarity(docs_tfidf[:1], docs_tfidf).flatten()
+        cosine_similarities = cosine_similarities[1:]
+        context = dict(zip(template_uuids, cosine_similarities))
+        return context
 
 
 class CampaignManager:

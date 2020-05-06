@@ -84,7 +84,7 @@ class SubscriptionGetSerializer(serializers.Serializer):
     target_email_list = SubscriptionTargetSerializer(many=True)
     templates_selected_uuid_list = serializers.ListField(required=False)
     active = serializers.BooleanField()
-    # db data tracking added below 
+    # db data tracking added below
     created_by = serializers.CharField(max_length=100)
     cb_timestamp = serializers.DateTimeField()
     last_updated_by = serializers.CharField(max_length=100)
@@ -100,6 +100,8 @@ class SubscriptionPostSerializer(serializers.Serializer):
 
     customer_uuid = serializers.UUIDField()
     name = serializers.CharField(required=True, max_length=100)
+    url = serializers.CharField(required=True, max_length=100)
+    keywords = serializers.CharField(max_length=100)
     start_date = serializers.DateTimeField()
     gophish_campaign_list = GoPhishCampaignsSerializer(many=True)
     primary_contact = SubscriptionContactSerializer()

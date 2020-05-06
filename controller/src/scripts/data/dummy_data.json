@@ -23,6 +23,8 @@
       "customer_uuid": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
       "gophish_campaign_list": [],
       "name": "SC-1031.Matt-Daemon.1.1",
+      "url": "https://inl.gov",
+      "keywords": "research development government work job",
       "primary_contact": {
         "customer": "Matts Damons",
         "email": "Matt.Daemon@example.com",
@@ -102,6 +104,8 @@
       "customer_uuid": "6068d85a-4f83-4b5a-958e-a179e5b4c205",
       "gophish_campaign_list": [],
       "name": "SC-1221.Ben-Aflex.1.1",
+      "url": "https://google.com",
+      "keywords": "search query google",
       "primary_contact": {
         "customer": "Sams Snacks",
         "email": "foo.bar@example.com",
