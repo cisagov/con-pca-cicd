@@ -29,12 +29,19 @@ def db_service(collection_name, model, validate_model):
 
     return service
 
-def personalize_template(customer_info, template_data):
-    updated_template = {}
-    return updated_template
+def personalize_template(customer_info, template_data, sub_data):
+    relevent_info = {
+        "current_date": current_date(), 
+        "current_season": current_season(),
+        "name": customer_info["name"],
+        "city": customer_info["city"],
+        "state": customer_info["state"],
+        "zip": customer_info["zip"]
+        }    
+    print(relevent_info)
 
 def current_date():
-    today = datetime.datetime.today()
+    today = datetime.today()
     return {
         "day": today.day,
         "month": today.month,
@@ -42,16 +49,15 @@ def current_date():
     }
 
 def current_season():
-    Y = 2000 # dummy leap year to allow input X-02-29 (leap day)
-    seasons = [('winter', (date(Y,  1,  1),  date(Y,  3, 20))),
-            ('spring', (date(Y,  3, 21),  date(Y,  6, 20))),
-            ('summer', (date(Y,  6, 21),  date(Y,  9, 22))),
-            ('autumn', (date(Y,  9, 23),  date(Y, 12, 20))),
-            ('winter', (date(Y, 12, 21),  date(Y, 12, 31)))]
+    today = datetime.today()
+    Y = today.year 
+    seasons = [('winter', (datetime(Y,  1,  1),  datetime(Y,  3, 20))),
+            ('spring', (datetime(Y,  3, 21),  datetime(Y,  6, 20))),
+            ('summer', (datetime(Y,  6, 21),  datetime(Y,  9, 22))),
+            ('autumn', (datetime(Y,  9, 23),  datetime(Y, 12, 20))),
+            ('winter', (datetime(Y, 12, 21),  datetime(Y, 12, 31)))]
 
-    if isinstance(date.today(), datetime):
-        now = now.date()
-    now = now.replace(year=Y)
+    now = datetime.today()
     return next(season for season, (start, end) in seasons
                 if start <= now <= end)
 

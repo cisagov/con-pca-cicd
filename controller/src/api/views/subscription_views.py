@@ -15,6 +15,7 @@ import uuid
 from api.manager import CampaignManager, TemplateManager
 from api.models.subscription_models import SubscriptionModel, validate_subscription
 from api.models.template_models import TemplateModel, validate_template
+from api.models.customer_models import CustomerModel, validate_customer
 from api.serializers.subscriptions_serializers import (
     SubscriptionGetSerializer,
     SubscriptionPostResponseSerializer,
@@ -23,7 +24,7 @@ from api.serializers.subscriptions_serializers import (
     SubscriptionPatchSerializer,
     SubscriptionDeleteResponseSerializer,
 )
-from api.utils import db_service
+from api.utils import db_service, personalize_template
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status
 from rest_framework.response import Response
@@ -82,10 +83,20 @@ class SubscriptionsListView(APIView):
         # Data for Template calculation ToDo: Save relevant_templates
         relevant_templates = template_manager.get_templates(
             post_data.get("url"), post_data.get("keywords"), template_data
-        )
+        )[:15]
 
         # Return 15 of the most relevant templates
-        post_data["templates_selected_uuid_list"] = relevant_templates[:15]
+        post_data["templates_selected_uuid_list"] = relevant_templates
+
+
+        # get customer data
+        customer = self.__get_single(
+            post_data["customer_uuid"], "customer", CustomerModel, validate_customer
+        )
+
+        # get relevent template data
+        template_list = [x for x in template_list if x["template_uuid"] in relevant_templates] 
+        personalize_template(customer, template_list, post_data)
 
         # Data for GoPhish
         first_name = post_data.get("primary_contact").get("first_name", "")
@@ -171,6 +182,18 @@ class SubscriptionsListView(APIView):
         service = db_service("subscription", SubscriptionModel, validate_subscription)
         created_response = loop.run_until_complete(service.create(to_create=post_data))
         return created_response
+
+    def __get_single(self, uuid, collection, model, validation_model):
+        """
+        Get_single private method.
+
+        This handles getting the data from the db.
+        """
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        service = db_service(collection, model, validation_model)
+        document = loop.run_until_complete(service.get(uuid=uuid))
+        return document
 
 
 class SubscriptionView(APIView):
