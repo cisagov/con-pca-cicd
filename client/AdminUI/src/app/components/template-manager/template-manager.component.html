@@ -7,11 +7,11 @@
       </mat-form-field>
       <mat-list class="overflow-auto flex-1 template-list" appearnce="outline">
         <h3 matSubheader>(Deception Score) : Template Name</h3>
-        <mat-list-item
+        <mat-list-item #templateList
           *ngFor="
             let template of template_list
               | listfilter
-                : 'name,template_uuid,descriptive_words,deception_score'
+                : 'name,descriptive_words,deception_score'
                 : search_input
           "
         >
@@ -80,9 +80,9 @@
               <span
                 [ngClass]="{
                   'tab-form-error':
-                    currentTemplateFormGroup.controls.templateText.hasError(
+                    currentTemplateFormGroup.controls.templateHTML.hasError(
                       'required'
-                    ) && currentTemplateFormGroup.controls.templateText.touched
+                    ) && currentTemplateFormGroup.controls.templateHTML.touched
                 }"
                 >HTML View
               </span>
@@ -101,9 +101,9 @@
               <span
                 [ngClass]="{
                   'tab-form-error':
-                    currentTemplateFormGroup.controls.templateText.hasError(
+                    currentTemplateFormGroup.controls.templateHTML.hasError(
                       'required'
-                    ) && currentTemplateFormGroup.controls.templateText.touched
+                    ) && currentTemplateFormGroup.controls.templateHTML.touched
                 }"
                 >Source View
               </span>
@@ -228,18 +228,17 @@
           class="d-flex"
           mat-raised-button
           color="primary"
-          (click)="newTemplate()"
+          (click)="setEmptyTemplateForm()"
         >
           New Template
         </button>
-        <button
+        <button 
           id="save-button"
           class="d-flex ml-auto"
           mat-raised-button
           color="primary"
-          (click)="saveTemplate()"
-        >
-          Save
+          (click)="saveTemplate()"        >
+          {{templateId ? 'Update' : 'Save New'}}
         </button>
       </div>
     </div>

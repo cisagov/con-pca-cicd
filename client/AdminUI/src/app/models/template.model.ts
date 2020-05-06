@@ -16,7 +16,7 @@ export class Template {
   template_type : string;
   //system_path: string;
   deception_score: number;
-  descriptive_words: Array<string>;
+  descriptive_words: string;
   description: string;
   image_list: Array<TemplateImageModel>;
   from_address: string;
@@ -29,13 +29,13 @@ export class Template {
 
   //Deception Score
   appearance: TemplateAppearanceModel;
-  grammer: number;
+  grammar: number;
   link_domain: number;
-  logo_graphics: string;
+  logo_graphics: number;
 
   sender: TemplateSenderModel;
-  external: string;
-  internal: string;
+  external: number;
+  internal: number;
   authoritative: number;
 
   relevancy: TemplateRelevancyModel;

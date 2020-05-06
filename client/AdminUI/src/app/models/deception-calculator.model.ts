@@ -4,6 +4,9 @@
  */
 export class DeceptionCalculation {
 
+    //ID
+    template__uuid: string;
+
     //template example
     temlpateName?: string;
     templateBody?: string;
@@ -17,18 +20,18 @@ export class DeceptionCalculation {
     //0-1 options 
     link_domain: number;
     logo_graphics: number;
-    sender_external: number;
-    relevancy_organization: number;
+    external: number;
+    organization: number;
     public_news: number;
 
     //no score options
-    behavior_fear?: boolean;
+    fear?: boolean;
     duty_obligation?: boolean;
     curiosity?: boolean;
     greed?: boolean;
 
     //text entry (May need conversion to array if values are parsed on the front end)
-    additional_word_tags?: string;   
+    descriptive_words?: string;   
 
     //calculated fields 
     final_deception_score: number

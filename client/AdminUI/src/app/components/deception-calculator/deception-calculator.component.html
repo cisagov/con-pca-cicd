@@ -42,7 +42,7 @@
                         </div>
                         <div class="" [formGroup]="deceptionFormGroup">
                             <mat-label class="mb-3">Sender External</mat-label>
-                            <mat-radio-group appearance="outline" class="row radio_selection_group"  formControlName="sender_external">
+                            <mat-radio-group appearance="outline" class="row radio_selection_group"  formControlName="external">
                                 <mat-radio-button [value]=0 radioGroup="senderExternalRadioGroup">0 = Fake / NA</mat-radio-button>
                                 <mat-radio-button [value]=1 radioGroup="senderExternalRadioGroup">1 = Spoofed</mat-radio-button>
                             </mat-radio-group>
@@ -70,7 +70,7 @@
                     <div class="d-flex flex-column col-md-12 col-lg-7 ">
                         <div class="" [formGroup]="deceptionFormGroup">
                             <mat-label class="mb-3">Relevancy Organization</mat-label>
-                            <mat-radio-group appearance="outline" class="row radio_selection_group"  formControlName="relevancy_organization">
+                            <mat-radio-group appearance="outline" class="row radio_selection_group"  formControlName="organization">
                                 <mat-radio-button [value]=0 radioGroup="relevancyOrganizationGroup">0 = No</mat-radio-button>
                                 <mat-radio-button [value]=1 radioGroup="relevancyOrganizationGroup">1 = Yes</mat-radio-button>
                             </mat-radio-group>
@@ -84,7 +84,7 @@
                         </div>
                         <div class="check-box-wrapper">
                             <div class="deception_checkboxes mt-2" [formGroup]="deceptionFormGroup">
-                                <mat-checkbox formControlName="behavior_fear">Behavior Fear </mat-checkbox>
+                                <mat-checkbox formControlName="fear">Behavior Fear </mat-checkbox>
                                 <mat-checkbox formControlName="curiosity">Duty or Obligation</mat-checkbox>
                                 <mat-checkbox formControlName="duty_obligation">Curiosity</mat-checkbox>
                                 <mat-checkbox formControlName="greed">Greed</mat-checkbox>
@@ -98,7 +98,7 @@
                                 cdkAutosizeMinRows="2"
                                 cdkAutosizeMaxRows="5"
                                 placeholder="Additional Word Tags" 
-                                formControlName="additional_word_tags"
+                                formControlName="descriptive_words"
                                 
                                 ></textarea>
                             </mat-form-field>

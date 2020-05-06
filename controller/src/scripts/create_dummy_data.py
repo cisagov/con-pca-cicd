@@ -29,6 +29,7 @@ def load_file(data_file):
     return data
 
 
+
 def main():
     """This if the main def that runs creating data."""
     print("loading dummy json data")
@@ -39,6 +40,7 @@ def main():
     templates = load_file("data/reformated_template_data.json")
     created_template_uuids = []
     for template in templates:
+        template['deception_score'] = template['complexity']
         resp = requests.post("http://localhost:8000/api/v1/templates/", json=template)
         rep_json = resp.json()
         created_template_uuids.append(rep_json["template_uuid"])

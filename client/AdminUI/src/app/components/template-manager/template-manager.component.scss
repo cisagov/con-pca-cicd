@@ -1,13 +1,3 @@
-.testing {
-  outline: solid red 1px;
-}
-.testing::after {
-  content: "*";
-  color: red;
-}
-.tab-form-error {
-}
-
 .tab-form-error::after {
   content: "*";
   color: red;
@@ -35,7 +25,3 @@
   align-items: flex-end;
   flex: auto;
 }
-// mat-list-item:hover{
-//     background-color: blue($color: #000000);
-//     outline: gray solid 1px;
-// }
