@@ -7,12 +7,14 @@ This handles the api for all the Subscription urls.
 import asyncio
 import datetime
 import logging
+import requests
 import uuid
 
 # Third-Party Libraries
 # Local
-from api.manager import CampaignManager
+from api.manager import CampaignManager, TemplateManager
 from api.models.subscription_models import SubscriptionModel, validate_subscription
+from api.models.template_models import TemplateModel, validate_template
 from api.serializers.subscriptions_serializers import (
     SubscriptionGetSerializer,
     SubscriptionPostResponseSerializer,
@@ -30,7 +32,9 @@ from rest_framework.views import APIView
 logger = logging.getLogger(__name__)
 
 # GoPhish API Manager
-manager = CampaignManager()
+campaign_manager = CampaignManager()
+# Template Calculator Manager
+template_manager = TemplateManager()
 
 
 class SubscriptionsListView(APIView):
@@ -49,7 +53,7 @@ class SubscriptionsListView(APIView):
     def get(self, request):
         """Get method."""
         parameters = request.data.copy()
-        subscription_list = self.__get_data(parameters)
+        subscription_list = self.__get_data(parameters, "subscription", SubscriptionModel, validate_subscription)
         serializer = SubscriptionGetSerializer(subscription_list, many=True)
         return Response(serializer.data)
 
@@ -64,18 +68,31 @@ class SubscriptionsListView(APIView):
         """Post method."""
         post_data = request.data.copy()
 
+        # Get all templates for calc
+        template_list = self.__get_data(None, "template", TemplateModel, validate_template)
+
+        template_data = {
+            i.get("template_uuid"): i.get("descriptive_words") for i in template_list
+        }
+
+        # Data for Template calculation ToDo: Save relevant_templates
+        relevant_templates = template_manager.get_templates(
+            post_data.get("url"), post_data.get("keywords"), template_data
+        )
+        print(len(relevant_templates))
+
         # Data for GoPhish
         first_name = post_data.get("primary_contact").get("first_name", "")
         last_name = post_data.get("primary_contact").get("last_name", "")
-        templates = manager.get("email_template")
+        templates = campaign_manager.get("email_template")
         # get User Groups
-        user_groups = manager.get("user_group")
+        user_groups = campaign_manager.get("user_group")
         group_name = f"{last_name}'s Targets"
         target_list = post_data.get("target_email_list")
 
         # Note: this could be refactored later
         if group_name not in [group.name for group in user_groups]:
-            target = manager.create(
+            target = campaign_manager.create(
                 "user_group", group_name=group_name, target_list=target_list
             )
         else:
@@ -91,7 +108,7 @@ class SubscriptionsListView(APIView):
         for template in templates:
             template_name = template.name
             campaign_name = f"{first_name}.{last_name}.1.1 {template_name}"
-            campaign = manager.create(
+            campaign = campaign_manager.create(
                 "campaign",
                 campaign_name=campaign_name,
                 user_group=target,
@@ -116,7 +133,7 @@ class SubscriptionsListView(APIView):
         serializer = SubscriptionPostResponseSerializer(created_response)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-    def __get_data(self, parameters):
+    def __get_data(self, parameters, collection, model, validation_model):
         """
         Get_data private method.
 
@@ -124,11 +141,11 @@ class SubscriptionsListView(APIView):
         """
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
-        service = db_service("subscription", SubscriptionModel, validate_subscription)
-        subscription_list = loop.run_until_complete(
+        service = db_service(collection, model, validation_model)
+        document_list = loop.run_until_complete(
             service.filter_list(parameters=parameters)
         )
-        return subscription_list
+        return document_list
 
     def __save_data(self, post_data):
         """
@@ -146,8 +163,8 @@ class SubscriptionsListView(APIView):
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
         service = db_service("subscription", SubscriptionModel, validate_subscription)
-        created_responce = loop.run_until_complete(service.create(to_create=post_data))
-        return created_responce
+        created_response = loop.run_until_complete(service.create(to_create=post_data))
+        return created_response
 
 
 class SubscriptionView(APIView):
@@ -171,7 +188,7 @@ class SubscriptionView(APIView):
         return Response(serializer.data)
 
     @swagger_auto_schema(
-        request_body=SubscriptionPatchSerializer, 
+        request_body=SubscriptionPatchSerializer,
         responses={"202": SubscriptionPatchResponseSerializer, "400": "Bad Request"},
         security=[],
         operation_id="Update and Patch single subscription",
@@ -182,13 +199,15 @@ class SubscriptionView(APIView):
         logging.debug("update subscription_uuid {}".format(subscription_uuid))
         put_data = request.data.copy()
         serialized_data = SubscriptionPatchSerializer(put_data)
-        updated_response = self.__update_single(uuid=subscription_uuid, put_data=serialized_data.data)
+        updated_response = self.__update_single(
+            uuid=subscription_uuid, put_data=serialized_data.data
+        )
         logging.info("created responce {}".format(updated_response))
         if "errors" in updated_response:
             return Response(updated_response, status=status.HTTP_400_BAD_REQUEST)
         serializer = SubscriptionPatchResponseSerializer(updated_response)
         return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
-    
+
     @swagger_auto_schema(
         responses={"200": SubscriptionDeleteResponseSerializer, "400": "Bad Request"},
         security=[],
@@ -222,7 +241,7 @@ class SubscriptionView(APIView):
         Update_single private method.
 
         This handles getting the data from the db.
-        """            
+        """
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
         service = db_service("subscription", SubscriptionModel, validate_subscription)
@@ -239,7 +258,7 @@ class SubscriptionView(APIView):
         if "errors" in update_response:
             return update_response
         return subscription
-    
+
     def __delete_single(self, uuid):
         """
         Get_single private method.

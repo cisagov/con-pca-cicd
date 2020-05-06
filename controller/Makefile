@@ -15,7 +15,7 @@ build:
 
 # target: app logs - Runs django logs in the terminal
 logs:
-	 docker attach --sig-proxy=false cpa-api
+	 docker attach --sig-proxy=false pca-api
 
 # target: loc - Count lines of code.
 loc:
