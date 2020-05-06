@@ -38,6 +38,7 @@ def main():
 
     templates = load_file("data/reformated_template_data.json")
     created_template_uuids = []
+
     for template in templates:
         try:
             resp = requests.post(

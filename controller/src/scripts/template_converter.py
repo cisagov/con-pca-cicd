@@ -47,6 +47,13 @@ def main(argv):
     print("done loading data")
     output_list = []
     stop_words = set(stopwords.words("english"))
+
+    all_possible_tags = {
+        "brackets": [],
+        "glet": [],
+        "percent": []
+    }
+
     for temp in json_data:
         text = temp["text"]
         postString = text.split("\n", 2)
@@ -62,11 +69,31 @@ def main(argv):
         word_tokens = word_tokenize(message_cleaned_more)
         filtered_sentence = [w for w in word_tokens if w not in stop_words]
         descriptive_words = " ".join(filtered_sentence)
+        # calc all old scores
+        scores = []
+        for  item in temp["appearance"]:
+            scores.append(temp["appearance"][item])
+        for  item in temp["sender"]:
+            scores.append(temp["sender"][item])
+        for  item in temp["relevancy"]:
+            scores.append(temp["relevancy"][item])
+        for  item in temp["behavior"]:
+            scores.append(temp["behavior"][item])
+        scores.append(temp["complexity"])
+
+        bracket_tags = re.findall(r'\[.*?\]',message_cleaned)
+        percent_tags = re.findall(r'\%.*?\%',message_cleaned)
+        gtlt_tags = re.findall(r'\<.*?\>',message_cleaned)
+        
+        all_possible_tags["brackets"].extend(bracket_tags) 
+        all_possible_tags["percent"].extend(percent_tags) 
+        all_possible_tags["glet"].extend(gtlt_tags)
+
         template = {
             "name": temp["name"],
             "gophish_template_id": 0,
             "template_type": "Email",
-            "deception_score": 0,
+            "deception_score": sum(scores),
             "descriptive_words": descriptive_words,
             "description": temp["name"],
             "image_list": [],
@@ -99,6 +126,11 @@ def main(argv):
             "complexity": temp["complexity"],
         }
         output_list.append(template)
+
+    print("Now compile all possble tags to parse...")
+    all_possible_tags["brackets"] = list(dict.fromkeys(all_possible_tags["brackets"]))
+    all_possible_tags["percent"] = list(dict.fromkeys(all_possible_tags["percent"]))
+    all_possible_tags["glet"] = list(dict.fromkeys(all_possible_tags["glet"]))
 
     print("now walk over created templates in ../templetes/emails")
     current_dir = os.path.dirname(os.path.abspath(__file__)).rsplit("/", 1)[0]
@@ -150,7 +182,13 @@ def main(argv):
 
     current_dir = os.path.dirname(os.path.abspath(__file__))
     output_file = os.path.join(current_dir, "data/reformated_template_data.json",)
+    tag_file = os.path.join(current_dir, "data/tag_file.json",)
+
     print("writting values to file: {}...".format(output_file))
+
+    with open(tag_file, "w") as outfile:
+        json.dump(all_possible_tags, outfile, indent=2, sort_keys=True)
+    print("Finished tagfile.....")
 
     with open(output_file, "w") as outfile:
         data = output_list
