@@ -40,8 +40,14 @@ def main():
     templates = load_file("data/reformated_template_data.json")
     created_template_uuids = []
     for template in templates:
-        template['deception_score'] = template['complexity']
-        resp = requests.post("http://localhost:8000/api/v1/templates/", json=template)
+        try:
+            template['deception_score'] = template['complexity']
+            resp = requests.post(
+                "http://localhost:8000/api/v1/templates/", json=template
+            )
+            resp.raise_for_status()
+        except requests.exceptions.HTTPError as err:
+            raise err
         rep_json = resp.json()
         created_template_uuids.append(rep_json["template_uuid"])
 
@@ -53,11 +59,16 @@ def main():
     created_subcription_uuids = []
 
     for subscription in subscriptions:
-        resp = requests.post(
-            "http://localhost:8000/api/v1/subscriptions/", json=subscription
-        )
-        rep_json = resp.json()
-        created_subcription_uuids.append(rep_json["subscription_uuid"])
+        try:
+            resp = requests.post(
+                "http://localhost:8000/api/v1/subscriptions/", json=subscription
+            )
+            resp.raise_for_status()
+        except requests.exceptions.HTTPError as err:
+            raise err
+
+        resp_json = resp.json()
+        created_subcription_uuids.append(resp_json["subscription_uuid"])
 
     print("created subcription_list: {}".format(created_subcription_uuids))
     current_dir = os.path.dirname(os.path.abspath(__file__))
