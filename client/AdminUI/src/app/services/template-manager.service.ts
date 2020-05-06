@@ -38,7 +38,6 @@ export class TemplateManagerService {
 
   //POST a new template
   saveNewTemplate(template: Template) {
-    console.log(template);
     return new Promise((resolve, reject) => {
       this.http
         .post('http://localhost:8000/api/v1/templates/', template)
@@ -56,7 +55,6 @@ export class TemplateManagerService {
   }
   //PATCH an existing template with partial data
   updateTemplate(template: Template) {
-    console.log(template);
     return new Promise((resolve, reject) => {
       this.http
         .patch(`http://localhost:8000/api/v1/template/${template.template_uuid}/`, template)
@@ -72,5 +70,19 @@ export class TemplateManagerService {
         );
     });
   }
-  
+  deleteTemplate(template: Template) {
+    return new Promise((resolve,reject) => {
+      this.http
+      .delete(`http://localhost:8000/api/v1/template/${template.template_uuid}/`)
+      .subscribe(
+        success => {
+          resolve(success);
+        },
+        error => {
+          reject(error)
+        }
+      )
+    })
+  }
+
 }

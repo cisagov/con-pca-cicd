@@ -232,6 +232,16 @@
         >
           New Template
         </button>
+        <button
+          id="save-button"
+          class="d-flex"
+          mat-raised-button
+          color="warn"
+          (click)="deleteTemplate()"
+          [disabled]=!templateId
+        >
+        Delete Template
+      </button>
         <button 
           id="save-button"
           class="d-flex ml-auto"

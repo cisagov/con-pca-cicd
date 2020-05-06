@@ -185,16 +185,20 @@ export class TempalteManagerComponent implements OnInit {
   }
 
   //Update the list of all templates when a new entry is created, or a previous one updated
-  updateTemplateInList(savedTemplated: Template){    
+  updateTemplateInList(template_to_update: Template){    
     //get the index of the provided template in list for update, returns -1 if not found
-    let templateIndex = this.template_list.findIndex(template => template.template_uuid === savedTemplated.template_uuid)
+    let templateIndex = this.template_list.findIndex(template => template.template_uuid === template_to_update.template_uuid)
   
     if(templateIndex == -1){
       //New template
-      this.template_list.push(savedTemplated)
+      this.template_list.push(template_to_update)
+    } else if(template_to_update.name) {
+      //Update
+      this.template_list[templateIndex] = template_to_update
     } else {
-      //Update previous template
-      this.template_list[templateIndex] = savedTemplated
+      console.log("Splice attempt")
+      //template in list, but name is empty, delete case - remove from list
+      this.template_list.splice(templateIndex,1)
     }
   }
 
@@ -243,6 +247,20 @@ export class TempalteManagerComponent implements OnInit {
         }
       }
       alert('Invalid form fields: ' + invalid);
+    }
+  }
+
+  deleteTemplate(){
+    let template_to_delete = this.getTemplateFromForm(this.currentTemplateFormGroup)  
+    if(window.confirm(`Are you sure you want to delete ${template_to_delete.name}?`)){
+    this.templateManagerSvc.deleteTemplate(template_to_delete)
+      .then(
+        (success) => {
+          this.updateTemplateInList(<Template>success)
+          this.setEmptyTemplateForm()
+        },
+        (error) => {}
+      )
     }
   }
 
