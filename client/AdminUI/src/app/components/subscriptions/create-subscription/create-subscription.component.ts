@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { SubscriptionService } from 'src/app/services/subscription.service';
 import { Router } from '@angular/router';
-import { Organization, Contact } from 'src/app/models/organization.model';
+import { Customer, Contact } from 'src/app/models/customer.model';
 import { Subscription, SubscriptionContactModel, SubscriptionClicksModel } from 'src/app/models/subscription.model';
 import { Guid } from 'guid-typescript';
 
@@ -13,9 +13,9 @@ import { Guid } from 'guid-typescript';
 export class CreateSubscriptionComponent implements OnInit {
   orgId: number;
 
-  fullOrg: Organization;
+  fullOrg: Customer;
   contactsForOrg: Contact[] = [];
-  currentOrg: Organization = new Organization();
+  currentOrg: Customer = new Customer();
   currentContact: Contact = new Contact();
 
   startDate: Date = new Date();
@@ -45,22 +45,22 @@ export class CreateSubscriptionComponent implements OnInit {
     // TEMP
     this.orgId = 123;
 
-    // get the organization and contacts from the API
-    this.subscriptionSvc.getOrganization(this.orgId).subscribe((o: Organization) => {
+    // get the customer and contacts from the API
+    this.subscriptionSvc.getCustomer(this.orgId).subscribe((o: Customer) => {
 
       this.fullOrg = o;
       this.currentOrg = o;
 
-      this.contactsForOrg = this.subscriptionSvc.getContactsForOrg();
+      this.contactsForOrg = this.subscriptionSvc.getContactsForCustomer();
       this.currentContact = this.contactsForOrg[0];
     });
 
     // since the above subscription will fail, do some setup here
-    this.fullOrg = this.subscriptionSvc.organization;
-    this.subscriptionSvc.organization = this.fullOrg;
+    this.fullOrg = this.subscriptionSvc.customer;
+    this.subscriptionSvc.customer = this.fullOrg;
     this.currentOrg = this.fullOrg;
 
-    this.contactsForOrg = this.subscriptionSvc.getContactsForOrg();
+    this.contactsForOrg = this.subscriptionSvc.getContactsForCustomer();
     this.currentContact = this.contactsForOrg[0];
   }
 

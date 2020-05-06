@@ -2,7 +2,7 @@
 /**
  * The subscribing organization/stakeholder.
  */
-export class Organization {
+export class Customer {
     id: number;
     orgName: string;
     orgAbbrev: string;

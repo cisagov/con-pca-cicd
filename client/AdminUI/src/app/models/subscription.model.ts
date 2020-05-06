@@ -1,4 +1,4 @@
-import { Organization } from './organization.model';
+import { Customer } from './customer.model';
 export class GoPhishCampaignsModel{
 
 }

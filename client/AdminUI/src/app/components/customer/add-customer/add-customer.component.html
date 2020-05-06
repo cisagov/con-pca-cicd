@@ -1,5 +1,5 @@
 <div class="p-3">
-    <h1>Add Continuous Phishing Organization</h1>
+    <h1>Add Continuous Phishing Customer</h1>
     <div class="d-flex flex-row mb-3">
         <div class="d-flex flex-grow-1 flex-column">
             <div class="d-flex flex-row mb-3">
@@ -7,96 +7,96 @@
                 <button mat-raised-button color="accent">Edit</button>
                 <button mat-raised-button color="warn">Delete</button>
             </div>
-            <div class="d-flex flex-row" [formGroup]="organizationFormGroup">
+            <div class="d-flex flex-row" [formGroup]="customerFormGroup">
                 <mat-form-field appearance="outline" class="flex-grow-1">
-                    <mat-label>Organization Id</mat-label>
-                    <input type="text" matInput disabled placeholder="Organization Id" [formControl]="organizationFormGroup.controls.organizationId">
+                    <mat-label>Customer Id</mat-label>
+                    <input type="text" matInput disabled placeholder="Customer Id" [formControl]="customerFormGroup.controls.customerId">
                 </mat-form-field>
             </div>
             <div class="d-flex flex-row">
-                <mat-form-field appearance="outline" class="flex-grow-1" [formGroup]="organizationFormGroup">
-                    <mat-label>Organization Name*</mat-label>
-                    <input type="text" matInput placeholder="Organization Name" formControlName="organizationName"
-                    [errorStateMatcher]="matchOrganizationName">
-                    <mat-error *ngIf="organizationFormGroup.controls.organizationName.hasError('required')">
-                    Organization name is <strong>required</strong>
+                <mat-form-field appearance="outline" class="flex-grow-1" [formGroup]="customerFormGroup">
+                    <mat-label>Customer Name*</mat-label>
+                    <input type="text" matInput placeholder="Customer Name" formControlName="customerName"
+                    [errorStateMatcher]="matchCustomerName">
+                    <mat-error *ngIf="customerFormGroup.controls.customerName.hasError('required')">
+                    Customer name is <strong>required</strong>
                     </mat-error>
                 </mat-form-field>
             </div>
             <div class="d-flex flex-row" >
-                <mat-form-field appearance="outline" class="flex-grow-1" [formGroup]="organizationFormGroup">
-                    <mat-label>Organization Identifier*</mat-label>
-                    <input type="text" matInput placeholder="Organization Identifier" formControlName="organizationIdentifier"
-                    [errorStateMatcher]="matchOrganizationIdentifier">
-                    <mat-error *ngIf="organizationFormGroup.controls.organizationIdentifier.hasError('required')">
-                    Organization identifier is <strong>required</strong>
+                <mat-form-field appearance="outline" class="flex-grow-1" [formGroup]="customerFormGroup">
+                    <mat-label>Customer Identifier*</mat-label>
+                    <input type="text" matInput placeholder="Customer Identifier" formControlName="customerIdentifier"
+                    [errorStateMatcher]="matchCustomerIdentifier">
+                    <mat-error *ngIf="customerFormGroup.controls.customerIdentifier.hasError('required')">
+                    Customer identifier is <strong>required</strong>
                     </mat-error>
                 </mat-form-field>
             </div>
             <!-- Place holder for Government Type -->
             <div class="d-flex flex-row" >
-                <mat-form-field appearance="outline" class="flex-grow-1" [formGroup]="organizationFormGroup">
+                <mat-form-field appearance="outline" class="flex-grow-1" [formGroup]="customerFormGroup">
                     <mat-label>Address 1*</mat-label>
                     <input type="text" matInput placeholder="Address 1" formControlName="address1"
                     [errorStateMatcher]="matchAddress1">
-                    <mat-error *ngIf="organizationFormGroup.controls.address1.hasError('required')">
+                    <mat-error *ngIf="customerFormGroup.controls.address1.hasError('required')">
                         Address 1 is <strong>required</strong>
                     </mat-error>
                 </mat-form-field>
             </div>
             <div class="d-flex flex-row">
-                <mat-form-field appearance="outline" class="flex-grow-1" [formGroup]="organizationFormGroup">
+                <mat-form-field appearance="outline" class="flex-grow-1" [formGroup]="customerFormGroup">
                     <mat-label>Address 2</mat-label>
                     <input type="text" matInput placeholder="Address 2" formControlName="address2">
                 </mat-form-field>
             </div>
             <div class="d-flex flex-row">
-                <mat-form-field appearance="outline" class="flex-grow-1" [formGroup]="organizationFormGroup">
+                <mat-form-field appearance="outline" class="flex-grow-1" [formGroup]="customerFormGroup">
                     <mat-label>City*</mat-label>
                     <input type="text" matInput placeholder="city" formControlName="city"
                     [errorStateMatcher]="matchCity">
-                    <mat-error *ngIf="organizationFormGroup.controls.city.hasError('required')">
+                    <mat-error *ngIf="customerFormGroup.controls.city.hasError('required')">
                         City is <strong>required</strong>
                     </mat-error>
                 </mat-form-field>
             </div>
             <div class="d-flex flex-row">
-                <mat-form-field appearance="outline" class="flex-grow-1" [formGroup]="organizationFormGroup">
+                <mat-form-field appearance="outline" class="flex-grow-1" [formGroup]="customerFormGroup">
                     <mat-label>State*</mat-label>
                     <input type="text" matInput placeholder="State" formControlName="state"
                     [errorStateMatcher]="matchState">
-                    <mat-error *ngIf="organizationFormGroup.controls.state.hasError('required')">
+                    <mat-error *ngIf="customerFormGroup.controls.state.hasError('required')">
                         State is <strong>required</strong>
                     </mat-error>
                 </mat-form-field>
             </div>
             <div class="d-flex flex-row">
-                <mat-form-field appearance="outline" class="flex-grow-1" [formGroup]="organizationFormGroup">
+                <mat-form-field appearance="outline" class="flex-grow-1" [formGroup]="customerFormGroup">
                     <mat-label>Zip*</mat-label>
                     <input type="text" matInput placeholder="Zip" formControlName="zip"
                     [errorStateMatcher]="matchZip">
-                    <mat-error *ngIf="organizationFormGroup.controls.zip.hasError('required')">
+                    <mat-error *ngIf="customerFormGroup.controls.zip.hasError('required')">
                         Zip is <strong>required</strong>
                     </mat-error>
                 </mat-form-field>
             </div>
         </div>
     </div>
-    <h1>Organization Contacts</h1>
+    <h1>Customer Contacts</h1>
     <div class="d-flex flex-row mb-5">
-        <div class="d-flex flex-grow-1 flex-column">
+        <div class="d-flex flex-grow-1 flex-column add-contact-width">
             <div class="d-flex flex-row">
                 <button mat-raised-button color="primary" (click)="showAddContact()" *ngIf="!addContact">Add Contact</button>
             </div>
             
-            <div class="d-flex flex-row p-2 flex-grow-1" *ngIf="addContact">
-                <mat-card style="width:100%">
+            <div class="d-flex flex-row p-2 flex-grow-1 add-contact-width" *ngIf="addContact">
+                <mat-card class="add-contact-width">
                     <mat-card-header>
                         <mat-card-title>Add Contact</mat-card-title>
                     </mat-card-header>
                     <mat-card-content>
                         <div class="d-flex flex-row" >
-                            <div class="d-flex flex-column mr-2" [formGroup]="contactFormGroup">
+                            <div class="d-flex flex-column mr-2 w-50" [formGroup]="contactFormGroup">
                                 <mat-form-field appearance="outline">
                                     <mat-label>First Name*</mat-label>
                                     <input type="text" matInput placeholder="First Name" formControlName="firstName"
@@ -106,7 +106,7 @@
                                     </mat-error>
                                 </mat-form-field>
                             </div>
-                            <div class="d-flex flex-column mr-2" [formGroup]="contactFormGroup">
+                            <div class="d-flex flex-column mr-2 w-50" [formGroup]="contactFormGroup">
                                 <mat-form-field appearance="outline">
                                     <mat-label>Last Name*</mat-label>
                                     <input type="text" matInput placeholder="Last Name" formControlName="lastName"
@@ -116,15 +116,24 @@
                                     </mat-error>
                                 </mat-form-field>
                             </div>
-                            <div class="d-flex flex-column" [formGroup]="contactFormGroup">
+                        </div>
+                        <div class="d-flex flex-row">
+                            <div class="d-flex flex-column mr-2 w-50" [formGroup]="contactFormGroup">
                                 <mat-form-field appearance="outline">
                                     <mat-label>Title</mat-label>
                                     <input type="text" matInput placeholder="Title" formControlName="title">
                                 </mat-form-field>
                             </div>
+                            <div class="d-flex flex-column mr-2 w-50" [formGroup]="contactFormGroup">
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Phone</mat-label>
+                                    <input type="text" matInput placeholder="Phone" formControlName="phone">
+                                </mat-form-field>
+                            </div>
+                           
                         </div>
                         <div class="d-flex flex-row">
-                            <div class="d-flex flex-column mr-2" [formGroup]="contactFormGroup">
+                            <div class="d-flex flex-column mr-2 w-100" [formGroup]="contactFormGroup">
                                 <mat-form-field appearance="outline">
                                     <mat-label>Email*</mat-label>
                                     <input type="text" matInput placeholder="Email" formControlName="email"
@@ -137,14 +146,9 @@
                                     </mat-error>
                                 </mat-form-field>
                             </div>
-                            <div class="d-flex flex-column mr-2" [formGroup]="contactFormGroup">
-                                <mat-form-field appearance="outline">
-                                    <mat-label>Phone</mat-label>
-                                    <input type="text" matInput placeholder="Phone" formControlName="phone">
-                                </mat-form-field>
-                            </div>
+                           
                         </div>
-                        <div class="d-flex flex-row flex-grow-1" [formGroup]="contactFormGroup">
+                        <div class="d-flex flex-row flex-grow-1 w-100" [formGroup]="contactFormGroup">
                             <mat-form-field appearance="outline" class="flex-grow-1">
                                 <mat-label>Contact Notes</mat-label>
                                 <textarea matInput formControlName="contactNotes"></textarea>
@@ -199,7 +203,7 @@
                 </div>
             </div>
             <div class="d-flex flex-row flex-grow-1 justify-content-end">
-                <button mat-raised-button color="primary" [disabled]="!organizationFormGroup.valid" (click)="pushOrganization()">Save Organization</button>
+                <button mat-raised-button color="primary" [disabled]="!customerFormGroup.valid" (click)="pushCustomer()">Save Customer</button>
                 <button mat-flat-button>Cancel</button>
             </div>
         </div>
