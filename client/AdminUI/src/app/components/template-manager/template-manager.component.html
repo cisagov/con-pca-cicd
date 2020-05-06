@@ -6,10 +6,13 @@
         <input [(ngModel)]="search_input" matInput />
       </mat-form-field>
       <mat-list class="overflow-auto flex-1 template-list" appearnce="outline">
-        <mat-list-item
+        <h3 matSubheader>(Deception Score) : Template Name</h3>
+        <mat-list-item #templateList
           *ngFor="
             let template of template_list
-              | listfilter: 'name,template_uuid,descriptive_words':search_input
+              | listfilter
+                : 'name,descriptive_words,deception_score'
+                : search_input
           "
         >
           <button
@@ -17,7 +20,7 @@
             class="w-100 text-left"
             (click)="selectTemplate(template.template_uuid)"
           >
-            {{ template.name }}
+            ({{ template.deception_score }}) : {{ template.name }}
           </button>
         </mat-list-item>
       </mat-list>
@@ -77,9 +80,9 @@
               <span
                 [ngClass]="{
                   'tab-form-error':
-                    currentTemplateFormGroup.controls.templateText.hasError(
+                    currentTemplateFormGroup.controls.templateHTML.hasError(
                       'required'
-                    ) && currentTemplateFormGroup.controls.templateText.touched
+                    ) && currentTemplateFormGroup.controls.templateHTML.touched
                 }"
                 >HTML View
               </span>
@@ -88,7 +91,7 @@
               <angular-editor
                 #angularEditor
                 [style.height.px]="text_editor_height"
-                formControlName="templateText"
+                formControlName="templateHTML"
                 [config]="editorConfig"
               ></angular-editor>
             </div>
@@ -98,9 +101,9 @@
               <span
                 [ngClass]="{
                   'tab-form-error':
-                    currentTemplateFormGroup.controls.templateText.hasError(
+                    currentTemplateFormGroup.controls.templateHTML.hasError(
                       'required'
-                    ) && currentTemplateFormGroup.controls.templateText.touched
+                    ) && currentTemplateFormGroup.controls.templateHTML.touched
                 }"
                 >Source View
               </span>
@@ -112,8 +115,8 @@
                   [style.height.px]="text_editor_height"
                   [style.margin-bottom.px]="text_area_bot_marg"
                   matInput
-                  formControlName="templateText"
-                  [value]="currentTemplateFormGroup.value.templateText"
+                  formControlName="templateHTML"
+                  [value]="currentTemplateFormGroup.value.templateHTML"
                   placeholder="Select a template on the left to edit"
                   class="flex-1"
                   style="resize: none;"
@@ -225,18 +228,27 @@
           class="d-flex"
           mat-raised-button
           color="primary"
-          (click)="newTemplate()"
+          (click)="setEmptyTemplateForm()"
         >
           New Template
         </button>
         <button
           id="save-button"
+          class="d-flex"
+          mat-raised-button
+          color="warn"
+          (click)="deleteTemplate()"
+          [disabled]=!templateId
+        >
+        Delete Template
+      </button>
+        <button 
+          id="save-button"
           class="d-flex ml-auto"
           mat-raised-button
           color="primary"
-          (click)="saveTemplate()"
-        >
-          Save
+          (click)="saveTemplate()"        >
+          {{templateId ? 'Update' : 'Save New'}}
         </button>
       </div>
     </div>

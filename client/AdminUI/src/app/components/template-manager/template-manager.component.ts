@@ -3,7 +3,9 @@ import {
   OnInit,
   ViewChild,
   ElementRef,
-  HostListener
+  HostListener,
+  ChangeDetectorRef,
+  ɵɵtextInterpolateV
 } from '@angular/core';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
@@ -32,9 +34,11 @@ export class TempalteManagerComponent implements OnInit {
   matchSubject = new MyErrorStateMatcher();
   matchFromAddress = new MyErrorStateMatcher();
   matchTemplateName = new MyErrorStateMatcher();
+  matchTemplateHTML = new MyErrorStateMatcher();
 
   //Subscriptions
   subscriptions = Array<Subscription>();
+  selectedTemplateSub: Subscription;
 
   //Styling variables, required to properly size and display the angular-editor import
   body_content_height: number;
@@ -44,6 +48,7 @@ export class TempalteManagerComponent implements OnInit {
   @ViewChild('selectedTemplateTitle') titleElement: ElementRef;
   @ViewChild('tabs') tabElement: any;
   @ViewChild('angularEditor') angularEditorEle: any;
+  @ViewChild('templateList') template_list_element: ElementRef;
 
   constructor(
     private layoutSvc: LayoutMainService,
@@ -72,19 +77,22 @@ export class TempalteManagerComponent implements OnInit {
         });
       })
     );
+    //Check if template ID was included in the route, open template identified if so
     this.subscriptions.push(
       this.route.params.subscribe(params => {
         this.templateId = params['templateId'];
         if (this.templateId != undefined) {
           this.selectTemplate(this.templateId);
         } else {
-          this.setEmptyTemplateForm();
+          //Use preset empty form
         }
       })
     );
   }
 
+  
   ngOnDestroy() {
+    //Unsubscribe from all subscriptions
     this.subscriptions.forEach(sub => {
       sub.unsubscribe();
     });
@@ -94,38 +102,53 @@ export class TempalteManagerComponent implements OnInit {
     this.configAngularEditor();
   }
 
+  //Get a a list of all templates and place in template list 
   getAllTemplates() {
-    this.template_list = this.templateManagerSvc.getAllTemplates();
+    this.subscriptions.push(
+      this.templateManagerSvc.getAllTemplates().subscribe((data: any) => {
+        this.template_list = data;
+      })
+    );
   }
 
+  //Select a template based on template_uuid, returns the full template
+  selectTemplate(template_uuid: string) {
+    //Check for unsaved changes on form
+    if (this.currentTemplateFormGroup.dirty) {
+      if(!window.confirm("Select new template without saving?")){
+        return
+      }
+    }
+    //Get template and call setTemplateForm to initialize a form group using the selected tempalate
+    this.templateManagerSvc
+      .getTemplate(template_uuid).then(
+        (success) => {
+          this.setTemplateForm(<Template>success)
+          this.templateId = success['template_uuid']
+        },
+        (error) => {          
+        }
+      )
+  }
+
+  //Create an empty template form
   setEmptyTemplateForm() {
+    this.templateId = null
     this.currentTemplateFormGroup = new FormGroup({
       templateUUID: new FormControl(null),
       templateName: new FormControl('', [Validators.required]),
       templateDeceptionScore: new FormControl(0),
       templateDescriptiveWords: new FormControl(''),
       templateDescription: new FormControl(''),
-      templateDisplayLink: new FormControl(''),
       templateFromAddress: new FormControl('', [Validators.required]),
       templateRetired: new FormControl(false),
       templateSubject: new FormControl('', [Validators.required]),
-      templateText: new FormControl('', [Validators.required]),
-      templateTopicList: new FormControl(''),
-      templateGrammer: new FormControl(''),
-      templateLinkDomain: new FormControl(''),
-      templateLogoGraphics: new FormControl(''),
-      templateExternal: new FormControl(''),
-      templateInternal: new FormControl(''),
-      templateAuthoratative: new FormControl(''),
-      templateOrganization: new FormControl(''),
-      templatePublicNews: new FormControl(''),
-      templateFear: new FormControl(''),
-      templateDutyObligation: new FormControl(''),
-      templateCuriosity: new FormControl(''),
-      templateGreed: new FormControl('')
+      templateText: new FormControl(''),
+      templateHTML: new FormControl('', [Validators.required])
     });
   }
 
+  //Create a formgroup using a Template as initial data
   setTemplateForm(template: Template) {
     this.currentTemplateFormGroup = new FormGroup({
       templateUUID: new FormControl(template.template_uuid, [
@@ -133,102 +156,89 @@ export class TempalteManagerComponent implements OnInit {
       ]),
       templateName: new FormControl(template.name, [Validators.required]),
       templateDeceptionScore: new FormControl(template.deception_score),
-      templateDescriptiveWords: new FormControl(
-        template.descriptive_words?.join(', ')
-      ),
+      templateDescriptiveWords: new FormControl(template.descriptive_words),
       templateDescription: new FormControl(template.description),
-      templateDisplayLink: new FormControl(template.display_link),
       templateFromAddress: new FormControl(template.from_address, [
         Validators.required
       ]),
       templateRetired: new FormControl(template.retired),
       templateSubject: new FormControl(template.subject, [Validators.required]),
-      templateText: new FormControl(template.text, [Validators.required]),
-      templateTopicList: new FormControl(template.topic_list?.join(', ')),
-      templateGrammer: new FormControl(template.grammer),
-      templateLinkDomain: new FormControl(template.link_domain),
-      templateLogoGraphics: new FormControl(template.logo_graphics),
-      templateExternal: new FormControl(template.external),
-      templateInternal: new FormControl(template.internal),
-      templateAuthoratative: new FormControl(template.authoritative),
-      templateOrganization: new FormControl(template.organization),
-      templatePublicNews: new FormControl(template.public_news),
-      templateFear: new FormControl(template.fear),
-      templateDutyObligation: new FormControl(template.duty_obligation),
-      templateCuriosity: new FormControl(template.curiosity),
-      templateGreed: new FormControl(template.greed)
+      templateText: new FormControl(template.text),
+      templateHTML: new FormControl(template.html, [Validators.required])
     });
   }
 
+  //Get Template model from the form group
   getTemplateFromForm(form: FormGroup) {
     return new Template({
       template_uuid: form.controls['templateUUID'].value,
       name: form.controls['templateName'].value,
       deception_score: form.controls['templateDeceptionScore'].value,
-      descriptive_words: form.controls[
-        'templateDescriptiveWords'
-      ].value?.csvToArray(),
+      descriptive_words: form.controls['templateDescriptiveWords'].value,
       description: form.controls['templateDescription'].value,
-      display_link: form.controls['templateDisplayLink'].value,
       from_address: form.controls['templateFromAddress'].value,
       retired: form.controls['templateRetired'].value,
       subject: form.controls['templateSubject'].value,
       text: form.controls['templateText'].value,
-      topic_list: form.controls['templateTopicList'].value?.csvToArray(),
-      grammer: form.controls['templateGrammer'].value,
-      link_domain: form.controls['templateLinkDomain'].value,
-      logo_graphics: form.controls['templateLogoGraphics'].value,
-      external: form.controls['templateExternal'].value,
-      internal: form.controls['templateInternal'].value,
-      authoritative: form.controls['templateAuthoratative'].value,
-      organization: form.controls['templateOrganization'].value,
-      public_news: form.controls['templatePublicNews'].value,
-      fear: form.controls['templateFear'].value,
-      duty_obligation: form.controls['templateDutyObligation'].value,
-      curiosity: form.controls['templateCuriosity'].value,
-      greed: form.controls['templateGreed'].value
+      html: form.controls['templateHTML'].value
     });
   }
 
-  newTemplate() {
-    this.setEmptyTemplateForm();
-  }
-  selectTemplate(template_uuid: string) {
-    if (this.currentTemplateFormGroup.dirty) {
-      // alert(
-      //   'Values not saved for ' +
-      //     this.currentTemplateFormGroup.controls['templateName'].value
-      // );
+  //Update the list of all templates when a new entry is created, or a previous one updated
+  updateTemplateInList(template_to_update: Template){    
+    //get the index of the provided template in list for update, returns -1 if not found
+    let templateIndex = this.template_list.findIndex(template => template.template_uuid === template_to_update.template_uuid)
+  
+    if(templateIndex == -1){
+      //New template
+      this.template_list.push(template_to_update)
+    } else if(template_to_update.name) {
+      //Update
+      this.template_list[templateIndex] = template_to_update
+    } else {
+      console.log("Splice attempt")
+      //template in list, but name is empty, delete case - remove from list
+      this.template_list.splice(templateIndex,1)
     }
-    let selected_template = this.templateManagerSvc.getTemlpate(template_uuid);
-    this.setTemplateForm(selected_template);
   }
 
   saveTemplate() {
+    //mark all as touched to ensure formgroup validation checks all fields on new entry
     this.currentTemplateFormGroup.markAllAsTouched();
     if (this.currentTemplateFormGroup.valid) {
       let templateToSave = this.getTemplateFromForm(
         this.currentTemplateFormGroup
       );
-      //Depending on API requirements, two methods are avaiable. One for put, one for post
-      if (this.currentTemplateFormGroup.controls['templateUUID'].value == '0') {
-        console.log('Attempting to create a new template');
-        console.log(this.currentTemplateFormGroup);
+
+      //PATCH - existing template update
+      if (this.currentTemplateFormGroup.controls['templateUUID'].value) {
         this.templateManagerSvc
-          .saveTemplate(templateToSave)
-          .then(val => console.log(val));
+          .updateTemplate(templateToSave)
+          .then(
+            (success) => {
+              let retTemplate = <Template>success
+              this.updateTemplateInList(retTemplate)
+            },
+            (error) => {console.log(error)}
+            );
+      //POST - new template creation
       } else {
-        console.log(
-          'updating template : ' +
-            this.currentTemplateFormGroup.controls['templateUUID'].value
-        );
-        console.log(this.currentTemplateFormGroup);
         this.templateManagerSvc
-          .saveTemplate(templateToSave)
-          .then(val => console.log(val));
-        //Update the new template with auto generated return variables (UUID, createddate,etc) to allow for navigation to deception calc
+          .saveNewTemplate(templateToSave).then(
+          (success) => {
+            let retTemplate = new Template({
+              'template_uuid': success['template_uuid'],
+              'name': templateToSave.name,
+              'descriptive_words': templateToSave.descriptive_words,
+              'deception_score': 0
+            })
+            this.updateTemplateInList(retTemplate)
+          },
+          (error) => {console.log(error)}
+          );
       }
     } else {
+    //non valid form, collect nonvalid fields and display to user
       const invalid = [];
       const controls = this.currentTemplateFormGroup.controls;
       for (const name in controls) {
@@ -236,16 +246,30 @@ export class TempalteManagerComponent implements OnInit {
           invalid.push(name);
         }
       }
-      //TODO: replace with notification library when implmemnted
       alert('Invalid form fields: ' + invalid);
     }
   }
 
+  deleteTemplate(){
+    let template_to_delete = this.getTemplateFromForm(this.currentTemplateFormGroup)  
+    if(window.confirm(`Are you sure you want to delete ${template_to_delete.name}?`)){
+    this.templateManagerSvc.deleteTemplate(template_to_delete)
+      .then(
+        (success) => {
+          this.updateTemplateInList(<Template>success)
+          this.setEmptyTemplateForm()
+        },
+        (error) => {}
+      )
+    }
+  }
+
+  //Event that fires everytime the template tab choice is changed
   onTabChanged($event) {
     //Required because the angular-editor library can not bind to [value].
     //Set the formGroups template text value to itself to force an update on tab switch
-    this.currentTemplateFormGroup.controls['templateText'].setValue(
-      this.currentTemplateFormGroup.controls['templateText'].value
+    this.currentTemplateFormGroup.controls['templateHTML'].setValue(
+      this.currentTemplateFormGroup.controls['templateHTML'].value
     );
   }
 
@@ -334,6 +358,6 @@ export class TempalteManagerComponent implements OnInit {
     uploadWithCredentials: false,
     sanitize: true,
     toolbarPosition: 'top',
-    toolbarHiddenButtons: [['bold', 'italic'], ['fontSize']]
+    toolbarHiddenButtons: [['bold', 'italic'], ['fontSize', 'insertVideo']]
   };
 }

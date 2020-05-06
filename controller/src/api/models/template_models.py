@@ -127,6 +127,7 @@ class TemplateModel(Model):
     cb_timestamp = DateTimeType()
     last_updated_by = StringType()
     lub_timestamp = DateTimeType()
+    
 
 
 def validate_template(data_object):
