@@ -24,7 +24,7 @@ import { TempalteManagerComponent } from './components/template-manager/template
 import { TemplateManagerService } from './services/template-manager.service';
 import { ListFilterPipe } from './pipes/list-filter.pipe';
 import { AutosizeModule } from 'node_modules/ngx-autosize';
-import { AddOrganizationComponent } from './components/organization/add-organization/add-organization.component';
+import { AddCustomerComponent } from './components/customer/add-customer/add-customer.component';
 import { SubscriptionService } from './services/subscription.service';
 import { ThemeService } from './services/theme.service';
 import { LayoutMainService } from './services/layout-main.service';
@@ -43,7 +43,7 @@ import { UserAdminComponent } from './components/user-admin/user-admin.component
     LayoutMainComponent,
     SearchPanelComponent,
     ServiceSubscriptionComponent,
-    AddOrganizationComponent,
+    AddCustomerComponent,
     CreateSubscriptionComponent,
     DeceptionCalculatorComponent,
 

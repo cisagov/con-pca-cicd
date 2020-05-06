@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Organization } from '../models/organization.model';
+import { Customer } from '../models/customer.model';
 import { Observable } from 'rxjs';
 import { Subscription } from 'src/app/models/subscription.model';
 import { Router } from "@angular/router";
@@ -18,18 +18,18 @@ const headers = {
 export class SubscriptionService {
 
   /**
-   * The service keeps a copy of the Organization
+   * The service keeps a copy of the Customer
    */
-  organization: Organization;
-  organizations: Array<Organization> = [];
+  customer: Customer;
+  customers: Array<Customer> = [];
   /**
    * 
    */
   constructor(
     private http: HttpClient
   ) { 
-    //temp initialize organization with mock data
-    this.organizations.push(this.TEMPGETORG());
+    //temp initialize customer with mock data
+    this.customers.push(this.TEMPGETORG());
   }
 
   getSubscriptionsData(){
@@ -41,10 +41,10 @@ export class SubscriptionService {
    * is returned.
    * For now, a hard-coded model is returned.
    */
-  getOrganization(orgId: number) {
+  getCustomer(orgId: number) {
     // TEMP
-    this.organization = this.TEMPGETORG();
-    return new Observable<Organization>();
+    this.customer = this.TEMPGETORG();
+    return new Observable<Customer>();
 
 
     return this.http.get('http://bogus.org/subscription/getorg?id=' + orgId);
@@ -52,22 +52,22 @@ export class SubscriptionService {
 
   /**
    * In real life, API call happens here and the new
-   * organization is created.
+   * customer is created.
    * For now, a hard-coded model is returned.
    */
-  postOrganization(org: Organization){
-    this.organizations.push(org);
-    return new Observable<Organization>();
+  postCustomer(org: Customer){
+    this.customers.push(org);
+    return new Observable<Customer>();
 
     return this.http.post('http://bogus.org/subscription/postOrg', org);
   }
 
   /**
    * Returns an array of simple contact
-   * names and IDs for the organization.
+   * names and IDs for the customer.
    */
-  getContactsForOrg() {
-    let o = this.organization;
+  getContactsForCustomer() {
+    let o = this.customer;
     let a = [];
     o.contacts.forEach(x => {
       a.push({
@@ -82,8 +82,8 @@ export class SubscriptionService {
    * TEMP TEMP
    * This mocks up an Organization that would be returned from an API call
    */
-  TEMPGETORG(): Organization {
-    let o = new Organization();
+  TEMPGETORG(): Customer {
+    let o = new Customer();
     o.id = 123;
     o.orgName = "Delta Airlines";
     o.orgAbbrev = "DAL";
