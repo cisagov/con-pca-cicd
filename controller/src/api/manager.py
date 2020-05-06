@@ -12,7 +12,7 @@ from bs4 import BeautifulSoup
 from sklearn.feature_extraction.text import TfidfVectorizer, CountVectorizer
 from sklearn.metrics.pairwise import cosine_similarity, linear_kernel
 
-# cisagov Libraries
+# GoPhish Libraries
 from gophish import Gophish
 from gophish.models import SMTP, Campaign, Group, Page, Template, User
 
@@ -42,7 +42,8 @@ class TemplateManager:
 
     def get_templates(self, url: str, keywords: str, template_data):
         """
-        Return relative templates based on customer keywords
+        Return highest relative templates using tf-idf and cosine similarity algorithms
+        based on customer keywords
         """
         template_uuids = [*template_data.keys()]
         preprocessed_data = [self.preprocess_keywords(url, keywords)] + [
@@ -51,7 +52,14 @@ class TemplateManager:
         docs_tfidf = vectorizer.fit_transform(preprocessed_data)
         cosine_similarities = cosine_similarity(docs_tfidf[:1], docs_tfidf).flatten()
         cosine_similarities = cosine_similarities[1:]
-        context = dict(zip(template_uuids, cosine_similarities))
+
+        context = [
+            i
+            for _, i in sorted(
+                dict(zip(cosine_similarities, template_uuids)).items(), reverse=True
+            )
+        ]
+
         return context
 
 
