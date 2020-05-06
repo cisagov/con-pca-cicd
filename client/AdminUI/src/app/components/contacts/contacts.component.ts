@@ -4,14 +4,12 @@ import { LayoutMainService } from 'src/app/services/layout-main.service';
 @Component({
   selector: '',
   templateUrl: './contacts.component.html',
-  styleUrls: ['./contacts.component.scss']
+  styleUrls: ['./contacts.component.scss'],
 })
 
 export class ContactsComponent implements OnInit {
   body_content_height: number;
-  advancedSearch:boolean = false;
-
-  activeStatus = ["prohibit", "hourglass", "pause", "play", "stop"];
+  advancedSearch: boolean = false;
 
   displayedColumns = ["CompanyName",
     "FirstName",
@@ -41,10 +39,8 @@ export class ContactsComponent implements OnInit {
   }
 
   showAdvancedSearch() {
-    this.advancedSearch = true;
+    this.advancedSearch = !(this.advancedSearch);
   }
-
-  
 
   ngOnInit() {
   }
