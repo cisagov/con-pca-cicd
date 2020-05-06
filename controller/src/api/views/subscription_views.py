@@ -14,6 +14,7 @@ import uuid
 # Local
 from api.manager import CampaignManager, TemplateManager
 from api.models.subscription_models import SubscriptionModel, validate_subscription
+from api.models.template_models import TemplateModel, validate_template
 from api.serializers.subscriptions_serializers import (
     SubscriptionGetSerializer,
     SubscriptionPostResponseSerializer,
@@ -52,7 +53,7 @@ class SubscriptionsListView(APIView):
     def get(self, request):
         """Get method."""
         parameters = request.data.copy()
-        subscription_list = self.__get_data(parameters)
+        subscription_list = self.__get_data(parameters, "subscription", SubscriptionModel, validate_subscription)
         serializer = SubscriptionGetSerializer(subscription_list, many=True)
         return Response(serializer.data)
 
@@ -67,19 +68,18 @@ class SubscriptionsListView(APIView):
         """Post method."""
         post_data = request.data.copy()
 
-        try:
-            resp = requests.get("http://localhost:8000/api/v1/templates/")
-        except requests.exceptions.HTTPError as err:
-            raise err
+        # Get all templates for calc
+        template_list = self.__get_data(None, "template", TemplateModel, validate_template)
 
         template_data = {
-            i.get("template_uuid"): i.get("descriptive_words") for i in resp.json()
+            i.get("template_uuid"): i.get("descriptive_words") for i in template_list
         }
 
-        # Data for Template calculation
+        # Data for Template calculation ToDo: Save relevant_templates
         relevant_templates = template_manager.get_templates(
             post_data.get("url"), post_data.get("keywords"), template_data
         )
+        print(len(relevant_templates))
 
         # Data for GoPhish
         first_name = post_data.get("primary_contact").get("first_name", "")
@@ -133,7 +133,7 @@ class SubscriptionsListView(APIView):
         serializer = SubscriptionPostResponseSerializer(created_response)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-    def __get_data(self, parameters):
+    def __get_data(self, parameters, collection, model, validation_model):
         """
         Get_data private method.
 
@@ -141,11 +141,11 @@ class SubscriptionsListView(APIView):
         """
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
-        service = db_service("subscription", SubscriptionModel, validate_subscription)
-        subscription_list = loop.run_until_complete(
+        service = db_service(collection, model, validation_model)
+        document_list = loop.run_until_complete(
             service.filter_list(parameters=parameters)
         )
-        return subscription_list
+        return document_list
 
     def __save_data(self, post_data):
         """

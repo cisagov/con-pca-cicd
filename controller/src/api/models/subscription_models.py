@@ -108,7 +108,7 @@ class SubscriptionModel(Model):
     status = StringType()
     target_email_list = ListType(ModelType(SubscriptionTargetModel))
     # click_list = ListType(ModelType(SubscriptionClicksModel))
-    templates_selected_uuid_list = ListType(UUIDType)
+    templates_selected_uuid_list = ListType(StringType)
     active = BooleanType()
     # db data tracking added below
     created_by = StringType()
