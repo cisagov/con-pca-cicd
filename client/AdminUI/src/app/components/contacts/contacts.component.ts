@@ -17,8 +17,9 @@ export class ContactsComponent implements OnInit {
     lastName: new FormControl(),
     company: new FormControl(),
     position: new FormControl(),
+    phoneNumber: new FormControl(),
     primaryContacts: new FormControl(),
-    exactMaches: new FormControl(),
+    exactMatches: new FormControl(),
     startDate: new FormControl(),
     endDate: new FormControl()
   })
