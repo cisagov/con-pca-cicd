@@ -14,84 +14,86 @@
       </div>
     </div>
 
-    <!-- Advanced Search Div -->
-    <div *ngIf="advancedSearch">
-      <div class="row">
-        <!-- First Name Advanced Search -->
-        <div class="col-6">
-          <mat-form-field appearance="outline">
-            <mat-label>First Name</mat-label>
-            <input type="text" matInput placeholder="First Name">
-          </mat-form-field>
-        </div>
-      </div>
-      <!-- Last Name Advanced Search -->
-      <div class="row">
-        <div class="col">
-          <mat-form-field appearance="outline">
-            <mat-label>Last Name</mat-label>
-            <input type="text" matInput placeholder="Last Name">
-          </mat-form-field>
-        </div>
-      </div>
-      <!-- Company Advanced Search -->
-      <div class="row">
-        <div class="col">
-          <mat-form-field appearance="outline">
-            <mat-label>Company</mat-label>
-            <input type="text" matInput placeholder="Company Name">
-          </mat-form-field>
-        </div>
-      </div>
-      <!-- Position Advanced Search -->
-      <div class="row">
-        <div class="col">
-          <mat-form-field appearance="outline">
-            <mat-label>Position</mat-label>
-            <input type="text" matInput placeholder="Position Title">
-          </mat-form-field>
-        </div>
-      </div>
-      <!-- Phone Advanced Search -->
-      <div class="row">
-        <div class="col">
-          <mat-form-field appearance="outline">
-            <mat-label>Phone Number</mat-label>
-            <input type="text" matInput placeholder="Phone Number">
-          </mat-form-field>
-        </div>
-      </div>
-      <!-- Primary Contacts Advanced Search -->
-      <div class="row">
-        <div class="col">
-          <mat-slide-toggle labelPosition="before">Only Search Primary Contacts:</mat-slide-toggle>
-        </div>
-      </div>
-      <!-- Exact Matches Advanced Search -->
-      <div class="row">
-        <div class="col">
-          <mat-slide-toggle labelPosition="before">Exact Matches Only:</mat-slide-toggle>
-        </div>
-      </div>
-      <!-- Date contact was added - between two dates -->
-      <div class="row">
-        <div class="col">
-          Date Contact was Added:
-          <mat-form-field>
-            <input matInput [matDatepicker]="picker" placeholder="Start Date">
-            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-            <mat-datepicker #picker></mat-datepicker>
-          </mat-form-field>
-          To
-          <mat-form-field>
-            <input matInput [matDatepicker]="picker" placeholder="End Date">
-            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-            <mat-datepicker #picker></mat-datepicker>
-          </mat-form-field>
-        </div>
-      </div>
-    </div>
-    
+    <!-- ADVANCED SEARCH -->
+    <div class="d-flex flex-row p-2 flex-grow-1" *ngIf="advancedSearch">
+      <mat-card style="width:100%">
+        <mat-card-header>
+          <mat-card-title>Advanced Search</mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <!-- FIRST NAME & PRIMARY CONTACTS -->
+          <!-- <div class="d-flex flex-row">
+            <div class="d-flex flex-column mr-2" [formGroup]="advancedFormGroup">
+              <label>First Name:</label>
+              <mat-form-field appearance="outline">
+                <mat-label>First Name</mat-label>
+                <input type="text" formControlName="firstName" matInput placeholder="First Name">
+              </mat-form-field>
+            </div>
+            <div class="d-flex flex-column mr-2" [formGroup]="advancedFormGroup">
+              <mat-slide-toggle labelPosition="before" formControlName="primaryContacts">Only Search Primary Contacts:</mat-slide-toggle>
+            </div>
+          </div> -->
+          <!-- LAST NAME -->
+          <!-- <div class="d-flex flex-row">
+            <div class="d-flex flex-column mr-2" [formGroup]="advancedFormGroup">
+              <label>Last Name:</label>
+              <mat-form-field appearance="outline">
+                <mat-label>Last Name</mat-label>
+                <input type="text" formControlName="lastName" matInput placeholder="Last Name">
+              </mat-form-field>
+            </div>
+          </div> -->
+          <!-- COMPANY & EXACT MATCHES -->
+          <!-- <div class="d-flex flex-row">
+            <div class="d-flex flex-column mr-2" [formGroup]="advancedFormGroup">
+              <label>Company:</label>
+              <mat-form-field appearance="outline">
+                <mat-label>Company</mat-label>
+                <input type="text" formControlName="company" matInput placeholder="Company Name">
+              </mat-form-field>
+            </div>
+            <div class="d-flex flex-column mr-2" [formGroup]="advancedFormGroup">
+              <mat-slide-toggle labelPosition="before" formControlName="exactMatches">Exact Matches Only:</mat-slide-toggle>
+            </div>
+          </div> -->
+          <!-- POSITION & DATE RANGE -->
+          <!-- <div class="d-flex flex-row">
+            <div class="d-flex flex-column mr-2" [formGroup]="advancedFormGroup">
+              <label>Position</label>
+              <mat-form-field appearance="outline" [formGroup]="advancedFormGroup">
+                <mat-label>Position</mat-label>
+                <input type="text" formControlName="position" matInput placeholder="Position Title">
+              </mat-form-field>
+            </div>
+            <div class="d-flex flex-column mr-2" [formGroup]="advancedFormGroup">
+              Date Contact was Added:
+              <mat-form-field [formGroup]="advancedFormGroup">
+                <input matInput [matDatepicker]="picker" placeholder="Start Date" formControlName="startDate">
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+              </mat-form-field>
+              To
+              <mat-form-field [formGroup]="advancedFormGroup">
+                <input matInput [matDatepicker]="picker" placeholder="End Date" formControlName="endDate">
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+              </mat-form-field>
+            </div>
+          </div> -->
+          <!-- PHONE NUMBER -->
+          <!-- <div class="d-flex flex-row">
+            <div class="d-flex flex-column mr-2" [formGroup]="advancedFormGroup">
+              <label>Phone Number:</label>
+              <mat-form-field appearance="outline">
+                <mat-label>Phone Number</mat-label>
+                <input type="text" matInput placeholder="Phone Number" formControlName="phoneNumber">
+              </mat-form-field>
+            </div>
+          </div> -->
+        </mat-card-content>
+      </mat-card>
+    </div>    
 
     <!-- Contacts Table -->
     <mat-table [dataSource]="contactsData">

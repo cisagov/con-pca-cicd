@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { LayoutMainService } from 'src/app/services/layout-main.service';
+import { FormGroup, FormControl } from '@angular/forms';
 
 @Component({
   selector: '',
@@ -10,6 +11,17 @@ import { LayoutMainService } from 'src/app/services/layout-main.service';
 export class ContactsComponent implements OnInit {
   body_content_height: number;
   advancedSearch: boolean = false;
+
+  advancedFormGroup = new FormGroup({
+    firstName: new FormControl(),
+    lastName: new FormControl(),
+    company: new FormControl(),
+    position: new FormControl(),
+    primaryContacts: new FormControl(),
+    exactMaches: new FormControl(),
+    startDate: new FormControl(),
+    endDate: new FormControl()
+  })
 
   displayedColumns = ["CompanyName",
     "FirstName",
