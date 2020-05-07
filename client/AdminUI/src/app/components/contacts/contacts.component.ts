@@ -1,13 +1,13 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { LayoutMainService } from 'src/app/services/layout-main.service';
 import { FormGroup, FormControl } from '@angular/forms';
+import { MatDialogRef, MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: '',
   templateUrl: './contacts.component.html',
   styleUrls: ['./contacts.component.scss'],
 })
-
 export class ContactsComponent implements OnInit {
   body_content_height: number;
   advancedSearch: boolean = false;
@@ -48,7 +48,8 @@ export class ContactsComponent implements OnInit {
     { "CompanyName": "Next Level Tech", "FirstName": "  Cody", "LastName": " Smith", "Position": "IT Manager", "PrimaryContact": "No", "PhoneNumber": "(877)503-2280", },
   ];
 
-  constructor(private layoutSvc: LayoutMainService) {
+  constructor(
+    private layoutSvc: LayoutMainService, public dialog: MatDialog) {
     layoutSvc.setTitle('Con-PCA Contacts Page');
   }
 
@@ -56,7 +57,87 @@ export class ContactsComponent implements OnInit {
     this.advancedSearch = !(this.advancedSearch);
   }
 
+  openDeleteDialog(): void {
+    const dialogRef = this.dialog.open(
+      DeleteContactDialog
+    );
+  }
+
+  openAddDialog(): void {
+    const dialogRef = this.dialog.open(
+      AddContactDialog
+    );
+  }
+
+  openUpdateDialog(): void {
+    const dialogRef = this.dialog.open(
+      UpdateContactDialog
+    );
+  }
+
+  openViewDialog(): void {
+    const dialogRef = this.dialog.open(
+      ViewContactDialog
+    );
+  }
+
   ngOnInit() {
   }
 
+}
+
+@Component({
+  selector: 'delete-contact-dialog',
+  templateUrl: 'dialogues/delete-contact-dialog.html'
+})
+export class DeleteContactDialog {
+  constructor(
+    public dialogRef: MatDialogRef<DeleteContactDialog>
+  ) {}
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+}
+
+@Component({
+  selector: 'add-contact-dialog',
+  templateUrl: 'dialogues/add-contact-dialog.html'
+})
+export class AddContactDialog {
+  constructor(
+    public dialogRef: MatDialogRef<AddContactDialog>
+  ) {}
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+}
+
+@Component({
+  selector: 'view-contact-dialog',
+  templateUrl: 'dialogues/view-contact-dialog.html'
+})
+export class ViewContactDialog {
+  constructor(
+    public dialogRef: MatDialogRef<ViewContactDialog>
+  ) {}
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
+}
+
+@Component({
+  selector: 'update-contact-dialog',
+  templateUrl: 'dialogues/update-contact-dialog.html'
+})
+export class UpdateContactDialog {
+  constructor(
+    public dialogRef: MatDialogRef<UpdateContactDialog>
+  ) {}
+
+  onNoClick(): void {
+    this.dialogRef.close();
+  }
 }

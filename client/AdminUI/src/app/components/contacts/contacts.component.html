@@ -17,7 +17,7 @@
           <button mat-raised-button color="primary" class="search-button" (click)=showAdvancedSearch()>Advanced Search</button>
       </div>
       <div class="d-inline-flex flex-column ml-2">
-        <button mat-raised-button color="success" class="search-button">Add Contact</button>
+        <button mat-raised-button color="success" class="search-button" (click)="openAddDialog()">Add Contact</button>
       </div>
     </div>
 
@@ -126,13 +126,13 @@
       <ng-container matColumnDef="Action">
         <mat-header-cell *matHeaderCellDef>Action</mat-header-cell>
         <mat-cell *matCellDef="let row">
-          <button mat-icon-button color="primary">
+          <button mat-icon-button color="primary" (click)="openViewDialog()">
             <mat-icon>search</mat-icon>
           </button>
-          <button mat-icon-button color="accent">
+          <button mat-icon-button color="accent" (click)="openUpdateDialog()">
             <mat-icon>edit</mat-icon>
           </button>
-          <button mat-icon-button color="warn" *ngIf="row.PrimaryContact != 'Yes'">
+          <button mat-icon-button color="warn" *ngIf="row.PrimaryContact != 'Yes'" (click)="openDeleteDialog()">
             <mat-icon>delete</mat-icon>
           </button>
         </mat-cell>
