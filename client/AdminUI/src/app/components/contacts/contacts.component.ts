@@ -39,18 +39,6 @@ export class ContactsComponent implements OnInit {
   body_content_height: number;
   dataSource = new MatTableDataSource(contactsData)
 
-  advancedFormGroup = new FormGroup({
-    firstName: new FormControl(),
-    lastName: new FormControl(),
-    company: new FormControl(),
-    position: new FormControl(),
-    phoneNumber: new FormControl(),
-    primaryContacts: new FormControl(),
-    exactMatches: new FormControl(),
-    startDate: new FormControl(),
-    endDate: new FormControl()
-  })
-
   displayedColumns = ["CompanyName",
     "FirstName",
     "LastName",
