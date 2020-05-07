@@ -18,6 +18,21 @@ export class TemplateManagerService {
     return this.http.get('http://localhost:8000/api/v1/templates', headers);
   }
 
+  // getAllTemplates() {
+  //   return new Promise((resolve, reject) => {
+  //     this.http
+  //     .get('http://localhost:8000/api/v1/templates', headers)
+  //     .subscribe(
+  //       (success) => {
+  //         return success
+  //       },
+  //       (error) => {
+  //         return error
+  //       }
+  //     )
+  //   })
+  // }
+
   //GET a single template using the provided temlpate_uuid
   getTemplate(uuid: string) {
     return new Promise((resolve, reject) => {
