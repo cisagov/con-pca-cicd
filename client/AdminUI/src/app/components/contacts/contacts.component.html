@@ -9,7 +9,7 @@
       <div class="d-flex flex-column w-100">
         <mat-form-field class="search-bar" appearance="outline">
           <mat-label>Search</mat-label>
-          <input matInput>
+          <input matInput (keyup)="searchFilter($event)">
           <mat-icon matSuffix>search</mat-icon>
         </mat-form-field>
       </div>
@@ -84,7 +84,7 @@
     </div>    
 
     <!-- Contacts Table -->
-    <mat-table [dataSource]="contactsData">
+    <mat-table [dataSource]="dataSource">
 
       <!-- Company Name Column -->
       <ng-container matColumnDef="CompanyName">
