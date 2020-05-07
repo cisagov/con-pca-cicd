@@ -37,7 +37,6 @@ const contactsData: ContactsInfo[] = [
 })
 export class ContactsComponent implements OnInit {
   body_content_height: number;
-  advancedSearch: boolean = false;
   dataSource = new MatTableDataSource(contactsData)
 
   advancedFormGroup = new FormGroup({
@@ -67,10 +66,6 @@ export class ContactsComponent implements OnInit {
   searchFilter = (searchValue: string) => {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
-  }
-
-  showAdvancedSearch() {
-    this.advancedSearch = !(this.advancedSearch);
   }
 
   openDeleteDialog(): void {
