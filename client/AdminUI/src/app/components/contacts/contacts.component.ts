@@ -68,21 +68,9 @@ export class ContactsComponent implements OnInit {
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
-  openDeleteDialog(): void {
-    const dialogRef = this.dialog.open(
-      DeleteContactDialog
-    );
-  }
-
   openAddDialog(): void {
     const dialogRef = this.dialog.open(
       AddContactDialog
-    );
-  }
-
-  openUpdateDialog(): void {
-    const dialogRef = this.dialog.open(
-      UpdateContactDialog
     );
   }
 
@@ -95,20 +83,6 @@ export class ContactsComponent implements OnInit {
   ngOnInit() {
   }
 
-}
-
-@Component({
-  selector: 'delete-contact-dialog',
-  templateUrl: 'dialogues/delete-contact-dialog.html'
-})
-export class DeleteContactDialog {
-  constructor(
-    public dialogRef: MatDialogRef<DeleteContactDialog>
-  ) {}
-
-  onNoClick(): void {
-    this.dialogRef.close();
-  }
 }
 
 @Component({
@@ -132,20 +106,6 @@ export class AddContactDialog {
 export class ViewContactDialog {
   constructor(
     public dialogRef: MatDialogRef<ViewContactDialog>
-  ) {}
-
-  onNoClick(): void {
-    this.dialogRef.close();
-  }
-}
-
-@Component({
-  selector: 'update-contact-dialog',
-  templateUrl: 'dialogues/update-contact-dialog.html'
-})
-export class UpdateContactDialog {
-  constructor(
-    public dialogRef: MatDialogRef<UpdateContactDialog>
   ) {}
 
   onNoClick(): void {
