@@ -172,6 +172,8 @@ def personalize_template(customer_info, template_data, sub_data):
         "<%CURRENT_YEAR_SHORT%>": today.strftime("%y"),
         "<%CURRENT_DAY%>": today.strftime("%d"),
         "<%SPOOF_NAME%>": "FAKE NAME GERNERATOR",
+        "<%EVENT%>": "Relevent Event",
+        "<%TIMEFRAME%>": "Relevent Timeframe",
     }
     personalized_text = []
     for template in template_data:
