@@ -5,30 +5,26 @@ import { MatDialogRef, MatDialog } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 
 export interface ContactsInfo {
-  CompanyName: string;
-  FirstName: string;
-  LastName: string;
-  Position: string;
-  PrimaryContact: string;
-  PhoneNumber: string;
+  customer: string;
+  first_name: string;
+  last_name: string;
+  title: string;
+  primary_contact: string;
+  phone: string;
+  email: string;
+  notes: string;
 }
 
 const contactsData: ContactsInfo[] = [
-  { CompanyName: "Idaho National Labs", FirstName: " Barry", LastName: "Hansen", Position: "CEO", PrimaryContact: "Yes", PhoneNumber: "(208)222-2000"},
-  { CompanyName: "Idaho National Labs", FirstName: " Jason", LastName: "Bourne", Position: "Janitor", PrimaryContact: "Yes", PhoneNumber: "(208)222-2000"},
-  { CompanyName: "Idaho National Labs", FirstName: "  Randy", LastName: " Woods", Position: "Developer", PrimaryContact: "No", PhoneNumber: "(208)222-2183", },
-  { CompanyName: "Idaho National Labs", FirstName: "  McKenzie", LastName: " Willmore", Position: "Team Manager", PrimaryContact: "Yes", PhoneNumber: "(208)222-2544", },
-  { CompanyName: "Idaho National Labs", FirstName: "  Jason", LastName: " Kuipers", Position: "Developer", PrimaryContact: "No", PhoneNumber: "(208)222-2923", },
-  { CompanyName: "Idaho National Labs", FirstName: "  Bill", LastName: " Martin", Position: "Testing", PrimaryContact: "No", PhoneNumber: "(208)222-2070", },
-  { CompanyName: "Neetflix Streaming Services", FirstName: "  John", LastName: " Galetti", Position: "CEO", PrimaryContact: "No", PhoneNumber: "(509)345-4455", },
-  { CompanyName: "Neetflix Streaming Services", FirstName: "  David", LastName: " Olsavsky", Position: "CFO", PrimaryContact: "No", PhoneNumber: "(509)345-4455", },
-  { CompanyName: "Neetflix Streaming Services", FirstName: "  Jeff", LastName: " Wilke", Position: "HR Lead", PrimaryContact: "Yes", PhoneNumber: "(509)745-3021", },
-  { CompanyName: "Plumbing & Pipes Co", FirstName: "  Douglas", LastName: " Brand", Position: "Sales Manager", PrimaryContact: "Yes", PhoneNumber: "(208)735-7483", },
-  { CompanyName: "Plumbing & Pipes Co", FirstName: "  Valerie", LastName: " Anders", Position: "CTO", PrimaryContact: "Yes", PhoneNumber: "(208)735-74783", },
-  { CompanyName: "Next Level Tech", FirstName: "  Judith", LastName: " Fulmer", Position: "Company Rep", PrimaryContact: "Yes", PhoneNumber: "(877)503-2277", },
-  { CompanyName: "Next Level Tech", FirstName: "  Sarah", LastName: " Fulmer", Position: "Company Rep", PrimaryContact: "No", PhoneNumber: "(877)503-2278", },
-  { CompanyName: "Next Level Tech", FirstName: "  Kevin", LastName: " Turner", Position: "Security", PrimaryContact: "No", PhoneNumber: "(877)503-2279", },
-  { CompanyName: "Next Level Tech", FirstName: "  Cody", LastName: " Smith", Position: "IT Manager", PrimaryContact: "No", PhoneNumber: "(877)503-2280", },
+  { customer: "Wheel of Time", first_name: "Rand", last_name: "al'Thor", title: "Dragon Reborn", primary_contact: "Yes", phone: "(123)456-2000", email: "rand.althor@wot", notes: ""},
+  { customer: "Wheel of Time", first_name: "Matrim", last_name: "Cauthon", title: "The Gambler", primary_contact: "No", phone: "(123)456-2001", email: "mat.cauthon@wot", notes: ""},
+  { customer: "Wheel of Time", first_name: "Perrin", last_name: "Aybara", title: "Lord Goldeneyes", primary_contact: "No", phone: "(123)456-2002", email: "perrin.aybara@wot", notes: ""},
+  { customer: "Lord of the Rings", first_name: "Frodo", last_name: "Baggins", title: "Hobbit", primary_contact: "Yes", phone: "(123)456-2003", email: "frodo.baggins@lotr", notes: ""},
+  { customer: "Lord of the Rings", first_name: "Aragorn", last_name: "Elessar", title: "Strider", primary_contact: "No", phone: "(123)456-2004", email: "aragorn.elessar@lotr", notes: ""},
+  { customer: "Lord of the Rings", first_name: "Samwise", last_name: "Gamgee", title: "Hobbit", primary_contact: "No", phone: "(123)456-2005", email: "samwise.gamgee@lotr", notes: ""},
+  { customer: "Stormlight Archive", first_name: "Kaladin", last_name: "Stormblessed", title: "Knight Radiant", primary_contact: "No", phone: "(123)456-2006", email: "kaladin.stormblessed@sa", notes: ""},
+  { customer: "Stormlight Archive", first_name: "Dalinar", last_name: "Kholin", title: "Highprince", primary_contact: "Yes", phone: "(123)456-2007", email: "dalinar.kholin@sa", notes: ""},
+  { customer: "Stormlight Archive", first_name: "Shallan", last_name: "Davar", title: "Brightness", primary_contact: "No", phone: "(123)456-2008", email: "shallan.davar@sa", notes: ""},
 ];
 
 @Component({
@@ -40,12 +36,12 @@ export class ContactsComponent implements OnInit {
   body_content_height: number;
   dataSource = new MatTableDataSource(contactsData)
 
-  displayedColumns = ["CompanyName",
-    "FirstName",
-    "LastName",
-    "Position",
-    "PrimaryContact",
-    "Action"];
+  displayedColumns = ["customer",
+    "first_name",
+    "last_name",
+    "title",
+    "primary_contact",
+    "select"];
 
   constructor(
     private layoutSvc: LayoutMainService, public dialog: MatDialog) {
@@ -74,14 +70,14 @@ export class ContactsComponent implements OnInit {
     // New predicate for filtering.
     // The default predicate will only compare words against a single column.
     // Ex. if you search "Barry Hansen" no results would return because there are two columns...
-    // One for firstname and one for last name.
+    // One for first_name and one for last name.
     // This new predicate will search each word against all columns, if a word doesn't match anywhere...
     // no results will be returned.
     this.dataSource.filterPredicate = (data: ContactsInfo, filter: string) => {
       var words = filter.split(' ');
 
       // Create search data once so it's not created each time in loop
-      let searchData = `${data.FirstName.toLowerCase()} ${data.LastName.toLowerCase()} ${data.CompanyName.toLowerCase()} ${data.Position.toLowerCase()}`
+      let searchData = `${data.first_name.toLowerCase()} ${data.last_name.toLowerCase()} ${data.customer.toLowerCase()} ${data.title.toLowerCase()}`
 
       for (var i = 0; i < words.length; i++) {
 

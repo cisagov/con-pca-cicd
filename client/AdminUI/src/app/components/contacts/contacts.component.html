@@ -24,47 +24,47 @@
     <!-- Contacts Table -->
     <mat-table [dataSource]="dataSource">
       <!-- Company Name Column -->
-      <ng-container matColumnDef="CompanyName">
-        <mat-header-cell *matHeaderCellDef>Company Name</mat-header-cell>
-        <mat-cell *matCellDef="let row"> {{row.CompanyName}} </mat-cell>
+      <ng-container matColumnDef="customer">
+        <mat-header-cell *matHeaderCellDef>Customer Name</mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{row.customer}} </mat-cell>
       </ng-container>
 
       <!-- First Name Column -->
-      <ng-container matColumnDef="FirstName">
-        <mat-header-cell *matHeaderCellDef>First Name </mat-header-cell>
-        <mat-cell *matCellDef="let row"> {{row.FirstName}} </mat-cell>
+      <ng-container matColumnDef="first_name">
+        <mat-header-cell *matHeaderCellDef>First Name</mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{row.first_name}} </mat-cell>
       </ng-container>
 
       <!-- Last Name Column -->
-      <ng-container matColumnDef="LastName">
-        <mat-header-cell *matHeaderCellDef>Last Name </mat-header-cell>
-        <mat-cell *matCellDef="let row"> {{row.LastName}} </mat-cell>
+      <ng-container matColumnDef="last_name">
+        <mat-header-cell *matHeaderCellDef>Last Name</mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{row.last_name}} </mat-cell>
       </ng-container>
 
       <!-- Position Column -->
-      <ng-container matColumnDef="Position">
-        <mat-header-cell *matHeaderCellDef>Position </mat-header-cell>
-        <mat-cell *matCellDef="let row"> {{row.Position}} </mat-cell>
+      <ng-container matColumnDef="title">
+        <mat-header-cell *matHeaderCellDef>Title</mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{row.title}} </mat-cell>
       </ng-container>
 
       <!-- Primary Contact Column -->
-      <ng-container matColumnDef="PrimaryContact">
-        <mat-header-cell *matHeaderCellDef>Primary Contact </mat-header-cell>
-        <mat-cell *matCellDef="let row"> {{row.PrimaryContact}} </mat-cell>
+      <ng-container matColumnDef="primary_contact">
+        <mat-header-cell *matHeaderCellDef>Primary Contact</mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{row.primary_contact}} </mat-cell>
       </ng-container>
 
       <!-- Phone Number Column -->
-      <ng-container matColumnDef="PhoneNumber">
+      <ng-container matColumnDef="phone">
         <mat-header-cell *matHeaderCellDef>Phone Number</mat-header-cell>
-        <mat-cell *matCellDef="let row"> {{row.PhoneNumber}} </mat-cell>
+        <mat-cell *matCellDef="let row"> {{row.phone}} </mat-cell>
       </ng-container>
 
       <!-- Action Column -->
-      <ng-container matColumnDef="Action">
-        <mat-header-cell *matHeaderCellDef>Action</mat-header-cell>
+      <ng-container matColumnDef="select">
+        <mat-header-cell *matHeaderCellDef>Select</mat-header-cell>
         <mat-cell *matCellDef="let row">
           <button mat-icon-button color="primary" (click)="openViewDialog()">
-            <mat-icon>search</mat-icon>
+            <mat-icon>list</mat-icon>
           </button>
         </mat-cell>
       </ng-container>
