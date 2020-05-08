@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { LayoutMainService } from 'src/app/services/layout-main.service';
 import { FormGroup, FormControl } from '@angular/forms';
-import { MatDialogRef, MatDialog } from '@angular/material/dialog';
+import { MatDialogRef, MatDialog, MatDialogConfig, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 
 export interface ContactsInfo {
@@ -54,14 +54,16 @@ export class ContactsComponent implements OnInit {
   }
 
   openAddDialog(): void {
-    const dialogRef = this.dialog.open(
-      AddContactDialog
-    );
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.data = {}
+    const dialogRef = this.dialog.open(AddContactDialog, dialogConfig);
   }
 
-  openViewDialog(): void {
+  openViewDialog(row: ContactsInfo): void {
     const dialogRef = this.dialog.open(
-      ViewContactDialog
+      ViewContactDialog, {
+        data: row
+      }
     );
   }
 
@@ -120,11 +122,37 @@ export class AddContactDialog {
   templateUrl: 'dialogues/view-contact-dialog.html'
 })
 export class ViewContactDialog {
+  data: ContactsInfo;
+  editDisabled: boolean = true;
+
+  contactFormGroup = new FormGroup({
+    firstName: new FormControl(),
+    lastName: new FormControl(),
+    title: new FormControl(),
+    customer: new FormControl(),
+    email: new FormControl(),
+    phone: new FormControl(),
+    notes: new FormControl(),
+  })
+
   constructor(
-    public dialogRef: MatDialogRef<ViewContactDialog>
-  ) {}
+    public dialogRef: MatDialogRef<ViewContactDialog>,
+    @Inject(MAT_DIALOG_DATA) data) {
+      this.data = data;
+      this.contactFormGroup.disable();
+    }
+
+  onEditClick(): void {
+    if (this.contactFormGroup.disabled) {
+      this.contactFormGroup.enable();
+    } else {
+      this.contactFormGroup.disable();
+    }
+  }
 
   onNoClick(): void {
     this.dialogRef.close();
   }
+
+  get diagnostic() {return JSON.stringify(this.data)}
 }

@@ -63,7 +63,7 @@
       <ng-container matColumnDef="select">
         <mat-header-cell *matHeaderCellDef>Select</mat-header-cell>
         <mat-cell *matCellDef="let row">
-          <button mat-icon-button color="primary" (click)="openViewDialog()">
+          <button mat-icon-button color="primary" (click)="openViewDialog(row)">
             <mat-icon>list</mat-icon>
           </button>
         </mat-cell>
