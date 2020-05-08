@@ -15,6 +15,7 @@ export interface ContactsInfo {
 
 const contactsData: ContactsInfo[] = [
   { CompanyName: "Idaho National Labs", FirstName: " Barry", LastName: "Hansen", Position: "CEO", PrimaryContact: "Yes", PhoneNumber: "(208)222-2000"},
+  { CompanyName: "Idaho National Labs", FirstName: " Jason", LastName: "Bourne", Position: "Janitor", PrimaryContact: "Yes", PhoneNumber: "(208)222-2000"},
   { CompanyName: "Idaho National Labs", FirstName: "  Randy", LastName: " Woods", Position: "Developer", PrimaryContact: "No", PhoneNumber: "(208)222-2183", },
   { CompanyName: "Idaho National Labs", FirstName: "  McKenzie", LastName: " Willmore", Position: "Team Manager", PrimaryContact: "Yes", PhoneNumber: "(208)222-2544", },
   { CompanyName: "Idaho National Labs", FirstName: "  Jason", LastName: " Kuipers", Position: "Developer", PrimaryContact: "No", PhoneNumber: "(208)222-2923", },
@@ -69,8 +70,39 @@ export class ContactsComponent implements OnInit {
   }
 
   ngOnInit() {
-  }
 
+    // New predicate for filtering.
+    // The default predicate will only compare words against a single column.
+    // Ex. if you search "Barry Hansen" no results would return because there are two columns...
+    // One for firstname and one for last name.
+    // This new predicate will search each word against all columns, if a word doesn't match anywhere...
+    // no results will be returned.
+    this.dataSource.filterPredicate = (data: ContactsInfo, filter: string) => {
+      var words = filter.split(' ');
+
+      // Create search data once so it's not created each time in loop
+      let searchData = `${data.FirstName.toLowerCase()} ${data.LastName.toLowerCase()} ${data.CompanyName.toLowerCase()} ${data.Position.toLowerCase()}`
+
+      for (var i = 0; i < words.length; i++) {
+
+        // Don't want to compare bad input
+        if (words[i] == null || words[i] == '' || words[i] == ' ') {
+          continue;
+        }
+
+        // Check if search data contains the word
+        var isMatch = searchData.indexOf(words[i].trim().toLowerCase()) > -1;
+        
+        // If there's no match for the word, return false
+        if (!isMatch) {
+          return false;
+        }
+      }
+      
+      // return true if false was never returned
+      return true;
+    };
+  }
 }
 
 @Component({
