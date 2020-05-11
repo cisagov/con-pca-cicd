@@ -1,55 +1,72 @@
-<!--  <div class="row h-100">
-    <div class="col-6 h-100 p-3 flex-container flex-column">
-      <mat-form-field class="w-100 pb-3" appearance="outline">
-        <mat-label>Search</mat-label>
-        <input [(ngModel)]="search_input" matInput />
-      </mat-form-field>
-    -->
-      
   <div class="container-fluid" [style.height.px]="body_content_height">
-    <p>Welcome to the contacts page!</p>
 
-    <div class="row">
-      <div class="col text-right">
-        <button mat-raised-button color="primary" class="search-button">Basic Search</button>
-      </div>
-      <div class="col">
-        <button mat-raised-button color="primary" class="search-button">Advanced Search</button>
-      </div>
+    <div class="d-flex flex-row flex-grow-1 w-100 text-right">
+      
     </div>
 
-    <div class="p-3 w-100">
-      <mat-form-field class="search-bar" appearance="outline">
-        <mat-label>Search</mat-label>
-        <input matInput>
-      </mat-form-field>
-    </div>
+    <!-- Search Bar -->
+    <div class="d-flex flex-row flex-grow-1">
+      <div class="d-flex flex-column w-100">
+        <mat-form-field class="search-bar" appearance="outline">
+          <mat-label>Search</mat-label>
+          <input matInput (keyup)="searchFilter($event)">
+          <mat-icon matSuffix>search</mat-icon>
+        </mat-form-field>
+      </div>
+      <div class="d-inline-flex flex-column ml-2">
+        <button mat-raised-button color="success" class="search-button" (click)="openAddDialog()">Add Contact</button>
+      </div>
+    </div>   
 
-    <mat-table [dataSource]="contactsData">
-      <ng-container matColumnDef="CompanyName">
-        <mat-header-cell *matHeaderCellDef>Company Name</mat-header-cell>
-        <mat-cell *matCellDef="let row"> {{row.CompanyName}} </mat-cell>
+    <!-- Contacts Table -->
+    <mat-table [dataSource]="dataSource">
+      <!-- Company Name Column -->
+      <ng-container matColumnDef="customer">
+        <mat-header-cell *matHeaderCellDef>Customer Name</mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{row.customer}} </mat-cell>
       </ng-container>
-      <ng-container matColumnDef="FirstName">
-        <mat-header-cell *matHeaderCellDef>First Name </mat-header-cell>
-        <mat-cell *matCellDef="let row"> {{row.FirstName}} </mat-cell>
+
+      <!-- First Name Column -->
+      <ng-container matColumnDef="first_name">
+        <mat-header-cell *matHeaderCellDef>First Name</mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{row.first_name}} </mat-cell>
       </ng-container>
-      <ng-container matColumnDef="LastName">
-        <mat-header-cell *matHeaderCellDef>Last Name </mat-header-cell>
-        <mat-cell *matCellDef="let row"> {{row.LastName}} </mat-cell>
+
+      <!-- Last Name Column -->
+      <ng-container matColumnDef="last_name">
+        <mat-header-cell *matHeaderCellDef>Last Name</mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{row.last_name}} </mat-cell>
       </ng-container>
-      <ng-container matColumnDef="Position">
-        <mat-header-cell *matHeaderCellDef>Position </mat-header-cell>
-        <mat-cell *matCellDef="let row"> {{row.Position}} </mat-cell>
+
+      <!-- Position Column -->
+      <ng-container matColumnDef="title">
+        <mat-header-cell *matHeaderCellDef>Title</mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{row.title}} </mat-cell>
       </ng-container>
-      <ng-container matColumnDef="PrimaryContact">
-        <mat-header-cell *matHeaderCellDef>Primary Contact </mat-header-cell>
-        <mat-cell *matCellDef="let row"> {{row.PrimaryContact}} </mat-cell>
+
+      <!-- Primary Contact Column -->
+      <ng-container matColumnDef="primary_contact">
+        <mat-header-cell *matHeaderCellDef>Primary Contact</mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{row.primary_contact}} </mat-cell>
       </ng-container>
-      <ng-container matColumnDef="PhoneNumber">
+
+      <!-- Phone Number Column -->
+      <ng-container matColumnDef="phone">
         <mat-header-cell *matHeaderCellDef>Phone Number</mat-header-cell>
-        <mat-cell *matCellDef="let row"> {{row.PhoneNumber}} </mat-cell>
+        <mat-cell *matCellDef="let row"> {{row.phone}} </mat-cell>
       </ng-container>
+
+      <!-- Action Column -->
+      <ng-container matColumnDef="select">
+        <mat-header-cell *matHeaderCellDef>Select</mat-header-cell>
+        <mat-cell *matCellDef="let row">
+          <button mat-icon-button color="primary" (click)="openViewDialog(row)">
+            <mat-icon>list</mat-icon>
+          </button>
+        </mat-cell>
+      </ng-container>
+
+
       <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
       <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
   </mat-table>
