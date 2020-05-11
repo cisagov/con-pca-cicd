@@ -136,11 +136,47 @@ export class ContactsComponent implements OnInit {
   styleUrls: ['./contacts.component.scss'],
 })
 export class AddContactDialog {
+  data: ContactsInfo;
+  isPrimary = false;
+  addContactCustomer: string;
+  addContactFirstName: string;
+  addContactLastName: string;
+  addContactTitle: string;
+  addContactPrimary: string;
+  addContactPhone: string;
+  addContactEmail: string;
+  addContactNotes: string;
+
+
   constructor(
-    public dialogRef: MatDialogRef<AddContactDialog>
+    public dialogRef: MatDialogRef<AddContactDialog>,
   ) {}
 
   onNoClick(): void {
+    this.dialogRef.close();
+  }
+
+  onSaveClick(): void {
+    if (this.isPrimary == true) {
+        this.addContactPrimary = "Yes"
+    } else {
+      this.addContactPrimary = "No"
+    }
+
+    contactsData.push({
+      customer: this.addContactCustomer, 
+      first_name: this.addContactFirstName,
+      last_name: this.addContactLastName, 
+      title: this.addContactTitle, 
+      primary_contact: this.addContactPrimary,
+      phone: this.addContactPhone,
+      email: this.addContactEmail, 
+      notes: this.addContactNotes
+    });
+    this.dialogRef.close();
+  }
+
+  onCancelClick(): void {
     this.dialogRef.close();
   }
 }
