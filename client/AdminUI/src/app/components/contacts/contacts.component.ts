@@ -4,6 +4,7 @@ import { FormGroup, FormControl } from '@angular/forms';
 import { MatDialogRef, MatDialog, MatDialogConfig, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 
+// Interface for Contact Info
 export interface ContactsInfo {
   customer: string;
   first_name: string;
@@ -15,6 +16,8 @@ export interface ContactsInfo {
   notes: string;
 }
 
+
+// Example contacts data
 const contactsData: ContactsInfo[] = [
   { customer: "Wheel of Time", first_name: "Rand", last_name: "al'Thor", title: "Dragon Reborn", primary_contact: "Yes", phone: "(123)456-2000", email: "rand.althor@wot", notes: ""},
   { customer: "Wheel of Time", first_name: "Matrim", last_name: "Cauthon", title: "The Gambler", primary_contact: "No", phone: "(123)456-2001", email: "mat.cauthon@wot", notes: ""},
@@ -27,6 +30,9 @@ const contactsData: ContactsInfo[] = [
   { customer: "Stormlight Archive", first_name: "Shallan", last_name: "Davar", title: "Brightness", primary_contact: "No", phone: "(123)456-2008", email: "shallan.davar@sa", notes: ""},
 ];
 
+// =======================================
+// MAIN CONTACTS PAGE
+// =======================================
 @Component({
   selector: '',
   templateUrl: './contacts.component.html',
@@ -36,29 +42,39 @@ export class ContactsComponent implements OnInit {
   body_content_height: number;
   dataSource = new MatTableDataSource(contactsData)
 
-  displayedColumns = ["customer",
+  displayedColumns = [
+    "customer",
     "first_name",
     "last_name",
     "title",
     "primary_contact",
-    "select"];
+    "select"
+  ];
 
   constructor(
     private layoutSvc: LayoutMainService, public dialog: MatDialog) {
     layoutSvc.setTitle('Con-PCA Contacts Page');
   }
 
-  searchFilter = (searchValue: string) => {
+
+  // Filters search on key up in search bar
+  searchFilter(searchValue: string): void {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
+  // Opens a dialog box for adding a contact
   openAddDialog(): void {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.data = {}
     const dialogRef = this.dialog.open(AddContactDialog, dialogConfig);
+
+    dialogRef.afterClosed().subscribe(value => {
+      this.refresh()
+    })
   }
 
+  // Opens a dialog box for viewing, editing and deleting a contact
   openViewDialog(row: ContactsInfo): void {
     const dialogRef = this.dialog.open(
       ViewContactDialog, {
@@ -66,8 +82,13 @@ export class ContactsComponent implements OnInit {
       }
     );
     dialogRef.afterClosed().subscribe(value => {
-      this.dataSource.data = this.dataSource.data;
+      this.refresh()
     })
+  }
+
+  // Refreshes the data source view
+  refresh(): void {
+    this.dataSource.data = this.dataSource.data;
   }
 
   ngOnInit() {
@@ -106,6 +127,9 @@ export class ContactsComponent implements OnInit {
   }
 }
 
+// =======================================
+// ADD CONTACT DIALOG
+// =======================================
 @Component({
   selector: 'add-contact-dialog',
   templateUrl: 'dialogues/add-contact-dialog.html',
@@ -121,6 +145,10 @@ export class AddContactDialog {
   }
 }
 
+
+// =======================================
+// VIEW CONTACT DIALOG
+// =======================================
 @Component({
   selector: 'view-contact-dialog',
   templateUrl: 'dialogues/view-contact-dialog.html',
