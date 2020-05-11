@@ -7,22 +7,21 @@ This handles the api for all the Subscription urls.
 import asyncio
 import datetime
 import logging
-import requests
 import uuid
 
 # Third-Party Libraries
 # Local
 from api.manager import CampaignManager, TemplateManager
+from api.models.customer_models import CustomerModel, validate_customer
 from api.models.subscription_models import SubscriptionModel, validate_subscription
 from api.models.template_models import TemplateModel, validate_template
-from api.models.customer_models import CustomerModel, validate_customer
 from api.serializers.subscriptions_serializers import (
+    SubscriptionDeleteResponseSerializer,
     SubscriptionGetSerializer,
-    SubscriptionPostResponseSerializer,
-    SubscriptionPostSerializer,
     SubscriptionPatchResponseSerializer,
     SubscriptionPatchSerializer,
-    SubscriptionDeleteResponseSerializer,
+    SubscriptionPostResponseSerializer,
+    SubscriptionPostSerializer,
 )
 from api.utils import db_service, personalize_template
 from drf_yasg.utils import swagger_auto_schema
@@ -88,20 +87,21 @@ class SubscriptionsListView(APIView):
         # Return 15 of the most relevant templates
         post_data["templates_selected_uuid_list"] = relevant_templates
 
-
         # get customer data
         customer = self.__get_single(
             post_data["customer_uuid"], "customer", CustomerModel, validate_customer
         )
 
         # get relevent template data
-        template_list = [x for x in template_list if x["template_uuid"] in relevant_templates] 
-        personalize_template(customer, template_list, post_data)
+        template_list = [
+            x for x in template_list if x["template_uuid"] in relevant_templates
+        ]
+        templates = personalize_template(customer, template_list, post_data)
 
         # Data for GoPhish
         first_name = post_data.get("primary_contact").get("first_name", "")
         last_name = post_data.get("primary_contact").get("last_name", "")
-        templates = campaign_manager.get("email_template")
+
         # get User Groups
         user_groups = campaign_manager.get("user_group")
         group_name = f"{last_name}'s Targets"
@@ -123,19 +123,23 @@ class SubscriptionsListView(APIView):
 
         # Create a GoPhish Campaigns
         for template in templates:
-            template_name = template.name
+            # Create new template
+            created_tempale = campaign_manager.generate_email_template(
+                name=template["name"], template=template["data"]
+            )
+            template_name = created_tempale.name
             campaign_name = f"{first_name}.{last_name}.1.1 {template_name}"
             campaign = campaign_manager.create(
                 "campaign",
                 campaign_name=campaign_name,
                 user_group=target,
-                email_template=template,
+                email_template=created_tempale,
             )
             logger.info("campaign created: {}".format(campaign))
             created_campaign = {
                 "campaign_id": campaign.id,
                 "name": campaign_name,
-                "email_template": template.name,
+                "email_template": created_tempale.name,
                 "landing_page_template": "",
                 "target_email_list": target_list,
             }
@@ -244,7 +248,7 @@ class SubscriptionView(APIView):
         operation_description="This handles the API for the Delete of a  subscription with subscription_uuid.",
     )
     def delete(self, request, subscription_uuid):
-        """delete method."""
+        """Delete method."""
         logging.debug("delete subscription_uuid {}".format(subscription_uuid))
         delete_response = self.__delete_single(subscription_uuid)
         logging.info("delete responce {}".format(delete_response))

@@ -1,7 +1,6 @@
 """Utils file for api."""
 # Standard Python Libraries
 from datetime import datetime
-import json
 
 # Third-Party Libraries
 from database.service import Service
@@ -76,27 +75,27 @@ def personalize_template(customer_info, template_data, sub_data):
         "<%EVENT%>": "Relevent Event",
         "<%TIMEFRAME%>": "Relevent Timeframe",
     }
-    personalized_text = []
+    personalized_template_data = []
     for template in template_data:
         cleantext = template["html"]
         for key, value in check_replace.items():
             cleantext = cleantext.replace(key, value)
 
-        template_name = "{}_{}_{}".format(
+        template_unique_name = "{}_{}_{}".format(
             "".join(template["name"].split(" ")),
             customer_info["customer_uuid"],
-            today.strftime("%Y%m%d"),
+            today.strftime("%Y%m%d%H%M%S"),
         )
 
-        personalized_text.append(
+        personalized_template_data.append(
             {
                 "template_uuid": template["template_uuid"],
-                "personalized_text": cleantext,
-                "personalized_template_name": template_name,
+                "data": cleantext,
+                "name": template_unique_name,
             }
         )
 
-    print(json.dumps(personalized_text, indent=2, sort_keys=True))
+    return personalized_template_data
 
 
 def current_season(today):
