@@ -1,4 +1,23 @@
 {
+  "customer_data": {
+    "address_1": "123 Fake Street",
+    "address_2": "Suite 1",
+    "city": "Santa Cruz",
+    "contact_list": [
+      {
+        "email": "user@example.com",
+        "first_name": "Bob",
+        "last_name": "Burgston",
+        "notes": "The big cheese.",
+        "phone": "555-555-5555",
+        "title": "CeO"
+      }
+    ],
+    "identifier": "BoB",
+    "name": "Bobs Burgers",
+    "state": "California",
+    "zip_code": "12345"
+  },
   "subscription_data": [
     {
       "active": true,
@@ -22,9 +41,8 @@
       ],
       "customer_uuid": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
       "gophish_campaign_list": [],
-      "name": "SC-1031.Matt-Daemon.1.1",
-      "url": "https://inl.gov",
       "keywords": "research development government work job",
+      "name": "SC-1031.Matt-Daemon.1.1",
       "primary_contact": {
         "customer": "Matts Damons",
         "email": "Matt.Daemon@example.com",
@@ -35,7 +53,6 @@
       },
       "start_date": "2020-04-10T09:30:25",
       "status": "  Waiting on SRF",
-      "templates_selected_uuid_list": [],
       "target_email_list": [
         {
           "email": "Bat.Man@example.com",
@@ -79,7 +96,9 @@
           "last_name": "Smith",
           "position": "manager"
         }
-      ]
+      ],
+      "templates_selected_uuid_list": [],
+      "url": "https://inl.gov"
     },
     {
       "active": true,
@@ -103,9 +122,8 @@
       ],
       "customer_uuid": "6068d85a-4f83-4b5a-958e-a179e5b4c205",
       "gophish_campaign_list": [],
-      "name": "SC-1221.Ben-Aflex.1.1",
-      "url": "https://google.com",
       "keywords": "search query google",
+      "name": "SC-1221.Ben-Aflex.1.1",
       "primary_contact": {
         "customer": "Sams Snacks",
         "email": "foo.bar@example.com",
@@ -116,7 +134,6 @@
       },
       "start_date": "2020-03-10T09:30:25",
       "status": "Waiting on SRF",
-      "templates_selected_uuid_list": [],
       "target_email_list": [
         {
           "email": "Bat.Man@example.com",
@@ -160,7 +177,9 @@
           "last_name": "Smith",
           "position": "manager"
         }
-      ]
+      ],
+      "templates_selected_uuid_list": [],
+      "url": "https://google.com"
     }
   ]
 }

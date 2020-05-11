@@ -7,23 +7,23 @@ This handles the api for all the Subscription urls.
 import asyncio
 import datetime
 import logging
-import requests
 import uuid
 
 # Third-Party Libraries
 # Local
 from api.manager import CampaignManager, TemplateManager
+from api.models.customer_models import CustomerModel, validate_customer
 from api.models.subscription_models import SubscriptionModel, validate_subscription
 from api.models.template_models import TemplateModel, validate_template
 from api.serializers.subscriptions_serializers import (
+    SubscriptionDeleteResponseSerializer,
     SubscriptionGetSerializer,
-    SubscriptionPostResponseSerializer,
-    SubscriptionPostSerializer,
     SubscriptionPatchResponseSerializer,
     SubscriptionPatchSerializer,
-    SubscriptionDeleteResponseSerializer,
+    SubscriptionPostResponseSerializer,
+    SubscriptionPostSerializer,
 )
-from api.utils import db_service
+from api.utils import db_service, personalize_template
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status
 from rest_framework.response import Response
@@ -82,15 +82,26 @@ class SubscriptionsListView(APIView):
         # Data for Template calculation ToDo: Save relevant_templates
         relevant_templates = template_manager.get_templates(
             post_data.get("url"), post_data.get("keywords"), template_data
-        )
+        )[:15]
 
         # Return 15 of the most relevant templates
-        post_data["templates_selected_uuid_list"] = relevant_templates[:15]
+        post_data["templates_selected_uuid_list"] = relevant_templates
+
+        # get customer data
+        customer = self.__get_single(
+            post_data["customer_uuid"], "customer", CustomerModel, validate_customer
+        )
+
+        # get relevent template data
+        template_list = [
+            x for x in template_list if x["template_uuid"] in relevant_templates
+        ]
+        templates = personalize_template(customer, template_list, post_data)
 
         # Data for GoPhish
         first_name = post_data.get("primary_contact").get("first_name", "")
         last_name = post_data.get("primary_contact").get("last_name", "")
-        templates = campaign_manager.get("email_template")
+
         # get User Groups
         user_groups = campaign_manager.get("user_group")
         group_name = f"{last_name}'s Targets"
@@ -112,19 +123,23 @@ class SubscriptionsListView(APIView):
 
         # Create a GoPhish Campaigns
         for template in templates:
-            template_name = template.name
+            # Create new template
+            created_tempale = campaign_manager.generate_email_template(
+                name=template["name"], template=template["data"]
+            )
+            template_name = created_tempale.name
             campaign_name = f"{first_name}.{last_name}.1.1 {template_name}"
             campaign = campaign_manager.create(
                 "campaign",
                 campaign_name=campaign_name,
                 user_group=target,
-                email_template=template,
+                email_template=created_tempale,
             )
             logger.info("campaign created: {}".format(campaign))
             created_campaign = {
                 "campaign_id": campaign.id,
                 "name": campaign_name,
-                "email_template": template.name,
+                "email_template": created_tempale.name,
                 "landing_page_template": "",
                 "target_email_list": target_list,
             }
@@ -171,6 +186,18 @@ class SubscriptionsListView(APIView):
         service = db_service("subscription", SubscriptionModel, validate_subscription)
         created_response = loop.run_until_complete(service.create(to_create=post_data))
         return created_response
+
+    def __get_single(self, uuid, collection, model, validation_model):
+        """
+        Get_single private method.
+
+        This handles getting the data from the db.
+        """
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        service = db_service(collection, model, validation_model)
+        document = loop.run_until_complete(service.get(uuid=uuid))
+        return document
 
 
 class SubscriptionView(APIView):
@@ -221,7 +248,7 @@ class SubscriptionView(APIView):
         operation_description="This handles the API for the Delete of a  subscription with subscription_uuid.",
     )
     def delete(self, request, subscription_uuid):
-        """delete method."""
+        """Delete method."""
         logging.debug("delete subscription_uuid {}".format(subscription_uuid))
         delete_response = self.__delete_single(subscription_uuid)
         logging.info("delete responce {}".format(delete_response))
