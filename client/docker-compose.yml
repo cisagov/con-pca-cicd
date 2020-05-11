@@ -3,7 +3,7 @@ services:
   web:
     build:
       context: ./AdminUI
-    container_name: cpa-web
+    container_name: pca-web
     restart: unless-stopped
     ports:
       - "4200:4200"
