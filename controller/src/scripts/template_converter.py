@@ -17,6 +17,116 @@ from bs4 import BeautifulSoup
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 
+# tested params
+CUSTOMER_PARAMS = {
+    "customer_name": [
+        "<ORG>",
+        "<Customer Name>",
+        "[CUSTOMER]",
+        "[CUSTOMER LONG NAME]",
+        "[CUSTOMER NAME]",
+        "[Written Out Customer Name]",
+        "[Customer]",
+        "[CUSTOMER-NAME]",
+        "[Customer Name]",
+        "[CustomerName]",
+        "[CUSTOMER_NAME]",
+        "[Stakeholder Long Name]",
+        "[UNIVERSITY_NAME]",
+        "[AGENCY NAME]",
+        "[Organization]",
+        "[ORGANIZATION]",
+        "[Organization Name]",
+    ],
+    "acronym": [
+        "(ACRONYM)",
+        "<Acronym>",
+        "[ACRONYM]",
+        "[GROUP ACRONYM]",
+        "[Acronym]",
+        "[Stakeholder Acronym]",
+        "[CUSTOMER ACRONYM]",
+    ],
+    "city": [
+        "[Location]",
+        "[Location or Customer]",
+        "[Insert location]",
+        "[Customer Location, ex. Town of...]",
+        "[Customer Location ex. Town of...]",
+        "[CUST_LOCATION/NETWORK]",
+    ],
+    "state": ["[State]", "[State or Entity]", "[Entity or State]",],
+    "date": [
+        "[DATE]",
+        "[CAMPAIGN END DATE, YEAR]",
+        "[Date of End of Campaign]",
+        "[Date of Start of Campaign]",
+        "[DATE AFTER CAMPAIGN]",
+        "[Campaign End Date]",
+        "[Date of Campaign End]",
+        "[Insert Date]",
+        "[Insert Date and Time]",
+        "[RECENT DATE]",
+        "[Upcoming Date]",
+        "[MONTH YEAR]",
+        "[MONTH DAY, YEAR]",
+    ],
+    "year": ["<year>", "<Year>", "[CAMPAIGN END DATE, YEAR]", "[Year]", "[YEAR]"],
+    "month": ["[Month]", "[Month Year of Campaign]", "[MONTH]", "<Month>"],
+    "day": ["<day>"],
+    "season": ["[Season]", "[Select Summer/Spring/Fall/Winter]",],
+    "event": [
+        "[list relevant weather event]",
+        "[APPLICABLE EVENT]",
+        "[CUSTOMER SPECIFIC EVENT]",
+    ],
+    "logo": ["[LOGO]"],
+}
+
+GOPHISH_PARAMS = {
+    "link": [
+        "<URL%>" "<[%]URL[%]>",
+        "<%URL%>",
+        "<Spoofed Link>",
+        "<link>",
+        "<Link>",
+        "<spoofed link>",
+        "<hidden link>",
+        "<LINK TO ACTUAL CUST PAYMENT SITE OR SIMILAR>",
+        "<[Fake link]>",
+        "<HIDDEN>",
+        "<HIDDEN LINK>",
+        "<[EMBEDDED LINK]>",
+        "<LINK>",
+        "<embedded link>",
+        "[LINK]",
+        "[WRITTEN OUT SPOOFED CUSTOMER LINK]",
+        "[EMBEDDED LINK]",
+        "[Fake link]",
+        "[insert spoofed link]",
+        "[Insert Fake Link]",
+        "[PLAUSIBLE SPOOFED URL]",
+        "[insert fake URL]",
+        "[spoof fake URL]",
+        "[Related URL to State Law or Rule]",
+        "[Fake Web Page URL]",
+        "%URL%",
+        "%]URL[%",
+    ],
+    "spoof_name": [
+        "<FAKE NAME>",
+        "[SPOOFED NAME]",
+        "[NAME]",
+        "[GENERIC FIRST NAME]",
+        "[GENERIC NAME]",
+        "[APPROVED HIGH LEVEL NAME]",
+        "[Fake Name]",
+        "[fakename]",
+        "[MADE UP NAME]",
+    ],
+    "target": ["%To_Name%", "%To%",],
+}
+
 
 def load_data(data_file):
     """This loads json file of data_file."""
@@ -48,11 +158,7 @@ def main(argv):
     output_list = []
     stop_words = set(stopwords.words("english"))
 
-    all_possible_tags = {
-        "brackets": [],
-        "glet": [],
-        "percent": []
-    }
+    all_possible_tags = {"brackets": [], "glet": [], "percent": []}
 
     for temp in json_data:
         text = temp["text"]
@@ -62,6 +168,16 @@ def main(argv):
         if "Subject:" in postString[1]:
             message_subject = postString[1].replace("Subject: ", "")
         message_text = postString[2]
+
+        for keyword in CUSTOMER_PARAMS["customer_name"]:
+            message_text = message_text.replace(keyword, "<%CUSTOMER_NAME%>")
+        for keyword in CUSTOMER_PARAMS["season"]:
+            message_text = message_text.replace(keyword, "<%CURRENT_SEASON%>")
+        for keyword in GOPHISH_PARAMS["link"]:
+            message_text = message_text.replace(keyword, "<%URL%>")
+        for keyword in GOPHISH_PARAMS["target"]:
+            message_text = message_text.replace(keyword, "<%TARGET_FULLL_NAME%>")
+
         message_html = "<br>".join(message_text.split("\n"))
         message_cleaned = " ".join(message_text.split("\n"))
 
@@ -71,22 +187,22 @@ def main(argv):
         descriptive_words = " ".join(filtered_sentence)
         # calc all old scores
         scores = []
-        for  item in temp["appearance"]:
+        for item in temp["appearance"]:
             scores.append(temp["appearance"][item])
-        for  item in temp["sender"]:
+        for item in temp["sender"]:
             scores.append(temp["sender"][item])
-        for  item in temp["relevancy"]:
+        for item in temp["relevancy"]:
             scores.append(temp["relevancy"][item])
-        for  item in temp["behavior"]:
+        for item in temp["behavior"]:
             scores.append(temp["behavior"][item])
         scores.append(temp["complexity"])
 
-        bracket_tags = re.findall(r'\[.*?\]',message_cleaned)
-        percent_tags = re.findall(r'\%.*?\%',message_cleaned)
-        gtlt_tags = re.findall(r'\<.*?\>',message_cleaned)
-        
-        all_possible_tags["brackets"].extend(bracket_tags) 
-        all_possible_tags["percent"].extend(percent_tags) 
+        bracket_tags = re.findall(r"\[.*?\]", message_cleaned)
+        percent_tags = re.findall(r"\%.*?\%", message_cleaned)
+        gtlt_tags = re.findall(r"\<.*?\>", message_cleaned)
+
+        all_possible_tags["brackets"].extend(bracket_tags)
+        all_possible_tags["percent"].extend(percent_tags)
         all_possible_tags["glet"].extend(gtlt_tags)
 
         template = {

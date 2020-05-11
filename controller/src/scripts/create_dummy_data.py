@@ -52,12 +52,26 @@ def main():
 
     print("created tempaltes_list: {}".format(created_template_uuids))
 
-    print("Step 2/2: create subscriptions...")
+    print("Step 2/3: create customers...")
+
+    customer = json_data["customer_data"]
+    created_customer_uuid = ""
+    try:
+        resp = requests.post("http://localhost:8000/api/v1/customers/", json=customer)
+        resp.raise_for_status()
+    except requests.exceptions.HTTPError as err:
+        raise err
+
+    resp_json = resp.json()
+    created_customer_uuid = resp_json["customer_uuid"]
+
+    print("Step 3/3: create subscriptions...")
 
     subscriptions = json_data["subscription_data"]
     created_subcription_uuids = []
 
     for subscription in subscriptions:
+        subscription["customer_uuid"] = created_customer_uuid
         try:
             resp = requests.post(
                 "http://localhost:8000/api/v1/subscriptions/", json=subscription

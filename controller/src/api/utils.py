@@ -7,115 +7,6 @@ import json
 from database.service import Service
 from django.conf import settings
 
-CUSTOMER_PARAMS = {
-    "customer_name": [
-        "<ORG>",
-        "<Customer Name>",
-        "[CUSTOMER]",
-        "[CUSTOMER LONG NAME]",
-        "[CUSTOMER NAME]",
-        "[Written Out Customer Name]",
-        "[Customer]",
-        "[CUSTOMER-NAME]",
-        "[Customer Name]",
-        "[CustomerName]",
-        "[CUSTOMER_NAME]",
-        "[Stakeholder Long Name]",
-        "[UNIVERSITY_NAME]",
-        "[AGENCY NAME]",
-        "[Organization]",
-        "[ORGANIZATION]",
-        "[Organization Name]",
-    ],
-    "acronym": [
-        "(ACRONYM)",
-        "<Acronym>",
-        "[ACRONYM]",
-        "[GROUP ACRONYM]",
-        "[Acronym]",
-        "[Stakeholder Acronym]",
-        "[CUSTOMER ACRONYM]",
-    ],
-    "city": [
-        "[Location]",
-        "[Location or Customer]",
-        "[Insert location]",
-        "[Customer Location, ex. Town of...]",
-        "[Customer Location ex. Town of...]",
-        "[CUST_LOCATION/NETWORK]",
-    ],
-    "state": ["[State]", "[State or Entity]", "[Entity or State]",],
-    "date": [
-        "[DATE]",
-        "[CAMPAIGN END DATE, YEAR]",
-        "[Date of End of Campaign]",
-        "[Date of Start of Campaign]",
-        "[DATE AFTER CAMPAIGN]",
-        "[Campaign End Date]",
-        "[Date of Campaign End]",
-        "[Insert Date]",
-        "[Insert Date and Time]",
-        "[RECENT DATE]",
-        "[Upcoming Date]",
-        "[MONTH YEAR]",
-        "[MONTH DAY, YEAR]",
-    ],
-    "year": ["<year>", "<Year>", "[CAMPAIGN END DATE, YEAR]", "[Year]", "[YEAR]"],
-    "month": ["[Month]", "[Month Year of Campaign]", "[MONTH]", "<Month>"],
-    "day": ["<day>"],
-    "season": ["[Season]", "[Select Summer/Spring/Fall/Winter]",],
-    "event": [
-        "[list relevant weather event]",
-        "[APPLICABLE EVENT]",
-        "[CUSTOMER SPECIFIC EVENT]",
-    ],
-    "logo": ["[LOGO]"],
-}
-
-GOPHISH_PARAMS = {
-    "link": [
-        "<URL%>" "<[%]URL[%]>",
-        "<%URL%>",
-        "<Spoofed Link>",
-        "<link>",
-        "<Link>",
-        "<spoofed link>",
-        "<hidden link>",
-        "<LINK TO ACTUAL CUST PAYMENT SITE OR SIMILAR>",
-        "<[Fake link]>",
-        "<HIDDEN>",
-        "<HIDDEN LINK>",
-        "<[EMBEDDED LINK]>",
-        "<LINK>",
-        "<embedded link>",
-        "[LINK]",
-        "[WRITTEN OUT SPOOFED CUSTOMER LINK]",
-        "[EMBEDDED LINK]",
-        "[Fake link]",
-        "[insert spoofed link]",
-        "[Insert Fake Link]",
-        "[PLAUSIBLE SPOOFED URL]",
-        "[insert fake URL]",
-        "[spoof fake URL]",
-        "[Related URL to State Law or Rule]",
-        "[Fake Web Page URL]",
-        "%URL%",
-        "%]URL[%",
-    ],
-    "spoof_name": [
-        "<FAKE NAME>",
-        "[SPOOFED NAME]",
-        "[NAME]",
-        "[GENERIC FIRST NAME]",
-        "[GENERIC NAME]",
-        "[APPROVED HIGH LEVEL NAME]",
-        "[Fake Name]",
-        "[fakename]",
-        "[MADE UP NAME]",
-    ],
-    "target": ["%To_Name%", "%To%",],
-}
-
 
 def db_service(collection_name, model, validate_model):
     """
@@ -150,6 +41,13 @@ def personalize_template(customer_info, template_data, sub_data):
     It also fills in GoPhish usable params.
     """
     today = datetime.today()
+    customer_full_address = "{} {} {} {} {}".format(
+        customer_info["address_1"],
+        customer_info["address_2"],
+        customer_info["city"],
+        customer_info["state"],
+        customer_info["zip_code"],
+    )
     check_replace = {
         "<%URL%>": "{{.URL}}",
         "<%TARGET_FIRST_NAME%>": "{{.FirstName}}",
@@ -157,8 +55,11 @@ def personalize_template(customer_info, template_data, sub_data):
         "<%TARGET_FULLL_NAME%>": "{{.FirstName}} {{.LastName}}",
         "<%TARGET_EMAIL%>": "{{.Email}}",
         "<%TARGET_POSITION%>": "{{.Position}}",
+        "<%FROM%>": "{{.From}}",
         "<%CUSTOMER_NAME%>": customer_info["name"],
-        "<%CUSTOMER_ADDRESS%>": customer_info["name"],
+        "<%CUSTOMER_ADDRESS_FULL%>": customer_full_address,
+        "<%CUSTOMER_ADDRESS_1%>": customer_info["address_1"],
+        "<%CUSTOMER_ADDRESS_2%>": customer_info["address_2"],
         "<%CUSTOMER_STATE%>": customer_info["state"],
         "<%CUSTOMER_CITY%>": customer_info["city"],
         "<%CUSTOMER_ZIPCODE%>": customer_info["zip_code"],
@@ -178,11 +79,21 @@ def personalize_template(customer_info, template_data, sub_data):
     personalized_text = []
     for template in template_data:
         cleantext = template["html"]
-        for check, rep in check_replace:
-            cleantext = cleantext.replace(check, rep)
+        for key, value in check_replace.items():
+            cleantext = cleantext.replace(key, value)
+
+        template_name = "{}_{}_{}".format(
+            "".join(template["name"].split(" ")),
+            customer_info["customer_uuid"],
+            today.strftime("%Y%m%d"),
+        )
 
         personalized_text.append(
-            {"template_uuid": template["template_uuid"], "personalized_text": cleantext}
+            {
+                "template_uuid": template["template_uuid"],
+                "personalized_text": cleantext,
+                "personalized_template_name": template_name,
+            }
         )
 
     print(json.dumps(personalized_text, indent=2, sort_keys=True))
