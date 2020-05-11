@@ -19,15 +19,17 @@ export interface ContactsInfo {
 
 // Example contacts data
 const contactsData: ContactsInfo[] = [
-  { customer: "Wheel of Time", first_name: "Rand", last_name: "al'Thor", title: "Dragon Reborn", primary_contact: "Yes", phone: "(123)456-2000", email: "rand.althor@wot", notes: ""},
-  { customer: "Wheel of Time", first_name: "Matrim", last_name: "Cauthon", title: "The Gambler", primary_contact: "No", phone: "(123)456-2001", email: "mat.cauthon@wot", notes: ""},
-  { customer: "Wheel of Time", first_name: "Perrin", last_name: "Aybara", title: "Lord Goldeneyes", primary_contact: "No", phone: "(123)456-2002", email: "perrin.aybara@wot", notes: ""},
-  { customer: "Lord of the Rings", first_name: "Frodo", last_name: "Baggins", title: "Hobbit", primary_contact: "Yes", phone: "(123)456-2003", email: "frodo.baggins@lotr", notes: ""},
-  { customer: "Lord of the Rings", first_name: "Aragorn", last_name: "Elessar", title: "Strider", primary_contact: "No", phone: "(123)456-2004", email: "aragorn.elessar@lotr", notes: ""},
-  { customer: "Lord of the Rings", first_name: "Samwise", last_name: "Gamgee", title: "Hobbit", primary_contact: "No", phone: "(123)456-2005", email: "samwise.gamgee@lotr", notes: ""},
-  { customer: "Stormlight Archive", first_name: "Kaladin", last_name: "Stormblessed", title: "Knight Radiant", primary_contact: "No", phone: "(123)456-2006", email: "kaladin.stormblessed@sa", notes: ""},
-  { customer: "Stormlight Archive", first_name: "Dalinar", last_name: "Kholin", title: "Highprince", primary_contact: "Yes", phone: "(123)456-2007", email: "dalinar.kholin@sa", notes: ""},
-  { customer: "Stormlight Archive", first_name: "Shallan", last_name: "Davar", title: "Brightness", primary_contact: "No", phone: "(123)456-2008", email: "shallan.davar@sa", notes: ""},
+  { customer: "Idaho National Labs", first_name: "Barry", last_name: "Hansen", title: "CEO", primary_contact: "Yes", phone: "(123)456-2000", email: "Barry.Hansen@inl.gov", notes: "The boss. Definitely a cool guy."},
+  { customer: "Idaho National Labs", first_name: "Randy", last_name: "Woods", title: "Developer", primary_contact: "No", phone: "(123)456-2000", email: "Randy.Woods@inl.gov", notes: ""},
+  { customer: "Idaho National Labs", first_name: "Jason", last_name: "Kuipers", title: "Developer", primary_contact: "No", phone: "(123)456-2000", email: "Jason.Kuipers@inl.gov", notes: ""},
+  { customer: "Idaho National Labs", first_name: "McKenzie", last_name: "Willmore", title: "Team Manager", primary_contact: "Yes", phone: "(123)456-2000", email: "McKenzie.Willmore@inl.gov", notes: ""},
+  { customer: "Neetflix Streaming Services", first_name: "Bob", last_name: "Smith", title: "CEO", primary_contact: "Yes", phone: "(123)456-2001", email: "Bob.Smith@neetflix.com", notes: ""},
+  { customer: "Neetflix Streaming Services", first_name: "Sarah", last_name: "Smith", title: "CFO", primary_contact: "No", phone: "(123)456-2001", email: "Jake.Smith@neetflix.com", notes: ""},
+  { customer: "Neetflix Streaming Services", first_name: "Sam", last_name: "Smith", title: "CTO", primary_contact: "No", phone: "(123)456-2001", email: "Sam.Smith@neetflix.com", notes: ""},
+  { customer: "Some Other Company", first_name: "Ashley", last_name: "Tolley", title: "HR Manager", primary_contact: "Yes", phone: "(123)456-2002", email: "Ashley.Tolley@SOC.com", notes: ""},
+  { customer: "Some Other Company", first_name: "April", last_name: "Gates", title: "Snarky Assistant", primary_contact: "No", phone: "(123)456-2002", email: "April.Gates@SOC.com", notes: ""},
+  { customer: "Some Other Company", first_name: "Jake", last_name: "Eshleman", title: "IT & Security", primary_contact: "No", phone: "(123)456-2002", email: "Jake.Eshleman", notes: ""},
+  { customer: "Some Other Company", first_name: "Cynthia", last_name: "Johnson", title: "IT & Security", primary_contact: "No", phone: "(123)456-2002", email: "Cynthia.Johnson", notes: ""}
 ];
 
 // =======================================
