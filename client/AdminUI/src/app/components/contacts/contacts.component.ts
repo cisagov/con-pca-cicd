@@ -65,6 +65,9 @@ export class ContactsComponent implements OnInit {
         data: row
       }
     );
+    dialogRef.afterClosed().subscribe(value => {
+      this.dataSource.data = this.dataSource.data;
+    })
   }
 
   ngOnInit() {
@@ -105,7 +108,8 @@ export class ContactsComponent implements OnInit {
 
 @Component({
   selector: 'add-contact-dialog',
-  templateUrl: 'dialogues/add-contact-dialog.html'
+  templateUrl: 'dialogues/add-contact-dialog.html',
+  styleUrls: ['./contacts.component.scss'],
 })
 export class AddContactDialog {
   constructor(
@@ -119,35 +123,56 @@ export class AddContactDialog {
 
 @Component({
   selector: 'view-contact-dialog',
-  templateUrl: 'dialogues/view-contact-dialog.html'
+  templateUrl: 'dialogues/view-contact-dialog.html',
+  styleUrls: ['./contacts.component.scss'],
 })
 export class ViewContactDialog {
   data: ContactsInfo;
-  editDisabled: boolean = true;
+  edit: boolean = false;
 
   contactFormGroup = new FormGroup({
-    firstName: new FormControl(),
-    lastName: new FormControl(),
-    title: new FormControl(),
     customer: new FormControl(),
-    email: new FormControl(),
+    first_name: new FormControl(),
+    last_name: new FormControl(),
+    title: new FormControl(),
+    primary_contact: new FormControl(),
     phone: new FormControl(),
+    email: new FormControl(),
     notes: new FormControl(),
   })
+
+  initialData: ContactsInfo;
 
   constructor(
     public dialogRef: MatDialogRef<ViewContactDialog>,
     @Inject(MAT_DIALOG_DATA) data) {
       this.data = data;
+      this.initialData = Object.assign({}, data);
       this.contactFormGroup.disable();
     }
 
   onEditClick(): void {
-    if (this.contactFormGroup.disabled) {
-      this.contactFormGroup.enable();
-    } else {
-      this.contactFormGroup.disable();
+    this.edit = true;
+    this.contactFormGroup.enable();
+  }
+
+  onSaveEditClick(): void {
+    this.edit = false;
+    this.contactFormGroup.disable();
+  }
+
+  onCancelEditClick(): void {
+    this.contactFormGroup.patchValue(this.initialData);
+    console.log(this.data);
+  }
+
+  onDeleteClick(): void {
+    const index = contactsData.indexOf(this.data, 0);
+    console.log(index)
+    if (index > -1) {
+      contactsData.splice(index, 1);
     }
+    this.dialogRef.close();
   }
 
   onNoClick(): void {
