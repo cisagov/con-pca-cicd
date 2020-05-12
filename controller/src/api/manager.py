@@ -2,6 +2,7 @@
 
 # Standard Python Libraries
 import re
+import logging
 from typing import Dict
 
 # Third-Party Libraries
@@ -17,6 +18,7 @@ from gophish import Gophish
 from gophish.models import SMTP, Campaign, Group, Page, Template, User
 
 
+logger = logging.getLogger(__name__)
 faker = Faker()
 vectorizer = TfidfVectorizer()
 
@@ -143,6 +145,10 @@ class CampaignManager:
 
     def generate_email_template(self, name: str, template: str):
         """Generate Email Templates."""
+        existing_names = {email.name for email in self.gp_api.templates.get()}
+        if name in existing_names:
+            logger.info("Template, {}, already exists.. skipping".format(name))
+            return
         email_template = Template(name=name, html=template)
         return self.gp_api.templates.post(email_template)
 

@@ -124,28 +124,30 @@ class SubscriptionsListView(APIView):
         # Create a GoPhish Campaigns
         for template in templates:
             # Create new template
-            created_tempale = campaign_manager.generate_email_template(
+            created_template = campaign_manager.generate_email_template(
                 name=template["name"], template=template["data"]
             )
-            template_name = created_tempale.name
-            campaign_name = f"{first_name}.{last_name}.1.1 {template_name}"
-            campaign = campaign_manager.create(
-                "campaign",
-                campaign_name=campaign_name,
-                smtp_name="SMTP",
-                page_name="Phished",
-                user_group=target,
-                email_template=created_tempale,
-            )
-            logger.info("campaign created: {}".format(campaign))
-            created_campaign = {
-                "campaign_id": campaign.id,
-                "name": campaign_name,
-                "email_template": created_tempale.name,
-                "landing_page_template": "",
-                "target_email_list": target_list,
-            }
-            gophish_campaign_list.append(created_campaign)
+
+            if created_template is not None:
+                template_name = created_template.name
+                campaign_name = f"{first_name}.{last_name}.1.1 {template_name}"
+                campaign = campaign_manager.create(
+                    "campaign",
+                    campaign_name=campaign_name,
+                    smtp_name="SMTP",
+                    page_name="Phished",
+                    user_group=target,
+                    email_template=created_template,
+                )
+                logger.info("campaign created: {}".format(campaign))
+                created_campaign = {
+                    "campaign_id": campaign.id,
+                    "name": campaign_name,
+                    "email_template": created_template.name,
+                    "landing_page_template": "",
+                    "target_email_list": target_list,
+                }
+                gophish_campaign_list.append(created_campaign)
 
         post_data["gophish_campaign_list"] = gophish_campaign_list
 
