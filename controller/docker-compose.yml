@@ -1,91 +1,91 @@
 ---
-  version: '3.4'
-  services:
-    api:
-      build:
-        context: .
-        dockerfile: ./etc/Dockerfile
-      stdin_open: true
-      tty: true
-      container_name: pca-api
-      restart: on-failure
-      links:
-        - mongodb
-      ports:
-        - "8000:8000"
-      volumes:
-        - ./src:/app
-      env_file:
-        - .env
-  
-    celery-beat:
-      build:
-        context: .
-        dockerfile: ./etc/Dockerfile
-      container_name: pca-beat
-      hostname: celery-beat
-      restart: on-failure
-      entrypoint: celery -A config beat -l info
-      volumes:
-        - ./src:/app
-      depends_on:
-        - rabbitmq
-      env_file:
-        - .env
-  
-    celery-worker:
-      build:
-        context: .
-        dockerfile: ./etc/Dockerfile
-      container_name: pca-worker
-      restart: on-failure
-      entrypoint: celery worker --app=config.celery:app
-        --loglevel=info --logfile=tasks/logs/celery.log
-      volumes:
-        - ./src:/app
-      depends_on:
-        - rabbitmq
-      env_file:
-        - .env
-  
-    rabbitmq:
-      image: rabbitmq:3.6-management-alpine
-      # There is a prebuilt RabbitMQ image; see
-      # https://hub.docker.com/_/rabbitmq/ for details.
-      # This variant is built on Alpine Linux (it's smaller) and includes
-      # the management UI.
-      container_name: pca-rabbitmq
-      hostname: rabbitmq
-      restart: on-failure
-      # These ports are exposed on the host; 'hostport:containerport'.
-      # You could connect to this server from outside with the *host's*
-      # DNS name or IP address and port 5672 (the left-hand side of the
-      # colon).
-      ports:
-        # The standard AMQP protocol port
-        - '5672:5672'
-        # HTTP management UI
-        - '15672:15672'
-  
-      env_file:
-        - .env
-  
-    mongodb:
-      container_name: pca-mongodb
-      hostname: mongodb
-      image: "mongo:3.6"
-      # These ports are exposed on the host; 'hostport:containerport'.
-      # You could connect to this server from outside with the *host's*
-      # DNS name or IP address and port 27017 (the left-hand side of the
-      # colon).
-      ports:
-        - "27017:27017"
-      volumes:
-        - "mongodb:/data/db"
-      env_file:
-        - .env
-  
-  # Host volumes used to store code.
-  volumes:
-    mongodb:
-  
+version: '3.4'
+services:
+  api:
+    build:
+      context: .
+      dockerfile: ./etc/Dockerfile
+    stdin_open: true
+    tty: true
+    container_name: pca-api
+    hostname: pca-api
+    restart: on-failure
+    links:
+      - mongodb
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./src:/app
+    env_file:
+      - .env
+
+  celery-beat:
+    build:
+      context: .
+      dockerfile: ./etc/Dockerfile
+    container_name: pca-beat
+    hostname: celery-beat
+    restart: on-failure
+    entrypoint: celery -A config beat -l info
+    volumes:
+      - ./src:/app
+    depends_on:
+      - rabbitmq
+    env_file:
+      - .env
+
+  celery-worker:
+    build:
+      context: .
+      dockerfile: ./etc/Dockerfile
+    container_name: pca-worker
+    restart: on-failure
+    entrypoint: celery worker --app=config.celery:app
+      --loglevel=info --logfile=tasks/logs/celery.log
+    volumes:
+      - ./src:/app
+    depends_on:
+      - rabbitmq
+    env_file:
+      - .env
+
+  rabbitmq:
+    image: rabbitmq:3.6-management-alpine
+    # There is a prebuilt RabbitMQ image; see
+    # https://hub.docker.com/_/rabbitmq/ for details.
+    # This variant is built on Alpine Linux (it's smaller) and includes
+    # the management UI.
+    container_name: pca-rabbitmq
+    hostname: rabbitmq
+    restart: on-failure
+    # These ports are exposed on the host; 'hostport:containerport'.
+    # You could connect to this server from outside with the *host's*
+    # DNS name or IP address and port 5672 (the left-hand side of the
+    # colon).
+    ports:
+      # The standard AMQP protocol port
+      - '5672:5672'
+      # HTTP management UI
+      - '15672:15672'
+
+    env_file:
+      - .env
+
+  mongodb:
+    container_name: pca-mongodb
+    hostname: mongodb
+    image: "mongo:3.6"
+    # These ports are exposed on the host; 'hostport:containerport'.
+    # You could connect to this server from outside with the *host's*
+    # DNS name or IP address and port 27017 (the left-hand side of the
+    # colon).
+    ports:
+      - "27017:27017"
+    volumes:
+      - "mongodb:/data/db"
+    env_file:
+      - .env
+
+# Host volumes used to store code.
+volumes:
+  mongodb:
