@@ -52,3 +52,7 @@ db_load_dummy:
 # target: db_drop_mongo - connects to docker and drops mongo volume
 db_drop_mongo:
 	docker volume rm controller_mongodb
+
+# target: init_gophish - initialize gophish data
+init_gophish:
+	docker exec -it pca-api python scripts/init_gophish.py

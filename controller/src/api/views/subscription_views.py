@@ -132,6 +132,8 @@ class SubscriptionsListView(APIView):
             campaign = campaign_manager.create(
                 "campaign",
                 campaign_name=campaign_name,
+                smtp_name="SMTP",
+                page_name="Phished",
                 user_group=target,
                 email_template=created_tempale,
             )
