@@ -3,6 +3,8 @@ import { LayoutMainService } from 'src/app/services/layout-main.service';
 import { FormGroup, FormControl } from '@angular/forms';
 import { MatDialogRef, MatDialog, MatDialogConfig, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
+import {CustomerService} from 'src/app/services/customer.service'
+import { Customer, ICustomerContact } from 'src/app/models/customer.model';
 
 // Interface for Contact Info
 export interface ContactsInfo {
@@ -54,7 +56,9 @@ export class ContactsComponent implements OnInit {
   ];
 
   constructor(
-    private layoutSvc: LayoutMainService, public dialog: MatDialog) {
+    private layoutSvc: LayoutMainService, 
+    public dialog: MatDialog,
+    public customerService: CustomerService) {
     layoutSvc.setTitle('Con-PCA Contacts Page');
   }
 
@@ -94,6 +98,9 @@ export class ContactsComponent implements OnInit {
   }
 
   ngOnInit() {
+    let customers: Customer[] = this.customerService.getCustomers();
+    console.log(customers);
+    let customerContactList: ICustomerContact[] = this.customerService.getCustomerContactList(customers);
 
     // New predicate for filtering.
     // The default predicate will only compare words against a single column.

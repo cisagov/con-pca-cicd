@@ -34,6 +34,7 @@ import { ContactsComponent, ViewContactDialog, AddContactDialog } from './compon
 import { DomainsComponent } from './components/domains/domains.component';
 import { TemplatesPageComponent } from './components/templates-page/templates-page.component';
 import { UserAdminComponent } from './components/user-admin/user-admin.component';
+import { CustomerService } from './services/customer.service';
 
 
 
@@ -75,6 +76,7 @@ import { UserAdminComponent } from './components/user-admin/user-admin.component
   providers: [
     SubscriptionsService,
     DeceptionCalculatorService,
+    CustomerService,
     TemplateManagerService,
     ThemeService,
     LayoutMainService,
