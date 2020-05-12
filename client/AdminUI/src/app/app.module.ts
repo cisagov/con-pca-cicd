@@ -17,7 +17,7 @@ import { LayoutMainComponent } from './components/layout/layout-main/layout-main
 import { SubscriptionsService } from './components/subscriptions/subscriptions.service';
 import { SearchPanelComponent } from './components/search-panel/search-panel.component';
 import { ServiceSubscriptionComponent } from './components/service-subscription/service-subscription.component';
-import { CreateSubscriptionComponent } from './components/subscriptions/create-subscription/create-subscription.component';
+import { ManageSubscriptionComponent } from './components/subscriptions/manage-subscription/manage-subscription.component';
 import { DeceptionCalculatorComponent } from './components/deception-calculator/deception-calculator.component';
 import { DeceptionCalculatorService } from './services/deception-calculator.service';
 import { TempalteManagerComponent } from './components/template-manager/template-manager.component';
@@ -44,7 +44,7 @@ import { UserAdminComponent } from './components/user-admin/user-admin.component
     SearchPanelComponent,
     ServiceSubscriptionComponent,
     AddCustomerComponent,
-    CreateSubscriptionComponent,
+    ManageSubscriptionComponent,
     DeceptionCalculatorComponent,
 
     TempalteManagerComponent,

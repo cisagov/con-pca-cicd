@@ -12,7 +12,7 @@ export class ServiceSubscriptionComponent implements OnInit {
   constructor(
     private layoutSvc: LayoutMainService
   ) { 
-    layoutSvc.setTitle("Create Subscription");
+    layoutSvc.setTitle("Manage Subscription");
   }
 
   ngOnInit(): void {

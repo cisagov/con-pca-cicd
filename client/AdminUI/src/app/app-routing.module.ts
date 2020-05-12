@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { LayoutMainComponent } from './components/layout/layout-main/layout-main.component';
 import { SubscriptionsComponent } from './components/subscriptions/subscriptions.component';
-import { ServiceSubscriptionComponent } from './components/service-subscription/service-subscription.component';
+import { ManageSubscriptionComponent } from './components/subscriptions/manage-subscription/manage-subscription.component';
 import { DeceptionCalculatorComponent } from './components/deception-calculator/deception-calculator.component';
 import { TempalteManagerComponent } from './components/template-manager/template-manager.component';
 import { SearchPanelComponent } from './components/search-panel/search-panel.component';
@@ -23,9 +23,14 @@ const routes: Routes = [
     ]
   },
   {
-    path: 'servicesubscription',
+    path: 'createsubscription',
     component: LayoutMainComponent,
-    children: [{ path: '', component: ServiceSubscriptionComponent }]
+    children: [{ path: '', component: ManageSubscriptionComponent }]
+  },
+  {
+    path: 'managesubscription',
+    component: LayoutMainComponent,
+    children: [{ path: ':id', component: ManageSubscriptionComponent }]
   },
   {
     path: 'deceptioncalculator',

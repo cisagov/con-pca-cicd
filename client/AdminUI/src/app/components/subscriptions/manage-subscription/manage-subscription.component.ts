@@ -1,17 +1,27 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { SubscriptionService } from 'src/app/services/subscription.service';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Customer, Contact } from 'src/app/models/customer.model';
 import { Subscription, SubscriptionContactModel, SubscriptionClicksModel } from 'src/app/models/subscription.model';
 import { Guid } from 'guid-typescript';
 
+
 @Component({
-  selector: 'app-create-subscription',
-  templateUrl: './create-subscription.component.html'
+  selector: 'app-manage-subscription',
+  templateUrl: './manage-subscription.component.html'
 })
-export class CreateSubscriptionComponent implements OnInit {
+export class ManageSubscriptionComponent implements OnInit, OnDestroy {
+  private routeSub: any;
+
   orgId: number;
+
+  action_MANAGE: string = 'manage';
+  action_CREATE: string = 'create';
+  action: string = this.action_MANAGE;
+
+  // CREATE or MANAGE (edit existing)
+  pageMode: string = 'CREATE';
 
   fullOrg: Customer;
   contactsForOrg: Contact[] = [];
@@ -31,7 +41,8 @@ export class CreateSubscriptionComponent implements OnInit {
    */
   constructor(
     public subscriptionSvc: SubscriptionService,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute
   ) {
 
   }
@@ -40,10 +51,19 @@ export class CreateSubscriptionComponent implements OnInit {
    * 
    */
   ngOnInit(): void {
+    this.pageMode = 'MANAGE';
+
+    this.routeSub = this.route.params.subscribe(params => {
+      if (!params.id) {
+        this.pageMode = 'CREATE';
+      }
+      this.orgId = params.id;
+    });
 
 
-    // TEMP
-    this.orgId = 123;
+    if (this.pageMode == 'CREATE') {
+      this.action = this.action_CREATE;
+    }
 
     // get the customer and contacts from the API
     this.subscriptionSvc.getCustomer(this.orgId).subscribe((o: Customer) => {
@@ -134,5 +154,9 @@ export class CreateSubscriptionComponent implements OnInit {
     var result = new Date(date);
     result.setDate(result.getDate() + days);
     return result;
+  }
+
+  ngOnDestroy() {
+    this.routeSub.unsubscribe();
   }
 }

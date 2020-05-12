@@ -1,0 +1,81 @@
+<div class="p-3">
+    <h1>{{ action | titlecase }} Subscription</h1>
+
+    <div style="display: block;" class="mb-5">
+        <div>
+            <mat-label class="h6">Customer {{ orgId }}</mat-label>
+        </div>
+
+        <div class="p-3 card w-50 mb-1">
+            <div>{{currentOrg.orgName}}</div>
+            <div>{{currentOrg.orgAbbrev}}</div>
+            <div>{{currentOrg.orgAddress1}}</div>
+            <div>{{currentOrg.orgCity}}, {{currentOrg.orgState}}</div>
+            <div>{{currentOrg.orgType}}</div>
+        </div>
+
+        <div class="mb-3">
+            <button mat-raised-button color="primary">Assign Customer <i class="fa fa-search"
+                    style="font-size: 1rem;"></i></button>
+        </div>
+
+        <div>
+            <div>
+                <mat-label class="h6">Primary Contact</mat-label>
+            </div>
+            <mat-form-field appearance="outline">
+                <mat-select [(ngModel)]="primaryContact" (selectionChange)="changeContact($event)">
+                    <mat-option [value]="null" selected>-- Select --</mat-option>
+                    <mat-option *ngFor="let c of contactsForOrg" [value]="c.id">{{c.name}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+
+
+        <div style="display: block;" class="mb-3">
+            <mat-label class="h6">Start Date</mat-label>
+            <div>
+                <mat-form-field appearance="outline" class="mb-4">
+                    <input matInput [matDatepicker]="picker" [min]="startAt" [(ngModel)]="startDate">
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker [startAt]="startAt"></mat-datepicker>
+                </mat-form-field>
+            </div>
+
+            <div>
+                <mat-label class="h6">Applicability Word Tags</mat-label>
+                <div class="text-muted">Enter words that describe the
+                    organization, separated by commas.
+                    They will be used to select applicable templates.</div>
+                <textarea autosize appearance="outline" class="form-control mb-4" [(ngModel)]="tags"></textarea>
+            </div>
+
+            <div>
+                <div>
+                    <mat-label class="h6">CSV Content</mat-label>
+                </div>
+                <div class="text-muted">Upload a CSV file containing the list of contacts or enter them
+                    directly in the field below.
+                </div>
+            </div>
+
+            <button mat-raised-button color="primary" class="mb-3">
+                Upload Email Targets List <i class="fa fa-upload"></i>
+            </button>
+
+
+            <div class="text-muted">Format: email, firstname, lastname, position</div>
+            <textarea autosize placeholder="Enter targets as CSV" class="form-control" [(ngModel)]="csvText"></textarea>
+        </div>
+
+
+        <div class="text-right">
+            <button mat-raised-button color="primary" 
+                *ngIf="pageMode == 'CREATE'"
+                (click)="createAndLaunchSubscription()">Create and Launch
+                Subscription
+                Service</button>
+        </div>
+
+    </div>
+</div>
