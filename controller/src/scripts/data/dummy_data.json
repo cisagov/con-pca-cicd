@@ -23,7 +23,6 @@
       "active": true,
       "additional_contact_list": [
         {
-          "customer": "Sams Snacks",
           "email": "foo.bar@example.com",
           "first_name": "foo",
           "last_name": "bar",
@@ -31,7 +30,6 @@
           "office_phone": "555-555-5555"
         },
         {
-          "customer": "Sams Snacks",
           "email": "biz.baz@example.com",
           "first_name": "biz",
           "last_name": "baz",
@@ -44,7 +42,6 @@
       "keywords": "research development government work job",
       "name": "SC-1031.Matt-Daemon.1.1",
       "primary_contact": {
-        "customer": "Matts Damons",
         "email": "Matt.Daemon@example.com",
         "first_name": "Matt",
         "last_name": "Daemon",
@@ -104,7 +101,6 @@
       "active": true,
       "additional_contact_list": [
         {
-          "customer": "Sams Snacks",
           "email": "foo.bar@example.com",
           "first_name": "foo",
           "last_name": "bar",
@@ -112,7 +108,6 @@
           "office_phone": "555-555-5555"
         },
         {
-          "customer": "Sams Snacks",
           "email": "biz.baz@example.com",
           "first_name": "biz",
           "last_name": "baz",
@@ -125,7 +120,6 @@
       "keywords": "search query google",
       "name": "SC-1221.Ben-Aflex.1.1",
       "primary_contact": {
-        "customer": "Sams Snacks",
         "email": "foo.bar@example.com",
         "first_name": "foo",
         "last_name": "bar",
