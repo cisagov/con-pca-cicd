@@ -4,36 +4,18 @@ import { FormGroup, FormControl } from '@angular/forms';
 import { MatDialogRef, MatDialog, MatDialogConfig, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import {CustomerService} from 'src/app/services/customer.service'
-import { ICustomer, ICustomerContact } from 'src/app/models/customer.model';
-import { HttpResponse } from '@angular/common/http';
+import { MatTab } from '@angular/material/tabs';
 
-// Interface for Contact Info
-export interface ContactsInfo {
-  customer: string;
+export interface ICustomerContact {
+  customer_uuid: string;
+  customer_name: string;
   first_name: string;
   last_name: string;
   title: string;
-  primary_contact: string;
   phone: string;
   email: string;
   notes: string;
 }
-
-
-// Example contacts data
-const contactsData: ContactsInfo[] = [
-  { customer: "Idaho National Labs", first_name: "Barry", last_name: "Hansen", title: "CEO", primary_contact: "Yes", phone: "(123)456-2000", email: "Barry.Hansen@inl.gov", notes: "The boss. Definitely a cool guy."},
-  { customer: "Idaho National Labs", first_name: "Randy", last_name: "Woods", title: "Developer", primary_contact: "No", phone: "(123)456-2000", email: "Randy.Woods@inl.gov", notes: ""},
-  { customer: "Idaho National Labs", first_name: "Jason", last_name: "Kuipers", title: "Developer", primary_contact: "No", phone: "(123)456-2000", email: "Jason.Kuipers@inl.gov", notes: ""},
-  { customer: "Idaho National Labs", first_name: "McKenzie", last_name: "Willmore", title: "Team Manager", primary_contact: "Yes", phone: "(123)456-2000", email: "McKenzie.Willmore@inl.gov", notes: ""},
-  { customer: "Neetflix Streaming Services", first_name: "Bob", last_name: "Smith", title: "CEO", primary_contact: "Yes", phone: "(123)456-2001", email: "Bob.Smith@neetflix.com", notes: ""},
-  { customer: "Neetflix Streaming Services", first_name: "Sarah", last_name: "Smith", title: "CFO", primary_contact: "No", phone: "(123)456-2001", email: "Jake.Smith@neetflix.com", notes: ""},
-  { customer: "Neetflix Streaming Services", first_name: "Sam", last_name: "Smith", title: "CTO", primary_contact: "No", phone: "(123)456-2001", email: "Sam.Smith@neetflix.com", notes: ""},
-  { customer: "Some Other Company", first_name: "Ashley", last_name: "Tolley", title: "HR Manager", primary_contact: "Yes", phone: "(123)456-2002", email: "Ashley.Tolley@SOC.com", notes: ""},
-  { customer: "Some Other Company", first_name: "April", last_name: "Gates", title: "Snarky Assistant", primary_contact: "No", phone: "(123)456-2002", email: "April.Gates@SOC.com", notes: ""},
-  { customer: "Some Other Company", first_name: "Jake", last_name: "Eshleman", title: "IT & Security", primary_contact: "No", phone: "(123)456-2002", email: "Jake.Eshleman", notes: ""},
-  { customer: "Some Other Company", first_name: "Cynthia", last_name: "Johnson", title: "IT & Security", primary_contact: "No", phone: "(123)456-2002", email: "Cynthia.Johnson", notes: ""}
-];
 
 // =======================================
 // MAIN CONTACTS PAGE
@@ -44,18 +26,12 @@ const contactsData: ContactsInfo[] = [
   styleUrls: ['./contacts.component.scss'],
 })
 export class ContactsComponent implements OnInit {
-  body_content_height: number;
-
-  customers: ICustomer[];
-
-  dataSource = new MatTableDataSource(contactsData)
-
+  dataSource: MatTableDataSource<ICustomerContact>;
   displayedColumns = [
-    "customer",
+    "customer_name",
     "first_name",
     "last_name",
     "title",
-    "primary_contact",
     "select"
   ];
 
@@ -85,7 +61,7 @@ export class ContactsComponent implements OnInit {
   }
 
   // Opens a dialog box for viewing, editing and deleting a contact
-  openViewDialog(row: ContactsInfo): void {
+  openViewDialog(row: ICustomerContact): void {
     const dialogRef = this.dialog.open(
       ViewContactDialog, {
         data: row
@@ -101,24 +77,36 @@ export class ContactsComponent implements OnInit {
     this.dataSource.data = this.dataSource.data;
   }
 
-  ngOnInit() {
-    this.customerService.getCustomers().subscribe(res => {
-      console.log(res);
-      this.customers = res;
-    });
-    console.log(this.customers);
+  private setCustomerContactList() {
+    this.customerService.getCustomers().subscribe((data: any[]) => {
+      let customerContactList: ICustomerContact[] = []
 
-    // New predicate for filtering.
-    // The default predicate will only compare words against a single column.
-    // Ex. if you search "Barry Hansen" no results would return because there are two columns...
-    // One for first_name and one for last name.
-    // This new predicate will search each word against all columns, if a word doesn't match anywhere...
-    // no results will be returned.
-    this.dataSource.filterPredicate = (data: ContactsInfo, filter: string) => {
+      data.map((customer: any) => {
+        customer.contact_list.map((contact: any) => {
+          customerContactList.push({
+            customer_uuid: customer.customer_uuid,
+            customer_name: customer.name,
+            first_name: contact.first_name,
+            last_name: contact.last_name,
+            title: contact.title,
+            phone: contact.phone,
+            email: contact.email,
+            notes: contact.notes,
+          })
+        })
+      })
+      console.log(customerContactList);
+      this.dataSource.data = customerContactList;
+    })
+  }
+
+  // custom filter predicate to search list
+  private setFilterPredicate() {
+    this.dataSource.filterPredicate = (data: ICustomerContact, filter: string) => {
       var words = filter.split(' ');
 
       // Create search data once so it's not created each time in loop
-      let searchData = `${data.first_name.toLowerCase()} ${data.last_name.toLowerCase()} ${data.customer.toLowerCase()} ${data.title.toLowerCase()}`
+      let searchData = `${data.first_name.toLowerCase()} ${data.last_name.toLowerCase()} ${data.customer_name.toLowerCase()} ${data.title.toLowerCase()}`
 
       for (var i = 0; i < words.length; i++) {
 
@@ -140,6 +128,12 @@ export class ContactsComponent implements OnInit {
       return true;
     };
   }
+
+  ngOnInit() {
+    this.dataSource = new MatTableDataSource();
+    this.setCustomerContactList();
+    this.setFilterPredicate();
+  }
 }
 
 // =======================================
@@ -151,7 +145,7 @@ export class ContactsComponent implements OnInit {
   styleUrls: ['./contacts.component.scss'],
 })
 export class AddContactDialog {
-  data: ContactsInfo;
+  data: ICustomerContact;
   isPrimary = false;
   addContactCustomer: string;
   addContactFirstName: string;
@@ -178,12 +172,12 @@ export class AddContactDialog {
       this.addContactPrimary = "No"
     }
 
-    contactsData.push({
-      customer: this.addContactCustomer, 
+    customerContactList.push({
+      customer_name: this.addContactCustomer, 
+      customer_uuid: '',
       first_name: this.addContactFirstName,
       last_name: this.addContactLastName, 
-      title: this.addContactTitle, 
-      primary_contact: this.addContactPrimary,
+      title: this.addContactTitle,
       phone: this.addContactPhone,
       email: this.addContactEmail, 
       notes: this.addContactNotes
@@ -206,7 +200,7 @@ export class AddContactDialog {
   styleUrls: ['./contacts.component.scss'],
 })
 export class ViewContactDialog {
-  data: ContactsInfo;
+  data: ICustomerContact;
   edit: boolean = false;
 
   contactFormGroup = new FormGroup({
@@ -220,7 +214,7 @@ export class ViewContactDialog {
     notes: new FormControl(),
   })
 
-  initialData: ContactsInfo;
+  initialData: ICustomerContact;
 
   constructor(
     public dialogRef: MatDialogRef<ViewContactDialog>,
@@ -246,10 +240,10 @@ export class ViewContactDialog {
   }
 
   onDeleteClick(): void {
-    const index = contactsData.indexOf(this.data, 0);
+    const index = customerContactList.indexOf(this.data, 0);
     console.log(index)
     if (index > -1) {
-      contactsData.splice(index, 1);
+      customerContactList.splice(index, 1);
     }
     this.dialogRef.close();
   }
