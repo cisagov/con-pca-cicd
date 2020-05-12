@@ -8,6 +8,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AngularEditorModule } from '@kolkov/angular-editor';
 import { MaterialModule } from './material.module';
+import { MatSortModule } from '@angular/material/sort'
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -65,6 +66,7 @@ import { UserAdminComponent } from './components/user-admin/user-admin.component
     AppRoutingModule,
     BrowserAnimationsModule,
     MaterialModule,
+    MatSortModule,
     FormsModule,
     ReactiveFormsModule,
     AutosizeModule,
@@ -77,6 +79,9 @@ import { UserAdminComponent } from './components/user-admin/user-admin.component
     ThemeService,
     LayoutMainService,
     HttpClient
+  ],
+  exports: [
+    MatSortModule
   ],
   bootstrap: [AppComponent]
 })
