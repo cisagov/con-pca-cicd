@@ -4,7 +4,8 @@ import { FormGroup, FormControl } from '@angular/forms';
 import { MatDialogRef, MatDialog, MatDialogConfig, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import {CustomerService} from 'src/app/services/customer.service'
-import { Customer, ICustomerContact } from 'src/app/models/customer.model';
+import { ICustomer, ICustomerContact } from 'src/app/models/customer.model';
+import { HttpResponse } from '@angular/common/http';
 
 // Interface for Contact Info
 export interface ContactsInfo {
@@ -44,6 +45,9 @@ const contactsData: ContactsInfo[] = [
 })
 export class ContactsComponent implements OnInit {
   body_content_height: number;
+
+  customers: ICustomer[];
+
   dataSource = new MatTableDataSource(contactsData)
 
   displayedColumns = [
@@ -98,9 +102,11 @@ export class ContactsComponent implements OnInit {
   }
 
   ngOnInit() {
-    let customers: Customer[] = this.customerService.getCustomers();
-    console.log(customers);
-    let customerContactList: ICustomerContact[] = this.customerService.getCustomerContactList(customers);
+    this.customerService.getCustomers().subscribe(res => {
+      console.log(res);
+      this.customers = res;
+    });
+    console.log(this.customers);
 
     // New predicate for filtering.
     // The default predicate will only compare words against a single column.

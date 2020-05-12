@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Customer, Contact, IApiCustomer, IApiContact, ICustomerContact } from 'src/app/models/customer.model'
+import { ICustomer, IContact, ICustomerContact } from 'src/app/models/customer.model'
+import { Observable } from 'rxjs';
 
 // Json Definition returned for Customer from API
 
@@ -15,7 +16,7 @@ export class CustomerService {
 
   constructor(private http: HttpClient) { }
 
-  public getCustomerContactList(customers: Customer[]): ICustomerContact[] {
+  public getCustomerContactList(customers: ICustomer[]): ICustomerContact[] {
     let customerContacts: ICustomerContact[] = [];
     console.log(customers[0]);
     console.log(customers);
@@ -46,55 +47,12 @@ export class CustomerService {
   }
 
   // Gets all Customers
-  public getCustomers(): Customer[] {
-    
-    let results: Customer[] = []
+  public getCustomers(): Observable<ICustomer[]> {
     let url = `${this.api}/api/v1/customers/`
-
-    this.http.get<IApiCustomer[]>(url, { headers }).subscribe(data => {
-      data.map((item: IApiCustomer) => {
-        results.push(this.customerJsonToObject(item))
-      })
-    })
-
-    return results;
+    return this.http.get<ICustomer[]>(url, { headers });
   }
 
-  public patchCustomer(data: Customer) {
+  public patchCustomer(data: ICustomer) {
     return this.http.patch(`${this.api}/api/v1/customer/${data.uuid}/`, data, { headers })
-  }
-
-  private customerJsonToObject(item: IApiCustomer): Customer {
-    let contacts: Contact[] = []
-    
-    item.contact_list.map(
-      (contact: IApiContact) => {
-        let o: Contact = this.contactJsonToObject(contact);
-        contacts.push(o)
-      }
-    )
-
-    let customer = new Customer();
-    customer.uuid = item.customer_uuid;
-    customer.name = item.name;
-    customer.identifier = item.identifier;
-    customer.address1 = item.address_1;
-    customer.address2 = item.address_2;
-    customer.city = item.city;
-    customer.state = item.state;
-    customer.zipCode = item.zip_code;
-    customer.contactList = contacts;
-    return customer;
-  }
-
-  private contactJsonToObject(item: IApiContact): Contact {
-    let contact = new Contact();
-    contact.firstName = item.first_name;
-    contact.lastName = item.last_name;
-    contact.title = item.title;
-    contact.phone = item.phone;
-    contact.email = item.email;
-    contact.notes = item.notes;
-    return contact;
   }
 }
