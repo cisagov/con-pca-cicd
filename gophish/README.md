@@ -38,6 +38,12 @@ A registered domain name
 - Phishing server is running on `localhost:8080`
 - Adminer UI is running on `localhost:9000`
 
+### Credentials
+- visit: `localhost:3333`
+  - Default credentials:
+    - username: `admin`
+    - password: `gophish`
+
 ### Stop and Remove project containers
 
 - Stop all containers
