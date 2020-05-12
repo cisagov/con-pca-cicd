@@ -52,6 +52,7 @@ These files are used as configuration in deployment.
 Create your .env file
 
 - `cp etc/env.dist .env`
+- **Note:** visit `localhost:3333/settings` to get your API key. Save it into your `.env` file
 
 Build containers
 
@@ -76,6 +77,9 @@ Remove containers
 Access Django shell
 
 - `make shell`
+
+Initialize GoPhish data
+- `make init_gophish`
 
 Generate and load Random Data into DB
 
