@@ -41,13 +41,13 @@ export class SubscriptionService {
    * is returned.
    * For now, a hard-coded model is returned.
    */
-  getCustomer(orgId: number) {
+  getCustomer(customerId: string) {
     // TEMP
     this.customer = this.TEMPGETORG();
     return new Observable<Customer>();
 
 
-    return this.http.get('http://bogus.org/subscription/getorg?id=' + orgId);
+    return this.http.get('http://bogus.org/subscription/getorg?id=' + customerId);
   }
 
   /**

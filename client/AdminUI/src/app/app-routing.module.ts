@@ -15,7 +15,7 @@ import { OrganizationsPageComponent } from './components/organizations-page/orga
 
 const routes: Routes = [
   {
-    path: 'subscription',
+    path: 'subscriptions',
     component: LayoutMainComponent,
     children: [
       { path: '', component: SubscriptionsComponent },
