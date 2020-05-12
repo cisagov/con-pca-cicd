@@ -32,10 +32,11 @@ class SubscriptionContactModel(Model):
 
     first_name = StringType(required=True)
     last_name = StringType(required=True)
-    office_phone = StringType(required=True)
+    title = StringType()
+    office_phone = StringType()
     mobile_phone = StringType()
-    customer = StringType()
     email = EmailType(required=True)
+    notes = StringType()
 
 
 class SubscriptionTargetModel(Model):

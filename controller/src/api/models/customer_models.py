@@ -31,7 +31,8 @@ class CustomerContactModel(Model):
     first_name = StringType(required=True)
     last_name = StringType(required=True)
     title = StringType()
-    phone = StringType()
+    office_phone = StringType()
+    mobile_phone = StringType()
     email = EmailType(required=True)
     notes = StringType()
 
