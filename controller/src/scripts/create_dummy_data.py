@@ -29,7 +29,6 @@ def load_file(data_file):
     return data
 
 
-
 def main():
     """This if the main def that runs creating data."""
     print("loading dummy json data")
@@ -39,9 +38,10 @@ def main():
 
     templates = load_file("data/reformated_template_data.json")
     created_template_uuids = []
+
     for template in templates:
         try:
-            template['deception_score'] = template['complexity']
+            template["deception_score"] = template["complexity"]
             resp = requests.post(
                 "http://localhost:8000/api/v1/templates/", json=template
             )
@@ -51,14 +51,28 @@ def main():
         rep_json = resp.json()
         created_template_uuids.append(rep_json["template_uuid"])
 
-    print("created tempaltes_list: {}".format(created_template_uuids))
+    print("created templates_list: {}".format(created_template_uuids))
 
-    print("Step 2/2: create subscriptions...")
+    print("Step 2/3: create customers...")
+
+    customer = json_data["customer_data"]
+    created_customer_uuid = ""
+    try:
+        resp = requests.post("http://localhost:8000/api/v1/customers/", json=customer)
+        resp.raise_for_status()
+    except requests.exceptions.HTTPError as err:
+        raise err
+
+    resp_json = resp.json()
+    created_customer_uuid = resp_json["customer_uuid"]
+
+    print("Step 3/3: create subscriptions...")
 
     subscriptions = json_data["subscription_data"]
     created_subcription_uuids = []
 
     for subscription in subscriptions:
+        subscription["customer_uuid"] = created_customer_uuid
         try:
             resp = requests.post(
                 "http://localhost:8000/api/v1/subscriptions/", json=subscription
@@ -78,7 +92,7 @@ def main():
             datetime.now().strftime("%Y_%m_%d_%H%M%S")
         ),
     )
-    print("writting values to file: {}...".format(output_file))
+    print("writing values to file: {}...".format(output_file))
 
     with open(output_file, "w") as outfile:
         data = {
