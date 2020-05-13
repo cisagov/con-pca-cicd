@@ -54,13 +54,7 @@ class IncomingWebhookView(APIView):
             seralized = webhook_serializers.InboundWebhookSerializer(data)
             seralized_data = seralized.data
             single_subscription = self.__get_campaign(seralized_data["campaign_id"])
-            if seralized_data["message"] == "Campaign Created":
-                print(
-                    "campain created: {}".format(
-                        single_subscription["subscription_uuid"]
-                    )
-                )
-            elif seralized_data["message"] == "Email Sent":
+            if seralized_data["message"] == "Email Sent":
                 print("Sent email: {}".format(single_subscription["subscription_uuid"]))
             elif seralized_data["message"] == "Email Opened":
                 print(
@@ -76,8 +70,7 @@ class IncomingWebhookView(APIView):
                         single_subscription["subscription_uuid"]
                     )
                 )
-        else:
-            print(data)
+
         return
 
     def __get_campaign(self, campaign_id):

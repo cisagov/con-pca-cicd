@@ -86,7 +86,7 @@ class GoPhishResultModel(Model):
     reported             : boolean
     """
 
-    id = IntType()
+    id = StringType()
     first_name = StringType()
     last_name = StringType()
     position = StringType()

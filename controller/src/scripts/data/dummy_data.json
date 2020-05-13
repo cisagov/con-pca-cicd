@@ -8,8 +8,9 @@
         "email": "user@example.com",
         "first_name": "Bob",
         "last_name": "Burgston",
+        "mobile_phone": "555-555-5555",
         "notes": "The big cheese.",
-        "phone": "555-555-5555",
+        "office_phone": "555-555-5555",
         "title": "CeO"
       }
     ],

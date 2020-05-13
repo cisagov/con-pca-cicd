@@ -82,7 +82,7 @@ class SubscriptionsListView(APIView):
         # Data for Template calculation ToDo: Save relevant_templates
         relevant_templates = template_manager.get_templates(
             post_data.get("url"), post_data.get("keywords"), template_data
-        )[:15]
+        )[:1]
 
         # Return 15 of the most relevant templates
         post_data["templates_selected_uuid_list"] = relevant_templates
@@ -139,12 +139,27 @@ class SubscriptionsListView(APIView):
                     user_group=target,
                     email_template=created_template,
                 )
-                logger.info("campaign created: {}".format(campaign))
+                print("campaign created: {}".format(campaign))
+                today = datetime.datetime.utcnow()
+
                 created_campaign = {
                     "campaign_id": campaign.id,
                     "name": campaign_name,
+                    "created_date": today,
+                    "launch_date": today,
                     "email_template": created_template.name,
-                    "landing_page_template": "",
+                    "landing_page_template": campaign.page.name,
+                    "status": campaign.status,
+                    "results": [],
+                    "groups": [],
+                    "timeline": [
+                        {
+                            "email": None,
+                            "time": today,
+                            "message": "Campaign Created",
+                            "details": "",
+                        }
+                    ],
                     "target_email_list": target_list,
                 }
                 gophish_campaign_list.append(created_campaign)
