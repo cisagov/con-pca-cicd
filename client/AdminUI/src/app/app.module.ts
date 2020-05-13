@@ -35,6 +35,7 @@ import { DomainsComponent } from './components/domains/domains.component';
 import { TemplatesPageComponent } from './components/templates-page/templates-page.component';
 import { UserAdminComponent } from './components/user-admin/user-admin.component';
 import { CustomerService } from './services/customer.service';
+import { CustomersComponent } from './components/customers/customers.component';
 
 
 
@@ -59,6 +60,7 @@ import { CustomerService } from './services/customer.service';
     DomainsComponent,
     TemplatesPageComponent,
     UserAdminComponent,
+    CustomersComponent,
   ],
   imports: [
     BrowserModule,
