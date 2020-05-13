@@ -1,10 +1,13 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Customer, Contact } from 'src/app/models/customer.model'
-import { Observable } from 'rxjs';
-import { type } from 'os';
 
 // Json Definition returned for Customer from API
+const httpOptions = {
+  headers: new HttpHeaders({
+    'Content-Type': 'application/json'
+  })
+}
 
 @Injectable()
 export class CustomerService {
@@ -15,7 +18,15 @@ export class CustomerService {
   // Gets all Customers
   public getCustomers() {
     let url = `${this.api}/api/v1/customers/`;
-    return this.http.get(url, { observe: 'body', responseType: 'json'});
+    return this.http.get(url);
+  }
+
+  public setContacts(customer_uuid: string, contacts: Contact[]) {
+    let data = {
+      contact_list: contacts
+    }
+
+    return this.http.patch(`${this.api}/api/v1/customer/${customer_uuid}/`, JSON.stringify(data), httpOptions);
   }
 
   public patchCustomer(data: Customer) {

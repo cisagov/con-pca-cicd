@@ -4,9 +4,10 @@ import { FormGroup, FormControl } from '@angular/forms';
 import { MatDialogRef, MatDialog, MatDialogConfig, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import {CustomerService} from 'src/app/services/customer.service'
-import { MatTab } from '@angular/material/tabs';
+import { MatTab } from '@angular/material/tabs'; 
+import { Contact } from 'src/app/models/customer.model';
 
-export interface ICustomerContact {
+interface ICustomerContact {
   customer_uuid: string;
   customer_name: string;
   first_name: string;
@@ -16,6 +17,14 @@ export interface ICustomerContact {
   email: string;
   notes: string;
 }
+
+interface ICustomer {
+  customer_uuid: string;
+  customer_name: string;
+}
+
+let customerContacts: ICustomerContact[] = []
+let distinctCustomers: ICustomer[] = []
 
 // =======================================
 // MAIN CONTACTS PAGE
@@ -72,18 +81,18 @@ export class ContactsComponent implements OnInit {
     })
   }
 
-  // Refreshes the data source view
-  refresh(): void {
-    this.dataSource.data = this.dataSource.data;
-  }
-
-  private setCustomerContactList() {
+  private refresh(): void {
     this.customerService.getCustomers().subscribe((data: any[]) => {
-      let customerContactList: ICustomerContact[] = []
+      distinctCustomers = []
+      customerContacts = []
 
       data.map((customer: any) => {
+        distinctCustomers.push({
+          customer_name: customer.name,
+          customer_uuid: customer.customer_uuid
+        })
         customer.contact_list.map((contact: any) => {
-          customerContactList.push({
+          customerContacts.push({
             customer_uuid: customer.customer_uuid,
             customer_name: customer.name,
             first_name: contact.first_name,
@@ -95,8 +104,7 @@ export class ContactsComponent implements OnInit {
           })
         })
       })
-      console.log(customerContactList);
-      this.dataSource.data = customerContactList;
+      this.dataSource.data = customerContacts;
     })
   }
 
@@ -131,7 +139,7 @@ export class ContactsComponent implements OnInit {
 
   ngOnInit() {
     this.dataSource = new MatTableDataSource();
-    this.setCustomerContactList();
+    this.refresh();
     this.setFilterPredicate();
   }
 }
@@ -145,43 +153,61 @@ export class ContactsComponent implements OnInit {
   styleUrls: ['./contacts.component.scss'],
 })
 export class AddContactDialog {
-  data: ICustomerContact;
-  isPrimary = false;
-  addContactCustomer: string;
-  addContactFirstName: string;
-  addContactLastName: string;
-  addContactTitle: string;
-  addContactPrimary: string;
-  addContactPhone: string;
-  addContactEmail: string;
-  addContactNotes: string;
+  addContactFormGroup = new FormGroup({
+    customer_uuid: new FormControl(),
+    first_name: new FormControl(),
+    last_name: new FormControl(),
+    title: new FormControl(),
+    phone: new FormControl(),
+    email: new FormControl(),
+    notes: new FormControl()
+  })
+
+  customers: ICustomer[] = [  ]
 
 
   constructor(
     public dialogRef: MatDialogRef<AddContactDialog>,
-  ) {}
+    public customerService: CustomerService) { 
+    this.customers = distinctCustomers;
+  }
 
   onNoClick(): void {
     this.dialogRef.close();
   }
 
   onSaveClick(): void {
-    if (this.isPrimary == true) {
-        this.addContactPrimary = "Yes"
-    } else {
-      this.addContactPrimary = "No"
-    }
+    let uuid = this.addContactFormGroup.controls['customer_uuid'].value
+    let contacts: Contact[] = [];
+    customerContacts.map(val => {
+      if (val.customer_uuid == uuid) {
+        let c: Contact = {
+          first_name: val.first_name,
+          last_name: val.last_name,
+          title: val.title,
+          phone: val.phone,
+          email: val.email,
+          notes: val.notes
+        }
+        contacts.push(c);
+      }
+    })
 
-    customerContactList.push({
-      customer_name: this.addContactCustomer, 
-      customer_uuid: '',
-      first_name: this.addContactFirstName,
-      last_name: this.addContactLastName, 
-      title: this.addContactTitle,
-      phone: this.addContactPhone,
-      email: this.addContactEmail, 
-      notes: this.addContactNotes
-    });
+    let contact: Contact = {
+      first_name: this.addContactFormGroup.controls['first_name'].value,
+      last_name: this.addContactFormGroup.controls['last_name'].value,
+      title: this.addContactFormGroup.controls['title'].value,
+      phone: this.addContactFormGroup.controls['phone'].value,
+      email: this.addContactFormGroup.controls['email'].value,
+      notes: this.addContactFormGroup.controls['notes'].value
+    }
+    contacts.push(contact)
+
+    this.customerService.setContacts(
+      uuid,
+      contacts
+    ).subscribe(data => {console.log(data)})
+
     this.dialogRef.close();
   }
 
