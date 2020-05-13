@@ -39,11 +39,7 @@ export class LayoutMainComponent implements OnInit {
   ngAfterViewInit() {
     setTimeout(() => {
       this.setContentHeight();
-      this.setSideNav();
     });
-  }
-  setSideNav() {
-    this.layoutSvc.setSideNav(this.drawer);
   }
 
   @HostListener('window:resize', ['$event'])

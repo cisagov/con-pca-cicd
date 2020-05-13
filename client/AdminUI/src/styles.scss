@@ -313,3 +313,8 @@ $altTheme: mat-dark-theme($theme-primary, $theme-accent, $theme-warn);
 .mat-header-cell{ 
   color:  $light-text !important;
 }
+
+.header-logo-background{
+  background-color:#3c6f8e;
+  border-right:lighten(#3c6f8e, 5%) 1px solid;
+}
