@@ -2,8 +2,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Customer, Contact, NewCustomer, ICustomerContact } from 'src/app/models/customer.model'
 import { environment } from 'src/environments/environment';
-import { Observable } from 'rxjs';
-import { request } from 'http';
 
 // Json Definition returned for Customer from API
 const httpOptions = {

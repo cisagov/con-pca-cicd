@@ -39,17 +39,32 @@ export class ViewContactDialogComponent implements OnInit {
   }
 
   onSaveExitClick(): void {
+    this.removeContact()
+
+    this.customer.contact_list.push({
+      first_name: this.data.first_name,
+      last_name: this.data.last_name,
+      title: this.data.title,
+      phone: this.data.phone,
+      email: this.data.email,
+      notes: this.data.notes
+    })
+
     this.saveContacts()
     this.dialog_ref.close()
   }
 
   onDeleteClick(): void {
-    const index = customerContacts.indexOf(this.data, 0);
-    if (index > -1) {
-      customerContacts.splice(index, 1);
-    }
+    this.removeContact();
     this.saveContacts();
-    this.dialogRef.close();
+    this.dialog_ref.close();
+  }
+
+  removeContact(): void {
+    const index = this.getContactIndex()
+    if (index > -1) {
+      this.customer.contact_list.splice(index, 1);
+    }
   }
 
   onCancelExitClick(): void {
@@ -57,7 +72,7 @@ export class ViewContactDialogComponent implements OnInit {
   }
 
   saveContacts(): void {
-
+    this.customer_service.setContacts(this.customer.customer_uuid, this.customer.contact_list).subscribe()
   }
 
   getContactIndex(): number {
@@ -74,38 +89,3 @@ export class ViewContactDialogComponent implements OnInit {
     }
   }
 }
-
-// export class ViewContactDialog {
-
-//   onDeleteClick(): void {
-//     const index = customerContacts.indexOf(this.data, 0);
-//     if (index > -1) {
-//       customerContacts.splice(index, 1);
-//     }
-//     this.saveContacts();
-//     this.dialogRef.close();
-//   }
-
-//   private saveContacts(): void {
-//     let uuid = this.data.customer_uuid
-//     let contacts: Contact[] = [];
-//     customerContacts.map(val => {
-//       if (val.customer_uuid == uuid) {
-//         let c: Contact = {
-//           first_name: val.first_name,
-//           last_name: val.last_name,
-//           title: val.title,
-//           phone: val.phone,
-//           email: val.email,
-//           notes: val.notes
-//         }
-//         contacts.push(c);
-//       }
-//     })
-
-//     this.customerService.setContacts(
-//       uuid,
-//       contacts
-//     ).subscribe()
-//   }
-// }
