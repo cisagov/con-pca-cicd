@@ -1,31 +1,18 @@
 <ng-container>
   <mat-toolbar class="docs-header" color="primary">
-    <div style="padding-right:10px">
-      <img src="assets/CPA-logo-white.png" style="height: 3rem" />
+    <div class="header-logo header-logo-background">
+      <img src="assets/CPA-logo-white.png" style="height: 3.5rem" />
     </div>
     <button
       mat-icon-button
       class="menu-button"
       type="button"
       aria-label="Toggle sidenav"
-      [matMenuTriggerFor]="belowMenu"
+      (click)="drawer.toggle()"
     >
       <i class="material-icons">menu</i>
     </button>
     <div class="header-title">{{ layoutSvc.getTitle() }}</div>
-    <mat-menu
-      #belowMenu="matMenu"
-      yPosition="below"
-      class="mat-menu-custom-header"
-    >
-    
-      <button mat-menu-item routerLink="/subscriptions">Subscriptions</button>
-      <button mat-menu-item routerLink="/templatespage">Templates</button>
-      <button mat-menu-item routerLink="/contacts">Contacts</button>
-      <button mat-menu-item routerLink="/domains">Domains</button>
-      <button mat-menu-item routerLink="/organizations">Organizations</button>
-      <button mat-menu-item routerLink="/useradmin">User Admin</button>
-    </mat-menu>
     <span class="fill-remaining-space"></span>
     <span class="loggin-user">
       Barry Hansen
@@ -62,7 +49,14 @@
       [fixedTopGap]="0"
       [fixedBottomGap]="0"
     >
-      <router-outlet name="sidebar"></router-outlet>
+    <mat-nav-list>
+      <a mat-list-item routerLink="/subscription">Subscriptions</a>
+      <a mat-list-item routerLink="/templatemanager">Templates</a>
+      <a mat-list-item routerLink="/contacts">Contacts</a>
+      <a mat-list-item routerLink="/domains">Domains</a>
+      <a mat-list-item routerLink="/organizations">Organizations</a>
+      <a mat-list-item routerLink="/useradmin">User Admin</a>
+    </mat-nav-list>
     </mat-sidenav>
     <mat-sidenav-content #mainContent class="sidenav-content">
       <mat-card>
