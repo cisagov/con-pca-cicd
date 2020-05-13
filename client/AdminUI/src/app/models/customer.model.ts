@@ -9,6 +9,17 @@ export class Customer {
     zip_code: string;
     contact_list: Contact[]
 }
+
+export class NewCustomer {
+    name: string;
+    identifier: string;
+    address_1: string;
+    address_2: string;
+    city: string;
+    state: string;
+    zip_code: string;
+    contact_list: Contact[]
+}
   
 export class Contact {
     first_name: string;

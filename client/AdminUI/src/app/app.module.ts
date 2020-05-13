@@ -36,6 +36,7 @@ import { TemplatesPageComponent } from './components/templates-page/templates-pa
 import { UserAdminComponent } from './components/user-admin/user-admin.component';
 import { CustomerService } from './services/customer.service';
 import { CustomersComponent } from './components/customers/customers.component';
+import { AddCustomerDialogComponent } from './components/customers/add-customer-dialog/add-customer-dialog.component';
 
 
 
@@ -61,6 +62,7 @@ import { CustomersComponent } from './components/customers/customers.component';
     TemplatesPageComponent,
     UserAdminComponent,
     CustomersComponent,
+    AddCustomerDialogComponent,
   ],
   imports: [
     BrowserModule,

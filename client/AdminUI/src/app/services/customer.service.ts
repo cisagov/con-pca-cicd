@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Customer, Contact } from 'src/app/models/customer.model'
+import { Customer, Contact, NewCustomer } from 'src/app/models/customer.model'
 import { environment } from 'src/environments/environment';
 
 // Json Definition returned for Customer from API
@@ -30,5 +30,9 @@ export class CustomerService {
 
   public patchCustomer(data: Customer) {
     return this.http.patch(`${environment.apiEndpoint}/api/v1/customer/${data.customer_uuid}/`, data);
+  }
+
+  public addCustomer(customer: NewCustomer) {
+    return this.http.post(`${environment.apiEndpoint}/api/v1/customers/`, JSON.stringify(customer), httpOptions);
   }
 }

@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { LayoutMainService } from 'src/app/services/layout-main.service';
 import { CustomerService } from 'src/app/services/customer.service';
+import { MatDialogConfig, MatDialog } from '@angular/material/dialog';
+import { AddCustomerDialogComponent } from './add-customer-dialog/add-customer-dialog.component';
 
 interface ICustomer {
   uuid: string;
@@ -33,7 +35,8 @@ export class CustomersComponent implements OnInit {
 
   constructor(
     private layout_service: LayoutMainService,
-    public customer_service: CustomerService
+    public customer_service: CustomerService,
+    public dialog: MatDialog
   ) { 
     layout_service.setTitle('Con-PCA Customers Page')
   }
@@ -55,6 +58,16 @@ export class CustomersComponent implements OnInit {
       })
       this.data_source.data = customers;
     }) 
+  }
+
+  private open_add_customer_dialog(): void {
+    const dialog_config = new MatDialogConfig();
+    dialog_config.data = {}
+    const dialog_ref = this.dialog.open(AddCustomerDialogComponent, dialog_config);
+
+    dialog_ref.afterClosed().subscribe(value => {
+      this.refresh();
+    })
   }
 
   ngOnInit(): void {
