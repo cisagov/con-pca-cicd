@@ -25,7 +25,7 @@
             </div>
             <mat-form-field appearance="outline">
                 <mat-select placeholder="select ein kontakt" [(ngModel)]="primaryContact" (selectionChange)="changePrimary($event)">
-                    <mat-option [ngValue]="null" selected>-- Select --</mat-option>
+                    <mat-option [value]="null" selected>-- Select --</mat-option>
                     <mat-option *ngFor="let c of customerContacts" [value]="c">{{ c.first_name }}</mat-option>
                 </mat-select>
             </mat-form-field>

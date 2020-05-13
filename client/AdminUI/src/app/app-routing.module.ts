@@ -53,7 +53,7 @@ const routes: Routes = [
     children: [{ path: '', component: TemplateManagerComponent }]
   },
   {
-    path:'templatespage', component: LayoutMainComponent, 
+    path:'templates', component: LayoutMainComponent, 
     children: [
       { path: '', component: TemplatesPageComponent}
     ]
