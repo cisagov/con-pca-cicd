@@ -69,10 +69,9 @@ export class SubscriptionService {
   getContactsForCustomer() {
     let o = this.customer;
     let a = [];
-    o.contacts.forEach(x => {
+    o.contact_list.forEach(x => {
       a.push({
-        id: x.id,
-        name: x.firstName + ' ' + x.lastName
+        name: x.first_name + ' ' + x.last_name
       });
     });
     return a;
@@ -84,49 +83,44 @@ export class SubscriptionService {
    */
   TEMPGETORG(): Customer {
     let o = new Customer();
-    o.id = 123;
-    o.orgName = "Delta Airlines";
-    o.orgAbbrev = "DAL";
-    o.orgAddress1 = "1030 Delta Blvd";
-    o.orgCity = "Atlanta";
-    o.orgState = "GA";
-    o.orgZip = "30354";
+    o.customer_uuid = '123';
+    o.name = "Delta Airlines";
+    o.identifier = "DAL";
+    o.address_1 = "1030 Delta Blvd";
+    o.city = "Atlanta";
+    o.state = "GA";
+    o.zip_code = "30354";
 
-    o.orgType = "Private Non-Government";
-
-    o.contacts = [];
-    o.contacts.push(
+    o.contact_list = [];
+    o.contact_list.push(
       {
-        id: '201',
-        firstName: 'Mary',
-        lastName: 'Stephens',
+        first_name: 'Mary',
+        last_name: 'Stephens',
         title: 'CISO',
         phone: '208-716-2687',
         email: 'Mary.Stephens@delta.com',
-        contactNotes: ''
+        notes: ''
       }
     );
 
-    o.contacts.push(
+    o.contact_list.push(
       {
-        id: '202',
-        firstName: 'John',
-        lastName: 'Shirlaw',
+        first_name: 'John',
+        last_name: 'Shirlaw',
         title: 'VP R&D',
         phone: '208-921-1010',
         email: 'John.Shirlaw@delta.com',
-        contactNotes:''
+        notes:''
       });
 
-    o.contacts.push(
+    o.contact_list.push(
       {
-        id: '203',
-        firstName: 'Yanik',
-        lastName: 'Zarabraya',
+        first_name: 'Yanik',
+        last_name: 'Zarabraya',
         title: 'VP HR',
         phone: '208-377-9339',
         email: 'Yanik.Zarabraya@delta.com',
-        contactNotes: ''
+        notes: ''
       });
 
     console.log(o);
