@@ -4,7 +4,7 @@ import { LayoutMainComponent } from './components/layout/layout-main/layout-main
 import { SubscriptionsComponent } from './components/subscriptions/subscriptions.component';
 import { ManageSubscriptionComponent } from './components/subscriptions/manage-subscription/manage-subscription.component';
 import { DeceptionCalculatorComponent } from './components/deception-calculator/deception-calculator.component';
-import { TempalteManagerComponent } from './components/template-manager/template-manager.component';
+import { TemplateManagerComponent } from './components/template-manager/template-manager.component';
 import { SearchPanelComponent } from './components/search-panel/search-panel.component';
 import { ContactsComponent } from './components/contacts/contacts.component';
 import { DomainsComponent } from './components/domains/domains.component';
@@ -45,12 +45,12 @@ const routes: Routes = [
   {
     path: 'templatemanager',
     component: LayoutMainComponent,
-    children: [{ path: '', component: TempalteManagerComponent }]
+    children: [{ path: '', component: TemplateManagerComponent }]
   },
   {
     path: 'templatemanager/:templateId',
     component: LayoutMainComponent,
-    children: [{ path: '', component: TempalteManagerComponent }]
+    children: [{ path: '', component: TemplateManagerComponent }]
   },
   {
     path:'templatespage', component: LayoutMainComponent, 

@@ -1,13 +1,16 @@
-import { Customer } from './customer.model';
+import { Customer, Contact } from './customer.model';
+
+
 export class GoPhishCampaignsModel{
 
 }
 
-export class SubscriptionContactModel{
-    first_name: string;
-    last_name: string;
-    office_phone: string;    
-}
+// Use Contact class  defined in customer.model
+// export class SubscriptionContactModel{
+//     first_name: string;
+//     last_name: string;
+//     office_phone: string;    
+// }
 
 export interface SubscriptionClicksModel{
 
@@ -32,8 +35,8 @@ export class Subscription {
     //report_count: number;
     gophish_campaign_list: GoPhishCampaignsModel[];
     //first_report_timestamp: Date;
-    primary_contact: SubscriptionContactModel;
-    additional_contact_list: SubscriptionContactModel[];
+    primary_contact: Contact;
+    additional_contact_list: Contact[];
     status: string;
     //target_email_list: string[];
     target_email_list: Target[] = [];

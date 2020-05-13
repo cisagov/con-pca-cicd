@@ -17,6 +17,8 @@ const headers = {
 })
 export class SubscriptionService {
 
+  subscription: Subscription;
+
   /**
    * The service keeps a copy of the Customer
    */
@@ -28,8 +30,7 @@ export class SubscriptionService {
   constructor(
     private http: HttpClient
   ) { 
-    //temp initialize customer with mock data
-    this.customers.push(this.TEMPGETORG());
+
   }
 
   getSubscriptionsData(){
@@ -42,18 +43,12 @@ export class SubscriptionService {
    * For now, a hard-coded model is returned.
    */
   getCustomer(customerId: string) {
-    // TEMP
-    this.customer = this.TEMPGETORG();
-    return new Observable<Customer>();
-
-
-    return this.http.get('http://bogus.org/subscription/getorg?id=' + customerId);
+    return this.http.get('http://localhost:8000/api/v1/customer/' + customerId);
   }
 
   /**
-   * In real life, API call happens here and the new
-   * customer is created.
-   * For now, a hard-coded model is returned.
+   * In real life, the customer is posted from the customer component,
+   * not the subscription component.
    */
   postCustomer(org: Customer){
     this.customers.push(org);
@@ -66,72 +61,20 @@ export class SubscriptionService {
    * Returns an array of simple contact
    * names and IDs for the customer.
    */
-  getContactsForCustomer() {
-    let o = this.customer;
+  getContactsForCustomer(c: Customer) {
+    console.log('getContactsForCustomer:');
+    console.log(c);
+
     let a = [];
-    o.contacts.forEach(x => {
+    c.contact_list.forEach(x => {
       a.push({
         id: x.id,
-        name: x.firstName + ' ' + x.lastName
+        name: x.first_name + ' ' + x.last_name
       });
     });
     return a;
   }
 
-  /**
-   * TEMP TEMP
-   * This mocks up an Organization that would be returned from an API call
-   */
-  TEMPGETORG(): Customer {
-    let o = new Customer();
-    o.id = 123;
-    o.orgName = "Delta Airlines";
-    o.orgAbbrev = "DAL";
-    o.orgAddress1 = "1030 Delta Blvd";
-    o.orgCity = "Atlanta";
-    o.orgState = "GA";
-    o.orgZip = "30354";
-
-    o.orgType = "Private Non-Government";
-
-    o.contacts = [];
-    o.contacts.push(
-      {
-        id: '201',
-        firstName: 'Mary',
-        lastName: 'Stephens',
-        title: 'CISO',
-        phone: '208-716-2687',
-        email: 'Mary.Stephens@delta.com',
-        contactNotes: ''
-      }
-    );
-
-    o.contacts.push(
-      {
-        id: '202',
-        firstName: 'John',
-        lastName: 'Shirlaw',
-        title: 'VP R&D',
-        phone: '208-921-1010',
-        email: 'John.Shirlaw@delta.com',
-        contactNotes:''
-      });
-
-    o.contacts.push(
-      {
-        id: '203',
-        firstName: 'Yanik',
-        lastName: 'Zarabraya',
-        title: 'VP HR',
-        phone: '208-377-9339',
-        email: 'Yanik.Zarabraya@delta.com',
-        contactNotes: ''
-      });
-
-    console.log(o);
-    return o;
-  }
 
   /**
    * Sends all information to the API to start a new subscription.

@@ -3,15 +3,15 @@
 
     <div style="display: block;" class="mb-5">
         <div>
-            <mat-label class="h6">Customer {{ orgId }}</mat-label>
+            <mat-label class="h6">Customer</mat-label>
         </div>
 
-        <div class="p-3 card w-50 mb-1">
-            <div>{{currentOrg.orgName}}</div>
-            <div>{{currentOrg.orgAbbrev}}</div>
-            <div>{{currentOrg.orgAddress1}}</div>
-            <div>{{currentOrg.orgCity}}, {{currentOrg.orgState}}</div>
-            <div>{{currentOrg.orgType}}</div>
+        <div class="p-2 card w-50 mb-1">
+            <div>{{customer?.name}}</div>
+            <div>{{customer?.identifier}}</div>
+            <div>{{customer?.address_1}}</div>
+            <div>{{customer?.address_2}}</div>
+            <div>{{customer?.city}}, {{customer?.state}}</div>
         </div>
 
         <div class="mb-3">
@@ -24,13 +24,12 @@
                 <mat-label class="h6">Primary Contact</mat-label>
             </div>
             <mat-form-field appearance="outline">
-                <mat-select [(ngModel)]="primaryContact" (selectionChange)="changeContact($event)">
-                    <mat-option [value]="null" selected>-- Select --</mat-option>
-                    <mat-option *ngFor="let c of contactsForOrg" [value]="c.id">{{c.name}}</mat-option>
+                <mat-select placeholder="select ein kontakt" [(ngModel)]="primaryContact" (selectionChange)="changePrimary($event)">
+                    <mat-option [ngValue]="null" selected>-- Select --</mat-option>
+                    <mat-option *ngFor="let c of customerContacts" [value]="c">{{ c.first_name }}</mat-option>
                 </mat-select>
             </mat-form-field>
         </div>
-
 
         <div style="display: block;" class="mb-3">
             <mat-label class="h6">Start Date</mat-label>
