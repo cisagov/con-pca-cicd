@@ -51,14 +51,11 @@ export class ContactsComponent implements OnInit {
     layoutSvc.setTitle('Con-PCA Contacts Page');
   }
 
-
-  // Filters search on key up in search bar
   searchFilter(searchValue: string): void {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 
-  // Opens a dialog box for adding a contact
   openAddDialog(): void {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.data = {}
@@ -69,7 +66,6 @@ export class ContactsComponent implements OnInit {
     })
   }
 
-  // Opens a dialog box for viewing, editing and deleting a contact
   openViewDialog(row: ICustomerContact): void {
     const dialogRef = this.dialog.open(
       ViewContactDialog, {
@@ -108,31 +104,20 @@ export class ContactsComponent implements OnInit {
     })
   }
 
-  // custom filter predicate to search list
   private setFilterPredicate() {
     this.dataSource.filterPredicate = (data: ICustomerContact, filter: string) => {
       var words = filter.split(' ');
-
-      // Create search data once so it's not created each time in loop
       let searchData = `${data.first_name.toLowerCase()} ${data.last_name.toLowerCase()} ${data.customer_name.toLowerCase()} ${data.title.toLowerCase()}`
-
       for (var i = 0; i < words.length; i++) {
-
-        // Don't want to compare bad input
         if (words[i] == null || words[i] == '' || words[i] == ' ') {
           continue;
         }
-
-        // Check if search data contains the word
         var isMatch = searchData.indexOf(words[i].trim().toLowerCase()) > -1;
         
-        // If there's no match for the word, return false
         if (!isMatch) {
           return false;
         }
       }
-      
-      // return true if false was never returned
       return true;
     };
   }
@@ -144,9 +129,6 @@ export class ContactsComponent implements OnInit {
   }
 }
 
-// =======================================
-// ADD CONTACT DIALOG
-// =======================================
 @Component({
   selector: 'add-contact-dialog',
   templateUrl: 'dialogues/add-contact-dialog.html',
@@ -289,6 +271,4 @@ export class ViewContactDialog {
       contacts
     ).subscribe()
   }
-
-  get diagnostic() {return JSON.stringify(this.data)}
 }

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Customer, Contact } from 'src/app/models/customer.model'
+import { environment } from 'src/environments/environment';
 
 // Json Definition returned for Customer from API
 const httpOptions = {
@@ -11,13 +12,11 @@ const httpOptions = {
 
 @Injectable()
 export class CustomerService {
-  private api = 'http://localhost:8010/proxy'
-
   constructor(private http: HttpClient) { }
 
   // Gets all Customers
   public getCustomers() {
-    let url = `${this.api}/api/v1/customers/`;
+    let url = `${environment.apiEndpoint}/api/v1/customers/`;
     return this.http.get(url);
   }
 
@@ -26,10 +25,10 @@ export class CustomerService {
       contact_list: contacts
     }
 
-    return this.http.patch(`${this.api}/api/v1/customer/${customer_uuid}/`, JSON.stringify(data), httpOptions);
+    return this.http.patch(`${environment.apiEndpoint}/api/v1/customer/${customer_uuid}/`, JSON.stringify(data), httpOptions);
   }
 
   public patchCustomer(data: Customer) {
-    return this.http.patch(`${this.api}/api/v1/customer/${data.customer_uuid}/`, data);
+    return this.http.patch(`${environment.apiEndpoint}/api/v1/customer/${data.customer_uuid}/`, data);
   }
 }
