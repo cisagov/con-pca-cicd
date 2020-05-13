@@ -1,1 +1,35 @@
-<p>customers works!</p>
+<div class="container-fluid" [style.height.px]="body_content_height">
+    <mat-table [dataSource]="data_source">
+        <ng-container matColumnDef="name">
+            <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>
+            <mat-cell *matCellDef="let row"> {{row.name}} </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="identifier">
+            <mat-header-cell *matHeaderCellDef>Identifier</mat-header-cell>
+            <mat-cell *matCellDef="let row"> {{row.identifier}} </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="address_1">
+            <mat-header-cell *matHeaderCellDef>Address 1</mat-header-cell>
+            <mat-cell *matCellDef="let row"> {{row.address_1}} </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="address_2">
+            <mat-header-cell *matHeaderCellDef>Address 2</mat-header-cell>
+            <mat-cell *matCellDef="let row"> {{row.address_2}} </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="city">
+            <mat-header-cell *matHeaderCellDef>City</mat-header-cell>
+            <mat-cell *matCellDef="let row"> {{row.city}} </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="state">
+            <mat-header-cell *matHeaderCellDef>State</mat-header-cell>
+            <mat-cell *matCellDef="let row"> {{row.state}} </mat-cell>
+        </ng-container>
+        <ng-container matColumnDef="zip_code">
+            <mat-header-cell *matHeaderCellDef>Zip Code</mat-header-cell>
+            <mat-cell *matCellDef="let row"> {{row.zip_code}} </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="displayed_columns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayed_columns"></mat-row>
+    </mat-table>
+</div>
