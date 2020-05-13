@@ -17,11 +17,10 @@ import { LayoutBlankComponent } from './components/layout/layout-blank/layout-bl
 import { LayoutMainComponent } from './components/layout/layout-main/layout-main.component';
 import { SubscriptionsService } from './components/subscriptions/subscriptions.service';
 import { SearchPanelComponent } from './components/search-panel/search-panel.component';
-import { ServiceSubscriptionComponent } from './components/service-subscription/service-subscription.component';
-import { CreateSubscriptionComponent } from './components/subscriptions/create-subscription/create-subscription.component';
+import { ManageSubscriptionComponent } from './components/subscriptions/manage-subscription/manage-subscription.component';
 import { DeceptionCalculatorComponent } from './components/deception-calculator/deception-calculator.component';
 import { DeceptionCalculatorService } from './services/deception-calculator.service';
-import { TempalteManagerComponent } from './components/template-manager/template-manager.component';
+import { TemplateManagerComponent } from './components/template-manager/template-manager.component';
 import { TemplateManagerService } from './services/template-manager.service';
 import { ListFilterPipe } from './pipes/list-filter.pipe';
 import { AutosizeModule } from 'node_modules/ngx-autosize';
@@ -45,12 +44,11 @@ import { UserAdminComponent } from './components/user-admin/user-admin.component
     LayoutBlankComponent,
     LayoutMainComponent,
     SearchPanelComponent,
-    ServiceSubscriptionComponent,
     AddCustomerComponent,
-    CreateSubscriptionComponent,
+    ManageSubscriptionComponent,
     DeceptionCalculatorComponent,
 
-    TempalteManagerComponent,
+    TemplateManagerComponent,
     ListFilterPipe,
     ContactsComponent,
     ViewContactDialog,
