@@ -5,7 +5,7 @@ import { MatDialogRef, MatDialog, MatDialogConfig, MAT_DIALOG_DATA } from '@angu
 import { MatTableDataSource } from '@angular/material/table';
 import {CustomerService} from 'src/app/services/customer.service'
 import { MatTab } from '@angular/material/tabs'; 
-import { Contact } from 'src/app/models/customer.model';
+import { Contact, Customer } from 'src/app/models/customer.model';
 
 interface ICustomerContact {
   customer_uuid: string;
@@ -206,7 +206,7 @@ export class AddContactDialog {
     this.customerService.setContacts(
       uuid,
       contacts
-    ).subscribe(data => {console.log(data)})
+    ).subscribe()
 
     this.dialogRef.close();
   }
@@ -230,7 +230,6 @@ export class ViewContactDialog {
   edit: boolean = false;
 
   contactFormGroup = new FormGroup({
-    customer: new FormControl(),
     first_name: new FormControl(),
     last_name: new FormControl(),
     title: new FormControl(),
@@ -244,38 +243,51 @@ export class ViewContactDialog {
 
   constructor(
     public dialogRef: MatDialogRef<ViewContactDialog>,
+    public customerService: CustomerService,
     @Inject(MAT_DIALOG_DATA) data) {
       this.data = data;
       this.initialData = Object.assign({}, data);
-      this.contactFormGroup.disable();
     }
 
-  onEditClick(): void {
-    this.edit = true;
-    this.contactFormGroup.enable();
+  onSaveExitClick(): void {
+    this.saveContacts();
+    this.dialogRef.close();
   }
 
-  onSaveEditClick(): void {
-    this.edit = false;
-    this.contactFormGroup.disable();
-  }
-
-  onCancelEditClick(): void {
-    this.contactFormGroup.patchValue(this.initialData);
-    console.log(this.data);
+  onCancelExitClick(): void {
+    this.dialogRef.close();
   }
 
   onDeleteClick(): void {
-    const index = customerContactList.indexOf(this.data, 0);
-    console.log(index)
+    const index = customerContacts.indexOf(this.data, 0);
     if (index > -1) {
-      customerContactList.splice(index, 1);
+      customerContacts.splice(index, 1);
     }
+    this.saveContacts();
     this.dialogRef.close();
   }
 
-  onNoClick(): void {
-    this.dialogRef.close();
+  private saveContacts(): void {
+    let uuid = this.data.customer_uuid
+    let contacts: Contact[] = [];
+    customerContacts.map(val => {
+      if (val.customer_uuid == uuid) {
+        let c: Contact = {
+          first_name: val.first_name,
+          last_name: val.last_name,
+          title: val.title,
+          phone: val.phone,
+          email: val.email,
+          notes: val.notes
+        }
+        contacts.push(c);
+      }
+    })
+
+    this.customerService.setContacts(
+      uuid,
+      contacts
+    ).subscribe()
   }
 
   get diagnostic() {return JSON.stringify(this.data)}
