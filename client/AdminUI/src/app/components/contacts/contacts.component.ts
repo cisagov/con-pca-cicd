@@ -5,31 +5,10 @@ import { MatDialogRef, MatDialog, MatDialogConfig, MAT_DIALOG_DATA } from '@angu
 import { MatTableDataSource } from '@angular/material/table';
 import {CustomerService} from 'src/app/services/customer.service'
 import { MatTab } from '@angular/material/tabs'; 
-import { Contact, Customer } from 'src/app/models/customer.model';
+import { Contact, Customer, ICustomerContact } from 'src/app/models/customer.model';
 import { AddContactDialogComponent } from './add-contact-dialog/add-contact-dialog.component';
+import { ViewContactDialogComponent } from './view-contact-dialog/view-contact-dialog.component';
 
-interface ICustomerContact {
-  customer_uuid: string;
-  customer_name: string;
-  first_name: string;
-  last_name: string;
-  title: string;
-  phone: string;
-  email: string;
-  notes: string;
-}
-
-interface ICustomer {
-  customer_uuid: string;
-  customer_name: string;
-}
-
-let customerContacts: ICustomerContact[] = []
-let distinctCustomers: ICustomer[] = []
-
-// =======================================
-// MAIN CONTACTS PAGE
-// =======================================
 @Component({
   selector: '',
   templateUrl: './contacts.component.html',
@@ -69,7 +48,7 @@ export class ContactsComponent implements OnInit {
 
   openViewDialog(row: ICustomerContact): void {
     const dialogRef = this.dialog.open(
-      ViewContactDialog, {
+      ViewContactDialogComponent, {
         data: row
       }
     );
@@ -80,28 +59,9 @@ export class ContactsComponent implements OnInit {
 
   private refresh(): void {
     this.customerService.requestGetCustomers().subscribe((data: any[]) => {
-      distinctCustomers = []
-      customerContacts = []
-
-      data.map((customer: any) => {
-        distinctCustomers.push({
-          customer_name: customer.name,
-          customer_uuid: customer.customer_uuid
-        })
-        customer.contact_list.map((contact: any) => {
-          customerContacts.push({
-            customer_uuid: customer.customer_uuid,
-            customer_name: customer.name,
-            first_name: contact.first_name,
-            last_name: contact.last_name,
-            title: contact.title,
-            phone: contact.phone,
-            email: contact.email,
-            notes: contact.notes,
-          })
-        })
-      })
-      this.dataSource.data = customerContacts;
+      let customers = this.customerService.getCustomers(data)
+      let customerContacts = this.customerService.getAllContacts(customers);
+      this.dataSource.data = customerContacts
     })
   }
 
@@ -127,81 +87,5 @@ export class ContactsComponent implements OnInit {
     this.dataSource = new MatTableDataSource();
     this.refresh();
     this.setFilterPredicate();
-  }
-}
-
-
-
-// =======================================
-// VIEW CONTACT DIALOG
-// =======================================
-@Component({
-  selector: 'view-contact-dialog',
-  templateUrl: 'dialogues/view-contact-dialog.html',
-  styleUrls: ['./contacts.component.scss'],
-})
-export class ViewContactDialog {
-  data: ICustomerContact;
-  edit: boolean = false;
-
-  contactFormGroup = new FormGroup({
-    first_name: new FormControl(),
-    last_name: new FormControl(),
-    title: new FormControl(),
-    primary_contact: new FormControl(),
-    phone: new FormControl(),
-    email: new FormControl(),
-    notes: new FormControl(),
-  })
-
-  initialData: ICustomerContact;
-
-  constructor(
-    public dialogRef: MatDialogRef<ViewContactDialog>,
-    public customerService: CustomerService,
-    @Inject(MAT_DIALOG_DATA) data) {
-      this.data = data;
-      this.initialData = Object.assign({}, data);
-    }
-
-  onSaveExitClick(): void {
-    this.saveContacts();
-    this.dialogRef.close();
-  }
-
-  onCancelExitClick(): void {
-    this.dialogRef.close();
-  }
-
-  onDeleteClick(): void {
-    const index = customerContacts.indexOf(this.data, 0);
-    if (index > -1) {
-      customerContacts.splice(index, 1);
-    }
-    this.saveContacts();
-    this.dialogRef.close();
-  }
-
-  private saveContacts(): void {
-    let uuid = this.data.customer_uuid
-    let contacts: Contact[] = [];
-    customerContacts.map(val => {
-      if (val.customer_uuid == uuid) {
-        let c: Contact = {
-          first_name: val.first_name,
-          last_name: val.last_name,
-          title: val.title,
-          phone: val.phone,
-          email: val.email,
-          notes: val.notes
-        }
-        contacts.push(c);
-      }
-    })
-
-    this.customerService.setContacts(
-      uuid,
-      contacts
-    ).subscribe()
   }
 }

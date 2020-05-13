@@ -30,3 +30,14 @@ export class Contact {
     notes: string;
 }
 
+export interface ICustomerContact {
+    customer_uuid: string;
+    customer_name: string;
+    first_name: string;
+    last_name: string;
+    title: string;
+    phone: string;
+    email: string;
+    notes: string;
+  }
+

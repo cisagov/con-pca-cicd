@@ -35,7 +35,6 @@ export class AddContactDialogComponent implements OnInit {
   ngOnInit(): void {
     this.customer_service.requestGetCustomers().subscribe((data: any[]) => {
       this.customers = this.customer_service.getCustomers(data)
-      console.log(this.customers)
     })
   }
 

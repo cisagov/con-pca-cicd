@@ -30,7 +30,7 @@ import { SubscriptionService } from './services/subscription.service';
 import { ThemeService } from './services/theme.service';
 import { LayoutMainService } from './services/layout-main.service';
 
-import { ContactsComponent, ViewContactDialog } from './components/contacts/contacts.component';
+import { ContactsComponent } from './components/contacts/contacts.component';
 import { DomainsComponent } from './components/domains/domains.component';
 import { TemplatesPageComponent } from './components/templates-page/templates-page.component';
 import { UserAdminComponent } from './components/user-admin/user-admin.component';
@@ -38,6 +38,7 @@ import { CustomerService } from './services/customer.service';
 import { CustomersComponent } from './components/customers/customers.component';
 import { AddCustomerDialogComponent } from './components/customers/add-customer-dialog/add-customer-dialog.component';
 import { AddContactDialogComponent } from './components/contacts/add-contact-dialog/add-contact-dialog.component';
+import { ViewContactDialogComponent } from './components/contacts/view-contact-dialog/view-contact-dialog.component';
 
 
 
@@ -57,13 +58,13 @@ import { AddContactDialogComponent } from './components/contacts/add-contact-dia
     TempalteManagerComponent,
     ListFilterPipe,
     ContactsComponent,
-    ViewContactDialog,
     DomainsComponent,
     TemplatesPageComponent,
     UserAdminComponent,
     CustomersComponent,
     AddCustomerDialogComponent,
     AddContactDialogComponent,
+    ViewContactDialogComponent,
   ],
   imports: [
     BrowserModule,
