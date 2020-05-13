@@ -23,7 +23,7 @@ from api.serializers.subscriptions_serializers import (
     SubscriptionPostResponseSerializer,
     SubscriptionPostSerializer,
 )
-from api.utils import db_service, personalize_template
+from api.utils import db_service, format_ztime, personalize_template
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status
 from rest_framework.response import Response
@@ -139,14 +139,13 @@ class SubscriptionsListView(APIView):
                     user_group=target,
                     email_template=created_template,
                 )
-                print("campaign created: {}".format(campaign))
-                today = datetime.datetime.utcnow()
+                logger.info("campaign created: {}".format(campaign))
 
                 created_campaign = {
                     "campaign_id": campaign.id,
                     "name": campaign_name,
-                    "created_date": today,
-                    "launch_date": today,
+                    "created_date": format_ztime(campaign.created_date),
+                    "launch_date": format_ztime(campaign.launch_date),
                     "email_template": created_template.name,
                     "landing_page_template": campaign.page.name,
                     "status": campaign.status,
@@ -155,7 +154,7 @@ class SubscriptionsListView(APIView):
                     "timeline": [
                         {
                             "email": None,
-                            "time": today,
+                            "time": format_ztime(campaign.created_date),
                             "message": "Campaign Created",
                             "details": "",
                         }
