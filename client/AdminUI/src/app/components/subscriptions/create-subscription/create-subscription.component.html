@@ -10,23 +10,22 @@
                         <i class="fa fa-search" style="font-size: 1rem;"></i>
                     </button>
                 </div>
-                <mat-form-field appearance="outline">
+                <!-- <mat-form-field appearance="outline">
                     <mat-select (selectionChange)="changeContact($event)">
                         <mat-option value="0" selected>Select Contact</mat-option>
                         <mat-option *ngFor="let c of contactsForOrg" [value]="c.id">{{c.name}}</mat-option>
                     </mat-select>
-                </mat-form-field>
+                </mat-form-field> -->
             </div>
         </div>
         <div style="border-right: 1px solid #000" class="pl-2 pr-2">
-            <div>{{currentOrg.orgName}}</div>
-            <div>{{currentOrg.orgAbbrev}}</div>
-            <div>{{currentOrg.orgAddress1}}</div>
-            <div>{{currentOrg.orgCity}}, {{currentOrg.orgState}}</div>
-            <div>{{currentOrg.orgType}}</div>
+            <div>{{currentOrg.name}}</div>
+            <div>{{currentOrg.identifier}}</div>
+            <div>{{currentOrg.address_1}}</div>
+            <div>{{currentOrg.city}}, {{currentOrg.state}}</div>
         </div>
         <div class="pl-2">
-            <div>{{currentContact.firstName}} {{currentContact.lastName}}
+            <div>{{currentContact.first_name}} {{currentContact.last_name}}
                 {{currentContact.title}}</div>
             <div>{{currentContact.phone}}</div>
             <div>{{currentContact.email}}</div>

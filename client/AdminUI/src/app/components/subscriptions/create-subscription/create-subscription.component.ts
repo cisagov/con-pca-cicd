@@ -67,13 +67,6 @@ export class CreateSubscriptionComponent implements OnInit {
   /**
    * 
    */
-  changeContact(e: any) {
-    this.currentContact = this.currentOrg.contacts.find(x => x.id == e.value);
-  }
-
-  /**
-   * 
-   */
   createAndLaunchSubscription() {
     console.log('createAndLaunchSubscription');
 

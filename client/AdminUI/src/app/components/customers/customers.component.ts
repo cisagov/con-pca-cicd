@@ -12,7 +12,7 @@ import { Customer } from 'src/app/models/customer.model';
   styleUrls: ['./customers.component.scss']
 })
 export class CustomersComponent implements OnInit {
-  private data_source: MatTableDataSource<Customer>;
+  public data_source: MatTableDataSource<Customer>;
   displayed_columns = [
     "name",
     "identifier",
@@ -37,7 +37,7 @@ export class CustomersComponent implements OnInit {
     }) 
   }
 
-  private open_add_customer_dialog(): void {
+  public open_add_customer_dialog(): void {
     const dialog_config = new MatDialogConfig();
     dialog_config.data = {}
     const dialog_ref = this.dialog.open(AddCustomerDialogComponent, dialog_config);
