@@ -91,7 +91,8 @@ export class AddCustomerComponent implements OnInit {
     {
       var contact: Contact = {
         id: Guid.create().toString(),
-        phone: this.contactFormGroup.controls['phone'].value,
+        office_phone: this.contactFormGroup.controls['office_phone'].value,
+        mobile_phone: this.contactFormGroup.controls['mobile_phone'].value,
         email: this.contactFormGroup.controls['email'].value,
         first_name: this.contactFormGroup.controls['firstName'].value,
         last_name: this.contactFormGroup.controls['lastName'].value,

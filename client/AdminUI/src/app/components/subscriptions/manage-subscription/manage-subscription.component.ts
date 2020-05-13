@@ -138,7 +138,7 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
     this.subscriptionSvc.submitSubscription(sub).subscribe(
       resp => {
         alert("Your subscription was created as " + sub.name);
-        this.router.navigate(['subscription']);
+        this.router.navigate(['subscriptions']);
       });
   }
 
