@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Customer, Contact, NewCustomer } from 'src/app/models/customer.model'
 import { environment } from 'src/environments/environment';
+import { Observable } from 'rxjs';
 
 // Json Definition returned for Customer from API
 const httpOptions = {
@@ -14,10 +15,41 @@ const httpOptions = {
 export class CustomerService {
   constructor(private http: HttpClient) { }
 
-  // Gets all Customers
-  public getCustomers() {
+  // Returns observable on http request to get customers
+  public requestGetCustomers() {
     let url = `${environment.apiEndpoint}/api/v1/customers/`;
     return this.http.get(url);
+  }
+
+  // Generates a list of Customer from request data
+  public getCustomers(requestData: any[]): Customer[] {
+    let customers: Customer[] = [];
+    requestData.map((x: any) => {
+      let customer: Customer = {
+        customer_uuid: x.customer_uuid,
+        name: x.name,
+        identifier: x.identifier,
+        address_1: x.address_1,
+        address_2: x.address_2,
+        city: x.city,
+        state: x.state,
+        zip_code: x.zip_code,
+        contact_list: []
+      }
+      customer.contact_list.map((y: any) => {
+        let contact: Contact = {
+          first_name: y.first_name,
+          last_name: y.last_name,
+          title: y.title,
+          phone: y.phone,
+          email: y.email,
+          notes: y.notes
+        }
+        customer.contact_list.push(contact)
+      })
+      customers.push(customer)
+    })
+    return customers
   }
 
   public setContacts(customer_uuid: string, contacts: Contact[]) {

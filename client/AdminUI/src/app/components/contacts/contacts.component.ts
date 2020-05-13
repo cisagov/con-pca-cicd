@@ -6,6 +6,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import {CustomerService} from 'src/app/services/customer.service'
 import { MatTab } from '@angular/material/tabs'; 
 import { Contact, Customer } from 'src/app/models/customer.model';
+import { AddContactDialogComponent } from './add-contact-dialog/add-contact-dialog.component';
 
 interface ICustomerContact {
   customer_uuid: string;
@@ -59,7 +60,7 @@ export class ContactsComponent implements OnInit {
   openAddDialog(): void {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.data = {}
-    const dialogRef = this.dialog.open(AddContactDialog, dialogConfig);
+    const dialogRef = this.dialog.open(AddContactDialogComponent, dialogConfig);
 
     dialogRef.afterClosed().subscribe(value => {
       this.refresh()
@@ -78,7 +79,7 @@ export class ContactsComponent implements OnInit {
   }
 
   private refresh(): void {
-    this.customerService.getCustomers().subscribe((data: any[]) => {
+    this.customerService.requestGetCustomers().subscribe((data: any[]) => {
       distinctCustomers = []
       customerContacts = []
 
@@ -129,74 +130,6 @@ export class ContactsComponent implements OnInit {
   }
 }
 
-@Component({
-  selector: 'add-contact-dialog',
-  templateUrl: 'dialogues/add-contact-dialog.html',
-  styleUrls: ['./contacts.component.scss'],
-})
-export class AddContactDialog {
-  addContactFormGroup = new FormGroup({
-    customer_uuid: new FormControl(),
-    first_name: new FormControl(),
-    last_name: new FormControl(),
-    title: new FormControl(),
-    phone: new FormControl(),
-    email: new FormControl(),
-    notes: new FormControl()
-  })
-
-  customers: ICustomer[] = [  ]
-
-
-  constructor(
-    public dialogRef: MatDialogRef<AddContactDialog>,
-    public customerService: CustomerService) { 
-    this.customers = distinctCustomers;
-  }
-
-  onNoClick(): void {
-    this.dialogRef.close();
-  }
-
-  onSaveClick(): void {
-    let uuid = this.addContactFormGroup.controls['customer_uuid'].value
-    let contacts: Contact[] = [];
-    customerContacts.map(val => {
-      if (val.customer_uuid == uuid) {
-        let c: Contact = {
-          first_name: val.first_name,
-          last_name: val.last_name,
-          title: val.title,
-          phone: val.phone,
-          email: val.email,
-          notes: val.notes
-        }
-        contacts.push(c);
-      }
-    })
-
-    let contact: Contact = {
-      first_name: this.addContactFormGroup.controls['first_name'].value,
-      last_name: this.addContactFormGroup.controls['last_name'].value,
-      title: this.addContactFormGroup.controls['title'].value,
-      phone: this.addContactFormGroup.controls['phone'].value,
-      email: this.addContactFormGroup.controls['email'].value,
-      notes: this.addContactFormGroup.controls['notes'].value
-    }
-    contacts.push(contact)
-
-    this.customerService.setContacts(
-      uuid,
-      contacts
-    ).subscribe()
-
-    this.dialogRef.close();
-  }
-
-  onCancelClick(): void {
-    this.dialogRef.close();
-  }
-}
 
 
 // =======================================
