@@ -74,7 +74,6 @@ class IncomingWebhookView(APIView):
                 gophish_campaign_data = gophish_campaign_serialized.data
                 for campaign in subscription["gophish_campaign_list"]:
                     if campaign["campaign_id"] == seralized_data["campaign_id"]:
-                        print("here")
                         campaign["timeline"].append(
                             {
                                 "email": seralized_data["email"],

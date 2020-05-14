@@ -82,7 +82,7 @@ class SubscriptionsListView(APIView):
         # Data for Template calculation ToDo: Save relevant_templates
         relevant_templates = template_manager.get_templates(
             post_data.get("url"), post_data.get("keywords"), template_data
-        )[:1]
+        )[:15]
 
         # Return 15 of the most relevant templates
         post_data["templates_selected_uuid_list"] = relevant_templates

@@ -38,7 +38,20 @@ A registered domain name
 - Phishing server is running on `localhost:8080`
 - Adminer UI is running on `localhost:9000`
 
+## Set up webhooks
+
+- Log onto admin UI located at `localhost:3333`
+- Naviagate to "Webhooks" panal
+- select: `+ New Webhook`
+  - name: `Local Webhook`
+  - url: `http://pca-api:8000/api/v1/inboundwebhook/`
+  - Is active: `true`
+  - Save!
+- test the connection via `ping` button
+- Webhooks are now setup for `con-pca`
+
 ### Credentials
+
 - visit: `localhost:3333`
   - Default credentials:
     - username: `admin`
