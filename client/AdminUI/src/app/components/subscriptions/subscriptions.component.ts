@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { SubscriptionService } from 'src/app/services/subscription.service';
 import { LayoutMainService } from 'src/app/services/layout-main.service';
+import { FormControl } from '@angular/forms';
+import { StatusList } from 'src/app/models/status.model';
 
 
 
@@ -12,7 +14,14 @@ import { LayoutMainService } from 'src/app/services/layout-main.service';
 })
 export class SubscriptionsComponent implements OnInit {
 
-  activeStatus = ["prohibit", "hourglass", "pause", "play", "stop"];
+  status = new FormControl();
+  searchAll: string;
+  searchOrganization: string;
+  searchSubscriptionName: string;
+  searchPrimaryContact: string;
+  searchStatus: string[];
+
+  statusList = new StatusList().staticStatusList;
 
   displayedColumns = ["SubscriptionName",
     "Status",
@@ -20,6 +29,7 @@ export class SubscriptionsComponent implements OnInit {
     "Customer",
     "LastActionDate",
     "Active"];
+    
   subscriptionsData = [
     { "SubscriptionName": "SC-1031.Matt-Daemon.1.1", "Status": "  Waiting on SRF", "PrimaryContact": " Matt Daemon", "Customer": "Some Company.2com", "LastActionDate": " 3/26/2020", "Active": "prohibit", },
     { "SubscriptionName": "SC-1221.Ben-Aflex.1.1", "Status": "  Waiting on SRF", "PrimaryContact": " Ben Aflex", "Customer": "Some Company.3com", "LastActionDate": " 3/26/2020", "Active": true },
@@ -46,17 +56,25 @@ export class SubscriptionsComponent implements OnInit {
       layoutSvc.setTitle("Subscriptions");
     }
 
-  ngOnInit(): void {
-    this.subscriptionsSvc.getSubscriptionsData().subscribe((data: any) => {      
-      this.subscriptionsData = data;    
-      this.getRandomStatusIcon();  
-    });
+  ngOnInit(): void {    
     this.layoutSvc.setTitle("Subscriptions");
   }
 
-  getRandomStatusIcon() {
-    this.subscriptionsData.forEach((s: any) => {
-      s.Active = this.activeStatus[Math.floor((Math.random() * this.activeStatus.length))];
+  getSubscriptionsList(){
+    this.subscriptionsSvc.getSubscriptionsData().subscribe((data: any) => {      
+      console.log(data);
+      // data.forEach(element => {        
+      //   element.statusIconAndName = this.statusList.getStatus(element.Status);
+      //   console.log(element.statusIconAndName);
+      // });
+      this.subscriptionsData = data;    
     });
+  }
+
+ 
+
+  runSearch(){
+    console.log("Search is running");
+    //make a call to the api to retreive the list of subscriptions 
   }
 }
