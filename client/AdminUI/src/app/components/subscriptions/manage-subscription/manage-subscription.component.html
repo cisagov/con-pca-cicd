@@ -23,12 +23,12 @@
             <div>
                 <mat-label class="h6">Primary Contact</mat-label>
             </div>
-            <!-- <mat-form-field appearance="outline">
-                <mat-select placeholder="select ein kontakt" [(ngModel)]="primaryContact" (selectionChange)="changePrimary($event)">
-                    <mat-option [value]="null" selected>-- Select --</mat-option>
-                    <mat-option *ngFor="let c of customerContacts" [value]="c">{{ c.first_name }}</mat-option>
+            <mat-form-field appearance="outline">
+                <mat-select [(ngModel)]="primaryContact" (selectionChange)="changePrimary($event)">
+                    <mat-option [value]="null">--Select--</mat-option>
+                    <mat-option *ngFor="let c of customerContacts" [value]="c.first_name">{{ c.first_name }}</mat-option>
                 </mat-select>
-            </mat-form-field> -->
+            </mat-form-field>
         </div>
 
         <div style="display: block;" class="mb-3">
@@ -39,6 +39,14 @@
                     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                     <mat-datepicker #picker [startAt]="startAt"></mat-datepicker>
                 </mat-form-field>
+            </div>
+
+            <div>
+                <mat-label class="h6">Customer Website</mat-label>
+                <div class="text-muted">The customer's page will be analyzed 
+                    to send phishing emails relevant to their industry.
+                </div>
+                <input [(ngModel)]="url" type="text" class="form-control mb-4">
             </div>
 
             <div>
@@ -68,12 +76,11 @@
         </div>
 
 
-        <div class="text-right">
+        <div class="text-right mt-3">
             <button mat-raised-button color="primary" 
                 *ngIf="pageMode == 'CREATE'"
-                (click)="createAndLaunchSubscription()">Create and Launch
-                Subscription
-                Service</button>
+                (click)="createAndLaunchSubscription()">Create and Launch Subscription
+                </button>
         </div>
 
     </div>

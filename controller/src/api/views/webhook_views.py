@@ -1,14 +1,19 @@
 """Webhook View."""
 # Standard Python Libraries
 import asyncio
+import datetime
 import logging
 
 # Third-Party Libraries
 from api.manager import CampaignManager
 from api.models.subscription_models import SubscriptionModel, validate_subscription
-from api.serializers import webhook_serializers
-from api.utils import db_service
+from api.serializers import campaign_serializers, webhook_serializers
+from api.serializers.subscriptions_serializers import (
+    SubscriptionPatchResponseSerializer,
+)
+from api.utils import db_service, format_ztime
 from drf_yasg.utils import swagger_auto_schema
+from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -25,7 +30,7 @@ class IncomingWebhookView(APIView):
 
     @swagger_auto_schema(
         request_body=webhook_serializers.InboundWebhookSerializer,
-        responses={"200": None, "400": "Bad Request",},
+        responses={"202": SubscriptionPatchResponseSerializer, "400": "Bad Request",},
         security=[],
         operation_id="Incoming WebHook from gophish ",
         operation_description=" This handles incoming webhooks from GoPhish Campaigns.",
@@ -33,8 +38,7 @@ class IncomingWebhookView(APIView):
     def post(self, request):
         """Post method."""
         data = request.data.copy()
-        self.__handle_webhook_data(data)
-        return Response()
+        return self.__handle_webhook_data(data)
 
     def __handle_webhook_data(self, data):
         """
@@ -53,37 +57,50 @@ class IncomingWebhookView(APIView):
         if "message" in data:
             seralized = webhook_serializers.InboundWebhookSerializer(data)
             seralized_data = seralized.data
-            single_subscription = self.__get_campaign(seralized_data["campaign_id"])
-            if seralized_data["message"] == "Campaign Created":
-                print(
-                    "campain created: {}".format(
-                        single_subscription["subscription_uuid"]
-                    )
-                )
-            elif seralized_data["message"] == "Email Sent":
-                print("Sent email: {}".format(single_subscription["subscription_uuid"]))
-            elif seralized_data["message"] == "Email Opened":
-                print(
-                    "Email Opened: {}".format(single_subscription["subscription_uuid"])
-                )
-            elif seralized_data["message"] == "Clicked Link":
-                print(
-                    "Clicked Link: {}".format(single_subscription["subscription_uuid"])
-                )
-            elif seralized_data["message"] == "Submitted Data":
-                print(
-                    "Submitted Data: {}".format(
-                        single_subscription["subscription_uuid"]
-                    )
-                )
-        else:
-            print(data)
-        return
+            subscription = self.__get_single_subscription(seralized_data["campaign_id"])
 
-    def __get_campaign(self, campaign_id):
-        """Get Campaign Data."""
+            if seralized_data["message"] in [
+                "Email Sent",
+                "Email Opened",
+                "Clicked Link",
+                "Submitted Data",
+            ]:
+                gophish_campaign = manager.get(
+                    "campaign", campaign_id=seralized_data["campaign_id"]
+                )
+                gophish_campaign_serialized = campaign_serializers.CampaignSerializer(
+                    gophish_campaign
+                )
+                gophish_campaign_data = gophish_campaign_serialized.data
+                for campaign in subscription["gophish_campaign_list"]:
+                    if campaign["campaign_id"] == seralized_data["campaign_id"]:
+                        campaign["timeline"].append(
+                            {
+                                "email": seralized_data["email"],
+                                "message": seralized_data["message"],
+                                "time": format_ztime(seralized_data["time"]),
+                                "details": seralized_data["details"],
+                            }
+                        )
+                        campaign["results"] = gophish_campaign_data["results"]
+                        campaign["status"] = gophish_campaign_data["status"]
+
+            updated_response = self.__update_single(
+                subscription=subscription,
+                collection="subscription",
+                model=SubscriptionModel,
+                validation=validate_subscription,
+            )
+            if "errors" in updated_response:
+                return Response(updated_response, status=status.HTTP_400_BAD_REQUEST)
+            serializer = SubscriptionPatchResponseSerializer(updated_response)
+            return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
+
+        return Response()
+
+    def __get_single_subscription(self, campaign_id):
+        """Get single subscription with campaign id."""
         parameters = {"gophish_campaign_list.campaign_id": campaign_id}
-        print(parameters)
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
         service = db_service("subscription", SubscriptionModel, validate_subscription)
@@ -91,3 +108,17 @@ class IncomingWebhookView(APIView):
             service.filter_list(parameters=parameters)
         )
         return next(iter(subscription_list), None)
+
+    def __update_single(self, subscription, collection, model, validation):
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        service = db_service(collection, model, validation)
+        put_data = {
+            "last_updated_by": "webhook",
+            "lub_timestamp": datetime.datetime.utcnow(),
+        }
+        subscription.update(put_data)
+        update_response = loop.run_until_complete(service.update(subscription))
+        if "errors" in update_response:
+            return update_response
+        return subscription
