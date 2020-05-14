@@ -45,10 +45,16 @@
         <mat-cell *matCellDef="let row"> {{row.primary_contact}} </mat-cell>
       </ng-container>
 
-      <!-- Phone Number Column -->
-      <ng-container matColumnDef="phone">
-        <mat-header-cell *matHeaderCellDef>Phone Number</mat-header-cell>
-        <mat-cell *matCellDef="let row"> {{row.phone}} </mat-cell>
+      <!-- Office Phone Number Column -->
+      <ng-container matColumnDef="office_phone">
+        <mat-header-cell *matHeaderCellDef>Office Phone</mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{row.office_phone}} </mat-cell>
+      </ng-container>
+
+      <!-- Mobile Phone Number Column -->
+      <ng-container matColumnDef="mobile_phone">
+        <mat-header-cell *matHeaderCellDef>Mobile Phone</mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{row.mobile_phone}} </mat-cell>
       </ng-container>
 
       <!-- Action Column -->

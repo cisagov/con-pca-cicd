@@ -25,7 +25,8 @@ export class Contact {
     first_name: string;
     last_name: string;
     title: string;
-    phone: string;
+    office_phone: string;
+    mobile_phone: string;
     email: string;
     notes: string;
 }
@@ -36,7 +37,8 @@ export interface ICustomerContact {
     first_name: string;
     last_name: string;
     title: string;
-    phone: string;
+    office_phone: string;
+    mobile_phone: string;
     email: string;
     notes: string;
   }
