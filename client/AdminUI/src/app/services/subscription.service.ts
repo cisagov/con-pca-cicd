@@ -68,7 +68,6 @@ export class SubscriptionService {
     let a = [];
     c.contact_list.forEach(x => {
       a.push({
-        id: x.id,
         name: x.first_name + ' ' + x.last_name
       });
     });
