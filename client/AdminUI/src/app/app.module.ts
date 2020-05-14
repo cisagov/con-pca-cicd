@@ -15,7 +15,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SubscriptionsComponent } from './components/subscriptions/subscriptions.component';
 import { LayoutBlankComponent } from './components/layout/layout-blank/layout-blank.component';
 import { LayoutMainComponent } from './components/layout/layout-main/layout-main.component';
-import { SubscriptionsService } from './components/subscriptions/subscriptions.service';
 import { SearchPanelComponent } from './components/search-panel/search-panel.component';
 import { ManageSubscriptionComponent } from './components/subscriptions/manage-subscription/manage-subscription.component';
 import { DeceptionCalculatorComponent } from './components/deception-calculator/deception-calculator.component';
@@ -78,7 +77,7 @@ import { ViewContactDialogComponent } from './components/contacts/view-contact-d
     HttpClientModule
   ],
   providers: [
-    SubscriptionsService,
+    SubscriptionService,
     DeceptionCalculatorService,
     CustomerService,
     TemplateManagerService,

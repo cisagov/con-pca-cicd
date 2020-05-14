@@ -15,57 +15,89 @@
                     <button mat-raised-button color="primary" class="float-right">Pause All</button>
                 </div>
 
-            <mat-accordion style="margin: 16px; padding-right: 24px;">
-                <mat-expansion-panel>
-                <mat-expansion-panel-header [collapsedHeight]="'120px'" [expandedHeight]="'120px'" width="900px" > 
-                    <mat-panel-title>Filter/Search Subscription</mat-panel-title>
-                    <mat-panel-description>
-                        <mat-form-field appearance="outline"> 
-                            <mat-label>Search</mat-label>
-                            <input matInput placeholder="Search"  [(ngModel)]="searchAll"
-                            (blur)="runSearch()">  <i class="fas fa-search"></i>                            
-                        </mat-form-field>
-                    </mat-panel-description>
-                </mat-expansion-panel-header>
-                <mat-form-field appearance="outline">
-                    <mat-label>Organization Name</mat-label>
-                    <input matInput [(ngModel)]="searchOrganization" (blur)="runSearch()"> 
-                </mat-form-field>
-            
-                <mat-form-field appearance="outline">
-                    <mat-label>Subscription Name</mat-label>
-                    <input matInput [(ngModel)]="searchSubscriptionName"> 
-                </mat-form-field>
-            
-                <mat-form-field appearance="outline">
-                    <mat-label>Primary Contact</mat-label>
-                    <input matInput [(ngModel)]="searchPrimaryContact"> 
-                </mat-form-field>    
-                <mat-form-field appearance="outline">
-                    <mat-label>Status</mat-label>
-                    <mat-select [(ngModel)]="searchStatus" multiple>
-                    <mat-option *ngFor="let s of statusList" [value]="s">{{s.display_name}}</mat-option>
-                    </mat-select>
-                </mat-form-field>    
-                <mat-checkbox color="primary" >Non-Government</mat-checkbox> <br>
-                <mat-checkbox color="primary" >Federal</mat-checkbox>        
-                </mat-expansion-panel>        
-            </mat-accordion>
-
-    
-
+                <mat-accordion style="margin: 16px; padding-right: 24px;">
+                    <mat-expansion-panel>
+                    <mat-expansion-panel-header [collapsedHeight]="'120px'" [expandedHeight]="'120px'" width="900px" > 
+                        <mat-panel-title>Filter/Search Subscription</mat-panel-title>
+                        <mat-panel-description>
+                            <mat-form-field appearance="outline"> 
+                                <mat-label>Search</mat-label>
+                                <input matInput placeholder="Search"  [(ngModel)]="searchAll"
+                                (blur)="runSearch()">  <i class="fas fa-search"></i>                            
+                            </mat-form-field>
+                        </mat-panel-description>
+                    </mat-expansion-panel-header>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Organization Name</mat-label>
+                        <input matInput [(ngModel)]="searchOrganization" (blur)="runSearch()"> 
+                    </mat-form-field>
+                
+                    <mat-form-field appearance="outline">
+                        <mat-label>Subscription Name</mat-label>
+                        <input matInput [(ngModel)]="searchSubscriptionName"> 
+                    </mat-form-field>
+                
+                    <mat-form-field appearance="outline">
+                        <mat-label>Primary Contact</mat-label>
+                        <input matInput [(ngModel)]="searchPrimaryContact"> 
+                    </mat-form-field>    
+                    <mat-form-field appearance="outline">
+                        <mat-label>Status</mat-label>
+                        <mat-select [(ngModel)]="searchStatus" multiple>
+                        <mat-option *ngFor="let s of statusList" [value]="s">{{s.display_name}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>    
+                    <mat-checkbox color="primary" >Non-Government</mat-checkbox> <br>
+                    <mat-checkbox color="primary" >Federal</mat-checkbox>        
+                    </mat-expansion-panel>        
+                </mat-accordion>
             </div>
-            <mat-table [dataSource]="subscriptionsData">
-                <ng-container matColumnDef="SubscriptionName"><mat-header-cell *matHeaderCellDef>Subscription Name</mat-header-cell>    <mat-cell *matCellDef="let row"> {{row.name}} </mat-cell></ng-container>
-                <ng-container matColumnDef="Status"><mat-header-cell *matHeaderCellDef>Status </mat-header-cell>    <mat-cell *matCellDef="let row"> {{row.Status }} </mat-cell></ng-container>
-                <ng-container matColumnDef="PrimaryContact"><mat-header-cell *matHeaderCellDef>Primary Contact </mat-header-cell>    <mat-cell *matCellDef="let row"> {{row.primary_contact?.name}} </mat-cell></ng-container>
-                <ng-container matColumnDef="Customer"><mat-header-cell *matHeaderCellDef>Organization </mat-header-cell>    <mat-cell *matCellDef="let row"> {{row.organization }} </mat-cell></ng-container>
-                <ng-container matColumnDef="LastActionDate"><mat-header-cell *matHeaderCellDef>Last Action Date </mat-header-cell>    <mat-cell *matCellDef="let row"> {{row.lub_timestamp}} </mat-cell></ng-container>
-                <ng-container matColumnDef="Active"><mat-header-cell *matHeaderCellDef>Active</mat-header-cell>    <mat-cell *matCellDef="let row">
-                    <!-- {{row?.statusIconAndName?.icon_name}} -->
-                    <img src="../../../assets/icon_play.png" style="height: 1rem;"> </mat-cell></ng-container>
-                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-                <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+
+            <mat-table [dataSource]="data_source">
+                <!-- SUBSCRIPTION NAME -->
+                <ng-container matColumnDef="name">
+                    <mat-header-cell *matHeaderCellDef>Subscription Name</mat-header-cell>    
+                    <mat-cell *matCellDef="let row"> {{row.name}}</mat-cell>
+                </ng-container>
+
+                <!-- STATUS -->
+                <ng-container matColumnDef="status">
+                    <mat-header-cell *matHeaderCellDef>Status</mat-header-cell>    
+                    <mat-cell *matCellDef="let row"> {{row.status }}</mat-cell>
+                </ng-container>
+
+                <!-- PRIMARY CONTACT -->
+                <ng-container matColumnDef="primary_contact">
+                    <mat-header-cell *matHeaderCellDef>Primary Contact</mat-header-cell>
+                    <mat-cell *matCellDef="let row"> {{row.primary_contact}}</mat-cell>
+                </ng-container>
+
+                <!-- CUSTOMER -->
+                <ng-container matColumnDef="customer">
+                    <mat-header-cell *matHeaderCellDef>customer</mat-header-cell>
+                    <mat-cell *matCellDef="let row">{{row.customer }}</mat-cell>
+                </ng-container>
+
+                <!-- LAST ACTION DATE -->
+                <ng-container matColumnDef="start_date">
+                    <mat-header-cell *matHeaderCellDef>Start Date</mat-header-cell>
+                    <mat-cell *matCellDef="let row"> {{row.start_date}}</mat-cell>
+                </ng-container>
+
+                <!-- ACTIVE -->
+                <ng-container matColumnDef="active">
+                    <mat-header-cell *matHeaderCellDef>Active</mat-header-cell>
+                    <mat-cell *matCellDef="let row">
+                        <!-- {{row?.statusIconAndName?.icon_name}} -->
+                        <img src="../../../assets/icon_play.png" style="height: 1rem;">
+                    </mat-cell>
+                </ng-container>
+
+                <!-- HEADER ROW -->
+                <mat-header-row *matHeaderRowDef="displayed_columns"></mat-header-row>
+
+                <!-- ROW DEFINITION -->
+                <mat-row *matRowDef="let row; columns: displayed_columns"></mat-row>
             </mat-table>
         </div>
     </div>
