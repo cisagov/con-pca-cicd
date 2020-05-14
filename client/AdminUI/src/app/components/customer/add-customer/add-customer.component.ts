@@ -2,15 +2,15 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, NgForm, FormGroupDirective, Validators, FormGroup } from '@angular/forms';
 import { MyErrorStateMatcher } from '../../../helper/ErrorStateMatcher';
 import { SubscriptionService } from 'src/app/services/subscription.service';
-import { Contact, Organization } from 'src/app/models/organization.model';
+import { Contact, Customer } from 'src/app/models/customer.model';
 import { Guid } from 'guid-typescript';
 
 @Component({
-  selector: 'app-add-organization',
-  templateUrl: './add-organization.component.html',
-  styleUrls: ['./add-organization.component.scss']
+  selector: 'app-add-customer',
+  templateUrl: './add-customer.component.html',
+  styleUrls: ['./add-customer.component.scss']
 })
-export class AddOrganizationComponent implements OnInit {
+export class AddCustomerComponent implements OnInit {
 
    model:any;
    addContact:boolean = false;
@@ -20,8 +20,8 @@ export class AddOrganizationComponent implements OnInit {
    orgError='';
    contacts:Array<Contact> = [];
 
-   matchOrganizationName = new MyErrorStateMatcher();
-   matchOrganizationIdentifier = new MyErrorStateMatcher();
+   matchCustomerName = new MyErrorStateMatcher();
+   matchCustomerIdentifier = new MyErrorStateMatcher();
    matchAddress1 = new MyErrorStateMatcher();
    matchCity = new MyErrorStateMatcher();
    matchState = new MyErrorStateMatcher();
@@ -31,10 +31,10 @@ export class AddOrganizationComponent implements OnInit {
    matchLastName = new MyErrorStateMatcher();
    matchEmail = new MyErrorStateMatcher();
    
-   organizationFormGroup = new FormGroup({
-    organizationId: new FormControl({value: '', disabled: true}),
-    organizationName: new FormControl('', [Validators.required]),
-    organizationIdentifier: new FormControl('', [Validators.required]),
+   customerFormGroup = new FormGroup({
+    customerId: new FormControl({value: '', disabled: true}),
+    customerName: new FormControl('', [Validators.required]),
+    customerIdentifier: new FormControl('', [Validators.required]),
     address1: new FormControl('', [Validators.required]),
     address2: new FormControl(''),
     city: new FormControl('', [Validators.required]),
@@ -53,33 +53,32 @@ export class AddOrganizationComponent implements OnInit {
 
 
   constructor( public subscriptionSvc: SubscriptionService) { 
-    this.organizationFormGroup.controls["organizationId"].setValue(Guid.create());
+    this.customerFormGroup.controls["customerId"].setValue(Guid.create());
   }
 
   createNew(){
-    this.clearOrganization();
+    this.clearCustomer();
   }
 
-  pushOrganization(){
-    if(this.organizationFormGroup.valid && this.contacts.length > 0)
+  pushCustomer(){
+    if(this.customerFormGroup.valid && this.contacts.length > 0)
     {
-      var organization: Organization = {
-        id: this.organizationFormGroup.controls["organizationId"].value,
-        orgName: this.organizationFormGroup.controls["organizationName"].value,
-        orgAbbrev: this.organizationFormGroup.controls["organizationIdentifier"].value,
-        orgAddress1: this.organizationFormGroup.controls["address1"].value,
-        orgAddress2: this.organizationFormGroup.controls["address2"].value,
-        orgCity: this.organizationFormGroup.controls["city"].value,
-        orgState: this.organizationFormGroup.controls["state"].value,
-        orgZip: this.organizationFormGroup.controls["zip"].value,
-        orgType: "",
-        contacts: this.contacts
+      var customer: Customer = {
+        customer_uuid: this.customerFormGroup.controls["customerId"].value,
+        name: this.customerFormGroup.controls["customerName"].value,
+        identifier: this.customerFormGroup.controls["customerIdentifier"].value,
+        address_1: this.customerFormGroup.controls["address1"].value,
+        address_2: this.customerFormGroup.controls["address2"].value,
+        city: this.customerFormGroup.controls["city"].value,
+        state: this.customerFormGroup.controls["state"].value,
+        zip_code: this.customerFormGroup.controls["zip"].value,
+        contact_list: this.contacts
       }
 
-      this.subscriptionSvc.postOrganization(organization).subscribe((o:Organization) => {
-        this.clearOrganization();
+      this.subscriptionSvc.postCustomer(customer).subscribe((o:Customer) => {
+        this.clearCustomer();
       });
-    } else if( !this.organizationFormGroup.valid )
+    } else if( !this.customerFormGroup.valid )
     {
       this.orgError = "Fix required fields";
     } else if( this.contacts.length < 1){
@@ -92,12 +91,14 @@ export class AddOrganizationComponent implements OnInit {
     {
       var contact: Contact = {
         id: Guid.create().toString(),
-        phone: this.contactFormGroup.controls['phone'].value,
+        office_phone: this.contactFormGroup.controls['office_phone'].value,
+        mobile_phone: this.contactFormGroup.controls['mobile_phone'].value,
         email: this.contactFormGroup.controls['email'].value,
-        firstName: this.contactFormGroup.controls['firstName'].value,
-        lastName: this.contactFormGroup.controls['lastName'].value,
+        first_name: this.contactFormGroup.controls['firstName'].value,
+        last_name: this.contactFormGroup.controls['lastName'].value,
         title: this.contactFormGroup.controls['title'].value,
-        contactNotes: this.contactFormGroup.controls['contactNotes'].value,
+        notes: this.contactFormGroup.controls['contactNotes'].value,
+        fullName: null
       };
       
       this.contacts.push(contact);
@@ -108,10 +109,10 @@ export class AddOrganizationComponent implements OnInit {
     }
   }
 
-  clearOrganization(){
+  clearCustomer(){
 
-    this.organizationFormGroup.reset();
-    this.organizationFormGroup.controls["organizationId"].setValue(Guid.create());
+    this.customerFormGroup.reset();
+    this.customerFormGroup.controls["customerId"].setValue(Guid.create());
     this.contacts = [];
     this.orgError = '';
   }

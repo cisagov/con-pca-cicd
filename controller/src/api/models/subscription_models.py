@@ -9,6 +9,7 @@ from database.repository.types import (
     BooleanType,
     DateTimeType,
     EmailType,
+    IntType,
     ListType,
     ModelType,
     StringType,
@@ -73,6 +74,7 @@ class GoPhishCampaignsModel(Model):
     This is a format to hold GophishCampaign information in the subscription model.
     """
 
+    campaign_id = IntType()
     name = StringType()
     email_template = StringType()
     landing_page_template = StringType()
@@ -93,8 +95,10 @@ class SubscriptionModel(Model):
     # values being passed in.
     customer_uuid = UUIDType()
     name = StringType()
+    url = StringType()
+    keywords = StringType()
     start_date = DateTimeType()
-    # commented out feilds for now are unused for the time
+    # commented out fields for now are unused for the time
     # end_date = DateTimeType()
     # report_count = IntType()
     gophish_campaign_list = ListType(ModelType(GoPhishCampaignsModel))
@@ -104,7 +108,7 @@ class SubscriptionModel(Model):
     status = StringType()
     target_email_list = ListType(ModelType(SubscriptionTargetModel))
     # click_list = ListType(ModelType(SubscriptionClicksModel))
-    # templates_selected_uuid_list = ListType(UUIDType)
+    templates_selected_uuid_list = ListType(StringType)
     active = BooleanType()
     # db data tracking added below
     created_by = StringType()

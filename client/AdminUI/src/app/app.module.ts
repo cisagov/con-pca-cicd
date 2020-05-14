@@ -1,8 +1,14 @@
-import { HttpClientModule, HTTP_INTERCEPTORS, HttpClient } from '@angular/common/http';
+import {
+  HttpClientModule,
+  HTTP_INTERCEPTORS,
+  HttpClient
+} from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AngularEditorModule } from '@kolkov/angular-editor';
 import { MaterialModule } from './material.module';
+import { MatSortModule } from '@angular/material/sort'
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -11,43 +17,70 @@ import { LayoutBlankComponent } from './components/layout/layout-blank/layout-bl
 import { LayoutMainComponent } from './components/layout/layout-main/layout-main.component';
 import { SubscriptionsService } from './components/subscriptions/subscriptions.service';
 import { SearchPanelComponent } from './components/search-panel/search-panel.component';
-import { ServiceSubscriptionComponent } from './components/service-subscription/service-subscription.component';
-import { CreateSubscriptionComponent } from './components/subscriptions/create-subscription/create-subscription.component';
+import { ManageSubscriptionComponent } from './components/subscriptions/manage-subscription/manage-subscription.component';
 import { DeceptionCalculatorComponent } from './components/deception-calculator/deception-calculator.component';
-import { DeceptionCalculatorService } from './components/deception-calculator/deception-calculator.service';
+import { DeceptionCalculatorService } from './services/deception-calculator.service';
+import { TemplateManagerComponent } from './components/template-manager/template-manager.component';
+import { TemplateManagerService } from './services/template-manager.service';
+import { ListFilterPipe } from './pipes/list-filter.pipe';
 import { AutosizeModule } from 'node_modules/ngx-autosize';
-import { AddOrganizationComponent } from './components/organization/add-organization/add-organization.component';
+import { AddCustomerComponent } from './components/customer/add-customer/add-customer.component';
 import { SubscriptionService } from './services/subscription.service';
+import { ThemeService } from './services/theme.service';
+import { LayoutMainService } from './services/layout-main.service';
+
+import { ContactsComponent, ViewContactDialog, AddContactDialog } from './components/contacts/contacts.component';
+import { DomainsComponent } from './components/domains/domains.component';
+import { TemplatesPageComponent } from './components/templates-page/templates-page.component';
+import { UserAdminComponent } from './components/user-admin/user-admin.component';
+
+
 
 
 @NgModule({
   declarations: [
-    AppComponent, 
-    SubscriptionsComponent, 
-    LayoutBlankComponent, 
-    LayoutMainComponent, 
-    SearchPanelComponent, 
-    ServiceSubscriptionComponent,
-    AddOrganizationComponent,
-    CreateSubscriptionComponent,
+    AppComponent,
+    SubscriptionsComponent,
+    LayoutBlankComponent,
+    LayoutMainComponent,
+    SearchPanelComponent,
+    AddCustomerComponent,
+    ManageSubscriptionComponent,
     DeceptionCalculatorComponent,
+
+    TemplateManagerComponent,
+    ListFilterPipe,
+    ContactsComponent,
+    ViewContactDialog,
+    AddContactDialog,
+    DomainsComponent,
+    TemplatesPageComponent,
+    UserAdminComponent,
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
+    AngularEditorModule,
     AppRoutingModule,
-    BrowserAnimationsModule, 
-    MaterialModule, 
-    FormsModule, 
+    BrowserAnimationsModule,
+    MaterialModule,
+    MatSortModule,
+    FormsModule,
     ReactiveFormsModule,
     AutosizeModule,
     HttpClientModule
   ],
   providers: [
-    SubscriptionsService,    
+    SubscriptionsService,
     DeceptionCalculatorService,
-    HttpClient,
+    TemplateManagerService,
+    ThemeService,
+    LayoutMainService,
+    HttpClient
+  ],
+  exports: [
+    MatSortModule
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}

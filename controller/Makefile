@@ -15,7 +15,7 @@ build:
 
 # target: app logs - Runs django logs in the terminal
 logs:
-	 docker attach --sig-proxy=false cpa-api
+	 docker attach --sig-proxy=false pca-api
 
 # target: loc - Count lines of code.
 loc:
@@ -38,17 +38,21 @@ redeploy: down build up
 
 # target: shell - django shell within container
 shell:
-	docker exec -it cpa-api python manage.py shell
+	docker exec -it pca-api python manage.py shell
 
 # target: format - Format Python code
 format:
-	docker exec cpa-api isort --multi-line=3 --trailing-comma --force-grid-wrap=0 --use-parentheses --line-width=100 -rc .
-	docker exec cpa-api black -l 100 .
+	docker exec pca-api isort --multi-line=3 --trailing-comma --force-grid-wrap=0 --use-parentheses --line-width=100 -rc .
+	docker exec pca-api black -l 100 .
 
 # target: db_load_dummy - connects to db and creates dummy-data and dumps file with id's
 db_load_dummy:
-	docker exec -it cpa-api python scripts/create_dummy_data.py
+	docker exec -it pca-api python scripts/create_dummy_data.py
 
 # target: db_drop_mongo - connects to docker and drops mongo volume
 db_drop_mongo:
 	docker volume rm controller_mongodb
+
+# target: init_gophish - initialize gophish data
+init_gophish:
+	docker exec -it pca-api python scripts/init_gophish.py

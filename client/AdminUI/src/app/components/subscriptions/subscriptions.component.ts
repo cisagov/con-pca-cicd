@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { SubscriptionService } from 'src/app/services/subscription.service';
+import { LayoutMainService } from 'src/app/services/layout-main.service';
 
 
 
@@ -39,14 +40,18 @@ export class SubscriptionsComponent implements OnInit {
   ];
 
   constructor(
-    private subscriptionsSvc: SubscriptionService
-    ) { }
+    private subscriptionsSvc: SubscriptionService,
+    private layoutSvc: LayoutMainService
+    ) { 
+      layoutSvc.setTitle("Subscriptions");
+    }
 
   ngOnInit(): void {
     this.subscriptionsSvc.getSubscriptionsData().subscribe((data: any) => {      
       this.subscriptionsData = data;    
       this.getRandomStatusIcon();  
     });
+    this.layoutSvc.setTitle("Subscriptions");
   }
 
   getRandomStatusIcon() {

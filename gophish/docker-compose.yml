@@ -4,7 +4,8 @@ services:
   gophish:
     build:
       context: ./etc/gophish/
-    container_name: cpa-gophish
+    container_name: pca-gophish
+    hostname: gophish
     restart: unless-stopped
     ports:
       - "3333:3333"
@@ -16,7 +17,7 @@ services:
   nginx:
     build:
       context: ./etc/nginx/
-    container_name: cpa-gophish-proxy
+    container_name: pca-gophish-proxy
     restart: unless-stopped
     ports:
       - "80:80"
@@ -25,7 +26,7 @@ services:
       - default
   mysql:
     image: mysql:latest
-    container_name: cpa-gophish-db
+    container_name: pca-gophish-db
     restart: unless-stopped
     ports:
       - '3306:3306'
@@ -39,7 +40,7 @@ services:
       - .env
   adminer:
     image: adminer
-    container_name: cpa-gophish-adminer
+    container_name: pca-gophish-adminer
     restart: unless-stopped
     ports:
       - 9000:8080
@@ -51,3 +52,5 @@ volumes:
 
 networks:
   default:
+    external:
+      name: controller_default

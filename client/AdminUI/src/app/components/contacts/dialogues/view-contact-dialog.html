@@ -1,0 +1,73 @@
+<div class="d-flex flex-column" [formGroup]="contactFormGroup">
+    <div class="d-flex flex-row">
+        <!-- FIRST NAME -->
+        <div class="d-flex flex-column">
+            <mat-form-field appearance="outline">
+                <mat-label>First Name</mat-label>
+                <input matInput type="text" [(ngModel)]="data.first_name" formControlName="first_name" disabled>
+            </mat-form-field>
+        </div>
+        <!-- LAST NAME -->
+        <div class="d-flex flex-column">
+            <mat-form-field appearance="outline">
+                <mat-label>Last Name</mat-label>
+                <input matInput type="text" [(ngModel)]="data.last_name" formControlName="last_name" disabled>
+            </mat-form-field>
+        </div>
+    </div>
+    <!-- TITLE -->
+    <mat-form-field appearance="outline">
+        <mat-label>Title</mat-label>
+        <input matInput type="text" [(ngModel)]="data.title" formControlName="title" disabled>
+    </mat-form-field>
+    <!-- CUSTOMER -->
+    <mat-form-field appearance="outline">
+        <mat-label>Customer</mat-label>
+        <input matInput type="text" [(ngModel)]="data.customer" formControlName="customer" disabled>
+    </mat-form-field>
+    <!-- PHONE -->
+    <mat-form-field appearance="outline">
+        <mat-label>Phone Number</mat-label>
+        <input matInput type="text" [(ngModel)]="data.phone" formControlName="phone" disabled>
+    </mat-form-field>
+    <!-- EMAIL -->
+    <mat-form-field appearance="outline">
+        <mat-label>Email</mat-label>
+        <input matInput type="email" [(ngModel)]="data.email" formControlName="email" disabled>
+    </mat-form-field>
+    <!-- NOTES -->
+    <mat-form-field appearance="outline">
+        <mat-label>Notes</mat-label>
+        <input matInput type="text" [(ngModel)]="data.notes" formControlName="notes" disabled>
+    </mat-form-field>
+</div>
+
+<!-- INITIAL BUTTONS AT END -->
+<div class="d-flex flex-column" *ngIf="!edit">
+    <div class="d-flex flex-row justify-content-end">
+        <div class="d-flex flex-column">
+            <button mat-raised-button color="accent" (click)="onEditClick()">Edit</button>
+        </div>
+        <div class="d-flex flex-column">
+            <button mat-raised-button color="warn" (click)="onDeleteClick()">Delete</button>
+        </div>
+        <div class="d-flex flex-column">
+            <button mat-raised-button color="primary" (click)="onNoClick()">Exit</button>
+        </div>
+    </div>
+</div>
+
+<!-- EDIT BUTTONS AT END -->
+<div class="d-flex flex-column" *ngIf="edit">
+    <div class="d-flex flex-row justify-content-end">
+        <div class="d-flex flex-column">
+            <button mat-raised-button color="success" (click)="onSaveEditClick()">Save</button>
+        </div>
+        <div class="d-flex flex-column">
+            <button mat-raised-button color="accent" (click)="onCancelEditClick()">Cancel</button>
+        </div>
+    </div>
+</div> 
+
+
+

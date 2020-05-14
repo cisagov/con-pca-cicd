@@ -175,7 +175,7 @@ class GenericRepository(object):
 
         """
         client = AsyncIOMotorClient(db_url, io_loop=asyncio.get_event_loop())
-        self.db = client["cpa_data_dev"]
+        self.db = client["pca_data_dev"]
         self.collection_name = collection_name
         self.collection = self.db.get_collection(
             self.collection_name, codec_options=CodecOptions(tz_aware=True)
@@ -253,10 +253,10 @@ class GenericRepository(object):
         Generic method that can be used to update a
         single document by a given object.
         """
-        result = await self.collection.update_one(
+        await self.collection.update_one(
             {self.uuid_name: object[self.uuid_name]}, {"$set": object}
         )
-        return str(result.upserted_id)
+        return {self.uuid_name: object[self.uuid_name]}
 
     async def delete(self, uuid):
         """
@@ -265,5 +265,5 @@ class GenericRepository(object):
         Generic method that can be used to delete a
         single document by a given uuid.
         """
-        result = await self.collection.delete_one({self.uuid_name: uuid})
-        return result.acknowledged
+        await self.collection.delete_one({self.uuid_name: uuid})
+        return {self.uuid_name: uuid}

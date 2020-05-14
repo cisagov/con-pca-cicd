@@ -1,4 +1,4 @@
-# CPA Client
+# Con-PCA Client
 ### Angular frontend application
 
 ### Requirements

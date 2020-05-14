@@ -148,3 +148,4 @@ CELERY_BEAT_SCHEDULE = {
 # GoPhish
 GP_URL = os.environ.get("GP_URL", "")
 GP_API_KEY = os.environ.get("GP_API_KEY", "")
+PHISH_URL = os.environ.get("PHISH_URL", "")

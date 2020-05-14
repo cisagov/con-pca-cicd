@@ -20,10 +20,10 @@ import os
 import requests
 
 
-def load_data():
+def load_file(data_file):
     """This loads json file of dummy data from data/dummy_data.json."""
     current_dir = os.path.dirname(os.path.abspath(__file__))
-    data_file = os.path.join(current_dir, "data/dummy_data.json")
+    data_file = os.path.join(current_dir, data_file)
     with open(data_file, "r") as f:
         data = json.load(f)
     return data
@@ -32,23 +32,39 @@ def load_data():
 def main():
     """This if the main def that runs creating data."""
     print("loading dummy json data")
-    json_data = load_data()
+    json_data = load_file("data/dummy_data.json")
     print("done loading data")
-    print("Step 1/3: create templates...")
+    print("Step 1/2: create templates...")
 
-    templates = json_data["template_data"]
+    templates = load_file("data/reformated_template_data.json")
     created_template_uuids = []
+
     for template in templates:
-        resp = requests.post("http://localhost:8000/api/v1/templates/", json=template)
+        try:
+            template["deception_score"] = template["complexity"]
+            resp = requests.post(
+                "http://localhost:8000/api/v1/templates/", json=template
+            )
+            resp.raise_for_status()
+        except requests.exceptions.HTTPError as err:
+            raise err
         rep_json = resp.json()
         created_template_uuids.append(rep_json["template_uuid"])
 
-    print("created tempaltes_list: {}".format(created_template_uuids))
-    print("Step 2/3: create targets...(Skipping)")
-    # Currently Targets are not being creating into their own collections.
-    created_targets_uuids = []
+    print("created templates_list: {}".format(created_template_uuids))
 
-    print("created target_list: {}".format(created_targets_uuids))
+    print("Step 2/3: create customers...")
+
+    customer = json_data["customer_data"]
+    created_customer_uuid = ""
+    try:
+        resp = requests.post("http://localhost:8000/api/v1/customers/", json=customer)
+        resp.raise_for_status()
+    except requests.exceptions.HTTPError as err:
+        raise err
+
+    resp_json = resp.json()
+    created_customer_uuid = resp_json["customer_uuid"]
 
     print("Step 3/3: create subscriptions...")
 
@@ -56,11 +72,17 @@ def main():
     created_subcription_uuids = []
 
     for subscription in subscriptions:
-        resp = requests.post(
-            "http://localhost:8000/api/v1/subscriptions/", json=subscription
-        )
-        rep_json = resp.json()
-        created_subcription_uuids.append(rep_json["subscription_uuid"])
+        subscription["customer_uuid"] = created_customer_uuid
+        try:
+            resp = requests.post(
+                "http://localhost:8000/api/v1/subscriptions/", json=subscription
+            )
+            resp.raise_for_status()
+        except requests.exceptions.HTTPError as err:
+            raise err
+
+        resp_json = resp.json()
+        created_subcription_uuids.append(resp_json["subscription_uuid"])
 
     print("created subcription_list: {}".format(created_subcription_uuids))
     current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -70,11 +92,10 @@ def main():
             datetime.now().strftime("%Y_%m_%d_%H%M%S")
         ),
     )
-    print("writting values to file: {}...".format(output_file))
+    print("writing values to file: {}...".format(output_file))
 
     with open(output_file, "w") as outfile:
         data = {
-            "created_targets_uuids": created_targets_uuids,
             "created_subcription_uuids": created_subcription_uuids,
             "created_template_uuids": created_template_uuids,
         }

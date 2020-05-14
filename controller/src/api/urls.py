@@ -4,7 +4,13 @@ API URLs.
 This lists all urls under the API app.
 """
 # Third-Party Libraries
-from api.views import campaign_views, subscription_views, template_views
+from api.views import (
+    campaign_views,
+    customer_views,
+    subscription_views,
+    template_views,
+    webhook_views,
+)
 from django.urls import path
 from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
@@ -12,9 +18,9 @@ from rest_framework import permissions
 
 schema_view = get_schema_view(
     openapi.Info(
-        title="CPA API",
+        title="Con-PCA API",
         default_version="v1",
-        description="""This is the API documentation for CPA.
+        description="""This is the API documentation for Con-PCA.
         This was created to define all API calls and repsonses.""",
         terms_of_service="https://github.com/cisagov/cpa/blob/develop/LICENSE",
         contact=openapi.Contact(email="peter.mercado255@gmail.com"),
@@ -66,5 +72,20 @@ urlpatterns = [
         "v1/campaign/<campaign_id>/",
         campaign_views.CampaignDetailView.as_view(),
         name="campaign_detail",
+    ),
+    path(
+        "v1/customers/",
+        customer_views.CustomerListView.as_view(),
+        name="customer_list_api",
+    ),
+    path(
+        "v1/customer/<customer_uuid>/",
+        customer_views.CustomerView.as_view(),
+        name="customer_get_api",
+    ),
+    path(
+        "v1/inboundwebhook/",
+        webhook_views.IncomingWebhookView.as_view(),
+        name="inbound_webhook_api",
     ),
 ]

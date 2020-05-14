@@ -1,135 +1,202 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { FormControl, NgForm, FormGroupDirective, Validators, FormGroup, FormBuilder } from '@angular/forms';
+import {
+  FormControl,
+  NgForm,
+  FormGroupDirective,
+  Validators,
+  FormGroup,
+  FormBuilder
+} from '@angular/forms';
+import { Router, ActivatedRoute, ParamMap } from '@angular/router';
+import { switchMap } from 'rxjs/operators';
 import { MyErrorStateMatcher } from 'src/app/helper/ErrorStateMatcher';
-import { DeceptionCalculatorService } from 'src/app/components/deception-calculator/deception-calculator.service';
+import { DeceptionCalculatorService } from 'src/app/services/deception-calculator.service';
 import { DeceptionCalculation } from 'src/app/models/deception-calculator.model';
+import { Template } from 'src/app/models/template.model'
+import { LayoutMainService } from 'src/app/services/layout-main.service';
+import { Subscription, Observable } from 'rxjs';
+import { temporaryAllocator } from '@angular/compiler/src/render3/view/util';
 
 @Component({
   selector: 'deception-calculator',
   templateUrl: './deception-calculator.component.html',
   styleUrls: ['./deception-calculator.component.scss']
 })
-
 export class DeceptionCalculatorComponent implements OnInit {
-    
-    //models
-    decpeption_calculation: DeceptionCalculation
-    
-    //Forms and presentation elements
-    deceptionFormGroup: FormGroup
-    emailPreivew: string
+  //models
+  decpeption_calculation: DeceptionCalculation;
 
-    constructor(
-        public deceptionService : DeceptionCalculatorService,
-        private fb: FormBuilder,
-    ) { 
-    }
+  //Forms and presentation elements
+  templateId: string;
+  deceptionFormGroup: FormGroup;
+  templateName: string;
+  templateSubject: string
+  templateHTML: string;
 
-    ngOnInit(): void {
-        this.decpeption_calculation = this.deceptionService.getBaseDeceptionCalculation()
-        this.deceptionFormGroup = this.setDeceptionFormFromModel(this.decpeption_calculation);
-        this.emailPreivew = this.deceptionService.getEmailPreview();
-        
-        this.onValueChanges()
+  //Subscriptions
+  subscriptions = Array<Subscription>();
 
-    }
+  constructor(
+    public deceptionService: DeceptionCalculatorService,
+    private layoutSvc: LayoutMainService,
+    private fb: FormBuilder,
+    private route: ActivatedRoute,
+    private router: Router
+  ) {
+    layoutSvc.setTitle('Deception Calculator');
 
-    ngAfterViewInit(){
-        
-    }
+    //Set formGroup to empty model to avoid collision when HTML is rendered
+    this.setDeceptionFormFromModel(new Template)
+  }
 
-    saveDeceptionCalculation(){
-        console.log("Data to Save :")
-        console.log(this.decpeption_calculation)
-        //this.deceptionService.save(this.decpeption_calculation)
-    }
+  ngOnInit(): void {
+    //Get a subscription to the template and build out the formGroup and html preview
+    this.subscriptions.push(
+      this.route.params.subscribe(params => {
+        this.templateId = params['templateId'];
+        if (this.templateId != undefined) {
+          this.subscriptions.push(this.deceptionService.getDeception(this.templateId).subscribe((templateData: Template) => {
+            this.templateId = templateData.template_uuid
+            this.setDeceptionFormFromModel(templateData)
+            this.setTemplatePreview(templateData)
+            this.onValueChanges();
+          }))
+        } else {
+          this.router.navigate(['/templatemanager']);
+        }
+      })
+    );
 
-    onValueChanges(): void {
-        console.log("val change")
-        this.deceptionFormGroup.valueChanges.subscribe( val => {
-            //Convert form to model and save 
-            
-            this.decpeption_calculation = this.getDeceptionModelFromForm(this.deceptionFormGroup)
-            this.deceptionService.updateDeceptionScore(this.decpeption_calculation)
-            
-            //call save method here if saving on change 
-            //this.deceptionService.save(this.decpeption_calculation)
-            
-            //Update deception total score in the form for display
-            this.deceptionFormGroup.patchValue({final_deception_score: this.decpeption_calculation.final_deception_score},{emitEvent: false})
-        })
+    //Get access to the sidenav element, set to closed initially
+    this.subscriptions.push(
+      this.layoutSvc
+        .getSideNavIsSet()
+        .subscribe(sideNavEmit => this.layoutSvc.closeSideNav())
+    );
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.forEach(sub => {
+      sub.unsubscribe();
+    });
+  }
+
+  saveDeceptionCalculation() {
+    if (this.deceptionFormGroup.valid) {
+      let template_to_save = this.getTemplateModelFromForm(this.deceptionFormGroup)
+      this.deceptionService.saveDeception(template_to_save)
+    } else {
+      alert("Errors on deception form" + this.deceptionFormGroup.errors)
     }
-    
-    //Helper method if further csv/string cleaning is needed
-    csvToArray(inputCSV: string){
-        return inputCSV.split(',');
-    }
+  }
+
+  onValueChanges(): void {
+    //Event fires for every modification to the form, used to update deception score
+    this.deceptionFormGroup.valueChanges.subscribe(val => {
+      this.deceptionFormGroup.patchValue(
+        {
+          final_deception_score: this.calcDeceptionScore(val)
+        },
+        { emitEvent: false }
+      );
+    });
+  }
+
+  /**
+   * Calculate the deception score using the provided Template model
+   */
+  calcDeceptionScore(formValues: Template){
+    return formValues.authoritative +
+    formValues.grammar +
+    formValues.internal + 
+    formValues.link_domain +
+    formValues.logo_graphics +
+    formValues.public_news +
+    formValues.organization +
+    formValues.external
+  }
+  
 
   /**
    * Set the angular form data from the provided DeceptionCalculation model
    */
-    setDeceptionFormFromModel(decep_calc_model: DeceptionCalculation){
-        var csv = "";
-        decep_calc_model.additional_word_tags.forEach(item => {
-            csv += (item + ",")
-        })
-        csv = csv.slice(0,-1);
-        return new FormGroup({
-            authoritative: new FormControl(decep_calc_model.authoritative),
-            grammar: new FormControl(decep_calc_model.grammar),
-            internal: new FormControl(decep_calc_model.internal),
-            link_domain: new FormControl(decep_calc_model.link_domain),
-            logo_graphics: new FormControl(decep_calc_model.logo_graphics),
-            sender_external: new FormControl(decep_calc_model.sender_external),
-            relevancy_organization: new FormControl(decep_calc_model.relevancy_organization),
-            public_news: new FormControl(decep_calc_model.public_news),
-            behavior_fear: new FormControl(decep_calc_model.behavior_fear),
-            duty_obligation: new FormControl(decep_calc_model.duty_obligation),
-            curiosity: new FormControl(decep_calc_model.curiosity),
-            greed: new FormControl(decep_calc_model.greed),
-            additional_word_tags: new FormControl(csv, {updateOn: 'blur'}),
-            //final_deception_score: new FormControl({value: decep_calc_model.final_deception_score, disabled:true}),
-            final_deception_score: new FormControl(decep_calc_model.final_deception_score),
-        })
-    }
+  setDeceptionFormFromModel(template: Template) {
 
-    /**
-     * Get the deception calculation model from the suppied form
-     */
-    getDeceptionModelFromForm(decep_form: FormGroup){
-        if(this.deceptionFormGroup.valid){
-            var decep_model : DeceptionCalculation = {
-                grammar:  this.deceptionFormGroup.controls['grammar'].value,
-                internal: this.deceptionFormGroup.controls['internal'].value,
-                authoritative:  this.deceptionFormGroup.controls['authoritative'].value,
-                link_domain: this.deceptionFormGroup.controls['link_domain'].value,
-                logo_graphics: this.deceptionFormGroup.controls['logo_graphics'].value,
-                sender_external: this.deceptionFormGroup.controls['sender_external'].value,
-                relevancy_organization: this.deceptionFormGroup.controls['relevancy_organization'].value,
-                public_news: this.deceptionFormGroup.controls['public_news'].value,
-                behavior_fear: this.deceptionFormGroup.controls['behavior_fear'].value,
-                duty_obligation: this.deceptionFormGroup.controls['duty_obligation'].value,
-                curiosity: this.deceptionFormGroup.controls['curiosity'].value,
-                greed: this.deceptionFormGroup.controls['greed'].value,
-                additional_word_tags: this.csvToArray(this.deceptionFormGroup.controls['additional_word_tags'].value),
-                final_deception_score: this.deceptionFormGroup.controls['final_deception_score'].value
-            };
-            return decep_model
-        } else {
-            console.log(this.deceptionFormGroup.errors)
-            return
-        }
-    }
-
-    /**
-     * Called to save and redirect to proper page
-     */
-    saveAndReturn(){
-        console.log("Save and Return Called")
-        this.saveDeceptionCalculation()
-        //redirect("template-page")
-    }
+    if(!template.appearance){template.appearance = <any>{}}
+    if(!template.sender){template.sender = <any>{}}
+    if(!template.relevancy){template.relevancy = <any>{}}
+    if(!template.behavior){template.behavior = <any>{}}
 
     
+    this.deceptionFormGroup = new FormGroup({
+      authoritative: new FormControl(template.sender?.authoritative ?? 0),
+      external: new FormControl(template.sender?.external ?? 0),
+      internal: new FormControl(template.sender?.internal ?? 0),      
+      grammar: new FormControl(template.appearance?.grammar ?? 0),
+      link_domain: new FormControl(template.appearance?.link_domain ?? 0),
+      logo_graphics: new FormControl(template.appearance?.logo_graphics ?? 0),
+      organization: new FormControl(template.relevancy.organization ?? 0),
+      public_news: new FormControl(template.relevancy.public_news ?? 0),
+      fear: new FormControl(template.behavior?.fear ?? false),
+      duty_obligation: new FormControl(template.behavior?.duty_obligation ?? false),
+      curiosity: new FormControl(template.behavior?.curiosity ?? false),
+      greed: new FormControl(template.behavior?.greed ?? false),
+      descriptive_words: new FormControl(template.descriptive_words ?? " ", { updateOn: 'blur' }),
+      final_deception_score: new FormControl({
+        value: this.calcDeceptionScore(template), disabled:true}
+      )
+    });
 
+  }
+  /**
+   * Sets the template preview for display
+   * @param template 
+   */
+  setTemplatePreview(template: Template){
+    this.templateName = template.name ? template.name : "Template name not found" 
+    this.templateSubject = template.subject ? template.subject : "Template subject not found"
+    this.templateHTML = template.html ? template.html : "<h1>Preivew not Found</h1>"
+  }
+
+  /**
+   * Returns a Template model initialized from a provided formgroup
+   * @param decep_form 
+   */
+  getTemplateModelFromForm(decep_form: FormGroup) { 
+      //Multiple templates used to easily strip the data from the form, and transfer to a template format the API expects
+      let formTemplate = new Template(decep_form.value)
+      let saveTemplate = new Template()
+      saveTemplate.appearance = { 
+        'grammar': formTemplate.grammar,
+        'link_domain': formTemplate.link_domain,
+        'logo_graphics': formTemplate.logo_graphics
+      }
+      saveTemplate.sender = {
+        'authoritative': formTemplate.authoritative,
+        'external': formTemplate.external,
+        'internal': formTemplate.internal
+      }
+      saveTemplate.relevancy = {
+        'organization': formTemplate.organization,
+        'public_news': formTemplate.public_news
+      }
+      saveTemplate.behavior = {
+        'curiosity': formTemplate.curiosity,
+        'duty_obligation': formTemplate.duty_obligation,
+        'fear': formTemplate.fear,
+        'greed': formTemplate.greed
+      }
+      saveTemplate.descriptive_words = formTemplate.descriptive_words
+      saveTemplate.template_uuid = this.templateId
+      saveTemplate.deception_score = this.calcDeceptionScore(formTemplate)
+      return saveTemplate
+  }
+
+  /**
+   * Called to save and redirect to template manager page, and select the current template
+   */
+  saveAndReturn() {
+    this.saveDeceptionCalculation();
+    this.router.navigate(['/templatemanager', this.templateId]);
+  }
 }
