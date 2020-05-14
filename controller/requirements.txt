@@ -38,6 +38,7 @@ jedi==0.17.0
 Jinja2==2.11.2
 joblib==0.14.1
 kombu==4.6.8
+git+git://github.com/cisagov/lcgit.git@7360374e78661d8dfa5ec550337a4e398c3bb4e8#egg=lcgit
 lxml==4.5.0
 MarkupSafe==1.1.1
 motor==2.0.0
@@ -55,6 +56,7 @@ ptyprocess==0.6.0
 pycparser==2.20
 Pygments==2.6.1
 pymongo==3.10.1
+pytest==5.4.1
 pyparsing==2.1.10
 Pyphen==0.9.5
 python-dateutil==2.8.1

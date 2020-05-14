@@ -17,11 +17,10 @@ import { LayoutBlankComponent } from './components/layout/layout-blank/layout-bl
 import { LayoutMainComponent } from './components/layout/layout-main/layout-main.component';
 import { SubscriptionsService } from './components/subscriptions/subscriptions.service';
 import { SearchPanelComponent } from './components/search-panel/search-panel.component';
-import { ServiceSubscriptionComponent } from './components/service-subscription/service-subscription.component';
-import { CreateSubscriptionComponent } from './components/subscriptions/create-subscription/create-subscription.component';
+import { ManageSubscriptionComponent } from './components/subscriptions/manage-subscription/manage-subscription.component';
 import { DeceptionCalculatorComponent } from './components/deception-calculator/deception-calculator.component';
 import { DeceptionCalculatorService } from './services/deception-calculator.service';
-import { TempalteManagerComponent } from './components/template-manager/template-manager.component';
+import { TemplateManagerComponent } from './components/template-manager/template-manager.component';
 import { TemplateManagerService } from './services/template-manager.service';
 import { ListFilterPipe } from './pipes/list-filter.pipe';
 import { AutosizeModule } from 'node_modules/ngx-autosize';
@@ -30,10 +29,15 @@ import { SubscriptionService } from './services/subscription.service';
 import { ThemeService } from './services/theme.service';
 import { LayoutMainService } from './services/layout-main.service';
 
-import { ContactsComponent, ViewContactDialog, AddContactDialog } from './components/contacts/contacts.component';
+import { ContactsComponent } from './components/contacts/contacts.component';
 import { DomainsComponent } from './components/domains/domains.component';
 import { TemplatesPageComponent } from './components/templates-page/templates-page.component';
 import { UserAdminComponent } from './components/user-admin/user-admin.component';
+import { CustomerService } from './services/customer.service';
+import { CustomersComponent } from './components/customers/customers.component';
+import { AddCustomerDialogComponent } from './components/customers/add-customer-dialog/add-customer-dialog.component';
+import { AddContactDialogComponent } from './components/contacts/add-contact-dialog/add-contact-dialog.component';
+import { ViewContactDialogComponent } from './components/contacts/view-contact-dialog/view-contact-dialog.component';
 
 
 
@@ -45,19 +49,20 @@ import { UserAdminComponent } from './components/user-admin/user-admin.component
     LayoutBlankComponent,
     LayoutMainComponent,
     SearchPanelComponent,
-    ServiceSubscriptionComponent,
     AddCustomerComponent,
-    CreateSubscriptionComponent,
+    ManageSubscriptionComponent,
     DeceptionCalculatorComponent,
 
-    TempalteManagerComponent,
+    TemplateManagerComponent,
     ListFilterPipe,
     ContactsComponent,
-    ViewContactDialog,
-    AddContactDialog,
     DomainsComponent,
     TemplatesPageComponent,
     UserAdminComponent,
+    CustomersComponent,
+    AddCustomerDialogComponent,
+    AddContactDialogComponent,
+    ViewContactDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -75,6 +80,7 @@ import { UserAdminComponent } from './components/user-admin/user-admin.component
   providers: [
     SubscriptionsService,
     DeceptionCalculatorService,
+    CustomerService,
     TemplateManagerService,
     ThemeService,
     LayoutMainService,

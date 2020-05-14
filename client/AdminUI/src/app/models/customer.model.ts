@@ -1,30 +1,43 @@
-
-/**
- * The subscribing organization/stakeholder.
- */
 export class Customer {
-    id: number;
-    orgName: string;
-    orgAbbrev: string;
-    orgAddress1: string;
-    orgAddress2: string;
-    orgCity: string;
-    orgState: string;
-    orgZip: string;
-    orgType: string;
-
-    contacts: Contact[];
+    customer_uuid: string;
+    name: string;
+    identifier: string;
+    address_1: string;
+    address_2: string;
+    city: string;
+    state: string;
+    zip_code: string;
+    contact_list: Contact[]
 }
 
-/**
- * A point of contact within an Organization
- */
+export class NewCustomer {
+    name: string;
+    identifier: string;
+    address_1: string;
+    address_2: string;
+    city: string;
+    state: string;
+    zip_code: string;
+    contact_list: Contact[]
+}
+  
 export class Contact {
-    id: string;
-    firstName: string;
-    lastName: string;
+    first_name: string;
+    last_name: string;
     title: string;
     phone: string;
     email: string;
-    contactNotes: string;
+    notes: string;
 }
+
+export interface ICustomerContact {
+    customer_uuid: string;
+    customer_name: string;
+    first_name: string;
+    last_name: string;
+    title: string;
+    phone: string;
+    email: string;
+    notes: string;
+  }
+

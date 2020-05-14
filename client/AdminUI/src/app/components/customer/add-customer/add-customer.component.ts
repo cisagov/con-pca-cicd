@@ -64,16 +64,15 @@ export class AddCustomerComponent implements OnInit {
     if(this.customerFormGroup.valid && this.contacts.length > 0)
     {
       var customer: Customer = {
-        id: this.customerFormGroup.controls["customerId"].value,
-        orgName: this.customerFormGroup.controls["customerName"].value,
-        orgAbbrev: this.customerFormGroup.controls["customerIdentifier"].value,
-        orgAddress1: this.customerFormGroup.controls["address1"].value,
-        orgAddress2: this.customerFormGroup.controls["address2"].value,
-        orgCity: this.customerFormGroup.controls["city"].value,
-        orgState: this.customerFormGroup.controls["state"].value,
-        orgZip: this.customerFormGroup.controls["zip"].value,
-        orgType: "",
-        contacts: this.contacts
+        customer_uuid: this.customerFormGroup.controls["customerId"].value,
+        name: this.customerFormGroup.controls["customerName"].value,
+        identifier: this.customerFormGroup.controls["customerIdentifier"].value,
+        address_1: this.customerFormGroup.controls["address1"].value,
+        address_2: this.customerFormGroup.controls["address2"].value,
+        city: this.customerFormGroup.controls["city"].value,
+        state: this.customerFormGroup.controls["state"].value,
+        zip_code: this.customerFormGroup.controls["zip"].value,
+        contact_list: this.contacts
       }
 
       this.subscriptionSvc.postCustomer(customer).subscribe((o:Customer) => {
@@ -91,13 +90,12 @@ export class AddCustomerComponent implements OnInit {
     if(this.contactFormGroup.valid)
     {
       var contact: Contact = {
-        id: Guid.create().toString(),
         phone: this.contactFormGroup.controls['phone'].value,
         email: this.contactFormGroup.controls['email'].value,
-        firstName: this.contactFormGroup.controls['firstName'].value,
-        lastName: this.contactFormGroup.controls['lastName'].value,
+        first_name: this.contactFormGroup.controls['firstName'].value,
+        last_name: this.contactFormGroup.controls['lastName'].value,
         title: this.contactFormGroup.controls['title'].value,
-        contactNotes: this.contactFormGroup.controls['contactNotes'].value,
+        notes: this.contactFormGroup.controls['contactNotes'].value,
       };
       
       this.contacts.push(contact);

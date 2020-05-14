@@ -23,7 +23,7 @@ import 'src/app/helper/csvToArray';
   styleUrls: ['./template-manager.component.scss'],
   templateUrl: './template-manager.component.html'
 })
-export class TempalteManagerComponent implements OnInit {
+export class TemplateManagerComponent implements OnInit {
   //Full template list variables
   search_input: string;
 
@@ -125,7 +125,7 @@ export class TempalteManagerComponent implements OnInit {
 
   //Select a template based on template_uuid, returns the full template
   selectTemplate(template_uuid: string) {
-    //Get template and call setTemplateForm to initialize a form group using the selected tempalate
+    //Get template and call setTemplateForm to initialize a form group using the selected template
     this.templateManagerSvc
       .getTemplate(template_uuid).then(
         (success) => {

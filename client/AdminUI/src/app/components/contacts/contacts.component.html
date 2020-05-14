@@ -1,9 +1,4 @@
-  <div class="container-fluid" [style.height.px]="body_content_height">
-
-    <div class="d-flex flex-row flex-grow-1 w-100 text-right">
-      
-    </div>
-
+  <div class="container-fluid">
     <!-- Search Bar -->
     <div class="d-flex flex-row flex-grow-1">
       <div class="d-flex flex-column w-100">
@@ -14,16 +9,16 @@
         </mat-form-field>
       </div>
       <div class="d-inline-flex flex-column ml-2">
-        <button mat-raised-button color="success" class="search-button" (click)="openAddDialog()">Add Contact</button>
+        <button mat-raised-button color="primary" class="search-button" (click)="openAddDialog()">Add Contact</button>
       </div>
     </div>   
 
     <!-- Contacts Table -->
     <mat-table [dataSource]="dataSource">
       <!-- Company Name Column -->
-      <ng-container matColumnDef="customer">
+      <ng-container matColumnDef="customer_name">
         <mat-header-cell *matHeaderCellDef>Customer Name</mat-header-cell>
-        <mat-cell *matCellDef="let row"> {{row.customer}} </mat-cell>
+        <mat-cell *matCellDef="let row"> {{row.customer_name}} </mat-cell>
       </ng-container>
 
       <!-- First Name Column -->

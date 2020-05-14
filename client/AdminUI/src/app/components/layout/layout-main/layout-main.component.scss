@@ -6,7 +6,7 @@
 }
 
 .docs-sidenav {
-  width: 300px;
+  width: 250px;
   display: flex;
 }
 .sidenav-container {
@@ -62,3 +62,14 @@
 .mat-card {
   margin: 10px;
 }
+.header-logo {
+  margin-right: 10px;
+  width: 250px;
+  text-align: center;
+  min-height:100%;
+  align-items:center;
+}
+.mat-toolbar {
+  padding-left:0 !important;
+}
+
