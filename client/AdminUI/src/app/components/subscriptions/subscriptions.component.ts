@@ -26,7 +26,8 @@ export class SubscriptionsComponent implements OnInit {
     "customer",
     "start_date",
     "last_updated",
-    "active"
+    "active",
+    "select"
   ];
 
 
@@ -47,7 +48,6 @@ export class SubscriptionsComponent implements OnInit {
 
   private refresh() {
     this.subscription_service.requestGetSubscriptions().subscribe((data: any[]) => {
-      console.log(data)
       let subscriptions = this.subscription_service.getSubscriptions(data)
       this.customer_service.requestGetCustomers().subscribe((data: any[]) => {
         let customers = this.customer_service.getCustomers(data)
