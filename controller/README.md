@@ -66,6 +66,9 @@ Run Django logs in the terminal
 
 - `make logs`
 
+Initialize GoPhish & generate random data into mongo
+- `make init`
+
 Stop containers
 
 - `make stop`
@@ -77,13 +80,6 @@ Remove containers
 Access Django shell
 
 - `make shell`
-
-Initialize GoPhish data
-- `make init_gophish`
-
-Generate and load Random Data into DB
-
-- `make db_load_dummy`
 
 Drop DB of all data
 
