@@ -23,7 +23,7 @@ from api.serializers.subscriptions_serializers import (
     SubscriptionPostResponseSerializer,
     SubscriptionPostSerializer,
 )
-from api.utils import db_service, personalize_template
+from api.utils import db_service, format_ztime, personalize_template
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status
 from rest_framework.response import Response
@@ -140,11 +140,25 @@ class SubscriptionsListView(APIView):
                     email_template=created_template,
                 )
                 logger.info("campaign created: {}".format(campaign))
+
                 created_campaign = {
                     "campaign_id": campaign.id,
                     "name": campaign_name,
+                    "created_date": format_ztime(campaign.created_date),
+                    "launch_date": format_ztime(campaign.launch_date),
                     "email_template": created_template.name,
-                    "landing_page_template": "",
+                    "landing_page_template": campaign.page.name,
+                    "status": campaign.status,
+                    "results": [],
+                    "groups": [],
+                    "timeline": [
+                        {
+                            "email": None,
+                            "time": format_ztime(campaign.created_date),
+                            "message": "Campaign Created",
+                            "details": "",
+                        }
+                    ],
                     "target_email_list": target_list,
                 }
                 gophish_campaign_list.append(created_campaign)
