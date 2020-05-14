@@ -22,22 +22,6 @@
   "subscription_data": [
     {
       "active": true,
-      "additional_contact_list": [
-        {
-          "email": "foo.bar@example.com",
-          "first_name": "foo",
-          "last_name": "bar",
-          "mobile_phone": "555-555-5555",
-          "office_phone": "555-555-5555"
-        },
-        {
-          "email": "biz.baz@example.com",
-          "first_name": "biz",
-          "last_name": "baz",
-          "mobile_phone": "555-555-5555",
-          "office_phone": "555-555-5555"
-        }
-      ],
       "customer_uuid": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
       "gophish_campaign_list": [],
       "keywords": "research development government work job",
@@ -100,22 +84,6 @@
     },
     {
       "active": true,
-      "additional_contact_list": [
-        {
-          "email": "foo.bar@example.com",
-          "first_name": "foo",
-          "last_name": "bar",
-          "mobile_phone": "555-555-5555",
-          "office_phone": "555-555-5555"
-        },
-        {
-          "email": "biz.baz@example.com",
-          "first_name": "biz",
-          "last_name": "baz",
-          "mobile_phone": "555-555-5555",
-          "office_phone": "555-555-5555"
-        }
-      ],
       "customer_uuid": "6068d85a-4f83-4b5a-958e-a179e5b4c205",
       "gophish_campaign_list": [],
       "keywords": "search query google",
