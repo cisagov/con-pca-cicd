@@ -1,4 +1,4 @@
-import { Customer, Contact } from './customer.model';
+import { Contact } from './customer.model';
 
 
 export class GoPhishCampaignsModel{
@@ -20,12 +20,12 @@ export class Subscription {
     active: boolean;
     customer_uuid: string;
     keywords: string;
+    lub_timestamp: Date;
     name: string;
     primary_contact: Contact;
     start_date: Date;
     status: string;
     subscription_uuid: string;
-    
     url: string;
 }
 

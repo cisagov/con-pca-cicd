@@ -40,6 +40,7 @@ export class SubscriptionService {
       active: requestData.active,
       customer_uuid: requestData.customer_uuid,
       keywords: requestData.keywords,
+      lub_timestamp: requestData.lub_timestamp,
       name: requestData.name,
       primary_contact: this.customer_service.getContact(requestData.primary_contact),
       start_date: requestData.start_date,

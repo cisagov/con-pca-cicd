@@ -36,6 +36,7 @@ export class SubscriptionsComponent implements OnInit {
     "primary_contact",
     "customer",
     "start_date",
+    "last_updated",
     "active"
   ];
 

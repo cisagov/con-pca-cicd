@@ -78,10 +78,16 @@
                     <mat-cell *matCellDef="let row">{{row.customer.name}}</mat-cell>
                 </ng-container>
 
-                <!-- LAST ACTION DATE -->
+                <!-- START DATE -->
                 <ng-container matColumnDef="start_date">
                     <mat-header-cell *matHeaderCellDef>Start Date</mat-header-cell>
                     <mat-cell *matCellDef="let row"> {{row.subscription.start_date}}</mat-cell>
+                </ng-container>
+
+                <!-- LAST UDPATED DATE -->
+                <ng-container matColumnDef="last_updated">
+                    <mat-header-cell *matHeaderCellDef>Last Updated</mat-header-cell>
+                    <mat-cell *matCellDef="let row"> {{row.subscription.lub_timestamp}}</mat-cell>
                 </ng-container>
 
                 <!-- ACTIVE -->
