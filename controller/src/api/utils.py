@@ -79,7 +79,8 @@ def personalize_template(customer_info, template_data, sub_data):
     for template in template_data:
         cleantext = template["html"]
         for key, value in check_replace.items():
-            cleantext = cleantext.replace(key, value)
+            if value != None:
+                cleantext = cleantext.replace(key, value)
 
         template_unique_name = "{}_{}_{}".format(
             "".join(template["name"].split(" ")),

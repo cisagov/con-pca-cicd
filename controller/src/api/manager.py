@@ -36,10 +36,16 @@ class TemplateManager:
         clean text by converting words to lower case,
         removing punctuation and numbers
         """
-        headers = {"Content-Type": "text/html"}
-        resp = requests.get(url, headers=headers)
-        soup = BeautifulSoup(resp.text, "lxml")
-        text = re.sub(r"[^A-Za-z]+", " ", soup.get_text().lower())
+        text = ""
+        if url != None:
+            headers = {"Content-Type": "text/html"}
+            resp = requests.get(url, headers=headers)
+            soup = BeautifulSoup(resp.text, "lxml")
+            text = re.sub(r"[^A-Za-z]+", " ", soup.get_text().lower())
+
+        if keywords == None:
+            keywords = ""
+            
         return text + keywords
 
     def get_templates(self, url: str, keywords: str, template_data):

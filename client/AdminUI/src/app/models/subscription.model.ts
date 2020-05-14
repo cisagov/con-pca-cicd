@@ -31,8 +31,11 @@ export class Subscription {
     name: string;
     //organization: string;
     start_date: Date;
-    //end_date: Date;
-    //report_count: number;
+    
+    url: string;
+
+    keywords: string;
+
     gophish_campaign_list: GoPhishCampaignsModel[];
     //first_report_timestamp: Date;
     primary_contact: Contact;
@@ -53,26 +56,26 @@ export class Subscription {
      * 
      * @param csv 
      */
-    setKeywordsFromCSV(csv: string) {
-        //TODO: fix the api call to allow for these 
-        //things
-        // this.orgKeywords = [];
+    // setKeywordsFromCSV(csv: string) {
+    //     let kw = [];
 
-        // if (!csv) {
-        //     return;
-        // }
+    //     if (!csv) {
+    //         return;
+    //     }
 
-        // let lines = csv.split('\n');
-        // lines.forEach((line: string) => {
-        //     let words = line.split(',');
-        //     words.forEach(w => {
-        //         w = w.trim();
-        //         if (w != '') {
-        //             this.orgKeywords.push(w);
-        //         }
-        //     });
-        // });
-    }
+    //     let lines = csv.split('\n');
+    //     lines.forEach((line: string) => {
+    //         let words = line.split(',');
+    //         words.forEach(w => {
+    //             w = w.trim();
+    //             if (w != '') {
+    //                 kw.push(w);
+    //             }
+    //         });
+    //     });
+
+    //     this.keywords = kw.slice();
+    // }
 
     /**
      * Converts a string with CSV lines into Targets.
