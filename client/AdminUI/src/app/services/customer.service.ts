@@ -40,7 +40,8 @@ export class CustomerService {
           first_name: contact.first_name,
           last_name: contact.last_name,
           title: contact.title,
-          phone: contact.phone,
+          office_phone: contact.office_phone,
+          mobile_phone: contact.mobile_phone,
           email: contact.email,
           notes: contact.notes
         }
@@ -79,7 +80,8 @@ export class CustomerService {
       first_name: requestData.first_name,
       last_name: requestData.last_name,
       title: requestData.title,
-      phone: requestData.phone,
+      office_phone: requestData.office_phone,
+      mobile_phone: requestData.mobile_phone,
       email: requestData.email,
       notes: requestData.notes
     }

@@ -20,10 +20,15 @@
         <mat-label>Title</mat-label>
         <input matInput type="text" [(ngModel)]="data.title" formControlName="title">
     </mat-form-field>
-    <!-- PHONE -->
+    <!-- OFFICE PHONE -->
     <mat-form-field appearance="outline">
-        <mat-label>Phone Number</mat-label>
-        <input matInput type="text" [(ngModel)]="data.phone" formControlName="phone">
+        <mat-label>Office Phone Number</mat-label>
+        <input matInput type="text" [(ngModel)]="data.office_phone" formControlName="office_phone">
+    </mat-form-field>
+    <!-- MOBILE PHONE -->
+    <mat-form-field appearance="outline">
+        <mat-label>Mobile Phone Number</mat-label>
+        <input matInput type="text" [(ngModel)]="data.mobile_phone" formControlName="mobile_phone">
     </mat-form-field>
     <!-- EMAIL -->
     <mat-form-field appearance="outline">

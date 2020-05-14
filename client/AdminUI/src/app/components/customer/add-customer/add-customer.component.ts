@@ -4,6 +4,7 @@ import { MyErrorStateMatcher } from '../../../helper/ErrorStateMatcher';
 import { SubscriptionService } from 'src/app/services/subscription.service';
 import { Contact, Customer } from 'src/app/models/customer.model';
 import { Guid } from 'guid-typescript';
+import { CustomerService } from 'src/app/services/customer.service';
 
 @Component({
   selector: 'app-add-customer',
@@ -15,7 +16,7 @@ export class AddCustomerComponent implements OnInit {
    model:any;
    addContact:boolean = false;
    contactDataSource: any = [];
-   displayedColumns: string[] = ['name', 'title', 'email', 'phone'];
+   displayedColumns: string[] = ['name', 'title', 'email', 'office_phone', 'mobile_phone'];
    contactError='';
    orgError='';
    contacts:Array<Contact> = [];
@@ -47,12 +48,13 @@ export class AddCustomerComponent implements OnInit {
     lastName: new FormControl('', [Validators.required]),
     title: new FormControl(''),
     email: new FormControl('', [Validators.required, Validators.email]),
-    phone: new FormControl(''),
+    office_phone: new FormControl(''),
+    mobile_phone: new FormControl(''),
     contactNotes: new FormControl(''),
    });
 
 
-  constructor( public subscriptionSvc: SubscriptionService) { 
+  constructor( public subscriptionSvc: SubscriptionService, public customer_service: CustomerService) { 
     this.customerFormGroup.controls["customerId"].setValue(Guid.create());
   }
 
@@ -75,9 +77,9 @@ export class AddCustomerComponent implements OnInit {
         contact_list: this.contacts
       }
 
-      this.subscriptionSvc.postCustomer(customer).subscribe((o:Customer) => {
-        this.clearCustomer();
-      });
+      this.customer_service.addCustomer(customer).subscribe((data: any) => {
+        this.clearCustomer()
+      })
     } else if( !this.customerFormGroup.valid )
     {
       this.orgError = "Fix required fields";
@@ -90,7 +92,8 @@ export class AddCustomerComponent implements OnInit {
     if(this.contactFormGroup.valid)
     {
       var contact: Contact = {
-        phone: this.contactFormGroup.controls['phone'].value,
+        office_phone: this.contactFormGroup.controls['office_phone'].value,
+        mobile_phone: this.contactFormGroup.controls['mobile_phone'].value,
         email: this.contactFormGroup.controls['email'].value,
         first_name: this.contactFormGroup.controls['firstName'].value,
         last_name: this.contactFormGroup.controls['lastName'].value,
