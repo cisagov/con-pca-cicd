@@ -1,11 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { SubscriptionService } from 'src/app/services/subscription.service';
 import { LayoutMainService } from 'src/app/services/layout-main.service';
-import { FormControl } from '@angular/forms';
-import { StatusList } from 'src/app/models/status.model';
 import { Subscription } from 'src/app/models/subscription.model';
 import { MatTableDataSource } from '@angular/material/table';
-import { Contact, Customer } from 'src/app/models/customer.model';
+import { Customer } from 'src/app/models/customer.model';
 import { CustomerService } from 'src/app/services/customer.service';
 
 interface ICustomerSubscription {
@@ -20,15 +18,6 @@ interface ICustomerSubscription {
 })
 export class SubscriptionsComponent implements OnInit {
   public data_source: MatTableDataSource<ICustomerSubscription>;
-
-  status = new FormControl();
-  searchAll: string;
-  searchOrganization: string;
-  searchSubscriptionName: string;
-  searchPrimaryContact: string;
-  searchStatus: string[];
-
-  statusList = new StatusList().staticStatusList;
 
   displayed_columns = [
     "name",
@@ -52,11 +41,11 @@ export class SubscriptionsComponent implements OnInit {
   ngOnInit(): void {    
     this.layoutSvc.setTitle("Subscriptions");
     this.data_source = new MatTableDataSource();
-
     this.refresh();
+    this.setFilterPredicate();
   }
 
-  refresh() {
+  private refresh() {
     this.subscription_service.requestGetSubscriptions().subscribe((data: any[]) => {
       console.log(data)
       let subscriptions = this.subscription_service.getSubscriptions(data)
@@ -73,10 +62,28 @@ export class SubscriptionsComponent implements OnInit {
         this.data_source.data = customerSubscriptions
       })
     })
-  } 
+  }
 
-  runSearch(){
-    console.log("Search is running");
-    //make a call to the api to retreive the list of subscriptions 
+  private setFilterPredicate() {
+    this.data_source.filterPredicate = (data: ICustomerSubscription, filter: string) => {
+      var words = filter.split(' ');
+      let searchData = `${data.subscription.name.toLowerCase()} ${data.subscription.status.toLowerCase()} ${data.customer.name.toLowerCase()} ${data.subscription.primary_contact.first_name.toLowerCase()} ${data.subscription.primary_contact.last_name.toLowerCase()}`
+      for (var i = 0; i < words.length; i++) {
+        if (words[i] == null || words[i] == '' || words[i] == ' ') {
+          continue;
+        }
+        var isMatch = searchData.indexOf(words[i].trim().toLowerCase()) > -1;
+        
+        if (!isMatch) {
+          return false;
+        }
+      }
+      return true;
+    };
+  }
+
+  public searchFilter(searchValue: string): void {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.data_source.filter = filterValue.trim().toLowerCase();
   }
 }
