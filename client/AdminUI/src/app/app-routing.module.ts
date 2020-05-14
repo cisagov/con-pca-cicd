@@ -11,6 +11,7 @@ import { DomainsComponent } from './components/domains/domains.component';
 import { TemplatesPageComponent } from './components/templates-page/templates-page.component';
 import { UserAdminComponent } from './components/user-admin/user-admin.component';
 import { CustomersComponent } from './components/customers/customers.component';
+import { ViewSubscriptionComponent } from './components/subscriptions/view-subscription/view-subscription.component';
 
 
 const routes: Routes = [
@@ -28,9 +29,9 @@ const routes: Routes = [
     children: [{ path: '', component: ManageSubscriptionComponent }]
   },
   {
-    path: 'managesubscription',
+    path: 'view-subscription',
     component: LayoutMainComponent,
-    children: [{ path: ':id', component: ManageSubscriptionComponent }]
+    children: [{ path: ':id', component: ViewSubscriptionComponent }]
   },
   {
     path: 'deceptioncalculator',

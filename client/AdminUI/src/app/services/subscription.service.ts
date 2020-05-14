@@ -35,6 +35,11 @@ export class SubscriptionService {
     return subscriptions
   }
 
+  public requestGetSubscription(subscription_uuid: string) {
+    let url = `${environment.apiEndpoint}/api/v1/subscription/${subscription_uuid}/`
+    return this.http.get(url)
+  }
+
   public getSubscription(requestData: any): Subscription {
     let subscription: Subscription = {
       active: requestData.active,
