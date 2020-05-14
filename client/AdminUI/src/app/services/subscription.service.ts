@@ -17,6 +17,8 @@ const headers = {
 })
 export class SubscriptionService {
 
+  subscription: Subscription;
+
   /**
    * The service keeps a copy of the Customer
    */
@@ -28,8 +30,7 @@ export class SubscriptionService {
   constructor(
     private http: HttpClient
   ) { 
-    //temp initialize customer with mock data
-    this.customers.push(this.TEMPGETORG());
+
   }
 
   getSubscriptionsData(){
@@ -41,19 +42,13 @@ export class SubscriptionService {
    * is returned.
    * For now, a hard-coded model is returned.
    */
-  getCustomer(orgId: number) {
-    // TEMP
-    this.customer = this.TEMPGETORG();
-    return new Observable<Customer>();
-
-
-    return this.http.get('http://bogus.org/subscription/getorg?id=' + orgId);
+  getCustomer(customerId: string) {
+    return this.http.get('http://localhost:8000/api/v1/customer/' + customerId);
   }
 
   /**
-   * In real life, API call happens here and the new
-   * customer is created.
-   * For now, a hard-coded model is returned.
+   * In real life, the customer is posted from the customer component,
+   * not the subscription component.
    */
   postCustomer(org: Customer){
     this.customers.push(org);
@@ -66,10 +61,12 @@ export class SubscriptionService {
    * Returns an array of simple contact
    * names and IDs for the customer.
    */
-  getContactsForCustomer() {
-    let o = this.customer;
+  getContactsForCustomer(c: Customer) {
+    console.log('getContactsForCustomer:');
+    console.log(c);
+
     let a = [];
-    o.contact_list.forEach(x => {
+    c.contact_list.forEach(x => {
       a.push({
         name: x.first_name + ' ' + x.last_name
       });
@@ -77,55 +74,6 @@ export class SubscriptionService {
     return a;
   }
 
-  /**
-   * TEMP TEMP
-   * This mocks up an Organization that would be returned from an API call
-   */
-  TEMPGETORG(): Customer {
-    let o = new Customer();
-    o.customer_uuid = '123';
-    o.name = "Delta Airlines";
-    o.identifier = "DAL";
-    o.address_1 = "1030 Delta Blvd";
-    o.city = "Atlanta";
-    o.state = "GA";
-    o.zip_code = "30354";
-
-    o.contact_list = [];
-    o.contact_list.push(
-      {
-        first_name: 'Mary',
-        last_name: 'Stephens',
-        title: 'CISO',
-        phone: '208-716-2687',
-        email: 'Mary.Stephens@delta.com',
-        notes: ''
-      }
-    );
-
-    o.contact_list.push(
-      {
-        first_name: 'John',
-        last_name: 'Shirlaw',
-        title: 'VP R&D',
-        phone: '208-921-1010',
-        email: 'John.Shirlaw@delta.com',
-        notes:''
-      });
-
-    o.contact_list.push(
-      {
-        first_name: 'Yanik',
-        last_name: 'Zarabraya',
-        title: 'VP HR',
-        phone: '208-377-9339',
-        email: 'Yanik.Zarabraya@delta.com',
-        notes: ''
-      });
-
-    console.log(o);
-    return o;
-  }
 
   /**
    * Sends all information to the API to start a new subscription.

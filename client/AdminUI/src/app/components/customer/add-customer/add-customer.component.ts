@@ -64,7 +64,7 @@ export class AddCustomerComponent implements OnInit {
     if(this.customerFormGroup.valid && this.contacts.length > 0)
     {
       var customer: Customer = {
-        customer_uuid: '',
+        customer_uuid: this.customerFormGroup.controls["customerId"].value,
         name: this.customerFormGroup.controls["customerName"].value,
         identifier: this.customerFormGroup.controls["customerIdentifier"].value,
         address_1: this.customerFormGroup.controls["address1"].value,
