@@ -55,7 +55,7 @@ export class ContactsComponent implements OnInit {
 
   constructor(
     private layoutSvc: LayoutMainService, public dialog: MatDialog) {
-    layoutSvc.setTitle('Con-PCA Contacts Page');
+    layoutSvc.setTitle('Contacts');
   }
 
 
