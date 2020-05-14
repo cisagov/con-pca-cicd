@@ -91,9 +91,9 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
   /**
    * 
    */
-  changePrimary(e: any) {
-    this.primaryContact = this.customer.contact_list.find(x => x.id == e.value);
-  }
+  // changePrimary(e: any) {
+  //   this.primaryContact = this.customer.contact_list.find(x => x.id == e.value);
+  // }
 
   /**
    * 
@@ -122,7 +122,7 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
     sub.primary_contact = new Contact();
     sub.primary_contact.first_name = "Barry";
     sub.primary_contact.last_name = "Hansen";
-    sub.primary_contact.office_phone = "208-716-2687";
+    sub.primary_contact.phone = "208-716-2687";
 
     sub.start_date = this.startDate;
     sub.status = "New Not Started";

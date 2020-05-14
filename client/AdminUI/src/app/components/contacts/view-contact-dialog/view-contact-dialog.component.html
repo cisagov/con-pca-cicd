@@ -1,0 +1,53 @@
+<div class="d-flex flex-column" [formGroup]="form_group">
+    <div class="d-flex flex-row">
+        <!-- FIRST NAME -->
+        <div class="d-flex flex-column">
+            <mat-form-field appearance="outline">
+                <mat-label>First Name</mat-label>
+                <input matInput type="text" [(ngModel)]="data.first_name" formControlName="first_name">
+            </mat-form-field>
+        </div>
+        <!-- LAST NAME -->
+        <div class="d-flex flex-column">
+            <mat-form-field appearance="outline">
+                <mat-label>Last Name</mat-label>
+                <input matInput type="text" [(ngModel)]="data.last_name" formControlName="last_name">
+            </mat-form-field>
+        </div>
+    </div>
+    <!-- TITLE -->
+    <mat-form-field appearance="outline">
+        <mat-label>Title</mat-label>
+        <input matInput type="text" [(ngModel)]="data.title" formControlName="title">
+    </mat-form-field>
+    <!-- PHONE -->
+    <mat-form-field appearance="outline">
+        <mat-label>Phone Number</mat-label>
+        <input matInput type="text" [(ngModel)]="data.phone" formControlName="phone">
+    </mat-form-field>
+    <!-- EMAIL -->
+    <mat-form-field appearance="outline">
+        <mat-label>Email</mat-label>
+        <input matInput type="email" [(ngModel)]="data.email" formControlName="email">
+    </mat-form-field>
+    <!-- NOTES -->
+    <mat-form-field appearance="outline">
+        <mat-label>Notes</mat-label>
+        <input matInput type="text" [(ngModel)]="data.notes" formControlName="notes">
+    </mat-form-field>
+</div>
+
+<!-- INITIAL BUTTONS AT END -->
+<div class="d-flex flex-column">
+    <div class="d-flex flex-row justify-content-end">
+        <div class="d-flex flex-column">
+            <button mat-raised-button color="warn" (click)="onDeleteClick()">Delete</button>
+        </div>
+        <div class="d-flex flex-column">
+            <button mat-raised-button color="accent" (click)="onSaveExitClick()">Save & Exit</button>
+        </div>
+        <div class="d-flex flex-column">
+            <button mat-raised-button color="primary" (click)="onCancelExitClick()">Cancel & Exit</button>
+        </div>
+    </div>
+</div>

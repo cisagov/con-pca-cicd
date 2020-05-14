@@ -9,6 +9,12 @@ all:
 help:
 	@egrep "^# target:" [Mm]akefile
 
+# target: env = generate env files
+env:
+	cp ./client/etc/env.dist ./client/.env
+	cp ./controller/etc/env.dist ./controller/.env
+	cp ./gophish/etc/env.dist ./gophish/.env
+
 # target: build = build all containers
 build:
 	docker-compose -f ./client/docker-compose.yml build

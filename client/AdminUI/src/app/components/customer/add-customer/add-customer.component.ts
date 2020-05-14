@@ -90,15 +90,12 @@ export class AddCustomerComponent implements OnInit {
     if(this.contactFormGroup.valid)
     {
       var contact: Contact = {
-        id: Guid.create().toString(),
-        office_phone: this.contactFormGroup.controls['office_phone'].value,
-        mobile_phone: this.contactFormGroup.controls['mobile_phone'].value,
+        phone: this.contactFormGroup.controls['phone'].value,
         email: this.contactFormGroup.controls['email'].value,
         first_name: this.contactFormGroup.controls['firstName'].value,
         last_name: this.contactFormGroup.controls['lastName'].value,
         title: this.contactFormGroup.controls['title'].value,
         notes: this.contactFormGroup.controls['contactNotes'].value,
-        fullName: null
       };
       
       this.contacts.push(contact);
