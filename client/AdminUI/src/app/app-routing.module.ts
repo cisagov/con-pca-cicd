@@ -10,7 +10,7 @@ import { ContactsComponent } from './components/contacts/contacts.component';
 import { DomainsComponent } from './components/domains/domains.component';
 import { TemplatesPageComponent } from './components/templates-page/templates-page.component';
 import { UserAdminComponent } from './components/user-admin/user-admin.component';
-import { OrganizationsPageComponent } from './components/organizations-page/organizations-page.component';
+import { CustomersComponent } from './components/customers/customers.component';
 
 
 const routes: Routes = [
@@ -65,15 +65,15 @@ const routes: Routes = [
     ]
   },
   {
-    path:'domains', component: LayoutMainComponent, 
+    path:'customers', component: LayoutMainComponent,
     children: [
-      { path: '', component: DomainsComponent}
+      { path: '', component: CustomersComponent}
     ]
   },
   {
-    path:'organizationspage', component: LayoutMainComponent, 
+    path:'domains', component: LayoutMainComponent, 
     children: [
-      { path: '', component: OrganizationsPageComponent}
+      { path: '', component: DomainsComponent}
     ]
   },
   {
