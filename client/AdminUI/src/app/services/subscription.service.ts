@@ -4,6 +4,7 @@ import { Customer } from '../models/customer.model';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Subscription } from '../models/subscription.model';
+import { CustomerService } from './customer.service';
 
 const headers = {
    headers: new HttpHeaders()
@@ -19,7 +20,7 @@ export class SubscriptionService {
   customer: Customer;
   customers: Array<Customer> = [];
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private customer_service: CustomerService) { }
 
   public requestGetSubscriptions() { 
     let url = `${environment.apiEndpoint}/api/v1/subscriptions/`
@@ -40,6 +41,7 @@ export class SubscriptionService {
       customer_uuid: requestData.customer_uuid,
       keywords: requestData.keywords,
       name: requestData.name,
+      primary_contact: this.customer_service.getContact(requestData.primary_contact),
       start_date: requestData.start_date,
       status: requestData.status,
       subscription_uuid: requestData.subscription_uuid,
@@ -47,43 +49,6 @@ export class SubscriptionService {
     }
 
     return subscription
-  }
-
-  /**
-   * In real life, API call happens here and the model
-   * is returned.
-   * For now, a hard-coded model is returned.
-   */
-  getCustomer(customerId: string) {
-    return this.http.get('http://localhost:8000/api/v1/customer/' + customerId);
-  }
-
-  /**
-   * In real life, the customer is posted from the customer component,
-   * not the subscription component.
-   */
-  postCustomer(org: Customer){
-    this.customers.push(org);
-    return new Observable<Customer>();
-
-    return this.http.post('http://bogus.org/subscription/postOrg', org);
-  }
-
-  /**
-   * Returns an array of simple contact
-   * names and IDs for the customer.
-   */
-  getContactsForCustomer(c: Customer) {
-    console.log('getContactsForCustomer:');
-    console.log(c);
-
-    let a = [];
-    c.contact_list.forEach(x => {
-      a.push({
-        name: x.first_name + ' ' + x.last_name
-      });
-    });
-    return a;
   }
 
 

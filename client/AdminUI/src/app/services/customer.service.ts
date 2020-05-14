@@ -69,17 +69,21 @@ export class CustomerService {
     }
 
     requestData.contact_list.map((c: any) => {
-      let contact: Contact = {
-        first_name: c.first_name,
-        last_name: c.last_name,
-        title: c.title,
-        phone: c.phone,
-        email: c.email,
-        notes: c.notes
-      }
-      customer.contact_list.push(contact)
+      customer.contact_list.push(this.getContact(c))
     })
     return customer
+  }
+
+  public getContact(requestData: any) {
+    let contact: Contact = {
+      first_name: requestData.first_name,
+      last_name: requestData.last_name,
+      title: requestData.title,
+      phone: requestData.phone,
+      email: requestData.email,
+      notes: requestData.notes
+    }
+    return contact
   }
 
   public setContacts(customer_uuid: string, contacts: Contact[]) {

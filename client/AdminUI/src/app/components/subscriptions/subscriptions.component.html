@@ -57,31 +57,31 @@
                 <!-- SUBSCRIPTION NAME -->
                 <ng-container matColumnDef="name">
                     <mat-header-cell *matHeaderCellDef>Subscription Name</mat-header-cell>    
-                    <mat-cell *matCellDef="let row"> {{row.name}}</mat-cell>
+                    <mat-cell *matCellDef="let row"> {{row.subscription.name}}</mat-cell>
                 </ng-container>
 
                 <!-- STATUS -->
                 <ng-container matColumnDef="status">
                     <mat-header-cell *matHeaderCellDef>Status</mat-header-cell>    
-                    <mat-cell *matCellDef="let row"> {{row.status }}</mat-cell>
+                    <mat-cell *matCellDef="let row"> {{row.subscription.status}}</mat-cell>
                 </ng-container>
 
                 <!-- PRIMARY CONTACT -->
                 <ng-container matColumnDef="primary_contact">
                     <mat-header-cell *matHeaderCellDef>Primary Contact</mat-header-cell>
-                    <mat-cell *matCellDef="let row"> {{row.primary_contact}}</mat-cell>
+                    <mat-cell *matCellDef="let row"> {{row.subscription.primary_contact.first_name}} {{row.subscription.primary_contact.last_name}}</mat-cell>
                 </ng-container>
 
                 <!-- CUSTOMER -->
                 <ng-container matColumnDef="customer">
-                    <mat-header-cell *matHeaderCellDef>customer</mat-header-cell>
-                    <mat-cell *matCellDef="let row">{{row.customer }}</mat-cell>
+                    <mat-header-cell *matHeaderCellDef>Customer</mat-header-cell>
+                    <mat-cell *matCellDef="let row">{{row.customer.name}}</mat-cell>
                 </ng-container>
 
                 <!-- LAST ACTION DATE -->
                 <ng-container matColumnDef="start_date">
                     <mat-header-cell *matHeaderCellDef>Start Date</mat-header-cell>
-                    <mat-cell *matCellDef="let row"> {{row.start_date}}</mat-cell>
+                    <mat-cell *matCellDef="let row"> {{row.subscription.start_date}}</mat-cell>
                 </ng-container>
 
                 <!-- ACTIVE -->

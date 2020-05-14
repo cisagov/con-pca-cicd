@@ -21,9 +21,11 @@ export class Subscription {
     customer_uuid: string;
     keywords: string;
     name: string;
+    primary_contact: Contact;
     start_date: Date;
     status: string;
     subscription_uuid: string;
+    
     url: string;
 }
 

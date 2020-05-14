@@ -5,35 +5,13 @@ import { FormControl } from '@angular/forms';
 import { StatusList } from 'src/app/models/status.model';
 import { Subscription } from 'src/app/models/subscription.model';
 import { MatTableDataSource } from '@angular/material/table';
-import { MatTab } from '@angular/material/tabs';
+import { Contact, Customer } from 'src/app/models/customer.model';
+import { CustomerService } from 'src/app/services/customer.service';
 
-
-const subscription_data: Subscription[] = [
-  {
-    name: 'rand-subscription',
-    primary_contact: 'Rand Al Thor',
-    customer: 'Some Company',
-    status: 'Waiting on SRF',
-    active: true,
-    start_date: new Date('2020-08-26')
-  },
-  {
-    name: 'perrin-subscription',
-    primary_contact: 'Perrin Aybara',
-    customer: 'Other Company',
-    status: 'Stopped',
-    active: true,
-    start_date: new Date('2020-04-20')
-  },
-  {
-    name: 'matt-subscription',
-    primary_contact: 'Matt Cauthon',
-    customer: 'Best Company',
-    status: 'Running',
-    active: true,
-    start_date: new Date('2020-05-13')
-  }
-]
+interface ICustomerSubscription {
+  customer: Customer;
+  subscription: Subscription;
+}
 
 @Component({
   selector: 'app-dashboard',
@@ -41,7 +19,7 @@ const subscription_data: Subscription[] = [
   styleUrls: ['./subscriptions.component.scss']
 })
 export class SubscriptionsComponent implements OnInit {
-  public data_source: MatTableDataSource<Subscription>;
+  public data_source: MatTableDataSource<ICustomerSubscription>;
 
   status = new FormControl();
   searchAll: string;
@@ -61,10 +39,10 @@ export class SubscriptionsComponent implements OnInit {
     "active"
   ];
 
-  
 
   constructor(
     private subscription_service: SubscriptionService,
+    private customer_service: CustomerService,
     private layoutSvc: LayoutMainService
     ) { 
       layoutSvc.setTitle("Subscriptions");
@@ -79,8 +57,20 @@ export class SubscriptionsComponent implements OnInit {
 
   refresh() {
     this.subscription_service.requestGetSubscriptions().subscribe((data: any[]) => {
+      console.log(data)
       let subscriptions = this.subscription_service.getSubscriptions(data)
-      this.data_source.data = subscriptions
+      this.customer_service.requestGetCustomers().subscribe((data: any[]) => {
+        let customers = this.customer_service.getCustomers(data)
+        let customerSubscriptions: ICustomerSubscription[] = []
+        subscriptions.map((s: Subscription) => {
+          let customerSubscription: ICustomerSubscription = {
+            customer: customers.find(o => o.customer_uuid == s.customer_uuid),
+            subscription: s
+          }
+          customerSubscriptions.push(customerSubscription);
+        })
+        this.data_source.data = customerSubscriptions
+      })
     })
   } 
 
