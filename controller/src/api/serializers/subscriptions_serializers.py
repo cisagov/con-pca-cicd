@@ -15,12 +15,13 @@ class SubscriptionContactSerializer(serializers.Serializer):
     This is a formats the data coming out of the Db.
     """
 
-    first_name = serializers.CharField(max_length=100)
-    last_name = serializers.CharField(max_length=100)
+    first_name = serializers.CharField(max_length=250)
+    last_name = serializers.CharField(max_length=250)
+    title = serializers.CharField(max_length=250)
     office_phone = serializers.CharField(max_length=100)
     mobile_phone = serializers.CharField(max_length=100)
-    customer = serializers.CharField(max_length=100)
-    email = serializers.EmailField()
+    email = serializers.EmailField(max_length=None, min_length=None, allow_blank=False)
+    notes = serializers.CharField(max_length=None, min_length=None, allow_blank=True)
 
 
 class SubscriptionTargetSerializer(serializers.Serializer):
@@ -48,6 +49,51 @@ class SubscriptionClicksSerializer(serializers.Serializer):
     target_uuid = serializers.UUIDField()
 
 
+class GoPhishResultSerializer(serializers.Serializer):
+    """
+    This is the GoPhishResult Serializer.
+
+    This is a formats the data coming out of the Db.
+    """
+
+    id = serializers.CharField()
+    first_name = serializers.CharField(max_length=255)
+    last_name = serializers.CharField(max_length=255)
+    position = serializers.CharField()
+    status = serializers.CharField(max_length=255)
+    ip = serializers.CharField()
+    latitude = serializers.FloatField()
+    longitude = serializers.FloatField()
+    send_date = serializers.DateTimeField(required=False)
+    reported = serializers.BooleanField(required=False)
+
+
+class GoPhishGroupSerializer(serializers.Serializer):
+    """
+    This is the GoPhishGroup Serializer.
+
+    This is a formats the data coming out of the Db.
+    """
+
+    id = serializers.IntegerField(required=False)
+    name = serializers.CharField(max_length=255)
+    targets = SubscriptionTargetSerializer(many=True)
+    modified_date = serializers.DateTimeField()
+
+
+class GoPhishTimelineSerializer(serializers.Serializer):
+    """
+    This is the GoPhishTimeline Serializer.
+
+    This is a formats the data coming out of the Db.
+    """
+
+    email = serializers.EmailField(required=False)
+    time = serializers.DateTimeField()
+    message = serializers.CharField(max_length=255)
+    details = serializers.CharField(required=False)
+
+
 class GoPhishCampaignsSerializer(serializers.Serializer):
     """
     This is the GoPhishCampaigns Serializer.
@@ -57,11 +103,17 @@ class GoPhishCampaignsSerializer(serializers.Serializer):
 
     campaign_id = serializers.IntegerField(required=False)
     name = serializers.CharField(max_length=100)
-    email_template = serializers.CharField(max_length=100)
-    landing_page_template = serializers.CharField(max_length=100)
-    start_date = serializers.DateTimeField()
-    end_date = serializers.DateTimeField()
-    target_email_list = SubscriptionTargetSerializer(many=True)
+    created_date = serializers.DateTimeField()
+    launch_date = serializers.DateTimeField()
+    send_by_date = serializers.DateTimeField(required=False)
+    completed_date = serializers.DateTimeField(required=False)
+    email_template = serializers.CharField(required=False)
+    landing_page_template = serializers.CharField(required=False)
+    status = serializers.CharField(max_length=255)
+    results = GoPhishResultSerializer(many=True)
+    groups = GoPhishGroupSerializer(many=True)
+    timeline = GoPhishTimelineSerializer(many=True)
+    target_email_list = SubscriptionTargetSerializer(many=True, required=False)
 
 
 class SubscriptionGetSerializer(serializers.Serializer):
