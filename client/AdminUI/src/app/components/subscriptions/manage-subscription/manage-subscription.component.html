@@ -1,4 +1,4 @@
-<!-- <div class="p-3">
+<div class="p-3">
     <h1>{{ action | titlecase }} Subscription</h1>
 
     <div style="display: block;" class="mb-5">
@@ -11,7 +11,7 @@
             <div>{{customer?.identifier}}</div>
             <div>{{customer?.address_1}}</div>
             <div>{{customer?.address_2}}</div>
-            <div>{{customer?.city}}, {{customer?.state}}</div>
+            <div>{{customer?.city}}, {{customer?.state}} {{customer?.zip_code}}</div>
         </div>
 
         <div class="mb-3">
@@ -26,7 +26,7 @@
             <mat-form-field appearance="outline">
                 <mat-select [(ngModel)]="primaryContact" (selectionChange)="changePrimary($event)">
                     <mat-option [value]="null">--Select--</mat-option>
-                    <mat-option *ngFor="let c of customerContacts" [value]="c.first_name">{{ c.first_name }}</mat-option>
+                    <mat-option *ngFor="let c of customer?.contact_list" [value]="c.first_name">{{ c.first_name }} {{ c.last_name }}</mat-option>
                 </mat-select>
             </mat-form-field>
         </div>
@@ -84,4 +84,4 @@
         </div>
 
     </div>
-</div> -->
+</div> 

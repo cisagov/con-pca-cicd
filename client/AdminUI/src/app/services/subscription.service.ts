@@ -17,6 +17,7 @@ const headers = {
   providedIn: 'root'
 })
 export class SubscriptionService {
+  subscription: Subscription;
   customer: Customer;
   customers: Array<Customer> = [];
 
@@ -30,12 +31,12 @@ export class SubscriptionService {
   public getSubscriptions(requestData: any[]): Subscription[] {
     let subscriptions: Subscription[] = []
     requestData.map((s: any) => {
-      subscriptions.push(this.getSubscription(s))
+      subscriptions.push(this.buildSubscription(s))
     })
     return subscriptions
   }
 
-  public getSubscription(requestData: any): Subscription {
+  public buildSubscription(requestData: any): Subscription {
     let subscription: Subscription = {
       active: requestData.active,
       customer_uuid: requestData.customer_uuid,
@@ -46,19 +47,26 @@ export class SubscriptionService {
       start_date: requestData.start_date,
       status: requestData.status,
       subscription_uuid: requestData.subscription_uuid,
-      url: requestData.url
+      url: requestData.url,
+      target_email_list: requestData.target_email_list,
+      setTargetsFromCSV: null
     }
 
     return subscription
   }
 
+  /**
+   * 
+   */
+  getSubscription(subscriptionId: string) {
+    return this.http.get('http://localhost:8000/api/v1/subscriptions' + subscriptionId + '/')
+  }
 
   /**
    * Sends all information to the API to start a new subscription.
    * @param s 
    */
-  submitSubscription(subscription) {
-    //NEED TO MAKE THIS LOOK at the 
+  submitSubscription(subscription: Subscription) {
     return this.http.post('http://localhost:8000/api/v1/subscriptions/', subscription)
   }
 }

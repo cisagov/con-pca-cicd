@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  apiEndpoint: "http://localhost:8010/proxy",
+  apiEndpoint: "http://localhost:8000",
 };
 
 /*

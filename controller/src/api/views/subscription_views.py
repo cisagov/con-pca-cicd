@@ -102,75 +102,90 @@ class SubscriptionsListView(APIView):
         first_name = post_data.get("primary_contact").get("first_name", "")
         last_name = post_data.get("primary_contact").get("last_name", "")
 
-        # get User Groups
-        user_groups = campaign_manager.get("user_group")
-        group_name = f"{last_name}'s Targets"
-        target_list = post_data.get("target_email_list")
 
-        # Note: this could be refactored later
-        if group_name not in [group.name for group in user_groups]:
-            target = campaign_manager.create(
-                "user_group", group_name=group_name, target_list=target_list
-            )
-        else:
-            # get group from list
-            for user_group in user_groups:
-                if user_group.name == group_name:
-                    target = user_group
-                    break
+        """ RKW TEMP - I can't connect to GP right now, so the whole 
+            block of code that talks to campaign_manager is wrapped in a
+            try so that we can return clean, even if the GP connection tanks.
+        """
+        try:
 
-        gophish_campaign_list = []
 
-        # Create a GoPhish Campaigns
-        for template in templates:
-            # Create new template
-            created_template = campaign_manager.generate_email_template(
-                name=template["name"], template=template["data"]
-            )
 
-            if created_template is not None:
-                template_name = created_template.name
-                campaign_name = f"{first_name}.{last_name}.1.1 {template_name}"
-                campaign = campaign_manager.create(
-                    "campaign",
-                    campaign_name=campaign_name,
-                    smtp_name="SMTP",
-                    page_name="Phished",
-                    user_group=target,
-                    email_template=created_template,
+            # get User Groups
+            user_groups = campaign_manager.get("user_group")
+            group_name = f"{last_name}'s Targets"
+            target_list = post_data.get("target_email_list")
+
+            # Note: this could be refactored later
+            if group_name not in [group.name for group in user_groups]:
+                target = campaign_manager.create(
+                    "user_group", group_name=group_name, target_list=target_list
                 )
-                logger.info("campaign created: {}".format(campaign))
+            else:
+                # get group from list
+                for user_group in user_groups:
+                    if user_group.name == group_name:
+                        target = user_group
+                        break
 
-                created_campaign = {
-                    "campaign_id": campaign.id,
-                    "name": campaign_name,
-                    "created_date": format_ztime(campaign.created_date),
-                    "launch_date": format_ztime(campaign.launch_date),
-                    "email_template": created_template.name,
-                    "landing_page_template": campaign.page.name,
-                    "status": campaign.status,
-                    "results": [],
-                    "groups": [],
-                    "timeline": [
-                        {
-                            "email": None,
-                            "time": format_ztime(campaign.created_date),
-                            "message": "Campaign Created",
-                            "details": "",
-                        }
-                    ],
-                    "target_email_list": target_list,
-                }
-                gophish_campaign_list.append(created_campaign)
+            gophish_campaign_list = []
 
-        post_data["gophish_campaign_list"] = gophish_campaign_list
+            # Create a GoPhish Campaigns
+            for template in templates:
+                # Create new template
+                created_template = campaign_manager.generate_email_template(
+                    name=template["name"], template=template["data"]
+                )
 
-        created_response = self.__save_data(post_data)
+                if created_template is not None:
+                    template_name = created_template.name
+                    campaign_name = f"{first_name}.{last_name}.1.1 {template_name}"
+                    campaign = campaign_manager.create(
+                        "campaign",
+                        campaign_name=campaign_name,
+                        smtp_name="SMTP",
+                        page_name="Phished",
+                        user_group=target,
+                        email_template=created_template,
+                    )
+                    logger.info("campaign created: {}".format(campaign))
 
-        if "errors" in created_response:
-            return Response(created_response, status=status.HTTP_400_BAD_REQUEST)
-        serializer = SubscriptionPostResponseSerializer(created_response)
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+                    created_campaign = {
+                        "campaign_id": campaign.id,
+                        "name": campaign_name,
+                        "created_date": format_ztime(campaign.created_date),
+                        "launch_date": format_ztime(campaign.launch_date),
+                        "email_template": created_template.name,
+                        "landing_page_template": campaign.page.name,
+                        "status": campaign.status,
+                        "results": [],
+                        "groups": [],
+                        "timeline": [
+                            {
+                                "email": None,
+                                "time": format_ztime(campaign.created_date),
+                                "message": "Campaign Created",
+                                "details": "",
+                            }
+                        ],
+                        "target_email_list": target_list,
+                    }
+                    gophish_campaign_list.append(created_campaign)
+
+            post_data["gophish_campaign_list"] = gophish_campaign_list
+
+            created_response = self.__save_data(post_data)
+
+            if "errors" in created_response:
+                return Response(created_response, status=status.HTTP_400_BAD_REQUEST)
+            serializer = SubscriptionPostResponseSerializer(created_response)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+        except:
+            pass
+
+        # RKW DEBUG
+        return Response("{abc}", status=status.HTTP_201_CREATED)
 
     def __get_data(self, parameters, collection, model, validation_model):
         """

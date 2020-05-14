@@ -6,6 +6,7 @@ import { Customer, Contact } from 'src/app/models/customer.model';
 import { Subscription, SubscriptionClicksModel } from 'src/app/models/subscription.model';
 import { Guid } from 'guid-typescript';
 import { UserService } from 'src/app/services/user.service';
+import { CustomerService } from 'src/app/services/customer.service';
 
 
 @Component({
@@ -23,8 +24,8 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
   // CREATE or MANAGE (edit existing)
   pageMode: string = 'CREATE';
 
-  customer: Customer;
-  customerContacts: Contact[] = [];
+  subscription: Subscription;
+  customer: Customer = new Customer();
   primaryContact: Contact = new Contact();
 
   startDate: Date = new Date();
@@ -41,6 +42,7 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
    */
   constructor(
     public subscriptionSvc: SubscriptionService,
+    public customerSvc: CustomerService,
     private router: Router,
     private route: ActivatedRoute,
     private userSvc: UserService
@@ -49,45 +51,53 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * 
+   * INIT
    */
   ngOnInit(): void {
-    // this.pageMode = 'MANAGE';
+    this.pageMode = 'MANAGE';
 
-    // this.subscriptionSvc.subscription = new Subscription();
-    // let sub = this.subscriptionSvc.subscription;
+    this.subscriptionSvc.subscription = new Subscription();
+    let sub = this.subscriptionSvc.subscription;
 
-    // this.routeSub = this.route.params.subscribe(params => {
-    //   if (!params.id) {
-    //     this.pageMode = 'CREATE';
-    //     sub = new Subscription();
-    //     sub.subscription_uuid = Guid.create().toString();
-    //   } else {
-    //     sub.subscription_uuid = params.id;
-    //   }
+    this.routeSub = this.route.params.subscribe(params => {
+      if (!params.id) {
+        this.pageMode = 'CREATE';
+        this.action = this.action_CREATE;
+        sub = new Subscription();
+        sub.subscription_uuid = Guid.create().toString();
 
-    //   if (this.pageMode == 'CREATE') {
-    //     this.action = this.action_CREATE;
+        // TEMP TEMP TEMP - just randomly pick an existing customer for now
+        this.customerSvc.requestGetCustomers().subscribe((c: Customer[]) => {
+          let rnd = Math.floor(Math.random() * Math.floor(c.length));
+          this.customer = c[rnd];
+        });
 
-    //     // TEMP TEMP TEMP
-    //     sub.customer_uuid = '14892635-c166-4797-991f-6c266e01586e';
-    //   }
+      } else {
+        sub.subscription_uuid = params.id;
 
-
-    //   // get the customer and contacts from the API
-    //   this.subscriptionSvc.getCustomer(sub.customer_uuid).subscribe((c: Customer) => {
-    //     this.customer = c;
-
-    //     this.customerContacts = this.subscriptionSvc.getContactsForCustomer(c);
-    //     console.log('customerContacts: ');
-    //     console.log(this.customerContacts);
-
-    //     this.primaryContact = this.customerContacts[0];
-    //     console.log('primaryContact: ');
-    //     console.log(this.primaryContact);
-    //   });
-    // });
+        this.subscriptionSvc.getSubscription(sub.subscription_uuid)
+          .subscribe((s: Subscription) => {
+          this.subscription = s;
+        });
+      }
+    });
   }
+
+
+  /**
+   * 
+   * @param customer_uuid 
+   */
+  loadContactsForCustomer(customer_uuid: string) {
+    // get the customer and contacts from the API
+    this.customerSvc.requestGetCustomer(customer_uuid).subscribe((c: Customer) => {
+      this.customer = c;
+
+      this.customer.contact_list = this.customerSvc.getContactsForCustomer(c);
+      this.primaryContact = this.customer.contact_list[0];
+    });
+  }
+
 
   /**
    * 
@@ -99,53 +109,41 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
   /**
    * 
    */
-  // createAndLaunchSubscription() {
-  //   console.log('createAndLaunchSubscription');
+  createAndLaunchSubscription() {
+    console.log('createAndLaunchSubscription');
 
-  //   let sub = this.subscriptionSvc.subscription;
+    let sub = this.subscriptionSvc.subscription;
 
-  //   // set up the subscription and persist it in the service
-  //   sub = new Subscription();
+    // set up the subscription and persist it in the service
+    sub = new Subscription();
 
-  //   sub.customer_uuid = "14892635-c166-4797-991f-6c266e01586e";
-  //   sub.primary_contact = this.primaryContact;
-  //   sub.additional_contact_list = [];
+    sub.customer_uuid = this.customer.customer_uuid;
+    sub.primary_contact = this.primaryContact;
 
-  //   sub.active = true;
+    sub.active = true;
 
-  //   sub.created_by = this.userSvc.getCurrentUser();
-
-  //   sub.gophish_campaign_list = [];
-
-  //   sub.last_updated_by = this.userSvc.getCurrentUser();
-  //   sub.lub_timestamp = new Date();
-
-  //   sub.name = "SC-1.Matt-Daemon.1.1"; //auto generated name
-
-
-  //   sub.start_date = this.startDate;
-  //   sub.status = "New Not Started";
-
-  //   // set the target list
-  //   sub.setTargetsFromCSV(this.csvText);
-
-  //   sub.url = this.url;
-
-  //   // tags / keywords
-  //   sub.keywords = this.tags;
+    sub.lub_timestamp = new Date();
+    sub.name = "SC-1." + this.customer.name + ".1.1"; //auto generated name
+    sub.start_date = this.startDate;
+    sub.status = "New Not Started";
+    // set the target list
+    sub.setTargetsFromCSV(this.csvText);
+    sub.url = this.url;
+    // tags / keywords
+    sub.keywords = this.tags;
 
 
-  //   // call service with everything needed to start the subscription
-  //   this.subscriptionSvc.submitSubscription(sub).subscribe(
-  //     resp => {
-  //       alert("Your subscription was created as " + sub.name);
-  //       this.router.navigate(['subscriptions']);
-  //     },
-  //     error => {
-  //       console.log(error);
-  //       alert("An error occurred submitting the subscription: " + error.error);
-  //     });
-  // }
+    // call service with everything needed to start the subscription
+    this.subscriptionSvc.submitSubscription(sub).subscribe(
+      resp => {
+        alert("Your subscription was created as " + sub.name);
+        this.router.navigate(['subscriptions']);
+      },
+      error => {
+        console.log(error);
+        alert("An error occurred submitting the subscription: " + error.error);
+      });
+  }
 
   /**
    * 
@@ -163,5 +161,20 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
    */
   ngOnDestroy() {
     this.routeSub.unsubscribe();
+  }
+
+  /**
+   * This is a temporary method for demo purposes
+   */
+  async tempGrabRandomCustomer() {
+    let uuid = '';
+
+    let c: any[] = await this.customerSvc.requestGetCustomers().toPromise();
+    let rnd = Math.floor(Math.random() * Math.floor(c.length));
+    console.log(rnd);
+    console.log(c[rnd].customer_uuid);
+    uuid = c[rnd].customer_uuid;
+
+    return uuid;
   }
 }

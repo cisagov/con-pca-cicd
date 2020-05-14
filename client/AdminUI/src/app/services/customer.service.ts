@@ -88,6 +88,23 @@ export class CustomerService {
     return contact
   }
 
+  /**
+   * Returns an array of simple contact
+   * names and IDs for the customer.
+   */
+  public getContactsForCustomer(c: Customer) {
+    console.log('getContactsForCustomer:');
+    console.log(c);
+
+    let a = [];
+    c.contact_list.forEach(x => {
+      a.push({
+        name: x.first_name + ' ' + x.last_name
+      });
+    });
+    return a;
+  }
+
   public setContacts(customer_uuid: string, contacts: Contact[]) {
     let data = {
       contact_list: contacts
