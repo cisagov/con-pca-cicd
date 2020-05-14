@@ -1,11 +1,74 @@
-<style scoped>
-    .mat-form-field{
-        width:100%;
-    }
-</style>
-
 <div class="container-fluid">
-    <div class="row">
+    <!-- Search Bar -->
+    <div class="d-flex flex-row flex-grow-1">
+        <div class="d-flex flex-column w-100">
+            <mat-form-field class="search-bar" appearance="outline">
+                <mat-label>Search</mat-label>
+                <input matInput (keyup)="searchFilter($event)">
+                <mat-icon matSuffix>search</mat-icon>
+            </mat-form-field>
+        </div>
+        <div class="d-inline-flex flex-column ml-2">
+            <button mat-raised-button class="add-button" color="primary" routerLink="/createsubscription" >Create New Subscription</button>
+        </div>
+    </div>
+
+    <!-- TABLE -->
+    <mat-table [dataSource]="data_source">
+        <!-- SUBSCRIPTION NAME -->
+        <ng-container matColumnDef="name">
+            <mat-header-cell *matHeaderCellDef>Subscription Name</mat-header-cell>    
+            <mat-cell *matCellDef="let row"> {{row.subscription.name}}</mat-cell>
+        </ng-container>
+
+        <!-- STATUS -->
+        <ng-container matColumnDef="status">
+            <mat-header-cell *matHeaderCellDef>Status</mat-header-cell>    
+            <mat-cell *matCellDef="let row"> {{row.subscription.status}}</mat-cell>
+        </ng-container>
+
+        <!-- PRIMARY CONTACT -->
+        <ng-container matColumnDef="primary_contact">
+            <mat-header-cell *matHeaderCellDef>Primary Contact</mat-header-cell>
+            <mat-cell *matCellDef="let row"> {{row.subscription.primary_contact.first_name}} {{row.subscription.primary_contact.last_name}}</mat-cell>
+        </ng-container>
+
+        <!-- CUSTOMER -->
+        <ng-container matColumnDef="customer">
+            <mat-header-cell *matHeaderCellDef>Customer</mat-header-cell>
+            <mat-cell *matCellDef="let row">{{row.customer.name}}</mat-cell>
+        </ng-container>
+
+        <!-- START DATE -->
+        <ng-container matColumnDef="start_date">
+            <mat-header-cell *matHeaderCellDef>Start Date</mat-header-cell>
+            <mat-cell *matCellDef="let row"> {{row.subscription.start_date}}</mat-cell>
+        </ng-container>
+
+        <!-- LAST UDPATED DATE -->
+        <ng-container matColumnDef="last_updated">
+            <mat-header-cell *matHeaderCellDef>Last Updated</mat-header-cell>
+            <mat-cell *matCellDef="let row"> {{row.subscription.lub_timestamp}}</mat-cell>
+        </ng-container>
+
+        <!-- ACTIVE -->
+        <ng-container matColumnDef="active">
+            <mat-header-cell *matHeaderCellDef>Active</mat-header-cell>
+            <mat-cell *matCellDef="let row">
+                <!-- {{row?.statusIconAndName?.icon_name}} -->
+                <img src="../../../assets/icon_play.png" style="height: 1rem;">
+            </mat-cell>
+        </ng-container>
+
+        <!-- HEADER ROW -->
+        <mat-header-row *matHeaderRowDef="displayed_columns"></mat-header-row>
+
+        <!-- ROW DEFINITION -->
+        <mat-row *matRowDef="let row; columns: displayed_columns"></mat-row>
+    </mat-table>
+
+    <!-- OLD SEARCH WITH ADVANCED -->
+    <!-- <div class="row">
         <div class="col-sm">
             <div class="row" style="padding-bottom:10px">
                 <div class="col-6">
@@ -53,60 +116,9 @@
                 </mat-accordion>
             </div>
 
-            <mat-table [dataSource]="data_source">
-                <!-- SUBSCRIPTION NAME -->
-                <ng-container matColumnDef="name">
-                    <mat-header-cell *matHeaderCellDef>Subscription Name</mat-header-cell>    
-                    <mat-cell *matCellDef="let row"> {{row.subscription.name}}</mat-cell>
-                </ng-container>
-
-                <!-- STATUS -->
-                <ng-container matColumnDef="status">
-                    <mat-header-cell *matHeaderCellDef>Status</mat-header-cell>    
-                    <mat-cell *matCellDef="let row"> {{row.subscription.status}}</mat-cell>
-                </ng-container>
-
-                <!-- PRIMARY CONTACT -->
-                <ng-container matColumnDef="primary_contact">
-                    <mat-header-cell *matHeaderCellDef>Primary Contact</mat-header-cell>
-                    <mat-cell *matCellDef="let row"> {{row.subscription.primary_contact.first_name}} {{row.subscription.primary_contact.last_name}}</mat-cell>
-                </ng-container>
-
-                <!-- CUSTOMER -->
-                <ng-container matColumnDef="customer">
-                    <mat-header-cell *matHeaderCellDef>Customer</mat-header-cell>
-                    <mat-cell *matCellDef="let row">{{row.customer.name}}</mat-cell>
-                </ng-container>
-
-                <!-- START DATE -->
-                <ng-container matColumnDef="start_date">
-                    <mat-header-cell *matHeaderCellDef>Start Date</mat-header-cell>
-                    <mat-cell *matCellDef="let row"> {{row.subscription.start_date}}</mat-cell>
-                </ng-container>
-
-                <!-- LAST UDPATED DATE -->
-                <ng-container matColumnDef="last_updated">
-                    <mat-header-cell *matHeaderCellDef>Last Updated</mat-header-cell>
-                    <mat-cell *matCellDef="let row"> {{row.subscription.lub_timestamp}}</mat-cell>
-                </ng-container>
-
-                <!-- ACTIVE -->
-                <ng-container matColumnDef="active">
-                    <mat-header-cell *matHeaderCellDef>Active</mat-header-cell>
-                    <mat-cell *matCellDef="let row">
-                        <!-- {{row?.statusIconAndName?.icon_name}} -->
-                        <img src="../../../assets/icon_play.png" style="height: 1rem;">
-                    </mat-cell>
-                </ng-container>
-
-                <!-- HEADER ROW -->
-                <mat-header-row *matHeaderRowDef="displayed_columns"></mat-header-row>
-
-                <!-- ROW DEFINITION -->
-                <mat-row *matRowDef="let row; columns: displayed_columns"></mat-row>
-            </mat-table>
+            
         </div>
-    </div>
+    </div> -->
 </div>
 
 
