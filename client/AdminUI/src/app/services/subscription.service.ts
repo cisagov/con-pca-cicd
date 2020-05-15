@@ -7,10 +7,10 @@ import { Subscription } from '../models/subscription.model';
 import { CustomerService } from './customer.service';
 
 const headers = {
-   headers: new HttpHeaders()
-     .set('Content-Type', 'application/json'),
-   params: new HttpParams()
- };
+  headers: new HttpHeaders()
+    .set('Content-Type', 'application/json'),
+  params: new HttpParams()
+};
 
 
 @Injectable({
@@ -23,11 +23,18 @@ export class SubscriptionService {
 
   constructor(private http: HttpClient, private customer_service: CustomerService) { }
 
-  public getSubscriptions() { 
+  /**
+   * 
+   */
+  public getSubscriptions() {
     let url = `${environment.apiEndpoint}/api/v1/subscriptions/`
     return this.http.get(url)
   }
-  
+
+  /**
+   * 
+   * @param requestData 
+   */
   public toSubscriptions(requestData: any[]): Subscription[] {
     let subscriptions: Subscription[] = []
     requestData.map((s: any) => {
@@ -36,6 +43,19 @@ export class SubscriptionService {
     return subscriptions
   }
 
+  /**
+   * 
+   * @param subscription_uuid 
+   */
+  public getSubscription(subscription_uuid: string) {
+    let url = `${environment.apiEndpoint}/api/v1/subscription/${subscription_uuid}/`
+    return this.http.get(url)
+  }
+
+  /**
+   * 
+   * @param requestData 
+   */
   public toSubscription(requestData: any): Subscription {
     let subscription: Subscription = {
       active: requestData.active,
@@ -53,15 +73,6 @@ export class SubscriptionService {
     }
 
     return subscription
-  }
-
-  /**
-   * 
-   * @param subscriptionId 
-   */
-  public getSubscription(subscriptionId: string) { 
-    let url = `${environment.apiEndpoint}/api/v1/subscription/${subscriptionId}/`
-    return this.http.get(url)
   }
 
   /**
