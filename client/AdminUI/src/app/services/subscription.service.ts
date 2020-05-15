@@ -23,20 +23,20 @@ export class SubscriptionService {
 
   constructor(private http: HttpClient, private customer_service: CustomerService) { }
 
-  public requestGetSubscriptions() { 
+  public getSubscriptions() { 
     let url = `${environment.apiEndpoint}/api/v1/subscriptions/`
     return this.http.get(url)
   }
   
-  public getSubscriptions(requestData: any[]): Subscription[] {
+  public toSubscriptions(requestData: any[]): Subscription[] {
     let subscriptions: Subscription[] = []
     requestData.map((s: any) => {
-      subscriptions.push(this.buildSubscription(s))
+      subscriptions.push(this.toSubscription(s))
     })
     return subscriptions
   }
 
-  public buildSubscription(requestData: any): Subscription {
+  public toSubscription(requestData: any): Subscription {
     let subscription: Subscription = {
       active: requestData.active,
       customer_uuid: requestData.customer_uuid,
@@ -57,9 +57,11 @@ export class SubscriptionService {
 
   /**
    * 
+   * @param subscriptionId 
    */
-  getSubscription(subscriptionId: string) {
-    return this.http.get('http://localhost:8000/api/v1/subscriptions' + subscriptionId + '/')
+  public getSubscription(subscriptionId: string) { 
+    let url = `${environment.apiEndpoint}/api/v1/subscription/${subscriptionId}/`
+    return this.http.get(url)
   }
 
   /**
