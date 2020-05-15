@@ -6,7 +6,7 @@
             <mat-label class="h6">Customer</mat-label>
         </div>
 
-        <div class="p-2 card w-50 mb-1">
+        <div class="p-2 mat-card ml-0 w-50 mb-1">
             <div>{{customer?.name}}</div>
             <div>{{customer?.identifier}}</div>
             <div>{{customer?.address_1}}</div>
@@ -15,7 +15,7 @@
         </div>
 
         <div class="mb-3">
-            <button mat-raised-button color="primary" (click)="assignCustomer()">Assign Customer <i class="fa fa-search"
+            <button mat-raised-button color="primary" (click)="showCustomerDialog()">Assign Customer <i class="fa fa-search"
                     style="font-size: 1rem;"></i></button>
         </div>
 

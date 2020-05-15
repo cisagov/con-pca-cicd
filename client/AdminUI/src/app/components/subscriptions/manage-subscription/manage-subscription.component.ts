@@ -70,11 +70,21 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
         this.subscription = sub;
         sub.subscription_uuid = Guid.create().toString();
 
-        // START TEMP - just randomly pick an existing customer for now
+        // START TEMP ------------------------
+        // find Globex or randomly pick an existing customer for now
         if (!this.subscription.customer_uuid) {
           this.customerSvc.requestGetCustomers().subscribe((c: Customer[]) => {
-            let rnd = Math.floor(Math.random() * Math.floor(c.length));
-            this.customer = c[rnd];
+
+            // first look for Globex
+            let globex = c.find(x => x.identifier == 'GLBX');
+            if (globex == null) {
+
+              // if not found, just pick a random customer
+              let rnd = Math.floor(Math.random() * Math.floor(c.length));
+              this.customer = c[rnd];
+            } else {
+              this.customer = globex;
+            }
           });
         }
         // END TEMP --------------------------
@@ -109,7 +119,7 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
    * Presents a customer page to select or create a new customer for 
    * this subscription.
    */
-  public assignCustomer(): void {
+  public showCustomerDialog(): void {
     const dialogConfig = new MatDialogConfig();
     dialogConfig.height = "80vh";
     dialogConfig.width = "80vw";
@@ -126,8 +136,10 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
    * 
    */
   changePrimaryContact(e: any) {
-    this.primaryContact = this.customer.contact_list.find(x => x.first_name == e.value);
+    this.primaryContact = this.customer.contact_list
+      .find(x => (x.first_name + '_' + x.last_name) == e.value);
     this.subscription.primary_contact = this.primaryContact;
+    this.subscriptionSvc.subscription.primary_contact = this.primaryContact;
   }
 
   /**

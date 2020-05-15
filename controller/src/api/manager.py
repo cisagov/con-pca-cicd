@@ -57,8 +57,7 @@ class TemplateManager:
         preprocessed_data = [self.preprocess_keywords(url, keywords)] + [
             *template_data.values()
         ]
-        print('RKW - preprocessed_data')
-        print(preprocessed_data)
+
         docs_tfidf = vectorizer.fit_transform(preprocessed_data)
         cosine_similarities = cosine_similarity(docs_tfidf[:1], docs_tfidf).flatten()
         cosine_similarities = cosine_similarities[1:]
