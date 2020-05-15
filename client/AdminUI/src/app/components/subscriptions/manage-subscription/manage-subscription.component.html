@@ -15,7 +15,7 @@
         </div>
 
         <div class="mb-3">
-            <button mat-raised-button color="primary">Assign Customer <i class="fa fa-search"
+            <button mat-raised-button color="primary" (click)="assignCustomer()">Assign Customer <i class="fa fa-search"
                     style="font-size: 1rem;"></i></button>
         </div>
 
@@ -24,9 +24,10 @@
                 <mat-label class="h6">Primary Contact</mat-label>
             </div>
             <mat-form-field appearance="outline">
-                <mat-select [(ngModel)]="primaryContact" (selectionChange)="changePrimary($event)">
+                <mat-select [(ngModel)]="primaryContact" (selectionChange)="changePrimaryContact($event)">
                     <mat-option [value]="null">--Select--</mat-option>
-                    <mat-option *ngFor="let c of customer?.contact_list" [value]="c.first_name">{{ c.first_name }} {{ c.last_name }}</mat-option>
+                    <mat-option *ngFor="let c of customer?.contact_list" [value]="c.first_name + '_' + c.last_name">
+                        {{ c.first_name }} {{ c.last_name }}</mat-option>
                 </mat-select>
             </mat-form-field>
         </div>

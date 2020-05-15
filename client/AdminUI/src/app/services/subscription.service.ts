@@ -21,6 +21,13 @@ export class SubscriptionService {
   customer: Customer;
   customers: Array<Customer> = [];
 
+  cameFromSubscription: boolean;
+
+  /**
+   * 
+   * @param http 
+   * @param customer_service 
+   */
   constructor(private http: HttpClient, private customer_service: CustomerService) { }
 
   /**

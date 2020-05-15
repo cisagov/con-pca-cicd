@@ -1,12 +1,14 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { MatDialogConfig, MatDialog } from '@angular/material/dialog';
 import { FormGroup, FormControl } from '@angular/forms';
 import { SubscriptionService } from 'src/app/services/subscription.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Customer, Contact } from 'src/app/models/customer.model';
-import { Subscription, SubscriptionClicksModel } from 'src/app/models/subscription.model';
+import { Subscription } from 'src/app/models/subscription.model';
 import { Guid } from 'guid-typescript';
 import { UserService } from 'src/app/services/user.service';
 import { CustomerService } from 'src/app/services/customer.service';
+import { CustomersComponent } from 'src/app/components/customers/customers.component';
 
 
 @Component({
@@ -45,7 +47,8 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
     public customerSvc: CustomerService,
     private router: Router,
     private route: ActivatedRoute,
-    private userSvc: UserService
+    private userSvc: UserService,
+    public dialog: MatDialog
   ) {
 
   }
@@ -64,21 +67,25 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
         this.pageMode = 'CREATE';
         this.action = this.action_CREATE;
         sub = new Subscription();
+        this.subscription = sub;
         sub.subscription_uuid = Guid.create().toString();
 
-        // TEMP TEMP TEMP - just randomly pick an existing customer for now
-        this.customerSvc.requestGetCustomers().subscribe((c: Customer[]) => {
-          let rnd = Math.floor(Math.random() * Math.floor(c.length));
-          this.customer = c[rnd];
-        });
+        // START TEMP - just randomly pick an existing customer for now
+        if (!this.subscription.customer_uuid) {
+          this.customerSvc.requestGetCustomers().subscribe((c: Customer[]) => {
+            let rnd = Math.floor(Math.random() * Math.floor(c.length));
+            this.customer = c[rnd];
+          });
+        }
+        // END TEMP --------------------------
 
       } else {
         sub.subscription_uuid = params.id;
 
         this.subscriptionSvc.getSubscription(sub.subscription_uuid)
           .subscribe((s: Subscription) => {
-          this.subscription = s;
-        });
+            this.subscription = s;
+          });
       }
     });
   }
@@ -98,12 +105,29 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
     });
   }
 
+  /**
+   * Presents a customer page to select or create a new customer for 
+   * this subscription.
+   */
+  public assignCustomer(): void {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.height = "80vh";
+    dialogConfig.width = "80vw";
+    dialogConfig.data = {};
+    const dialogRef = this.dialog.open(CustomersComponent, dialogConfig);
+
+    dialogRef.afterClosed().subscribe(value => {
+      // TODO:  set the subscription's customer here so that
+      // the binding will reflect the change in the page
+    })
+  }
 
   /**
    * 
    */
-  changePrimary(e: any) {
+  changePrimaryContact(e: any) {
     this.primaryContact = this.customer.contact_list.find(x => x.first_name == e.value);
+    this.subscription.primary_contact = this.primaryContact;
   }
 
   /**
@@ -161,20 +185,5 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
    */
   ngOnDestroy() {
     this.routeSub.unsubscribe();
-  }
-
-  /**
-   * This is a temporary method for demo purposes
-   */
-  async tempGrabRandomCustomer() {
-    let uuid = '';
-
-    let c: any[] = await this.customerSvc.requestGetCustomers().toPromise();
-    let rnd = Math.floor(Math.random() * Math.floor(c.length));
-    console.log(rnd);
-    console.log(c[rnd].customer_uuid);
-    uuid = c[rnd].customer_uuid;
-
-    return uuid;
   }
 }
