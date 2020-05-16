@@ -17,11 +17,9 @@ SECRET_KEY = os.environ.get("SECRET_KEY")
 
 DEBUG = int(os.environ.get("DEBUG", default=0))
 
-tmp_allowed_hosts = os.environ.get("DJANGO_ALLOWED_HOSTS")
-if tmp_allowed_hosts:
-    ALLOWED_HOSTS = tmp_allowed_hosts.split(" ")
-else:
-    ALLOWED_HOSTS = ["localhost", "127.0.0.1", "[::1]"]
+ALLOWED_HOSTS = os.environ.get(
+    "DJANGO_ALLOWED_HOSTS", "localhost 127.0.0.1 [::1]"
+).split()
 
 CORS_ORIGIN_ALLOW_ALL = True
 
@@ -40,7 +38,6 @@ INSTALLED_APPS = [
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
-    "django.contrib.staticfiles",
     "corsheaders",
     # third party
     "rest_framework",
@@ -109,15 +106,6 @@ USE_L10N = True
 
 USE_TZ = True
 
-
-# Static files (CSS, JavaScript, Images)
-
-STATIC_URL = "/static/"
-
-STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
-
-STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
-
 # Django Rest Framework
 
 REST_FRAMEWORK = {
@@ -135,15 +123,6 @@ CELERY_ACCEPT_CONTENT = ["json"]
 CELERY_TASK_SERIALIZER = "json"
 CELERY_RESULT_SERIALIZER = "json"
 CELERY_IGNORE_RESULT = False
-
-# Celery Beat
-
-CELERY_BEAT_SCHEDULE = {
-    "task-one": {
-        "task": "tasks.tasks.create_task",
-        "schedule": crontab(minute=59, hour=23),
-    }
-}
 
 # GoPhish
 GP_URL = os.environ.get("GP_URL", "")
