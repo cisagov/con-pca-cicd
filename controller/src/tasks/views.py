@@ -1,4 +1,9 @@
+from datetime import datetime, timedelta
+
+from celery.utils.log import get_logger
 from celery.result import AsyncResult
+from celery.task.control import revoke
+
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -9,6 +14,7 @@ from .tasks import campaign_report
 from .serializers import CampaignReportSerializer
 
 
+logger = get_logger(__name__)
 inspect = app.control.inspect()
 
 
@@ -45,15 +51,19 @@ class TaskListView(APIView):
         triggered by a GoPhish callback once a campaign has been created.
         """
         data = request.data
-        word = data.get("word")
-        task = campaign_report.apply_async(args=[word], countdown=30)
-        context = {"task id": task.id, "word": word}
+        campaign_id = data.get("campaign_id")
+        # Execute task in 90 days from campaign launch
+        ninety_days = datetime.utcnow() + timedelta(days=90)
+        try:
+            task = campaign_report.apply_async(args=[campaign_id], eta=ninety_days)
+        except add.OperationalError as exc:
+            logger.exception("Campaign task raised: %r", exc)
+        context = {"task id": task.id, "campaign_id": campaign_id}
         return Response(context)
 
 
 class TaskView(APIView):
     @swagger_auto_schema(
-        responses={"200": CampaignReportSerializer, "400": "Bad Request",},
         security=[],
         operation_id="Get a specific task's details",
         operation_description="Query a specific task by its ID to return specific details",
@@ -70,3 +80,10 @@ class TaskView(APIView):
         }
 
         return Response(result)
+
+    def delete(self, request, task_id):
+        """
+        Delete a specific task in the queue
+        """
+        revoke(task_id, terminate=True)
+        return Response(f"Task {task_id} has been deleted")

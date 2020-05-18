@@ -5,11 +5,16 @@ from celery.schedules import crontab
 
 from config.celery import app
 
+from api.manager import CampaignManager
+
+
+campaign_manager = CampaignManager()
+
 
 @shared_task
-def campaign_report(word):
+def campaign_report(campaign_id):
     """
     Pull final campaign report
     """
-    print(word)
-    return word
+    campaign = campaign_manager.get("campaign", campaign_id=campaign_id)
+    return campaign
