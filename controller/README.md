@@ -87,8 +87,8 @@ Drop DB of all data
 
 ### Creating and loading random data
 
-Using the makefile command: `make db_load_dummy` you can create data in
-the db and get an output file containing all the id's of the created data.
+Using the makefile command: `make init` you can create data in
+the db and get an output file containing all the id's of the created data. This will also create initial data for gophish.
 
 Incase you want to clear out all data in the DB, use: `make db_drop_mongo`
 
