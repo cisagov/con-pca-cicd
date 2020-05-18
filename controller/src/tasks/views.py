@@ -11,7 +11,7 @@ from drf_yasg.utils import swagger_auto_schema
 
 from config.celery import app
 from .tasks import campaign_report
-from .serializers import CampaignReportSerializer
+from .serializers import CampaignReportSerializer, TaskListSerializer
 
 
 logger = get_logger(__name__)
@@ -20,7 +20,7 @@ inspect = app.control.inspect()
 
 class TaskListView(APIView):
     @swagger_auto_schema(
-        responses={"200": CampaignReportSerializer, "400": "Bad Request",},
+        responses={"200": TaskListSerializer, "400": "Bad Request",},
         security=[],
         operation_id="Campaign report generation tasks",
         operation_description="Return a list of scheduled campaign report generation task",
@@ -37,7 +37,8 @@ class TaskListView(APIView):
             "reserved": inspect.reserved(),
             "registered": inspect.registered(),
         }
-        return Response(context)
+        serializer = TaskListSerializer(context)
+        return Response(serializer.data)
 
     @swagger_auto_schema(
         responses={"200": CampaignReportSerializer, "400": "Bad Request",},
@@ -81,6 +82,11 @@ class TaskView(APIView):
 
         return Response(result)
 
+    @swagger_auto_schema(
+        security=[],
+        operation_id="Delete a task",
+        operation_description="Delete a specific task by its task ID",
+    )
     def delete(self, request, task_id):
         """
         Delete a specific task in the queue
