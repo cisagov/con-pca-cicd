@@ -53,7 +53,7 @@ class SubscriptionsListView(APIView):
     def get(self, request):
         """Get method."""
         parameters = request.data.copy()
-        subscription_list = self.__get_data(
+        subscription_list = self.__get_list(
             parameters, "subscription", SubscriptionModel, validate_subscription
         )
         serializer = SubscriptionGetSerializer(subscription_list, many=True)
@@ -165,14 +165,16 @@ class SubscriptionsListView(APIView):
 
         post_data["gophish_campaign_list"] = gophish_campaign_list
 
-        created_response = self.__save_data(post_data)
+        created_response = self.__save_data(
+            post_data, "subscription", SubscriptionModel, validate_subscription
+        )
 
         if "errors" in created_response:
             return Response(created_response, status=status.HTTP_400_BAD_REQUEST)
         serializer = SubscriptionPostResponseSerializer(created_response)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-    def __get_data(self, parameters, collection, model, validation_model):
+    def __get_list(self, parameters, collection, model, validation_model):
         """
         Get_data private method.
 
@@ -186,7 +188,7 @@ class SubscriptionsListView(APIView):
         )
         return document_list
 
-    def __save_data(self, post_data):
+    def __save_data(self, post_data, collection, model, validation_model):
         """
         Save_data private method.
 
@@ -194,14 +196,16 @@ class SubscriptionsListView(APIView):
         post_data and saves it to the db with the required feilds.
         ToDo: break out the email data into its own collection or keep flat as is.
         """
-        create_timestamp = datetime.datetime.utcnow()
-        current_user = "dev user"
-        post_data["subscription_uuid"] = str(uuid.uuid4())
-        post_data["created_by"] = post_data["last_updated_by"] = current_user
-        post_data["cb_timestamp"] = post_data["lub_timestamp"] = create_timestamp
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
-        service = db_service("subscription", SubscriptionModel, validate_subscription)
+        service = db_service(collection, model, validation_model)
+
+        create_timestamp = datetime.datetime.utcnow()
+        current_user = "dev user"
+        post_data["{}_uuid".format(collection)] = str(uuid.uuid4())
+        post_data["created_by"] = post_data["last_updated_by"] = current_user
+        post_data["cb_timestamp"] = post_data["lub_timestamp"] = create_timestamp
+
         created_response = loop.run_until_complete(service.create(to_create=post_data))
         return created_response
 
@@ -322,3 +326,40 @@ class SubscriptionView(APIView):
 
         delete_response = loop.run_until_complete(service.delete(uuid=uuid))
         return delete_response
+
+
+class SubscriptionsCustomerListView(APIView):
+    """
+    This is the SubscriptionsCustomerListView APIView.
+
+    This handles the API to get a List of Subscriptions with customer_uuid.
+    """
+
+    @swagger_auto_schema(
+        responses={"200": SubscriptionGetSerializer, "400": "Bad Request"},
+        security=[],
+        operation_id="Get list of Subscriptions via customer_uuid",
+        operation_description="This handles the API for the Get a Substription with customer_uuid.",
+    )
+    def get(self, request, customer_uuid):
+        """Get method."""
+        parameters = {"customer_uuid": customer_uuid}
+        subscription_list = self.__get_list(
+            parameters, "subscription", SubscriptionModel, validate_subscription
+        )
+        serializer = SubscriptionGetSerializer(subscription_list, many=True)
+        return Response(serializer.data)
+
+    def __get_list(self, parameters, collection, model, validation_model):
+        """
+        Get_data private method.
+
+        This handles getting the data from the db.
+        """
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        service = db_service(collection, model, validation_model)
+        document_list = loop.run_until_complete(
+            service.filter_list(parameters=parameters)
+        )
+        return document_list
