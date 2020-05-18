@@ -21,7 +21,11 @@ ALLOWED_HOSTS = os.environ.get(
     "DJANGO_ALLOWED_HOSTS", "localhost 127.0.0.1 [::1]"
 ).split()
 
-CORS_ORIGIN_ALLOW_ALL = True
+CORS_ORIGIN_WHITELIST = [
+    "http://localhost:4200",
+    "https://localhost:3333",
+    "http://localhost:8080",
+]
 
 DB_CONFIG = {
     "DB_HOST": os.getenv("DB_HOST"),
