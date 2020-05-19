@@ -98,7 +98,7 @@ class SubscriptionsListView(APIView):
         ]
         templates = personalize_template(customer, template_list, post_data)
 
-        # Data for GoPhisho
+        # Data for GoPhish
         first_name = post_data.get("primary_contact").get("first_name", "")
         last_name = post_data.get("primary_contact").get("last_name", "")
 
