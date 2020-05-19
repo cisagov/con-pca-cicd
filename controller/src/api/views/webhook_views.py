@@ -1,7 +1,5 @@
 """Webhook View."""
 # Standard Python Libraries
-import asyncio
-import datetime
 import logging
 
 # Third-Party Libraries
@@ -11,7 +9,8 @@ from api.serializers import campaign_serializers, webhook_serializers
 from api.serializers.subscriptions_serializers import (
     SubscriptionPatchResponseSerializer,
 )
-from api.utils import db_service, format_ztime
+from api.utils.db_utils import get_single_subscription_webhook, update_single_webhook
+from api.utils.template_utils import format_ztime
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status
 from rest_framework.response import Response
@@ -57,7 +56,12 @@ class IncomingWebhookView(APIView):
         if "message" in data:
             seralized = webhook_serializers.InboundWebhookSerializer(data)
             seralized_data = seralized.data
-            subscription = self.__get_single_subscription(seralized_data["campaign_id"])
+            subscription = get_single_subscription_webhook(
+                seralized_data["campaign_id"],
+                "subscription",
+                SubscriptionModel,
+                validate_subscription,
+            )
 
             if seralized_data["message"] in [
                 "Email Sent",
@@ -85,7 +89,7 @@ class IncomingWebhookView(APIView):
                         campaign["results"] = gophish_campaign_data["results"]
                         campaign["status"] = gophish_campaign_data["status"]
 
-            updated_response = self.__update_single(
+            updated_response = update_single_webhook(
                 subscription=subscription,
                 collection="subscription",
                 model=SubscriptionModel,
@@ -97,28 +101,3 @@ class IncomingWebhookView(APIView):
             return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
 
         return Response()
-
-    def __get_single_subscription(self, campaign_id):
-        """Get single subscription with campaign id."""
-        parameters = {"gophish_campaign_list.campaign_id": campaign_id}
-        loop = asyncio.new_event_loop()
-        asyncio.set_event_loop(loop)
-        service = db_service("subscription", SubscriptionModel, validate_subscription)
-        subscription_list = loop.run_until_complete(
-            service.filter_list(parameters=parameters)
-        )
-        return next(iter(subscription_list), None)
-
-    def __update_single(self, subscription, collection, model, validation):
-        loop = asyncio.new_event_loop()
-        asyncio.set_event_loop(loop)
-        service = db_service(collection, model, validation)
-        put_data = {
-            "last_updated_by": "webhook",
-            "lub_timestamp": datetime.datetime.utcnow(),
-        }
-        subscription.update(put_data)
-        update_response = loop.run_until_complete(service.update(subscription))
-        if "errors" in update_response:
-            return update_response
-        return subscription
