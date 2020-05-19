@@ -17,6 +17,8 @@ controller/src/staticfiles
 controller/src/celerybeat-schedule
 controller/src/celerybeat.pid
 controller/src/scripts/data/created_dummy_data_*.json
+controller/.coverage
+controller/htmlcov/
 
 # Gophish
 gophish/.env
