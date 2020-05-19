@@ -98,31 +98,47 @@ class SubscriptionsListView(APIView):
         ]
         templates = personalize_template(customer, template_list, post_data)
 
-        # Data for GoPhish
-        try:
-            first_name = post_data.get("primary_contact").get("first_name", "")
-            last_name = post_data.get("primary_contact").get("last_name", "")
-        except Exception as exc:
-            print('RKW - Exception with primary contact names: ')
-            print(exc)
+        # Data for GoPhisho
+        first_name = post_data.get("primary_contact").get("first_name", "")
+        last_name = post_data.get("primary_contact").get("last_name", "")
 
+        # get User Groups
+        user_groups = campaign_manager.get("user_group")
+        group_name = f"{last_name}'s Targets"
+        target_list = post_data.get("target_email_list")
 
-        """ RKW TEMP - I can't connect to GP right now, so the whole 
-            block of code that talks to campaign_manager is wrapped in a
-            try so that we can return clean, even if the GP connection tanks.
-        """
-        try:
-            # get User Groups
-            user_groups = campaign_manager.get("user_group")
-            group_name = f"{last_name}'s Targets"
-            target_list = post_data.get("target_email_list")
+        # Note: this could be refactored later
+        if group_name not in [group.name for group in user_groups]:
+            target = campaign_manager.create(
+                "user_group", group_name=group_name, target_list=target_list
+            )
+        else:
+            # get group from list
+            for user_group in user_groups:
+                if user_group.name == group_name:
+                    target = user_group
+                    break
 
-            # Note: this could be refactored later
-            if group_name not in [group.name for group in user_groups]:
-                target = campaign_manager.create(
-                    "user_group", group_name=group_name, target_list=target_list
+        gophish_campaign_list = []
+
+        # Create a GoPhish Campaigns
+        for template in templates:
+            # Create new template
+            created_template = campaign_manager.generate_email_template(
+                name=template["name"], template=template["data"]
+            )
+
+            if created_template is not None:
+                template_name = created_template.name
+                campaign_name = f"{first_name}.{last_name}.1.1 {template_name}"
+                campaign = campaign_manager.create(
+                    "campaign",
+                    campaign_name=campaign_name,
+                    smtp_name="SMTP",
+                    page_name="Phished",
+                    user_group=target,
+                    email_template=created_template,
                 )
-
                 logger.info("campaign created: {}".format(campaign))
 
                 created_campaign = {
