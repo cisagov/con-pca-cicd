@@ -1,0 +1,29 @@
+version: '3.2'
+services:
+  localstack:
+    image: localstack/localstack:latest
+    container_name: pca-localstack
+    ports:
+      - '4563-4599:4563-4599'
+      - '8055:8080'
+    environment:
+      - SERVICES=apigateway,cloudwatch,events,iam,lambda,logs,s3,sns,sqs
+      - DEBUG=1
+      - DATA_DIR=/tmp/localstack/data
+    volumes:
+      - pca-localstack-data:/tmp/localstack
+      - '/var/run/docker.sock:/var/run/docker.sock'
+  terraform:
+    build:
+      context: .
+      dockerfile: terraform.Dockerfile
+    container_name: pca-terraform
+    depends_on: 
+      - localstack
+    image: cpa-terraform:1.0
+    volumes:
+      - pca-terraform-data:/app/state
+      - './terraform:/app/resources'
+volumes:
+  pca-localstack-data:
+  pca-terraform-data:

@@ -57,3 +57,12 @@ init:
 # target: db_drop_mongo - connects to docker and drops mongo volume
 db_drop_mongo:
 	docker volume rm controller_mongodb
+
+# target: tests - runs pytests against code
+tests:
+	coverage run --omit *.venv* -m pytest ./src/ --disable-warnings
+	coverage html
+
+# target: cc - Shows cyclomatic complexity for all code
+cc:
+	radon cc ./src/ -e "*.venv*" -s -o SCORE
