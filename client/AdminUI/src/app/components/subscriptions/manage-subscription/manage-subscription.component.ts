@@ -136,6 +136,9 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
    * 
    */
   changePrimaryContact(e: any) {
+    if (!this.customer) {
+      return;
+    }
     this.primaryContact = this.customer.contact_list
       .find(x => (x.first_name + '_' + x.last_name) == e.value);
     this.subscription.primary_contact = this.primaryContact;

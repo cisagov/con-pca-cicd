@@ -99,8 +99,12 @@ class SubscriptionsListView(APIView):
         templates = personalize_template(customer, template_list, post_data)
 
         # Data for GoPhish
-        first_name = post_data.get("primary_contact").get("first_name", "")
-        last_name = post_data.get("primary_contact").get("last_name", "")
+        try:
+            first_name = post_data.get("primary_contact").get("first_name", "")
+            last_name = post_data.get("primary_contact").get("last_name", "")
+        except Exception as exc:
+            print('RKW - Exception with primary contact names: ')
+            print(exc)
 
 
         """ RKW TEMP - I can't connect to GP right now, so the whole 
@@ -181,8 +185,9 @@ class SubscriptionsListView(APIView):
             serializer = SubscriptionPostResponseSerializer(created_response)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-        except:
-            pass
+        except Exception as exc:
+            print('RKW Exception in subscriptions POST')
+            print(exc)
 
         # RKW DEBUG
         return Response("{abc}", status=status.HTTP_201_CREATED)
