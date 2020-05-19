@@ -9,7 +9,8 @@ import { Guid } from 'guid-typescript';
 import { UserService } from 'src/app/services/user.service';
 import { CustomerService } from 'src/app/services/customer.service';
 import { CustomersComponent } from 'src/app/components/customers/customers.component';
-
+import { XlsxToCsv } from 'src/app/helper/XlsxToCsv';
+import { StringifyOptions } from 'querystring';
 
 @Component({
   selector: 'app-manage-subscription',
@@ -143,6 +144,30 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
       .find(x => (x.first_name + '_' + x.last_name) == e.value);
     this.subscription.primary_contact = this.primaryContact;
     this.subscriptionSvc.subscription.primary_contact = this.primaryContact;
+  }
+
+  /**
+   * Programatically clicks the corresponding file upload element.
+   * @param event
+   */
+  openFileBrowser(event: any) {
+    event.preventDefault();
+    const element: HTMLElement = document.getElementById('csvUpload') as HTMLElement;
+    element.click();
+  }
+
+  /**
+   * Reads the contents of the event's file and puts them into csvText.
+   * @param e The 'file' event
+   */
+  fileSelect(e: any) {
+    let file: any = e.target.files[0];
+
+    let x = new XlsxToCsv();
+    x.convert(file).then((xyz: string) => {
+      this.csvText = xyz;
+    });
+
   }
 
   /**

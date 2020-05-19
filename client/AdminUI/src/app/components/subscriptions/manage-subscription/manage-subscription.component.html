@@ -62,27 +62,28 @@
                 </mat-error>
             </mat-form-field>
 
-            <div>
+            <div class="mb-3">
                 <div>
                     <mat-label class="h6">CSV Content</mat-label>
                 </div>
-                <div class="text-muted">Upload a CSV file containing the list of contacts or enter them
+                <div class="text-muted">Upload an Excel spreadsheet or comma-separated value text 
+                    file containing the list of contacts or enter them
                     directly in the field below.
                 </div>
+                <div class="text-muted">Format: email, firstname, lastname, position</div>
             </div>
 
-            <button mat-raised-button color="primary" class="mb-3">
+            <button mat-raised-button color="primary" class="mb-3" (click)="openFileBrowser($event)">
                 Upload Email Targets List <i class="fa fa-upload"></i>
             </button>
-
-
-            <div class="text-muted">Format: email, firstname, lastname, position</div>
+            <input id="csvUpload" type="file" accept=".csv,.xls,.xlsx" (change)="fileSelect($event)"
+                class="d-none">
+            
             <mat-form-field class="w-100">
                 <mat-label>Target Emails</mat-label>
                 <textarea matNativeControl cdkTextareaAutosize class="form-control" [(ngModel)]="csvText"></textarea>
             </mat-form-field>
         </div>
-
 
         <div class="text-right mt-3">
             <button mat-raised-button color="primary" *ngIf="pageMode == 'CREATE'"
