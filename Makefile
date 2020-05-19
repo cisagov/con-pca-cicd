@@ -29,6 +29,12 @@ up:
 	docker-compose -f ./gophish/docker-compose.yml up -d
 	docker-compose -f ./aws/docker-compose.yml up -d
 
+# target: local - Run all containers required for a local environment
+local:
+	docker-compose -f ./client/docker-compose.yml up -d
+	docker-compose -f ./controller/docker-compose.yml up -d
+	docker-compose -f ./gophish/docker-compose.yml up -d
+
 # target: stop - Stop all docker containers
 stop:
 	docker-compose -f ./client/docker-compose.yml stop

@@ -48,7 +48,7 @@ Build containers:
 
 To run the containers, use:
 
-- `make up`
+- `make local`
 
 Your output will look like:
 
@@ -61,6 +61,10 @@ Creating pca-worker   ... done
 Creating pca-beat     ... done
 Creating pca-api      ... done
 ```
+
+To run containers including aws, use:
+
+- `make up`
 
 Stop containers
 
