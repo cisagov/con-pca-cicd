@@ -236,10 +236,15 @@ old_time_frame_tags = [
 #        "<%TIMEFRAME%>": "Relevent Timeframe",
 
 def main():
-    with open("data/template_old.json") as file:
+
+    if len(sys.argv) != 3:
+        print("Usage: {} [inputfile] [outputfile]".format(sys.argv[0]))
+        exit()
+
+    with open(sys.argv[1]) as file:
         data = json.load(file)
 
-    # Update tags in old template data file (template_old.json)
+    # Update tags in old template data file
     for template in data:
         text = template['text']
 
@@ -284,7 +289,7 @@ def main():
 
         template['text'] = text
 
-    with open("data/template_updated_tags.json", "w") as file:
+    with open(sys.argv[2], "w") as file:
         json.dump(data, file, indent=2)
 
 
