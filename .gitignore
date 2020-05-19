@@ -33,3 +33,6 @@ gophish/.env
 
 # Python env
 env/
+
+# Terraform
+aws/terraform/.terraform
