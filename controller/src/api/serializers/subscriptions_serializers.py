@@ -7,21 +7,7 @@ serializing data coming from the db into a request responce.
 # Third-Party Libraries
 from rest_framework import serializers
 
-
-class SubscriptionContactSerializer(serializers.Serializer):
-    """
-    This is the SubscriptionContact Serializer.
-
-    This is a formats the data coming out of the Db.
-    """
-
-    first_name = serializers.CharField(max_length=250)
-    last_name = serializers.CharField(max_length=250)
-    title = serializers.CharField(max_length=250)
-    # office_phone = serializers.CharField(max_length=100)
-    mobile_phone = serializers.CharField(max_length=100)
-    email = serializers.EmailField(max_length=None, min_length=None, allow_blank=False)
-    notes = serializers.CharField(max_length=None, min_length=None, allow_blank=True)
+from .customer_serializers import CustomerContactSerializer
 
 
 class SubscriptionTargetSerializer(serializers.Serializer):
@@ -132,8 +118,7 @@ class SubscriptionGetSerializer(serializers.Serializer):
     keywords = serializers.CharField(max_length=100)
     start_date = serializers.DateTimeField()
     gophish_campaign_list = GoPhishCampaignsSerializer(many=True)
-    primary_contact = SubscriptionContactSerializer()
-    additional_contact_list = SubscriptionContactSerializer(many=True)
+    primary_contact = CustomerContactSerializer()
     status = serializers.CharField(max_length=100)
     target_email_list = SubscriptionTargetSerializer(many=True)
     templates_selected_uuid_list = serializers.ListField(required=False)
@@ -158,8 +143,7 @@ class SubscriptionPostSerializer(serializers.Serializer):
     keywords = serializers.CharField(max_length=100)
     start_date = serializers.DateTimeField()
     gophish_campaign_list = GoPhishCampaignsSerializer(many=True)
-    primary_contact = SubscriptionContactSerializer()
-    additional_contact_list = SubscriptionContactSerializer(many=True)
+    primary_contact = CustomerContactSerializer()
     status = serializers.CharField(max_length=100)
     target_email_list = SubscriptionTargetSerializer(many=True)
     templates_selected_uuid_list = serializers.ListField()
@@ -189,8 +173,7 @@ class SubscriptionPatchSerializer(serializers.Serializer):
     keywords = serializers.CharField(max_length=100)
     start_date = serializers.DateTimeField(required=False)
     gophish_campaign_list = GoPhishCampaignsSerializer(many=True, required=False)
-    primary_contact = SubscriptionContactSerializer(required=False)
-    additional_contact_list = SubscriptionContactSerializer(many=True, required=False)
+    primary_contact = CustomerContactSerializer(required=False)
     status = serializers.CharField(max_length=100, required=False)
     target_email_list = SubscriptionTargetSerializer(many=True, required=False)
     templates_selected_uuid_list = serializers.ListField(required=False)
@@ -210,8 +193,7 @@ class SubscriptionPatchResponseSerializer(serializers.Serializer):
     keywords = serializers.CharField(max_length=100)
     start_date = serializers.DateTimeField()
     gophish_campaign_list = GoPhishCampaignsSerializer(many=True)
-    primary_contact = SubscriptionContactSerializer()
-    additional_contact_list = SubscriptionContactSerializer(many=True)
+    primary_contact = CustomerContactSerializer()
     status = serializers.CharField(max_length=100)
     target_email_list = SubscriptionTargetSerializer(many=True)
     templates_selected_uuid_list = serializers.ListField(required=False)
