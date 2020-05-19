@@ -28,7 +28,7 @@ export class ContactsComponent implements OnInit {
     private layoutSvc: LayoutMainService, 
     public dialog: MatDialog,
     public customerService: CustomerService) {
-    layoutSvc.setTitle('Con-PCA Contacts Page');
+    layoutSvc.setTitle('Contacts');
   }
 
   searchFilter(searchValue: string): void {
