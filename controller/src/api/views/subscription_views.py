@@ -1,11 +1,9 @@
 """
 Subscription Views.
-
 This handles the api for all the Subscription urls.
 """
 # Standard Python Libraries
 import logging
-
 # Third-Party Libraries
 # Local
 from api.manager import CampaignManager, TemplateManager
@@ -32,22 +30,16 @@ from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
-
 logger = logging.getLogger(__name__)
-
 # GoPhish API Manager
 campaign_manager = CampaignManager()
 # Template Calculator Manager
 template_manager = TemplateManager()
-
-
 class SubscriptionsListView(APIView):
     """
     This is the SubscriptionsListView APIView.
-
     This handles the API to get a List of Subscriptions.
     """
-
     @swagger_auto_schema(
         responses={"200": SubscriptionGetSerializer, "400": "Bad Request"},
         security=[],
@@ -62,7 +54,6 @@ class SubscriptionsListView(APIView):
         )
         serializer = SubscriptionGetSerializer(subscription_list, many=True)
         return Response(serializer.data)
-
     @swagger_auto_schema(
         request_body=SubscriptionPostSerializer,
         responses={"201": SubscriptionPostResponseSerializer, "400": "Bad Request"},
@@ -73,46 +64,37 @@ class SubscriptionsListView(APIView):
     def post(self, request, format=None):
         """Post method."""
         post_data = request.data.copy()
-
         # Get all templates for calc
-        template_list = self.__get_list(
-            None, "template", TemplateModel, validate_template
-        )
-
+        template_list = get_list(None, "template", TemplateModel, validate_template)
         template_data = {
             i.get("template_uuid"): i.get("descriptive_words") for i in template_list
         }
-
         # Data for Template calculation ToDo: Save relevant_templates
-        url = post_data.get("url")
-        keywords = post_data.get("keywords")
-        relevant_templates = template_manager.get_templates(
-            url, keywords, template_data
-        )[:15]
-
+        if post_data.get("keywords"):
+            relevant_templates = template_manager.get_templates(
+                post_data.get("url"), post_data.get("keywords"), template_data
+            )[:15]
+        else:
+            relevant_templates = []
+            
         # Return 15 of the most relevant templates
         post_data["templates_selected_uuid_list"] = relevant_templates
-
         # get customer data
         customer = get_single(
             post_data["customer_uuid"], "customer", CustomerModel, validate_customer
         )
-
         # get relevent template data
         template_list = [
             x for x in template_list if x["template_uuid"] in relevant_templates
         ]
         templates = personalize_template(customer, template_list, post_data)
-
         # Data for GoPhish
         first_name = post_data.get("primary_contact").get("first_name", "")
         last_name = post_data.get("primary_contact").get("last_name", "")
-
         # get User Groups
         user_groups = campaign_manager.get("user_group")
         group_name = f"{last_name}'s Targets"
         target_list = post_data.get("target_email_list")
-
         # Note: this could be refactored later
         if group_name not in [group.name for group in user_groups]:
             target = campaign_manager.create(
@@ -124,16 +106,13 @@ class SubscriptionsListView(APIView):
                 if user_group.name == group_name:
                     target = user_group
                     break
-
         gophish_campaign_list = []
-
         # Create a GoPhish Campaigns
         for template in templates:
             # Create new template
             created_template = campaign_manager.generate_email_template(
                 name=template["name"], template=template["data"]
             )
-
             if created_template is not None:
                 template_name = created_template.name
                 campaign_name = f"{first_name}.{last_name}.1.1 {template_name}"
@@ -146,7 +125,6 @@ class SubscriptionsListView(APIView):
                     email_template=created_template,
                 )
                 logger.info("campaign created: {}".format(campaign))
-
                 created_campaign = {
                     "campaign_id": campaign.id,
                     "name": campaign_name,
@@ -168,26 +146,19 @@ class SubscriptionsListView(APIView):
                     "target_email_list": target_list,
                 }
                 gophish_campaign_list.append(created_campaign)
-
         post_data["gophish_campaign_list"] = gophish_campaign_list
-
         created_response = save_single(
             post_data, "subscription", SubscriptionModel, validate_subscription
         )
-
         if "errors" in created_response:
             return Response(created_response, status=status.HTTP_400_BAD_REQUEST)
         serializer = SubscriptionPostResponseSerializer(created_response)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
-
-
 class SubscriptionView(APIView):
     """
     This is the SubscriptionsView APIView.
-
     This handles the API for the Get a Substription with subscription_uuid.
     """
-
     @swagger_auto_schema(
         responses={"200": SubscriptionGetSerializer, "400": "Bad Request"},
         security=[],
@@ -202,7 +173,6 @@ class SubscriptionView(APIView):
         )
         serializer = SubscriptionGetSerializer(subscription)
         return Response(serializer.data)
-
     @swagger_auto_schema(
         request_body=SubscriptionPatchSerializer,
         responses={"202": SubscriptionPatchResponseSerializer, "400": "Bad Request"},
@@ -227,7 +197,6 @@ class SubscriptionView(APIView):
             return Response(updated_response, status=status.HTTP_400_BAD_REQUEST)
         serializer = SubscriptionPatchResponseSerializer(updated_response)
         return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
-
     @swagger_auto_schema(
         responses={"200": SubscriptionDeleteResponseSerializer, "400": "Bad Request"},
         security=[],
@@ -248,15 +217,11 @@ class SubscriptionView(APIView):
             return Response(delete_response, status=status.HTTP_400_BAD_REQUEST)
         serializer = SubscriptionDeleteResponseSerializer(delete_response)
         return Response(serializer.data, status=status.HTTP_200_OK)
-
-
 class SubscriptionsCustomerListView(APIView):
     """
     This is the SubscriptionsCustomerListView APIView.
-
     This handles the API to get a List of Subscriptions with customer_uuid.
     """
-
     @swagger_auto_schema(
         responses={"200": SubscriptionGetSerializer, "400": "Bad Request"},
         security=[],
