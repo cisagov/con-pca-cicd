@@ -4,6 +4,6 @@ from . import views
 
 
 urlpatterns = [
-  path('', views.run_task, name='run_task'),
-  path("tasks/<task_id>/", views.get_status, name="get_status"),
+    path("", views.TaskListView.as_view(), name="run_task"),
+    path("<task_id>/", views.TaskView.as_view(), name="get_status"),
 ]

@@ -21,7 +21,8 @@ export class AddContactDialogComponent implements OnInit {
     first_name: new FormControl(),
     last_name: new FormControl(),
     title: new FormControl(),
-    phone: new FormControl(),
+    office_phone: new FormControl(),
+    mobile_phone: new FormControl(),
     email: new FormControl(),
     notes: new FormControl()
   })
@@ -64,7 +65,8 @@ export class AddContactDialogComponent implements OnInit {
       first_name: this.form_group.controls['first_name'].value,
       last_name: this.form_group.controls['last_name'].value,
       title: this.form_group.controls['title'].value,
-      phone: this.form_group.controls['phone'].value,
+      office_phone: this.form_group.controls['office_phone'].value,
+      mobile_phone: this.form_group.controls['mobile_phone'].value,
       email: this.form_group.controls['email'].value,
       notes: this.form_group.controls['notes'].value
     }

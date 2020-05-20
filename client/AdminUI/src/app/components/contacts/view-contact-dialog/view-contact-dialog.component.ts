@@ -45,7 +45,8 @@ export class ViewContactDialogComponent implements OnInit {
       first_name: this.data.first_name,
       last_name: this.data.last_name,
       title: this.data.title,
-      phone: this.data.phone,
+      office_phone: this.data.office_phone,
+      mobile_phone: this.data.mobile_phone,
       email: this.data.email,
       notes: this.data.notes
     })

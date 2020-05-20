@@ -9,27 +9,27 @@
             </div>
             <div class="d-flex flex-row" [formGroup]="customerFormGroup">
                 <mat-form-field appearance="outline" class="flex-grow-1">
-                    <mat-label>Customer Id</mat-label>
+                    <mat-label>Customer/Organization Id</mat-label>
                     <input type="text" matInput disabled placeholder="Customer Id" [formControl]="customerFormGroup.controls.customerId">
                 </mat-form-field>
             </div>
             <div class="d-flex flex-row">
                 <mat-form-field appearance="outline" class="flex-grow-1" [formGroup]="customerFormGroup">
                     <mat-label>Customer Name*</mat-label>
-                    <input type="text" matInput placeholder="Customer Name" formControlName="customerName"
+                    <input type="text" matInput placeholder="Customer/Organization Name" formControlName="customerName"
                     [errorStateMatcher]="matchCustomerName">
                     <mat-error *ngIf="customerFormGroup.controls.customerName.hasError('required')">
-                    Customer name is <strong>required</strong>
+                    Customer/Organization name is <strong>required</strong>
                     </mat-error>
                 </mat-form-field>
             </div>
             <div class="d-flex flex-row" >
                 <mat-form-field appearance="outline" class="flex-grow-1" [formGroup]="customerFormGroup">
                     <mat-label>Customer Identifier*</mat-label>
-                    <input type="text" matInput placeholder="Customer Identifier" formControlName="customerIdentifier"
+                    <input type="text" matInput placeholder="Customer/Organization Identifier" formControlName="customerIdentifier"
                     [errorStateMatcher]="matchCustomerIdentifier">
                     <mat-error *ngIf="customerFormGroup.controls.customerIdentifier.hasError('required')">
-                    Customer identifier is <strong>required</strong>
+                    Customer/Organization identifier is <strong>required</strong>
                     </mat-error>
                 </mat-form-field>
             </div>
@@ -82,11 +82,11 @@
             </div>
         </div>
     </div>
-    <h1>Customer Contacts</h1>
+    <h1>Customer/Organization Contacts</h1>
     <div class="d-flex flex-row mb-5">
         <div class="d-flex flex-grow-1 flex-column add-contact-width">
             <div class="d-flex flex-row">
-                <button mat-raised-button color="primary" (click)="showAddContact()" *ngIf="!addContact">Add Contact</button>
+                <button mat-raised-button color="primary" (click)="showAddContact()" *ngIf="!addContact">Add Contact/Organization</button>
             </div>
             
             <div class="d-flex flex-row p-2 flex-grow-1 add-contact-width" *ngIf="addContact">
@@ -126,8 +126,14 @@
                             </div>
                             <div class="d-flex flex-column mr-2 w-50" [formGroup]="contactFormGroup">
                                 <mat-form-field appearance="outline">
-                                    <mat-label>Phone</mat-label>
-                                    <input type="text" matInput placeholder="Phone" formControlName="phone">
+                                    <mat-label>Office Phone</mat-label>
+                                    <input type="text" matInput placeholder="Office Phone" formControlName="office_phone">
+                                </mat-form-field>
+                            </div>
+                            <div class="d-flex flex-column mr-2 w-50" [formGroup]="contactFormGroup">
+                                <mat-form-field appearance="outline">
+                                    <mat-label>Mobile Phone</mat-label>
+                                    <input type="text" matInput placeholder="Mobile Phone" formControlName="mobile_phone">
                                 </mat-form-field>
                             </div>
                            

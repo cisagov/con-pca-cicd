@@ -28,7 +28,7 @@ export class CustomersComponent implements OnInit {
     public customer_service: CustomerService,
     public dialog: MatDialog
   ) { 
-    layout_service.setTitle('Con-PCA Customers Page')
+    layout_service.setTitle('Customers')
   }
 
   private refresh(): void {

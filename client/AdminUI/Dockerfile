@@ -5,7 +5,7 @@ WORKDIR /app
 COPY package.json /app/package.json
 
 RUN npm install --loglevel=error
-RUN npm install -g @angular/cli@7.3.9
+RUN npm install -g @angular/cli@9.1.0
 
 ENV PATH /app/node_modules/.bin:$PATH
 

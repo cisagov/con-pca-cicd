@@ -87,8 +87,8 @@ Drop DB of all data
 
 ### Creating and loading random data
 
-Using the makefile command: `make db_load_dummy` you can create data in
-the db and get an output file containing all the id's of the created data.
+Using the makefile command: `make init` you can create data in
+the db and get an output file containing all the id's of the created data. This will also create initial data for gophish.
 
 Incase you want to clear out all data in the DB, use: `make db_drop_mongo`
 
@@ -238,3 +238,53 @@ X-Content-Type-Options: nosniff
 Notes: see
 [additional docker refs](https://linuxize.com/post/how-to-remove-docker-images-containers-volumes-and-networks/)
 for trouble shooting Docker
+
+## Testing / Styling / Design
+
+### Install requirements
+
+```bash
+python -m venv .venv
+.venv/bin/activate # Linux
+.venv/Scripts/Activate.ps1 # Windows
+pip install -r requirements.txt
+pip install -r test_requirements.txt
+```
+
+### Pytest / Coverage
+
+For testing we will use `pytest` for running tests, `Coverage` for determing what more tests we need to write, and `pytest-mock` for mocking code.
+
+- [pytest](https://docs.pytest.org/en/latest/)
+
+- [pytest-mock](https://github.com/pytest-dev/pytest-mock/)
+
+- [coverage](https://coverage.readthedocs.io/en/coverage-5.1/)
+
+Here are the commands that can be run.
+
+```bash
+coverage run --omit *.venv* -m pytest ./src/ --disable-warnings
+coverage report
+coverage html
+```
+
+### Cyclomatic Complexity
+
+We will be using the radon package to determine code complexity and using cyclomatic complexity in particular. 
+
+- [radon](https://radon.readthedocs.io/en/latest/)
+
+```bash
+radon cc ./src/ -e "*.venv*" -s -o SCORE
+```
+
+### Styling
+
+For uniform styling, the black library can be used.
+
+- [black](https://pypi.org/project/black/)
+
+```bash
+black /path/to/file
+```

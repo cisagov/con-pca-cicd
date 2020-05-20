@@ -39,9 +39,8 @@ Use `Makefile` to install and run all services.
 
 Create your .env files
 
-- `cp ./client/etc/env.dist ./client/.env`
-- `cp ./controller/etc/env.dist ./controller/.env`
-- `cp ./gophish/etc/env.dist ./gophish/.env`
+- `make env`
+- **note**: reach out to someone to update your `.env` files with project secrets
 
 Build containers:
 
@@ -49,7 +48,7 @@ Build containers:
 
 To run the containers, use:
 
-- `make up`
+- `make local`
 
 Your output will look like:
 
@@ -62,6 +61,10 @@ Creating pca-worker   ... done
 Creating pca-beat     ... done
 Creating pca-api      ... done
 ```
+
+To run containers including aws, use:
+
+- `make up`
 
 Stop containers
 

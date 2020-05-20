@@ -1,6 +1,6 @@
 <ng-container>
   <mat-toolbar class="docs-header" color="primary">
-    <div class="header-logo header-logo-background">
+    <div class="header-logo ">
       <img src="assets/CPA-logo-white.png" style="height: 3.5rem" />
     </div>
     <button
@@ -12,7 +12,7 @@
     >
       <i class="material-icons">menu</i>
     </button>
-    <div class="header-title">{{ layoutSvc.getTitle() }}</div>
+    
     <span class="fill-remaining-space"></span>
     <span class="loggin-user">
       Barry Hansen
@@ -54,15 +54,12 @@
       <a mat-list-item routerLink="/templates">Templates</a>
       <a mat-list-item routerLink="/contacts">Contacts</a>
       <a mat-list-item routerLink="/domains">Domains</a>
-<<<<<<< HEAD
-      <a mat-list-item routerLink="/organizations">Customers</a>
-=======
       <a mat-list-item routerLink="/customers">Customers</a>
->>>>>>> 5f627f8b415a29904623fbd4600274a7df3af0e6
       <a mat-list-item routerLink="/useradmin">User Admin</a>
     </mat-nav-list>
     </mat-sidenav>
     <mat-sidenav-content #mainContent class="sidenav-content">
+      <div class="header-title"><h1 class="font-header">{{ layoutSvc.getTitle() }}</h1></div>
       <mat-card>
         <mat-card-content #matCard>
           <router-outlet></router-outlet>

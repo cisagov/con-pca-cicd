@@ -17,27 +17,7 @@ from database.repository.types import (
     UUIDType,
 )
 
-
-class SubscriptionContactModel(Model):
-    """
-    This is the SubscriptionContact Model.
-
-    This is a format to hold contact information in the subscription model.
-    first_name = StringType(required=True)
-    last_name = StringType(required=True)
-    office_phone = StringType(required=True)
-    mobile_phone = StringType()
-    customer = StringType()
-    email = EmailType(required=True)
-    """
-
-    first_name = StringType(required=True)
-    last_name = StringType(required=True)
-    title = StringType()
-    office_phone = StringType()
-    mobile_phone = StringType()
-    email = EmailType(required=True)
-    notes = StringType()
+from .customer_models import CustomerContactModel
 
 
 class SubscriptionTargetModel(Model):
@@ -186,11 +166,9 @@ class SubscriptionModel(Model):
     # report_count = IntType()
     gophish_campaign_list = ListType(ModelType(GoPhishCampaignsModel))
     # first_report_timestamp = DateTimeType()
-    primary_contact = ModelType(SubscriptionContactModel)
-    additional_contact_list = ListType(ModelType(SubscriptionContactModel))
+    primary_contact = ModelType(CustomerContactModel)
     status = StringType()
     target_email_list = ListType(ModelType(SubscriptionTargetModel))
-    # click_list = ListType(ModelType(SubscriptionClicksModel))
     templates_selected_uuid_list = ListType(StringType)
     active = BooleanType()
     # db data tracking added below

@@ -45,10 +45,7 @@ format:
 	docker exec pca-api isort --multi-line=3 --trailing-comma --force-grid-wrap=0 --use-parentheses --line-width=100 -rc .
 	docker exec pca-api black -l 100 .
 
-# target: db_load_dummy - connects to db and creates dummy-data and dumps file with id's
-db_load_dummy:
-	docker exec -it pca-api python scripts/create_dummy_data.py
-
+# target: init - initialize project with dummy data for mongo and gophish databases
 init:
 	docker exec -it pca-api python scripts/init_gophish.py
 	docker exec -it pca-api python scripts/create_dummy_data.py
@@ -56,3 +53,12 @@ init:
 # target: db_drop_mongo - connects to docker and drops mongo volume
 db_drop_mongo:
 	docker volume rm controller_mongodb
+
+# target: tests - runs pytests against code
+tests:
+	coverage run --omit *.venv* -m pytest ./src/ --disable-warnings
+	coverage html
+
+# target: cc - Shows cyclomatic complexity for all code
+cc:
+	radon cc ./src/ -e "*.venv*" -s -o SCORE
