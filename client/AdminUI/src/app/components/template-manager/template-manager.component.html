@@ -204,7 +204,7 @@
                   />
                 </mat-form-field>
               </div>
-              <div class="d-flex flex-column mt-2">
+              <div class="d-flex flex-column pb-3">
                 <mat-form-field appearance="outline" class="flex-grow-1">
                   <mat-label>Descriptive Words (CSV)</mat-label>
                   <textarea
@@ -217,6 +217,28 @@
                   ></textarea>
                 </mat-form-field>
               </div>
+
+              <div class="d-flex flex-column pb-3">
+                <div class="d-flex flex-row">
+                  <!-- RETIRED CHECKBOX -->
+                  <mat-checkbox formControlName="templateRetired" class="mt-5 mr-3">
+                    <mat-label>Retired</mat-label>
+                  </mat-checkbox>
+                   <!-- RETIRED DESCRIPTION -->
+                  <mat-form-field appearance="outline" class="flex-grow-1">
+                    <mat-label>Template Retired Description</mat-label>
+                    <textarea
+                      matInput
+                      cdkTextareaAutosize
+                      cdkAutosizeMinRows="5"
+                      cdkAutosizeMaxRows="10"
+                      placeholder="Template Retired Description"
+                      formControlName="templateRetiredDescription"
+                    ></textarea>
+                  </mat-form-field>
+                </div>
+              </div>
+
             </div>
           </mat-tab>
         </mat-tab-group>

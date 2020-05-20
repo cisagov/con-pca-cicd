@@ -66,6 +66,7 @@ class SubscriptionsListView(APIView):
         post_data = request.data.copy()
         # Get all templates for calc
         template_list = get_list(None, "template", TemplateModel, validate_template)
+
         template_data = {
             i.get("template_uuid"): i.get("descriptive_words") for i in template_list
         }

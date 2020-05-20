@@ -22,6 +22,7 @@ export class Template {
   from_address: string;
   //display_link: string;
   retired: boolean;
+  retired_description: boolean;
   subject: string;
   text: string;
   html: string;

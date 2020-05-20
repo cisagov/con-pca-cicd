@@ -156,6 +156,7 @@ export class TemplateManagerComponent implements OnInit {
         Validators.required
       ]),
       templateRetired: new FormControl(template.retired),
+      templateRetiredDescription: new FormControl(template.retired_description),
       templateSubject: new FormControl(template.subject, [Validators.required]),
       templateText: new FormControl(template.text),
       templateHTML: new FormControl(template.html, [Validators.required]),
@@ -202,6 +203,7 @@ export class TemplateManagerComponent implements OnInit {
         description: form.controls['templateDescription'].value,
         from_address: form.controls['templateFromAddress'].value,
         retired: form.controls['templateRetired'].value,
+        retired_description: form.controls['templateRetiredDescription'].value,
         subject: form.controls['templateSubject'].value,
         text: form.controls['templateText'].value,
         html: form.controls['templateHTML'].value,
