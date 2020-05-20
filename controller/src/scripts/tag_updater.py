@@ -10,40 +10,7 @@ import sys
 
 # Old tags that still need to be placed in categories for updated tags
 #
-#       ***DOMAIN TAGS***
-#       DOMAIN
-#       domain
-#       [domain]
-#       [DOMAIN]
-#       [Spoofed Domain]
-#       [SPOOFED_DOMAIN]
-#       [UNIVERSITY-DOMAIN]
-#       [NCATS_DOMAIN]
-#       [NCATS DOMAIN]
-#       [WRITTEN OUT SPOOFED CUSTOMER SURVEY DOMAIN]
-#       [CUSTOMER-DOMAIN]
-#
-#       ***ACRONYM TAGS***
-#       [Group Acronym]
-#       [Acronym]
-#       (Acronym)
-#       [ACRONYM]
-#       <Acronym>
-#       <ACRONYM>
-#       [GROUP ACRONYM]
-#       [CUSTOMER ACRONYM]
-#
-#       ***SLOGAN TAGS***
-#       [CUSTOMER SLOGAN]
-#
-#       ***SIGNATURE TAGS***
-#       [Organization Signature]
-#       [Signature]
-#
-#       ***TOPIC TAGS***
-#       [TOPIC]
-#
-#       ***MISC/SPECIFIC TAGS***
+#       ***MISC/UNCATEGORIZED TAGS***
 #       [Related User Type]
 #       [TimeCardProgram]
 #       [CUST_SYSTEM]
@@ -58,14 +25,37 @@ import sys
 #       [CUSTOMER LEADERSHIP OFFICE]
 #       [CUSTOMER EMAIL]
 #       <ORG WEB PLATFORM/SERVICE>
+#       <ORG INTRANET>
+#       <ORG SYSTEM>
+#       [NAME OF PARKING OR COMMUTER PROGRAM]
+#       <NAME@SPOOFED INTERNAL ADDR>
+#       [PROGRAM DEPARTMENT]
+#       [RELEVANT EXTERNAL SITE]
+#       [FORM NAME]
+#       [KNOWN CUSTOMER OFFICE]
+#       [PROPER TITLE FOR OFFICE SUPPLY MANAGER]
+#       [CUSTOMER HR OFFICE]
+#       [SPOOFED CUSTOMER EMAIL]
+#       [CUSTOMER OFFICE EMAIL]
+#       [OTHER ORG]
+#       [Relevant Position]
+#       [Relevant Skill]
+#       [Related\nAuthority to Customer]
+#       [Related User Type]
+#       %TOKEN%
+#       [amount or number]
+#       [LEGIT CONTRACT #]
+#       [LEGIT SOLICITATION #]
+#       [LEGIT_JOB_PREFIX]
+#       [LEGIT_JOB]
+#       [ACTUAL ADDRESS OF DEPT]
 
 old_target_name_tags = [
     "%To_Name%"
-    "%To%"
 ]
 
-old_from_tags: [
-
+old_target_email_tags = [
+    "%To%"
 ]
 
 old_customer_tags = [
@@ -81,13 +71,14 @@ old_customer_tags = [
     "[CustomerName]",
     "[CUSTOMER_NAME]",
     "[Stakeholder Long Name]",
-    "[Stakeholder]"
+    "[Stakeholder]",
     "[UNIVERSITY_NAME]",
     "[AGENCY NAME]",
     "[Organization]",
     "[ORGANIZATION]",
     "[Organization Name]",
-    "<CUST_NAME>"
+    "<CUST_NAME>",
+    "[CUST_Name]",
     "[Organization Type]",
     "[ORG/CITY/TOWN/STATE]",
     "[CUSTOMER GROUP FOR PAYMENTS]",
@@ -118,7 +109,6 @@ old_date_tags = [
 ]
 
 old_link_tags = [
-    "<%URL%>",
     "<[%]URL[%]>",
     "<Spoofed Link>",
     "[Spoofed Related Site]",
@@ -145,8 +135,9 @@ old_link_tags = [
     "[spoof fake URL]",
     "[Related URL to State Law or Rule]",
     "[Fake Web Page URL]",
+    "%]URL[%",
     "%URL%",
-    "%]URL[%"
+    "<<%URL%>>"
 ]
 
 old_state_tags = [
@@ -165,10 +156,13 @@ old_season_tags = [
 old_customer_location_tags = [
     "[Customer Location, ex. Town of...]",
     "[Customer Location ex. Town of...]",
-    "[Customer City]", "[CUST_LOCATION/NETWORK]",
+    "[Customer City]", 
+    "[CUST_LOCATION/NETWORK]",
     "<CITY/ORG NAME>",
     "[Location or Customer]",
-    "[Customer Location]"
+    "[Customer Location]",
+    "[Insert location]",
+    "[LEGIT_LOCATION]"
 ]
 
 old_month_tags = [
@@ -196,15 +190,81 @@ old_spoof_name_tags = [
     "[Fake Name]",
     "[fakename]",
     "[MADE UP NAME]",
-    "[FAKE NAME]"
+    "[FAKE NAME]",
+    "FIRST LAST",
+    "[FAKE_NAME]"
 ]
 
 old_event_tags = [
-    "[list relevant weather event]"
+    "[list relevant weather event]",
+    "[CUSTOMER SPECIFIC EVENT]"
 ]
 
 old_time_frame_tags = [
     "[Change time frame as needed]"
+]
+
+old_domain_tags = [
+    "[domain]",
+    "[Domain]",
+    "[DOMAIN]",
+    "[Spoofed Domain]",
+    "[SPOOFED_DOMAIN]",
+    "[UNIVERSITY-DOMAIN]",
+    "[UNIVERSITY_DOMAIN]",
+    "[NCATS_DOMAIN]",
+    "[NCATS DOMAIN]",
+    "[WRITTEN OUT SPOOFED CUSTOMER SURVEY DOMAIN]",
+    "[CUSTOMER-DOMAIN]",
+    "[WRITTEN OUT SPOOFED CUSTOMER DOMAIN]",
+    "[Similar Customer Domain]",
+    "[Spoofed Similar Org Domain]",
+    "[spoofed.domain.tld]",
+    "spoofed.domain.tld",
+    "fake.domain.tld",
+    "NCATS_DOMAIN.tld",
+    "ncats.domain.tld",
+    "spoofedfakeinteneral.ncatsdomain.tld",
+    "[SPOOFED_CUST_DOMAIN]",
+    "[CUSTOM_DOMAIN]",
+    "[CUST_DOMAIN]",
+    "[CUST_DOMAIN_SPOOF]",
+    "FAKE-BUSINESS-SITE.tld",
+    "NCATS-DOMAIN.tld",
+    "[UNRELATED_DOMAIN.tld]",
+    "[GENERIC_DOMAIN.tld]",
+    "NCATS.domain",
+    "[subdomain.domain.tld]"
+]
+
+old_acronym_tags = [
+    "[Group Acronym]",
+    "[Acronym]",
+    "(Acronym)",
+    "(ACRONYM)",
+    "[ACRONYM]",
+    "<Acronym>",
+    "<ACRONYM>",
+    "[GROUP ACRONYM]",
+    "[CUSTOMER ACRONYM]",
+    "[CUSTOMER SPECIFIC GROUP ACRONYM]",
+    "[CustomerAcronymLikeSite]",
+    "[Stakeholder Acronym]",
+    "[customeracronymorname]"
+]
+
+old_slogan_tags = [
+    "[CUSTOMER SLOGAN]"
+]
+
+old_signature_tags = [
+    "[Organization Signature]",
+    "[Signature]",
+    "[SIGNATURE LINE]"
+]
+
+old_topic_tags = [
+    "[TOPIC]"
 ]
 
 # New Uniform Tags
@@ -234,6 +294,11 @@ old_time_frame_tags = [
 #        "<%SPOOF_NAME%>": "FAKE NAME GERNERATOR",
 #        "<%EVENT%>": "Relevent Event",
 #        "<%TIMEFRAME%>": "Relevent Timeframe",
+#        "<%DOMAIN%>": "Relevenat Domain",
+#        "<%ACRONYM%>": "Relevant Acronym",
+#        "<%SLOGAN%>": "Relevant Slogan",
+#        "<%SIGNATURE%>": "Relevenat Signature",
+#        "<%TOPIC%>": "Relevant Topic"
 
 def main():
 
@@ -253,6 +318,9 @@ def main():
 
         for tag in old_target_name_tags:
             text = text.replace(tag, "<%TARGET_FULL_NAME%>")
+
+        for tag in old_target_email_tags:
+            text = text.replace(tag, "<%TARGET_EMAIL%>")
 
         for tag in old_customer_tags:
             text = text.replace(tag, "<%CUSTOMER_NAME%>")
@@ -286,6 +354,21 @@ def main():
 
         for tag in old_time_frame_tags:
             text = text.replace(tag, "<%TIMEFRAME%>")
+
+        for tag in old_domain_tags:
+            text = text.replace(tag, "<%DOMAIN%>")
+
+        for tag in old_acronym_tags:
+            text = text.replace(tag, "<%ACRONYM%>")
+
+        for tag in old_slogan_tags:
+            text = text.replace(tag, "<%SLOGAN%>")
+
+        for tag in old_signature_tags:
+            text = text.replace(tag, "<%SIGNATURE%>")
+
+        for tag in old_topic_tags:
+            text = text.replace(tag, "<%TOPIC%>")
 
         template['text'] = text
 
