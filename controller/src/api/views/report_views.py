@@ -33,6 +33,12 @@ class ReportsView(APIView):
     This handles the API a Get .
     """
 
+    @swagger_auto_schema(
+        responses={"200": ReportsGetSerializer, "400": "Bad Request",},
+        security=[],
+        operation_id="Get Subscription Report Details",
+        operation_description=" This handles the API to get details on a Subscription Report",
+    )
     def get(self, request, subscription_uuid):
         subscription = get_single(
             subscription_uuid, "subscription", SubscriptionModel, validate_subscription
