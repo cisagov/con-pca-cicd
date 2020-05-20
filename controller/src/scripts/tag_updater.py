@@ -11,43 +11,43 @@ import sys
 # Old tags that still need to be placed in categories for updated tags
 #
 #       ***MISC/UNCATEGORIZED TAGS***
+
 #       [Related User Type]
-#       [TimeCardProgram]
+
+#       <ORG SYSTEM>
 #       [CUST_SYSTEM]
-#       [Actual Division that Handles Pay]
-#       [LOGO]
-#       [Related Budget/Finance Department]
-#       [CUSTOMER-RELEVENT-JOB-ROLE]
-#       [name of parks from opensource gathering]
-#       <CUST_IT_Dept_NAME>
+#       <ORG WEB PLATFORM/SERVICE>
 #       [System Name]
+
+#       [LOGO]
+
+#       [OTHER ORG]
+#       [RELEVANT EXTERNAL SITE]
+
+#       [CUSTOMER-RELEVENT-JOB-ROLE]
+#       [Relevant Position]
+#       [LEGIT_JOB]
+
+#       [name of parks from opensource gathering]
 #       [County Election's Staff, Information Systems personnel across the State]
 #       [CUSTOMER LEADERSHIP OFFICE]
+
 #       [CUSTOMER EMAIL]
-#       <ORG WEB PLATFORM/SERVICE>
-#       <ORG INTRANET>
-#       <ORG SYSTEM>
-#       [NAME OF PARKING OR COMMUTER PROGRAM]
-#       <NAME@SPOOFED INTERNAL ADDR>
-#       [PROGRAM DEPARTMENT]
-#       [RELEVANT EXTERNAL SITE]
-#       [FORM NAME]
-#       [KNOWN CUSTOMER OFFICE]
-#       [PROPER TITLE FOR OFFICE SUPPLY MANAGER]
-#       [CUSTOMER HR OFFICE]
 #       [SPOOFED CUSTOMER EMAIL]
 #       [CUSTOMER OFFICE EMAIL]
-#       [OTHER ORG]
-#       [Relevant Position]
+#       <NAME@SPOOFED INTERNAL ADDR>
+
+#       <ORG INTRANET>
+
+#       [FORM NAME]
+
+#       [PROPER TITLE FOR OFFICE SUPPLY MANAGER]
 #       [Relevant Skill]
 #       [Related\nAuthority to Customer]
-#       [Related User Type]
-#       %TOKEN%
 #       [amount or number]
 #       [LEGIT CONTRACT #]
 #       [LEGIT SOLICITATION #]
 #       [LEGIT_JOB_PREFIX]
-#       [LEGIT_JOB]
 #       [ACTUAL ADDRESS OF DEPT]
 
 old_target_name_tags = [
@@ -82,7 +82,13 @@ old_customer_tags = [
     "[Organization Type]",
     "[ORG/CITY/TOWN/STATE]",
     "[CUSTOMER GROUP FOR PAYMENTS]",
-    "[CUSTOMER SPECIFIC GROUP]"
+    "[CUSTOMER SPECIFIC GROUP]",
+    "[Actual Division that Handles Pay]",
+    "<CUST_IT_Dept_NAME>",
+    "[Related Budget/Finance Department]",
+    "[PROGRAM DEPARTMENT]",
+    "[KNOWN CUSTOMER OFFICE]",
+    "[CUSTOMER HR OFFICE]"
 ]
 
 old_address_tags = [
@@ -267,6 +273,15 @@ old_topic_tags = [
     "[TOPIC]"
 ]
 
+old_token_tags = [
+    "%TOKEN%"
+]
+
+old_program_tags = [
+    "[TimeCardProgram]",
+    "[NAME OF PARKING OR COMMUTER PROGRAM]"
+]
+
 # New Uniform Tags
 #        "<%URL%>": "{{.URL}}",
 #        "<%TARGET_FIRST_NAME%>": "{{.FirstName}}",
@@ -298,7 +313,9 @@ old_topic_tags = [
 #        "<%ACRONYM%>": "Relevant Acronym",
 #        "<%SLOGAN%>": "Relevant Slogan",
 #        "<%SIGNATURE%>": "Relevenat Signature",
-#        "<%TOPIC%>": "Relevant Topic"
+#        "<%TOPIC%>": "Relevant Topic",
+#        "<%TOKEN%>": "Relevant Token",
+#        "<%PROGRAM%>": Relevant Program",
 
 def main():
 
@@ -369,6 +386,12 @@ def main():
 
         for tag in old_topic_tags:
             text = text.replace(tag, "<%TOPIC%>")
+
+        for tag in old_token_tags:
+            text = text.replace(tag, "<%TOKEN%>")
+
+        for tag in old_program_tags:
+            text = text.replace(tag, "<%PROGRAM%>")
 
         template['text'] = text
 
