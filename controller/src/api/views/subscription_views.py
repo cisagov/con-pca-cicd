@@ -164,7 +164,7 @@ class SubscriptionView(APIView):
         responses={"200": SubscriptionGetSerializer, "400": "Bad Request"},
         security=[],
         operation_id="Get single Subscription",
-        operation_description="This handles the API for the Get a Substription with subscription_uuid.",
+        operation_description="This handles the API for the Get a Subscription with subscription_uuid.",
     )
     def get(self, request, subscription_uuid):
         """Get method."""
@@ -193,7 +193,7 @@ class SubscriptionView(APIView):
             model=SubscriptionModel,
             validation_model=validate_subscription,
         )
-        logger.info("created responce {}".format(updated_response))
+        logging.info("created response {}".format(updated_response))
         if "errors" in updated_response:
             return Response(updated_response, status=status.HTTP_400_BAD_REQUEST)
         serializer = SubscriptionPatchResponseSerializer(updated_response)
@@ -213,7 +213,7 @@ class SubscriptionView(APIView):
             model=SubscriptionModel,
             validation_model=validate_subscription,
         )
-        logger.info("delete responce {}".format(delete_response))
+        logging.info("delete response {}".format(delete_response))
         if "errors" in delete_response:
             return Response(delete_response, status=status.HTTP_400_BAD_REQUEST)
         serializer = SubscriptionDeleteResponseSerializer(delete_response)

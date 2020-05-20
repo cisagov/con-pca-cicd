@@ -1,8 +1,8 @@
 """
 WebHook Serializers.
 
-These are Django Rest Famerwork Serializers. These are used for
-serializing data coming from the db into a request responce.
+These are Django Rest Framework Serializers. These are used for
+serializing data coming from the db into a request response.
 """
 # Third-Party Libraries
 from rest_framework import serializers
