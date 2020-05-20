@@ -21,6 +21,7 @@ export class ContactsComponent implements OnInit {
     "first_name",
     "last_name",
     "title",
+    "active",
     "select"
   ];
 

@@ -44,6 +44,7 @@ export class CustomerService {
           mobile_phone: contact.mobile_phone,
           email: contact.email,
           notes: contact.notes,
+          active: contact.active
         }
         customerContacts.push(customerContact)
       })

@@ -18,6 +18,7 @@ export class ViewContactDialogComponent implements OnInit {
     phone: new FormControl(),
     email: new FormControl(),
     notes: new FormControl(),
+    active: new FormControl(),
   })
 
   customer: Customer
@@ -49,7 +50,7 @@ export class ViewContactDialogComponent implements OnInit {
       mobile_phone: this.data.mobile_phone,
       email: this.data.email,
       notes: this.data.notes,
-      active: true
+      active: this.data.active
     })
 
     this.saveContacts()

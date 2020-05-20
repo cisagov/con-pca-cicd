@@ -42,5 +42,6 @@ export interface ICustomerContact {
     mobile_phone: string;
     email: string;
     notes: string;
+    active: boolean;
   }
 
