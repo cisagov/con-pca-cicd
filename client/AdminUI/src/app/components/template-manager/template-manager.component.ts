@@ -244,7 +244,7 @@ export class TemplateManagerComponent implements OnInit {
           .updateTemplate(templateToSave)
           .then(
             (success) => {
-              this.router.navigate(['/templatespage']);
+              this.router.navigate(['/templates']);
               // let retTemplate = <Template>success
               // this.updateTemplateInList(retTemplate)
             },
@@ -255,7 +255,7 @@ export class TemplateManagerComponent implements OnInit {
         this.templateManagerSvc
           .saveNewTemplate(templateToSave).then(
           (success) => {
-            this.router.navigate(['/templatespage']);
+            this.router.navigate(['/templates']);
             // let retTemplate = new Template({
             //   'template_uuid': success['template_uuid'],
             //   'name': templateToSave.name,
