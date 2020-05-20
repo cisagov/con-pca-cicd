@@ -4,10 +4,7 @@ Subscription Views.
 This handles the api for all the Subscription urls.
 """
 # Standard Python Libraries
-import asyncio
-import datetime
 import logging
-import uuid
 
 # Third-Party Libraries
 # Local
@@ -23,7 +20,14 @@ from api.serializers.subscriptions_serializers import (
     SubscriptionPostResponseSerializer,
     SubscriptionPostSerializer,
 )
-from api.utils import db_service, format_ztime, personalize_template
+from api.utils.db_utils import (
+    delete_single,
+    get_list,
+    get_single,
+    save_single,
+    update_single,
+)
+from api.utils.template_utils import format_ztime, personalize_template
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status
 from rest_framework.response import Response
@@ -53,7 +57,7 @@ class SubscriptionsListView(APIView):
     def get(self, request):
         """Get method."""
         parameters = request.data.copy()
-        subscription_list = self.__get_list(
+        subscription_list = get_list(
             parameters, "subscription", SubscriptionModel, validate_subscription
         )
         serializer = SubscriptionGetSerializer(subscription_list, many=True)
@@ -71,9 +75,7 @@ class SubscriptionsListView(APIView):
         post_data = request.data.copy()
 
         # Get all templates for calc
-        template_list = self.__get_data(
-            None, "template", TemplateModel, validate_template
-        )
+        template_list = get_list(None, "template", TemplateModel, validate_template)
 
         template_data = {
             i.get("template_uuid"): i.get("descriptive_words") for i in template_list
@@ -88,7 +90,7 @@ class SubscriptionsListView(APIView):
         post_data["templates_selected_uuid_list"] = relevant_templates
 
         # get customer data
-        customer = self.__get_single(
+        customer = get_single(
             post_data["customer_uuid"], "customer", CustomerModel, validate_customer
         )
 
@@ -165,7 +167,7 @@ class SubscriptionsListView(APIView):
 
         post_data["gophish_campaign_list"] = gophish_campaign_list
 
-        created_response = self.__save_data(
+        created_response = save_single(
             post_data, "subscription", SubscriptionModel, validate_subscription
         )
 
@@ -173,53 +175,6 @@ class SubscriptionsListView(APIView):
             return Response(created_response, status=status.HTTP_400_BAD_REQUEST)
         serializer = SubscriptionPostResponseSerializer(created_response)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
-
-    def __get_list(self, parameters, collection, model, validation_model):
-        """
-        Get_data private method.
-
-        This handles getting the data from the db.
-        """
-        loop = asyncio.new_event_loop()
-        asyncio.set_event_loop(loop)
-        service = db_service(collection, model, validation_model)
-        document_list = loop.run_until_complete(
-            service.filter_list(parameters=parameters)
-        )
-        return document_list
-
-    def __save_data(self, post_data, collection, model, validation_model):
-        """
-        Save_data private method.
-
-        This method is a private method that takes in
-        post_data and saves it to the db with the required feilds.
-        ToDo: break out the email data into its own collection or keep flat as is.
-        """
-        loop = asyncio.new_event_loop()
-        asyncio.set_event_loop(loop)
-        service = db_service(collection, model, validation_model)
-
-        create_timestamp = datetime.datetime.utcnow()
-        current_user = "dev user"
-        post_data["{}_uuid".format(collection)] = str(uuid.uuid4())
-        post_data["created_by"] = post_data["last_updated_by"] = current_user
-        post_data["cb_timestamp"] = post_data["lub_timestamp"] = create_timestamp
-
-        created_response = loop.run_until_complete(service.create(to_create=post_data))
-        return created_response
-
-    def __get_single(self, uuid, collection, model, validation_model):
-        """
-        Get_single private method.
-
-        This handles getting the data from the db.
-        """
-        loop = asyncio.new_event_loop()
-        asyncio.set_event_loop(loop)
-        service = db_service(collection, model, validation_model)
-        document = loop.run_until_complete(service.get(uuid=uuid))
-        return document
 
 
 class SubscriptionView(APIView):
@@ -238,7 +193,9 @@ class SubscriptionView(APIView):
     def get(self, request, subscription_uuid):
         """Get method."""
         print("get subscription_uuid {}".format(subscription_uuid))
-        subscription = self.__get_single(subscription_uuid)
+        subscription = get_single(
+            subscription_uuid, "subscription", SubscriptionModel, validate_subscription
+        )
         serializer = SubscriptionGetSerializer(subscription)
         return Response(serializer.data)
 
@@ -254,8 +211,12 @@ class SubscriptionView(APIView):
         logging.debug("update subscription_uuid {}".format(subscription_uuid))
         put_data = request.data.copy()
         serialized_data = SubscriptionPatchSerializer(put_data)
-        updated_response = self.__update_single(
-            uuid=subscription_uuid, put_data=serialized_data.data
+        updated_response = update_single(
+            uuid=subscription_uuid,
+            put_data=serialized_data.data,
+            collection="subscription",
+            model=SubscriptionModel,
+            validation_model=validate_subscription,
         )
         logging.info("created responce {}".format(updated_response))
         if "errors" in updated_response:
@@ -272,60 +233,17 @@ class SubscriptionView(APIView):
     def delete(self, request, subscription_uuid):
         """Delete method."""
         logging.debug("delete subscription_uuid {}".format(subscription_uuid))
-        delete_response = self.__delete_single(subscription_uuid)
+        delete_response = delete_single(
+            uuid=subscription_uuid,
+            collection="subscription",
+            model=SubscriptionModel,
+            validation_model=validate_subscription,
+        )
         logging.info("delete responce {}".format(delete_response))
         if "errors" in delete_response:
             return Response(delete_response, status=status.HTTP_400_BAD_REQUEST)
         serializer = SubscriptionDeleteResponseSerializer(delete_response)
         return Response(serializer.data, status=status.HTTP_200_OK)
-
-    def __get_single(self, subscription_uuid):
-        """
-        Get_single private method.
-
-        This handles getting the data from the db.
-        """
-        loop = asyncio.new_event_loop()
-        asyncio.set_event_loop(loop)
-        service = db_service("subscription", SubscriptionModel, validate_subscription)
-        subscription = loop.run_until_complete(service.get(uuid=subscription_uuid))
-        return subscription
-
-    def __update_single(self, uuid, put_data):
-        """
-        Update_single private method.
-
-        This handles getting the data from the db.
-        """
-        loop = asyncio.new_event_loop()
-        asyncio.set_event_loop(loop)
-        service = db_service("subscription", SubscriptionModel, validate_subscription)
-
-        updated_timestamp = datetime.datetime.utcnow()
-        current_user = "dev user"
-        put_data["subscription_uuid"] = uuid
-        put_data["last_updated_by"] = current_user
-        put_data["lub_timestamp"] = updated_timestamp
-
-        subscription = loop.run_until_complete(service.get(uuid=uuid))
-        subscription.update(put_data)
-        update_response = loop.run_until_complete(service.update(subscription))
-        if "errors" in update_response:
-            return update_response
-        return subscription
-
-    def __delete_single(self, uuid):
-        """
-        Get_single private method.
-
-        This handles getting the data from the db.
-        """
-        loop = asyncio.new_event_loop()
-        asyncio.set_event_loop(loop)
-        service = db_service("subscription", SubscriptionModel, validate_subscription)
-
-        delete_response = loop.run_until_complete(service.delete(uuid=uuid))
-        return delete_response
 
 
 class SubscriptionsCustomerListView(APIView):
@@ -344,22 +262,8 @@ class SubscriptionsCustomerListView(APIView):
     def get(self, request, customer_uuid):
         """Get method."""
         parameters = {"customer_uuid": customer_uuid}
-        subscription_list = self.__get_list(
+        subscription_list = get_list(
             parameters, "subscription", SubscriptionModel, validate_subscription
         )
         serializer = SubscriptionGetSerializer(subscription_list, many=True)
         return Response(serializer.data)
-
-    def __get_list(self, parameters, collection, model, validation_model):
-        """
-        Get_data private method.
-
-        This handles getting the data from the db.
-        """
-        loop = asyncio.new_event_loop()
-        asyncio.set_event_loop(loop)
-        service = db_service(collection, model, validation_model)
-        document_list = loop.run_until_complete(
-            service.filter_list(parameters=parameters)
-        )
-        return document_list

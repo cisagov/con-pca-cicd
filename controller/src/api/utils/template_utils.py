@@ -1,34 +1,6 @@
-"""Utils file for api."""
+"""Template Utils file for api."""
 # Standard Python Libraries
 from datetime import datetime, timedelta
-
-# Third-Party Libraries
-from database.service import Service
-from django.conf import settings
-
-
-def db_service(collection_name, model, validate_model):
-    """
-    Db_service.
-
-    This is a method for handling db connection in api.
-    Might refactor this into database lib.
-    """
-    mongo_uri = "mongodb://{}:{}@{}:{}/".format(
-        settings.DB_CONFIG["DB_USER"],
-        settings.DB_CONFIG["DB_PW"],
-        settings.DB_CONFIG["DB_HOST"],
-        settings.DB_CONFIG["DB_PORT"],
-    )
-
-    service = Service(
-        mongo_uri,
-        collection_name=collection_name,
-        model=model,
-        model_validation=validate_model,
-    )
-
-    return service
 
 
 def personalize_template(customer_info, template_data, sub_data):
@@ -79,7 +51,7 @@ def personalize_template(customer_info, template_data, sub_data):
     for template in template_data:
         cleantext = template["html"]
         for key, value in check_replace.items():
-            if value != None:
+            if value is not None:
                 cleantext = cleantext.replace(key, value)
 
         template_unique_name = "{}_{}_{}".format(
