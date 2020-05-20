@@ -210,7 +210,7 @@ class SubscriptionView(APIView):
     )
     def patch(self, request, subscription_uuid):
         """Patch method."""
-        logging.debug("update subscription_uuid {}".format(subscription_uuid))
+        logger.debug("update subscription_uuid {}".format(subscription_uuid))
         put_data = request.data.copy()
         serialized_data = SubscriptionPatchSerializer(put_data)
         updated_response = update_single(
@@ -220,7 +220,7 @@ class SubscriptionView(APIView):
             model=SubscriptionModel,
             validation_model=validate_subscription,
         )
-        logging.info("created responce {}".format(updated_response))
+        logger.info("created responce {}".format(updated_response))
         if "errors" in updated_response:
             return Response(updated_response, status=status.HTTP_400_BAD_REQUEST)
         serializer = SubscriptionPatchResponseSerializer(updated_response)
@@ -234,14 +234,14 @@ class SubscriptionView(APIView):
     )
     def delete(self, request, subscription_uuid):
         """Delete method."""
-        logging.debug("delete subscription_uuid {}".format(subscription_uuid))
+        logger.debug("delete subscription_uuid {}".format(subscription_uuid))
         delete_response = delete_single(
             uuid=subscription_uuid,
             collection="subscription",
             model=SubscriptionModel,
             validation_model=validate_subscription,
         )
-        logging.info("delete responce {}".format(delete_response))
+        logger.info("delete responce {}".format(delete_response))
         if "errors" in delete_response:
             return Response(delete_response, status=status.HTTP_400_BAD_REQUEST)
         serializer = SubscriptionDeleteResponseSerializer(delete_response)
