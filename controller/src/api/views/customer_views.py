@@ -66,7 +66,7 @@ class CustomerListView(APIView):
         created_response = save_single(
             post_data, "customer", CustomerModel, validate_customer
         )
-        logging.info("created responce {}".format(created_response))
+        logger.info("created responce {}".format(created_response))
         if "errors" in created_response:
             return Response(created_response, status=status.HTTP_400_BAD_REQUEST)
         serializer = CustomerPostResponseSerializer(created_response)
@@ -88,7 +88,7 @@ class CustomerView(APIView):
     )
     def get(self, request, customer_uuid):
         """Get method."""
-        logging.debug("get customer_uuid {}".format(customer_uuid))
+        logger.debug("get customer_uuid {}".format(customer_uuid))
         customer = get_single(
             customer_uuid, "customer", CustomerModel, validate_customer
         )
@@ -104,7 +104,7 @@ class CustomerView(APIView):
     )
     def patch(self, request, customer_uuid):
         """Patch method."""
-        logging.debug("get customer_uuid {}".format(customer_uuid))
+        logger.debug("get customer_uuid {}".format(customer_uuid))
         put_data = request.data.copy()
         serialized_data = CustomerPatchSerializer(put_data)
         updated_response = update_single(
@@ -114,7 +114,7 @@ class CustomerView(APIView):
             model=CustomerModel,
             validation_model=validate_customer,
         )
-        logging.info("created responce {}".format(updated_response))
+        logger.info("created responce {}".format(updated_response))
         if "errors" in updated_response:
             return Response(updated_response, status=status.HTTP_400_BAD_REQUEST)
         serializer = CustomerPatchResponseSerializer(updated_response)
@@ -128,11 +128,11 @@ class CustomerView(APIView):
     )
     def delete(self, request, customer_uuid):
         """Delete method."""
-        logging.debug("delete customer_uuid {}".format(customer_uuid))
+        logger.debug("delete customer_uuid {}".format(customer_uuid))
         delete_response = delete_single(
             customer_uuid, "customer", CustomerModel, validate_customer
         )
-        logging.info("delete responce {}".format(delete_response))
+        logger.info("delete responce {}".format(delete_response))
         if "errors" in delete_response:
             return Response(delete_response, status=status.HTTP_400_BAD_REQUEST)
         serializer = CustomerDeleteResponseSerializer(delete_response)

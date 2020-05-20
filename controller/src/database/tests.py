@@ -21,6 +21,8 @@ import uuid
 from service import Service
 from test_validators import DemoModel, validate_demo
 
+logger = logging.getLogger(__name__)
+
 
 def load_config():
     """This loads configuration from env."""
@@ -63,8 +65,7 @@ class TestStringMethods(unittest.TestCase):
             cls.service_config["DB_PORT"],
         )
 
-        logging.basicConfig(level=logging.getLevelName(os.getenv("LOG_LEVEL", "INFO")))
-        logging.info("service_config {}".format(cls.service_config))
+        logger.info("service_config {}".format(cls.service_config))
 
         cls.loop = asyncio.new_event_loop()
         asyncio.set_event_loop(cls.loop)
@@ -111,9 +112,9 @@ class TestStringMethods(unittest.TestCase):
 
         self.assertEqual(created["demo_uuid"], demo_id)
 
-        logging.info("created {}".format(created))
+        logger.info("created {}".format(created))
         delteted = self.loop.run_until_complete(self.demo_service.delete(uuid=demo_id))
-        logging.info("delteted {}".format(delteted))
+        logger.info("delteted {}".format(delteted))
 
     def test_filter_empty(self):
         """
