@@ -5,20 +5,19 @@
         <div>
             <mat-label class="h6">Customer</mat-label>
         </div>
-
         <div class="p-2 card w-50 mb-1">
-            <div>{{data.customer.name}}</div>
-            <div>{{data.customer.identifier}}</div>
-            <div>{{data.customer.address_1}}</div>
-            <div>{{data.customer.address_2}}</div>
-            <div>{{data.customer.city}}, {{data.customer.state}}</div>
+            <div>{{data?.customer.name}}</div>
+            <div>{{data?.customer.identifier}}</div>
+            <div>{{data?.customer.address_1}}</div>
+            <div>{{data?.customer.address_2}}</div>
+            <div>{{data?.customer.city}}, {{data?.customer.state}}</div>
         </div>
 
         <div>
             <mat-form-field appearance="outline">
                 <mat-label>Primary Contact</mat-label>
                 <mat-select>
-                    <mat-option *ngFor="let c of data.customer.contact_list" [value]="c">
+                    <mat-option *ngFor="let c of data?.customer.contact_list" [value]="c">
                         {{c.first_name}} {{c.last_name}} - {{c.email}}
                     </mat-option>
                 </mat-select>
@@ -29,7 +28,7 @@
             <mat-label class="h6">Start Date</mat-label>
             <div>
                 <mat-form-field appearance="outline" class="mb-4">
-                    <input matInput [matDatepicker]="picker" [(ngModel)]="data.subscription.start_date">
+                    <input matInput [matDatepicker]="picker" [(ngModel)]="data?.subscription.start_date">
                     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                     <mat-datepicker #picker></mat-datepicker>
                 </mat-form-field>
@@ -40,7 +39,7 @@
                 <div class="text-muted">The customer's page will be analyzed 
                     to send phishing emails relevant to their industry.
                 </div>
-                <input [(ngModel)]="data.subscription.url" type="text" class="form-control mb-4">
+                <input [(ngModel)]="data?.subscription.url" type="text" class="form-control mb-4">
             </div>
 
             <div>
@@ -48,7 +47,7 @@
                 <div class="text-muted">Enter words that describe the
                     organization, separated by commas.
                     They will be used to select applicable templates.</div>
-                <textarea autosize appearance="outline" class="form-control mb-4" [(ngModel)]="data.subscription.keywords"></textarea>
+                <textarea autosize appearance="outline" class="form-control mb-4" [(ngModel)]="data?.subscription.keywords"></textarea>
             </div>
 
             <div>
@@ -70,7 +69,9 @@
         </div>
 
 
+        
         <div class="text-right mt-3">
+            <delete-subscription [subscription]="data?.subscription"></delete-subscription>
             <button mat-raised-button color="primary">Create and Launch Subscription</button>
         </div>
 
