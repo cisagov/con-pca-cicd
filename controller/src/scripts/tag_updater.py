@@ -14,13 +14,6 @@ import sys
 
 #       [Related User Type]
 
-#       <ORG SYSTEM>
-#       [CUST_SYSTEM]
-#       <ORG WEB PLATFORM/SERVICE>
-#       [System Name]
-
-#       [LOGO]
-
 #       [OTHER ORG]
 #       [RELEVANT EXTERNAL SITE]
 
@@ -31,11 +24,6 @@ import sys
 #       [name of parks from opensource gathering]
 #       [County Election's Staff, Information Systems personnel across the State]
 #       [CUSTOMER LEADERSHIP OFFICE]
-
-#       [CUSTOMER EMAIL]
-#       [SPOOFED CUSTOMER EMAIL]
-#       [CUSTOMER OFFICE EMAIL]
-#       <NAME@SPOOFED INTERNAL ADDR>
 
 #       <ORG INTRANET>
 
@@ -48,7 +36,6 @@ import sys
 #       [LEGIT CONTRACT #]
 #       [LEGIT SOLICITATION #]
 #       [LEGIT_JOB_PREFIX]
-#       [ACTUAL ADDRESS OF DEPT]
 
 old_target_name_tags = [
     "%To_Name%"
@@ -56,6 +43,13 @@ old_target_name_tags = [
 
 old_target_email_tags = [
     "%To%"
+]
+
+old_customer_system_tags = [
+    "<ORG SYSTEM>",
+    "[CUST_SYSTEM]",
+    "<ORG WEB PLATFORM/SERVICE>",
+    "[System Name]"
 ]
 
 old_customer_tags = [
@@ -91,11 +85,19 @@ old_customer_tags = [
     "[CUSTOMER HR OFFICE]"
 ]
 
+old_customer_email_tags = [
+    "[CUSTOMER EMAIL]",
+    "[SPOOFED CUSTOMER EMAIL]",
+    "[CUSTOMER OFFICE EMAIL]",
+    "<NAME@SPOOFED INTERNAL ADDR>"
+]
+
 old_address_tags = [
     "[Insert Address Here]",
     "[Location]",
     "[RELATED ADDRESS]",
-    "[Related Org Address]"
+    "[Related Org Address]",
+    "[ACTUAL ADDRESS OF DEPT]"
 ]
 
 old_date_tags = [
@@ -282,6 +284,10 @@ old_program_tags = [
     "[NAME OF PARKING OR COMMUTER PROGRAM]"
 ]
 
+old_logo_tags = [
+    "[LOGO]"
+]
+
 # New Uniform Tags
 #        "<%URL%>": "{{.URL}}",
 #        "<%TARGET_FIRST_NAME%>": "{{.FirstName}}",
@@ -291,6 +297,8 @@ old_program_tags = [
 #        "<%TARGET_POSITION%>": "{{.Position}}",
 #        "<%FROM%>": "{{.From}}",
 #        "<%CUSTOMER_NAME%>": customer_info["name"],
+#        "<%CUSTOMER_EMAIL%>":
+#        "<%CUSTOMER_SYSTEM%>":
 #        "<%CUSTOMER_ADDRESS_FULL%>": customer_full_address,
 #        "<%CUSTOMER_ADDRESS_1%>": customer_info["address_1"],
 #        "<%CUSTOMER_ADDRESS_2%>": customer_info["address_2"],
@@ -315,7 +323,8 @@ old_program_tags = [
 #        "<%SIGNATURE%>": "Relevenat Signature",
 #        "<%TOPIC%>": "Relevant Topic",
 #        "<%TOKEN%>": "Relevant Token",
-#        "<%PROGRAM%>": Relevant Program",
+#        "<%PROGRAM%>": "Relevant Program",
+#        "<%LOGO%>": "Relevant Logo"
 
 def main():
 
@@ -326,72 +335,24 @@ def main():
     with open(sys.argv[1]) as file:
         data = json.load(file)
 
+    updated_tags = {
+        "<%URL%>": old_link_tags , "<%TARGET_FULL_NAME%>": old_target_name_tags, "<%TARGET_EMAIL%>": old_target_email_tags, "<%CUSTOMER_SYSTEM%>": old_customer_system_tags,
+        "<%CUSTOMER_NAME%>": old_customer_tags, "<%CUSTOMER_EMAIL%>": old_customer_email_tags, "<%CUSTOMER_ADDRESS_FULL%>": old_address_tags, 
+        "<%CUSTOEMR_STATE%>": old_state_tags, "<%CUSTOMER_CITY%>": old_customer_location_tags, "<%CURRENT_SEASON%>": old_season_tags, "<%CURRENT_DATE_LONG%>": old_date_tags,
+        "<%CURRENT_MONTH_LONG%>": old_month_tags, "<%CURRENT_YEAR_LONG%>": old_year_tags, "<%SPOOF_NAME%>": old_spoof_name_tags, "<%EVENT%>": old_event_tags,
+        "<%TIMEFRAME%>": old_time_frame_tags, "<%DOMAIN%>": old_domain_tags, "<%ACRONYM%>": old_acronym_tags, "<%SLOGAN%>": old_slogan_tags, "<%SIGNATURE%>": old_signature_tags,
+        "<%TOPIC%>": old_topic_tags, "<%TOKEN%>": old_token_tags, "<%PROGRAM%>": old_program_tags, "<%LOGO%>": old_logo_tags
+    }
+
     # Update tags in old template data file
     for template in data:
         text = template['text']
 
-        for tag in old_link_tags:
-            text = text.replace(tag, "<%URL%>")
+        for key in updated_tags:
+            old_tags_list = updated_tags[key]
 
-        for tag in old_target_name_tags:
-            text = text.replace(tag, "<%TARGET_FULL_NAME%>")
-
-        for tag in old_target_email_tags:
-            text = text.replace(tag, "<%TARGET_EMAIL%>")
-
-        for tag in old_customer_tags:
-            text = text.replace(tag, "<%CUSTOMER_NAME%>")
-
-        for tag in old_address_tags:
-            text = text.replace(tag, "<%CUSTOMER_ADDRESS_FULL%>")
-
-        for tag in old_state_tags:
-            text = text.replace(tag, "<%CUSTOMER_STATE%>")
-
-        for tag in old_customer_location_tags:
-            text = text.replace(tag, "<%CUSTOMER_CITY%>")
-
-        for tag in old_season_tags:
-            text = text.replace(tag, "<%CURRENT_SEASON%>")
-
-        for tag in old_date_tags:
-            text = text.replace(tag, "<%CURRENT_DATE_LONG%>")
-
-        for tag in old_month_tags:
-            text = text.replace(tag, "<%CURRENT_MONTH_LONG%>")
-
-        for tag in old_year_tags:
-            text = text.replace(tag, "<%CURRENT_YEAR_LONG%>")
-
-        for tag in old_spoof_name_tags:
-            text = text.replace(tag, "<%SPOOF_NAME%>")
-
-        for tag in old_event_tags:
-            text = text.replace(tag, "<%EVENT%>")
-
-        for tag in old_time_frame_tags:
-            text = text.replace(tag, "<%TIMEFRAME%>")
-
-        for tag in old_domain_tags:
-            text = text.replace(tag, "<%DOMAIN%>")
-
-        for tag in old_acronym_tags:
-            text = text.replace(tag, "<%ACRONYM%>")
-
-        for tag in old_slogan_tags:
-            text = text.replace(tag, "<%SLOGAN%>")
-
-        for tag in old_signature_tags:
-            text = text.replace(tag, "<%SIGNATURE%>")
-
-        for tag in old_topic_tags:
-            text = text.replace(tag, "<%TOPIC%>")
-
-        for tag in old_token_tags:
-            text = text.replace(tag, "<%TOKEN%>")
-
-        for tag in old_program_tags:
-            text = text.replace(tag, "<%PROGRAM%>")
+            for old_tag in old_tags_list:
+                text = text.replace(old_tag, key)
 
         template['text'] = text
 
