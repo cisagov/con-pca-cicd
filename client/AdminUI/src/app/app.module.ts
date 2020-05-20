@@ -37,10 +37,7 @@ import { CustomersComponent } from './components/customers/customers.component';
 import { AddCustomerDialogComponent } from './components/customers/add-customer-dialog/add-customer-dialog.component';
 import { AddContactDialogComponent } from './components/contacts/add-contact-dialog/add-contact-dialog.component';
 import { ViewContactDialogComponent } from './components/contacts/view-contact-dialog/view-contact-dialog.component';
-import { ViewSubscriptionComponent } from './components/subscriptions/view-subscription/view-subscription.component';
 import { DeleteSubscription, DeleteSubscriptionDialog} from 'src/app/components/subscriptions/delete-subscription/delete-subscription.component'
-
-
 
 
 @NgModule({
@@ -64,7 +61,6 @@ import { DeleteSubscription, DeleteSubscriptionDialog} from 'src/app/components/
     AddCustomerDialogComponent,
     AddContactDialogComponent,
     ViewContactDialogComponent,
-    ViewSubscriptionComponent,
     DeleteSubscription,
     DeleteSubscriptionDialog,
   ],
