@@ -21,6 +21,7 @@ export class ContactsComponent implements OnInit {
     "first_name",
     "last_name",
     "title",
+    "active",
     "select"
   ];
 
@@ -58,8 +59,8 @@ export class ContactsComponent implements OnInit {
   }
 
   private refresh(): void {
-    this.customerService.requestGetCustomers().subscribe((data: any[]) => {
-      let customers = this.customerService.getCustomers(data)
+    this.customerService.getCustomers().subscribe((data: any[]) => {
+      let customers = this.customerService.toCustomers(data)
       let customerContacts = this.customerService.getAllContacts(customers);
       this.dataSource.data = customerContacts
     })

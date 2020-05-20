@@ -99,6 +99,7 @@ export class AddCustomerComponent implements OnInit {
         last_name: this.contactFormGroup.controls['lastName'].value,
         title: this.contactFormGroup.controls['title'].value,
         notes: this.contactFormGroup.controls['contactNotes'].value,
+        active: true
       };
       
       this.contacts.push(contact);

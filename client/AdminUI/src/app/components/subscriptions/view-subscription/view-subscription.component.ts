@@ -33,10 +33,10 @@ export class ViewSubscriptionComponent implements OnInit {
   }
 
   private get_subscription(subscription_uuid: string) {
-    this.subscription_service.requestGetSubscription(subscription_uuid).subscribe((data: any) => {
-      let subscription = this.subscription_service.getSubscription(data)
-      this.customer_service.requestGetCustomer(subscription.customer_uuid).subscribe((data: any) => {
-        let customer = this.customer_service.getCustomer(data)
+    this.subscription_service.getSubscription(subscription_uuid).subscribe((data: any) => {
+      let subscription = this.subscription_service.toSubscription(data)
+      this.customer_service.getCustomer(subscription.customer_uuid).subscribe((data: any) => {
+        let customer = this.customer_service.toCustomer(data)
         this.data = {
           customer: customer,
           subscription: subscription

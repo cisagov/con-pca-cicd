@@ -12,6 +12,7 @@ from database.repository.types import (
     ModelType,
     StringType,
     UUIDType,
+    BooleanType
 )
 
 
@@ -35,6 +36,7 @@ class CustomerContactModel(Model):
     mobile_phone = StringType()
     email = EmailType(required=True)
     notes = StringType()
+    active = BooleanType(required=True)
 
 
 class CustomerModel(Model):
