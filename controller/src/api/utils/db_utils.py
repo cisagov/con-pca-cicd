@@ -9,6 +9,11 @@ import uuid
 from database.service import Service
 from django.conf import settings
 
+
+# Models
+from api.models.subscription_models import SubscriptionModel
+from api.models.template_models import TemplateModel
+
 logger = logging.getLogger(__name__)
 
 
@@ -97,7 +102,12 @@ def update_single(uuid, put_data, collection, model, validation_model):
     service, loop = __get_service_loop(collection, model, validation_model)
     updated_timestamp = datetime.datetime.utcnow()
     current_user = "dev user"
-    put_data["subscription_uuid"] = uuid
+
+    if isinstance(model, TemplateModel):
+        put_data["template_uuid"] = uuid
+    elif isinstance(model, SubscriptionModel):
+        put_data['subscription_uuid'] = uuid
+    
     put_data["last_updated_by"] = current_user
     put_data["lub_timestamp"] = updated_timestamp
 

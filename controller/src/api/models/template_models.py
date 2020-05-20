@@ -88,6 +88,7 @@ class TemplateModel(Model):
     display_link [string]
     from_address [string]
     retired [bool]
+    retired_description [string]
     subject [string]
     text [string]
     topic [list] [string]
@@ -111,6 +112,7 @@ class TemplateModel(Model):
     image_list = ListType(ModelType(TemplateImageModel))
     from_address = StringType()
     retired = BooleanType()
+    retired_description = StringType()
     subject = StringType()
     text = StringType()
     html = StringType()
