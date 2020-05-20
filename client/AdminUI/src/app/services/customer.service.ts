@@ -20,16 +20,6 @@ export class CustomerService {
     return this.http.get(url);
   }
 
-  // Generates a list of Customer from request data
-  public toCustomers(requestData: any[]): Customer[] {
-    let customers: Customer[] = [];
-    requestData.map((c: any) => {
-      let customer = this.toCustomer(c)
-      customers.push(customer)
-    })
-    return customers
-  }
-
   public getAllContacts(customers: Customer[]): ICustomerContact[] {
     let customerContacts: ICustomerContact[] = []
     customers.map((customer: Customer) => {
@@ -55,25 +45,6 @@ export class CustomerService {
   public getCustomer(customer_uuid: string) {
     let url = `${environment.apiEndpoint}/api/v1/customer/${customer_uuid}/`;
     return this.http.get(url);
-  }
-
-  public toCustomer(requestData: any) {
-    let customer: Customer = {
-      customer_uuid: requestData.customer_uuid,
-      name: requestData.name,
-      identifier: requestData.identifier,
-      address_1: requestData.address_1,
-      address_2: requestData.address_2,
-      city: requestData.city,
-      state: requestData.state,
-      zip_code: requestData.zip_code,
-      contact_list: []
-    }
-
-    requestData.contact_list.map((c: any) => {
-      customer.contact_list.push(this.getContact(c))
-    })
-    return customer
   }
 
   public getContact(requestData: any) {

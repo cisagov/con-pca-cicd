@@ -32,8 +32,8 @@ export class CustomersComponent implements OnInit {
   }
 
   private refresh(): void {
-    this.customer_service.getCustomers().subscribe((data: any[]) => {
-      this.data_source.data = this.customer_service.toCustomers(data);
+    this.customer_service.getCustomers().subscribe((data: any) => {
+      this.data_source.data = data as Customer[];
     }) 
   }
 

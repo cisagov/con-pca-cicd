@@ -51,7 +51,7 @@ export class SubscriptionsComponent implements OnInit {
       console.log(data)
       let subscriptions = this.subscription_service.toSubscriptions(data)
       this.customer_service.getCustomers().subscribe((data: any[]) => {
-        let customers = this.customer_service.toCustomers(data)
+        let customers = data as Customer[]
         let customerSubscriptions: ICustomerSubscription[] = []
         subscriptions.map((s: Subscription) => {
           let customerSubscription: ICustomerSubscription = {
