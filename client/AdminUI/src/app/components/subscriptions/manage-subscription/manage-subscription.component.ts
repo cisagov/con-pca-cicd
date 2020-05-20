@@ -90,10 +90,6 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
    * convenience getter for easy access to form fields
    */
   get f() { return this.subscribeForm.controls; }
-        // START TEMP ------------------------
-        // find Globex or randomly pick an existing customer for now
-        if (!this.subscription.customer_uuid) {
-          this.customerSvc.getCustomers().subscribe((c: Customer[]) => {
 
 
   /**
@@ -113,7 +109,7 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
     // START TEMP ------------------------
     // find Globex or randomly pick an existing customer for now
     if (!this.subscription.customer_uuid) {
-      this.customerSvc.requestGetCustomers().subscribe((c: Customer[]) => {
+      this.customerSvc.getCustomers().subscribe((c: Customer[]) => {
 
         // first look for Globex
         let globex = c.find(x => x.identifier == 'GLBX');
@@ -241,12 +237,12 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
     sub.name = "SC-1." + this.customer.name + ".1.1"; //auto generated name
     sub.start_date = this.startDate;
     sub.status = "New Not Started";
-    
+
     sub.url = this.url;
-    
+
     // keywords
     sub.keywords = this.f.keywords.value;
-    
+
     // set the target list
     let csv = this.f.csvText.value;
     sub.setTargetsFromCSV(csv);
