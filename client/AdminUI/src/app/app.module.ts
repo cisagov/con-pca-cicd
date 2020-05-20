@@ -38,6 +38,7 @@ import { AddCustomerDialogComponent } from './components/customers/add-customer-
 import { AddContactDialogComponent } from './components/contacts/add-contact-dialog/add-contact-dialog.component';
 import { ViewContactDialogComponent } from './components/contacts/view-contact-dialog/view-contact-dialog.component';
 import { ViewSubscriptionComponent } from './components/subscriptions/view-subscription/view-subscription.component';
+import { DeleteSubscription, DeleteSubscriptionDialog} from 'src/app/components/subscriptions/delete-subscription/delete-subscription.component'
 
 
 
@@ -64,6 +65,8 @@ import { ViewSubscriptionComponent } from './components/subscriptions/view-subsc
     AddContactDialogComponent,
     ViewContactDialogComponent,
     ViewSubscriptionComponent,
+    DeleteSubscription,
+    DeleteSubscriptionDialog,
   ],
   imports: [
     BrowserModule,

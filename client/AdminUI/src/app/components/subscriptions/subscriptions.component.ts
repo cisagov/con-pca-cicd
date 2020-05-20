@@ -35,20 +35,21 @@ export class SubscriptionsComponent implements OnInit {
     private subscription_service: SubscriptionService,
     private customer_service: CustomerService,
     private layoutSvc: LayoutMainService
-    ) { 
-      layoutSvc.setTitle("Subscriptions");
-    }
+  ) {
+    layoutSvc.setTitle("Subscriptions");
+  }
 
-  ngOnInit(): void {    
+  ngOnInit(): void {
     this.layoutSvc.setTitle("Subscriptions");
     this.data_source = new MatTableDataSource();
     this.refresh();
     this.setFilterPredicate();
   }
 
-  private refresh() {
-    this.subscription_service.requestGetSubscriptions().subscribe((data: any[]) => {
-      let subscriptions = this.subscription_service.getSubscriptions(data)
+  refresh() {
+    this.subscription_service.getSubscriptions().subscribe((data: any[]) => {
+      console.log(data)
+      let subscriptions = this.subscription_service.toSubscriptions(data)
       this.customer_service.getCustomers().subscribe((data: any[]) => {
         let customers = this.customer_service.toCustomers(data)
         let customerSubscriptions: ICustomerSubscription[] = []
@@ -73,7 +74,7 @@ export class SubscriptionsComponent implements OnInit {
           continue;
         }
         var isMatch = searchData.indexOf(words[i].trim().toLowerCase()) > -1;
-        
+
         if (!isMatch) {
           return false;
         }

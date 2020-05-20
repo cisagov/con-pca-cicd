@@ -1,4 +1,4 @@
-<!-- <div class="p-3">
+<div class="p-3">
     <h1>{{ action | titlecase }} Subscription</h1>
 
     <div style="display: block;" class="mb-5">
@@ -6,17 +6,17 @@
             <mat-label class="h6">Customer</mat-label>
         </div>
 
-        <div class="p-2 card w-50 mb-1">
+        <div class="p-2 mat-card ml-0 w-50 mb-1">
             <div>{{customer?.name}}</div>
             <div>{{customer?.identifier}}</div>
             <div>{{customer?.address_1}}</div>
             <div>{{customer?.address_2}}</div>
-            <div>{{customer?.city}}, {{customer?.state}}</div>
+            <div>{{customer?.city}}, {{customer?.state}} {{customer?.zip_code}}</div>
         </div>
 
         <div class="mb-3">
-            <button mat-raised-button color="primary">Assign Customer <i class="fa fa-search"
-                    style="font-size: 1rem;"></i></button>
+            <button mat-raised-button color="primary" (click)="showCustomerDialog()">Assign Customer <i
+                    class="fa fa-search" style="font-size: 1rem;"></i></button>
         </div>
 
         <div>
@@ -24,9 +24,10 @@
                 <mat-label class="h6">Primary Contact</mat-label>
             </div>
             <mat-form-field appearance="outline">
-                <mat-select [(ngModel)]="primaryContact" (selectionChange)="changePrimary($event)">
+                <mat-select [(ngModel)]="primaryContact" (selectionChange)="changePrimaryContact($event)">
                     <mat-option [value]="null">--Select--</mat-option>
-                    <mat-option *ngFor="let c of customerContacts" [value]="c.first_name">{{ c.first_name }}</mat-option>
+                    <mat-option *ngFor="let c of customer?.contact_list" [value]="c.first_name + '_' + c.last_name">
+                        {{ c.first_name }} {{ c.last_name }}</mat-option>
                 </mat-select>
             </mat-form-field>
         </div>
@@ -43,45 +44,52 @@
 
             <div>
                 <mat-label class="h6">Customer Website</mat-label>
-                <div class="text-muted">The customer's page will be analyzed 
+                <div class="text-muted">The customer's page will be analyzed
                     to send phishing emails relevant to their industry.
                 </div>
                 <input [(ngModel)]="url" type="text" class="form-control mb-4">
             </div>
 
-            <div>
-                <mat-label class="h6">Applicability Word Tags</mat-label>
-                <div class="text-muted">Enter words that describe the
-                    organization, separated by commas.
-                    They will be used to select applicable templates.</div>
-                <textarea autosize appearance="outline" class="form-control mb-4" [(ngModel)]="tags"></textarea>
-            </div>
+            <div class="text-muted">Enter words that describe the
+                organization, separated by commas.
+                They will be used to select applicable templates.</div>
+            <mat-form-field class="w-100">
+                <mat-label>Applicability Word Tags</mat-label>
+                <textarea matNativeControl cdkTextareaAutosize class="form-control mb-4" [(ngModel)]="tags"></textarea>
+                <mat-error *ngIf="
+                      true">
+                    Tags <strong>required</strong>
+                </mat-error>
+            </mat-form-field>
 
-            <div>
+            <div class="mb-3">
                 <div>
                     <mat-label class="h6">CSV Content</mat-label>
                 </div>
-                <div class="text-muted">Upload a CSV file containing the list of contacts or enter them
+                <div class="text-muted">Upload an Excel spreadsheet or comma-separated value text 
+                    file containing the list of contacts or enter them
                     directly in the field below.
                 </div>
+                <div class="text-muted">Format: email, firstname, lastname, position</div>
             </div>
 
-            <button mat-raised-button color="primary" class="mb-3">
+            <button mat-raised-button color="primary" class="mb-3" (click)="openFileBrowser($event)">
                 Upload Email Targets List <i class="fa fa-upload"></i>
             </button>
-
-
-            <div class="text-muted">Format: email, firstname, lastname, position</div>
-            <textarea autosize placeholder="Enter targets as CSV" class="form-control" [(ngModel)]="csvText"></textarea>
+            <input id="csvUpload" type="file" accept=".csv,.xls,.xlsx" (change)="fileSelect($event)"
+                class="d-none">
+            
+            <mat-form-field class="w-100">
+                <mat-label>Target Emails</mat-label>
+                <textarea matNativeControl cdkTextareaAutosize class="form-control" [(ngModel)]="csvText"></textarea>
+            </mat-form-field>
         </div>
 
-
         <div class="text-right mt-3">
-            <button mat-raised-button color="primary" 
-                *ngIf="pageMode == 'CREATE'"
+            <button mat-raised-button color="primary" *ngIf="pageMode == 'CREATE'"
                 (click)="createAndLaunchSubscription()">Create and Launch Subscription
-                </button>
+            </button>
         </div>
 
     </div>
-</div> -->
+</div>

@@ -45,7 +45,11 @@ format:
 	docker exec pca-api isort --multi-line=3 --trailing-comma --force-grid-wrap=0 --use-parentheses --line-width=100 -rc .
 	docker exec pca-api black -l 100 .
 
-# target: init - initialize project with dummy data for mongo and gophish databases
+# target: db_load_dummy - connects to db and creates dummy-data and dumps file with id's
+db_load_dummy:
+	docker exec -it pca-api python scripts/create_dummy_data.py
+
+# target: init - initializes gophish and creates dummy data
 init:
 	docker exec -it pca-api python scripts/init_gophish.py
 	docker exec -it pca-api python scripts/create_dummy_data.py

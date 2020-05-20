@@ -31,7 +31,7 @@ const routes: Routes = [
   {
     path: 'view-subscription',
     component: LayoutMainComponent,
-    children: [{ path: ':id', component: ViewSubscriptionComponent }]
+    children: [{ path: ':id', component: ManageSubscriptionComponent }]
   },
   {
     path: 'deceptioncalculator',

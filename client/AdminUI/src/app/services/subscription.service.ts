@@ -7,40 +7,63 @@ import { Subscription } from '../models/subscription.model';
 import { CustomerService } from './customer.service';
 
 const headers = {
-   headers: new HttpHeaders()
-     .set('Content-Type', 'application/json'),
-   params: new HttpParams()
- };
+  headers: new HttpHeaders()
+    .set('Content-Type', 'application/json'),
+  params: new HttpParams()
+};
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class SubscriptionService {
+  subscription: Subscription;
   customer: Customer;
   customers: Array<Customer> = [];
 
+  cameFromSubscription: boolean;
+
+  /**
+   * 
+   * @param http 
+   * @param customer_service 
+   */
   constructor(private http: HttpClient, private customer_service: CustomerService) { }
 
-  public requestGetSubscriptions() { 
+  /**
+   * 
+   */
+  public getSubscriptions() {
     let url = `${environment.apiEndpoint}/api/v1/subscriptions/`
     return this.http.get(url)
   }
-  
-  public getSubscriptions(requestData: any[]): Subscription[] {
+
+  /**
+   * 
+   * @param requestData 
+   */
+  public toSubscriptions(requestData: any[]): Subscription[] {
     let subscriptions: Subscription[] = []
     requestData.map((s: any) => {
-      subscriptions.push(this.getSubscription(s))
+      subscriptions.push(this.toSubscription(s))
     })
     return subscriptions
   }
 
-  public requestGetSubscription(subscription_uuid: string) {
+  /**
+   * 
+   * @param subscription_uuid 
+   */
+  public getSubscription(subscription_uuid: string) {
     let url = `${environment.apiEndpoint}/api/v1/subscription/${subscription_uuid}/`
     return this.http.get(url)
   }
 
-  public getSubscription(requestData: any): Subscription {
+  /**
+   * 
+   * @param requestData 
+   */
+  public toSubscription(requestData: any): Subscription {
     let subscription: Subscription = {
       active: requestData.active,
       customer_uuid: requestData.customer_uuid,
@@ -51,19 +74,34 @@ export class SubscriptionService {
       start_date: requestData.start_date,
       status: requestData.status,
       subscription_uuid: requestData.subscription_uuid,
-      url: requestData.url
+      url: requestData.url,
+      target_email_list: requestData.target_email_list,
+      setTargetsFromCSV: null
     }
 
     return subscription
   }
-
+  public deleteSubscription(subscription: Subscription) {
+    console.log(subscription)
+    return new Promise((resolve,reject) => {
+      this.http
+      .delete(`${environment.apiEndpoint}/api/v1/subscription/${subscription.subscription_uuid}/`)
+      .subscribe(
+        success => {
+          resolve(success);
+        },
+        error => {
+          reject(error)
+        }
+      )
+    })
+  }
 
   /**
    * Sends all information to the API to start a new subscription.
    * @param s 
    */
-  submitSubscription(subscription) {
-    //NEED TO MAKE THIS LOOK at the 
+  submitSubscription(subscription: Subscription) {
     return this.http.post('http://localhost:8000/api/v1/subscriptions/', subscription)
   }
 }

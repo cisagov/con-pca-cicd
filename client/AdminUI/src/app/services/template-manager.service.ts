@@ -1,5 +1,6 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable, OnInit } from '@angular/core';
+import { environment } from 'src/environments/environment';
 import { Router } from '@angular/router';
 
 import { Template, TemplateShort } from 'src/app/models/template.model';
@@ -15,7 +16,7 @@ export class TemplateManagerService {
 
   //GET a list of all templates
   getAllTemplates() {
-    return this.http.get('http://localhost:8000/api/v1/templates', headers);
+    return this.http.get(`${environment.apiEndpoint}/api/v1/templates`, headers);
   }
 
   // getAllTemplates() {
@@ -37,7 +38,7 @@ export class TemplateManagerService {
   getTemplate(uuid: string) {
     return new Promise((resolve, reject) => {
       this.http
-        .get(`http://localhost:8000/api/v1/template/${uuid}`)
+        .get(`${environment.apiEndpoint}/api/v1/template/${uuid}`)
         .subscribe(
           success => {
             resolve(success);
@@ -55,7 +56,7 @@ export class TemplateManagerService {
   saveNewTemplate(template: Template) {
     return new Promise((resolve, reject) => {
       this.http
-        .post('http://localhost:8000/api/v1/templates/', template)
+        .post(`${environment.apiEndpoint}/api/v1/templates/`, template)
         .subscribe(
           success => {
             resolve(success);
@@ -72,7 +73,7 @@ export class TemplateManagerService {
   updateTemplate(template: Template) {
     return new Promise((resolve, reject) => {
       this.http
-        .patch(`http://localhost:8000/api/v1/template/${template.template_uuid}/`, template)
+        .patch(`${environment.apiEndpoint}/api/v1/template/${template.template_uuid}/`, template)
         .subscribe(
           success => {
             resolve(success);
@@ -88,7 +89,7 @@ export class TemplateManagerService {
   deleteTemplate(template: Template) {
     return new Promise((resolve,reject) => {
       this.http
-      .delete(`http://localhost:8000/api/v1/template/${template.template_uuid}/`)
+      .delete(`${environment.apiEndpoint}/api/v1/template/${template.template_uuid}/`)
       .subscribe(
         success => {
           resolve(success);
