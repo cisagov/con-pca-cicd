@@ -62,6 +62,8 @@ class IncomingWebhookView(APIView):
                 SubscriptionModel,
                 validate_subscription,
             )
+            if subscription is None:
+                return Response(status=status.HTTP_404_NOT_FOUND)
 
             if seralized_data["message"] in [
                 "Email Sent",
@@ -93,11 +95,11 @@ class IncomingWebhookView(APIView):
                 subscription=subscription,
                 collection="subscription",
                 model=SubscriptionModel,
-                validation=validate_subscription,
+                validation_model=validate_subscription,
             )
             if "errors" in updated_response:
                 return Response(updated_response, status=status.HTTP_400_BAD_REQUEST)
             serializer = SubscriptionPatchResponseSerializer(updated_response)
             return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
 
-        return Response()
+        return Response(status=status.HTTP_200_OK)
