@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MatDialogConfig, MatDialog } from '@angular/material/dialog';
-import { FormGroup, FormControl } from '@angular/forms';
+import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { SubscriptionService } from 'src/app/services/subscription.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Customer, Contact } from 'src/app/models/customer.model';
@@ -19,12 +19,15 @@ import { StringifyOptions } from 'querystring';
 export class ManageSubscriptionComponent implements OnInit, OnDestroy {
   private routeSub: any;
 
+  subscribeForm: FormGroup;
+  submitted = false;
 
-  action_MANAGE: string = 'manage';
+
+  action_EDIT: string = 'edit';
   action_CREATE: string = 'create';
-  action: string = this.action_MANAGE;
+  action: string = this.action_EDIT;
 
-  // CREATE or MANAGE (edit existing)
+  // CREATE or EDIT 
   pageMode: string = 'CREATE';
 
   subscription: Subscription;
@@ -49,7 +52,8 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
     private router: Router,
     private route: ActivatedRoute,
     private userSvc: UserService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    public formBuilder: FormBuilder
   ) {
 
   }
@@ -58,49 +62,85 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
    * INIT
    */
   ngOnInit(): void {
-    this.pageMode = 'MANAGE';
+    // build form
+    this.subscribeForm = new FormGroup({
+      selectedCustomerUuid: new FormControl('', Validators.required),
+      csvText: new FormControl('', Validators.required),
+      primaryContact: new FormControl(null),
+      startDate: new FormControl(new Date()),
+      url: new FormControl(''),
+      tags: new FormControl('')
+    });
+
+
+    this.pageMode = 'EDIT';
 
     this.subscriptionSvc.subscription = new Subscription();
-    let sub = this.subscriptionSvc.subscription;
 
     this.routeSub = this.route.params.subscribe(params => {
       if (!params.id) {
-        this.pageMode = 'CREATE';
-        this.action = this.action_CREATE;
-        sub = new Subscription();
-        this.subscription = sub;
-        sub.subscription_uuid = Guid.create().toString();
-
-        // START TEMP ------------------------
-        // find Globex or randomly pick an existing customer for now
-        if (!this.subscription.customer_uuid) {
-          this.customerSvc.requestGetCustomers().subscribe((c: Customer[]) => {
-
-            // first look for Globex
-            let globex = c.find(x => x.identifier == 'GLBX');
-            if (globex == null) {
-
-              // if not found, just pick a random customer
-              let rnd = Math.floor(Math.random() * Math.floor(c.length));
-              this.customer = c[rnd];
-            } else {
-              this.customer = globex;
-            }
-          });
-        }
-        // END TEMP --------------------------
-
+        this.loadPageForCreate(params);
       } else {
-        sub.subscription_uuid = params.id;
-
-        this.subscriptionSvc.getSubscription(sub.subscription_uuid)
-          .subscribe((s: Subscription) => {
-            this.subscription = s;
-          });
+        this.loadPageForEdit(params);
       }
     });
   }
 
+  /**
+   * convenience getter for easy access to form fields
+   */
+  get f() { return this.subscribeForm.controls; }
+
+
+  /**
+   * 
+   */
+  loadPageForCreate(params: any) {
+    // CREATE mode
+    this.pageMode = 'CREATE';
+    this.action = this.action_CREATE;
+    let sub = this.subscriptionSvc.subscription;
+    sub = new Subscription();
+    this.subscription = sub;
+    sub.subscription_uuid = Guid.create().toString();
+
+
+
+
+    // START TEMP ------------------------
+    // find Globex or randomly pick an existing customer for now
+    if (!this.subscription.customer_uuid) {
+      this.customerSvc.requestGetCustomers().subscribe((c: Customer[]) => {
+
+        // first look for Globex
+        let globex = c.find(x => x.identifier == 'GLBX');
+        if (globex == null) {
+
+          // if not found, just pick a random customer
+          let rnd = Math.floor(Math.random() * Math.floor(c.length));
+          this.customer = c[rnd];
+        } else {
+          this.customer = globex;
+        }
+
+        this.subscribeForm.controls.selectedCustomerUuid.setValue(this.customer.customer_uuid);
+      });
+    }
+    // END TEMP --------------------------
+  }
+
+  /**
+   * 
+   */
+  loadPageForEdit(params: any) {
+    let sub = this.subscriptionSvc.subscription;
+    sub.subscription_uuid = params.id;
+
+    this.subscriptionSvc.getSubscription(sub.subscription_uuid)
+      .subscribe((s: Subscription) => {
+        this.subscription = s;
+      });
+  }
 
   /**
    * 
@@ -173,8 +213,17 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
   /**
    * 
    */
-  createAndLaunchSubscription() {
-    console.log('createAndLaunchSubscription');
+  onSubmit() {
+    console.log('onSubmit');
+
+    console.log(this.subscribeForm);
+
+    this.submitted = true;
+
+    // stop here if form is invalid
+    if (this.subscribeForm.invalid) {
+      return;
+    }
 
     let sub = this.subscriptionSvc.subscription;
 

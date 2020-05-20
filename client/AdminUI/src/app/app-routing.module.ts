@@ -11,7 +11,6 @@ import { DomainsComponent } from './components/domains/domains.component';
 import { TemplatesPageComponent } from './components/templates-page/templates-page.component';
 import { UserAdminComponent } from './components/user-admin/user-admin.component';
 import { CustomersComponent } from './components/customers/customers.component';
-import { ViewSubscriptionComponent } from './components/subscriptions/view-subscription/view-subscription.component';
 
 
 const routes: Routes = [
@@ -24,7 +23,7 @@ const routes: Routes = [
     ]
   },
   {
-    path: 'createsubscription',
+    path: 'create-subscription',
     component: LayoutMainComponent,
     children: [{ path: '', component: ManageSubscriptionComponent }]
   },
