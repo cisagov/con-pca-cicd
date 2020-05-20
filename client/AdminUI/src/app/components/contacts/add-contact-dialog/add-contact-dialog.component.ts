@@ -34,8 +34,8 @@ export class AddContactDialogComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.customer_service.requestGetCustomers().subscribe((data: any[]) => {
-      this.customers = this.customer_service.getCustomers(data)
+    this.customer_service.getCustomers().subscribe((data: any[]) => {
+      this.customers = this.customer_service.toCustomers(data)
     })
   }
 
@@ -68,7 +68,8 @@ export class AddContactDialogComponent implements OnInit {
       office_phone: this.form_group.controls['office_phone'].value,
       mobile_phone: this.form_group.controls['mobile_phone'].value,
       email: this.form_group.controls['email'].value,
-      notes: this.form_group.controls['notes'].value
+      notes: this.form_group.controls['notes'].value,
+      active: true
     }
     return contact
   }

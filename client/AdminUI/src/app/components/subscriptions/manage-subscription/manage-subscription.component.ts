@@ -90,6 +90,10 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
    * convenience getter for easy access to form fields
    */
   get f() { return this.subscribeForm.controls; }
+        // START TEMP ------------------------
+        // find Globex or randomly pick an existing customer for now
+        if (!this.subscription.customer_uuid) {
+          this.customerSvc.getCustomers().subscribe((c: Customer[]) => {
 
 
   /**
@@ -147,7 +151,7 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
    */
   loadContactsForCustomer(customer_uuid: string) {
     // get the customer and contacts from the API
-    this.customerSvc.requestGetCustomer(customer_uuid).subscribe((c: Customer) => {
+    this.customerSvc.getCustomer(customer_uuid).subscribe((c: Customer) => {
       this.customer = c;
 
       this.customer.contact_list = this.customerSvc.getContactsForCustomer(c);

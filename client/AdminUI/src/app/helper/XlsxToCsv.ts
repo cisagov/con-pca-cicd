@@ -1,4 +1,4 @@
-import * as XLSX from 'XLSX';
+import * as XLSX from 'xlsx';
 
 export class XlsxToCsv {
 

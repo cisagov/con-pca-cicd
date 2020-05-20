@@ -57,6 +57,12 @@
         <mat-cell *matCellDef="let row"> {{row.mobile_phone}} </mat-cell>
       </ng-container>
 
+      <!-- Active Column -->
+      <ng-container matColumnDef="active">
+        <mat-header-cell *matHeaderCellDef>Active</mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{row.active}} </mat-cell>
+      </ng-container>
+
       <!-- Action Column -->
       <ng-container matColumnDef="select">
         <mat-header-cell *matHeaderCellDef>Select</mat-header-cell>

@@ -40,6 +40,10 @@
         <mat-label>Notes</mat-label>
         <input matInput type="text" [(ngModel)]="data.notes" formControlName="notes">
     </mat-form-field>
+    <!-- ACTIVE -->
+    <mat-checkbox [(ngModel)]="data.active" formControlName="active">
+        <mat-label>Active</mat-label>
+    </mat-checkbox>
 </div>
 
 <!-- INITIAL BUTTONS AT END -->
