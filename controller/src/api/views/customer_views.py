@@ -66,7 +66,7 @@ class CustomerListView(APIView):
         created_response = save_single(
             post_data, "customer", CustomerModel, validate_customer
         )
-        logging.info("created responce {}".format(created_response))
+        logging.info("created response {}".format(created_response))
         if "errors" in created_response:
             return Response(created_response, status=status.HTTP_400_BAD_REQUEST)
         serializer = CustomerPostResponseSerializer(created_response)
@@ -114,7 +114,7 @@ class CustomerView(APIView):
             model=CustomerModel,
             validation_model=validate_customer,
         )
-        logging.info("created responce {}".format(updated_response))
+        logging.info("created response {}".format(updated_response))
         if "errors" in updated_response:
             return Response(updated_response, status=status.HTTP_400_BAD_REQUEST)
         serializer = CustomerPatchResponseSerializer(updated_response)
@@ -132,7 +132,7 @@ class CustomerView(APIView):
         delete_response = delete_single(
             customer_uuid, "customer", CustomerModel, validate_customer
         )
-        logging.info("delete responce {}".format(delete_response))
+        logging.info("delete response {}".format(delete_response))
         if "errors" in delete_response:
             return Response(delete_response, status=status.HTTP_400_BAD_REQUEST)
         serializer = CustomerDeleteResponseSerializer(delete_response)
