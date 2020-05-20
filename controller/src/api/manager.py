@@ -36,17 +36,19 @@ class TemplateManager:
         clean text by converting words to lower case,
         removing punctuation and numbers
         """
-        text = ""
+        web_text = ""
         if url != None:
+            if not url.startswith("http://") and not url.startswith("https://"):
+                url = "http://" + url
             headers = {"Content-Type": "text/html"}
             resp = requests.get(url, headers=headers)
             soup = BeautifulSoup(resp.text, "lxml")
-            text = re.sub(r"[^A-Za-z]+", " ", soup.get_text().lower())
+            web_text = re.sub(r"[^A-Za-z]+", " ", soup.get_text().lower())
 
         if keywords == None:
             keywords = ""
             
-        return text + keywords
+        return web_text + keywords
 
     def get_templates(self, url: str, keywords: str, template_data):
         """
@@ -57,6 +59,8 @@ class TemplateManager:
         preprocessed_data = [self.preprocess_keywords(url, keywords)] + [
             *template_data.values()
         ]
+        print('RKW: preprocessed_data = ')
+        print(preprocessed_data)
         docs_tfidf = vectorizer.fit_transform(preprocessed_data)
         cosine_similarities = cosine_similarity(docs_tfidf[:1], docs_tfidf).flatten()
         cosine_similarities = cosine_similarities[1:]

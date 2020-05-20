@@ -10,7 +10,7 @@ import { UserService } from 'src/app/services/user.service';
 import { CustomerService } from 'src/app/services/customer.service';
 import { CustomersComponent } from 'src/app/components/customers/customers.component';
 import { XlsxToCsv } from 'src/app/helper/XlsxToCsv';
-import { StringifyOptions } from 'querystring';
+
 
 @Component({
   selector: 'app-manage-subscription',
@@ -38,7 +38,7 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
   startAt = new Date();
 
   url: string;
-  tags: string;
+  keywords: string;
 
   // The raw CSV content of the textarea
   csvText: string;
@@ -66,10 +66,10 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
     this.subscribeForm = new FormGroup({
       selectedCustomerUuid: new FormControl('', Validators.required),
       csvText: new FormControl('', Validators.required),
-      primaryContact: new FormControl(null),
+      primaryContact: new FormControl(null, Validators.required),
       startDate: new FormControl(new Date()),
       url: new FormControl(''),
-      tags: new FormControl('')
+      keywords: new FormControl('')
     });
 
 
@@ -93,10 +93,9 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
 
 
   /**
-   * 
+   * CREATE mode
    */
   loadPageForCreate(params: any) {
-    // CREATE mode
     this.pageMode = 'CREATE';
     this.action = this.action_CREATE;
     let sub = this.subscriptionSvc.subscription;
@@ -123,14 +122,14 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
           this.customer = globex;
         }
 
-        this.subscribeForm.controls.selectedCustomerUuid.setValue(this.customer.customer_uuid);
+        this.f.selectedCustomerUuid.setValue(this.customer.customer_uuid);
       });
     }
     // END TEMP --------------------------
   }
 
   /**
-   * 
+   * EDIT mode
    */
   loadPageForEdit(params: any) {
     let sub = this.subscriptionSvc.subscription;
@@ -206,6 +205,7 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
     let x = new XlsxToCsv();
     x.convert(file).then((xyz: string) => {
       this.csvText = xyz;
+      this.f.csvText.setValue(xyz);
     });
 
   }
@@ -214,8 +214,6 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
    * 
    */
   onSubmit() {
-    console.log('onSubmit');
-
     console.log(this.subscribeForm);
 
     this.submitted = true;
@@ -239,12 +237,15 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
     sub.name = "SC-1." + this.customer.name + ".1.1"; //auto generated name
     sub.start_date = this.startDate;
     sub.status = "New Not Started";
-    // set the target list
-    sub.setTargetsFromCSV(this.csvText);
+    
     sub.url = this.url;
-    // tags / keywords
-    sub.keywords = this.tags;
-
+    
+    // keywords
+    sub.keywords = this.f.keywords.value;
+    
+    // set the target list
+    let csv = this.f.csvText.value;
+    sub.setTargetsFromCSV(csv);
 
     // call service with everything needed to start the subscription
     this.subscriptionSvc.submitSubscription(sub).subscribe(

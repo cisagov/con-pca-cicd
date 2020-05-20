@@ -71,7 +71,7 @@ class SubscriptionsListView(APIView):
         post_data = request.data.copy()
 
         # Get all templates for calc
-        template_list = self.__get_data(
+        template_list = self.__get_list(
             None, "template", TemplateModel, validate_template
         )
 
@@ -80,8 +80,10 @@ class SubscriptionsListView(APIView):
         }
 
         # Data for Template calculation ToDo: Save relevant_templates
+        url = post_data.get("url")
+        keywords = post_data.get("keywords")
         relevant_templates = template_manager.get_templates(
-            post_data.get("url"), post_data.get("keywords"), template_data
+            url, keywords, template_data
         )[:15]
 
         # Return 15 of the most relevant templates

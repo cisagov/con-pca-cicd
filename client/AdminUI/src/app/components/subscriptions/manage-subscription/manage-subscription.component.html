@@ -4,7 +4,7 @@
     <form [formGroup]="subscribeForm" (ngSubmit)="onSubmit()">
         <div style="display: block;" class="mb-5">
             <div>
-                <mat-label class="h6">Customer</mat-label>
+                <mat-label class="h6">Customer/Organization</mat-label>
             </div>
 
             <div class="p-2 mat-card ml-0 w-50 mb-1">
@@ -32,6 +32,9 @@
                             {{ c.first_name }} {{ c.last_name }}</mat-option>
                     </mat-select>
                 </mat-form-field>
+                <div *ngIf="submitted && f.primaryContact.errors" class="invalid-feedback">
+                    <div *ngIf="f.primaryContact.errors.required">A primary contact must be selected</div>
+                </div>
             </div>
 
             <div style="display: block;" class="mb-3">
@@ -52,17 +55,13 @@
                     <input formControlName="url" type="text" class="form-control mb-4">
                 </div>
 
-                <div class="text-muted">Enter words that describe the
+                <div class="text-muted">Optionally enter words that describe the
                     organization, separated by commas.
                     They will be used to select applicable templates.</div>
                 <mat-form-field class="w-100">
                     <mat-label>Applicability Word Tags</mat-label>
                     <textarea matNativeControl cdkTextareaAutosize class="form-control mb-4"
-                    formControlName="tags"></textarea>
-                    <mat-error *ngIf="
-                      true">
-                        Tags <strong>required</strong>
-                    </mat-error>
+                        formControlName="keywords"></textarea>
                 </mat-form-field>
 
                 <div class="mb-3">
@@ -83,15 +82,13 @@
 
                 <mat-form-field class="w-100">
                     <mat-label>Target Emails</mat-label>
-                    <textarea matNativeControl cdkTextareaAutosize class="form-control"
-                        formControlName="csvText"
-                        [ngClass]="{ 'is-invalid': submitted && f.csvText.errors }" 
-                        >
+                    <textarea matNativeControl cdkTextareaAutosize class="form-control" formControlName="csvText"
+                        [ngClass]="{ 'is-invalid': submitted && f.csvText.errors }">
                     </textarea>
                     <div *ngIf="submitted && f.csvText.errors" class="invalid-feedback">
                         <div *ngIf="f.csvText.errors.required">Targets must be defined</div>
                     </div>
-                </mat-form-field> 
+                </mat-form-field>
             </div>
 
             <div class="text-right mt-3">
