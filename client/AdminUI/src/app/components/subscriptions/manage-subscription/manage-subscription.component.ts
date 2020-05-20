@@ -74,7 +74,7 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
         // START TEMP ------------------------
         // find Globex or randomly pick an existing customer for now
         if (!this.subscription.customer_uuid) {
-          this.customerSvc.requestGetCustomers().subscribe((c: Customer[]) => {
+          this.customerSvc.getCustomers().subscribe((c: Customer[]) => {
 
             // first look for Globex
             let globex = c.find(x => x.identifier == 'GLBX');
@@ -108,7 +108,7 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
    */
   loadContactsForCustomer(customer_uuid: string) {
     // get the customer and contacts from the API
-    this.customerSvc.requestGetCustomer(customer_uuid).subscribe((c: Customer) => {
+    this.customerSvc.getCustomer(customer_uuid).subscribe((c: Customer) => {
       this.customer = c;
 
       this.customer.contact_list = this.customerSvc.getContactsForCustomer(c);
