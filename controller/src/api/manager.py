@@ -15,7 +15,7 @@ from sklearn.metrics.pairwise import cosine_similarity, linear_kernel
 
 # GoPhish Libraries
 from gophish import Gophish
-from gophish.models import SMTP, Campaign, Group, Page, Template, User
+from gophish.models import Campaign, Group, SMTP, Stat, Page, Template, User
 
 
 logger = logging.getLogger(__name__)
@@ -47,7 +47,7 @@ class TemplateManager:
 
         if keywords == None:
             keywords = ""
-            
+
         return web_text + keywords
 
     def get_templates(self, url: str, keywords: str, template_data):
@@ -118,6 +118,8 @@ class CampaignManager:
             return self.get_sending_profile(kwargs.get("smtp_id", None))
         elif method == "campaign":
             return self.get_campaign(kwargs.get("campaign_id", None))
+        elif method == "summary":
+            return self.get_campaign_summary(kwargs.get("campaign_id", None))
         else:
             return "method not found"
 
@@ -190,6 +192,13 @@ class CampaignManager:
         else:
             campaign = self.gp_api.campaigns.get()
         return campaign
+
+    def get_campaign_summary(self, campaign_id: int = None):
+        if campaign_id:
+            summary = self.gp_api.campaigns.summary(campaign_id=campaign_id)
+        else:
+            summary = self.gp_api.campaigns.summary()
+        return summary.as_dict()
 
     def get_sending_profile(self, smtp_id: int = None):
         """GET Sending Profile."""
