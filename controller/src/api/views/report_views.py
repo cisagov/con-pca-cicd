@@ -17,6 +17,7 @@ from api.models.subscription_models import SubscriptionModel, validate_subscript
 from api.serializers.subscriptions_serializers import SubscriptionGetSerializer
 from api.manager import CampaignManager
 from api.utils.db_utils import get_single
+from api.serializers.reports_serializers import ReportsGetSerializer
 
 
 logger = logging.getLogger(__name__)
@@ -41,5 +42,14 @@ class ReportsView(APIView):
             campaign_manager.get("summary", campaign_id=campaign.get("campaign_id"))
             for campaign in campaigns
         ]
+        target_count = sum([targets.get("stats").get("total") for targets in summary])
+        context = {
+            "subscription_uuid": subscription_uuid,
+            "customer_name": subscription.get("name"),
+            "start_date": summary[0].get("created_date"),
+            "end_date": summary[0].get("send_by_date"),
+            "target_count": target_count,
+        }
 
-        return Response(summary)
+        serializer = ReportsGetSerializer(context)
+        return Response(serializer.data)
