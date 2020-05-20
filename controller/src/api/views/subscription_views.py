@@ -210,7 +210,7 @@ class SubscriptionView(APIView):
     )
     def patch(self, request, subscription_uuid):
         """Patch method."""
-        logging.debug("update subscription_uuid {}".format(subscription_uuid))
+        logger.debug("update subscription_uuid {}".format(subscription_uuid))
         put_data = request.data.copy()
         serialized_data = SubscriptionPatchSerializer(put_data)
         updated_response = update_single(
@@ -234,7 +234,7 @@ class SubscriptionView(APIView):
     )
     def delete(self, request, subscription_uuid):
         """Delete method."""
-        logging.debug("delete subscription_uuid {}".format(subscription_uuid))
+        logger.debug("delete subscription_uuid {}".format(subscription_uuid))
         delete_response = delete_single(
             uuid=subscription_uuid,
             collection="subscription",
