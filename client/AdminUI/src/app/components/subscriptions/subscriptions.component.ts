@@ -49,8 +49,8 @@ export class SubscriptionsComponent implements OnInit {
   private refresh() {
     this.subscription_service.requestGetSubscriptions().subscribe((data: any[]) => {
       let subscriptions = this.subscription_service.getSubscriptions(data)
-      this.customer_service.requestGetCustomers().subscribe((data: any[]) => {
-        let customers = this.customer_service.getCustomers(data)
+      this.customer_service.getCustomers().subscribe((data: any[]) => {
+        let customers = this.customer_service.toCustomers(data)
         let customerSubscriptions: ICustomerSubscription[] = []
         subscriptions.map((s: Subscription) => {
           let customerSubscription: ICustomerSubscription = {

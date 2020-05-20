@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Customer, Contact, NewCustomer, ICustomerContact } from 'src/app/models/customer.model'
 import { environment } from 'src/environments/environment';
+import { request } from 'http';
 
 // Json Definition returned for Customer from API
 const httpOptions = {
@@ -15,16 +16,16 @@ export class CustomerService {
   constructor(private http: HttpClient) { }
 
   // Returns observable on http request to get customers
-  public requestGetCustomers() {
+  public getCustomers() {
     let url = `${environment.apiEndpoint}/api/v1/customers/`;
     return this.http.get(url);
   }
 
   // Generates a list of Customer from request data
-  public getCustomers(requestData: any[]): Customer[] {
+  public toCustomers(requestData: any[]): Customer[] {
     let customers: Customer[] = [];
     requestData.map((c: any) => {
-      let customer = this.getCustomer(c)
+      let customer = this.toCustomer(c)
       customers.push(customer)
     })
     return customers
@@ -43,7 +44,7 @@ export class CustomerService {
           office_phone: contact.office_phone,
           mobile_phone: contact.mobile_phone,
           email: contact.email,
-          notes: contact.notes
+          notes: contact.notes,
         }
         customerContacts.push(customerContact)
       })
@@ -51,12 +52,12 @@ export class CustomerService {
     return customerContacts;
   }
 
-  public requestGetCustomer(customer_uuid: string) {
+  public getCustomer(customer_uuid: string) {
     let url = `${environment.apiEndpoint}/api/v1/customer/${customer_uuid}/`;
     return this.http.get(url);
   }
 
-  public getCustomer(requestData: any) {
+  public toCustomer(requestData: any) {
     let customer: Customer = {
       customer_uuid: requestData.customer_uuid,
       name: requestData.name,
@@ -83,7 +84,8 @@ export class CustomerService {
       office_phone: requestData.office_phone,
       mobile_phone: requestData.mobile_phone,
       email: requestData.email,
-      notes: requestData.notes
+      notes: requestData.notes,
+      active: requestData.active
     }
     return contact
   }

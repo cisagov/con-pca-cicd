@@ -33,8 +33,8 @@ export class ViewContactDialogComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.customer_service.requestGetCustomer(this.data.customer_uuid).subscribe((data: any) => {
-      this.customer = this.customer_service.getCustomer(data)
+    this.customer_service.getCustomer(this.data.customer_uuid).subscribe((data: any) => {
+      this.customer = this.customer_service.toCustomer(data)
     })
   }
 
@@ -48,7 +48,8 @@ export class ViewContactDialogComponent implements OnInit {
       office_phone: this.data.office_phone,
       mobile_phone: this.data.mobile_phone,
       email: this.data.email,
-      notes: this.data.notes
+      notes: this.data.notes,
+      active: true
     })
 
     this.saveContacts()

@@ -29,6 +29,7 @@ export class Contact {
     mobile_phone: string;
     email: string;
     notes: string;
+    active: boolean;
 }
 
 export interface ICustomerContact {

@@ -22,6 +22,7 @@ class CustomerContactSerializer(serializers.Serializer):
     mobile_phone = serializers.CharField(max_length=100)
     email = serializers.EmailField(max_length=None, min_length=None, allow_blank=False)
     notes = serializers.CharField(max_length=None, min_length=None, allow_blank=True)
+    active = serializers.BooleanField(default=True, allow_null=False)
 
 
 class CustomerGetSerializer(serializers.Serializer):

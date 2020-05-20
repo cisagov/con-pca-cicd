@@ -11,7 +11,8 @@
         "mobile_phone": "555-555-5555",
         "notes": "The big cheese.",
         "office_phone": "555-555-5555",
-        "title": "CeO"
+        "title": "CeO",
+        "active": true
       }
     ],
     "identifier": "BoB",
@@ -31,7 +32,8 @@
         "first_name": "Matt",
         "last_name": "Daemon",
         "mobile_phone": "555-555-5555",
-        "office_phone": "555-555-5555"
+        "office_phone": "555-555-5555",
+        "active": true
       },
       "start_date": "2020-04-10T09:30:25",
       "status": "  Waiting on SRF",
