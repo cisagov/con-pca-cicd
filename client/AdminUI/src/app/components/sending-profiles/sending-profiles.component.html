@@ -2,7 +2,7 @@
     <h1>Sending Profiles</h1>
 
     <div class="mb-2 text-right">
-        <button mat-raised-button class="add-button" color="primary" (click)="openProfileDialog()">New Profile</button>
+        <button mat-raised-button class="add-button" color="primary" (click)="openProfileDialog(0)">New Profile</button>
     </div>
 
     <div class="col p-0 w-100">
@@ -25,10 +25,19 @@
                 <mat-header-cell *matHeaderCellDef mat-sort-header>Last Modified Date</mat-header-cell>
                 <mat-cell *matCellDef="let row">{{row.modified_date}}</mat-cell>
             </ng-container>
+            <!-- SELECT ICON -->
+            <ng-container matColumnDef="select">
+                <mat-header-cell *matHeaderCellDef>Select</mat-header-cell>
+                <mat-cell *matCellDef="let row">
+                  <button mat-icon-button color="primary" (click)="openProfileDialog(row)">
+                    <mat-icon>list</mat-icon>
+                  </button>
+                </mat-cell>
+            </ng-container>
 
 
             <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-            <mat-row class="table-row" *matRowDef="let row; columns: displayedColumns" (click)="editProfile(row)">
+            <mat-row class="table-row" *matRowDef="let row; columns: displayedColumns" (click)="openProfileDialog(row)">
             </mat-row>
         </mat-table>
 

@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { SendingProfile } from '../models/sending-profile.model';
 import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 
@@ -19,8 +18,17 @@ export class SendingProfileService {
   /**
    * Returns a promise with all sending profiles.
    */
-  getAllProfiles() {
-    let url = `${environment.apiEndpoint}/api/v1/sendingprofiles/`
+  public getAllProfiles() {
+    let url = `${environment.apiEndpoint}/api/v1/sendingprofiles/`;
+    return this.http.get(url);
+  }
+
+  /**
+   * 
+   * @param profileId 
+   */
+  public getProfile(profileId: number) {
+    let url = `${environment.apiEndpoint}/api/v1/sendingprofile/${profileId}/`
     return this.http.get(url);
   }
 }

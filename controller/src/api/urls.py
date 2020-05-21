@@ -10,6 +10,7 @@ from api.views import (
     report_views,
     subscription_views,
     template_views,
+    sendingprofile_views,
     webhook_views,
 )
 from django.urls import path
@@ -93,6 +94,16 @@ urlpatterns = [
         "v1/customer/<customer_uuid>/",
         customer_views.CustomerView.as_view(),
         name="customer_get_api",
+    ),
+    path(
+        "v1/sendingprofiles/",
+        sendingprofile_views.SendingProfilesListView.as_view(),
+        name="sendingprofile_list_api",
+    ),
+    path(
+        "v1/sendingprofile/<id>/",
+        sendingprofile_views.SendingProfileView.as_view(),
+        name="sendingprofile_get_api",
     ),
     path(
         "v1/inboundwebhook/",

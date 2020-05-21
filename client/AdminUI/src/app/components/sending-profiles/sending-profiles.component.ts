@@ -25,7 +25,7 @@ export class SendingProfilesComponent implements OnInit {
 
   ngOnInit(): void {
     this.sendingProfileSvc.getAllProfiles().subscribe((data: any) => {
-      this.sendingProfilesData.data = data as SendingProfile[]
+      this.sendingProfilesData.data = data as SendingProfile[];
     });
   }
   /**
@@ -37,13 +37,14 @@ export class SendingProfilesComponent implements OnInit {
   }
 
   /**
-   * 
+   * Open the detail dialog and pass the ID of the clicked row, or 0 if they clicked 'new'.
    */
-  openProfileDialog(): void {
+  openProfileDialog(row: any): void {
     const dialogConfig = new MatDialogConfig();
-    //dialogConfig.height = "80vh";
     dialogConfig.width = "60vw";
-    dialogConfig.data = {};
+    dialogConfig.data = {
+      sendingProfileId: row.id
+    };
     const dialogRef = this.dialog.open(SendingProfileDetailComponent, dialogConfig);
 
     dialogRef.afterClosed().subscribe(value => {
