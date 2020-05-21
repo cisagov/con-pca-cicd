@@ -1,22 +1,22 @@
 """GoPhish API Manager."""
 
 # Standard Python Libraries
-import re
 import logging
+import re
 from typing import Dict
 
 # Third-Party Libraries
-import requests
-from faker import Faker
-from django.conf import settings
 from bs4 import BeautifulSoup
-from sklearn.feature_extraction.text import TfidfVectorizer, CountVectorizer
-from sklearn.metrics.pairwise import cosine_similarity, linear_kernel
+from django.conf import settings
+from faker import Faker
+import requests
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
 
+# cisagov Libraries
 # GoPhish Libraries
 from gophish import Gophish
 from gophish.models import Campaign, Group, SMTP, Stat, Page, Template, User
-
 
 logger = logging.getLogger(__name__)
 faker = Faker()
@@ -24,20 +24,23 @@ vectorizer = TfidfVectorizer()
 
 
 class TemplateManager:
-    """Template calculator"""
+    """Template calculator."""
 
     def __init__(self):
+        """Init."""
         pass
 
     def preprocess_keywords(self, url: str, keywords: str):
         """
-        Extract text from the given url
+        Preprocess_keywords.
+
+        Extract text from the given url.
         Concatenate a bag of keywords from user input
         clean text by converting words to lower case,
         removing punctuation and numbers
         """
         web_text = ""
-        if url != None:
+        if url is not None:
             if not url.startswith("http://") and not url.startswith("https://"):
                 url = "http://" + url
             headers = {"Content-Type": "text/html"}
@@ -45,13 +48,15 @@ class TemplateManager:
             soup = BeautifulSoup(resp.text, "lxml")
             web_text = re.sub(r"[^A-Za-z]+", " ", soup.get_text().lower())
 
-        if keywords == None:
+        if keywords is None:
             keywords = ""
 
         return web_text + keywords
 
     def get_templates(self, url: str, keywords: str, template_data):
         """
+        Get Templates.
+
         Return highest relative templates using tf-idf and cosine similarity algorithms
         based on customer keywords
         """
@@ -110,6 +115,8 @@ class CampaignManager:
                 kwargs.get("page_name"),
                 kwargs.get("user_group"),
                 kwargs.get("email_template"),
+                kwargs.get("launch_date"),
+                kwargs.get("send_by_date"),
             )
 
     def get(self, method, **kwargs):
@@ -137,6 +144,8 @@ class CampaignManager:
         page_name: str,
         user_group=None,
         email_template=None,
+        launch_date=None,
+        send_by_date=None,
     ):
         """Generate campaign Method."""
         smtp = SMTP(name=smtp_name)
@@ -149,6 +158,8 @@ class CampaignManager:
             template=email_template,
             smtp=smtp,
             url=settings.PHISH_URL,
+            launch_date=launch_date,
+            send_by_date=send_by_date,
         )
 
         campaign = self.gp_api.campaigns.post(campaign)
