@@ -31,7 +31,6 @@ from rest_framework.views import APIView
 logger = logging.getLogger(__name__)
 
 
-
 class TemplatesListView(APIView):
     """
     This is the TemplatesListView APIView.
@@ -67,7 +66,7 @@ class TemplatesListView(APIView):
         created_response = save_single(
             post_data, "template", TemplateModel, validate_template
         )
-        logger.info("created responce {}".format(created_response))
+        logger.info("created response {}".format(created_response))
         if "errors" in created_response:
             return Response(created_response, status=status.HTTP_400_BAD_REQUEST)
         serializer = TemplatePostResponseSerializer(created_response)
@@ -116,7 +115,7 @@ class TemplateView(APIView):
             model=TemplateModel,
             validation_model=validate_template,
         )
-        logger.info("created responce {}".format(updated_response))
+        logger.info("created response {}".format(updated_response))
         if "errors" in updated_response:
             return Response(updated_response, status=status.HTTP_400_BAD_REQUEST)
         serializer = TemplatePatchResponseSerializer(updated_response)
@@ -134,7 +133,7 @@ class TemplateView(APIView):
         delete_response = delete_single(
             template_uuid, "template", TemplateModel, validate_template
         )
-        logger.info("delete responce {}".format(delete_response))
+        logger.info("delete response {}".format(delete_response))
         if "errors" in delete_response:
             return Response(delete_response, status=status.HTTP_400_BAD_REQUEST)
         serializer = TemplateDeleteResponseSerializer(delete_response)

@@ -17,8 +17,10 @@
             </div>
 
             <div class="mb-3">
-                <button mat-raised-button color="primary" (click)="showCustomerDialog()">Assign Customer <i
-                        class="fa fa-search" style="font-size: 1rem;"></i></button>
+                <button mat-raised-button color="primary" *ngIf="pageMode == 'CREATE'"
+                    (click)="showCustomerDialog()">Assign Customer
+                    <i class="fa fa-search" style="font-size: 1rem;"></i>
+                </button>
             </div>
 
             <div>
@@ -28,7 +30,7 @@
                 <mat-form-field appearance="outline">
                     <mat-select formControlName="primaryContact" (selectionChange)="changePrimaryContact($event)">
                         <mat-option [value]="null">--Select--</mat-option>
-                        <mat-option *ngFor="let c of customer?.contact_list" [value]="c.first_name + '_' + c.last_name">
+                        <mat-option *ngFor="let c of customer?.contact_list" [value]="c.email">
                             {{ c.first_name }} {{ c.last_name }}</mat-option>
                     </mat-select>
                 </mat-form-field>
@@ -37,59 +39,64 @@
                 </div>
             </div>
 
-            <div style="display: block;" class="mb-3">
-                <mat-label class="h6">Start Date</mat-label>
-                <div>
-                    <mat-form-field appearance="outline" class="mb-4">
-                        <input matInput [matDatepicker]="picker" [min]="startAt" formControlName="startDate">
-                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                        <mat-datepicker #picker [startAt]="startAt"></mat-datepicker>
-                    </mat-form-field>
-                </div>
 
-                <div>
-                    <mat-label class="h6">Customer Website</mat-label>
-                    <div class="text-muted">The customer's page will be analyzed
-                        to send phishing emails relevant to their industry.
-                    </div>
-                    <input formControlName="url" type="text" class="form-control mb-4">
-                </div>
-
-                <div class="text-muted">Optionally enter words that describe the
-                    organization, separated by commas.
-                    They will be used to select applicable templates.</div>
-                <mat-form-field class="w-100">
-                    <mat-label>Applicability Word Tags</mat-label>
-                    <textarea matNativeControl cdkTextareaAutosize class="form-control mb-4"
-                        formControlName="keywords"></textarea>
-                </mat-form-field>
-
-                <div class="mb-3">
-                    <div>
-                        <mat-label class="h6">CSV Content</mat-label>
-                    </div>
-                    <div class="text-muted">Upload an Excel spreadsheet or comma-separated value text
-                        file containing the list of contacts or enter them
-                        directly in the field below.
-                    </div>
-                    <div class="text-muted">Format: email, firstname, lastname, position</div>
-                </div>
-
-                <button mat-raised-button color="primary" class="mb-3" (click)="openFileBrowser($event)">
-                    Upload Email Targets List <i class="fa fa-upload"></i>
-                </button>
-                <input id="csvUpload" type="file" accept=".csv,.xls,.xlsx" (change)="fileSelect($event)" class="d-none">
-
-                <mat-form-field class="w-100">
-                    <mat-label>Target Emails</mat-label>
-                    <textarea matNativeControl cdkTextareaAutosize class="form-control" formControlName="csvText"
-                        [ngClass]="{ 'is-invalid': submitted && f.csvText.errors }">
-                    </textarea>
-                    <div *ngIf="submitted && f.csvText.errors" class="invalid-feedback">
-                        <div *ngIf="f.csvText.errors.required">Targets must be defined</div>
-                    </div>
+            <mat-label class="h6">Start Date</mat-label>
+            <div>
+                <mat-form-field appearance="outline" class="mb-4">
+                    <input matInput [matDatepicker]="picker" [min]="startAt" formControlName="startDate">
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker [startAt]="startAt"></mat-datepicker>
                 </mat-form-field>
             </div>
+
+
+            <mat-label class="h6">Customer Website</mat-label>
+            <div class="text-muted">The customer's page will be analyzed
+                to send phishing emails relevant to their industry.
+            </div>
+            <mat-form-field class="w-100" appearance="outline">
+                <input matInput formControlName="url" type="text">
+            </mat-form-field>
+
+
+            <mat-label class="h6">Keywords</mat-label>
+            <div class="text-muted">Optionally enter words that describe the
+                organization, separated by commas.
+                They will be used to select applicable templates.</div>
+            <mat-form-field class="w-100" appearance="outline">
+                <mat-label>Applicability Word Tags</mat-label>
+                <textarea matInput autosize formControlName="keywords"></textarea>
+            </mat-form-field>
+
+
+            <div class="mb-3">
+                <div>
+                    <mat-label class="h6">Target Recipients</mat-label>
+                </div>
+                <div class="text-muted">Upload an Excel spreadsheet or comma-separated value text
+                    file containing the list of target individuals or enter them
+                    directly in the field below.
+                </div>
+                <div class="text-muted"><em>Format: email, firstname, lastname, position</em></div>
+            </div>
+
+            <button mat-raised-button color="primary" class="mb-3" 
+                *ngIf="pageMode == 'CREATE'"
+                (click)="openFileBrowser($event)">
+                Upload Email Targets List <i class="fa fa-upload"></i>
+            </button>
+            <input id="csvUpload" type="file" accept=".csv,.xls,.xlsx" (change)="fileSelect($event)" class="d-none">
+
+            <mat-form-field class="w-100 flex-grow-1" appearance="outline">
+                <mat-label>Target Emails</mat-label>
+                <textarea matInput autosize formControlName="csvText"
+                    [ngClass]="{ 'is-invalid': submitted && f.csvText.errors }">
+                    </textarea>
+                <div *ngIf="submitted && f.csvText.errors" class="invalid-feedback">
+                    <div *ngIf="f.csvText.errors.required">Targets must be defined</div>
+                </div>
+            </mat-form-field>
+
 
             <div class="text-right mt-3">
                 <button type="submit" mat-raised-button color="primary" *ngIf="pageMode == 'CREATE'">
