@@ -38,3 +38,4 @@ env/
 
 # Terraform
 aws/terraform/.terraform
+aws/.env
