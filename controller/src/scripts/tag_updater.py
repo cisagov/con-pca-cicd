@@ -255,6 +255,7 @@ old_token_tags = [
 
 old_program_tags = [
     "[TimeCardProgram]",
+    "[Time Card Program]",
     "[NAME OF PARKING OR COMMUTER PROGRAM]"
 ]
 
