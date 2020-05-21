@@ -1,9 +1,11 @@
 """
 Subscription Views.
+
 This handles the api for all the Subscription urls.
 """
 # Standard Python Libraries
 import logging
+
 # Third-Party Libraries
 # Local
 from api.manager import CampaignManager, TemplateManager
@@ -31,16 +33,21 @@ from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
+
 logger = logging.getLogger(__name__)
 # GoPhish API Manager
 campaign_manager = CampaignManager()
 # Template Calculator Manager
 template_manager = TemplateManager()
+
+
 class SubscriptionsListView(APIView):
     """
     This is the SubscriptionsListView APIView.
+
     This handles the API to get a List of Subscriptions.
     """
+
     @swagger_auto_schema(
         responses={"200": SubscriptionGetSerializer, "400": "Bad Request"},
         security=[],
@@ -55,6 +62,7 @@ class SubscriptionsListView(APIView):
         )
         serializer = SubscriptionGetSerializer(subscription_list, many=True)
         return Response(serializer.data)
+
     @swagger_auto_schema(
         request_body=SubscriptionPostSerializer,
         responses={"201": SubscriptionPostResponseSerializer, "400": "Bad Request"},
@@ -80,11 +88,14 @@ class SubscriptionsListView(APIView):
         else:
             relevant_templates = []
 
+        divided_templates = [
+            relevant_templates[x : x + 5] for x in range(0, len(relevant_templates), 5)
+        ]
+
         # Get the next date Intervals
         start_date = post_data.get("start_date")
         campaign_data_list = get_campaign_dates(start_date)
 
-            
         # Return 15 of the most relevant templates
         post_data["templates_selected_uuid_list"] = relevant_templates
         # get customer data
@@ -169,7 +180,6 @@ class SubscriptionsListView(APIView):
             campaign_start = campaign_info["start_date"].strftime("%Y-%m-%d")
             campaign_end = campaign_info["send_by_date"].strftime("%Y-%m-%d")
 
-
             if created_template is not None:
                 template_name = created_template.name
                 campaign_name = f"{first_name}.{last_name}.1.1 {template_name} {campaign_start}-{campaign_end}"
@@ -218,8 +228,10 @@ class SubscriptionsListView(APIView):
 class SubscriptionView(APIView):
     """
     This is the SubscriptionsView APIView.
+
     This handles the API for the Get a Substription with subscription_uuid.
     """
+
     @swagger_auto_schema(
         responses={"200": SubscriptionGetSerializer, "400": "Bad Request"},
         security=[],
@@ -234,6 +246,7 @@ class SubscriptionView(APIView):
         )
         serializer = SubscriptionGetSerializer(subscription)
         return Response(serializer.data)
+
     @swagger_auto_schema(
         request_body=SubscriptionPatchSerializer,
         responses={"202": SubscriptionPatchResponseSerializer, "400": "Bad Request"},
@@ -258,6 +271,7 @@ class SubscriptionView(APIView):
             return Response(updated_response, status=status.HTTP_400_BAD_REQUEST)
         serializer = SubscriptionPatchResponseSerializer(updated_response)
         return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
+
     @swagger_auto_schema(
         responses={"200": SubscriptionDeleteResponseSerializer, "400": "Bad Request"},
         security=[],
@@ -278,11 +292,15 @@ class SubscriptionView(APIView):
             return Response(delete_response, status=status.HTTP_400_BAD_REQUEST)
         serializer = SubscriptionDeleteResponseSerializer(delete_response)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+
 class SubscriptionsCustomerListView(APIView):
     """
     This is the SubscriptionsCustomerListView APIView.
+
     This handles the API to get a List of Subscriptions with customer_uuid.
     """
+
     @swagger_auto_schema(
         responses={"200": SubscriptionGetSerializer, "400": "Bad Request"},
         security=[],
