@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Customer } from '../models/customer.model';
+import { Customer, Contact } from '../models/customer.model';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Subscription } from '../models/subscription.model';
@@ -103,5 +103,15 @@ export class SubscriptionService {
    */
   submitSubscription(subscription: Subscription) {
     return this.http.post('http://localhost:8000/api/v1/subscriptions/', subscription)
+  }
+
+  /**
+   * Patches the subscription with the new primary contact.
+   * @param subscriptUuid 
+   * @param contact 
+   */
+  updatePrimaryContact(subscriptUuid: string, contact: Contact) {
+    let primary = { primary_contact: contact };
+    return this.http.patch(`http://localhost:8000/api/v1/subscription/${subscriptUuid}/`, primary)
   }
 }

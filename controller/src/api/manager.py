@@ -59,6 +59,12 @@ class TemplateManager:
         preprocessed_data = [self.preprocess_keywords(url, keywords)] + [
             *template_data.values()
         ]
+        
+        while("" in preprocessed_data) : 
+            preprocessed_data.remove("") 
+
+        if not preprocessed_data:
+            return []
 
         docs_tfidf = vectorizer.fit_transform(preprocessed_data)
         cosine_similarities = cosine_similarity(docs_tfidf[:1], docs_tfidf).flatten()
