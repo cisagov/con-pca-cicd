@@ -23,11 +23,22 @@ export class SendingProfilesComponent implements OnInit {
     public dialog: MatDialog
   ) { }
 
+  /**
+   * 
+   */
   ngOnInit(): void {
+    this.refresh();
+  }
+
+  /**
+   * Refreshes the page display.
+   */
+  refresh() {
     this.sendingProfileSvc.getAllProfiles().subscribe((data: any) => {
       this.sendingProfilesData.data = data as SendingProfile[];
     });
   }
+
   /**
    * 
    * @param row 
@@ -48,7 +59,7 @@ export class SendingProfilesComponent implements OnInit {
     const dialogRef = this.dialog.open(SendingProfileDetailComponent, dialogConfig);
 
     dialogRef.afterClosed().subscribe(value => {
-      //
+      this.refresh();
     })
   }
 }

@@ -1,10 +1,14 @@
-<h1>New Sending Profile</h1>
+<h1>{{ mode | titlecase }} Sending Profile</h1>
 
 <form [formGroup]="profileForm">
 
     <mat-form-field appearance="outline" class="w-100">
         <mat-label>Name</mat-label>
-        <input formControlName="name" matInput>
+        <input formControlName="name" matInput
+        [ngClass]="{ 'is-invalid': submitted && f.name.errors }">
+        <div *ngIf="submitted && f.name.errors" class="invalid-feedback">
+            <div *ngIf="f.name.errors.required">Profile name is required</div>
+        </div>
     </mat-form-field>
 
     <mat-form-field appearance="outline" class="w-100">
@@ -14,12 +18,20 @@
 
     <mat-form-field appearance="outline" class="w-100">
         <mat-label>From</mat-label>
-        <input formControlName="from" matInput>
+        <input formControlName="from" matInput
+        [ngClass]="{ 'is-invalid': submitted && f.from.errors }">
+        <div *ngIf="submitted && f.from.errors" class="invalid-feedback">
+            <div *ngIf="f.from.errors.required">From address is required</div>
+        </div>
     </mat-form-field>
 
     <mat-form-field appearance="outline" class="w-100">
         <mat-label>Host</mat-label>
-        <input formControlName="host" matInput>
+        <input formControlName="host" matInput
+        [ngClass]="{ 'is-invalid': submitted && f.host.errors }">
+        <div *ngIf="submitted && f.host.errors" class="invalid-feedback">
+            <div *ngIf="f.host.errors.required">Host is required</div>
+        </div>
     </mat-form-field>
 
     <mat-form-field appearance="outline" class="w-100">
@@ -32,7 +44,11 @@
         <input formControlName="password" matInput type="password">
     </mat-form-field>
 
-
+    <div class="valign-bottom">
+        <mat-checkbox formControlName="ignoreCertErrors" color="primary">
+            Ignore Certificate Errors
+        </mat-checkbox>
+    </div>
 
     <div class="text-right mt-3">
         <button mat-raised-button class="add-button" color="basic" (click)="onCancelClick()">
