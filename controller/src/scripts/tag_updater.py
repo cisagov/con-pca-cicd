@@ -8,35 +8,6 @@ and writes the results to a new file.
 import json
 import sys
 
-# Old tags that still need to be placed in categories for updated tags
-#
-#       ***MISC/UNCATEGORIZED TAGS***
-
-#       [Related User Type]
-
-#       [OTHER ORG]
-#       [RELEVANT EXTERNAL SITE]
-
-#       [CUSTOMER-RELEVENT-JOB-ROLE]
-#       [Relevant Position]
-#       [LEGIT_JOB]
-
-#       [name of parks from opensource gathering]
-#       [County Election's Staff, Information Systems personnel across the State]
-#       [CUSTOMER LEADERSHIP OFFICE]
-
-#       <ORG INTRANET>
-
-#       [FORM NAME]
-
-#       [PROPER TITLE FOR OFFICE SUPPLY MANAGER]
-#       [Relevant Skill]
-#       [Related\nAuthority to Customer]
-#       [amount or number]
-#       [LEGIT CONTRACT #]
-#       [LEGIT SOLICITATION #]
-#       [LEGIT_JOB_PREFIX]
-
 old_target_name_tags = [
     "%To_Name%"
 ]
@@ -49,7 +20,8 @@ old_customer_system_tags = [
     "<ORG SYSTEM>",
     "[CUST_SYSTEM]",
     "<ORG WEB PLATFORM/SERVICE>",
-    "[System Name]"
+    "[System Name]",
+    "<ORG INTRANET>"
 ]
 
 old_customer_tags = [
@@ -82,7 +54,9 @@ old_customer_tags = [
     "[Related Budget/Finance Department]",
     "[PROGRAM DEPARTMENT]",
     "[KNOWN CUSTOMER OFFICE]",
-    "[CUSTOMER HR OFFICE]"
+    "[CUSTOMER HR OFFICE]",
+    "[CUSTOMER LEADERSHIP OFFICE]",
+    "[County Election's Staff, Information Systems personnel across the State]"
 ]
 
 old_customer_email_tags = [
@@ -288,6 +262,21 @@ old_logo_tags = [
     "[LOGO]"
 ]
 
+old_job_tags = [
+    "[CUSTOMER-RELEVENT-JOB-ROLE]",
+    "[Relevant Position]",
+    "[LEGIT_JOB]",
+    "[LEGIT_JOB_PREFIX]",
+    "[PROPER TITLE FOR OFFICE SUPPLY MANAGER]",
+    "[Relevant Skill]"
+]
+
+old_number_tags = [
+    "[amount or number]",
+    "[LEGIT CONTRACT #]",
+    "[LEGIT SOLICITATION #]"
+]
+
 # New Uniform Tags
 #        "<%URL%>": "{{.URL}}",
 #        "<%TARGET_FIRST_NAME%>": "{{.FirstName}}",
@@ -325,6 +314,9 @@ old_logo_tags = [
 #        "<%TOKEN%>": "Relevant Token",
 #        "<%PROGRAM%>": "Relevant Program",
 #        "<%LOGO%>": "Relevant Logo"
+#        "<%JOB_ROLE%>": "Relevant Job"
+#        "<%NUMBER%>": Relevnant amount or number"
+
 
 def main():
 
@@ -341,7 +333,8 @@ def main():
         "<%CUSTOEMR_STATE%>": old_state_tags, "<%CUSTOMER_CITY%>": old_customer_location_tags, "<%CURRENT_SEASON%>": old_season_tags, "<%CURRENT_DATE_LONG%>": old_date_tags,
         "<%CURRENT_MONTH_LONG%>": old_month_tags, "<%CURRENT_YEAR_LONG%>": old_year_tags, "<%SPOOF_NAME%>": old_spoof_name_tags, "<%EVENT%>": old_event_tags,
         "<%TIMEFRAME%>": old_time_frame_tags, "<%DOMAIN%>": old_domain_tags, "<%ACRONYM%>": old_acronym_tags, "<%SLOGAN%>": old_slogan_tags, "<%SIGNATURE%>": old_signature_tags,
-        "<%TOPIC%>": old_topic_tags, "<%TOKEN%>": old_token_tags, "<%PROGRAM%>": old_program_tags, "<%LOGO%>": old_logo_tags
+        "<%TOPIC%>": old_topic_tags, "<%TOKEN%>": old_token_tags, "<%PROGRAM%>": old_program_tags, "<%LOGO%>": old_logo_tags, "<%JOB_ROLE%>": old_job_tags,
+        "<%NUMBER%>": old_number_tags
     }
 
     # Update tags in old template data file
