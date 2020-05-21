@@ -4,7 +4,7 @@ import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms'
 import { SubscriptionService } from 'src/app/services/subscription.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Customer, Contact } from 'src/app/models/customer.model';
-import { Subscription } from 'src/app/models/subscription.model';
+import { Subscription, Target } from 'src/app/models/subscription.model';
 import { Guid } from 'guid-typescript';
 import { UserService } from 'src/app/services/user.service';
 import { CustomerService } from 'src/app/services/customer.service';
@@ -62,14 +62,15 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
    * INIT
    */
   ngOnInit(): void {
-    // build form
+
+    // build  form
     this.subscribeForm = new FormGroup({
       selectedCustomerUuid: new FormControl('', Validators.required),
-      csvText: new FormControl('', Validators.required),
       primaryContact: new FormControl(null, Validators.required),
       startDate: new FormControl(new Date()),
       url: new FormControl(''),
-      keywords: new FormControl('')
+      keywords: new FormControl(''),
+      csvText: new FormControl('', Validators.required)
     });
 
 
@@ -138,6 +139,18 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
     this.subscriptionSvc.getSubscription(sub.subscription_uuid)
       .subscribe((s: Subscription) => {
         this.subscription = s;
+        this.f.primaryContact.setValue(s.primary_contact.email);
+        this.f.url.setValue(s.url);
+        this.f.url.disable();
+        this.f.keywords.setValue(s.keywords);
+        this.f.keywords.disable();
+        this.f.csvText.setValue(this.emailDisplay(s.target_email_list));
+        this.f.csvText.disable();
+
+        this.customerSvc.getCustomer(s.customer_uuid)
+          .subscribe((c: Customer) => {
+            this.customer = c;
+          });
       });
   }
 
@@ -180,9 +193,15 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
       return;
     }
     this.primaryContact = this.customer.contact_list
-      .find(x => (x.first_name + '_' + x.last_name) == e.value);
+      .find(x => (x.email) == e.value);
     this.subscription.primary_contact = this.primaryContact;
     this.subscriptionSvc.subscription.primary_contact = this.primaryContact;
+
+    // patch the subscription in real time if in edit mode
+    if (this.pageMode == 'EDIT') {
+      this.subscriptionSvc.updatePrimaryContact(this.subscription.subscription_uuid, this.primaryContact)
+        .subscribe();
+    }
   }
 
   /**
@@ -211,11 +230,20 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * 
+   * Formats emails for display in the form.
+   */
+  emailDisplay(targetList: Target[]) {
+    let output = '';
+    targetList.forEach((t: Target) => {
+      output += `${t.email}, ${t.first_name}, ${t.last_name}, ${t.position}\n`;
+    });
+    return output;
+  }
+
+  /**
+   * Submits the form to create a new Subscription.
    */
   onSubmit() {
-    console.log(this.subscribeForm);
-
     this.submitted = true;
 
     // stop here if form is invalid
