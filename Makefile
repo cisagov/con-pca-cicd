@@ -52,20 +52,6 @@ down:
 	docker-compose -f ./controller/docker-compose.yml down
 	docker-compose -f ./aws/docker-compose.yml down
 
-# target: venv_win - creates a python venv and installs requirements for windows powershell
-venv_win:
-	python -m venv .venv
-	.venv/Scripts/activate.ps1
-	pip install -r controller/requirements.txt
-	pip install -r controller/requirements_test.txt
-
-# target: venv_lin - creates a python venv and installs requirements for linux
-venv_lin:
-	python -m venv .venv
-	source .venv/bin/activate
-	pip install -r controller/requirements.txt
-	pip install -r controller/requirements_test.txt
-
 controller_tests:
 	coverage run --omit *.venv* -m pytest ./controller/src/ --disable-warnings
 	coverage html
