@@ -72,3 +72,7 @@ controller_tests:
 
 controller_cc:
 	radon cc ./controller/src/ -e "*.venv*" -s -o SCORE
+
+vscode:
+	cp ./etc/vscode/env.dist ./.env
+	cp ./etc/vscode/pytest.ini .
