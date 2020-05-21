@@ -65,3 +65,10 @@ venv_lin:
 	source .venv/bin/activate
 	pip install -r controller/requirements.txt
 	pip install -r controller/requirements_test.txt
+
+controller_tests:
+	coverage run --omit *.venv* -m pytest ./controller/src/ --disable-warnings
+	coverage html
+
+controller_cc:
+	radon cc ./controller/src/ -e "*.venv*" -s -o SCORE
