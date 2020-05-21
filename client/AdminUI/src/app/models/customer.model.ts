@@ -1,3 +1,5 @@
+import { TemplateShort } from './template.model';
+
 export class Customer {
     customer_uuid: string;
     name: string;
@@ -8,6 +10,10 @@ export class Customer {
     state: string;
     zip_code: string;
     contact_list: Contact[]
+
+    public constructor(init?: Partial<TemplateShort>) {
+        Object.assign(this, init)
+    }
 }
 
 export class NewCustomer {
@@ -30,6 +36,10 @@ export class Contact {
     email: string;
     notes: string;
     active: boolean;
+
+    public constructor(init?: Partial<TemplateShort>) {
+        Object.assign(this, init)
+    }
 }
 
 export interface ICustomerContact {

@@ -16,7 +16,7 @@ from sklearn.metrics.pairwise import cosine_similarity
 # cisagov Libraries
 # GoPhish Libraries
 from gophish import Gophish
-from gophish.models import SMTP, Campaign, Group, Page, Template, User
+from gophish.models import Campaign, Group, SMTP, Stat, Page, Template, User
 
 logger = logging.getLogger(__name__)
 faker = Faker()
@@ -64,6 +64,12 @@ class TemplateManager:
         preprocessed_data = [self.preprocess_keywords(url, keywords)] + [
             *template_data.values()
         ]
+        
+        while("" in preprocessed_data) : 
+            preprocessed_data.remove("") 
+
+        if not preprocessed_data:
+            return []
 
         docs_tfidf = vectorizer.fit_transform(preprocessed_data)
         cosine_similarities = cosine_similarity(docs_tfidf[:1], docs_tfidf).flatten()
@@ -125,6 +131,8 @@ class CampaignManager:
             return self.get_sending_profile(kwargs.get("smtp_id", None))
         elif method == "campaign":
             return self.get_campaign(kwargs.get("campaign_id", None))
+        elif method == "summary":
+            return self.get_campaign_summary(kwargs.get("campaign_id", None))
         else:
             return "method not found"
 
@@ -201,6 +209,13 @@ class CampaignManager:
         else:
             campaign = self.gp_api.campaigns.get()
         return campaign
+
+    def get_campaign_summary(self, campaign_id: int = None):
+        if campaign_id:
+            summary = self.gp_api.campaigns.summary(campaign_id=campaign_id)
+        else:
+            summary = self.gp_api.campaigns.summary()
+        return summary.as_dict()
 
     def get_sending_profile(self, smtp_id: int = None):
         """GET Sending Profile."""
