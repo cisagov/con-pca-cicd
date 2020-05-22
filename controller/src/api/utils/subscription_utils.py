@@ -2,6 +2,9 @@
 # Standard Python Libraries
 from datetime import datetime, timedelta
 
+# Third-Party Libraries
+from lcgit import lcg
+
 
 def get_campaign_dates(start_date_string):
     """
@@ -61,6 +64,7 @@ def target_list_divide(target_list):
     Temp funtion to divide list of targets into 3 sub lists.
     ToDo: replace with random selecter algorithm.
     """
+    target_list = lcgit_list_randomizer(target_list)
     avg = len(target_list) / float(3)
     return_lists = []
     last = 0.0
@@ -70,3 +74,16 @@ def target_list_divide(target_list):
         last += avg
 
     return return_lists
+
+
+def lcgit_list_randomizer(object_list):
+    """
+    Lcgit List Randomizer.
+
+    This uses lcgit from https://github.com/cisagov/lcgit
+    to genrate a random list order
+    """
+    random_list = []
+    for item in lcg(object_list):
+        random_list.append(item)
+    return random_list
