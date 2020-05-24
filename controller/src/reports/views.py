@@ -14,7 +14,7 @@ from . import views
 
 
 def reports_page(request):
-    return render(request, "reports/reports-page.html")
+    return render(request, "reports/base.html")
 
 
 def generate_pdf(request):
@@ -24,6 +24,8 @@ def generate_pdf(request):
     fs = FileSystemStorage("/tmp")
     with fs.open("reports_test.pdf") as pdf:
         response = HttpResponse(pdf, content_type="application/pdf")
-        response["Content-Disposition"] = 'attachment; filename="reports_test.pdf"'
+        response[
+            "Content-Disposition"
+        ] = 'attachment; filename="subscription_report.pdf"'
         return response
     return response
