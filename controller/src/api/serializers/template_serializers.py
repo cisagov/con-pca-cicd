@@ -1,8 +1,8 @@
 """
 Template Serializers.
 
-These are Django Rest Famerwork Serializers. These are used for
-serializing data coming from the db into a request responce.
+These are Django Rest Framework Serializers. These are used for
+serializing data coming from the db into a request response.
 """
 # Third-Party Libraries
 from rest_framework import serializers
@@ -88,7 +88,8 @@ class TemplateGetSerializer(serializers.Serializer):
     description = serializers.CharField()
     image_list = TemplateImageSerializer(many=True)
     from_address = serializers.EmailField()
-    retired = serializers.BooleanField()
+    retired = serializers.BooleanField(default=False)
+    retired_description = serializers.CharField(default="")
     subject = serializers.CharField(max_length=200)
     text = serializers.CharField()
     html = serializers.CharField()
@@ -121,7 +122,8 @@ class TemplatePostSerializer(serializers.Serializer):
     description = serializers.CharField()
     image_list = TemplateImageSerializer(many=True)
     from_address = serializers.EmailField()
-    retired = serializers.BooleanField()
+    retired = serializers.BooleanField(default=False)
+    retired_description = serializers.CharField(default="")
     subject = serializers.CharField(max_length=200)
     text = serializers.CharField()
     html = serializers.CharField()
@@ -152,13 +154,16 @@ class TemplatePatchSerializer(serializers.Serializer):
     """
 
     name = serializers.CharField(required=False)
-    template_type = serializers.ChoiceField(choices=TEMPLATE_TYPE_CHOICES, required=False)
+    template_type = serializers.ChoiceField(
+        choices=TEMPLATE_TYPE_CHOICES, required=False
+    )
     deception_score = serializers.IntegerField(required=False)
     descriptive_words = serializers.CharField(required=False)
     description = serializers.CharField(required=False)
     image_list = TemplateImageSerializer(many=True, required=False)
     from_address = serializers.EmailField(required=False)
-    retired = serializers.BooleanField(required=False)
+    retired = serializers.BooleanField(default=False, required=False)
+    retired_description = serializers.CharField(default="", required=False)
     subject = serializers.CharField(max_length=200, required=False)
     text = serializers.CharField(required=False)
     html = serializers.CharField(required=False)
@@ -187,7 +192,8 @@ class TemplatePatchResponseSerializer(serializers.Serializer):
     description = serializers.CharField()
     image_list = TemplateImageSerializer(many=True)
     from_address = serializers.EmailField()
-    retired = serializers.BooleanField()
+    retired = serializers.BooleanField(default=False)
+    retired_description = serializers.CharField(default="")
     subject = serializers.CharField(max_length=200)
     text = serializers.CharField()
     html = serializers.CharField()

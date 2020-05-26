@@ -19,6 +19,7 @@ export class TemplatesPageComponent implements OnInit, AfterViewInit{
     "deception_score",
     "template_type",
     "created_by",
+    "retired"
    ];
    templatesData = new MatTableDataSource<Template>();
    search_input = ''

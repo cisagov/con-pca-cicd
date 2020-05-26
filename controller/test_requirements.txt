@@ -1,5 +1,0 @@
-black
-coverage
-pytest
-pytest-mock
-radon

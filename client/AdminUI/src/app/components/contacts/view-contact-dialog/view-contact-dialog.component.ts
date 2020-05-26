@@ -14,6 +14,8 @@ export class ViewContactDialogComponent implements OnInit {
     first_name: new FormControl(),
     last_name: new FormControl(),
     title: new FormControl(),
+    office_phone: new FormControl(),
+    mobile_phone: new FormControl(),
     primary_contact: new FormControl(),
     phone: new FormControl(),
     email: new FormControl(),
@@ -35,7 +37,7 @@ export class ViewContactDialogComponent implements OnInit {
 
   ngOnInit(): void {
     this.customer_service.getCustomer(this.data.customer_uuid).subscribe((data: any) => {
-      this.customer = this.customer_service.toCustomer(data)
+      this.customer = data as Customer
     })
   }
 

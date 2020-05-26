@@ -5,14 +5,14 @@
     "city": "Santa Cruz",
     "contact_list": [
       {
+        "active": true,
         "email": "user@example.com",
         "first_name": "Bob",
         "last_name": "Burgston",
         "mobile_phone": "555-555-5555",
         "notes": "The big cheese.",
         "office_phone": "555-555-5555",
-        "title": "CeO",
-        "active": true
+        "title": "CeO"
       }
     ],
     "identifier": "BoB",
@@ -28,12 +28,12 @@
       "keywords": "research development government work job",
       "name": "SC-1031.Matt-Daemon.1.1",
       "primary_contact": {
+        "active": true,
         "email": "Matt.Daemon@example.com",
         "first_name": "Matt",
         "last_name": "Daemon",
         "mobile_phone": "555-555-5555",
-        "office_phone": "555-555-5555",
-        "active": true
+        "office_phone": "555-555-5555"
       },
       "start_date": "2020-04-10T09:30:25",
       "status": "  Waiting on SRF",
@@ -91,6 +91,7 @@
       "keywords": "search query google",
       "name": "SC-1221.Ben-Aflex.1.1",
       "primary_contact": {
+        "active": true,
         "email": "foo.bar@example.com",
         "first_name": "foo",
         "last_name": "bar",

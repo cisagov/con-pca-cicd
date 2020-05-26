@@ -7,6 +7,7 @@ This lists all urls under the API app.
 from api.views import (
     campaign_views,
     customer_views,
+    report_views,
     subscription_views,
     template_views,
     webhook_views,
@@ -59,6 +60,11 @@ urlpatterns = [
         "v1/subscription/customer/<customer_uuid>/",
         subscription_views.SubscriptionsCustomerListView.as_view(),
         name="subscriptions_customer_get_api",
+    ),
+    path(
+        "v1/reports/<subscription_uuid>/",
+        report_views.ReportsView.as_view(),
+        name="reports_get_api",
     ),
     path(
         "v1/templates/",

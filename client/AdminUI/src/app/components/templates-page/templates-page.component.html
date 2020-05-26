@@ -1,17 +1,44 @@
 <div class="d-flex flex-column">
   <div class="d-flex mb-2 w-100 search-content">
+
+      <!-- SEARCH BAR -->
       <mat-form-field class="flex-grow-1" appearance="outline">
         <mat-label>Search</mat-label>
           <input [(ngModel)]="search_input" (keyup)="filterTemplates($event.target.value)" matInput placeholder="Search" />
       </mat-form-field>
       <button mat-raised-button color="primary" class="flex-grow-0 mt-1 ml-2 " routerLink="/templatemanager" >Create New</button>
   </div>
-  <div class="col p-0 w-100">    
+  <div class="col p-0 w-100"> 
+
+    <!-- TEMPLATES TABLE -->
     <mat-table [dataSource]="templatesData" matSort>
-      <ng-container matColumnDef="name"><mat-header-cell *matHeaderCellDef mat-sort-header>Template Name</mat-header-cell>    <mat-cell *matCellDef="let row"> {{row.name}} </mat-cell></ng-container>
-      <ng-container matColumnDef="deception_score"><mat-header-cell *matHeaderCellDef mat-sort-header>Deception Score </mat-header-cell>    <mat-cell *matCellDef="let row"> {{row.deception_score }} </mat-cell></ng-container>
-      <ng-container matColumnDef="template_type"><mat-header-cell *matHeaderCellDef mat-sort-header>Type</mat-header-cell>    <mat-cell *matCellDef="let row"> {{row.template_type}} </mat-cell></ng-container>
-      <ng-container matColumnDef="created_by"><mat-header-cell *matHeaderCellDef mat-sort-header>Created By</mat-header-cell>    <mat-cell *matCellDef="let row"> {{row.created_by }} </mat-cell></ng-container>
+      
+      <!-- NAME -->
+      <ng-container matColumnDef="name">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Template Name</mat-header-cell>    
+        <mat-cell *matCellDef="let row">{{row.name}}</mat-cell>
+      </ng-container>
+      <!-- DECEPTION SCORE -->
+      <ng-container matColumnDef="deception_score">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Deception Score</mat-header-cell>
+        <mat-cell *matCellDef="let row">{{row.deception_score }}</mat-cell>
+      </ng-container>
+      <!-- TEMPLATE TYPE -->
+      <ng-container matColumnDef="template_type">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Type</mat-header-cell>
+        <mat-cell *matCellDef="let row">{{row.template_type}}</mat-cell>
+      </ng-container>
+      <!-- CREATED BY -->
+      <ng-container matColumnDef="created_by">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Created By</mat-header-cell>    
+        <mat-cell *matCellDef="let row">{{row.created_by}}</mat-cell>
+      </ng-container>
+      <!-- RETIRED -->
+      <ng-container matColumnDef="retired">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Retired</mat-header-cell>    
+        <mat-cell *matCellDef="let row">{{row.retired}}</mat-cell>
+      </ng-container>
+
       <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
       <mat-row class="table-row" *matRowDef="let row; columns: displayedColumns" (click)="editTemplate(row)"></mat-row>
   </mat-table>
