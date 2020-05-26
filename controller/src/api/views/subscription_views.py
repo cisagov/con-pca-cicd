@@ -73,8 +73,15 @@ class SubscriptionsListView(APIView):
     def post(self, request, format=None):
         """Post method."""
         post_data = request.data.copy()
-        # Get all templates for calc
-        template_list = get_list(None, "template", TemplateModel, validate_template)
+        # Get all Email templates for calc
+        template_list = get_list(
+            {"template_type": "Email"}, "template", TemplateModel, validate_template
+        )
+
+        # Get all Landning pages or defult
+        # This is currently selecting the defult page on creation.
+        # landing_template_list = get_list({"template_type": "Landing"}, "template", TemplateModel, validate_template)
+        landing_page = "Phished"
 
         template_data = {
             i.get("template_uuid"): i.get("descriptive_words") for i in template_list
@@ -111,7 +118,7 @@ class SubscriptionsListView(APIView):
             templates = personalize_template(customer, template_data_list, post_data)
             template_personalized_list.append(templates)
 
-        # divide emails, TODO: replace with this random email picker
+        # divide emails
         target_list = post_data.get("target_email_list")
         target_div = target_list_divide(target_list)
         index = 0
@@ -145,7 +152,7 @@ class SubscriptionsListView(APIView):
                         break
 
             gophish_campaign_list = self.__create_and_save_campaigns(
-                campaign_info, target_group, first_name, last_name
+                campaign_info, target_group, first_name, last_name, landing_page
             )
 
         post_data["gophish_campaign_list"] = gophish_campaign_list
@@ -160,7 +167,7 @@ class SubscriptionsListView(APIView):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     def __create_and_save_campaigns(
-        self, campaign_info, target_group, first_name, last_name
+        self, campaign_info, target_group, first_name, last_name, landing_page
     ):
         """
         Create and Save Campaigns.
@@ -188,7 +195,7 @@ class SubscriptionsListView(APIView):
                     "campaign",
                     campaign_name=campaign_name,
                     smtp_name="SMTP",
-                    page_name="Phished",
+                    page_name=landing_page,  # Replace with picked landing page, default init page now.
                     user_group=target_group,
                     email_template=created_template,
                     launch_date=campaign_info["start_date"].strftime(
