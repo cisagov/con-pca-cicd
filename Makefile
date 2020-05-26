@@ -51,10 +51,3 @@ down:
 	docker-compose -f ./gophish/docker-compose.yml down
 	docker-compose -f ./controller/docker-compose.yml down
 	docker-compose -f ./aws/docker-compose.yml down
-
-controller_tests:
-	coverage run --omit *.venv* -m pytest ./controller/src/ --disable-warnings
-	coverage html
-
-controller_cc:
-	radon cc ./controller/src/ -e "*.venv*" -s -o SCORE
