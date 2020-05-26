@@ -6,6 +6,7 @@ __pycache__
 .python-version
 .DS_Store
 src/.DS_Store
+.coverage
 
 # Client
 /client/AdminUI/node_modules
