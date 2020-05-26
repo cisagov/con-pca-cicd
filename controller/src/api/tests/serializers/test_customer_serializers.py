@@ -1,30 +1,52 @@
-from api.serializers.customer_serializers import CustomerContactSerializer
-from api.serializers.customer_serializers import CustomerGetSerializer
-from api.serializers.customer_serializers import CustomerPostSerializer
-from api.serializers.customer_serializers import CustomerPostResponseSerializer
-from api.serializers.customer_serializers import CustomerPatchSerializer
-from api.serializers.customer_serializers import CustomerPatchResponseSerializer
-from api.serializers.customer_serializers import CustomerDeleteResponseSerializer
+from api.serializers.customer_serializers import (
+    CustomerContactSerializer,
+    CustomerGetSerializer,
+    CustomerPostSerializer,
+    CustomerPostResponseSerializer,
+    CustomerPatchSerializer,
+    CustomerPatchResponseSerializer,
+    CustomerDeleteResponseSerializer
+)
+
+from api.models.customer_models import CustomerContactModel
+
+
 from datetime import datetime
 from uuid import uuid4
-
+import json
 
 class TestCustomerContactSerializer:
-    def create(self, first_name='Jimmy', last_name='Johns', title='Deliveryman', office_phone='123-456-7890', mobile_phone='987-654-3210', email='jimmy.johns@test.com', notes='Some Notes', active=True):
-        customer_contact = CustomerContactSerializer()
-        customer_contact.first_name = first_name
-        customer_contact.last_name = last_name
-        customer_contact.title = title
-        customer_contact.office_phone = office_phone
-        customer_contact.mobile_phone = mobile_phone
-        customer_contact.email = email
-        customer_contact.notes = notes
-        customer_contact.active = active
-        return customer_contact
+    def test_serializer(self):
+        data = {
+            'first_name': 'firstname',
+            'last_name': 'lastname',
+            'title': 'title',
+            'office_phone': '111-222-3333',
+            'mobile_phone': '444-555-6666',
+            'email': 'email@email.com',
+            'notes': 'notes',
+            'active': True
+        }
 
-    def test_creation(self):
-        cc = self.create()
-        assert isinstance(cc, CustomerContactSerializer) is True
+        serializer = CustomerContactSerializer(data=data)
+        assert serializer.is_valid() is True
+
+    def test_serializer_null_active(self):
+        data = {
+            'first_name': 'firstname',
+            'last_name': 'lastname',
+            'title': 'title',
+            'office_phone': '111-222-3333',
+            'mobile_phone': '444-555-6666',
+            'email': 'email@email.com',
+            'notes': 'notes',
+            'active': None
+        }
+
+        serializer = CustomerContactSerializer(data=data)
+        assert serializer.is_valid() is False
+        assert len(serializer.errors) == 1
+        assert serializer.errors.get('active') is not None
 
 
 class TestCustomerGetSerializer:
