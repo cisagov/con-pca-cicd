@@ -109,7 +109,7 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
 
     // START TEMP ------------------------
     // find Globex or randomly pick an existing customer for now
-    if (!this.subscription.customer_uuid) {
+    /*if (!this.subscription.customer_uuid) {
       this.customerSvc.getCustomers().subscribe((c: Customer[]) => {
 
         // first look for Globex
@@ -125,8 +125,23 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
 
         this.f.selectedCustomerUuid.setValue(this.customer.customer_uuid);
       });
-    }
+    }*/
     // END TEMP --------------------------
+  }
+
+  setCustomer(){
+    if(this.customerSvc.selectedCustomer.length > 0){
+      this.subscribeForm.patchValue({
+        selectedCustomerUuid: this.customerSvc.selectedCustomer
+      });
+      this.customerSvc.getCustomer(this.customerSvc.selectedCustomer).subscribe(
+        (data: Customer) => {
+          this.customer = data;
+          this.f.selectedCustomerUuid.setValue(this.customer.customer_uuid)
+        }
+      )
+    }
+    
   }
 
   /**
@@ -180,8 +195,7 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
     const dialogRef = this.dialog.open(CustomersComponent, dialogConfig);
 
     dialogRef.afterClosed().subscribe(value => {
-      // TODO:  set the subscription's customer here so that
-      // the binding will reflect the change in the page
+      this.setCustomer();
     })
   }
 
