@@ -1,6 +1,5 @@
 black
 coverage
-mock
 pytest
 pytest-django
 pytest-env

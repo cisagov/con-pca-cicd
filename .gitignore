@@ -1,6 +1,5 @@
 .env
 !etc/vscode/.env
-pytest.ini
 .venv
 .mypy_cache
 __pycache__
