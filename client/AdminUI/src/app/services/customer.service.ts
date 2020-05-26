@@ -14,6 +14,12 @@ const httpOptions = {
 export class CustomerService {
   constructor(private http: HttpClient) { }
 
+  showCustomerInfo: boolean = false;
+  selectedCustomer: string = '';
+
+  setCustomerInfo(show:boolean){
+    this.showCustomerInfo = show;
+  }
   // Returns observable on http request to get customers
   public getCustomers() {
     let url = `${environment.apiEndpoint}/api/v1/customers/`;

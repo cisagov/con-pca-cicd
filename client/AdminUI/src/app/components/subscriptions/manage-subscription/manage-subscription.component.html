@@ -47,20 +47,21 @@
                     </mat-form-field>
                 </div>
 
-                <div>
-                    <mat-label class="h6">Customer Website</mat-label>
-                    <div class="text-muted">The customer's page will be analyzed
-                        to send phishing emails relevant to their industry.
-                    </div>
-                    <input formControlName="url" type="text" class="form-control mb-4">
+                <div class="text-muted">The customer's page will be analyzed
+                    to send phishing emails relevant to their industry.
                 </div>
+                <mat-form-field appearance="outline">
+                    <mat-label>Customer Website</mat-label>
+                    
+                    <input matInput formControlName="url" type="text" >
+                </mat-form-field>
 
                 <div class="text-muted">Optionally enter words that describe the
                     organization, separated by commas.
                     They will be used to select applicable templates.</div>
-                <mat-form-field class="w-100">
+                <mat-form-field class="w-100" appearance="outline">
                     <mat-label>Applicability Word Tags</mat-label>
-                    <textarea matNativeControl cdkTextareaAutosize class="form-control mb-4"
+                    <textarea matInput cdkTextareaAutosize class="mb-4"
                         formControlName="keywords"></textarea>
                 </mat-form-field>
 
@@ -80,14 +81,14 @@
                 </button>
                 <input id="csvUpload" type="file" accept=".csv,.xls,.xlsx" (change)="fileSelect($event)" class="d-none">
 
-                <mat-form-field class="w-100">
+                <mat-form-field appearance="outline" class="w-100">
                     <mat-label>Target Emails</mat-label>
-                    <textarea matNativeControl cdkTextareaAutosize class="form-control" formControlName="csvText"
+                    <textarea matInput cdkTextareaAutosize formControlName="csvText"
                         [ngClass]="{ 'is-invalid': submitted && f.csvText.errors }">
                     </textarea>
-                    <div *ngIf="submitted && f.csvText.errors" class="invalid-feedback">
+                    <mat-error *ngIf="submitted && f.csvText.errors" class="invalid-feedback">
                         <div *ngIf="f.csvText.errors.required">Targets must be defined</div>
-                    </div>
+                    </mat-error>
                 </mat-form-field>
             </div>
 
