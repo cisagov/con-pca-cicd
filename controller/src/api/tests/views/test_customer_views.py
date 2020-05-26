@@ -13,4 +13,3 @@ class TestCustomerListView:
 
     def test_post(self):
         return
-
