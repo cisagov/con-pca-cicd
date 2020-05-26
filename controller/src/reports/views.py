@@ -1,15 +1,9 @@
 import logging
 
-from weasyprint import HTML
-
-from django.core.files.storage import FileSystemStorage
+# Django Libraries
 from django.views.generic import TemplateView
-from django.shortcuts import render
-from django.urls import path
-from django.conf.urls import url
-from django.template.loader import get_template
-from django.http import HttpResponse, FileResponse
 
+# Local Libraries
 from api.models.subscription_models import SubscriptionModel, validate_subscription
 from api.utils.db_utils import get_single
 from api.manager import CampaignManager
@@ -44,17 +38,3 @@ class ReportsView(TemplateView):
             "target_count": target_count,
         }
         return context
-
-
-def generate_pdf(request):
-    html = HTML("http://localhost:8000/reports/")
-    html.write_pdf("/tmp/reports_test.pdf")
-
-    fs = FileSystemStorage("/tmp")
-    with fs.open("reports_test.pdf") as pdf:
-        response = HttpResponse(pdf, content_type="application/pdf")
-        response[
-            "Content-Disposition"
-        ] = 'attachment; filename="subscription_report.pdf"'
-        return response
-    return response
