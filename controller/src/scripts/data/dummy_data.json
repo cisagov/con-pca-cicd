@@ -1,29 +1,53 @@
 {
-  "customer_data": {
-    "address_1": "123 Fake Street",
-    "address_2": "Suite 1",
-    "city": "Santa Cruz",
-    "contact_list": [
-      {
-        "active": true,
-        "email": "user@example.com",
-        "first_name": "Bob",
-        "last_name": "Burgston",
-        "mobile_phone": "555-555-5555",
-        "notes": "The big cheese.",
-        "office_phone": "555-555-5555",
-        "title": "CeO"
-      }
-    ],
-    "identifier": "BoB",
-    "name": "Bobs Burgers",
-    "state": "California",
-    "zip_code": "12345"
-  },
+  "customer_data": [
+    {
+      "address_1": "123 Fake Street",
+      "address_2": "Suite 1",
+      "city": "Santa Cruz",
+      "contact_list": [
+        {
+          "active": true,
+          "email": "BobTest@example.com",
+          "first_name": "Bob",
+          "last_name": "Belcher",
+          "mobile_phone": "555-555-5555",
+          "notes": "The big cheese.",
+          "office_phone": "555-555-5555",
+          "title": "CeO"
+        }
+      ],
+      "identifier": "BoB",
+      "name": "Bobs Burgers",
+      "state": "California",
+      "zip_code": "12345"
+  },{
+      "address_1": "321 Test Avenue",
+      "address_2": "Suite 1",
+      "city": "Springfield",
+      "contact_list": [
+        {
+          "active": true,
+          "email": "homerS@example.com",
+          "first_name": "Homer",
+          "last_name": "Simpson",
+          "mobile_phone": "555-555-5555",
+          "notes": "The other big cheese.",
+          "office_phone": "555-555-5555",
+          "title": "Nuclear Engineer"
+        }
+      ],
+      "identifier": "HOMER",
+      "name": "Springfield Power",
+      "state": "Kanasas",
+      "zip_code": "12345"
+    }
+  ],
   "subscription_data": [
     {
-      "active": true,
-      "customer_uuid": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+      "testing_customer_identifier": "BoB", 
+
+      "active": true,     
+      "customer_uuid": "d2e45f21-0460-4a05-865f-a30cb8b6336a",
       "gophish_campaign_list": [],
       "keywords": "research development government work job",
       "name": "SC-1031.Matt-Daemon.1.1",
@@ -85,6 +109,8 @@
       "url": "https://inl.gov"
     },
     {
+      "testing_customer_identifier": "HOMER", 
+
       "active": true,
       "customer_uuid": "6068d85a-4f83-4b5a-958e-a179e5b4c205",
       "gophish_campaign_list": [],

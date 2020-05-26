@@ -301,7 +301,11 @@ class CampaignManager:
     def delete_user_group(self, group_id: int):
         """DELETE User group."""
         if group_id:
-            status = self.gp_api.groups.delete(group_id=group_id)
+            try:
+                status = self.gp_api.groups.delete(group_id=group_id)
+            except: 
+                print("Group id not found")
+                status = None
         else:
             status = None
         return status

@@ -101,6 +101,15 @@ class GoPhishCampaignsSerializer(serializers.Serializer):
     timeline = GoPhishTimelineSerializer(many=True)
     target_email_list = SubscriptionTargetSerializer(many=True, required=False)
 
+# class GoPhishTemplateSerializer(serializers.Serializer):
+#     """
+#     This is the GoPhish Temaplates Serializer.
+
+#     This is a formats the data coming out of the Db.
+#     """
+#     template_id = serializers.IntegerField(required=False)
+    
+
 
 class SubscriptionGetSerializer(serializers.Serializer):
     """

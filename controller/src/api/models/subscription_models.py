@@ -93,8 +93,6 @@ class GoPhishGroupModel(Model):
     name = StringType()
     targets = ListType(ModelType(SubscriptionTargetModel))
     modified_date = DateTimeType()
-
-
 class GoPhishTimelineModel(Model):
     """
     This is the GoPhish Timeline Model.
@@ -138,6 +136,7 @@ class GoPhishCampaignsModel(Model):
     send_by_date = DateTimeType()
     completed_date = DateTimeType()
     email_template = StringType()
+    email_template_id = IntType()
     landing_page_template = StringType()
     status = StringType()
     results = ListType(ModelType(GoPhishResultModel))
