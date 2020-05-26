@@ -7,6 +7,7 @@
 - [Client](https://github.com/cisagov/con-pca/tree/develop/client)
 - [Controller](https://github.com/cisagov/con-pca/tree/develop/controller)
 - [GoPhish](https://github.com/cisagov/con-pca/tree/develop/gophish)
+- [AWS](https://github.com/cisagov/con-pca/tree/develop/aws)
 
 ### Requirements
 

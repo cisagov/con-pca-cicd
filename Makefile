@@ -9,6 +9,9 @@ all:
 help:
 	@egrep "^# target:" [Mm]akefile
 
+help_win:
+	Select-String "^# target:" Makefile
+
 # target: env = generate env files
 env:
 	cp ./client/etc/env.dist ./client/.env
