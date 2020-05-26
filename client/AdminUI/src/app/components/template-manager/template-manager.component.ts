@@ -3,9 +3,6 @@ import {
   OnInit,
   ViewChild,
   ElementRef,
-  HostListener,
-  ChangeDetectorRef,
-  ɵɵtextInterpolateV
 } from '@angular/core';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
@@ -295,6 +292,13 @@ export class TemplateManagerComponent implements OnInit {
         },
         (error) => {}
       )
+    }
+  }
+
+  stopTemplate() {
+    let template_to_stop = this.getTemplateFromForm(this.currentTemplateFormGroup)
+    if(window.confirm(`Are you sure you want to stop all subscriptions currently using this template ${template_to_stop.name}?`)) {
+      this.templateManagerSvc.stopTemplate(template_to_stop)
     }
   }
 
