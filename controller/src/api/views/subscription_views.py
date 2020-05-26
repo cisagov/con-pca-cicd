@@ -27,6 +27,7 @@ from api.utils.db_utils import (
     save_single,
     update_single,
 )
+from api.utils.subscription_utils import get_campaign_dates, target_list_divide
 from api.utils.template_utils import format_ztime, personalize_template
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status
@@ -34,7 +35,6 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 logger = logging.getLogger(__name__)
-
 # GoPhish API Manager
 campaign_manager = CampaignManager()
 # Template Calculator Manager
@@ -73,7 +73,6 @@ class SubscriptionsListView(APIView):
     def post(self, request, format=None):
         """Post method."""
         post_data = request.data.copy()
-
         # Get all templates for calc
         template_list = get_list(None, "template", TemplateModel, validate_template)
 
@@ -81,75 +80,131 @@ class SubscriptionsListView(APIView):
             i.get("template_uuid"): i.get("descriptive_words") for i in template_list
         }
 
-        # Data for Template calculation ToDo: Save relevant_templates
-        url = post_data.get("url")
-        keywords = post_data.get("keywords")
-        relevant_templates = template_manager.get_templates(
-            url, keywords, template_data
-        )[:15]
+        # Data for Template calculation
+        if post_data.get("keywords"):
+            relevant_templates = template_manager.get_templates(
+                post_data.get("url"), post_data.get("keywords"), template_data
+            )[:15]
+        else:
+            relevant_templates = []
+
+        divided_templates = [
+            relevant_templates[x : x + 5] for x in range(0, len(relevant_templates), 5)
+        ]
+
+        # Get the next date Intervals
+        start_date = post_data.get("start_date")
+        campaign_data_list = get_campaign_dates(start_date)
 
         # Return 15 of the most relevant templates
         post_data["templates_selected_uuid_list"] = relevant_templates
-
         # get customer data
         customer = get_single(
             post_data["customer_uuid"], "customer", CustomerModel, validate_customer
         )
 
-        # get relevent template data
-        template_list = [
-            x for x in template_list if x["template_uuid"] in relevant_templates
-        ]
-        templates = personalize_template(customer, template_list, post_data)
+        template_personalized_list = []
+        for template_group in divided_templates:
+            template_data_list = [
+                x for x in template_list if x["template_uuid"] in template_group
+            ]
+            templates = personalize_template(customer, template_data_list, post_data)
+            template_personalized_list.append(templates)
+
+        # divide emails, TODO: replace with this random email picker
+        target_list = post_data.get("target_email_list")
+        target_div = target_list_divide(target_list)
+        index = 0
+        for campaign_info in campaign_data_list:
+            campaign_info["templetes"] = template_personalized_list[index]
+            campaign_info["targets"] = target_div[index]
+            index += 1
 
         # Data for GoPhish
         first_name = post_data.get("primary_contact").get("first_name", "")
         last_name = post_data.get("primary_contact").get("last_name", "")
-
         # get User Groups
         user_groups = campaign_manager.get("user_group")
-        group_name = f"{last_name}'s Targets"
-        target_list = post_data.get("target_email_list")
 
-        # Note: this could be refactored later
-        if group_name not in [group.name for group in user_groups]:
-            target = campaign_manager.create(
-                "user_group", group_name=group_name, target_list=target_list
+        # create campaigns
+        group_number = 0
+        for campaign_info in campaign_data_list:
+            campaign_group = f"{first_name}.{last_name}.1.1 Targets.{group_number} "
+            group_number += 1
+            if campaign_group not in [group.name for group in user_groups]:
+                target_group = campaign_manager.create(
+                    "user_group",
+                    group_name=campaign_group,
+                    target_list=campaign_info["targets"],
+                )
+            else:
+                # get group from list
+                for user_group in user_groups:
+                    if user_group.name == campaign_group:
+                        target_group = user_group
+                        break
+
+            gophish_campaign_list = self.__create_and_save_campaigns(
+                campaign_info, target_group, first_name, last_name
             )
-        else:
-            # get group from list
-            for user_group in user_groups:
-                if user_group.name == group_name:
-                    target = user_group
-                    break
+
+        post_data["gophish_campaign_list"] = gophish_campaign_list
+
+        created_response = save_single(
+            post_data, "subscription", SubscriptionModel, validate_subscription
+        )
+
+        if "errors" in created_response:
+            return Response(created_response, status=status.HTTP_400_BAD_REQUEST)
+        serializer = SubscriptionPostResponseSerializer(created_response)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+    def __create_and_save_campaigns(
+        self, campaign_info, target_group, first_name, last_name
+    ):
+        """
+        Create and Save Campaigns.
+
+        This method handles the creation of each campain with given template, target group, and data.
+        """
+        templates = campaign_info["templetes"]
+        targets = campaign_info["targets"]
 
         gophish_campaign_list = []
-
         # Create a GoPhish Campaigns
         for template in templates:
             # Create new template
             created_template = campaign_manager.generate_email_template(
                 name=template["name"], template=template["data"]
             )
+            campaign_start = campaign_info["start_date"].strftime("%Y-%m-%d")
+            campaign_end = campaign_info["send_by_date"].strftime("%Y-%m-%d")
 
             if created_template is not None:
                 template_name = created_template.name
-                campaign_name = f"{first_name}.{last_name}.1.1 {template_name}"
+                campaign_name = f"{first_name}.{last_name}.1.1 {template_name} {campaign_start}-{campaign_end}"
+                print(campaign_info["start_date"])
                 campaign = campaign_manager.create(
                     "campaign",
                     campaign_name=campaign_name,
                     smtp_name="SMTP",
                     page_name="Phished",
-                    user_group=target,
+                    user_group=target_group,
                     email_template=created_template,
+                    launch_date=campaign_info["start_date"].strftime(
+                        "%Y-%m-%dT%H:%M:%S+00:00"
+                    ),
+                    send_by_date=campaign_info["send_by_date"].strftime(
+                        "%Y-%m-%dT%H:%M:%S+00:00"
+                    ),
                 )
                 logger.info("campaign created: {}".format(campaign))
-
                 created_campaign = {
                     "campaign_id": campaign.id,
                     "name": campaign_name,
                     "created_date": format_ztime(campaign.created_date),
-                    "launch_date": format_ztime(campaign.launch_date),
+                    "launch_date": campaign_info["start_date"],
+                    "send_by_date": campaign_info["send_by_date"],
                     "email_template": created_template.name,
                     "landing_page_template": campaign.page.name,
                     "status": campaign.status,
@@ -163,20 +218,11 @@ class SubscriptionsListView(APIView):
                             "details": "",
                         }
                     ],
-                    "target_email_list": target_list,
+                    "target_email_list": targets,
                 }
                 gophish_campaign_list.append(created_campaign)
 
-        post_data["gophish_campaign_list"] = gophish_campaign_list
-
-        created_response = save_single(
-            post_data, "subscription", SubscriptionModel, validate_subscription
-        )
-
-        if "errors" in created_response:
-            return Response(created_response, status=status.HTTP_400_BAD_REQUEST)
-        serializer = SubscriptionPostResponseSerializer(created_response)
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return gophish_campaign_list
 
 
 class SubscriptionView(APIView):
@@ -190,7 +236,7 @@ class SubscriptionView(APIView):
         responses={"200": SubscriptionGetSerializer, "400": "Bad Request"},
         security=[],
         operation_id="Get single Subscription",
-        operation_description="This handles the API for the Get a Substription with subscription_uuid.",
+        operation_description="This handles the API for the Get a Subscription with subscription_uuid.",
     )
     def get(self, request, subscription_uuid):
         """Get method."""
@@ -220,7 +266,7 @@ class SubscriptionView(APIView):
             model=SubscriptionModel,
             validation_model=validate_subscription,
         )
-        logger.info("created responce {}".format(updated_response))
+        logging.info("created response {}".format(updated_response))
         if "errors" in updated_response:
             return Response(updated_response, status=status.HTTP_400_BAD_REQUEST)
         serializer = SubscriptionPatchResponseSerializer(updated_response)
@@ -241,7 +287,7 @@ class SubscriptionView(APIView):
             model=SubscriptionModel,
             validation_model=validate_subscription,
         )
-        logger.info("delete responce {}".format(delete_response))
+        logging.info("delete response {}".format(delete_response))
         if "errors" in delete_response:
             return Response(delete_response, status=status.HTTP_400_BAD_REQUEST)
         serializer = SubscriptionDeleteResponseSerializer(delete_response)

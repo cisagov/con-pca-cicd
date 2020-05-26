@@ -1,7 +1,7 @@
 """
 GoPhish Campaign Serializers.
 
-These are Django Rest Famerwork Serializers.
+These are Django Rest Framework Serializers.
 These are used for serializing data coming in from gophish.
 API Docs:
 https://docs.getgophish.com/api-documentation/campaigns
