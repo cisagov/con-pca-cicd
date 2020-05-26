@@ -4,6 +4,7 @@ This handles the api for all the Sending Profile urls.
 """
 # Standard Python Libraries
 import logging
+import copy
 # Third-Party Libraries
 # Local
 from api.manager import CampaignManager
@@ -29,6 +30,7 @@ logger = logging.getLogger(__name__)
 # GoPhish API Manager
 campaign_manager = CampaignManager()
 
+
 class SendingProfilesListView(APIView):
     """
     This is the SendingProfilesListView APIView.
@@ -53,7 +55,8 @@ class SendingProfilesListView(APIView):
     """
     @swagger_auto_schema(
         request_body=SendingProfilePatchSerializer,
-        responses={"202": SendingProfilePatchResponseSerializer, "400": "Bad Request"},
+        responses={"202": SendingProfilePatchResponseSerializer,
+                   "400": "Bad Request"},
         security=[],
         operation_id="Create Sending Profile",
         operation_description="This handles the API for the Update Sending Profile with uuid.",
@@ -61,7 +64,7 @@ class SendingProfilesListView(APIView):
     def post(self, request):
         sp = request.data.copy()
         sending_profile = campaign_manager.create(
-            "sending_profile", 
+            "sending_profile",
             name=sp.get("name"),
             username=sp.get("username"),
             password=sp.get("password"),
@@ -91,7 +94,6 @@ class SendingProfileView(APIView):
         serializer = SendingProfileSerializer(sending_profile)
         return Response(serializer.data)
 
-
     """
     This is the SendingProfileView APIView.
     This handles the API for PATCHing a Sending Profile with id.
@@ -99,22 +101,34 @@ class SendingProfileView(APIView):
     """
     @swagger_auto_schema(
         request_body=SendingProfilePatchSerializer,
-        responses={"202": SendingProfilePatchResponseSerializer, "400": "Bad Request"},
+        responses={"202": SendingProfilePatchResponseSerializer,
+                   "400": "Bad Request"},
         security=[],
         operation_id="Update and Patch single Sending Profile",
         operation_description="This handles the API for the Update Sending Profile with uuid.",
     )
     def patch(self, request, id):
-        # get the saved record
-        sending_profile = campaign_manager.get("sending_profile", smtp_id=id)
+        # get the saved record and overlay with whatever was sent
+        sp = campaign_manager.get("sending_profile", smtp_id=id)
+        patch_data = request.data.copy()
 
-        # patch the supplied data
-        # .....
+        sp.name = self.__setAttribute(sp.name, patch_data, "name")
+        sp.interface_type = self.__setAttribute(sp.interface_type, patch_data, "interface_type")
+        sp.host = self.__setAttribute(sp.host, patch_data, "host")
+        sp.username = self.__setAttribute(sp.username, patch_data, "username")
+        sp.password = self.__setAttribute(sp.password, patch_data, "password")
+        sp.ignore_cert_errors = self.__setAttribute(sp.ignore_cert_errors, patch_data, "ignore_cert_errors")
+        sp.from_address = self.__setAttribute(sp.from_address, patch_data, "from_address")
 
+        campaign_manager.put_sending_profile(sp)
 
-        # get the new version to make sure we return the latest
+        # get the new version from gophish to make sure we return the latest
         sending_profile = campaign_manager.get("sending_profile", smtp_id=id)
         serializer = SendingProfileSerializer(sending_profile)
         return Response(serializer.data)
 
 
+    def __setAttribute(self, orig, d, attrName):
+        if attrName in d:
+            return d[attrName]
+        return orig

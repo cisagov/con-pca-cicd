@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, ChangeDetectorRef } from '@angular/core';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { SendingProfileService } from 'src/app/services/sending-profile.service';
@@ -21,11 +21,14 @@ export class SendingProfileDetailComponent implements OnInit {
 
   submitted = false;
 
+  headers: Map<string, string> = new Map<string, string>();
+
   /**
    * Constructor.
    */
   constructor(
     private sendingProfileSvc: SendingProfileService,
+    private ref: ChangeDetectorRef,
     public dialog_ref: MatDialogRef<SendingProfileDetailComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
@@ -48,7 +51,9 @@ export class SendingProfileDetailComponent implements OnInit {
       host: new FormControl('', Validators.required),
       username: new FormControl(''),
       password: new FormControl(''),
-      ignoreCertErrors: new FormControl(false)
+      ignoreCertErrors: new FormControl(false),
+      newHeaderName: new FormControl(''),
+      newHeaderValue: new FormControl('')
     });
 
     if (!!this.id) {
@@ -69,6 +74,12 @@ export class SendingProfileDetailComponent implements OnInit {
           console.log(err);
         });
     }
+  }
+
+
+  addHeader() {
+    this.headers.set(this.f.newHeaderName.value, this.f.newHeaderValue.value);
+    this.ref.detectChanges();
   }
 
   /**

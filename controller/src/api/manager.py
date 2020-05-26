@@ -191,6 +191,10 @@ class CampaignManager:
         return self.gp_api.smtp.post(smtp=smtp)
 
 
+    def put_sending_profile(self, sp):
+        return self.gp_api.smtp.put(smtp=sp)
+
+
     def generate_email_template(self, name: str, template: str):
         """Generate Email Templates."""
         existing_names = {email.name for email in self.gp_api.templates.get()}
