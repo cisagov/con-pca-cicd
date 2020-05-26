@@ -39,7 +39,6 @@
                 </div>
             </div>
 
-
             <mat-label class="h6">Start Date</mat-label>
             <div>
                 <mat-form-field appearance="outline" class="mb-4">
@@ -86,7 +85,6 @@
                 Upload Email Targets List <i class="fa fa-upload"></i>
             </button>
             <input id="csvUpload" type="file" accept=".csv,.xls,.xlsx" (change)="fileSelect($event)" class="d-none">
-
             <mat-form-field class="w-100 flex-grow-1" appearance="outline">
                 <mat-label>Target Emails</mat-label>
                 <textarea matInput autosize formControlName="csvText"
@@ -96,7 +94,6 @@
                     <div *ngIf="f.csvText.errors.required">Targets must be defined</div>
                 </div>
             </mat-form-field>
-
 
             <div class="text-right mt-3">
                 <button type="submit" mat-raised-button color="primary" *ngIf="pageMode == 'CREATE'">
