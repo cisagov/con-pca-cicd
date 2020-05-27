@@ -239,9 +239,11 @@ Notes: see
 [additional docker refs](https://linuxize.com/post/how-to-remove-docker-images-containers-volumes-and-networks/)
 for trouble shooting Docker
 
-## Testing / Styling / Design
+## Testing
 
-### Install requirements
+### Requirements
+
+Make sure when running any tests, from the CLI or VS Code, that a virtual environment is being used with the application requirements and testing requirements installed.
 
 ```bash
 python -m venv .venv
@@ -251,32 +253,63 @@ pip install -r requirements.txt
 pip install -r test_requirements.txt
 ```
 
+- [black](https://pypi.org/project/black/) - Uniform styling.
+
+- [coverage](https://coverage.readthedocs.io/en/coverage-5.1/) - Calculates code coverage from tests.
+
+- [pytest](https://docs.pytest.org/en/latest/) - Easier to use testing framework.
+
+- [pytest-django](https://pytest-django.readthedocs.io/en/latest/) - Library to better integrate pytest with Django
+
+- [pytest-env](https://github.com/MobileDynasty/pytest-env) - Allows environment variables to be put in pytest.ini for loading.
+
+- [pytest-mock](https://github.com/pytest-dev/pytest-mock/) - Mock integration with pytest.
+
+- [pytest-pythonpath](https://pypi.org/project/pytest-pythonpath/) - Allows additional python paths to be defined in pytest.ini.
+
+- [radon](https://radon.readthedocs.io/en/latest/) - Calculates code complexity.
+
+### Setting up VS Code
+
+1. Create and activate virtual environment in VS Code [https://code.visualstudio.com/docs/python/environments](https://code.visualstudio.com/docs/python/environments)
+
+2. Configure pytest in VS Code with the `controller` directory as source. [https://code.visualstudio.com/docs/python/testing#_enable-a-test-framework](https://code.visualstudio.com/docs/python/testing#_enable-a-test-framework)
+
+3. Discover Tests. [https://code.visualstudio.com/docs/python/testing#_test-discovery](https://code.visualstudio.com/docs/python/testing#_test-discovery)
+
+4. Run Tests. [https://code.visualstudio.com/docs/python/testing#_run-tests](https://code.visualstudio.com/docs/python/testing#_run-tests)
+
+### Windows Issue
+
+One of the libraries, `WeasyPrint` is being used to convert html to pdf. For Windows development, additional configuration is needed, otherwise some of the tests will fail. The setup for installing on Windows can be found at [https://weasyprint.readthedocs.io/en/latest/install.html#windows](https://weasyprint.readthedocs.io/en/latest/install.html#windows)
+
 ### Pytest / Coverage
 
-For testing we will use `pytest` for running tests, `Coverage` for determing what more tests we need to write, and `pytest-mock` for mocking code.
-
-- [pytest](https://docs.pytest.org/en/latest/)
-
-- [pytest-mock](https://github.com/pytest-dev/pytest-mock/)
-
-- [coverage](https://coverage.readthedocs.io/en/coverage-5.1/)
-
-Here are the commands that can be run.
+To get code coverage, it needs to be done from the command line. After running the below steps, open `htmlcov/index.html` with a browser to view code coverage and further details.
 
 ```bash
 coverage run --omit *.venv* -m pytest ./src/ --disable-warnings
-coverage report
 coverage html
+```
+
+Or use make command.
+
+```bash
+make coverage
 ```
 
 ### Cyclomatic Complexity
 
-We will be using the radon package to determine code complexity and using cyclomatic complexity in particular. 
-
-- [radon](https://radon.readthedocs.io/en/latest/)
+To determine cyclomatic complexity, use the radon package.
 
 ```bash
 radon cc ./src/ -e "*.venv*" -s -o SCORE
+```
+
+Or use make command.
+
+```bash
+make cc
 ```
 
 ### Styling

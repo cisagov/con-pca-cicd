@@ -5,7 +5,8 @@ import { SubscriptionService } from 'src/app/services/subscription.service';
 import { Contact, Customer } from 'src/app/models/customer.model';
 import { Guid } from 'guid-typescript';
 import { CustomerService } from 'src/app/services/customer.service';
-
+import { MatDialog } from '@angular/material/dialog';
+ 
 @Component({
   selector: 'app-add-customer',
   templateUrl: './add-customer.component.html',
@@ -16,7 +17,7 @@ export class AddCustomerComponent implements OnInit {
    model:any;
    addContact:boolean = false;
    contactDataSource: any = [];
-   displayedColumns: string[] = ['name', 'title', 'email', 'office_phone', 'mobile_phone'];
+   displayedColumns: string[] = ['name', 'title', 'email', 'mobile_phone', 'mobile_phone'];
    contactError='';
    orgError='';
    contacts:Array<Contact> = [];
@@ -33,7 +34,6 @@ export class AddCustomerComponent implements OnInit {
    matchEmail = new MyErrorStateMatcher();
    
    customerFormGroup = new FormGroup({
-    customerId: new FormControl({value: '', disabled: true}),
     customerName: new FormControl('', [Validators.required]),
     customerIdentifier: new FormControl('', [Validators.required]),
     address1: new FormControl('', [Validators.required]),
@@ -54,8 +54,8 @@ export class AddCustomerComponent implements OnInit {
    });
 
 
-  constructor( public subscriptionSvc: SubscriptionService, public customer_service: CustomerService) { 
-    this.customerFormGroup.controls["customerId"].setValue(Guid.create());
+  constructor( public subscriptionSvc: SubscriptionService, public customerSvc: CustomerService, public dialog: MatDialog) { 
+
   }
 
   createNew(){
@@ -66,7 +66,7 @@ export class AddCustomerComponent implements OnInit {
     if(this.customerFormGroup.valid && this.contacts.length > 0)
     {
       var customer: Customer = {
-        customer_uuid: this.customerFormGroup.controls["customerId"].value,
+        customer_uuid: '',
         name: this.customerFormGroup.controls["customerName"].value,
         identifier: this.customerFormGroup.controls["customerIdentifier"].value,
         address_1: this.customerFormGroup.controls["address1"].value,
@@ -77,8 +77,10 @@ export class AddCustomerComponent implements OnInit {
         contact_list: this.contacts
       }
 
-      this.customer_service.addCustomer(customer).subscribe((data: any) => {
-        this.clearCustomer()
+      this.customerSvc.addCustomer(customer).subscribe((data: any) => {
+        this.customerSvc.selectedCustomer = data.customer_uuid;
+        this.cancelCustomer();
+        this.dialog.closeAll();
       })
     } else if( !this.customerFormGroup.valid )
     {
@@ -113,9 +115,13 @@ export class AddCustomerComponent implements OnInit {
   clearCustomer(){
 
     this.customerFormGroup.reset();
-    this.customerFormGroup.controls["customerId"].setValue(Guid.create());
     this.contacts = [];
     this.orgError = '';
+  }
+
+  cancelCustomer(){
+    this.clearCustomer();
+    this.customerSvc.setCustomerInfo(false)
   }
 
   clearContact(){

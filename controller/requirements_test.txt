@@ -1,0 +1,8 @@
+black
+coverage
+pytest
+pytest-django
+pytest-env
+pytest-mock
+pytest-pythonpath
+radon
