@@ -4,6 +4,7 @@ Subscription Views.
 This handles the api for all the Subscription urls.
 """
 # Standard Python Libraries
+from datetime import datetime
 import logging
 
 # Third-Party Libraries
@@ -99,8 +100,10 @@ class SubscriptionsListView(APIView):
             relevant_templates[x : x + 5] for x in range(0, len(relevant_templates), 5)
         ]
 
-        # Get the next date Intervals
-        start_date = post_data.get("start_date")
+        # Get the next date Intervals, if no startdate is sent, default today
+        start_date = post_data.get(
+            "start_date", datetime.today().strftime("%Y-%m-%dT%H:%M:%S")
+        )
         campaign_data_list = get_campaign_dates(start_date)
 
         # Return 15 of the most relevant templates
