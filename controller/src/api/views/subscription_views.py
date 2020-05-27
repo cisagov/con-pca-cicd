@@ -12,6 +12,7 @@ from api.manager import CampaignManager, TemplateManager
 from api.models.customer_models import CustomerModel, validate_customer
 from api.models.subscription_models import SubscriptionModel, validate_subscription
 from api.models.template_models import TemplateModel, validate_template
+from api.serializers import campaign_serializers
 from api.serializers.subscriptions_serializers import (
     SubscriptionDeleteResponseSerializer,
     SubscriptionGetSerializer,
@@ -73,6 +74,30 @@ class SubscriptionsListView(APIView):
     def post(self, request, format=None):
         """Post method."""
         post_data = request.data.copy()
+
+        # get customer data
+        customer = get_single(
+            post_data["customer_uuid"], "customer", CustomerModel, validate_customer
+        )
+
+        #Get list of all subscriptions for incrementing sub name
+        customer_filter = {'customer_uuid': post_data["customer_uuid"]}
+        subscription_list = get_list(
+            customer_filter, "subscription", SubscriptionModel, validate_subscription
+        )
+        increment_position = 4 #The position the individual subscriptions is being counted from
+        
+        previous_incrments = []
+        for sub in subscription_list:
+            previous_incrments.append(sub['name'].split(".")[increment_position])
+        
+        first_increment = 1 #Modify when the first increment value has a purpose determined
+        second_increment = 1 if not previous_incrments else int(max(previous_incrments)) + 1
+
+        # Generate sub name using customer and increment info
+        post_data['name'] = f"{customer['identifier']}.{customer['contact_list'][0]['first_name']}.{customer['contact_list'][0]['last_name']}.{first_increment}.{second_increment}"
+
+
         # Get all templates for calc
         template_list = get_list(None, "template", TemplateModel, validate_template)
 
@@ -98,11 +123,7 @@ class SubscriptionsListView(APIView):
 
         # Return 15 of the most relevant templates
         post_data["templates_selected_uuid_list"] = relevant_templates
-        # get customer data
-        customer = get_single(
-            post_data["customer_uuid"], "customer", CustomerModel, validate_customer
-        )
-
+        
         template_personalized_list = []
         for template_group in divided_templates:
             template_data_list = [
@@ -126,29 +147,34 @@ class SubscriptionsListView(APIView):
         # get User Groups
         user_groups = campaign_manager.get("user_group")
 
+        
+        
+
         # create campaigns
         group_number = 0
+        gophish_campaign_list = []
         for campaign_info in campaign_data_list:
-            campaign_group = f"{first_name}.{last_name}.1.1 Targets.{group_number} "
+            campaign_group = f"{post_data['name']}.Targets.{group_number} "
+            campaign_info["name"] = f"{post_data['name']}.{group_number}"
             group_number += 1
-            if campaign_group not in [group.name for group in user_groups]:
-                target_group = campaign_manager.create(
-                    "user_group",
-                    group_name=campaign_group,
-                    target_list=campaign_info["targets"],
-                )
-            else:
-                # get group from list
-                for user_group in user_groups:
-                    if user_group.name == campaign_group:
-                        target_group = user_group
-                        break
-
-            gophish_campaign_list = self.__create_and_save_campaigns(
-                campaign_info, target_group, first_name, last_name
+            # if campaign_group not in [group.name for group in user_groups]:
+            target_group = campaign_manager.create(
+                "user_group",
+                group_name=campaign_group,
+                target_list=campaign_info["targets"],
             )
+            # else:
+            #     # get group from list
+            #     for user_group in user_groups:
+            #         if user_group.name == campaign_group:
+            #             target_group = user_group
+            #             break
+            gophish_campaign_list.extend(self.__create_and_save_campaigns(
+                campaign_info, target_group, first_name, last_name
+            ))
 
         post_data["gophish_campaign_list"] = gophish_campaign_list
+        
 
         created_response = save_single(
             post_data, "subscription", SubscriptionModel, validate_subscription
@@ -182,7 +208,10 @@ class SubscriptionsListView(APIView):
 
             if created_template is not None:
                 template_name = created_template.name
-                campaign_name = f"{first_name}.{last_name}.1.1 {template_name} {campaign_start}-{campaign_end}"
+                if not campaign_info["name"]:
+                    campaign_name = f"{first_name}.{last_name}.1.1 {template_name} {campaign_start}-{campaign_end}"
+                else:
+                    campaign_name = f"{campaign_info['name']}.{template_name}.{campaign_start}-{campaign_end}"
                 print(campaign_info["start_date"])
                 campaign = campaign_manager.create(
                     "campaign",
@@ -199,6 +228,7 @@ class SubscriptionsListView(APIView):
                     ),
                 )
                 logger.info("campaign created: {}".format(campaign))
+               
                 created_campaign = {
                     "campaign_id": campaign.id,
                     "name": campaign_name,
@@ -206,10 +236,11 @@ class SubscriptionsListView(APIView):
                     "launch_date": campaign_info["start_date"],
                     "send_by_date": campaign_info["send_by_date"],
                     "email_template": created_template.name,
+                    "email_template_id": created_template.id,
                     "landing_page_template": campaign.page.name,
                     "status": campaign.status,
                     "results": [],
-                    "groups": [],
+                    "groups": [campaign_serializers.CampaignGroupSerializer(target_group).data],
                     "timeline": [
                         {
                             "email": None,
@@ -280,14 +311,42 @@ class SubscriptionView(APIView):
     )
     def delete(self, request, subscription_uuid):
         """Delete method."""
-        logger.debug("delete subscription_uuid {}".format(subscription_uuid))
+        logging.debug("delete subscription_uuid {}".format(subscription_uuid))
+        
+        subscription = get_single(
+            uuid=subscription_uuid,
+            collection="subscription",
+            model=SubscriptionModel,
+            validation_model=validate_subscription,
+        )
+        
+        #Delete campaigns
+        groups_to_delete = set()
+        for campaign in subscription['gophish_campaign_list']:
+            for group in campaign['groups']:
+                if group['id'] not in groups_to_delete:
+                    groups_to_delete.add(group['id'])
+            for id in groups_to_delete:
+                try:
+                    group_del_result =  campaign_manager.delete("user_group",group_id=id)
+                except:
+                    print(f"failed to delete group ")
+            # Delete Templates
+            template_del_result = campaign_manager.delete("email_template",template_id=campaign["email_template_id"])
+            # Delete Campaigns
+            campaign_del_result = campaign_manager.delete("campaign", campaign_id=campaign['campaign_id'])
+        # Delete Groups    
+        for group_id in groups_to_delete:
+            campaign_manager.delete("user_group", group_id=group_id)
+
         delete_response = delete_single(
             uuid=subscription_uuid,
             collection="subscription",
             model=SubscriptionModel,
             validation_model=validate_subscription,
         )
-        logging.info("delete response {}".format(delete_response))
+
+        logging.info("delete responce {}".format(delete_response))
         if "errors" in delete_response:
             return Response(delete_response, status=status.HTTP_400_BAD_REQUEST)
         serializer = SubscriptionDeleteResponseSerializer(delete_response)

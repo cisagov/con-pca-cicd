@@ -34,7 +34,7 @@ def main():
     print("loading dummy json data")
     json_data = load_file("data/dummy_data.json")
     print("done loading data")
-    print("Step 1/2: create templates...")
+    print("Step 1/3: create templates...")
 
     templates = load_file("data/reformated_template_data.json")
     created_template_uuids = []
@@ -55,16 +55,17 @@ def main():
 
     print("Step 2/3: create customers...")
 
-    customer = json_data["customer_data"]
-    created_customer_uuid = ""
-    try:
-        resp = requests.post("http://localhost:8000/api/v1/customers/", json=customer)
-        resp.raise_for_status()
-    except requests.exceptions.HTTPError as err:
-        raise err
+    customers = json_data["customer_data"]
+    created_customer_uuids = []
+    for customer in customers:
+        try:
+            resp = requests.post("http://localhost:8000/api/v1/customers/", json=customer)
+            resp.raise_for_status()
+        except requests.exceptions.HTTPError as err:
+            raise err
 
-    resp_json = resp.json()
-    created_customer_uuid = resp_json["customer_uuid"]
+        resp_json = resp.json()
+        # created_customer_uuids.append(resp_json["customer_uuid"])
 
     print("Step 3/3: create subscriptions...")
 
@@ -72,7 +73,17 @@ def main():
     created_subcription_uuids = []
 
     for subscription in subscriptions:
-        subscription["customer_uuid"] = created_customer_uuid
+        print(subscription)
+        # If testing data (identified by 'testing_customer'), get customer_uuid from db
+        if "testing_customer_identifier" in subscription.keys():       
+            existing_customers = requests.get("http://localhost:8000/api/v1/customers/")
+            print(existing_customers.json())
+            if existing_customers:
+                for customer in existing_customers.json():
+                    if customer["identifier"] == subscription["testing_customer_identifier"]:
+                        subscription["customer_uuid"] = customer["customer_uuid"]
+                subscription.pop("testing_customer_identifier", None)
+
         try:
             resp = requests.post(
                 "http://localhost:8000/api/v1/subscriptions/", json=subscription
@@ -96,6 +107,7 @@ def main():
 
     with open(output_file, "w") as outfile:
         data = {
+            "created_customers": created_customer_uuids,
             "created_subcription_uuids": created_subcription_uuids,
             "created_template_uuids": created_template_uuids,
         }

@@ -86,7 +86,7 @@ class TemplateManager:
 
 
 class CampaignManager:
-    """GoPhish API Manager. TODO: create put and delete methods."""
+    """GoPhish API Manager. TODO: create put methods."""
 
     def __init__(self):
         """Init."""
@@ -138,6 +138,22 @@ class CampaignManager:
             return self.get_campaign_summary(kwargs.get("campaign_id", None))
         else:
             return "method not found"
+    
+    def delete(self, method, **kwargs):
+        """DELETE Method."""
+        if method == "email_template":
+            return self.delete_email_template(kwargs.get("template_id", None))
+        elif method == "landing_page":
+            return self.delete_landing_page(kwargs.get("page_id", None))
+        elif method == "user_group":
+            return self.delete_user_group(kwargs.get("group_id", None))
+        elif method == "sending_profile":
+            return self.delete_sending_profile(kwargs.get("smtp_id", None))
+        elif method == "campaign":
+            return self.delete_campaign(kwargs.get("campaign_id", None))
+        else:
+            return "method not found"
+    
 
     # Create methods
     def generate_campaign(
@@ -224,8 +240,8 @@ class CampaignManager:
         ]
 
         target_group = Group(name=group_name, targets=users)
-        self.gp_api.groups.post(target_group)
-        return target_group
+        return self.gp_api.groups.post(target_group)
+        
 
 
     # Get methods
@@ -281,3 +297,46 @@ class CampaignManager:
             user_group = self.gp_api.groups.get()
         return user_group
 
+    # Delete methods
+    def delete_campaign(self, campaign_id: int):
+        """DELETE Campaign."""
+        if campaign_id:
+            status = self.gp_api.campaigns.delete(campaign_id=campaign_id)
+        else:
+            status: None
+        return status
+
+    def delete_sending_profile(self, smtp_id: int):
+        """DELETE Sending Profile."""
+        if smtp_id:
+            status = self.gp_api.smtp.delete(smtp_id=smtp_id)
+        else:
+            status = None
+        return status
+
+    def delete_email_template(self, template_id: int):
+        """DELETE Email Temp."""
+        if template_id:
+            status = self.gp_api.templates.delete(template_id=template_id)
+        else:
+            status = None
+        return status
+
+    def delete_landing_page(self, page_id: int):
+        """DELETE landingpage."""
+        if page_id:
+            status = self.gp_api.pages.delete(page_id=page_id)
+        else:
+            status = None
+        return status
+
+    def delete_user_group(self, group_id: int):
+        """DELETE User group."""
+        if group_id:
+            try:
+                status = self.gp_api.groups.delete(group_id=group_id)
+            except: 
+                status = None
+        else:
+            status = None
+        return status
