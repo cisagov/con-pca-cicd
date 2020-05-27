@@ -135,6 +135,7 @@ class SubscriptionsListView(APIView):
 
         # create campaigns
         group_number = 0
+        gophish_campaign_master_list = []
         for campaign_info in campaign_data_list:
             campaign_group = f"{first_name}.{last_name}.1.1 Targets.{group_number} "
             group_number += 1
@@ -154,8 +155,11 @@ class SubscriptionsListView(APIView):
             gophish_campaign_list = self.__create_and_save_campaigns(
                 campaign_info, target_group, first_name, last_name, landing_page
             )
+            gophish_campaign_master_list = (
+                gophish_campaign_master_list + gophish_campaign_list
+            )
 
-        post_data["gophish_campaign_list"] = gophish_campaign_list
+        post_data["gophish_campaign_list"] = gophish_campaign_master_list
 
         created_response = save_single(
             post_data, "subscription", SubscriptionModel, validate_subscription
