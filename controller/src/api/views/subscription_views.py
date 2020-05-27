@@ -315,3 +315,25 @@ class SubscriptionsCustomerListView(APIView):
         )
         serializer = SubscriptionGetSerializer(subscription_list, many=True)
         return Response(serializer.data)
+
+
+class SubscriptionsTemplateListView(APIView):
+    """
+    This is the SubscriptionsTemplateListView APIView.
+
+    This handles the API to get a list of subscriptions by template_uuid
+    """
+    @swagger_auto_schema(
+        responses={"200": SubscriptionGetSerializer, "400": "Bad Request"},
+        security=[],
+        operation_id="Get list of subscriptions via template_uuid",
+        operation_description="This handles the API fro the get a subscription with template_uuid"
+    )
+    def get(self, request, template_uuid):
+        """Get method."""
+        parameters = {"templates_selected_uuid_list": template_uuid}
+        subscription_list = get_list(
+            parameters, "subscription", SubscriptionModel, validate_subscription
+        )
+        serializer = SubscriptionGetSerializer(subscription_list, many=True)
+        return Response(serializer.data)
