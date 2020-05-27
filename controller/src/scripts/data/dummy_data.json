@@ -23,22 +23,22 @@
   },{
       "address_1": "321 Test Avenue",
       "address_2": "Suite 1",
-      "city": "Springfield",
+      "city": "Idaho Falls",
       "contact_list": [
         {
           "active": true,
-          "email": "homerS@example.com",
-          "first_name": "Homer",
-          "last_name": "Simpson",
+          "email": "Wayne@example.com",
+          "first_name": "Wayne",
+          "last_name": "Gretzky",
           "mobile_phone": "555-555-5555",
-          "notes": "The other big cheese.",
+          "notes": "Legend",
           "office_phone": "555-555-5555",
-          "title": "Nuclear Engineer"
+          "title": "The best"
         }
       ],
-      "identifier": "HOMER",
-      "name": "Springfield Power",
-      "state": "Kanasas",
+      "identifier": "NHL",
+      "name": "The Ice Rink",
+      "state": "Idaho",
       "zip_code": "12345"
     }
   ],
@@ -109,7 +109,7 @@
       "url": "https://inl.gov"
     },
     {
-      "testing_customer_identifier": "HOMER", 
+      "testing_customer_identifier": "NHL", 
 
       "active": true,
       "customer_uuid": "6068d85a-4f83-4b5a-958e-a179e5b4c205",
@@ -128,8 +128,8 @@
       "status": "Waiting on SRF",
       "target_email_list": [
         {
-          "email": "Bat.Man@example.com",
-          "first_name": "Bat",
+          "email": "Spider.Man@example.com",
+          "first_name": "Spider",
           "last_name": "Man",
           "position": "admin"
         },
