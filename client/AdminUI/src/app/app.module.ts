@@ -41,7 +41,7 @@ import { DeleteSubscription, DeleteSubscriptionDialog} from 'src/app/components/
 import { StopTemplateDialogComponent } from './components/template-manager/stop-template-dialog/stop-template-dialog.component'
 import { SendingProfilesComponent } from './components/sending-profiles/sending-profiles.component';
 import { SendingProfileDetailComponent } from './components/sending-profiles/sending-profile-detail.component'
-
+import { CustomerSubscriptionsComponent } from './components/subscriptions/customer-subscriptions/customer-subscriptions.component'
 
 @NgModule({
   declarations: [
@@ -69,6 +69,7 @@ import { SendingProfileDetailComponent } from './components/sending-profiles/sen
     StopTemplateDialogComponent,
     SendingProfilesComponent,
     SendingProfileDetailComponent,
+    CustomerSubscriptionsComponent,
   ],
   imports: [
     BrowserModule,

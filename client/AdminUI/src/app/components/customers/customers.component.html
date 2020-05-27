@@ -35,6 +35,15 @@
                 <mat-header-cell *matHeaderCellDef>Zip Code</mat-header-cell>
                 <mat-cell *matCellDef="let row"> {{row.zip_code}} </mat-cell>
             </ng-container>
+            <ng-container matColumnDef="select">
+                <mat-header-cell *matHeaderCellDef>Select</mat-header-cell>
+                <mat-cell *matCellDef="let row"> 
+                    <button mat-icon-button color="primary" [routerLink]="['/customer', row.customer_uuid]">
+                      <mat-icon>list</mat-icon>
+                    </button>
+                </mat-cell>
+            </ng-container>
+            
 
             <mat-header-row *matHeaderRowDef="displayed_columns"></mat-header-row>
             <mat-row *matRowDef="let row; columns: displayed_columns" (click)="setCustomer(row.customer_uuid)"></mat-row>

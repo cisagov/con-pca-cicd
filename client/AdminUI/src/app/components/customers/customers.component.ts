@@ -20,7 +20,8 @@ export class CustomersComponent implements OnInit {
     "address_2",
     "city",
     "state",
-    "zip_code"
+    "zip_code",
+    "select"
   ]
 
   constructor(
@@ -32,10 +33,10 @@ export class CustomersComponent implements OnInit {
     this.customerSvc.setCustomerInfo(false);
   }
 
+
   private refresh(): void {
     this.customerSvc.getCustomers().subscribe((data: any) => {
-    this.data_source.data = data as Customer[];
-
+      this.data_source.data = data as Customer[];
     }) 
   }
 
@@ -43,10 +44,6 @@ export class CustomersComponent implements OnInit {
     const dialog_config = new MatDialogConfig();
     dialog_config.data = {}
     const dialog_ref = this.dialog.open(AddCustomerDialogComponent, dialog_config);
-
-    dialog_ref.afterClosed().subscribe(value => {
-      this.refresh();
-    })
   }
 
   public setCustomer(uuid){
@@ -56,7 +53,12 @@ export class CustomersComponent implements OnInit {
 
   ngOnInit(): void {
     this.data_source = new MatTableDataSource();
-    this.refresh();
+    this.customerSvc.getCustomerInfoStatus().subscribe(status => {
+      if(status == false){
+        this.refresh()
+      }
+    })
+    
   }
 
 }

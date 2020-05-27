@@ -2,7 +2,8 @@
     <div class="d-flex flex-row mb-3">
         <div class="d-flex flex-grow-1 flex-column">
             <div class="d-flex flex-row mb-3">
-                <button mat-raised-button color="primary" (click)="createNew()">Create New</button>
+                <button mat-raised-button color="primary" *ngIf="!isExistingCustomer()" (click)="createNew()">Clear</button>
+                <h1 *ngIf="isExistingCustomer()">{{customer?.name}}</h1>
                 <!-- <button mat-raised-button color="accent">Edit</button>
                 <button mat-raised-button color="warn">Delete</button> -->
             </div>
@@ -201,6 +202,10 @@
                   <div class="alert alert-danger flex-grow-1" role="alert" *ngIf="!checkDataSourceLength()">
                     No contacts Available
                   </div>
+            </div>
+            <div *ngIf="customer_uuid" class="pt-3">
+                <h1>Customer Subscriptions</h1>
+                <customer-subscriptions [customer]="customer"></customer-subscriptions>
             </div>
             <div class="d-flex flex-row flex-grow-1">
                 <div class="alert alert-danger flex-grow-1" *ngIf="orgError">

@@ -82,7 +82,6 @@ export class SubscriptionService {
     return subscription
   }
   public deleteSubscription(subscription: Subscription) {
-    console.log(subscription)
     return new Promise((resolve,reject) => {
       this.http
       .delete(`${environment.apiEndpoint}/api/v1/subscription/${subscription.subscription_uuid}/`)
