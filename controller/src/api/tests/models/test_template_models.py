@@ -1,6 +1,7 @@
 import pytest
 import api.models.template_models as tm
 import datetime
+import uuid
 from database.repository.models import Model
 from database.repository.types import (
     BooleanType,
@@ -78,7 +79,7 @@ class TestTemplateImageModel:
 
 class TestTemplateModel:
     
-    def create(self, template_uuid = UUIDType(), gophish_template_id = 12942, name = "Test", template_type = "test template", deception_score = 2, 
+    def create(self, template_uuid = str(uuid.uuid4()), gophish_template_id = 12942, name = "Test", template_type = "test template", deception_score = 2, 
                 descriptive_words = "test", description = "This is a test", image_list = [tm.TemplateImageModel()], from_address = "spoof address", 
                 retired = False, retired_description = "N/A", subject = "spoof email", text = "text", html = "html", topic_list = ["topic 1", "topic 2"],
                 appearance = tm.TemplateAppearanceModel(), sender = tm.TemplateSenderModel(), relavancy = tm.TemplateRelevancyModel(), 
@@ -115,7 +116,9 @@ class TestTemplateModel:
         template_model = self.create()
         assert isinstance(template_model, tm.TemplateModel)
         
+class TestValidateTemplate:
 
-
-
-    
+    def test_validate_template(self):
+        test_model = TestTemplateModel()
+        data_object = test_model.create()
+        tm.validate_template(data_object)
