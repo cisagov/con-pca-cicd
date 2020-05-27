@@ -1,9 +1,8 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
-import { Injectable, OnInit } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
-import { Router } from '@angular/router';
 
-import { Template, TemplateShort } from 'src/app/models/template.model';
+import { Template } from 'src/app/models/template.model';
 
 const headers = {
   headers: new HttpHeaders().set('Content-Type', 'application/json'),
@@ -99,6 +98,11 @@ export class TemplateManagerService {
         }
       )
     })
+  }
+
+  stopTemplate(template: Template) {
+    console.log('Logic for stopping a template')
+    return
   }
 
 }
