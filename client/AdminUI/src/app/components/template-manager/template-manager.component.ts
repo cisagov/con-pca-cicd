@@ -14,6 +14,8 @@ import { Template } from 'src/app/models/template.model';
 import { Subscription } from 'rxjs';
 import $ from 'jquery';
 import 'src/app/helper/csvToArray';
+import { MatDialog } from '@angular/material/dialog';
+import { StopTemplateDialogComponent } from './stop-template-dialog/stop-template-dialog.component';
 
 @Component({
   selector: 'app-template-manager',
@@ -48,7 +50,8 @@ export class TemplateManagerComponent implements OnInit {
     private layoutSvc: LayoutMainService,
     private templateManagerSvc: TemplateManagerService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    public dialog: MatDialog
   ) {
     layoutSvc.setTitle('Template Manager');
     //this.setEmptyTemplateForm();
@@ -295,11 +298,14 @@ export class TemplateManagerComponent implements OnInit {
     }
   }
 
-  stopTemplate() {
+  openStopTemplateDialog() {
     let template_to_stop = this.getTemplateFromForm(this.currentTemplateFormGroup)
-    if(window.confirm(`Are you sure you want to stop all subscriptions currently using this template ${template_to_stop.name}?`)) {
-      this.templateManagerSvc.stopTemplate(template_to_stop)
-    }
+
+    this.dialog.open(
+      StopTemplateDialogComponent, {
+        data: template_to_stop
+      }
+    )
   }
 
   //Event that fires everytime the template tab choice is changed

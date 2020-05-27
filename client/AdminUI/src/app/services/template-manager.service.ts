@@ -101,6 +101,7 @@ export class TemplateManagerService {
   }
 
   stopTemplate(template: Template) {
+    console.log('Logic for stopping a template')
     return
   }
 
