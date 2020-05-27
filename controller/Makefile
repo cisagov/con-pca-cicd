@@ -58,8 +58,8 @@ init:
 db_drop_mongo:
 	docker volume rm controller_mongodb
 
-# target: tests - runs pytests against code
-tests:
+# target: coverage - runs pytests against code and generates coverage html
+coverage:
 	coverage run --omit *.venv* -m pytest ./src/ --disable-warnings
 	coverage html
 

@@ -318,3 +318,7 @@ $altTheme: mat-dark-theme($theme-primary, $theme-accent, $theme-warn);
   background-color:#3c6f8e;
   border-right:lighten(#3c6f8e, 5%) 1px solid;
 }
+
+.mat-form-field{
+  margin-right:10px;
+}

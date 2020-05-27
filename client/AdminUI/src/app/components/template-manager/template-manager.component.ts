@@ -3,9 +3,6 @@ import {
   OnInit,
   ViewChild,
   ElementRef,
-  HostListener,
-  ChangeDetectorRef,
-  ɵɵtextInterpolateV
 } from '@angular/core';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
@@ -17,6 +14,8 @@ import { Template } from 'src/app/models/template.model';
 import { Subscription } from 'rxjs';
 import $ from 'jquery';
 import 'src/app/helper/csvToArray';
+import { MatDialog } from '@angular/material/dialog';
+import { StopTemplateDialogComponent } from './stop-template-dialog/stop-template-dialog.component';
 
 @Component({
   selector: 'app-template-manager',
@@ -51,7 +50,8 @@ export class TemplateManagerComponent implements OnInit {
     private layoutSvc: LayoutMainService,
     private templateManagerSvc: TemplateManagerService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    public dialog: MatDialog
   ) {
     layoutSvc.setTitle('Template Manager');
     //this.setEmptyTemplateForm();
@@ -296,6 +296,16 @@ export class TemplateManagerComponent implements OnInit {
         (error) => {}
       )
     }
+  }
+
+  openStopTemplateDialog() {
+    let template_to_stop = this.getTemplateFromForm(this.currentTemplateFormGroup)
+
+    this.dialog.open(
+      StopTemplateDialogComponent, {
+        data: template_to_stop
+      }
+    )
   }
 
   //Event that fires everytime the template tab choice is changed
