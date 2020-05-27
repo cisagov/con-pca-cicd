@@ -100,7 +100,16 @@
                     Create and Launch Subscription
                 </button>
             </div>
-            <delete-subscription *ngIf="pageMode != 'CREATE'" [subscription]="subscription"></delete-subscription>
+
+            <div class="d-flex flex-row">
+                <div class="d-flex flex-column">
+                    <delete-subscription *ngIf="pageMode != 'CREATE'" [subscription]="subscription"></delete-subscription>
+                </div>
+                <div class="d-flex flex-row" *ngIf="!subscription.active">
+                    <button mat-raised-button color="accent" (click)="showArchiveDialog()">Archive Subscription</button>
+                </div>
+            </div>
+            
     
 
         </div>
