@@ -72,6 +72,14 @@ export class SubscriptionService {
   }
 
   /**
+   * Sends information to the API to update a subscription
+   * @param subscription 
+   */
+  patchSubscription(subscription: Subscription) {
+    return this.http.patch(`http://localhost:8000/api/v1/subscription/${subscription.subscription_uuid}/`, subscription)
+  }
+
+  /**
    * Patches the subscription with the new primary contact.
    * @param subscriptUuid 
    * @param contact 

@@ -54,11 +54,13 @@ export class SubscriptionsComponent implements OnInit {
         let customers = data as Customer[]
         let customerSubscriptions: ICustomerSubscription[] = []
         subscriptions.map((s: Subscription) => {
-          let customerSubscription: ICustomerSubscription = {
-            customer: customers.find(o => o.customer_uuid == s.customer_uuid),
-            subscription: s
+          if (!s.archived) {
+            let customerSubscription: ICustomerSubscription = {
+              customer: customers.find(o => o.customer_uuid == s.customer_uuid),
+              subscription: s
+            }
+            customerSubscriptions.push(customerSubscription);
           }
-          customerSubscriptions.push(customerSubscription);
         })
         this.data_source.data = customerSubscriptions
       })
