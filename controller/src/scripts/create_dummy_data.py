@@ -36,7 +36,9 @@ def main():
     print("done loading data")
     print("Step 1/3: create templates...")
 
-    templates = load_file("data/reformated_template_data.json")
+    email_templates = load_file("data/reformated_template_data.json")
+    laning_page_tempalte = load_file("data/landing_pages.json")
+    templates = email_templates + laning_page_tempalte
     created_template_uuids = []
 
     for template in templates:
@@ -65,7 +67,9 @@ def main():
             raise err
 
         resp_json = resp.json()
-        # created_customer_uuids.append(resp_json["customer_uuid"])
+        created_customer_uuid = resp_json["customer_uuid"]
+        print("created customer_uuid: {}".format(created_customer_uuid))
+        created_customer_uuids.append(created_customer_uuid)
 
     print("Step 3/3: create subscriptions...")
 
@@ -109,7 +113,7 @@ def main():
         data = {
             "created_customers": created_customer_uuids,
             "created_subcription_uuids": created_subcription_uuids,
-            "created_template_uuids": created_template_uuids,
+            "created_template_uuids": created_template_uuids
         }
         json.dump(data, outfile, indent=2)
     print("Finished.....")

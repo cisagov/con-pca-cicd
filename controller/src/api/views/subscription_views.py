@@ -4,6 +4,7 @@ Subscription Views.
 This handles the api for all the Subscription urls.
 """
 # Standard Python Libraries
+from datetime import datetime
 import logging
 
 # Third-Party Libraries
@@ -98,8 +99,15 @@ class SubscriptionsListView(APIView):
         post_data['name'] = f"{customer['identifier']}.{customer['contact_list'][0]['first_name']}.{customer['contact_list'][0]['last_name']}.{first_increment}.{second_increment}"
 
 
-        # Get all templates for calc
-        template_list = get_list(None, "template", TemplateModel, validate_template)
+        # Get all Email templates for calc
+        template_list = get_list(
+            {"template_type": "Email"}, "template", TemplateModel, validate_template
+        )
+
+        # Get all Landning pages or defult
+        # This is currently selecting the defult page on creation.
+        # landing_template_list = get_list({"template_type": "Landing"}, "template", TemplateModel, validate_template)
+        landing_page = "Phished"
 
         template_data = {
             i.get("template_uuid"): i.get("descriptive_words") for i in template_list
@@ -117,8 +125,10 @@ class SubscriptionsListView(APIView):
             relevant_templates[x : x + 5] for x in range(0, len(relevant_templates), 5)
         ]
 
-        # Get the next date Intervals
-        start_date = post_data.get("start_date")
+        # Get the next date Intervals, if no startdate is sent, default today
+        start_date = post_data.get(
+            "start_date", datetime.today().strftime("%Y-%m-%dT%H:%M:%S")
+        )
         campaign_data_list = get_campaign_dates(start_date)
 
         # Return 15 of the most relevant templates
@@ -132,7 +142,7 @@ class SubscriptionsListView(APIView):
             templates = personalize_template(customer, template_data_list, post_data)
             template_personalized_list.append(templates)
 
-        # divide emails, TODO: replace with this random email picker
+        # divide emails
         target_list = post_data.get("target_email_list")
         target_div = target_list_divide(target_list)
         index = 0
@@ -146,9 +156,6 @@ class SubscriptionsListView(APIView):
         last_name = post_data.get("primary_contact").get("last_name", "")
         # get User Groups
         user_groups = campaign_manager.get("user_group")
-
-        
-        
 
         # create campaigns
         group_number = 0
@@ -170,12 +177,11 @@ class SubscriptionsListView(APIView):
             #             target_group = user_group
             #             break
             gophish_campaign_list.extend(self.__create_and_save_campaigns(
-                campaign_info, target_group, first_name, last_name
+                campaign_info, target_group, first_name, last_name, landing_page
             ))
 
         post_data["gophish_campaign_list"] = gophish_campaign_list
         
-
         created_response = save_single(
             post_data, "subscription", SubscriptionModel, validate_subscription
         )
@@ -186,7 +192,7 @@ class SubscriptionsListView(APIView):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     def __create_and_save_campaigns(
-        self, campaign_info, target_group, first_name, last_name
+        self, campaign_info, target_group, first_name, last_name, landing_page
     ):
         """
         Create and Save Campaigns.
@@ -217,7 +223,7 @@ class SubscriptionsListView(APIView):
                     "campaign",
                     campaign_name=campaign_name,
                     smtp_name="SMTP",
-                    page_name="Phished",
+                    page_name=landing_page,  # Replace with picked landing page, default init page now.
                     user_group=target_group,
                     email_template=created_template,
                     launch_date=campaign_info["start_date"].strftime(
