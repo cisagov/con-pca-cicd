@@ -170,6 +170,7 @@ class SubscriptionModel(Model):
     target_email_list = ListType(ModelType(SubscriptionTargetModel))
     templates_selected_uuid_list = ListType(StringType)
     active = BooleanType()
+    archived = BooleanType()
     # db data tracking added below
     created_by = StringType()
     cb_timestamp = DateTimeType()

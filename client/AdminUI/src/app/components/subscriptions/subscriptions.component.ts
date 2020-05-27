@@ -49,7 +49,7 @@ export class SubscriptionsComponent implements OnInit {
   refresh() {
     this.subscription_service.getSubscriptions().subscribe((data: any[]) => {
       console.log(data)
-      let subscriptions = this.subscription_service.toSubscriptions(data)
+      let subscriptions = data as Subscription[]
       this.customer_service.getCustomers().subscribe((data: any[]) => {
         let customers = data as Customer[]
         let customerSubscriptions: ICustomerSubscription[] = []
