@@ -53,11 +53,6 @@ urlpatterns = [
         name="subscriptions_list_api",
     ),
     path(
-        "v1/subscriptions/template/<template_uuid>/",
-        subscription_views.SubscriptionsTemplateListView.as_view(),
-        name="subscriptions_list_api",
-    ),
-    path(
         "v1/subscription/<subscription_uuid>/",
         subscription_views.SubscriptionView.as_view(),
         name="subscriptions_get_api",

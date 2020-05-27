@@ -74,6 +74,8 @@ def main():
     for subscription in subscriptions:
         subscription["customer_uuid"] = created_customer_uuid
         try:
+            print(subscription)
+
             resp = requests.post(
                 "http://localhost:8000/api/v1/subscriptions/", json=subscription
             )

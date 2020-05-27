@@ -17,6 +17,7 @@ import $ from 'jquery';
 import 'src/app/helper/csvToArray';
 import { MatDialog } from '@angular/material/dialog';
 import { StopTemplateDialogComponent } from './stop-template-dialog/stop-template-dialog.component';
+import { SubscriptionService } from 'src/app/services/subscription.service';
 
 @Component({
   selector: 'app-template-manager',
@@ -53,6 +54,7 @@ export class TemplateManagerComponent implements OnInit {
   constructor(
     private layoutSvc: LayoutMainService,
     private templateManagerSvc: TemplateManagerService,
+    private subscriptionSvc: SubscriptionService,
     private route: ActivatedRoute,
     private router: Router,
     public dialog: MatDialog
@@ -133,11 +135,15 @@ export class TemplateManagerComponent implements OnInit {
     this.templateManagerSvc
       .getTemplate(template_uuid).then(
         (success) => {
-          this.setTemplateForm(<Template>success)
-          this.templateId = success['template_uuid']
+          let t = <Template>success;
 
-          // RKW
-          // this.getPcaSubscriptionsForTemplate(this.templateId);
+          this.setTemplateForm(t)
+          this.templateId = t.template_uuid;
+
+          this.subscriptionSvc.getSubscriptionsByTemplate(t)
+            .subscribe((x: PcaSubscription[]) => {
+              this.pcaSubscriptions = x;
+          });
         },
         (error) => {          
         }
