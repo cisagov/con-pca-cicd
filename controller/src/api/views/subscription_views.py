@@ -152,25 +152,26 @@ class SubscriptionsListView(APIView):
 
         # create campaigns
         group_number = 0
+        gophish_campaign_list = []
         for campaign_info in campaign_data_list:
             campaign_group = f"{post_data['name']}.Targets.{group_number} "
             campaign_info["name"] = f"{post_data['name']}.{group_number}"
             group_number += 1
-            if campaign_group not in [group.name for group in user_groups]:
-                target_group = campaign_manager.create(
-                    "user_group",
-                    group_name=campaign_group,
-                    target_list=campaign_info["targets"],
-                )
-            else:
-                # get group from list
-                for user_group in user_groups:
-                    if user_group.name == campaign_group:
-                        target_group = user_group
-                        break
-            gophish_campaign_list = self.__create_and_save_campaigns(
-                campaign_info, target_group, first_name, last_name
+            # if campaign_group not in [group.name for group in user_groups]:
+            target_group = campaign_manager.create(
+                "user_group",
+                group_name=campaign_group,
+                target_list=campaign_info["targets"],
             )
+            # else:
+            #     # get group from list
+            #     for user_group in user_groups:
+            #         if user_group.name == campaign_group:
+            #             target_group = user_group
+            #             break
+            gophish_campaign_list.extend(self.__create_and_save_campaigns(
+                campaign_info, target_group, first_name, last_name
+            ))
 
         post_data["gophish_campaign_list"] = gophish_campaign_list
         

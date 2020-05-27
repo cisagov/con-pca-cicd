@@ -214,8 +214,8 @@ class CampaignManager:
         ]
 
         target_group = Group(name=group_name, targets=users)
-        self.gp_api.groups.post(target_group)
-        return target_group
+        return self.gp_api.groups.post(target_group)
+        
 
     # Get methods
     def get_campaign(self, campaign_id: int = None):
@@ -304,7 +304,6 @@ class CampaignManager:
             try:
                 status = self.gp_api.groups.delete(group_id=group_id)
             except: 
-                print("Group id not found")
                 status = None
         else:
             status = None
