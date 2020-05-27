@@ -225,6 +225,25 @@ class SubscriptionsListView(APIView):
         return gophish_campaign_list
 
 
+class SubscriptionsTemplateListView(APIView):
+    """
+    Returns a list of Subscriptions that are using a given Template
+    """
+    @swagger_auto_schema(
+        responses={"200": SubscriptionGetSerializer, "400": "Bad Request"},
+        security=[],
+        operation_id="List of Subscriptions using Template",
+        operation_description="This handles the API to get a List of Subscriptions using a specified Template.",
+    )
+    def get(self, request, template_uuid):
+        parameters = request.data.copy()
+        subscription_list = get_list(
+            parameters, "subscription", SubscriptionModel, validate_subscription
+        )
+        serializer = SubscriptionGetSerializer(subscription_list, many=True)
+        return Response(serializer.data)
+
+
 class SubscriptionView(APIView):
     """
     This is the SubscriptionsView APIView.

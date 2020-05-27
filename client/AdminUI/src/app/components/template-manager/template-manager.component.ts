@@ -14,6 +14,7 @@ import { MyErrorStateMatcher } from 'src/app/helper/ErrorStateMatcher';
 import { LayoutMainService } from 'src/app/services/layout-main.service';
 import { TemplateManagerService } from 'src/app/services/template-manager.service';
 import { Template } from 'src/app/models/template.model';
+import { Subscription as PcaSubscription } from 'src/app/models/subscription.model';
 import { Subscription } from 'rxjs';
 import $ from 'jquery';
 import 'src/app/helper/csvToArray';
@@ -35,8 +36,11 @@ export class TemplateManagerComponent implements OnInit {
   matchTemplateName = new MyErrorStateMatcher();
   matchTemplateHTML = new MyErrorStateMatcher();
 
-  //Subscriptions
+  //RxJS Subscriptions
   subscriptions = Array<Subscription>();
+
+  // Con-PCA Subscriptions for the current Template
+  pcaSubscriptions = new Array<PcaSubscription>();
 
   //Styling variables, required to properly size and display the angular-editor import
   body_content_height: number;
@@ -131,6 +135,8 @@ export class TemplateManagerComponent implements OnInit {
         (success) => {
           this.setTemplateForm(<Template>success)
           this.templateId = success['template_uuid']
+
+          this.getPcaSubscriptionsForTemplate(this.templateId);
         },
         (error) => {          
         }
@@ -296,6 +302,20 @@ export class TemplateManagerComponent implements OnInit {
         (error) => {}
       )
     }
+  }
+
+  /**
+   * Gets a list of Con-PCA Subscriptions (not RxJS Subscriptions) that are 
+   * using a template.
+   * @param template_uuid 
+   */
+  getPcaSubscriptionsForTemplate(template_uuid: string) {
+    this.templateManagerSvc.getSubscriptionsForTemplate(template_uuid)
+      .subscribe((subs: Array<PcaSubscription>) => {
+        this.pcaSubscriptions = subs;
+
+        console.log(this.pcaSubscriptions);
+    });
   }
 
   //Event that fires everytime the template tab choice is changed

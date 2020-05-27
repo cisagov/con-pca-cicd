@@ -101,4 +101,12 @@ export class TemplateManagerService {
     })
   }
 
+  /**
+   * 
+   * @param template_uuid 
+   */
+  getSubscriptionsForTemplate(template_uuid: string) {
+    let url = `${environment.apiEndpoint}/api/v1/subscriptions/template/${template_uuid}/`;
+    return this.http.get(url);
+  }
 }
