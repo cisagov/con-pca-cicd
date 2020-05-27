@@ -4,6 +4,5 @@ from . import views
 
 
 urlpatterns = [
-  path('', views.reports_page, name='reports-page'),
-  path('pdf', views.generate_pdf, name='generate-pdf'),
+    path("<subscription_uuid>/", views.ReportsView.as_view(), name="reports-page"),
 ]
