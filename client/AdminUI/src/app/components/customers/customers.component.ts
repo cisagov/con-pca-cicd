@@ -25,15 +25,17 @@ export class CustomersComponent implements OnInit {
 
   constructor(
     private layout_service: LayoutMainService,
-    public customer_service: CustomerService,
+    public customerSvc: CustomerService,
     public dialog: MatDialog
   ) { 
-    layout_service.setTitle('Customers')
+    layout_service.setTitle('Customers');
+    this.customerSvc.setCustomerInfo(false);
   }
 
   private refresh(): void {
-    this.customer_service.getCustomers().subscribe((data: any) => {
-      this.data_source.data = data as Customer[];
+    this.customerSvc.getCustomers().subscribe((data: any) => {
+    this.data_source.data = data as Customer[];
+
     }) 
   }
 
@@ -45,6 +47,11 @@ export class CustomersComponent implements OnInit {
     dialog_ref.afterClosed().subscribe(value => {
       this.refresh();
     })
+  }
+
+  public setCustomer(uuid){
+    this.customerSvc.selectedCustomer = uuid;
+    this.dialog.closeAll();
   }
 
   ngOnInit(): void {
