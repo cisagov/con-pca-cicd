@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Customer, Contact } from '../models/customer.model';
-import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Subscription } from '../models/subscription.model';
 import { CustomerService } from './customer.service';
+import { Template } from '../models/template.model';
 
 const headers = {
   headers: new HttpHeaders()
@@ -113,5 +113,13 @@ export class SubscriptionService {
   updatePrimaryContact(subscriptUuid: string, contact: Contact) {
     let primary = { primary_contact: contact };
     return this.http.patch(`http://localhost:8000/api/v1/subscription/${subscriptUuid}/`, primary)
+  }
+
+  /**
+   * Gets all subscriptions for a given template.
+   * @param template 
+   */
+  public getSubscriptionsByTemplate(template: Template) {
+    return this.http.get(`${environment.apiEndpoint}/api/v1/subscription/template/${template.template_uuid}`)
   }
 }

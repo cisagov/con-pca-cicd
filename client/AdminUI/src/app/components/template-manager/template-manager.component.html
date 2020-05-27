@@ -283,15 +283,24 @@
           (click)="deleteTemplate()"
           *ngIf=templateId
         >
-        Delete Template
-      </button>
+          Delete Template
+        </button>
+        <button
+          id="stop-button"
+          class="d-flex"
+          mat-raised-button
+          color="accent"
+          (click)="openStopTemplateDialog()"
+          *ngIf=templateId>
+          Stop Template
+        </button>
         <button 
           id="save-button"
           class="d-flex ml-auto"
           mat-raised-button
           color="primary"
           (click)="saveTemplate()"        >
-          Save Template
+            Save Template
         </button>
       </div>
     </div>

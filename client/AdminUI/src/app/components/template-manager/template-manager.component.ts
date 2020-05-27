@@ -3,9 +3,6 @@ import {
   OnInit,
   ViewChild,
   ElementRef,
-  HostListener,
-  ChangeDetectorRef,
-  ɵɵtextInterpolateV
 } from '@angular/core';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { AngularEditorConfig } from '@kolkov/angular-editor';
@@ -18,6 +15,8 @@ import { Subscription as PcaSubscription } from 'src/app/models/subscription.mod
 import { Subscription } from 'rxjs';
 import $ from 'jquery';
 import 'src/app/helper/csvToArray';
+import { MatDialog } from '@angular/material/dialog';
+import { StopTemplateDialogComponent } from './stop-template-dialog/stop-template-dialog.component';
 
 @Component({
   selector: 'app-template-manager',
@@ -55,7 +54,8 @@ export class TemplateManagerComponent implements OnInit {
     private layoutSvc: LayoutMainService,
     private templateManagerSvc: TemplateManagerService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    public dialog: MatDialog
   ) {
     layoutSvc.setTitle('Template Manager');
     //this.setEmptyTemplateForm();
@@ -136,7 +136,8 @@ export class TemplateManagerComponent implements OnInit {
           this.setTemplateForm(<Template>success)
           this.templateId = success['template_uuid']
 
-          this.getPcaSubscriptionsForTemplate(this.templateId);
+          // RKW
+          // this.getPcaSubscriptionsForTemplate(this.templateId);
         },
         (error) => {          
         }
@@ -304,18 +305,15 @@ export class TemplateManagerComponent implements OnInit {
     }
   }
 
-  /**
-   * Gets a list of Con-PCA Subscriptions (not RxJS Subscriptions) that are 
-   * using a template.
-   * @param template_uuid 
-   */
-  getPcaSubscriptionsForTemplate(template_uuid: string) {
-    this.templateManagerSvc.getSubscriptionsForTemplate(template_uuid)
-      .subscribe((subs: Array<PcaSubscription>) => {
-        this.pcaSubscriptions = subs;
 
-        console.log(this.pcaSubscriptions);
-    });
+  openStopTemplateDialog() {
+    let template_to_stop = this.getTemplateFromForm(this.currentTemplateFormGroup)
+
+    this.dialog.open(
+      StopTemplateDialogComponent, {
+        data: template_to_stop
+      }
+    )
   }
 
   //Event that fires everytime the template tab choice is changed
