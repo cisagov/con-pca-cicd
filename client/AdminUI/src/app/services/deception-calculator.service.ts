@@ -33,10 +33,8 @@ export class DeceptionCalculatorService {
             resolve('Template Saved');
           },
           error => {
-            console.log(error);
           },
           () => {
-            console.log('Post obeservable complete');
           }
         );    
       })

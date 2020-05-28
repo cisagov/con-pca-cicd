@@ -48,7 +48,6 @@ export class SubscriptionService {
   }
 
   public deleteSubscription(subscription: Subscription) {
-    console.log(subscription)
     return new Promise((resolve,reject) => {
       this.http
       .delete(`${environment.apiEndpoint}/api/v1/subscription/${subscription.subscription_uuid}/`)
@@ -95,5 +94,13 @@ export class SubscriptionService {
    */
   public getSubscriptionsByTemplate(template: Template) {
     return this.http.get(`${environment.apiEndpoint}/api/v1/subscription/template/${template.template_uuid}`)
+  }
+
+  /**
+   * Gets all subscriptions for a given customer.
+   * @param template 
+   */
+  public getSubscriptionsByCustomer(customer: Customer) {
+    return this.http.get(`${environment.apiEndpoint}/api/v1/subscription/customer/${customer.customer_uuid}`)
   }
 }

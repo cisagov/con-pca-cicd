@@ -40,9 +40,9 @@ import { ViewContactDialogComponent } from './components/contacts/view-contact-d
 import { DeleteSubscription, DeleteSubscriptionDialog} from 'src/app/components/subscriptions/delete-subscription/delete-subscription.component';
 import { StopTemplateDialogComponent } from './components/template-manager/stop-template-dialog/stop-template-dialog.component'
 import { SendingProfilesComponent } from './components/sending-profiles/sending-profiles.component';
-import { SendingProfileDetailComponent } from './components/sending-profiles/sending-profile-detail.component';
+import { SendingProfileDetailComponent } from './components/sending-profiles/sending-profile-detail.component'
+import { CustomerSubscriptionsComponent } from './components/subscriptions/customer-subscriptions/customer-subscriptions.component'
 import { ArchiveSubscriptionDialogComponent } from './components/subscriptions/archive-subscription-dialog/archive-subscription-dialog.component'
-
 
 @NgModule({
   declarations: [
@@ -70,6 +70,7 @@ import { ArchiveSubscriptionDialogComponent } from './components/subscriptions/a
     StopTemplateDialogComponent,
     SendingProfilesComponent,
     SendingProfileDetailComponent,
+    CustomerSubscriptionsComponent,
     ArchiveSubscriptionDialogComponent,
   ],
   imports: [

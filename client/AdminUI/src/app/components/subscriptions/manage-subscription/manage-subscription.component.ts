@@ -308,7 +308,6 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
         this.router.navigate(['subscriptions']);
       },
       error => {
-        console.log(error);
         alert("An error occurred submitting the subscription: " + error.error);
       });
   }
