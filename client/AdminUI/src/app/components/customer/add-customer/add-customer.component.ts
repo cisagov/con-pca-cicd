@@ -21,7 +21,7 @@ export class AddCustomerComponent implements OnInit {
    model:any;
    addContact:boolean = false;
    contactDataSource: any = [];
-   displayedColumns: string[] = ['name', 'title', 'email', 'mobile_phone', 'mobile_phone'];
+   displayedColumns: string[] = ['name', 'title', 'email', 'mobile_phone', 'office_phone', 'action'];
    contactError='';
    orgError='';
    contacts = new MatTableDataSource<Contact>();
@@ -210,6 +210,13 @@ export class AddCustomerComponent implements OnInit {
     else{
       this.contactError = "Fix required fields."
     }
+  }
+
+  removeContact(cust){
+    const index = this.contacts.data.findIndex(d => d === cust);
+    this.contacts.data.splice(index, 1);
+    let tempContact = this.contacts;
+    this.contacts = new MatTableDataSource<Contact>(tempContact.data);
   }
 
   clearCustomer(){
