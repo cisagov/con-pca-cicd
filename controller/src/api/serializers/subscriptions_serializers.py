@@ -7,7 +7,7 @@ serializing data coming from the db into a request response.
 # Third-Party Libraries
 from rest_framework import serializers
 
-from .customer_serializers import CustomerContactSerializer
+from api.serializers.customer_serializers import CustomerContactSerializer
 
 
 class SubscriptionTargetSerializer(serializers.Serializer):
@@ -133,6 +133,7 @@ class SubscriptionGetSerializer(serializers.Serializer):
     templates_selected_uuid_list = serializers.ListField(required=False)
     active = serializers.BooleanField()
     archived = serializers.BooleanField(default=False)
+    manually_stopped = serializers.BooleanField(default=False)
     # db data tracking added below
     created_by = serializers.CharField(max_length=100)
     cb_timestamp = serializers.DateTimeField()
@@ -159,6 +160,7 @@ class SubscriptionPostSerializer(serializers.Serializer):
     templates_selected_uuid_list = serializers.ListField()
     active = serializers.BooleanField()
     archived = serializers.BooleanField(default=False)
+    manually_stopped = serializers.BooleanField(default=False)
 
 
 class SubscriptionPostResponseSerializer(serializers.Serializer):
@@ -190,6 +192,7 @@ class SubscriptionPatchSerializer(serializers.Serializer):
     templates_selected_uuid_list = serializers.ListField(required=False)
     active = serializers.BooleanField(required=False)
     archived = serializers.BooleanField(default=False)
+    manually_stopped = serializers.BooleanField(default=False)
 
 
 class SubscriptionPatchResponseSerializer(serializers.Serializer):
@@ -211,6 +214,7 @@ class SubscriptionPatchResponseSerializer(serializers.Serializer):
     templates_selected_uuid_list = serializers.ListField(required=False)
     active = serializers.BooleanField()
     archived = serializers.BooleanField(default=False)
+    manually_stopped = serializers.BooleanField(default=False)
     created_by = serializers.CharField(max_length=100)
     cb_timestamp = serializers.DateTimeField()
     last_updated_by = serializers.CharField(max_length=100)

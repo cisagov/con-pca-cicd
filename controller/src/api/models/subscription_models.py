@@ -17,7 +17,7 @@ from database.repository.types import (
     UUIDType,
 )
 
-from .customer_models import CustomerContactModel
+from api.models.customer_models import CustomerContactModel
 
 
 class SubscriptionTargetModel(Model):
@@ -171,6 +171,7 @@ class SubscriptionModel(Model):
     templates_selected_uuid_list = ListType(StringType)
     active = BooleanType()
     archived = BooleanType()
+    manually_stopped = BooleanType()
     # db data tracking added below
     created_by = StringType()
     cb_timestamp = DateTimeType()

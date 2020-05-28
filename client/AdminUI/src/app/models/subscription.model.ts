@@ -22,6 +22,7 @@ export class Subscription {
     customer_uuid: string;
     keywords: string;
     lub_timestamp: Date;
+    manually_stopped: boolean;
     name: string;
     primary_contact: Contact;
     start_date: Date;
