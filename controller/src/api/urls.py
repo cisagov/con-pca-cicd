@@ -65,17 +65,22 @@ urlpatterns = [
     path(
         "v1/subscription/template/<template_uuid>/",
         subscription_views.SubscriptionsTemplateListView.as_view(),
-        name="subscriptions_template_get_api"
+        name="subscriptions_template_get_api",
     ),
     path(
         "v1/subscription/stop/<subscription_uuid>/",
         subscription_views.SubscriptionStopView.as_view(),
-        name="subscription_stop_api"
+        name="subscription_stop_api",
     ),
     path(
         "v1/reports/<subscription_uuid>/",
         report_views.ReportsView.as_view(),
         name="reports_get_api",
+    ),
+    path(
+        "v1/reports/<subscription_uuid>/pdf/",
+        report_views.ReportsPDFView.as_view(),
+        name="reports_get_pdf_api",
     ),
     path(
         "v1/templates/",

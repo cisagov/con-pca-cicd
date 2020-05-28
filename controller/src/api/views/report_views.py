@@ -19,6 +19,8 @@ from rest_framework.views import APIView
 
 # Local Libraries
 from api.serializers.reports_serializers import ReportsGetSerializer
+from api.models.subscription_models import SubscriptionModel, validate_subscription
+from api.utils.db_utils import get_single
 
 
 logger = logging.getLogger(__name__)
@@ -29,6 +31,23 @@ class ReportsView(APIView):
     This is the ReportsView API Endpoint.
 
     This handles the API a Get .
+    """
+
+    @swagger_auto_schema(
+        responses={"200": ReportsGetSerializer, "400": "Bad Request",},
+        security=[],
+        operation_id="Get Subscription Report data",
+        operation_description="This fetches a subscription's report data by subscription uuid",
+    )
+    def get(self, request, subscription_uuid):
+        return Response("test")
+
+
+class ReportsPDFView(APIView):
+    """
+    This is the ReportsView Pdf API Endpoint.
+
+    This handles the API a Get request for download a pdf document
     """
 
     @swagger_auto_schema(
