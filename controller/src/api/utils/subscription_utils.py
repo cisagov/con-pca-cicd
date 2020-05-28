@@ -4,7 +4,9 @@ from datetime import datetime, timedelta
 
 # Third-Party Libraries
 from lcgit import lcg
+from celery.task.control import revoke
 
+# Local Libraries
 from api.serializers.subscriptions_serializers import SubscriptionPatchSerializer
 from api.models.subscription_models import SubscriptionModel, validate_subscription
 
@@ -105,31 +107,29 @@ def stop_subscription(subscription):
 
         Returns updated Campaign
         """
-        campaign_manager.complete_campaign(campaign_id=campaign['campaign_id'])
-        campaign['status'] = 'stopped'
-        campaign['completed_date'] = datetime.now()
+        campaign_manager.complete_campaign(campaign_id=campaign["campaign_id"])
+        campaign["status"] = "stopped"
+        campaign["completed_date"] = datetime.now()
         return campaign
 
-
     # Stop Campaigns
-    updated_campaigns = list(map(stop_campaign, subscription['gophish_campaign_list']))
-    
-    # TODO: Remove from scheduler
+    updated_campaigns = list(map(stop_campaign, subscription["gophish_campaign_list"]))
+
+    # Remove from the scheduler
+    revoke(subscription["task_uuid"], terminate=True)
 
     # Update subscription
-    subscription['gophish_campaign_list'] = updated_campaigns
-    subscription['active'] = False
-    subscription['manually_stopped'] = True
-    subscription['status'] = 'stopped'
+    subscription["gophish_campaign_list"] = updated_campaigns
+    subscription["active"] = False
+    subscription["manually_stopped"] = True
+    subscription["active_task"] = False
+    subscription["status"] = "stopped"
     resp = db_utils.update_single(
-        uuid=subscription['subscription_uuid'],
+        uuid=subscription["subscription_uuid"],
         put_data=SubscriptionPatchSerializer(subscription).data,
         collection="subscription",
         model=SubscriptionModel,
-        validation_model=validate_subscription
+        validation_model=validate_subscription,
     )
 
     return resp
-
-
-

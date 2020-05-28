@@ -10,7 +10,7 @@ from rest_framework.views import APIView
 from drf_yasg.utils import swagger_auto_schema
 
 from config.celery import app
-from .tasks import campaign_report
+from .tasks import subscription_report
 from .serializers import CampaignReportSerializer, TaskListSerializer
 
 
@@ -52,14 +52,16 @@ class TaskListView(APIView):
         triggered by a GoPhish callback once a campaign has been created.
         """
         data = request.data
-        campaign_id = data.get("campaign_id")
+        subscription_uuid = data.get("subscription_uuid")
         # Execute task in 90 days from campaign launch
         ninety_days = datetime.utcnow() + timedelta(days=90)
         try:
-            task = campaign_report.apply_async(args=[campaign_id], eta=ninety_days)
+            task = subscription_report.apply_async(
+                args=[subscription_uuid], eta=ninety_days
+            )
         except add.OperationalError as exc:
-            logger.exception("Campaign task raised: %r", exc)
-        context = {"task id": task.id, "campaign_id": campaign_id}
+            logger.exception("Subscription task raised: %r", exc)
+        context = {"task id": task.id, "subscription_uuid": subscription_uuid}
         return Response(context)
 
 
