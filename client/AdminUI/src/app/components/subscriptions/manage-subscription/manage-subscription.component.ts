@@ -44,6 +44,8 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
   // The raw CSV content of the textarea
   csvText: string;
 
+
+
   /**
    * 
    */
@@ -64,7 +66,7 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
    */
   ngOnInit(): void {
 
-    // build  form
+    // build form
     this.subscribeForm = new FormGroup({
       selectedCustomerUuid: new FormControl('', Validators.required),
       primaryContact: new FormControl(null, Validators.required),
@@ -312,6 +314,8 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
         alert("An error occurred submitting the subscription: " + error.error);
       });
   }
+
+  
 
   /**
    * 

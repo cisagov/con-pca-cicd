@@ -42,7 +42,8 @@ import { StopTemplateDialogComponent } from './components/template-manager/stop-
 import { SendingProfilesComponent } from './components/sending-profiles/sending-profiles.component';
 import { SendingProfileDetailComponent } from './components/sending-profiles/sending-profile-detail.component';
 import { ArchiveSubscriptionDialogComponent } from './components/subscriptions/archive-subscription-dialog/archive-subscription-dialog.component'
-
+import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { SubDashboardComponent } from './components/subscriptions/sub-dashboard/sub-dashboard.component';
 
 @NgModule({
   declarations: [
@@ -71,6 +72,7 @@ import { ArchiveSubscriptionDialogComponent } from './components/subscriptions/a
     SendingProfilesComponent,
     SendingProfileDetailComponent,
     ArchiveSubscriptionDialogComponent,
+    SubDashboardComponent,
   ],
   imports: [
     BrowserModule,
@@ -83,7 +85,8 @@ import { ArchiveSubscriptionDialogComponent } from './components/subscriptions/a
     FormsModule,
     ReactiveFormsModule,
     AutosizeModule,
-    HttpClientModule
+    HttpClientModule,
+    NgxChartsModule
   ],
   providers: [
     SubscriptionService,

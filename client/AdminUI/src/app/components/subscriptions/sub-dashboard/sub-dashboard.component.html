@@ -1,0 +1,53 @@
+<mat-card class="mb-4">
+    <mat-card-header>
+        <mat-card-title style="margin-left: -16px !important">
+            Statistics For Current Cycle
+        </mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+        <div class="d-flex flex-column">
+            <div>
+                <h4>Statistics By Level</h4>
+                <ngx-charts-bar-vertical-2d 
+                    [results]="chart.chartResults" 
+                    [view]="[0, 200]"
+                    [scheme]="chart.colorScheme" 
+                    [gradient]="chart.gradient" 
+                    [xAxis]="chart.showXAxis"
+                    [yAxis]="chart.showYAxis" 
+                    [legend]="chart.showLegend" 
+                    [legendPosition]="chart.legendPosition"
+                    [showXAxisLabel]="chart.showXAxisLabel" 
+                    [showYAxisLabel]="chart.showYAxisLabel"
+                    [xAxisLabel]="chart.xAxisLabel" 
+                    [yAxisLabel]="chart.yAxisLabel" 
+                    [roundEdges]="false">
+                </ngx-charts-bar-vertical-2d>
+            </div>
+
+            <div class="d-block mt-5 mb-5 w-100" style="max-height: 100px;">
+                <h4>Number of Emails Sent This Quarter</h4>
+                <ngx-charts-bar-horizontal-stacked 
+                    [results]="chartSentPercent.chartResults" 
+                    [view]="[0, 100]"
+                    [scheme]="chartSentPercent.colorScheme" 
+                    [gradient]="chartSentPercent.gradient"
+                    [xAxis]="chartSentPercent.showXAxis" 
+                    [yAxis]="chartSentPercent.showYAxis"
+                    [legend]="chartSentPercent.showLegend" 
+                    [showXAxisLabel]="chartSentPercent.showXAxisLabel"
+                    [showYAxisLabel]="chartSentPercent.showYAxisLabel" 
+                    [xAxisLabel]="chartSentPercent.xAxisLabel"
+                    [yAxisLabel]="chartSentPercent.yAxisLabel">
+                </ngx-charts-bar-horizontal-stacked>
+            </div>
+
+            <div>
+                Average Time to First Click: {{ avgTTFC }}
+            </div>
+            <div>
+                Average Time to First Report: {{ avgTTFR }}
+            </div>
+        </div>
+    </mat-card-content>
+</mat-card>
