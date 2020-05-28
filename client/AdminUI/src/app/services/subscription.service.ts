@@ -40,18 +40,6 @@ export class SubscriptionService {
 
   /**
    * 
-   * @param requestData 
-   */
-  public toSubscriptions(requestData: any[]): Subscription[] {
-    let subscriptions: Subscription[] = []
-    requestData.map((s: any) => {
-      subscriptions.push(this.toSubscription(s))
-    })
-    return subscriptions
-  }
-
-  /**
-   * 
    * @param subscription_uuid 
    */
   public getSubscription(subscription_uuid: string) {
@@ -59,28 +47,6 @@ export class SubscriptionService {
     return this.http.get(url)
   }
 
-  /**
-   * 
-   * @param requestData 
-   */
-  public toSubscription(requestData: any): Subscription {
-    let subscription: Subscription = {
-      active: requestData.active,
-      customer_uuid: requestData.customer_uuid,
-      keywords: requestData.keywords,
-      lub_timestamp: requestData.lub_timestamp,
-      name: requestData.name,
-      primary_contact: this.customer_service.getContact(requestData.primary_contact),
-      start_date: requestData.start_date,
-      status: requestData.status,
-      subscription_uuid: requestData.subscription_uuid,
-      url: requestData.url,
-      target_email_list: requestData.target_email_list,
-      setTargetsFromCSV: null
-    }
-
-    return subscription
-  }
   public deleteSubscription(subscription: Subscription) {
     return new Promise((resolve,reject) => {
       this.http
@@ -102,6 +68,14 @@ export class SubscriptionService {
    */
   submitSubscription(subscription: Subscription) {
     return this.http.post('http://localhost:8000/api/v1/subscriptions/', subscription)
+  }
+
+  /**
+   * Sends information to the API to update a subscription
+   * @param subscription 
+   */
+  patchSubscription(subscription: Subscription) {
+    return this.http.patch(`http://localhost:8000/api/v1/subscription/${subscription.subscription_uuid}/`, subscription)
   }
 
   /**
