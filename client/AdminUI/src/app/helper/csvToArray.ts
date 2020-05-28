@@ -10,7 +10,6 @@ String.prototype.csvToArray = function(): Array<String> {
     .forEach(item => {
       retVal.push(item.trim());
     });
-  console.log(retVal);
   return retVal;
 };
 export {};

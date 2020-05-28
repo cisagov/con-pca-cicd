@@ -101,6 +101,15 @@ class GoPhishCampaignsSerializer(serializers.Serializer):
     timeline = GoPhishTimelineSerializer(many=True)
     target_email_list = SubscriptionTargetSerializer(many=True, required=False)
 
+# class GoPhishTemplateSerializer(serializers.Serializer):
+#     """
+#     This is the GoPhish Temaplates Serializer.
+
+#     This is a formats the data coming out of the Db.
+#     """
+#     template_id = serializers.IntegerField(required=False)
+    
+
 
 class SubscriptionGetSerializer(serializers.Serializer):
     """
@@ -123,6 +132,7 @@ class SubscriptionGetSerializer(serializers.Serializer):
     target_email_list = SubscriptionTargetSerializer(many=True)
     templates_selected_uuid_list = serializers.ListField(required=False)
     active = serializers.BooleanField()
+    archived = serializers.BooleanField(default=False)
     # db data tracking added below
     created_by = serializers.CharField(max_length=100)
     cb_timestamp = serializers.DateTimeField()
@@ -148,6 +158,7 @@ class SubscriptionPostSerializer(serializers.Serializer):
     target_email_list = SubscriptionTargetSerializer(many=True)
     templates_selected_uuid_list = serializers.ListField()
     active = serializers.BooleanField()
+    archived = serializers.BooleanField(default=False)
 
 
 class SubscriptionPostResponseSerializer(serializers.Serializer):
@@ -178,6 +189,7 @@ class SubscriptionPatchSerializer(serializers.Serializer):
     target_email_list = SubscriptionTargetSerializer(many=True, required=False)
     templates_selected_uuid_list = serializers.ListField(required=False)
     active = serializers.BooleanField(required=False)
+    archived = serializers.BooleanField(default=False)
 
 
 class SubscriptionPatchResponseSerializer(serializers.Serializer):
@@ -198,6 +210,7 @@ class SubscriptionPatchResponseSerializer(serializers.Serializer):
     target_email_list = SubscriptionTargetSerializer(many=True)
     templates_selected_uuid_list = serializers.ListField(required=False)
     active = serializers.BooleanField()
+    archived = serializers.BooleanField(default=False)
     created_by = serializers.CharField(max_length=100)
     cb_timestamp = serializers.DateTimeField()
     last_updated_by = serializers.CharField(max_length=100)

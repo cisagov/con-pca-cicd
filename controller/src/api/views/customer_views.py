@@ -63,6 +63,18 @@ class CustomerListView(APIView):
     def post(self, request, format=None):
         """Post method."""
         post_data = request.data.copy()
+
+        # Check for existing customer with the same name and identifier pair
+        customer_filter = {
+            "identifier": post_data["identifier"],
+            "name": post_data["name"]
+        }
+        existing_customer = get_list(
+            customer_filter, "customer", CustomerModel, validate_customer
+        )
+        if existing_customer:
+            return Response("User with that identifier already exists",status=status.HTTP_202_ACCEPTED)
+
         created_response = save_single(
             post_data, "customer", CustomerModel, validate_customer
         )
