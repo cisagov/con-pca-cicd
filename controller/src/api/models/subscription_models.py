@@ -93,6 +93,8 @@ class GoPhishGroupModel(Model):
     name = StringType()
     targets = ListType(ModelType(SubscriptionTargetModel))
     modified_date = DateTimeType()
+
+
 class GoPhishTimelineModel(Model):
     """
     This is the GoPhish Timeline Model.
@@ -156,6 +158,7 @@ class SubscriptionModel(Model):
     subscription_uuid = UUIDType()
     # values being passed in.
     customer_uuid = UUIDType()
+    task_uuid = StringType()
     name = StringType()
     url = StringType()
     keywords = StringType()
@@ -170,6 +173,7 @@ class SubscriptionModel(Model):
     target_email_list = ListType(ModelType(SubscriptionTargetModel))
     templates_selected_uuid_list = ListType(StringType)
     active = BooleanType()
+    active_task = BooleanType()
     archived = BooleanType()
     manually_stopped = BooleanType()
     # db data tracking added below
