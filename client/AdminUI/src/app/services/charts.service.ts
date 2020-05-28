@@ -5,26 +5,24 @@ import { Injectable } from '@angular/core';
 })
 export class ChartsService {
 
-  sent: any = {};
-
   /**
-   * 
+   * Returns the data to draw the Statistics By Level charts.
    */
-  public getGraphs() {
+  getStatisticsByLevel() {
     return [{
       "name": "Sent",
       "series": [
         {
           "name": "Low",
-          "value": 345
+          "value": 100
         },
         {
           "name": "Moderate",
-          "value": 325
+          "value": 125
         },
         {
           "name": "High",
-          "value": 325
+          "value": 106
         }
       ]
     },
@@ -33,15 +31,15 @@ export class ChartsService {
       "series": [
         {
           "name": "Low",
-          "value": 300
+          "value": 81
         },
         {
           "name": "Moderate",
-          "value": 300
+          "value": 83
         },
         {
           "name": "High",
-          "value": 300
+          "value": 62
         }
       ]
     },
@@ -54,16 +52,16 @@ export class ChartsService {
         },
         {
           "name": "Moderate",
-          "value": 100
+          "value": 27
         },
         {
           "name": "High",
-          "value": 150
+          "value": 50
         }
       ]
     },
     {
-      "name": "Subitted",
+      "name": "Submitted",
       "series": [
         {
           "name": "Low",
@@ -96,13 +94,12 @@ export class ChartsService {
         }
       ]
     }];
-
   }
 
   /**
    * Returns the percentage of emails sent thus far in the cycle.
    */
-  getSentPercent() {
+  getSentEmailNumbers() {
     return [{
       "name": "",
       "series": [

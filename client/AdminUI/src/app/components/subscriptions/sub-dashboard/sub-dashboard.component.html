@@ -6,17 +6,17 @@
     </mat-card-header>
     <mat-card-content>
         <div class="d-flex flex-column">
-            <div>
+            <div style="max-height: 200px; margin-bottom: 1rem;">
                 <h4>Statistics By Level</h4>
                 <ngx-charts-bar-vertical-2d 
                     [results]="chart.chartResults" 
-                    [view]="[0, 200]"
                     [scheme]="chart.colorScheme" 
                     [gradient]="chart.gradient" 
                     [xAxis]="chart.showXAxis"
                     [yAxis]="chart.showYAxis" 
                     [legend]="chart.showLegend" 
                     [legendPosition]="chart.legendPosition"
+                    [legendTitle]="''"
                     [showXAxisLabel]="chart.showXAxisLabel" 
                     [showYAxisLabel]="chart.showYAxisLabel"
                     [xAxisLabel]="chart.xAxisLabel" 
@@ -25,20 +25,19 @@
                 </ngx-charts-bar-vertical-2d>
             </div>
 
-            <div class="d-block mt-5 mb-5 w-100" style="max-height: 100px;">
-                <h4>Number of Emails Sent This Quarter</h4>
+            <div class="d-block mb-5 w-100" style="max-height: 100px;">
+                <h4>Number of Emails Sent</h4>
                 <ngx-charts-bar-horizontal-stacked 
-                    [results]="chartSentPercent.chartResults" 
-                    [view]="[0, 100]"
-                    [scheme]="chartSentPercent.colorScheme" 
-                    [gradient]="chartSentPercent.gradient"
-                    [xAxis]="chartSentPercent.showXAxis" 
-                    [yAxis]="chartSentPercent.showYAxis"
-                    [legend]="chartSentPercent.showLegend" 
-                    [showXAxisLabel]="chartSentPercent.showXAxisLabel"
-                    [showYAxisLabel]="chartSentPercent.showYAxisLabel" 
-                    [xAxisLabel]="chartSentPercent.xAxisLabel"
-                    [yAxisLabel]="chartSentPercent.yAxisLabel">
+                    [results]="chartSent.chartResults" 
+                    [scheme]="chartSent.colorScheme" 
+                    [gradient]="chartSent.gradient"
+                    [xAxis]="chartSent.showXAxis" 
+                    [yAxis]="chartSent.showYAxis"
+                    [legend]="chartSent.showLegend" 
+                    [showXAxisLabel]="chartSent.showXAxisLabel"
+                    [showYAxisLabel]="chartSent.showYAxisLabel" 
+                    [xAxisLabel]="chartSent.xAxisLabel"
+                    [yAxisLabel]="chartSent.yAxisLabel">
                 </ngx-charts-bar-horizontal-stacked>
             </div>
 

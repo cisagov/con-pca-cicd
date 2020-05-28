@@ -8,7 +8,7 @@ import { ChartsService } from 'src/app/services/charts.service';
 export class SubDashboardComponent implements OnInit {
 
   chart: any = {};
-  chartSentPercent: any = {};
+  chartSent: any = {};
 
   // average time to first click
   avgTTFC = '3 minutes';
@@ -18,6 +18,10 @@ export class SubDashboardComponent implements OnInit {
 
   schemeLowMedHigh = {
     domain: ['#064875', '#fcbf10', '#007bc1' ]
+  };
+
+  schemeSent = {
+    domain: ['#336600', '#eeeeee']
   };
 
   /**
@@ -47,26 +51,24 @@ export class SubDashboardComponent implements OnInit {
     this.chart.yAxisLabel = '';
     this.chart.showDataLabel = true;
 
-    //this.chart.showLegend = true;
-    //this.chart.legendPosition = 'right';
+    this.chart.showLegend = true;
+    this.chart.legendPosition = 'right';
 
     this.chart.colorScheme = this.schemeLowMedHigh;
 
     // get content
-    this.chart.chartResults = this.chartsSvc.getGraphs();
+    this.chart.chartResults = this.chartsSvc.getStatisticsByLevel();
 
 
-    this.chartSentPercent.showXAxis = true;
-    this.chartSentPercent.showYAxis = true;
-    this.chartSentPercent.showXAxisLabel = true;
-    this.chartSentPercent.xAxisLabel = '';
-    this.chartSentPercent.showYAxisLabel = true;
-    this.chartSentPercent.yAxisLabel = '';
-    this.chartSentPercent.showDataLabel = true;
-    this.chartSentPercent.colorScheme = {
-      domain: ['#336600', '#eeeeee']
-    };
-    this.chartSentPercent.view = [500, 100];
-    this.chartSentPercent.chartResults = this.chartsSvc.getSentPercent();
+    this.chartSent.showXAxis = true;
+    this.chartSent.showYAxis = true;
+    this.chartSent.showXAxisLabel = true;
+    this.chartSent.xAxisLabel = '';
+    this.chartSent.showYAxisLabel = true;
+    this.chartSent.yAxisLabel = '';
+    this.chartSent.showDataLabel = true;
+    this.chartSent.colorScheme = this.schemeSent;
+    this.chartSent.view = [500, 100];
+    this.chartSent.chartResults = this.chartsSvc.getSentEmailNumbers();
   }
 }
