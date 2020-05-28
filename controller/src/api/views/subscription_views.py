@@ -31,6 +31,9 @@ from api.utils.db_utils import (
 )
 from api.utils.subscription_utils import get_campaign_dates, target_list_divide
 from api.utils.template_utils import format_ztime, personalize_template
+
+from api.utils import subscription_utils
+
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status
 from rest_framework.response import Response
@@ -303,7 +306,7 @@ class SubscriptionView(APIView):
             model=SubscriptionModel,
             validation_model=validate_subscription,
         )
-        logging.info("created response {}".format(updated_response))
+        logger.info("created response {}".format(updated_response))
         if "errors" in updated_response:
             return Response(updated_response, status=status.HTTP_400_BAD_REQUEST)
         serializer = SubscriptionPatchResponseSerializer(updated_response)
@@ -317,7 +320,7 @@ class SubscriptionView(APIView):
     )
     def delete(self, request, subscription_uuid):
         """Delete method."""
-        logging.debug("delete subscription_uuid {}".format(subscription_uuid))
+        logger.debug("delete subscription_uuid {}".format(subscription_uuid))
         
         subscription = get_single(
             uuid=subscription_uuid,
@@ -352,7 +355,7 @@ class SubscriptionView(APIView):
             validation_model=validate_subscription,
         )
 
-        logging.info("delete responce {}".format(delete_response))
+        logger.info("delete responce {}".format(delete_response))
         if "errors" in delete_response:
             return Response(delete_response, status=status.HTTP_400_BAD_REQUEST)
         serializer = SubscriptionDeleteResponseSerializer(delete_response)
@@ -402,3 +405,22 @@ class SubscriptionsTemplateListView(APIView):
         )
         serializer = SubscriptionGetSerializer(subscription_list, many=True)
         return Response(serializer.data)
+
+
+class SubscriptionStopView(APIView):
+    @swagger_auto_schema(
+        responses={"202": SubscriptionPatchResponseSerializer, "400": "Bad Request"},
+        operation_id="Endpoint for manually stopping a subscription",
+        operation_description="Endpoint for manually stopping a subscription"
+    )
+    def get(self, request, subscription_uuid):
+
+        # get subscription
+        subscription = get_single(subscription_uuid, "subscription", SubscriptionModel, validate_subscription)
+        
+        # Stop subscription
+        resp = subscription_utils.stop_subscription(subscription)
+
+        # Return updated subscriptions
+        serializer = SubscriptionPatchResponseSerializer(resp)
+        return Response(serializer.data, status=status.HTTP_202_ACCEPTED)

@@ -156,7 +156,7 @@ class CampaignManager:
             return self.delete_campaign(kwargs.get("campaign_id", None))
         else:
             return "method not found"
-    
+
 
     # Create methods
     def generate_campaign(
@@ -342,4 +342,12 @@ class CampaignManager:
                 status = None
         else:
             status = None
+        return status
+
+    # Other Methods
+    def complete_campaign(self, campaign_id: int):
+        if campaign_id:
+            status = self.gp_api.campaigns.complete(campaign_id=campaign_id)
+        else:
+            status: None
         return status

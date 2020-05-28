@@ -38,11 +38,13 @@ import { AddCustomerDialogComponent } from './components/customers/add-customer-
 import { AddContactDialogComponent } from './components/contacts/add-contact-dialog/add-contact-dialog.component';
 import { ViewContactDialogComponent } from './components/contacts/view-contact-dialog/view-contact-dialog.component';
 import { DeleteSubscription, DeleteSubscriptionDialog} from 'src/app/components/subscriptions/delete-subscription/delete-subscription.component';
-import { StopTemplateDialogComponent } from './components/template-manager/stop-template-dialog/stop-template-dialog.component'
+import { StopTemplateDialogComponent } from './components/template-manager/stop-template-dialog/stop-template-dialog.component';
 import { SendingProfilesComponent } from './components/sending-profiles/sending-profiles.component';
-import { SendingProfileDetailComponent } from './components/sending-profiles/sending-profile-detail.component'
-import { CustomerSubscriptionsComponent } from './components/subscriptions/customer-subscriptions/customer-subscriptions.component'
-import { ArchiveSubscriptionDialogComponent } from './components/subscriptions/archive-subscription-dialog/archive-subscription-dialog.component'
+import { SendingProfileDetailComponent } from './components/sending-profiles/sending-profile-detail.component';
+import { CustomerSubscriptionsComponent } from './components/subscriptions/customer-subscriptions/customer-subscriptions.component';
+import { ArchiveSubscriptionDialogComponent } from './components/subscriptions/archive-subscription-dialog/archive-subscription-dialog.component';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { SubDashboardComponent } from './components/subscriptions/sub-dashboard/sub-dashboard.component';
 
 @NgModule({
   declarations: [
@@ -72,6 +74,7 @@ import { ArchiveSubscriptionDialogComponent } from './components/subscriptions/a
     SendingProfileDetailComponent,
     CustomerSubscriptionsComponent,
     ArchiveSubscriptionDialogComponent,
+    SubDashboardComponent,
   ],
   imports: [
     BrowserModule,
@@ -84,7 +87,8 @@ import { ArchiveSubscriptionDialogComponent } from './components/subscriptions/a
     FormsModule,
     ReactiveFormsModule,
     AutosizeModule,
-    HttpClientModule
+    HttpClientModule,
+    NgxChartsModule
   ],
   providers: [
     SubscriptionService,
