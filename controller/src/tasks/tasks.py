@@ -17,4 +17,5 @@ def campaign_report(campaign_id):
     Pull final campaign report
     """
     campaign = campaign_manager.get("campaign", campaign_id=campaign_id)
+    campaign_manager.complete_campaign(campaign_id=campaign_id)
     return campaign
