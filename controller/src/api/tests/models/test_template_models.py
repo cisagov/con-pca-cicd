@@ -26,6 +26,12 @@ class TestTemplateAppearanceModel:
         tam = self.create()
         assert isinstance(tam, tm.TemplateAppearanceModel) 
 
+    def test_validate_fields(self):
+        tam = self.create()
+        assert isinstance(tam.grammar, int) 
+        assert isinstance(tam.link_domain, int)
+        assert isinstance(tam.logo_graphics, int)
+
 class TestTemplateSenderModel:
     
     def create(self, external = 1, internal = 0, authoritative = 0):
@@ -39,6 +45,12 @@ class TestTemplateSenderModel:
         tsm = self.create()
         assert isinstance(tsm, tm.TemplateSenderModel) 
 
+    def test_validate_fields(self):
+        tsm = self.create()
+        assert isinstance(tsm.external, int)
+        assert isinstance(tsm.internal, int)
+        assert isinstance(tsm.authoritative, int)
+
 class TestTemplateRelevancyModel:
     
     def create(self, organization = 1, public_news = 1):
@@ -50,6 +62,11 @@ class TestTemplateRelevancyModel:
     def test_creation(self):
         trm = self.create()
         assert isinstance(trm, tm.TemplateRelevancyModel) 
+
+    def test_validate_fields(self):
+        trm = self.create()
+        assert isinstance(trm.organization, int)
+        assert isinstance(trm.public_news, int)
 
 class TestTemplateBehaviorModel:
     
@@ -65,6 +82,13 @@ class TestTemplateBehaviorModel:
         tbm = self.create()
         assert isinstance(tbm, tm.TemplateBehaviorModel)
 
+    def test_validate_fields(self):
+        tbm = self.create()
+        assert isinstance(tbm.fear, int)
+        assert isinstance(tbm.duty_obligation, int)
+        assert isinstance(tbm.curiosity, int)
+        assert isinstance(tbm.greed, int)
+
 class TestTemplateImageModel:
     
     def create(self, file_name = "img.jpg", file_url = "https://fakeurl.com"):
@@ -76,6 +100,11 @@ class TestTemplateImageModel:
     def test_creation(self):
         tim = self.create()
         assert isinstance(tim, tm.TemplateImageModel)
+
+    def test_validate_fields(self):
+        tim = self.create()
+        assert isinstance(tim.file_name, str)
+        assert isinstance(tim.file_url, str)
 
 class TestTemplateModel:
     
@@ -115,6 +144,33 @@ class TestTemplateModel:
     def test_creation(self):
         template_model = self.create()
         assert isinstance(template_model, tm.TemplateModel)
+
+    def test_validate_fields(self):
+        template_model = self.create()
+        assert isinstance(template_model.template_uuid, str)
+        assert isinstance(template_model.gophish_template_id, int)
+        assert isinstance(template_model.name, str)
+        assert isinstance(template_model.template_type, str)
+        assert isinstance(template_model.deception_score, int)
+        assert isinstance(template_model.descriptive_words, str)
+        assert isinstance(template_model.description, str)
+        assert isinstance(template_model.image_list, list)
+        assert isinstance(template_model.from_address, str)
+        assert isinstance(template_model.retired, bool)
+        assert isinstance(template_model.retired_description, str)
+        assert isinstance(template_model.subject, str)
+        assert isinstance(template_model.text, str)
+        assert isinstance(template_model.html, str)
+        assert isinstance(template_model.topic_list, list)
+        assert isinstance(template_model.appearance, tm.TemplateAppearanceModel)
+        assert isinstance(template_model.sender, tm.TemplateSenderModel)
+        assert isinstance(template_model.relevancy, tm.TemplateRelevancyModel)
+        assert isinstance(template_model.behavior, tm.TemplateBehaviorModel)
+        assert isinstance(template_model.complexity, int)
+        assert isinstance(template_model.created_by, str)
+        assert isinstance(template_model.cb_timestamp, datetime.datetime)
+        assert isinstance(template_model.last_updated_by, str)
+        assert isinstance(template_model.lub_timestamp, datetime.datetime)
         
 class TestValidateTemplate:
 
