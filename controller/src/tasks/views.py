@@ -11,7 +11,7 @@ from drf_yasg.utils import swagger_auto_schema
 
 from config.celery import app
 from .tasks import subscription_report
-from .serializers import CampaignReportSerializer, TaskListSerializer
+from .serializers import SubscriptionReportSerializer, TaskListSerializer
 
 
 logger = get_logger(__name__)
@@ -22,8 +22,8 @@ class TaskListView(APIView):
     @swagger_auto_schema(
         responses={"200": TaskListSerializer, "400": "Bad Request",},
         security=[],
-        operation_id="Campaign report generation tasks",
-        operation_description="Return a list of scheduled campaign report generation task",
+        operation_id="Subscription report generation tasks",
+        operation_description="Return a list of scheduled subscription report generation tasks",
     )
     def get(self, request):
         """
@@ -41,15 +41,15 @@ class TaskListView(APIView):
         return Response(serializer.data)
 
     @swagger_auto_schema(
-        responses={"200": CampaignReportSerializer, "400": "Bad Request",},
+        responses={"200": SubscriptionReportSerializer, "400": "Bad Request",},
         security=[],
-        operation_id="Campaign report generation tasks",
-        operation_description="Create a scheduled campaign report generation task",
+        operation_id="Subscription report generation tasks",
+        operation_description="Create a scheduled subscription report generation task",
     )
     def post(self, request):
         """
-        Create a scheduled campaign report generation task. This is
-        triggered by a GoPhish callback once a campaign has been created.
+        Create a scheduled subscription report generation task. This is
+        triggered by a GoPhish callback once a subscription has been created.
         """
         data = request.data
         subscription_uuid = data.get("subscription_uuid")

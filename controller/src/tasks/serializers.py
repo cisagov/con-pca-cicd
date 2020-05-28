@@ -8,7 +8,7 @@ class TaskListSerializer(serializers.Serializer):
     registered = serializers.DictField(child=serializers.CharField())
 
 
-class CampaignReportSerializer(serializers.Serializer):
+class SubscriptionReportSerializer(serializers.Serializer):
     task_id = serializers.CharField()
     campaign_id = serializers.EmailField()
     time = serializers.DateTimeField()
