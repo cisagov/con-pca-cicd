@@ -103,4 +103,8 @@ export class SubscriptionService {
   public getSubscriptionsByCustomer(customer: Customer) {
     return this.http.get(`${environment.apiEndpoint}/api/v1/subscription/customer/${customer.customer_uuid}`)
   }
+  
+  public stopSubscription(subscription: Subscription) {
+    return this.http.get(`${environment.apiEndpoint}/api/v1/subscription/stop/${subscription.subscription_uuid}/`)
+  }
 }

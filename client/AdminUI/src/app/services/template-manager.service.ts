@@ -101,8 +101,7 @@ export class TemplateManagerService {
   }
 
   stopTemplate(template: Template) {
-    console.log('Logic for stopping a template')
-    return
+    return this.http.get(`${environment.apiEndpoint}/api/v1/template/stop/${template.template_uuid}/`)
   }
 
 }

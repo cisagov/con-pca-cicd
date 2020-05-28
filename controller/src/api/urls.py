@@ -68,6 +68,11 @@ urlpatterns = [
         name="subscriptions_template_get_api"
     ),
     path(
+        "v1/subscription/stop/<subscription_uuid>/",
+        subscription_views.SubscriptionStopView.as_view(),
+        name="subscription_stop_api"
+    ),
+    path(
         "v1/reports/<subscription_uuid>/",
         report_views.ReportsView.as_view(),
         name="reports_get_api",
@@ -81,6 +86,11 @@ urlpatterns = [
         "v1/template/<template_uuid>/",
         template_views.TemplateView.as_view(),
         name="template_get_api",
+    ),
+    path(
+        "v1/template/stop/<template_uuid>/",
+        template_views.TemplateStopView.as_view(),
+        name="template_stop_api",
     ),
     path(
         "v1/campaigns/", campaign_views.CampaignListView.as_view(), name="campaign_list"
