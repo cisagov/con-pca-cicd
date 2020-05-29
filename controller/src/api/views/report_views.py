@@ -20,10 +20,15 @@ from rest_framework.views import APIView
 # Local Libraries
 from api.serializers.reports_serializers import ReportsGetSerializer
 from api.models.subscription_models import SubscriptionModel, validate_subscription
-from api.utils.db_utils import get_single
+from api.models.template_models import TemplateModel, validate_template
+from api.utils.db_utils import get_single, get_list
+from api.manager import CampaignManager
 
 
 logger = logging.getLogger(__name__)
+
+# GoPhish API Manager
+campaign_manager = CampaignManager()
 
 
 class ReportsView(APIView):
@@ -40,7 +45,31 @@ class ReportsView(APIView):
         operation_description="This fetches a subscription's report data by subscription uuid",
     )
     def get(self, request, subscription_uuid):
-        return Response("test")
+        subscription_uuid = self.kwargs["subscription_uuid"]
+        subscription = get_single(
+            subscription_uuid, "subscription", SubscriptionModel, validate_subscription
+        )
+        campaigns = subscription.get("gophish_campaign_list")
+        template_list = get_list(
+            subscription["templates_selected_uuid_list"],
+            "template",
+            TemplateModel,
+            validate_template,
+        )
+        summary = [
+            campaign_manager.get("summary", campaign_id=campaign.get("campaign_id"))
+            for campaign in campaigns
+        ]
+        target_count = sum([targets.get("stats").get("total") for targets in summary])
+        context = {
+            "subscription_uuid": subscription_uuid,
+            "customer_name": subscription.get("name"),
+            "start_date": summary[0].get("created_date"),
+            "end_date": summary[0].get("send_by_date"),
+            "target_count": target_count,
+        }
+        serializer = ReportsGetSerializer(context)
+        return Response(serializer.data)
 
 
 class ReportsPDFView(APIView):
