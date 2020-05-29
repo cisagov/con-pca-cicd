@@ -41,3 +41,7 @@ env/
 # Terraform
 aws/terraform/.terraform
 aws/.env
+/controller/Include
+/controller/Lib
+/controller/Scripts
+/controller/pyvenv.cfg
