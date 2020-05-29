@@ -8,16 +8,16 @@
           <mat-icon matSuffix>search</mat-icon>
         </mat-form-field>
       </div>
-      <div class="d-inline-flex flex-column ml-2">
+      <!-- <div class="d-inline-flex flex-column ml-2">
         <button mat-raised-button color="primary" class="search-button" (click)="openAddDialog()">Add Contact</button>
-      </div>
+      </div>-->
     </div>   
 
     <!-- Contacts Table -->
     <mat-table [dataSource]="dataSource">
       <!-- Company Name Column -->
       <ng-container matColumnDef="customer_name">
-        <mat-header-cell *matHeaderCellDef>Customer/Organization Name</mat-header-cell>
+        <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>
         <mat-cell *matCellDef="let row"> {{row.customer_name}} </mat-cell>
       </ng-container>
 
@@ -67,8 +67,8 @@
       <ng-container matColumnDef="select">
         <mat-header-cell *matHeaderCellDef>Select</mat-header-cell>
         <mat-cell *matCellDef="let row">
-          <button mat-icon-button color="primary" (click)="openViewDialog(row)">
-            <mat-icon>list</mat-icon>
+          <button class="table-btn-icon" mat-flat-button color="primary" (click)="openViewDialog(row)">
+            <mat-icon class="table-btn-icon-size">list</mat-icon>
           </button>
         </mat-cell>
       </ng-container>

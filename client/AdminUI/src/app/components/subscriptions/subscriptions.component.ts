@@ -48,17 +48,18 @@ export class SubscriptionsComponent implements OnInit {
 
   refresh() {
     this.subscription_service.getSubscriptions().subscribe((data: any[]) => {
-      console.log(data)
-      let subscriptions = this.subscription_service.toSubscriptions(data)
+      let subscriptions = data as Subscription[]
       this.customer_service.getCustomers().subscribe((data: any[]) => {
         let customers = data as Customer[]
         let customerSubscriptions: ICustomerSubscription[] = []
         subscriptions.map((s: Subscription) => {
-          let customerSubscription: ICustomerSubscription = {
-            customer: customers.find(o => o.customer_uuid == s.customer_uuid),
-            subscription: s
+          if (!s.archived) {
+            let customerSubscription: ICustomerSubscription = {
+              customer: customers.find(o => o.customer_uuid == s.customer_uuid),
+              subscription: s
+            }
+            customerSubscriptions.push(customerSubscription);
           }
-          customerSubscriptions.push(customerSubscription);
         })
         this.data_source.data = customerSubscriptions
       })

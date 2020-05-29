@@ -318,3 +318,18 @@ $altTheme: mat-dark-theme($theme-primary, $theme-accent, $theme-warn);
   background-color:#3c6f8e;
   border-right:lighten(#3c6f8e, 5%) 1px solid;
 }
+
+.mat-form-field{
+  margin-right:10px;
+}
+
+.table-btn-icon{
+  min-width:0 !important;
+  padding-left: 5px !important;
+  padding-right: 5px !important;
+  line-height: 29px !important;
+}
+
+.table-btn-icon-size {
+  font-size: 20px !important;
+}

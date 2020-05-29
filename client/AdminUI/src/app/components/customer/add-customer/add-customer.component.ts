@@ -4,8 +4,13 @@ import { MyErrorStateMatcher } from '../../../helper/ErrorStateMatcher';
 import { SubscriptionService } from 'src/app/services/subscription.service';
 import { Contact, Customer } from 'src/app/models/customer.model';
 import { Guid } from 'guid-typescript';
+import { Router, ActivatedRoute } from '@angular/router';
 import { CustomerService } from 'src/app/services/customer.service';
-
+import { MatDialog } from '@angular/material/dialog';
+import { MatTableDataSource } from '@angular/material/table';
+import { LayoutMainService } from 'src/app/services/layout-main.service'
+import { Subscription } from 'rxjs';
+ 
 @Component({
   selector: 'app-add-customer',
   templateUrl: './add-customer.component.html',
@@ -16,10 +21,10 @@ export class AddCustomerComponent implements OnInit {
    model:any;
    addContact:boolean = false;
    contactDataSource: any = [];
-   displayedColumns: string[] = ['name', 'title', 'email', 'office_phone', 'mobile_phone'];
+   displayedColumns: string[] = ['name', 'title', 'email', 'mobile_phone', 'office_phone', 'action'];
    contactError='';
    orgError='';
-   contacts:Array<Contact> = [];
+   contacts = new MatTableDataSource<Contact>();
 
    matchCustomerName = new MyErrorStateMatcher();
    matchCustomerIdentifier = new MyErrorStateMatcher();
@@ -33,7 +38,6 @@ export class AddCustomerComponent implements OnInit {
    matchEmail = new MyErrorStateMatcher();
    
    customerFormGroup = new FormGroup({
-    customerId: new FormControl({value: '', disabled: true}),
     customerName: new FormControl('', [Validators.required]),
     customerIdentifier: new FormControl('', [Validators.required]),
     address1: new FormControl('', [Validators.required]),
@@ -43,6 +47,7 @@ export class AddCustomerComponent implements OnInit {
     zip: new FormControl('', [Validators.required]),
    });
 
+   
    contactFormGroup = new FormGroup({
     firstName: new FormControl('', [Validators.required]),
     lastName: new FormControl('', [Validators.required]),
@@ -53,9 +58,92 @@ export class AddCustomerComponent implements OnInit {
     contactNotes: new FormControl(''),
    });
 
+  // List of angular subscriptions, unsubscribed to on delete
+  angularSubscriptions = Array<Subscription>();
+  // Customer_uuid if not new
+  customer_uuid: string;
+  customer: Customer;
 
-  constructor( public subscriptionSvc: SubscriptionService, public customer_service: CustomerService) { 
-    this.customerFormGroup.controls["customerId"].setValue(Guid.create());
+  constructor( 
+    public subscriptionSvc: SubscriptionService, 
+    public customerSvc: CustomerService, 
+    public dialog: MatDialog, 
+    private route: ActivatedRoute,
+    public router: Router, 
+    public layoutSvc: LayoutMainService
+  ){ 
+    layoutSvc.setTitle('Customers');
+  }
+
+  ngOnInit(): void {
+    this.angularSubscriptions.push(
+      this.route.params.subscribe(params => {
+        this.customer_uuid = params['customerId'];
+        if (this.customer_uuid != undefined) {
+          this.getCustomer()
+        } else {
+          //Use preset empty form
+        }
+      })
+    );
+  }
+
+  getCustomer() {
+    this.customerSvc.getCustomer(this.customer_uuid).subscribe(
+    (data: any) => {
+      if(data.customer_uuid != null){
+        this.customer = data as Customer
+        this.setCustomerForm(this.customer)
+        this.setContacts(this.customer.contact_list as Contact[])
+      } else {
+        this.orgError = "Specified customer UUID not found";
+      }
+    },
+    (error) => {
+      this.orgError = "Failed To load customer";
+    })
+  }
+
+  setCustomerForm(customer: Customer){    
+   this.customerFormGroup.setValue({
+     customerName: customer.name,
+     customerIdentifier: customer.identifier,
+     address1: customer.address_1,
+     address2: customer.address_2,
+     city: customer.city,
+     state: customer.state,
+     zip: customer.zip_code
+   })
+  }
+  setContacts(contactsList: Contact[]){
+    var newContacts = Array<Contact>();
+    contactsList.forEach(contact => {
+      var contactToAdd : Contact = {
+        office_phone: contact.office_phone,
+        mobile_phone: contact.mobile_phone,
+        email: contact.email,
+        first_name: contact.first_name,
+        last_name: contact.last_name,
+        title: contact.title,
+        notes: contact.notes,
+        active: true
+      };
+      newContacts.push(contactToAdd)
+      // this.contacts.data.push(contactToAdd)
+    });
+    this.contacts.data = newContacts
+  }
+
+  isExistingCustomer(): boolean {
+    if(this.customer_uuid) return true
+    return false
+  }
+
+  ngOnDestroy() {
+    //Unsubscribe from all subscriptions
+    this.angularSubscriptions.forEach(sub => {
+      sub.unsubscribe();
+    });
   }
 
   createNew(){
@@ -63,10 +151,10 @@ export class AddCustomerComponent implements OnInit {
   }
 
   pushCustomer(){
-    if(this.customerFormGroup.valid && this.contacts.length > 0)
+    if(this.customerFormGroup.valid && this.contacts.data.length > 0)
     {
       var customer: Customer = {
-        customer_uuid: this.customerFormGroup.controls["customerId"].value,
+        customer_uuid: '',
         name: this.customerFormGroup.controls["customerName"].value,
         identifier: this.customerFormGroup.controls["customerIdentifier"].value,
         address_1: this.customerFormGroup.controls["address1"].value,
@@ -74,16 +162,29 @@ export class AddCustomerComponent implements OnInit {
         city: this.customerFormGroup.controls["city"].value,
         state: this.customerFormGroup.controls["state"].value,
         zip_code: this.customerFormGroup.controls["zip"].value,
-        contact_list: this.contacts
+        contact_list: this.contacts.data
       }
-
-      this.customer_service.addCustomer(customer).subscribe((data: any) => {
-        this.clearCustomer()
-      })
+      //If editing existing customer
+      if(this.customer_uuid != null){ 
+        customer.customer_uuid = this.customer_uuid         
+        this.angularSubscriptions.push(this.customerSvc.patchCustomer(customer).subscribe((data: any) => {
+          this.router.navigate(['/customers']);
+        }))
+      }
+      //else creating a new customer
+      else {
+        this.customerSvc.addCustomer(customer).subscribe(
+          (data: any) => {
+            this.cancelCustomer();
+            this.dialog.closeAll();
+          },(error) => { 
+            this.orgError = "Error creating customer";
+          })
+      }
     } else if( !this.customerFormGroup.valid )
     {
       this.orgError = "Fix required fields";
-    } else if( this.contacts.length < 1){
+    } else if( this.contacts.data.length < 1){
       this.orgError = "Please add at least one contact";
     }
   }
@@ -101,8 +202,9 @@ export class AddCustomerComponent implements OnInit {
         notes: this.contactFormGroup.controls['contactNotes'].value,
         active: true
       };
-      
-      this.contacts.push(contact);
+      var previousContacts = this.contacts.data
+      previousContacts.push(contact);
+      this.contacts.data = previousContacts
       this.clearContact();
     }
     else{
@@ -110,12 +212,27 @@ export class AddCustomerComponent implements OnInit {
     }
   }
 
+  removeContact(cust){
+    const index = this.contacts.data.findIndex(d => d === cust);
+    this.contacts.data.splice(index, 1);
+    let tempContact = this.contacts;
+    this.contacts = new MatTableDataSource<Contact>(tempContact.data);
+  }
+
   clearCustomer(){
 
     this.customerFormGroup.reset();
-    this.customerFormGroup.controls["customerId"].setValue(Guid.create());
-    this.contacts = [];
+    this.contacts = new MatTableDataSource<Contact>();
     this.orgError = '';
+  }
+
+  cancelCustomer(){
+    if(this.customer_uuid){
+      this.router.navigate(['/customers']);
+    } else {
+      this.clearCustomer();
+      this.customerSvc.setCustomerInfo(false)
+    }
   }
 
   clearContact(){
@@ -133,10 +250,6 @@ export class AddCustomerComponent implements OnInit {
   }
 
   checkDataSourceLength(){
-    return this.contacts.length > 0;
-  }
-
-  ngOnInit(): void {
-    
+    return this.contacts.data.length > 0;
   }
 }

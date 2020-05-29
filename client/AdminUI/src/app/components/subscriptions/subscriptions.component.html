@@ -60,11 +60,12 @@
             </mat-cell>
         </ng-container>
 
+        <!-- SELECT -->
         <ng-container matColumnDef="select">
             <mat-header-cell *matHeaderCellDef>Select</mat-header-cell>
             <mat-cell *matCellDef="let row">
-              <button mat-icon-button color="primary" [routerLink]="['/view-subscription', row.subscription.subscription_uuid]">
-                <mat-icon>list</mat-icon>
+              <button class="table-btn-icon" mat-flat-button color="primary" [routerLink]="['/view-subscription', row.subscription.subscription_uuid]">
+                <mat-icon class="table-btn-icon-size">list</mat-icon>
               </button>
             </mat-cell>
         </ng-container>

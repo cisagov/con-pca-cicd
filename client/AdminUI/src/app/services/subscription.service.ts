@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Customer, Contact } from '../models/customer.model';
-import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Subscription } from '../models/subscription.model';
 import { CustomerService } from './customer.service';
+import { Template } from '../models/template.model';
 
 const headers = {
   headers: new HttpHeaders()
@@ -40,18 +40,6 @@ export class SubscriptionService {
 
   /**
    * 
-   * @param requestData 
-   */
-  public toSubscriptions(requestData: any[]): Subscription[] {
-    let subscriptions: Subscription[] = []
-    requestData.map((s: any) => {
-      subscriptions.push(this.toSubscription(s))
-    })
-    return subscriptions
-  }
-
-  /**
-   * 
    * @param subscription_uuid 
    */
   public getSubscription(subscription_uuid: string) {
@@ -59,30 +47,7 @@ export class SubscriptionService {
     return this.http.get(url)
   }
 
-  /**
-   * 
-   * @param requestData 
-   */
-  public toSubscription(requestData: any): Subscription {
-    let subscription: Subscription = {
-      active: requestData.active,
-      customer_uuid: requestData.customer_uuid,
-      keywords: requestData.keywords,
-      lub_timestamp: requestData.lub_timestamp,
-      name: requestData.name,
-      primary_contact: this.customer_service.getContact(requestData.primary_contact),
-      start_date: requestData.start_date,
-      status: requestData.status,
-      subscription_uuid: requestData.subscription_uuid,
-      url: requestData.url,
-      target_email_list: requestData.target_email_list,
-      setTargetsFromCSV: null
-    }
-
-    return subscription
-  }
   public deleteSubscription(subscription: Subscription) {
-    console.log(subscription)
     return new Promise((resolve,reject) => {
       this.http
       .delete(`${environment.apiEndpoint}/api/v1/subscription/${subscription.subscription_uuid}/`)
@@ -106,6 +71,14 @@ export class SubscriptionService {
   }
 
   /**
+   * Sends information to the API to update a subscription
+   * @param subscription 
+   */
+  patchSubscription(subscription: Subscription) {
+    return this.http.patch(`http://localhost:8000/api/v1/subscription/${subscription.subscription_uuid}/`, subscription)
+  }
+
+  /**
    * Patches the subscription with the new primary contact.
    * @param subscriptUuid 
    * @param contact 
@@ -113,5 +86,25 @@ export class SubscriptionService {
   updatePrimaryContact(subscriptUuid: string, contact: Contact) {
     let primary = { primary_contact: contact };
     return this.http.patch(`http://localhost:8000/api/v1/subscription/${subscriptUuid}/`, primary)
+  }
+
+  /**
+   * Gets all subscriptions for a given template.
+   * @param template 
+   */
+  public getSubscriptionsByTemplate(template: Template) {
+    return this.http.get(`${environment.apiEndpoint}/api/v1/subscription/template/${template.template_uuid}`)
+  }
+
+  /**
+   * Gets all subscriptions for a given customer.
+   * @param template 
+   */
+  public getSubscriptionsByCustomer(customer: Customer) {
+    return this.http.get(`${environment.apiEndpoint}/api/v1/subscription/customer/${customer.customer_uuid}`)
+  }
+  
+  public stopSubscription(subscription: Subscription) {
+    return this.http.get(`${environment.apiEndpoint}/api/v1/subscription/stop/${subscription.subscription_uuid}/`)
   }
 }

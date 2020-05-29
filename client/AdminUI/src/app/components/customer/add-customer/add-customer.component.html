@@ -1,17 +1,11 @@
 <div class="p-3">
-    <h1>Add Continuous Phishing Customer</h1>
     <div class="d-flex flex-row mb-3">
         <div class="d-flex flex-grow-1 flex-column">
             <div class="d-flex flex-row mb-3">
-                <button mat-raised-button color="primary" (click)="createNew()">Create New</button>
-                <button mat-raised-button color="accent">Edit</button>
-                <button mat-raised-button color="warn">Delete</button>
-            </div>
-            <div class="d-flex flex-row" [formGroup]="customerFormGroup">
-                <mat-form-field appearance="outline" class="flex-grow-1">
-                    <mat-label>Customer/Organization Id</mat-label>
-                    <input type="text" matInput disabled placeholder="Customer Id" [formControl]="customerFormGroup.controls.customerId">
-                </mat-form-field>
+                <button mat-raised-button color="primary" *ngIf="!isExistingCustomer()" (click)="createNew()">Clear</button>
+                <h1 *ngIf="isExistingCustomer()">{{customer?.name}}</h1>
+                <!-- <button mat-raised-button color="accent">Edit</button>
+                <button mat-raised-button color="warn">Delete</button> -->
             </div>
             <div class="d-flex flex-row">
                 <mat-form-field appearance="outline" class="flex-grow-1" [formGroup]="customerFormGroup">
@@ -175,7 +169,7 @@
                     <!-- Name Column -->
                     <ng-container matColumnDef="name">
                       <th mat-header-cell *matHeaderCellDef> Name </th>
-                      <td mat-cell *matCellDef="let element"> {{element.firstName + element.lastName}} </td>
+                      <td mat-cell *matCellDef="let element"> {{element.first_name + ' ' + element.last_name}} </td>
                     </ng-container>
                   
                     <!-- Title Column -->
@@ -190,18 +184,32 @@
                       <td mat-cell *matCellDef="let element"> {{element.email}} </td>
                     </ng-container>
                   
-                    <!-- Phone Column -->
-                    <ng-container matColumnDef="phone">
-                      <th mat-header-cell *matHeaderCellDef> Phone </th>
-                      <td mat-cell *matCellDef="let element"> {{element.phone}} </td>
+                    <!-- Mobile Phone Column -->
+                    <ng-container matColumnDef="mobile_phone">
+                      <th mat-header-cell *matHeaderCellDef> Mobile Phone </th>
+                      <td mat-cell *matCellDef="let element"> {{element.mobile_phone}} </td>
                     </ng-container>
                   
+                    <!-- Office Phone Column -->
+                    <ng-container matColumnDef="office_phone">
+                        <th mat-header-cell *matHeaderCellDef> Office Phone </th>
+                        <td mat-cell *matCellDef="let element"> {{element.office_phone}} </td>
+                      </ng-container>
+                    <ng-container matColumnDef="action">
+                        <th mat-header-cell *matHeaderCellDef>Select</th>
+                        <td mat-cell *matCellDef="let element; let i = index"><button class="table-btn-icon" mat-flat-button color="warn" (click)="removeContact(element)"><mat-icon class="table-btn-icon-size">delete</mat-icon></button></td>
+                    </ng-container>
+
                     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
                     <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
                   </table>
                   <div class="alert alert-danger flex-grow-1" role="alert" *ngIf="!checkDataSourceLength()">
                     No contacts Available
                   </div>
+            </div>
+            <div *ngIf="customer_uuid" class="pt-3">
+                <h1>Customer Subscriptions</h1>
+                <customer-subscriptions [customer]="customer"></customer-subscriptions>
             </div>
             <div class="d-flex flex-row flex-grow-1">
                 <div class="alert alert-danger flex-grow-1" *ngIf="orgError">
@@ -210,7 +218,7 @@
             </div>
             <div class="d-flex flex-row flex-grow-1 justify-content-end">
                 <button mat-raised-button color="primary" [disabled]="!customerFormGroup.valid" (click)="pushCustomer()">Save Customer</button>
-                <button mat-flat-button>Cancel</button>
+                <button mat-flat-button (click)="cancelCustomer()">Cancel</button>
             </div>
         </div>
     </div>

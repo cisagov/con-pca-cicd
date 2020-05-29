@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Customer, Contact, NewCustomer, ICustomerContact } from 'src/app/models/customer.model'
 import { environment } from 'src/environments/environment';
+import { BehaviorSubject } from 'rxjs';
 
 // Json Definition returned for Customer from API
 const httpOptions = {
@@ -14,6 +15,17 @@ const httpOptions = {
 export class CustomerService {
   constructor(private http: HttpClient) { }
 
+  showCustomerInfo: boolean = false;
+  selectedCustomer: string = '';
+  showCustomerInfoStatus: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(this.showCustomerInfo);
+
+  setCustomerInfo(show:boolean){
+    this.showCustomerInfo = show;
+    this.showCustomerInfoStatus.next(show)
+  }
+  getCustomerInfoStatus() {
+    return this.showCustomerInfoStatus;
+  }
   // Returns observable on http request to get customers
   public getCustomers() {
     let url = `${environment.apiEndpoint}/api/v1/customers/`;
@@ -42,7 +54,7 @@ export class CustomerService {
     return customerContacts;
   }
 
-  public getCustomer(customer_uuid: string) {
+  public getCustomer(customer_uuid: string) {    
     let url = `${environment.apiEndpoint}/api/v1/customer/${customer_uuid}/`;
     return this.http.get(url);
   }
@@ -66,9 +78,6 @@ export class CustomerService {
    * names and IDs for the customer.
    */
   public getContactsForCustomer(c: Customer) {
-    console.log('getContactsForCustomer:');
-    console.log(c);
-
     let a = [];
     c.contact_list.forEach(x => {
       a.push({

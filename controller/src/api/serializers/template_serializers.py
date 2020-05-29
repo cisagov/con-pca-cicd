@@ -6,6 +6,7 @@ serializing data coming from the db into a request response.
 """
 # Third-Party Libraries
 from rest_framework import serializers
+from api.serializers.subscriptions_serializers import SubscriptionPatchResponseSerializer
 
 TEMPLATE_TYPE_CHOICES = (
     ("Email", "Email"),
@@ -217,3 +218,12 @@ class TemplateDeleteResponseSerializer(serializers.Serializer):
     """
 
     template_uuid = serializers.UUIDField()
+
+
+class TemplateStopResponseSerializer(serializers.Serializer):
+    """
+    This is the Template STOP Response Serializer.
+    """
+
+    template = TemplatePatchResponseSerializer()
+    subscriptions = SubscriptionPatchResponseSerializer(many=True)
