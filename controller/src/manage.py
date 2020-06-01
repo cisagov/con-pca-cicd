@@ -2,10 +2,10 @@
 """Django's command-line utility for administrative tasks."""
 import os
 import sys
-#import ptvsd
+# import ptvsd
 
-#ptvsd.enable_attach(address=('0.0.0.0', 5678))
-#ptvsd.wait_for_attach()
+# ptvsd.enable_attach(address=('0.0.0.0', 5678)git pu)
+# ptvsd.wait_for_attach()
 
 
 def main():

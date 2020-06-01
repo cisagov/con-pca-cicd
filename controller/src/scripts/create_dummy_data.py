@@ -16,6 +16,7 @@ from datetime import datetime
 import json
 import os
 
+
 # Third-Party Libraries
 import requests
 
@@ -27,6 +28,18 @@ def load_file(data_file):
     with open(data_file, "r") as f:
         data = json.load(f)
     return data
+
+# def clean_up_first
+#     """" drop the collections before starting to add data """
+#      mongo_uri = "mongodb://{}:{}@{}:{}/".format(
+#         settings.DB_CONFIG["DB_USER"],
+#         settings.DB_CONFIG["DB_PW"],
+#         settings.DB_CONFIG["DB_HOST"],
+#         settings.DB_CONFIG["DB_PORT"],
+#     )
+#     client = MongoClient(mongo_uri)
+#     db=client.admin
+#     db.
 
 
 def main():
@@ -67,6 +80,7 @@ def main():
             raise err
 
         resp_json = resp.json()
+
         created_customer_uuid = resp_json["customer_uuid"]
         print("created customer_uuid: {}".format(created_customer_uuid))
         created_customer_uuids.append(created_customer_uuid)
