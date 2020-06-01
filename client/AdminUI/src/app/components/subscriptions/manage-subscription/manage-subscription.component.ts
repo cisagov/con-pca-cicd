@@ -16,7 +16,8 @@ import * as moment from 'node_modules/moment/moment';
 
 @Component({
   selector: 'app-manage-subscription',
-  templateUrl: './manage-subscription.component.html'
+  templateUrl: './manage-subscription.component.html', 
+  styleUrls: ['./manage-subscription.component.scss']
 })
 export class ManageSubscriptionComponent implements OnInit, OnDestroy {
   private routeSub: any;

@@ -6,170 +6,122 @@
 <head>
     <meta charset="utf-8">
     <link href="{% static '/css/base.css' %}" rel="stylesheet">
-    <title>Report</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+    <script type="text/javascript">
+        // Load Chart One
+        google.charts.load('current', {'packages':['corechart']});
+        google.charts.setOnLoadCallback(drawChart);
+        google.charts.setOnLoadCallback(drawChartTwo);
+        google.charts.setOnLoadCallback(drawChartThree);
+        
+        // Draw the chart and set the chart values
+        function drawChart() {
+          var data = google.visualization.arrayToDataTable([
+          ['Emails', 'Number'],
+
+          ['Opened', 289],
+          ['Unopened', 11]
+        ]);
+        
+          var options = {'title':'Emails', 'width':550, 'height':400};
+        
+          var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+          chart.draw(data, options);
+        }
+
+        function drawChartTwo() {
+            var data = google.visualization.arrayToDataTable([
+            ['Links', 'Number'],
+            ['Viewed', 83],
+            ['Clicked', 17]
+        ]);
+        
+          var options = {'title':'Links', 'width':550, 'height':400};
+        
+          var chart = new google.visualization.PieChart(document.getElementById('piechartTwo'));
+          chart.draw(data, options);
+        }
+
+        function drawChartThree() {
+            var data = google.visualization.arrayToDataTable([
+            ['Links', 'Number'],
+            ['Reported', 188],
+            ['Successful Phish', 17]
+        ]);
+        
+          var options = {'title':'Phishing Attempts', 'width':550, 'height':400};
+        
+          var chart = new google.visualization.PieChart(document.getElementById('piechartThree'));
+          chart.draw(data, options);
+        }
+        
+        </script>
+
+    <title>Monthly Report</title>
     <meta name="description" content="Report example">
 </head>
 
 <body>
     <article id="cover">
-        <h1>Assessment Summary for {{ customer_name }}</h1>
-        <address>
-            Idaho National Laboratory
-            1955 N. Fremont Ave.
-            Idaho Falls, ID 83415
-        </address>
-        <address>
-            +1 866-495-7440
-        </address>
+        <div class="banner">
+        </div>
+        <div class="phish_logo">
+            <img src="{% static '/img/phish_logo.png' %}"></img>
+        </div>
+        <div class="cisa_logo">
+            <img src="{% static '/img/cisa_logo.png' %}"></img>
+        </div>
+        <div class="report-title">
+                Monthly Subscription <br>
+                Report
+        </div>
     </article>
 
     <article id="contents">
-        <h2>Table of contents</h2>
-        <h3>Part one</h3>
+        <div class="container">
+            <div class="row">
+                <div class="col-6">
+                    <h2>Average Time to First Click<br></h2>
+                    <div class="circle">3 Minutes</div>
+                </div>
+                <div class="col-6">
+                    <h2>Average Time to First Report<br></h2>
+                    <div class="circle">17 Minutes</div>
+                </div>
+            </div>
+        </div>
+        <br><br>
         <ul>
-            <li><a href="#columns-title"></a></li>
-            <li><a href="#competences-title"></a></li>
-        </ul>
-
-        <h3>Part two</h3>
-        <ul>
-            <li><a href="#offers-title"></a></li>
-            <li><a href="#chapter-title"></a></li>
-            <li><a href="#typography-title"></a></li>
+            <li><b>This Report has been generated in Q1 of your phishing subscription cycle.</b></li>
+            <li><b>Of the 1,000 targets in this quarter's cycle, 333 targets have had emails sent.</b></li>
         </ul>
     </article>
-
-    <article id="competences">
-        <h2 id="competences-title">This is another big title, on a page full of work presentation</h2>
-
-        <h3>We present you some of WeasyPrint's features.</h3>
-
-        <section id="table-content">
-            <h4>Table of contents</h4>
-            <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi mi ante, tincidunt quis vehicula
-                sed, vehicula sed augue. Cras eget ante turpis.
-            </p>
-        </section>
-
-        <section id="heading">
-            <h4>Heading titles and page counters</h4>
-            <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi mi ante, tincidunt quis vehicula
-                sed, vehicula sed augue. Cras eget ante turpis.
-            </p>
-        </section>
-
-        <section id="multi-columns">
-            <h4>Multi-column text</h4>
-            <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi mi ante, tincidunt quis vehicula
-                sed, vehicula sed augue. Cras eget ante turpis.
-            </p>
-        </section>
-
-        <section id="internal-links">
-            <h4>Internal links</h4>
-            <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi mi ante, tincidunt quis vehicula
-                sed, vehicula sed augue. Cras eget ante turpis.
-            </p>
-        </section>
-
-        <section id="style">
-            <h4>Different page types</h4>
-            <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi mi ante, tincidunt quis vehicula
-                sed, vehicula sed augue. Cras eget ante turpis.
-            </p>
-        </section>
+       
+    <article id="article"><br><br><br>
+    <div class="charts">
+        <div class="container">
+            <div class="row">
+                <div class="col-12" id="chartOne">
+                    <div id="piechart"></div>
+                </div>
+                <div class="col-6">
+                    <div id="piechartTwo"></div>
+                </div>
+                <div class="col-6">
+                    <div id="piechartThree"></div>
+                </div>
+            </div>
+        </div>
+    </div>
     </article>
 
     <article id="chapter">
-        <h2 id="chapter-title">This is a chapter of a new section</h2>
     </article>
 
     <article id="typography">
-        <h2 id="typography-title">About some typography features</h2>
 
-        <section>
-            <h4>Italic and Bold Text</h4>
-            <p>
-                Lorem ipsum dolor <em>sit amet, consectetur adipiscing elit.</em> Ut
-                pulvinar dolor <strong>ac orci finibus elementum. Praesent</strong>
-                sit amet ligula turpis.
-            </p>
-        </section>
-
-        <section id="small-caps">
-            <h4>Small caps text</h4>
-            <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut pulvinar
-                dolor ac orci finibus elementum.
-            </p>
-        </section>
-
-        <section id="ligatures">
-            <h4>Ligatures</h4>
-            <dl>
-                <dt>Classical</dt>
-                <dd><span class="none">Offer</span> → <span class="common">Offer</span></dd>
-                <dt>Discretionary</dt>
-                <dd><span class="none">Often</span> → <span class="discretionary">Often</span></dd>
-                <dt>Contextual</dt>
-                <dd><span class="none">#&amp;</span> → <span class="contextual">#&amp;</span></dd>
-            </dl>
-        </section>
-
-        <section id="numbers">
-            <h4>Numbers</h4>
-            <dl>
-                <dt>Fractions</dt>
-                <dd>421/42 → <span id="fractions">421/42</span></dd>
-                <dt>Ordinals</dt>
-                <dd>2a 3o → <span id="ordinals">2a 3o</span></dd>
-                <dt>Slashed zero</dt>
-                <dd>1000 → <span id="slashed">1000</span></dd>
-                <dt>Superscript</dt>
-                <dd>a2 → <span id="super">a2</span></dd>
-                <dt>Subscript</dt>
-                <dd>C8H10N4O2 → <span id="sub">C8H10N4O2</span></dd>
-                </ul>
-        </section>
-
-        <section id="figures">
-            <h4>Figures</h4>
-            <dl>
-                <dt>Lining</dt>
-                <dd>
-                    <ul>
-                        <li>409,280</li>
-                        <li>367,112</li>
-                    </ul>
-                </dd>
-                <dt>Old-Style</dt>
-                <dd>
-                    <ul id="oldstyle">
-                        <li>409,280</li>
-                        <li>367,112</li>
-                    </ul>
-                </dd>
-                <dt>Tabular</dt>
-                <dd>
-                    <ul id="tabular">
-                        <li>409,280</li>
-                        <li>367,112</li>
-                    </ul>
-                </dd>
-                <dt>Old &amp; Tab.</dt>
-                <dd>
-                    <ul id="old-tabular">
-                        <li>409,280</li>
-                        <li>367,112</li>
-                    </ul>
-                </dd>
-            </dl>
-        </section>
     </article>
 </body>
 
