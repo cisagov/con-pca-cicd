@@ -183,6 +183,7 @@ class SubscriptionPatchSerializer(serializers.Serializer):
     customer_uuid = serializers.UUIDField(required=False)
     name = serializers.CharField(required=False, max_length=100)
     url = serializers.CharField(required=False, max_length=100)
+    import ipdb; ipdb.set_trace()
     keywords = serializers.CharField(max_length=100)
     start_date = serializers.DateTimeField(required=False)
     gophish_campaign_list = GoPhishCampaignsSerializer(many=True, required=False)

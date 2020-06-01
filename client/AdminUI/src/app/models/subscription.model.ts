@@ -1,5 +1,5 @@
 import { Contact } from './customer.model';
-
+import * as moment from 'node_modules/moment/moment';
 
 export class GoPhishCampaignsModel {
 
@@ -65,3 +65,19 @@ export class Target {
     position: string;
     email: string;
 }
+
+
+/**
+ * A point in time during the life of a subscription.
+ */
+export class TimelineItem {
+    id: number;
+
+    // The font awesome class string to show above the timeline ite
+    icon: string;    
+    title: string;
+    creatorName: string;
+    description: string;
+    buttonText: string;
+    date: moment.Moment;
+  }

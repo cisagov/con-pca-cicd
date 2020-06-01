@@ -3,7 +3,14 @@
         <div class="d-flex flex-column mb-5">
 
             <div class="w-100">
-                <app-sub-dashboard *ngIf="pageMode!='CREATE'"></app-sub-dashboard>
+                <app-sub-dashboard *ngIf="pageMode!='CREATE'" 
+                    [subscriptionUuid]="subscription?.subscription_uuid">
+                </app-sub-dashboard>
+
+                <h2>Subscription Timeline</h2>
+                <div style="margin: 0 2rem 1rem 2rem">
+                    <timeline [timelineItems]="timelineItems"></timeline>
+                </div>
             </div>
 
             <h2>Customer/Organization</h2>
@@ -46,7 +53,7 @@
 
             <mat-label class="h6">Start Date</mat-label>
             <div class="mb-4">
-                <mat-form-field appearance="outline" >
+                <mat-form-field appearance="outline">
                     <input matInput [matDatepicker]="picker" [min]="startAt" formControlName="startDate">
                     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                     <mat-datepicker #picker [startAt]="startAt"></mat-datepicker>
