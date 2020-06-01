@@ -43,8 +43,8 @@ export class SendingProfilesComponent implements OnInit {
    * 
    * @param row 
    */
-  editProfile(row: any): void {
-    // opens the same dialog in edit mode
+  deleteProfile(row: any): void {
+    console.log(row);
   }
 
   /**
