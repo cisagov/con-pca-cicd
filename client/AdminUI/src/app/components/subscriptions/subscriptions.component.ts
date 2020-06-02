@@ -5,6 +5,7 @@ import { Subscription } from 'src/app/models/subscription.model';
 import { MatTableDataSource } from '@angular/material/table';
 import { Customer } from 'src/app/models/customer.model';
 import { CustomerService } from 'src/app/services/customer.service';
+import { AppSettings } from 'src/app/AppSettings';
 
 interface ICustomerSubscription {
   customer: Customer;
@@ -30,6 +31,8 @@ export class SubscriptionsComponent implements OnInit {
   ];
 
   showArchived: boolean = false;
+
+  dateFormat = AppSettings.DATE_FORMAT;
 
   constructor(
     private subscription_service: SubscriptionService,
@@ -59,7 +62,6 @@ export class SubscriptionsComponent implements OnInit {
           }
           customerSubscriptions.push(customerSubscription);
         })
-        console.log(customerSubscriptions)
         this.data_source.data = customerSubscriptions
       })
     })

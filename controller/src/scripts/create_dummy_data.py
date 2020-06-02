@@ -92,6 +92,8 @@ def main():
                 subscription.pop("testing_customer_identifier", None)
 
         try:
+            print(subscription)
+
             resp = requests.post(
                 "http://localhost:8000/api/v1/subscriptions/", json=subscription
             )

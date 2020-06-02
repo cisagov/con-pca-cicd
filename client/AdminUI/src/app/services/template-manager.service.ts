@@ -105,7 +105,7 @@ export class TemplateManagerService {
   }
 
   stopTemplate(template: Template) {
-    return this.http.get(`${environment.apiEndpoint}/api/v1/template/stop/${template.template_uuid}/`)
+    return this.http.get(`${environment.apiEndpoint}/api/v1/template/stop/${template.template_uuid}/`);
   }
 
 }

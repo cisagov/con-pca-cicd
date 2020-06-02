@@ -83,7 +83,8 @@ class SubscriptionsListView(APIView):
 
     @swagger_auto_schema(
         request_body=SubscriptionPostSerializer,
-        responses={"201": SubscriptionPostResponseSerializer, "400": "Bad Request"},
+        responses={"201": SubscriptionPostResponseSerializer,
+                   "400": "Bad Request"},
         security=[],
         operation_id="Create Subscription",
         operation_description="This handles Creating a Subscription and launching a Campaign.",
@@ -108,7 +109,8 @@ class SubscriptionsListView(APIView):
 
         previous_incrments = []
         for sub in subscription_list:
-            previous_incrments.append(sub["name"].split(".")[increment_position])
+            previous_incrments.append(
+                sub["name"].split(".")[increment_position])
 
         first_increment = (
             1  # Modify when the first increment value has a purpose determined
@@ -127,8 +129,8 @@ class SubscriptionsListView(APIView):
             {"template_type": "Email"}, "template", TemplateModel, validate_template
         )
 
-        # Get all Landning pages or defult
-        # This is currently selecting the defult page on creation.
+        # Get all Landing pages or defult
+        # This is currently selecting the default page on creation.
         # landing_template_list = get_list({"template_type": "Landing"}, "template", TemplateModel, validate_template)
         landing_page = "Phished"
 
@@ -145,8 +147,10 @@ class SubscriptionsListView(APIView):
             relevant_templates = []
 
         divided_templates = [
-            relevant_templates[x : x + 5] for x in range(0, len(relevant_templates), 5)
+            relevant_templates[x: x + 5] for x in range(0, len(relevant_templates), 5)
         ]
+
+        print('divided_templates: {0} items'.format(len(divided_templates)))
 
         # Get the next date Intervals, if no startdate is sent, default today
         start_date = post_data.get(
@@ -162,21 +166,31 @@ class SubscriptionsListView(APIView):
             template_data_list = [
                 x for x in template_list if x["template_uuid"] in template_group
             ]
-            templates = personalize_template(customer, template_data_list, post_data)
+            templates = personalize_template(
+                customer, template_data_list, post_data)
             template_personalized_list.append(templates)
 
         # divide emails
         target_list = post_data.get("target_email_list")
         target_div = target_list_divide(target_list)
         index = 0
+        print('template_personalized_list: {0} items'.format(
+            len(template_personalized_list)))
         for campaign_info in campaign_data_list:
-            campaign_info["templetes"] = template_personalized_list[index]
-            campaign_info["targets"] = target_div[index]
+            try:
+                campaign_info["templates"] = template_personalized_list[index]
+            except:
+                pass
+            try:
+                campaign_info["targets"] = target_div[index]
+            except:
+                pass
             index += 1
 
         # Data for GoPhish
         first_name = post_data.get("primary_contact").get("first_name", "")
         last_name = post_data.get("primary_contact").get("last_name", "")
+
         # get User Groups
         user_groups = campaign_manager.get("user_group")
 
@@ -224,7 +238,7 @@ class SubscriptionsListView(APIView):
 
         This method handles the creation of each campain with given template, target group, and data.
         """
-        templates = campaign_info["templetes"]
+        templates = campaign_info["templates"]
         targets = campaign_info["targets"]
 
         gophish_campaign_list = []
@@ -248,7 +262,8 @@ class SubscriptionsListView(APIView):
                     "campaign",
                     campaign_name=campaign_name,
                     smtp_name="SMTP",
-                    page_name=landing_page,  # Replace with picked landing page, default init page now.
+                    # Replace with picked landing page, default init page now.
+                    page_name=landing_page,
                     user_group=target_group,
                     email_template=created_template,
                     launch_date=campaign_info["start_date"].strftime(
@@ -272,7 +287,8 @@ class SubscriptionsListView(APIView):
                     "status": campaign.status,
                     "results": [],
                     "groups": [
-                        campaign_serializers.CampaignGroupSerializer(target_group).data
+                        campaign_serializers.CampaignGroupSerializer(
+                            target_group).data
                     ],
                     "timeline": [
                         {
@@ -287,6 +303,25 @@ class SubscriptionsListView(APIView):
                 gophish_campaign_list.append(created_campaign)
 
         return gophish_campaign_list
+
+
+class SubscriptionsTemplateListView(APIView):
+    """
+    Returns a list of Subscriptions that are using a given Template
+    """
+    @swagger_auto_schema(
+        responses={"200": SubscriptionGetSerializer, "400": "Bad Request"},
+        security=[],
+        operation_id="List of Subscriptions using Template",
+        operation_description="This handles the API to get a List of Subscriptions using a specified Template.",
+    )
+    def get(self, request, template_uuid):
+        parameters = request.data.copy()
+        subscription_list = get_list(
+            parameters, "subscription", SubscriptionModel, validate_subscription
+        )
+        serializer = SubscriptionGetSerializer(subscription_list, many=True)
+        return Response(serializer.data)
 
 
 class SubscriptionView(APIView):
@@ -313,7 +348,8 @@ class SubscriptionView(APIView):
 
     @swagger_auto_schema(
         request_body=SubscriptionPatchSerializer,
-        responses={"202": SubscriptionPatchResponseSerializer, "400": "Bad Request"},
+        responses={"202": SubscriptionPatchResponseSerializer,
+                   "400": "Bad Request"},
         security=[],
         operation_id="Update and Patch single subscription",
         operation_description="This handles the API for the Update subscription with subscription_uuid.",
@@ -337,7 +373,8 @@ class SubscriptionView(APIView):
         return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
 
     @swagger_auto_schema(
-        responses={"200": SubscriptionDeleteResponseSerializer, "400": "Bad Request"},
+        responses={"200": SubscriptionDeleteResponseSerializer,
+                   "400": "Bad Request"},
         security=[],
         operation_id="Delete single subscription",
         operation_description="This handles the API for the Delete of a  subscription with subscription_uuid.",
@@ -430,7 +467,8 @@ class SubscriptionsTemplateListView(APIView):
     )
     def get(self, request, template_uuid):
         """Get method."""
-        parameters = {"templates_selected_uuid_list": template_uuid, "archived": False}
+        parameters = {
+            "templates_selected_uuid_list": template_uuid, "archived": False}
         subscription_list = get_list(
             parameters, "subscription", SubscriptionModel, validate_subscription
         )
@@ -440,7 +478,8 @@ class SubscriptionsTemplateListView(APIView):
 
 class SubscriptionStopView(APIView):
     @swagger_auto_schema(
-        responses={"202": SubscriptionPatchResponseSerializer, "400": "Bad Request"},
+        responses={"202": SubscriptionPatchResponseSerializer,
+                   "400": "Bad Request"},
         operation_id="Endpoint for manually stopping a subscription",
         operation_description="Endpoint for manually stopping a subscription",
     )

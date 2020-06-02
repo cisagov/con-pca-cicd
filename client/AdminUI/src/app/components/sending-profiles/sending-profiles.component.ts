@@ -48,7 +48,6 @@ export class SendingProfilesComponent implements OnInit {
    * @param row 
    */
   confirmDeleteProfile(row: any): void {
-    console.log(row);
     this.dialogRefConfirm = this.dialog.open(ConfirmComponent, { disableClose: false });
     this.dialogRefConfirm.componentInstance.confirmMessage =
       `This will delete sending profile '${row.name}'.  Do you want to continue?`;

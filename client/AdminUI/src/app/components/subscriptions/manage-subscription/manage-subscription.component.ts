@@ -107,30 +107,6 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
     sub = new Subscription();
     this.subscription = sub;
     sub.subscription_uuid = Guid.create().toString();
-
-
-
-
-    // START TEMP ------------------------
-    // find Globex or randomly pick an existing customer for now
-    /*if (!this.subscription.customer_uuid) {
-      this.customerSvc.getCustomers().subscribe((c: Customer[]) => {
-
-        // first look for Globex
-        let globex = c.find(x => x.identifier == 'GLBX');
-        if (globex == null) {
-
-          // if not found, just pick a random customer
-          let rnd = Math.floor(Math.random() * Math.floor(c.length));
-          this.customer = c[rnd];
-        } else {
-          this.customer = globex;
-        }
-
-        this.f.selectedCustomerUuid.setValue(this.customer.customer_uuid);
-      });
-    }*/
-    // END TEMP --------------------------
   }
 
   setCustomer(){
