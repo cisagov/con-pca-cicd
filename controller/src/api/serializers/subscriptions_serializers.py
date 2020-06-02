@@ -183,16 +183,16 @@ class SubscriptionPatchSerializer(serializers.Serializer):
     customer_uuid = serializers.UUIDField(required=False)
     name = serializers.CharField(required=False, max_length=100)
     url = serializers.CharField(required=False, max_length=100)
-    keywords = serializers.CharField(max_length=100)
+    keywords = serializers.CharField(required=False, max_length=100)
     start_date = serializers.DateTimeField(required=False)
-    gophish_campaign_list = GoPhishCampaignsSerializer(many=True, required=False)
+    gophish_campaign_list = GoPhishCampaignsSerializer(required=False, many=True)
     primary_contact = CustomerContactSerializer(required=False)
-    status = serializers.CharField(max_length=100, required=False)
-    target_email_list = SubscriptionTargetSerializer(many=True, required=False)
+    status = serializers.CharField(required=False, max_length=100)
+    target_email_list = SubscriptionTargetSerializer(required=False, many=True)
     templates_selected_uuid_list = serializers.ListField(required=False)
     active = serializers.BooleanField(required=False)
-    archived = serializers.BooleanField(default=False)
-    manually_stopped = serializers.BooleanField(default=False)
+    archived = serializers.BooleanField(required=False, default=False)
+    manually_stopped = serializers.BooleanField(required=False, default=False)
 
 
 class SubscriptionPatchResponseSerializer(serializers.Serializer):

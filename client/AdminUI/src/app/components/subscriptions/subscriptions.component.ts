@@ -62,7 +62,6 @@ export class SubscriptionsComponent implements OnInit {
           }
           customerSubscriptions.push(customerSubscription);
         })
-        console.log(customerSubscriptions)
         this.data_source.data = customerSubscriptions
       })
     })
