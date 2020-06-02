@@ -9,7 +9,15 @@
             </mat-form-field>
         </div>
         <div class="d-inline-flex flex-column ml-2">
-            <button mat-raised-button class="add-button" color="primary" routerLink="/create-subscription" >Create New Subscription</button>
+
+        </div>
+        <div class="d-inline-flex flex-column ml-2">
+            <button mat-raised-button color="primary" routerLink="/create-subscription">
+                Create New Subscription
+            </button>
+            <mat-slide-toggle class="mt-3 ml-3 mb-2" [(ngModel)]="showArchived" (change)="onArchiveToggle()">
+                Show Archived
+            </mat-slide-toggle>
         </div>
     </div>
 
@@ -17,20 +25,22 @@
     <mat-table [dataSource]="data_source">
         <!-- SUBSCRIPTION NAME -->
         <ng-container matColumnDef="name">
-            <mat-header-cell *matHeaderCellDef>Subscription Name</mat-header-cell>    
+            <mat-header-cell *matHeaderCellDef>Subscription Name</mat-header-cell>
             <mat-cell *matCellDef="let row"> {{row.subscription.name}}</mat-cell>
         </ng-container>
 
         <!-- STATUS -->
         <ng-container matColumnDef="status">
-            <mat-header-cell *matHeaderCellDef>Status</mat-header-cell>    
+            <mat-header-cell *matHeaderCellDef>Status</mat-header-cell>
             <mat-cell *matCellDef="let row"> {{row.subscription.status}}</mat-cell>
         </ng-container>
 
         <!-- PRIMARY CONTACT -->
         <ng-container matColumnDef="primary_contact">
             <mat-header-cell *matHeaderCellDef>Primary Contact</mat-header-cell>
-            <mat-cell *matCellDef="let row"> {{row.subscription.primary_contact.first_name}} {{row.subscription.primary_contact.last_name}}</mat-cell>
+            <mat-cell *matCellDef="let row"> {{row.subscription.primary_contact.first_name}}
+                {{row.subscription.primary_contact.last_name}}
+            </mat-cell>
         </ng-container>
 
         <!-- CUSTOMER -->
@@ -60,75 +70,27 @@
             </mat-cell>
         </ng-container>
 
+
+      
+        <!-- ARCHIVED -->
+        <ng-container matColumnDef="archived">
+            <mat-header-cell *matHeaderCellDef>Archived</mat-header-cell>
+            <mat-cell *matCellDef="let row">{{row.subscription.archived}}</mat-cell>
+
+        </ng-container>
         <!-- SELECT -->
         <ng-container matColumnDef="select">
             <mat-header-cell *matHeaderCellDef>Select</mat-header-cell>
             <mat-cell *matCellDef="let row">
               <button class="table-btn-icon" mat-flat-button color="primary" [routerLink]="['/view-subscription', row.subscription.subscription_uuid]">
-                <mat-icon class="table-btn-icon-size">list</mat-icon>
+                <mat-icon class="table-btn-icon-size">edit</mat-icon>
               </button>
             </mat-cell>
         </ng-container>
-
         <!-- HEADER ROW -->
         <mat-header-row *matHeaderRowDef="displayed_columns"></mat-header-row>
 
         <!-- ROW DEFINITION -->
-        <mat-row *matRowDef="let row; columns: displayed_columns"></mat-row>
+        <mat-row *matRowDef="let row; columns: displayed_columns" class="table-row" [routerLink]="['/view-subscription', row.subscription.subscription_uuid]"></mat-row>
     </mat-table>
-
-    <!-- OLD SEARCH WITH ADVANCED -->
-    <!-- <div class="row">
-        <div class="col-sm">
-            <div class="row" style="padding-bottom:10px">
-                <div class="col-6">
-                    <button mat-raised-button color="primary" routerLink="/create-subscription" >Create New Subscription</button>                    
-                </div>
-                <div class="col-6">
-                    <button mat-raised-button color="primary" class="float-right">Pause All</button>
-                </div>
-
-                <mat-accordion style="margin: 16px; padding-right: 24px;">
-                    <mat-expansion-panel>
-                    <mat-expansion-panel-header [collapsedHeight]="'120px'" [expandedHeight]="'120px'" width="900px" > 
-                        <mat-panel-title>Filter/Search Subscription</mat-panel-title>
-                        <mat-panel-description>
-                            <mat-form-field appearance="outline"> 
-                                <mat-label>Search</mat-label>
-                                <input matInput placeholder="Search"  [(ngModel)]="searchAll"
-                                (blur)="runSearch()">  <i class="fas fa-search"></i>                            
-                            </mat-form-field>
-                        </mat-panel-description>
-                    </mat-expansion-panel-header>
-                    <mat-form-field appearance="outline">
-                        <mat-label>Organization Name</mat-label>
-                        <input matInput [(ngModel)]="searchOrganization" (blur)="runSearch()"> 
-                    </mat-form-field>
-                
-                    <mat-form-field appearance="outline">
-                        <mat-label>Subscription Name</mat-label>
-                        <input matInput [(ngModel)]="searchSubscriptionName"> 
-                    </mat-form-field>
-                
-                    <mat-form-field appearance="outline">
-                        <mat-label>Primary Contact</mat-label>
-                        <input matInput [(ngModel)]="searchPrimaryContact"> 
-                    </mat-form-field>    
-                    <mat-form-field appearance="outline">
-                        <mat-label>Status</mat-label>
-                        <mat-select [(ngModel)]="searchStatus" multiple>
-                        <mat-option *ngFor="let s of statusList" [value]="s">{{s.display_name}}</mat-option>
-                        </mat-select>
-                    </mat-form-field>    
-                    <mat-checkbox color="primary" >Non-Government</mat-checkbox> <br>
-                    <mat-checkbox color="primary" >Federal</mat-checkbox>        
-                    </mat-expansion-panel>        
-                </mat-accordion>
-            </div>
-
-            
-        </div>
-    </div> -->
 </div>
-
-

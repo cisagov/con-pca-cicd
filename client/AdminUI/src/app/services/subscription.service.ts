@@ -33,8 +33,13 @@ export class SubscriptionService {
   /**
    * 
    */
-  public getSubscriptions() {
+  public getSubscriptions(archived: boolean = false) {
     let url = `${environment.apiEndpoint}/api/v1/subscriptions/`
+
+    if (archived) {
+      url = `${url}?archived=true`
+    }
+
     return this.http.get(url)
   }
 
@@ -48,17 +53,17 @@ export class SubscriptionService {
   }
 
   public deleteSubscription(subscription: Subscription) {
-    return new Promise((resolve,reject) => {
+    return new Promise((resolve, reject) => {
       this.http
-      .delete(`${environment.apiEndpoint}/api/v1/subscription/${subscription.subscription_uuid}/`)
-      .subscribe(
-        success => {
-          resolve(success);
-        },
-        error => {
-          reject(error)
-        }
-      )
+        .delete(`${environment.apiEndpoint}/api/v1/subscription/${subscription.subscription_uuid}/`)
+        .subscribe(
+          success => {
+            resolve(success);
+          },
+          error => {
+            reject(error)
+          }
+        )
     })
   }
 
@@ -103,7 +108,7 @@ export class SubscriptionService {
   public getSubscriptionsByCustomer(customer: Customer) {
     return this.http.get(`${environment.apiEndpoint}/api/v1/subscription/customer/${customer.customer_uuid}`)
   }
-  
+
   public stopSubscription(subscription: Subscription) {
     return this.http.get(`${environment.apiEndpoint}/api/v1/subscription/stop/${subscription.subscription_uuid}/`)
   }
