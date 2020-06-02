@@ -12,6 +12,7 @@ from api.views import (
     template_views,
     sendingprofile_views,
     webhook_views,
+    image_views,
 )
 from django.urls import path
 from drf_yasg import openapi
@@ -114,5 +115,10 @@ urlpatterns = [
         "v1/inboundwebhook/",
         webhook_views.IncomingWebhookView.as_view(),
         name="inbound_webhook_api",
+    ),
+    path(
+        "v1/imageupload/",
+        image_views.ImageView.as_view(),
+        name="image_upload",
     ),
 ]
