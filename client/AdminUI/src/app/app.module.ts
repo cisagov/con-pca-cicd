@@ -42,6 +42,7 @@ import { StopTemplateDialogComponent } from './components/template-manager/stop-
 import { SendingProfilesComponent } from './components/sending-profiles/sending-profiles.component';
 import { SendingProfileDetailComponent } from './components/sending-profiles/sending-profile-detail.component'
 import { CustomerSubscriptionsComponent } from './components/subscriptions/customer-subscriptions/customer-subscriptions.component'
+import { ArchiveSubscriptionDialogComponent } from './components/subscriptions/archive-subscription-dialog/archive-subscription-dialog.component'
 
 @NgModule({
   declarations: [
@@ -70,6 +71,7 @@ import { CustomerSubscriptionsComponent } from './components/subscriptions/custo
     SendingProfilesComponent,
     SendingProfileDetailComponent,
     CustomerSubscriptionsComponent,
+    ArchiveSubscriptionDialogComponent,
   ],
   imports: [
     BrowserModule,

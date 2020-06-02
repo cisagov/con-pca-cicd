@@ -68,6 +68,9 @@ class TemplateManager:
         while("" in preprocessed_data) : 
             preprocessed_data.remove("") 
 
+        while(None in preprocessed_data) : 
+            preprocessed_data.remove(None) 
+
         if not preprocessed_data:
             return []
 
