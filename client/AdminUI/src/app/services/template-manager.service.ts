@@ -14,8 +14,12 @@ export class TemplateManagerService {
   constructor(private http: HttpClient) { }
 
   //GET a list of all templates
-  getAllTemplates() {
-    return this.http.get(`${environment.apiEndpoint}/api/v1/templates`, headers);
+  getAllTemplates(retired: boolean = false) {
+    let url = `${environment.apiEndpoint}/api/v1/templates/`
+    if (retired) {
+      url = `${url}?retired=true`
+    }
+    return this.http.get(url, headers);
   }
 
   // getAllTemplates() {
@@ -101,8 +105,7 @@ export class TemplateManagerService {
   }
 
   stopTemplate(template: Template) {
-    console.log('Logic for stopping a template')
-    return
+    return this.http.get(`${environment.apiEndpoint}/api/v1/template/stop/${template.template_uuid}/`)
   }
 
 }

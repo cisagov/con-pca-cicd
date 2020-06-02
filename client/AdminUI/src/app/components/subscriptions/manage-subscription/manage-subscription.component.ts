@@ -10,11 +10,13 @@ import { UserService } from 'src/app/services/user.service';
 import { CustomerService } from 'src/app/services/customer.service';
 import { CustomersComponent } from 'src/app/components/customers/customers.component';
 import { XlsxToCsv } from 'src/app/helper/XlsxToCsv';
+import { ArchiveSubscriptionDialogComponent } from '../archive-subscription-dialog/archive-subscription-dialog.component';
 
 
 @Component({
   selector: 'app-manage-subscription',
-  templateUrl: './manage-subscription.component.html'
+  templateUrl: './manage-subscription.component.html', 
+  styleUrls: ['./manage-subscription.component.scss']
 })
 export class ManageSubscriptionComponent implements OnInit, OnDestroy {
   private routeSub: any;
@@ -43,6 +45,8 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
   // The raw CSV content of the textarea
   csvText: string;
 
+
+
   /**
    * 
    */
@@ -63,7 +67,7 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
    */
   ngOnInit(): void {
 
-    // build  form
+    // build form
     this.subscribeForm = new FormGroup({
       selectedCustomerUuid: new FormControl('', Validators.required),
       primaryContact: new FormControl(null, Validators.required),
@@ -200,6 +204,17 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
   }
 
   /**
+   * Shows Dialog for archiving a subscription
+   */
+  public showArchiveDialog(): void {
+    const dialogRef = this.dialog.open(
+      ArchiveSubscriptionDialogComponent, {
+        data: this.subscription
+      }
+    )
+  }
+
+  /**
    * 
    */
   changePrimaryContact(e: any) {
@@ -296,10 +311,11 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
         this.router.navigate(['subscriptions']);
       },
       error => {
-        console.log(error);
         alert("An error occurred submitting the subscription: " + error.error);
       });
   }
+
+  
 
   /**
    * 

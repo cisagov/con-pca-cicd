@@ -1,0 +1,83 @@
+@charset "UTF-8";
+@page {
+  size: Letter;
+  margin: 2.5cm;
+}
+
+* {
+    font-family: Arial, sans-serif;
+}
+
+h2 {
+  color: #174A91;
+  padding-bottom: 15px;
+}
+
+.banner {
+  /*height: 150px;
+  background-color: #1B2352;*/
+}
+
+.phish_logo {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: left;
+}
+
+.cisa_logo {
+  display: block;
+  margin: auto;
+  text-align: center;
+  width: 50%;
+}
+
+.report-title {
+  font-size: 75px;
+  text-align: center;
+  color: #174A91;
+  margin-top: 50px;
+  margin-bottom: 300px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+  text-align: center;
+  page-break-after: always;
+  border: 2px solid black;
+}
+
+#contents {
+  width: 75%;
+  margin: auto;
+  text-align: center;
+}
+
+.circle {
+  width:250px;
+  height:250px;
+  border-radius:250px;
+  font-size:45px;
+  color:#fff;
+  line-height:250px;
+  text-align: center;
+  background:#174A91;
+  margin: auto;
+}
+
+ul {
+  text-align: center;
+  list-style-position: inside;
+}
+
+#chartOne {
+  width: 50%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.charts {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  padding-right: 25px;
+}

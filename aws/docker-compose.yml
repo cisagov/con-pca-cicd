@@ -23,7 +23,7 @@ services:
     image: cpa-terraform:1.0
     volumes:
       - pca-terraform-data:/app/state
-      - './terraform:/app/resources'
+      - './terraform:/app/resources' 
 volumes:
   pca-localstack-data:
   pca-terraform-data:

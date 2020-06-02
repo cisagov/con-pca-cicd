@@ -17,7 +17,7 @@ from database.repository.types import (
     UUIDType,
 )
 
-from .customer_models import CustomerContactModel
+from api.models.customer_models import CustomerContactModel
 
 
 class SubscriptionTargetModel(Model):
@@ -138,6 +138,7 @@ class GoPhishCampaignsModel(Model):
     send_by_date = DateTimeType()
     completed_date = DateTimeType()
     email_template = StringType()
+    email_template_id = IntType()
     landing_page_template = StringType()
     status = StringType()
     results = ListType(ModelType(GoPhishResultModel))
@@ -157,6 +158,7 @@ class SubscriptionModel(Model):
     subscription_uuid = UUIDType()
     # values being passed in.
     customer_uuid = UUIDType()
+    task_uuid = StringType()
     name = StringType()
     url = StringType()
     keywords = StringType()
@@ -171,6 +173,9 @@ class SubscriptionModel(Model):
     target_email_list = ListType(ModelType(SubscriptionTargetModel))
     templates_selected_uuid_list = ListType(StringType)
     active = BooleanType()
+    active_task = BooleanType()
+    archived = BooleanType(default=False)
+    manually_stopped = BooleanType(default=False)
     # db data tracking added below
     created_by = StringType()
     cb_timestamp = DateTimeType()

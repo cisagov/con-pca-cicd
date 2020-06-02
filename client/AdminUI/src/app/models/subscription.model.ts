@@ -18,9 +18,11 @@ export interface SubscriptionClicksModel {
 
 export class Subscription {
     active: boolean;
+    archived: boolean;
     customer_uuid: string;
     keywords: string;
     lub_timestamp: Date;
+    manually_stopped: boolean;
     name: string;
     primary_contact: Contact;
     start_date: Date;

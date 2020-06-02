@@ -1,0 +1,128 @@
+{% load static %}
+
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <link href="{% static '/css/base.css' %}" rel="stylesheet">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+    <script type="text/javascript">
+        // Load Chart One
+        google.charts.load('current', {'packages':['corechart']});
+        google.charts.setOnLoadCallback(drawChart);
+        google.charts.setOnLoadCallback(drawChartTwo);
+        google.charts.setOnLoadCallback(drawChartThree);
+        
+        // Draw the chart and set the chart values
+        function drawChart() {
+          var data = google.visualization.arrayToDataTable([
+          ['Emails', 'Number'],
+
+          ['Opened', 289],
+          ['Unopened', 11]
+        ]);
+        
+          var options = {'title':'Emails', 'width':550, 'height':400};
+        
+          var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+          chart.draw(data, options);
+        }
+
+        function drawChartTwo() {
+            var data = google.visualization.arrayToDataTable([
+            ['Links', 'Number'],
+            ['Viewed', 83],
+            ['Clicked', 17]
+        ]);
+        
+          var options = {'title':'Links', 'width':550, 'height':400};
+        
+          var chart = new google.visualization.PieChart(document.getElementById('piechartTwo'));
+          chart.draw(data, options);
+        }
+
+        function drawChartThree() {
+            var data = google.visualization.arrayToDataTable([
+            ['Links', 'Number'],
+            ['Reported', 188],
+            ['Successful Phish', 17]
+        ]);
+        
+          var options = {'title':'Phishing Attempts', 'width':550, 'height':400};
+        
+          var chart = new google.visualization.PieChart(document.getElementById('piechartThree'));
+          chart.draw(data, options);
+        }
+        
+        </script>
+
+    <title>Monthly Report</title>
+    <meta name="description" content="Report example">
+</head>
+
+<body>
+    <article id="cover">
+        <div class="banner">
+        </div>
+        <div class="phish_logo">
+            <img src="{% static '/img/phish_logo.png' %}"></img>
+        </div>
+        <div class="cisa_logo">
+            <img src="{% static '/img/cisa_logo.png' %}"></img>
+        </div>
+        <div class="report-title">
+                Monthly Subscription <br>
+                Report
+        </div>
+    </article>
+
+    <article id="contents">
+        <div class="container">
+            <div class="row">
+                <div class="col-6">
+                    <h2>Average Time to First Click<br></h2>
+                    <div class="circle">3 Minutes</div>
+                </div>
+                <div class="col-6">
+                    <h2>Average Time to First Report<br></h2>
+                    <div class="circle">17 Minutes</div>
+                </div>
+            </div>
+        </div>
+        <br><br>
+        <ul>
+            <li><b>This Report has been generated in Q1 of your phishing subscription cycle.</b></li>
+            <li><b>Of the 1,000 targets in this quarter's cycle, 333 targets have had emails sent.</b></li>
+        </ul>
+    </article>
+       
+    <article id="article"><br><br><br>
+    <div class="charts">
+        <div class="container">
+            <div class="row">
+                <div class="col-12" id="chartOne">
+                    <div id="piechart"></div>
+                </div>
+                <div class="col-6">
+                    <div id="piechartTwo"></div>
+                </div>
+                <div class="col-6">
+                    <div id="piechartThree"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </article>
+
+    <article id="chapter">
+    </article>
+
+    <article id="typography">
+
+    </article>
+</body>
+
+</html>

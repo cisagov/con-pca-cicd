@@ -13,6 +13,7 @@ import { TemplateManagerService } from 'src/app/services/template-manager.servic
 import { Template } from 'src/app/models/template.model';
 import { Subscription as PcaSubscription } from 'src/app/models/subscription.model';
 import { Subscription } from 'rxjs';
+import { environment } from 'src/environments/environment';
 import $ from 'jquery';
 import 'src/app/helper/csvToArray';
 import { MatDialog } from '@angular/material/dialog';
@@ -42,6 +43,10 @@ export class TemplateManagerComponent implements OnInit {
   // Con-PCA Subscriptions for the current Template
   pcaSubscriptions = new Array<PcaSubscription>();
 
+  //config vars
+  image_upload_url: string = `${environment.apiEndpoint}/api/v1/imageupload/`
+
+
   //Styling variables, required to properly size and display the angular-editor import
   body_content_height: number;
   text_editor_height: number;
@@ -65,6 +70,7 @@ export class TemplateManagerComponent implements OnInit {
     //this.getAllTemplates();
   }
   ngOnInit() {
+    console.log(this.image_upload_url)
     //get subscription to height of page from main layout component
     this.subscriptions.push(
       this.layoutSvc.getContentHeightEmitter().subscribe(height => {
@@ -96,7 +102,7 @@ export class TemplateManagerComponent implements OnInit {
 
   }
 
-  
+
   ngOnDestroy() {
     //Unsubscribe from all subscriptions
     this.subscriptions.forEach(sub => {
@@ -113,10 +119,10 @@ export class TemplateManagerComponent implements OnInit {
     this.currentTemplateFormGroup.valueChanges.subscribe(val => {
       this.currentTemplateFormGroup.patchValue(
         {
-          final_deception_score:  (
+          final_deception_score: (
             val.authoritative +
             val.grammar +
-            val.internal + 
+            val.internal +
             val.link_domain +
             val.logo_graphics +
             val.public_news +
@@ -143,9 +149,9 @@ export class TemplateManagerComponent implements OnInit {
           this.subscriptionSvc.getSubscriptionsByTemplate(t)
             .subscribe((x: PcaSubscription[]) => {
               this.pcaSubscriptions = x;
-          });
+            });
         },
-        (error) => {          
+        (error) => {
         }
       )
   }
@@ -153,10 +159,10 @@ export class TemplateManagerComponent implements OnInit {
   //Create a formgroup using a Template as initial data
   setTemplateForm(template: Template) {
 
-    if(!template.appearance){template.appearance = <any>{}}
-    if(!template.sender){template.sender = <any>{}}
-    if(!template.relevancy){template.relevancy = <any>{}}
-    if(!template.behavior){template.behavior = <any>{}}
+    if (!template.appearance) { template.appearance = <any>{} }
+    if (!template.sender) { template.sender = <any>{} }
+    if (!template.relevancy) { template.relevancy = <any>{} }
+    if (!template.behavior) { template.behavior = <any>{} }
 
 
     this.currentTemplateFormGroup = new FormGroup({
@@ -175,7 +181,7 @@ export class TemplateManagerComponent implements OnInit {
       templateHTML: new FormControl(template.html, [Validators.required]),
       authoritative: new FormControl(template.sender?.authoritative ?? 0),
       external: new FormControl(template.sender?.external ?? 0),
-      internal: new FormControl(template.sender?.internal ?? 0),      
+      internal: new FormControl(template.sender?.internal ?? 0),
       grammar: new FormControl(template.appearance?.grammar ?? 0),
       link_domain: new FormControl(template.appearance?.link_domain ?? 0),
       logo_graphics: new FormControl(template.appearance?.logo_graphics ?? 0),
@@ -187,17 +193,18 @@ export class TemplateManagerComponent implements OnInit {
       greed: new FormControl(template.behavior?.greed ?? false),
       descriptive_words: new FormControl(template.descriptive_words ?? " ", { updateOn: 'blur' }),
       final_deception_score: new FormControl({
-        value: this.calcDeceptionScore(template), disabled:true}
+        value: this.calcDeceptionScore(template), disabled: true
+      }
       )
     });
-    
+
     this.onValueChanges();
   }
-  
-  calcDeceptionScore(formValues){
-      return (formValues.sender?.authoritative ?? 0) +
+
+  calcDeceptionScore(formValues) {
+    return (formValues.sender?.authoritative ?? 0) +
       (formValues.sender?.external ?? 0) +
-      (formValues.sender?.internal ?? 0) + 
+      (formValues.sender?.internal ?? 0) +
       (formValues.appearance?.grammar ?? 0) +
       (formValues.appearance?.link_domain ?? 0) +
       (formValues.appearance?.logo_graphics ?? 0) +
@@ -207,43 +214,43 @@ export class TemplateManagerComponent implements OnInit {
 
   //Get Template model from the form group
   getTemplateFromForm(form: FormGroup) {
-      let formTemplate = new Template(form.value)
-      let saveTemplate = new Template({
-        template_uuid: form.controls['templateUUID'].value,
-        name: form.controls['templateName'].value,
-        deception_score: form.controls['templateDeceptionScore'].value,
-        descriptive_words: form.controls['templateDescriptiveWords'].value,
-        description: form.controls['templateDescription'].value,
-        from_address: form.controls['templateFromAddress'].value,
-        retired: form.controls['templateRetired'].value,
-        retired_description: form.controls['templateRetiredDescription'].value,
-        subject: form.controls['templateSubject'].value,
-        text: form.controls['templateText'].value,
-        html: form.controls['templateHTML'].value,
-      })
-      saveTemplate.appearance = { 
-        'grammar': formTemplate.grammar,
-        'link_domain': formTemplate.link_domain,
-        'logo_graphics': formTemplate.logo_graphics
-      }
-      saveTemplate.sender = {
-        'authoritative': formTemplate.authoritative,
-        'external': formTemplate.external,
-        'internal': formTemplate.internal
-      }
-      saveTemplate.relevancy = {
-        'organization': formTemplate.organization,
-        'public_news': formTemplate.public_news
-      }
-      saveTemplate.behavior = {
-        'curiosity': formTemplate.curiosity,
-        'duty_obligation': formTemplate.duty_obligation,
-        'fear': formTemplate.fear,
-        'greed': formTemplate.greed
-      }
-      saveTemplate.template_uuid = this.templateId
-      saveTemplate.deception_score = form.controls['final_deception_score'].value
-      return saveTemplate;
+    let formTemplate = new Template(form.value)
+    let saveTemplate = new Template({
+      template_uuid: form.controls['templateUUID'].value,
+      name: form.controls['templateName'].value,
+      deception_score: form.controls['templateDeceptionScore'].value,
+      descriptive_words: form.controls['templateDescriptiveWords'].value,
+      description: form.controls['templateDescription'].value,
+      from_address: form.controls['templateFromAddress'].value,
+      retired: form.controls['templateRetired'].value,
+      retired_description: form.controls['templateRetiredDescription'].value,
+      subject: form.controls['templateSubject'].value,
+      text: form.controls['templateText'].value,
+      html: form.controls['templateHTML'].value,
+    })
+    saveTemplate.appearance = {
+      'grammar': formTemplate.grammar,
+      'link_domain': formTemplate.link_domain,
+      'logo_graphics': formTemplate.logo_graphics
+    }
+    saveTemplate.sender = {
+      'authoritative': formTemplate.authoritative,
+      'external': formTemplate.external,
+      'internal': formTemplate.internal
+    }
+    saveTemplate.relevancy = {
+      'organization': formTemplate.organization,
+      'public_news': formTemplate.public_news
+    }
+    saveTemplate.behavior = {
+      'curiosity': formTemplate.curiosity,
+      'duty_obligation': formTemplate.duty_obligation,
+      'fear': formTemplate.fear,
+      'greed': formTemplate.greed
+    }
+    saveTemplate.template_uuid = this.templateId
+    saveTemplate.deception_score = form.controls['final_deception_score'].value
+    return saveTemplate;
   }
 
   saveTemplate() {
@@ -263,28 +270,28 @@ export class TemplateManagerComponent implements OnInit {
               // let retTemplate = <Template>success
               // this.updateTemplateInList(retTemplate)
             },
-            (error) => {console.log(error)}
-            );
-      //POST - new template creation
+            (error) => { console.log(error) }
+          );
+        //POST - new template creation
       } else {
         this.templateManagerSvc
           .saveNewTemplate(templateToSave).then(
-          (success) => {
-            this.router.navigate(['/templates']);
-            // let retTemplate = new Template({
-            //   'template_uuid': success['template_uuid'],
-            //   'name': templateToSave.name,
-            //   'descriptive_words': templateToSave.descriptive_words,
-            //   'deception_score': 0
-            // })
-            // this.updateTemplateInList(retTemplate)
-          },
-          (error) => {console.log(error)}
+            (success) => {
+              this.router.navigate(['/templates']);
+              // let retTemplate = new Template({
+              //   'template_uuid': success['template_uuid'],
+              //   'name': templateToSave.name,
+              //   'descriptive_words': templateToSave.descriptive_words,
+              //   'deception_score': 0
+              // })
+              // this.updateTemplateInList(retTemplate)
+            },
+            (error) => { console.log(error) }
           );
       }
-      
+
     } else {
-    //non valid form, collect nonvalid fields and display to user
+      //non valid form, collect nonvalid fields and display to user
       const invalid = [];
       const controls = this.currentTemplateFormGroup.controls;
       for (const name in controls) {
@@ -296,18 +303,18 @@ export class TemplateManagerComponent implements OnInit {
     }
   }
 
-  deleteTemplate(){
-    let template_to_delete = this.getTemplateFromForm(this.currentTemplateFormGroup)  
-    if(window.confirm(`Are you sure you want to delete ${template_to_delete.name}?`)){
-    this.templateManagerSvc.deleteTemplate(template_to_delete)
-      .then(
-        (success) => {
-          // this.updateTemplateInList(<Template>success)
-          // this.setEmptyTemplateForm()
-          this.router.navigate(['/templatespage']);
-        },
-        (error) => {}
-      )
+  deleteTemplate() {
+    let template_to_delete = this.getTemplateFromForm(this.currentTemplateFormGroup)
+    if (window.confirm(`Are you sure you want to delete ${template_to_delete.name}?`)) {
+      this.templateManagerSvc.deleteTemplate(template_to_delete)
+        .then(
+          (success) => {
+            // this.updateTemplateInList(<Template>success)
+            // this.setEmptyTemplateForm()
+            this.router.navigate(['/templatespage']);
+          },
+          (error) => { }
+        )
     }
   }
 
@@ -317,8 +324,8 @@ export class TemplateManagerComponent implements OnInit {
 
     this.dialog.open(
       StopTemplateDialogComponent, {
-        data: template_to_stop
-      }
+      data: template_to_stop
+    }
     )
   }
 
@@ -330,7 +337,7 @@ export class TemplateManagerComponent implements OnInit {
       this.currentTemplateFormGroup.controls['templateHTML'].value
     );
   }
-  
+
 
   //Required because the angular-editor requires a hard coded height. Sets a new height referencing the elements on the page for
   //an accurate hieght measurement
@@ -412,7 +419,7 @@ export class TemplateManagerComponent implements OnInit {
         tag: 'h1'
       }
     ],
-    uploadUrl: 'TODO: REPLACE ME WITIH THE RIGHT URL',
+    uploadUrl: this.image_upload_url,
     //uploadUrl: 'localhost:8080/server/page/upload-image',
     uploadWithCredentials: false,
     sanitize: true,

@@ -10,8 +10,8 @@ from rest_framework.views import APIView
 from drf_yasg.utils import swagger_auto_schema
 
 from config.celery import app
-from .tasks import campaign_report
-from .serializers import CampaignReportSerializer, TaskListSerializer
+from .tasks import subscription_report
+from .serializers import SubscriptionReportSerializer, TaskListSerializer
 
 
 logger = get_logger(__name__)
@@ -22,8 +22,8 @@ class TaskListView(APIView):
     @swagger_auto_schema(
         responses={"200": TaskListSerializer, "400": "Bad Request",},
         security=[],
-        operation_id="Campaign report generation tasks",
-        operation_description="Return a list of scheduled campaign report generation task",
+        operation_id="Subscription report generation tasks",
+        operation_description="Return a list of scheduled subscription report generation tasks",
     )
     def get(self, request):
         """
@@ -41,25 +41,27 @@ class TaskListView(APIView):
         return Response(serializer.data)
 
     @swagger_auto_schema(
-        responses={"200": CampaignReportSerializer, "400": "Bad Request",},
+        responses={"200": SubscriptionReportSerializer, "400": "Bad Request",},
         security=[],
-        operation_id="Campaign report generation tasks",
-        operation_description="Create a scheduled campaign report generation task",
+        operation_id="Subscription report generation tasks",
+        operation_description="Create a scheduled subscription report generation task",
     )
     def post(self, request):
         """
-        Create a scheduled campaign report generation task. This is
-        triggered by a GoPhish callback once a campaign has been created.
+        Create a scheduled subscription report generation task. This is
+        triggered by a GoPhish callback once a subscription has been created.
         """
         data = request.data
-        campaign_id = data.get("campaign_id")
+        subscription_uuid = data.get("subscription_uuid")
         # Execute task in 90 days from campaign launch
         ninety_days = datetime.utcnow() + timedelta(days=90)
         try:
-            task = campaign_report.apply_async(args=[campaign_id], eta=ninety_days)
+            task = subscription_report.apply_async(
+                args=[subscription_uuid], eta=ninety_days
+            )
         except add.OperationalError as exc:
-            logger.exception("Campaign task raised: %r", exc)
-        context = {"task id": task.id, "campaign_id": campaign_id}
+            logger.exception("Subscription task raised: %r", exc)
+        context = {"task id": task.id, "subscription_uuid": subscription_uuid}
         return Response(context)
 
 

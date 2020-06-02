@@ -33,8 +33,9 @@ export class StopTemplateDialogComponent implements OnInit {
 
   confirm(): void {
     if(window.confirm(`Are you sure you want to stop the subscriptions?`)) {
-      this.templateSvc.stopTemplate(this.template)
-      this.dialogRef.close()
+      this.templateSvc.stopTemplate(this.template).subscribe(() => {
+        this.dialogRef.close()
+      })
     } else {
       this.dialogRef.close()
     }

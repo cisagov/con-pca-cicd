@@ -33,21 +33,14 @@ export class SubscriptionService {
   /**
    * 
    */
-  public getSubscriptions() {
+  public getSubscriptions(archived: boolean = false) {
     let url = `${environment.apiEndpoint}/api/v1/subscriptions/`
-    return this.http.get(url)
-  }
 
-  /**
-   * 
-   * @param requestData 
-   */
-  public toSubscriptions(requestData: any[]): Subscription[] {
-    let subscriptions: Subscription[] = []
-    requestData.map((s: any) => {
-      subscriptions.push(this.toSubscription(s))
-    })
-    return subscriptions
+    if (archived) {
+      url = `${url}?archived=true`
+    }
+
+    return this.http.get(url)
   }
 
   /**
@@ -59,41 +52,18 @@ export class SubscriptionService {
     return this.http.get(url)
   }
 
-  /**
-   * 
-   * @param requestData 
-   */
-  public toSubscription(requestData: any): Subscription {
-    let subscription: Subscription = {
-      active: requestData.active,
-      customer_uuid: requestData.customer_uuid,
-      keywords: requestData.keywords,
-      lub_timestamp: requestData.lub_timestamp,
-      name: requestData.name,
-      primary_contact: this.customer_service.getContact(requestData.primary_contact),
-      start_date: requestData.start_date,
-      status: requestData.status,
-      subscription_uuid: requestData.subscription_uuid,
-      url: requestData.url,
-      target_email_list: requestData.target_email_list,
-      setTargetsFromCSV: null
-    }
-
-    return subscription
-  }
   public deleteSubscription(subscription: Subscription) {
-    console.log(subscription)
-    return new Promise((resolve,reject) => {
+    return new Promise((resolve, reject) => {
       this.http
-      .delete(`${environment.apiEndpoint}/api/v1/subscription/${subscription.subscription_uuid}/`)
-      .subscribe(
-        success => {
-          resolve(success);
-        },
-        error => {
-          reject(error)
-        }
-      )
+        .delete(`${environment.apiEndpoint}/api/v1/subscription/${subscription.subscription_uuid}/`)
+        .subscribe(
+          success => {
+            resolve(success);
+          },
+          error => {
+            reject(error)
+          }
+        )
     })
   }
 
@@ -103,6 +73,14 @@ export class SubscriptionService {
    */
   submitSubscription(subscription: Subscription) {
     return this.http.post('http://localhost:8000/api/v1/subscriptions/', subscription)
+  }
+
+  /**
+   * Sends information to the API to update a subscription
+   * @param subscription 
+   */
+  patchSubscription(subscription: Subscription) {
+    return this.http.patch(`http://localhost:8000/api/v1/subscription/${subscription.subscription_uuid}/`, subscription)
   }
 
   /**
@@ -121,5 +99,17 @@ export class SubscriptionService {
    */
   public getSubscriptionsByTemplate(template: Template) {
     return this.http.get(`${environment.apiEndpoint}/api/v1/subscription/template/${template.template_uuid}`)
+  }
+
+  /**
+   * Gets all subscriptions for a given customer.
+   * @param template 
+   */
+  public getSubscriptionsByCustomer(customer: Customer) {
+    return this.http.get(`${environment.apiEndpoint}/api/v1/subscription/customer/${customer.customer_uuid}`)
+  }
+
+  public stopSubscription(subscription: Subscription) {
+    return this.http.get(`${environment.apiEndpoint}/api/v1/subscription/stop/${subscription.subscription_uuid}/`)
   }
 }
