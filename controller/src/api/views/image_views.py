@@ -42,15 +42,18 @@ class ImageView(APIView):
     def post(self, request, format=None):
         """Post method."""
         url = os.environ.get("AWS_ENDPOINT_URL")
-        aws_image_bucket = os.environ.get("AWS_STORAGE_BUCKET_IMAGES_NAME")        
+        aws_image_bucket = os.environ.get("AWS_STORAGE_BUCKET_IMAGES_NAME")       
+        aws_access_key_id = os.environ.get("AWS_ACCESS_KEY_ID")       
+        aws_secret_access_key = os.environ.get("AWS_SECRET_ACCESS_KEY")    
+        aws_region = os.environ.get("AWS_S3_REGION_NAME")    
         session = boto3.session.Session()
         s3_client = session.client(
             service_name='s3',
             endpoint_url=url,
             use_ssl=False,
-            aws_access_key_id='mock_access_key',
-            aws_secret_access_key='mock_secret_key',
-            region_name='us-east-1',
+            aws_access_key_id=aws_image_bucket,
+            aws_secret_access_key=aws_access_key_id,
+            region_name= aws_region,
         )
         # TODO - Use signed in user's name as additional image saveName attribute
         now = datetime.today()
