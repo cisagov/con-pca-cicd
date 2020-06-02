@@ -200,6 +200,16 @@ MONGO_INITDB_ROOT_USERNAME=root
 MONGO_INITDB_DATABASE=pca_data_dev
 ```
 
+# AWS
+AWS_ENDPOINT_URL=http://host.docker.internal:4566
+AWS_ACCESS_KEY_ID=mock_access_key
+AWS_SECRET_ACCESS_KEY=mock_secret_key
+AWS_STORAGE_BUCKET_NAME=con-pca-local-bucket
+AWS_STORAGE_BUCKET_IMAGES_NAME=con-pca-local-image-bucket
+AWS_S3_REGION_NAME=us-east-1
+DEFAULT_FILE_STORAGE=storages.backends.s3boto3.S3Boto3Storage
+
+
 `DB_PW` and `DB_USER` should match `MONGO_INITDB_ROOT_PASSWORD` and `MONGO_INITDB_ROOT_USERNAME`
 
 2.) Whipe DB
