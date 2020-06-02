@@ -2,35 +2,31 @@
 
 <!doctype html>
 <html>
-
 <head>
     <meta charset="utf-8">
     <link href="{% static '/css/base.css' %}" rel="stylesheet">
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-
     <script type="text/javascript">
-        // Load Chart One
         google.charts.load('current', {'packages':['corechart']});
         google.charts.setOnLoadCallback(drawChart);
         google.charts.setOnLoadCallback(drawChartTwo);
         google.charts.setOnLoadCallback(drawChartThree);
         
-        // Draw the chart and set the chart values
+        // Pie Chart One
         function drawChart() {
           var data = google.visualization.arrayToDataTable([
           ['Emails', 'Number'],
-
           ['Opened', 289],
           ['Unopened', 11]
         ]);
         
           var options = {'title':'Emails', 'width':550, 'height':400};
-        
           var chart = new google.visualization.PieChart(document.getElementById('piechart'));
           chart.draw(data, options);
         }
-
+        
+        // Pie Chart Two
         function drawChartTwo() {
             var data = google.visualization.arrayToDataTable([
             ['Links', 'Number'],
@@ -39,89 +35,125 @@
         ]);
         
           var options = {'title':'Links', 'width':550, 'height':400};
-        
           var chart = new google.visualization.PieChart(document.getElementById('piechartTwo'));
           chart.draw(data, options);
         }
 
+        // Statistics By Level combined bar graph
         function drawChartThree() {
             var data = google.visualization.arrayToDataTable([
-            ['Links', 'Number'],
-            ['Reported', 188],
-            ['Successful Phish', 17]
-        ]);
-        
-          var options = {'title':'Phishing Attempts', 'width':550, 'height':400};
-        
-          var chart = new google.visualization.PieChart(document.getElementById('piechartThree'));
-          chart.draw(data, options);
-        }
-        
+               ['Category', 'Low', 'Med', 'High'],
+               ['Sent',  333, 333, 333],
+               ['Opened',  300, 300, 300],
+               ['Clicked',  50, 100, 150],
+               ['Submitted',  11, 17, 24],
+            ]);
+
+            var options = {
+                title: '',
+                vAxis: {title: 'Amount'},
+                hAxis: {title: 'Category'},
+                seriesType: 'bars',
+                series: {4: {type: 'line'}}
+            }; 
+            var chart = new google.visualization.ComboChart(document.getElementById('columnchart'));
+            chart.draw(data, options);
+         }
         </script>
 
     <title>Monthly Report</title>
-    <meta name="description" content="Report example">
+    <meta name="description" content="MonthlyReport">
 </head>
 
 <body>
     <article id="cover">
-        <div class="banner">
-        </div>
-        <div class="phish_logo">
+        <div id="phishLogo">
             <img src="{% static '/img/phish_logo.png' %}"></img>
         </div>
-        <div class="cisa_logo">
+        <div id="cisaLogo">
             <img src="{% static '/img/cisa_logo.png' %}"></img>
         </div>
-        <div class="report-title">
-                Monthly Subscription <br>
-                Report
+        <div id="reportTitle">
+            Monthly Subscription <br>Report<br>
         </div>
+        <h3 id="reportDate">4/15/20 - 5/15/20</h3>
     </article>
 
-    <article id="contents">
+    <article id="pageOne">
         <div class="container">
             <div class="row">
                 <div class="col-6">
-                    <h2>Average Time to First Click<br></h2>
-                    <div class="circle">3 Minutes</div>
+                    <h2>
+                        <div class="averages"> Averages Time to First Click</div>
+                    </h2>
+                    <div class="timeBox">03 <br>Minutes</div>
                 </div>
                 <div class="col-6">
-                    <h2>Average Time to First Report<br></h2>
-                    <div class="circle">17 Minutes</div>
+                    <h2>
+                        <div class="averages">Average Time to First Report</div>
+                    </h2>
+                    <div class="timeBox">17 <br>Minutes</div>
                 </div>
             </div>
-        </div>
-        <br><br>
-        <ul>
-            <li><b>This Report has been generated in Q1 of your phishing subscription cycle.</b></li>
-            <li><b>Of the 1,000 targets in this quarter's cycle, 333 targets have had emails sent.</b></li>
-        </ul>
-    </article>
-       
-    <article id="article"><br><br><br>
-    <div class="charts">
-        <div class="container">
+
+            <h2>Report Statistics</h2>
             <div class="row">
-                <div class="col-12" id="chartOne">
+                <div class="col-6"></div>
+            </div>
+            <ul>
+                This Report has been generated in Q1 of your phishing subscription cycle.</b></li><br>
+                Of the 1,000 targets in this quarter's cycle, 333 targets have had emails sent.</b></li><br>
+            </ul>
+            <div class="progress" id="campaignProgress">
+                <div class="progress-bar bg-success" style="width:33%">333 / 1000</div>
+            </div><br><br>
+            
+            <div class="row">
+                <div class="col-6">
                     <div id="piechart"></div>
                 </div>
                 <div class="col-6">
                     <div id="piechartTwo"></div>
                 </div>
-                <div class="col-6">
-                    <div id="piechartThree"></div>
+            </div>
+
+            <h2>Statistics By Level</h2>
+            <div class="row">
+                <div class="col-10" id="chartThree">
+                    <div id="columnchart"></div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-4" id="campaignNumbers">
+                    Total Emails Sent: 333<br>
+                    Email Click Rate: 306 (92%)<br>
+                    Successful Phish Attempts: 73 (22%)<br>
                 </div>
             </div>
         </div>
-    </div>
     </article>
 
-    <article id="chapter">
-    </article>
-
-    <article id="typography">
-
+    <article id="pageTwo">
+        <div class="container">
+            <h2>Campaign Contact</h2>
+            <div class="row">
+                <div class="col-6">
+                    <div id="primaryContact">
+                        <b>Sarah Ferth, Director of Technology</b><br>
+                        Neetflix Streaming Services<br>
+                        (877) 522-2222<br>
+                        Atlanta, GA 12345
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div id="cisaContact">
+                        <b>CISA Contact Information</b>:<br>
+                        conpca@dhs.gov<br>
+                        (455) 554-4545<br><br>
+                    </div>
+                </div>
+            </div><br>
+        </div>
     </article>
 </body>
 
