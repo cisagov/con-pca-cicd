@@ -12,6 +12,7 @@ import { LayoutMainService } from 'src/app/services/layout-main.service';
 import { TemplateManagerService } from 'src/app/services/template-manager.service';
 import { Template } from 'src/app/models/template.model';
 import { Subscription } from 'rxjs';
+import { environment } from 'src/environments/environment';
 import $ from 'jquery';
 import 'src/app/helper/csvToArray';
 import { MatDialog } from '@angular/material/dialog';
@@ -33,9 +34,11 @@ export class TemplateManagerComponent implements OnInit {
   matchFromAddress = new MyErrorStateMatcher();
   matchTemplateName = new MyErrorStateMatcher();
   matchTemplateHTML = new MyErrorStateMatcher();
-
   //Subscriptions
   subscriptions = Array<Subscription>();
+
+  //config vars
+  image_upload_url: string = `${environment.apiEndpoint}/api/v1/imageupload/`
 
   //Styling variables, required to properly size and display the angular-editor import
   body_content_height: number;
@@ -59,6 +62,7 @@ export class TemplateManagerComponent implements OnInit {
     //this.getAllTemplates();
   }
   ngOnInit() {
+    console.log(this.image_upload_url)
     //get subscription to height of page from main layout component
     this.subscriptions.push(
       this.layoutSvc.getContentHeightEmitter().subscribe(height => {
@@ -398,7 +402,7 @@ export class TemplateManagerComponent implements OnInit {
         tag: 'h1'
       }
     ],
-    uploadUrl: 'TODO: REPLACE ME WITIH THE RIGHT URL',
+    uploadUrl: this.image_upload_url,
     //uploadUrl: 'localhost:8080/server/page/upload-image',
     uploadWithCredentials: false,
     sanitize: true,

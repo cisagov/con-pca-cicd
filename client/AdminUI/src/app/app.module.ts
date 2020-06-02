@@ -45,6 +45,7 @@ import { CustomerSubscriptionsComponent } from './components/subscriptions/custo
 import { ArchiveSubscriptionDialogComponent } from './components/subscriptions/archive-subscription-dialog/archive-subscription-dialog.component';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { SubDashboardComponent } from './components/subscriptions/sub-dashboard/sub-dashboard.component';
+import { ConfirmComponent } from './components/dialogs/confirm/confirm.component';
 
 @NgModule({
   declarations: [
@@ -75,6 +76,7 @@ import { SubDashboardComponent } from './components/subscriptions/sub-dashboard/
     CustomerSubscriptionsComponent,
     ArchiveSubscriptionDialogComponent,
     SubDashboardComponent,
+    ConfirmComponent,
   ],
   imports: [
     BrowserModule,
