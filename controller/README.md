@@ -257,7 +257,7 @@ Make sure when running any tests, from the CLI or VS Code, that a virtual enviro
 
 ```bash
 python -m venv .venv
-.venv/bin/activate # Linux
+source .venv/bin/activate # Linux
 .venv/Scripts/Activate.ps1 # Windows
 pip install -r requirements.txt
 pip install -r test_requirements.txt
