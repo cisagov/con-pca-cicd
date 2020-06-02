@@ -5,27 +5,24 @@ from api.serializers.customer_serializers import (
     CustomerPostResponseSerializer,
     CustomerPatchSerializer,
     CustomerPatchResponseSerializer,
-    CustomerDeleteResponseSerializer
+    CustomerDeleteResponseSerializer,
 )
-
-from api.models.customer_models import CustomerContactModel
-
 
 from datetime import datetime
 from uuid import uuid4
-import json
+
 
 class TestCustomerContactSerializer:
     def test_serializer(self):
         data = {
-            'first_name': 'firstname',
-            'last_name': 'lastname',
-            'title': 'title',
-            'office_phone': '111-222-3333',
-            'mobile_phone': '444-555-6666',
-            'email': 'email@email.com',
-            'notes': 'notes',
-            'active': True
+            "first_name": "firstname",
+            "last_name": "lastname",
+            "title": "title",
+            "office_phone": "111-222-3333",
+            "mobile_phone": "444-555-6666",
+            "email": "email@email.com",
+            "notes": "notes",
+            "active": True,
         }
 
         serializer = CustomerContactSerializer(data=data)
@@ -33,47 +30,55 @@ class TestCustomerContactSerializer:
 
     def test_serializer_null_active(self):
         data = {
-            'first_name': 'firstname',
-            'last_name': 'lastname',
-            'title': 'title',
-            'office_phone': '111-222-3333',
-            'mobile_phone': '444-555-6666',
-            'email': 'email@email.com',
-            'notes': 'notes',
-            'active': None
+            "first_name": "firstname",
+            "last_name": "lastname",
+            "title": "title",
+            "office_phone": "111-222-3333",
+            "mobile_phone": "444-555-6666",
+            "email": "email@email.com",
+            "notes": "notes",
+            "active": None,
         }
 
         serializer = CustomerContactSerializer(data=data)
         assert serializer.is_valid() is False
         assert len(serializer.errors) == 1
-        assert serializer.errors.get('active') is not None
+        assert serializer.errors.get("active") is not None
 
 
 class TestCustomerGetSerializer:
-    def create(self, customer_uuid=uuid4(), name='JimmyJohns', identifier='id', address_1='123 Street Street', address_2='456 Road Way', city='Citysburg', state='New Kansas', zip_code='12345', contact_list=[], created_by='Creator', cb_timestamp=datetime(1234, 5, 6), last_updated_by='Updater', lub_timestamp=datetime(9876, 5, 4)):
-        customer_get = CustomerGetSerializer()
-        customer_get.customer_uuid = customer_uuid
-        customer_get.name = name
-        customer_get.identifier = identifier
-        customer_get.address_1 = address_1
-        customer_get.address_2 = address_2
-        customer_get.city = city
-        customer_get.state = state
-        customer_get.zip_code = zip_code
-        customer_get.contact_list = contact_list
-        customer_get.created_by = created_by
-        customer_get.cb_timestamp = cb_timestamp
-        customer_get.last_updated_by = last_updated_by
-        customer_get.lub_timestamp = lub_timestamp
-        return customer_get
-
-    def test_creation(self):
-        cg = self.create()
-        assert isinstance(cg, CustomerGetSerializer) is True
+    def test_serializer(self):
+        data = {
+            "customer_uuid": uuid4(),
+            "name": "JimmyJohns",
+            "identifier": "id",
+            "address_1": "123 Street Street",
+            "address_2": "456 Road Way",
+            "city": "Citysburg",
+            "state": "New Kansas",
+            "zip_code": "12345",
+            "contact_list": [],
+            "created_by": "creator",
+            "cb_timestamp": datetime(1234, 5, 6),
+            "last_updated_by": "Updater",
+            "lub_timestamp": datetime(9876, 5, 4),
+        }
+        serializer = CustomerGetSerializer(data=data)
+        assert serializer.is_valid() is True
 
 
 class TestCustomerPostSerializer:
-    def create(self, name='JimmyJohns', identifier='id', address_1='123 Street Street', address_2='456 Road Way', city='Citysburg', state='New Kansas', zip_code='12345', contact_list=[]):
+    def create(
+        self,
+        name="JimmyJohns",
+        identifier="id",
+        address_1="123 Street Street",
+        address_2="456 Road Way",
+        city="Citysburg",
+        state="New Kansas",
+        zip_code="12345",
+        contact_list=[],
+    ):
         customer_post = CustomerPostSerializer()
         customer_post.name = name
         customer_post.identifier = identifier
@@ -102,7 +107,17 @@ class TestCustomerPostResponseSerializer:
 
 
 class TestCustomerPatchSerializer:
-    def create(self, name='jimmyjohns', identifier='id', address_1='123 Street Street', address_2='456 Road Way', city='Citysburg', state='New Kansas', zip_code='12345', contact_list=[]):
+    def create(
+        self,
+        name="jimmyjohns",
+        identifier="id",
+        address_1="123 Street Street",
+        address_2="456 Road Way",
+        city="Citysburg",
+        state="New Kansas",
+        zip_code="12345",
+        contact_list=[],
+    ):
         customer_patch = CustomerPatchSerializer()
         customer_patch.name = name
         customer_patch.identifier = identifier
@@ -120,7 +135,22 @@ class TestCustomerPatchSerializer:
 
 
 class TestCustomerPatchResponseSerializer:
-    def create(self, customer_uuid=uuid4(), name='JimmyJohns', identifier='id', address_1='123 Street Street', address_2='456 Road Way', city='Citysburg', state='New Kansas', zip_code='12345', contact_list=[], created_by='Creator', cb_timestamp=datetime(1234, 5, 6), last_updated_by='Updater', lub_timestamp=datetime(9876, 5, 4)):
+    def create(
+        self,
+        customer_uuid=uuid4(),
+        name="JimmyJohns",
+        identifier="id",
+        address_1="123 Street Street",
+        address_2="456 Road Way",
+        city="Citysburg",
+        state="New Kansas",
+        zip_code="12345",
+        contact_list=[],
+        created_by="Creator",
+        cb_timestamp=datetime(1234, 5, 6),
+        last_updated_by="Updater",
+        lub_timestamp=datetime(9876, 5, 4),
+    ):
         customer_patch_response = CustomerPatchResponseSerializer()
         customer_patch_response.customer_uuid = customer_uuid
         customer_patch_response.name = name
