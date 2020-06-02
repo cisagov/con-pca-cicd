@@ -1,21 +1,10 @@
-import pytest
 import api.models.template_models as tm
 import datetime
 import uuid
-from database.repository.models import Model
-from database.repository.types import (
-    BooleanType,
-    DateTimeType,
-    IntType,
-    ListType,
-    ModelType,
-    StringType,
-    UUIDType,
-)
+
 
 class TestTemplateAppearanceModel:
-    
-    def create(self, grammar = 1, link_domain = 1, logo_graphics = 1):
+    def create(self, grammar=1, link_domain=1, logo_graphics=1):
         template_appearance_model = tm.TemplateAppearanceModel()
         template_appearance_model.grammar = grammar
         template_appearance_model.link_domain = link_domain
@@ -24,17 +13,17 @@ class TestTemplateAppearanceModel:
 
     def test_creation(self):
         tam = self.create()
-        assert isinstance(tam, tm.TemplateAppearanceModel) 
+        assert isinstance(tam, tm.TemplateAppearanceModel)
 
     def test_validate_fields(self):
         tam = self.create()
-        assert isinstance(tam.grammar, int) 
+        assert isinstance(tam.grammar, int)
         assert isinstance(tam.link_domain, int)
         assert isinstance(tam.logo_graphics, int)
 
+
 class TestTemplateSenderModel:
-    
-    def create(self, external = 1, internal = 0, authoritative = 0):
+    def create(self, external=1, internal=0, authoritative=0):
         template_sender_model = tm.TemplateSenderModel()
         template_sender_model.external = external
         template_sender_model.internal = internal
@@ -43,7 +32,7 @@ class TestTemplateSenderModel:
 
     def test_creation(self):
         tsm = self.create()
-        assert isinstance(tsm, tm.TemplateSenderModel) 
+        assert isinstance(tsm, tm.TemplateSenderModel)
 
     def test_validate_fields(self):
         tsm = self.create()
@@ -51,9 +40,9 @@ class TestTemplateSenderModel:
         assert isinstance(tsm.internal, int)
         assert isinstance(tsm.authoritative, int)
 
+
 class TestTemplateRelevancyModel:
-    
-    def create(self, organization = 1, public_news = 1):
+    def create(self, organization=1, public_news=1):
         template_relevancy_model = tm.TemplateRelevancyModel()
         template_relevancy_model.organization = organization
         template_relevancy_model.public_news = public_news
@@ -61,16 +50,16 @@ class TestTemplateRelevancyModel:
 
     def test_creation(self):
         trm = self.create()
-        assert isinstance(trm, tm.TemplateRelevancyModel) 
+        assert isinstance(trm, tm.TemplateRelevancyModel)
 
     def test_validate_fields(self):
         trm = self.create()
         assert isinstance(trm.organization, int)
         assert isinstance(trm.public_news, int)
 
+
 class TestTemplateBehaviorModel:
-    
-    def create(self, fear = 1, duty_obligation = 1, curiosity = 0, greed = 0):
+    def create(self, fear=1, duty_obligation=1, curiosity=0, greed=0):
         template_behavior_model = tm.TemplateBehaviorModel()
         template_behavior_model.fear = fear
         template_behavior_model.duty_obligation = duty_obligation
@@ -89,9 +78,9 @@ class TestTemplateBehaviorModel:
         assert isinstance(tbm.curiosity, int)
         assert isinstance(tbm.greed, int)
 
+
 class TestTemplateImageModel:
-    
-    def create(self, file_name = "img.jpg", file_url = "https://fakeurl.com"):
+    def create(self, file_name="img.jpg", file_url="https://fakeurl.com"):
         template_image_model = tm.TemplateImageModel()
         template_image_model.file_name = file_name
         template_image_model.file_url = file_url
@@ -106,14 +95,35 @@ class TestTemplateImageModel:
         assert isinstance(tim.file_name, str)
         assert isinstance(tim.file_url, str)
 
+
 class TestTemplateModel:
-    
-    def create(self, template_uuid = str(uuid.uuid4()), gophish_template_id = 12942, name = "Test", template_type = "test template", deception_score = 2, 
-                descriptive_words = "test", description = "This is a test", image_list = [tm.TemplateImageModel()], from_address = "spoof address", 
-                retired = False, retired_description = "N/A", subject = "spoof email", text = "text", html = "html", topic_list = ["topic 1", "topic 2"],
-                appearance = tm.TemplateAppearanceModel(), sender = tm.TemplateSenderModel(), relavancy = tm.TemplateRelevancyModel(), 
-                behavior = tm.TemplateBehaviorModel(), complexity = 5, created_by = "creator", cb_timestamp = datetime.datetime.now(), last_updated_by = "updater",
-                lub_timestamp = datetime.datetime.now()):
+    def create(
+        self,
+        template_uuid=str(uuid.uuid4()),
+        gophish_template_id=12942,
+        name="Test",
+        template_type="test template",
+        deception_score=2,
+        descriptive_words="test",
+        description="This is a test",
+        image_list=[tm.TemplateImageModel()],
+        from_address="spoof address",
+        retired=False,
+        retired_description="N/A",
+        subject="spoof email",
+        text="text",
+        html="html",
+        topic_list=["topic 1", "topic 2"],
+        appearance=tm.TemplateAppearanceModel(),
+        sender=tm.TemplateSenderModel(),
+        relavancy=tm.TemplateRelevancyModel(),
+        behavior=tm.TemplateBehaviorModel(),
+        complexity=5,
+        created_by="creator",
+        cb_timestamp=datetime.datetime.now(),
+        last_updated_by="updater",
+        lub_timestamp=datetime.datetime.now(),
+    ):
         template_model = tm.TemplateModel()
         template_model.template_uuid = template_uuid
         template_model.gophish_template_id = gophish_template_id
@@ -131,7 +141,7 @@ class TestTemplateModel:
         template_model.html = html
         template_model.topic_list = topic_list
         template_model.appearance = appearance
-        template_model.sender = sender 
+        template_model.sender = sender
         template_model.relevancy = relavancy
         template_model.behavior = behavior
         template_model.complexity = complexity
@@ -171,9 +181,9 @@ class TestTemplateModel:
         assert isinstance(template_model.cb_timestamp, datetime.datetime)
         assert isinstance(template_model.last_updated_by, str)
         assert isinstance(template_model.lub_timestamp, datetime.datetime)
-        
-class TestValidateTemplate:
 
+
+class TestValidateTemplate:
     def test_validate_template(self):
         test_model = TestTemplateModel()
         data_object = test_model.create()
