@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { SubscriptionService } from 'src/app/services/subscription.service';
 import { LayoutMainService } from 'src/app/services/layout-main.service';
 import { Subscription } from 'src/app/models/subscription.model';
@@ -27,9 +27,9 @@ export class SubscriptionsComponent implements OnInit {
     "start_date",
     "last_updated",
     "active",
-    "select"
   ];
 
+  showArchived: boolean = false;
 
   constructor(
     private subscription_service: SubscriptionService,
@@ -47,20 +47,19 @@ export class SubscriptionsComponent implements OnInit {
   }
 
   refresh() {
-    this.subscription_service.getSubscriptions().subscribe((data: any[]) => {
+    this.subscription_service.getSubscriptions(this.showArchived).subscribe((data: any[]) => {
       let subscriptions = data as Subscription[]
       this.customer_service.getCustomers().subscribe((data: any[]) => {
         let customers = data as Customer[]
         let customerSubscriptions: ICustomerSubscription[] = []
         subscriptions.map((s: Subscription) => {
-          if (!s.archived) {
-            let customerSubscription: ICustomerSubscription = {
-              customer: customers.find(o => o.customer_uuid == s.customer_uuid),
-              subscription: s
-            }
-            customerSubscriptions.push(customerSubscription);
+          let customerSubscription: ICustomerSubscription = {
+            customer: customers.find(o => o.customer_uuid == s.customer_uuid),
+            subscription: s
           }
+          customerSubscriptions.push(customerSubscription);
         })
+        console.log(customerSubscriptions)
         this.data_source.data = customerSubscriptions
       })
     })
@@ -87,5 +86,14 @@ export class SubscriptionsComponent implements OnInit {
   public searchFilter(searchValue: string): void {
     const filterValue = (event.target as HTMLInputElement).value;
     this.data_source.filter = filterValue.trim().toLowerCase();
+  }
+
+  public onArchiveToggle(): void {
+    if (this.displayed_columns.includes('archived')) {
+      this.displayed_columns.pop()
+    } else {
+      this.displayed_columns.push('archived')
+    }
+    this.refresh()
   }
 }

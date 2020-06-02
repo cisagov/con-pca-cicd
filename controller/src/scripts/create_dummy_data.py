@@ -66,10 +66,13 @@ def main():
         except requests.exceptions.HTTPError as err:
             raise err
 
-        resp_json = resp.json()
-        created_customer_uuid = resp_json["customer_uuid"]
-        print("created customer_uuid: {}".format(created_customer_uuid))
-        created_customer_uuids.append(created_customer_uuid)
+        try:
+            resp_json = resp.json()
+            created_customer_uuid = resp_json["customer_uuid"]
+            print("created customer_uuid: {}".format(created_customer_uuid))
+            created_customer_uuids.append(created_customer_uuid)
+        except:
+            pass
 
     print("Step 3/3: create subscriptions...")
 
@@ -94,6 +97,7 @@ def main():
             )
             resp.raise_for_status()
         except requests.exceptions.HTTPError as err:
+            print(err)
             raise err
 
         resp_json = resp.json()

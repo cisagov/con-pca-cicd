@@ -174,8 +174,8 @@ class SubscriptionModel(Model):
     templates_selected_uuid_list = ListType(StringType)
     active = BooleanType()
     active_task = BooleanType()
-    archived = BooleanType()
-    manually_stopped = BooleanType()
+    archived = BooleanType(default=False)
+    manually_stopped = BooleanType(default=False)
     # db data tracking added below
     created_by = StringType()
     cb_timestamp = DateTimeType()
