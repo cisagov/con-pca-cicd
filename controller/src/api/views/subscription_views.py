@@ -22,6 +22,7 @@ from api.serializers.subscriptions_serializers import (
     SubscriptionPostResponseSerializer,
     SubscriptionPostSerializer,
 )
+from api.utils import subscription_utils
 from api.utils.db_utils import (
     delete_single,
     get_list,
@@ -31,11 +32,8 @@ from api.utils.db_utils import (
 )
 from api.utils.subscription_utils import get_campaign_dates, target_list_divide
 from api.utils.template_utils import format_ztime, personalize_template
-
-from api.utils import subscription_utils
-
-from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
+from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -123,8 +121,9 @@ class SubscriptionsListView(APIView):
         ] = f"{customer['identifier']}.{customer['contact_list'][0]['first_name']}.{customer['contact_list'][0]['last_name']}.{first_increment}.{second_increment}"
 
         # Get all Email templates for calc
+        email_template_params = {"template_type": "Email", "retired": False}
         template_list = get_list(
-            {"template_type": "Email"}, "template", TemplateModel, validate_template
+            email_template_params, "template", TemplateModel, validate_template
         )
 
         # Get all Landning pages or defult
@@ -178,7 +177,7 @@ class SubscriptionsListView(APIView):
         first_name = post_data.get("primary_contact").get("first_name", "")
         last_name = post_data.get("primary_contact").get("last_name", "")
         # get User Groups
-        user_groups = campaign_manager.get("user_group")
+        # user_groups = campaign_manager.get("user_group")
 
         # create campaigns
         group_number = 0
@@ -361,19 +360,15 @@ class SubscriptionView(APIView):
                     groups_to_delete.add(group["id"])
             for id in groups_to_delete:
                 try:
-                    group_del_result = campaign_manager.delete(
-                        "user_group", group_id=id
-                    )
-                except:
-                    print(f"failed to delete group ")
+                    campaign_manager.delete("user_group", group_id=id)
+                except Exception as error:
+                    print("failed to delete group: {}".format(error))
             # Delete Templates
-            template_del_result = campaign_manager.delete(
+            campaign_manager.delete(
                 "email_template", template_id=campaign["email_template_id"]
             )
             # Delete Campaigns
-            campaign_del_result = campaign_manager.delete(
-                "campaign", campaign_id=campaign["campaign_id"]
-            )
+            campaign_manager.delete("campaign", campaign_id=campaign["campaign_id"])
         # Delete Groups
         for group_id in groups_to_delete:
             campaign_manager.delete("user_group", group_id=group_id)
@@ -439,13 +434,19 @@ class SubscriptionsTemplateListView(APIView):
 
 
 class SubscriptionStopView(APIView):
+    """
+    This is the SubscriptionStopView APIView.
+
+    This handles the API to stop a Subscription using subscription_uuid.
+    """
+
     @swagger_auto_schema(
         responses={"202": SubscriptionPatchResponseSerializer, "400": "Bad Request"},
         operation_id="Endpoint for manually stopping a subscription",
         operation_description="Endpoint for manually stopping a subscription",
     )
     def get(self, request, subscription_uuid):
-
+        """Get method."""
         # get subscription
         subscription = get_single(
             subscription_uuid, "subscription", SubscriptionModel, validate_subscription
