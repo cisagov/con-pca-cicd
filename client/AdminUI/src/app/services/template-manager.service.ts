@@ -11,11 +11,15 @@ const headers = {
 
 @Injectable()
 export class TemplateManagerService {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   //GET a list of all templates
-  getAllTemplates() {
-    return this.http.get(`${environment.apiEndpoint}/api/v1/templates`, headers);
+  getAllTemplates(retired: boolean = false) {
+    let url = `${environment.apiEndpoint}/api/v1/templates/`
+    if (retired) {
+      url = `${url}?retired=true`
+    }
+    return this.http.get(url, headers);
   }
 
   // getAllTemplates() {
@@ -86,17 +90,17 @@ export class TemplateManagerService {
     });
   }
   deleteTemplate(template: Template) {
-    return new Promise((resolve,reject) => {
+    return new Promise((resolve, reject) => {
       this.http
-      .delete(`${environment.apiEndpoint}/api/v1/template/${template.template_uuid}/`)
-      .subscribe(
-        success => {
-          resolve(success);
-        },
-        error => {
-          reject(error)
-        }
-      )
+        .delete(`${environment.apiEndpoint}/api/v1/template/${template.template_uuid}/`)
+        .subscribe(
+          success => {
+            resolve(success);
+          },
+          error => {
+            reject(error)
+          }
+        )
     })
   }
 
