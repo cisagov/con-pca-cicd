@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "corsheaders",
+    'storages',
     # third party
     "rest_framework",
     "drf_yasg",
@@ -169,3 +170,12 @@ CELERY_IGNORE_RESULT = False
 GP_URL = os.environ.get("GP_URL", "")
 GP_API_KEY = os.environ.get("GP_API_KEY", "")
 PHISH_URL = os.environ.get("PHISH_URL", "")
+
+# AWS
+AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID")
+AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_KEY")
+DEFAULT_FILE_STORAGE = os.environ.get("DEFAULT_FILE_STORAGE")
+AWS_STORAGE_BUCKET_NAME = os.environ.get("AWS_STORAGE_BUCKET_NAME")
+AWS_STORAGE_BUCKET_IMAGES_NAME = os.environ.get("AWS_STORAGE_BUCKET_IMAGES_NAME")
+AWS_S3_REGION_NAME = os.environ.get("AWS_S3_REGION_NAME")
+AWS_S3_FILE_OVERWRITE = False

@@ -11,7 +11,7 @@ from api.models.template_models import TemplateModel, validate_template
 from api.models.subscription_models import SubscriptionModel, validate_subscription
 from api.serializers.subscriptions_serializers import (
     SubscriptionPatchSerializer,
-    SubscriptionGetSerializer
+    SubscriptionGetSerializer,
 )
 from api.manager import CampaignManager
 
@@ -33,6 +33,7 @@ from api.utils.db_utils import (
 )
 from api.utils import subscription_utils
 from drf_yasg.utils import swagger_auto_schema
+from drf_yasg import openapi
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -40,6 +41,7 @@ from rest_framework.views import APIView
 logger = logging.getLogger(__name__)
 
 campaign_manager = CampaignManager()
+
 
 class TemplatesListView(APIView):
     """
@@ -53,10 +55,22 @@ class TemplatesListView(APIView):
         security=[],
         operation_id="List of Templates",
         operation_description="This handles the API to get a List of Templates.",
+        manual_parameters=[
+            openapi.Parameter(
+                "retired",
+                openapi.IN_QUERY,
+                description="Show retired templates",
+                type=openapi.TYPE_BOOLEAN,
+                default=False,
+            )
+        ],
     )
     def get(self, request):
         """Get method."""
-        parameters = request.data.copy()
+        parameters = {"retired": False}
+        if request.GET.get("retired") == "true":
+            parameters.pop("retired", None)
+
         template_list = get_list(
             parameters, "template", TemplateModel, validate_template
         )
@@ -166,26 +180,32 @@ class TemplateStopView(APIView):
     def get(self, request, template_uuid):
         # get subscriptions
         parameters = {"templates_selected_uuid_list": template_uuid}
-        subscriptions = get_list(parameters, "subscription", SubscriptionModel, validate_subscription)
-        
+        subscriptions = get_list(
+            parameters, "subscription", SubscriptionModel, validate_subscription
+        )
+
         # Stop subscriptions
-        updated_subscriptions = list(map(subscription_utils.stop_subscription, subscriptions))
+        updated_subscriptions = list(
+            map(subscription_utils.stop_subscription, subscriptions)
+        )
 
         # Get template
-        template = get_single(template_uuid, "template", TemplateModel, validate_template)
+        template = get_single(
+            template_uuid, "template", TemplateModel, validate_template
+        )
 
         # Update template
-        template['retired'] = True
-        template['retired_description'] = 'Manually Stopped'
+        template["retired"] = True
+        template["retired_description"] = "Manually Stopped"
         updated_template = update_single(
             uuid=template_uuid,
             put_data=TemplatePatchSerializer(template).data,
             collection="template",
             model=TemplateModel,
-            validation_model=validate_template
+            validation_model=validate_template,
         )
 
         # Generate and return response
-        resp = {'template': updated_template, 'subscriptions': updated_subscriptions}
+        resp = {"template": updated_template, "subscriptions": updated_subscriptions}
         serializer = TemplateStopResponseSerializer(resp)
         return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
