@@ -1,33 +1,35 @@
 from api.serializers.campaign_serializers import CampaignSerializer
 
+
 def create(
-        id,
-        name,
-        created_date,
-        launch_date,
-        send_by_date,
-        completed_by_date,
-        status,
-        url,
-        results,
-        group,
-        timeline,
-    ):
-        data = {
-            "id": id,
-            "name": name,
-            "created_date": created_date,
-            "launch_date": launch_date,
-            "send_by_date": send_by_date,
-            "completed_date": completed_by_date,
-            "status": status,
-            "url": url,
-            "results": results,
-            "groups": group,
-            "timeline": timeline,
-        }
-        serializer = CampaignSerializer(data=data)
-        return serializer
+    id,
+    name,
+    created_date,
+    launch_date,
+    send_by_date,
+    completed_by_date,
+    status,
+    url,
+    results,
+    group,
+    timeline,
+):
+    data = {
+        "id": id,
+        "name": name,
+        "created_date": created_date,
+        "launch_date": launch_date,
+        "send_by_date": send_by_date,
+        "completed_date": completed_by_date,
+        "status": status,
+        "url": url,
+        "results": results,
+        "groups": group,
+        "timeline": timeline,
+    }
+    serializer = CampaignSerializer(data=data)
+    return serializer
+
 
 def test_creation():
     serializer = create(
@@ -46,6 +48,7 @@ def test_creation():
     assert isinstance(serializer, CampaignSerializer)
     serializer.is_valid()
     assert len(serializer.errors) == 0
+
 
 def test_serializer_missing_name_field():
     data = {

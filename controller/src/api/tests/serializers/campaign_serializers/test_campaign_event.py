@@ -1,9 +1,11 @@
 from api.serializers.campaign_serializers import CampaignEventSerializer
 
+
 def create(email, time, message, details):
-        data = {"email": email, "time": time, "message": message, "details": details}
-        serializer = CampaignEventSerializer(data=data)
-        return serializer
+    data = {"email": email, "time": time, "message": message, "details": details}
+    serializer = CampaignEventSerializer(data=data)
+    return serializer
+
 
 def test_creation():
     serializer = create(
