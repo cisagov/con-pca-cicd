@@ -111,7 +111,7 @@ class TemplateModel(Model):
     description = StringType()
     image_list = ListType(ModelType(TemplateImageModel))
     from_address = StringType()
-    retired = BooleanType()
+    retired = BooleanType(default=False)
     retired_description = StringType()
     subject = StringType()
     text = StringType()
@@ -129,7 +129,6 @@ class TemplateModel(Model):
     cb_timestamp = DateTimeType()
     last_updated_by = StringType()
     lub_timestamp = DateTimeType()
-    
 
 
 def validate_template(data_object):

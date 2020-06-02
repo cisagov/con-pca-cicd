@@ -34,6 +34,7 @@ export class CustomerSubscriptionsComponent implements OnInit {
       "active",
       "start_date",
       "lub_timestamp",
+      "inspect",
     ]
 
     constructor(

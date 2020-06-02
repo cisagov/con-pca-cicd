@@ -18,15 +18,16 @@
     </ng-container>
     <ng-container matColumnDef="lub_timestamp" >
         <mat-header-cell *matHeaderCellDef mat-sort-header>Last Updated</mat-header-cell>
+        <mat-cell *matCellDef="let row">{{row.lub_timestamp}}</mat-cell>
+    </ng-container>
+    <ng-container matColumnDef="inspect" >
+        <mat-header-cell *matHeaderCellDef>Inspect</mat-header-cell>
         <mat-cell *matCellDef="let row">
         <button mat-icon-button color="primary" [routerLink]="['/view-subscription', row.subscription_uuid]">
             <mat-icon>list</mat-icon>
-        </button></mat-cell>
+        </button>
+        </mat-cell>
     </ng-container>
-    <!-- <ng-container matColumnDef="inspect" >
-        <mat-header-cell *matHeaderCellDef>Inspect</mat-header-cell>
-        <mat-cell *matCellDef="let row">{{openSubscription(row.subscription_uuid)}}</mat-cell>
-    </ng-container> -->
 
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
     <mat-row class="table-row" *matRowDef="let row; columns: displayedColumns"></mat-row>
