@@ -11,13 +11,16 @@ import { MyErrorStateMatcher } from 'src/app/helper/ErrorStateMatcher';
 import { LayoutMainService } from 'src/app/services/layout-main.service';
 import { TemplateManagerService } from 'src/app/services/template-manager.service';
 import { Template } from 'src/app/models/template.model';
+import { Subscription as PcaSubscription } from 'src/app/models/subscription.model';
 import { Subscription } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import $ from 'jquery';
 import 'src/app/helper/csvToArray';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { StopTemplateDialogComponent } from './stop-template-dialog/stop-template-dialog.component';
+import { SubscriptionService } from 'src/app/services/subscription.service';
 import { ConfirmComponent } from '../dialogs/confirm/confirm.component';
+
 
 @Component({
   selector: 'app-template-manager',
@@ -37,11 +40,16 @@ export class TemplateManagerComponent implements OnInit {
   matchFromAddress = new MyErrorStateMatcher();
   matchTemplateName = new MyErrorStateMatcher();
   matchTemplateHTML = new MyErrorStateMatcher();
-  //Subscriptions
+
+  //RxJS Subscriptions
   subscriptions = Array<Subscription>();
+
+  // Con-PCA Subscriptions for the current Template
+  pcaSubscriptions = new Array<PcaSubscription>();
 
   //config vars
   image_upload_url: string = `${environment.apiEndpoint}/api/v1/imageupload/`
+
 
   //Styling variables, required to properly size and display the angular-editor import
   body_content_height: number;
@@ -55,6 +63,7 @@ export class TemplateManagerComponent implements OnInit {
   constructor(
     private layoutSvc: LayoutMainService,
     private templateManagerSvc: TemplateManagerService,
+    private subscriptionSvc: SubscriptionService,
     private route: ActivatedRoute,
     private router: Router,
     public dialog: MatDialog
@@ -136,8 +145,15 @@ export class TemplateManagerComponent implements OnInit {
     this.templateManagerSvc
       .getTemplate(template_uuid).then(
         (success) => {
-          this.setTemplateForm(<Template>success)
-          this.templateId = success['template_uuid']
+          let t = <Template>success;
+
+          this.setTemplateForm(t)
+          this.templateId = t.template_uuid;
+
+          this.subscriptionSvc.getSubscriptionsByTemplate(t)
+            .subscribe((x: PcaSubscription[]) => {
+              this.pcaSubscriptions = x;
+            });
         },
         (error) => {
         }
@@ -314,6 +330,7 @@ export class TemplateManagerComponent implements OnInit {
       this.dialogRefConfirm = null;
     });
   }
+
 
   openStopTemplateDialog() {
     let template_to_stop = this.getTemplateFromForm(this.currentTemplateFormGroup)

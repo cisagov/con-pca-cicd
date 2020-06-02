@@ -248,7 +248,7 @@ def main(argv):
     all_possible_tags["percent"] = list(dict.fromkeys(all_possible_tags["percent"]))
     all_possible_tags["glet"] = list(dict.fromkeys(all_possible_tags["glet"]))
 
-    print("now walk over created templates in ../templetes/emails")
+    print("now walk over created templates in ../templates/emails")
     current_dir = os.path.dirname(os.path.abspath(__file__)).rsplit("/", 1)[0]
     template_dir = os.path.join(current_dir, "templates/emails")
     for (_, _, filenames) in os.walk(template_dir):
