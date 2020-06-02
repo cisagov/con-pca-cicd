@@ -91,11 +91,11 @@ def main():
     created_subcription_uuids = []
 
     for subscription in subscriptions:
-        print(subscription)
+        #print(subscription)
         # If testing data (identified by 'testing_customer'), get customer_uuid from db
         if "testing_customer_identifier" in subscription.keys():       
             existing_customers = requests.get("http://localhost:8000/api/v1/customers/")
-            print(existing_customers.json())
+            #print(existing_customers.json())
             if existing_customers:
                 for customer in existing_customers.json():
                     if customer["identifier"] == subscription["testing_customer_identifier"]:

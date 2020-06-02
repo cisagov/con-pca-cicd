@@ -1,5 +1,5 @@
 """
-This is an models file.
+This is a models file.
 
 Here we create create the Base Model class for creating db models to inserting into db.
 This helps up control type and validation for json object.
