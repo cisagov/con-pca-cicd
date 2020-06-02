@@ -24,9 +24,15 @@ def get_campaign_dates(start_date_string):
     Using given start date,
     genereate the 3 campaign dates in 30 days increments.
     """
-    start_date = datetime.strptime(
-        start_date_string, "%Y-%m-%dT%H:%M:%S"
-    )  # Format inbound 2020-03-10T09:30:25
+    try:
+        start_date = datetime.strptime(
+            start_date_string, "%Y-%m-%dT%H:%M:%S"
+        )  # Format inbound 2020-03-10T09:30:25
+    except:
+        start_date = datetime.strptime(
+            start_date_string, "%Y-%m-%dT%H:%M:%S.%fZ"
+        )  # Format inbound 2020-03-10T09:30:25.227Z
+
     sixty_days = timedelta(days=60)
     # your calculated date
     # start: start_date
