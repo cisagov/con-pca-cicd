@@ -16,9 +16,11 @@ import { Subscription } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import $ from 'jquery';
 import 'src/app/helper/csvToArray';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { StopTemplateDialogComponent } from './stop-template-dialog/stop-template-dialog.component';
 import { SubscriptionService } from 'src/app/services/subscription.service';
+import { ConfirmComponent } from '../dialogs/confirm/confirm.component';
+
 
 @Component({
   selector: 'app-template-manager',
@@ -26,6 +28,8 @@ import { SubscriptionService } from 'src/app/services/subscription.service';
   templateUrl: './template-manager.component.html'
 })
 export class TemplateManagerComponent implements OnInit {
+  dialogRefConfirm: MatDialogRef<ConfirmComponent>;
+
   //Full template list variables
   search_input: string;
 
@@ -304,18 +308,27 @@ export class TemplateManagerComponent implements OnInit {
   }
 
   deleteTemplate() {
-    let template_to_delete = this.getTemplateFromForm(this.currentTemplateFormGroup)
-    if (window.confirm(`Are you sure you want to delete ${template_to_delete.name}?`)) {
-      this.templateManagerSvc.deleteTemplate(template_to_delete)
-        .then(
-          (success) => {
-            // this.updateTemplateInList(<Template>success)
-            // this.setEmptyTemplateForm()
-            this.router.navigate(['/templatespage']);
-          },
-          (error) => { }
-        )
-    }
+    let template_to_delete = this.getTemplateFromForm(this.currentTemplateFormGroup);
+
+    this.dialogRefConfirm = this.dialog.open(ConfirmComponent, { disableClose: false });
+    this.dialogRefConfirm.componentInstance.confirmMessage =
+      `Are you sure you want to delete ${template_to_delete.name}?`;
+    this.dialogRefConfirm.componentInstance.title = 'Confirm Delete';
+
+    this.dialogRefConfirm.afterClosed().subscribe(result => {
+      if (result) {
+        this.templateManagerSvc.deleteTemplate(template_to_delete)
+          .then(
+            (success) => {
+              // this.updateTemplateInList(<Template>success)
+              // this.setEmptyTemplateForm()
+              this.router.navigate(['/templates']);
+            },
+            (error) => { }
+          )
+      }
+      this.dialogRefConfirm = null;
+    });
   }
 
 
