@@ -1,99 +1,79 @@
 from api.serializers.subscriptions_serializers import SubscriptionPostSerializer
+from faker import Faker
 
-from datetime import datetime
-from uuid import uuid4
+fake = Faker()
 
 
-def create(
-    customer_uuid,
-    name,
-    url,
-    keywords,
-    start_date,
-    gophish_campaign_list,
-    primary_contact,
-    status,
-    target_email_list,
-    templates_selected_uuid_list,
-    active,
-    archived,
-    manually_stopped,
-):
+def test_serializer():
     data = {
-        "customer_uuid": customer_uuid,
-        "name": name,
-        "url": url,
-        "keywords": keywords,
-        "start_date": start_date,
-        "gophish_campaign_list": gophish_campaign_list,
-        "primary_contact": primary_contact,
-        "status": status,
-        "target_email_list": target_email_list,
-        "templates_selected_uuid_list": templates_selected_uuid_list,
-        "active": active,
-        "archived": archived,
-        "manually_stopped": manually_stopped,
+        "customer_uuid": fake.uuid4(),
+        "name": fake.name(),
+        "url": fake.url(),
+        "keywords": " ".join(fake.words()),
+        "start_date": fake.date_time(),
+        "end_date": fake.date_time(),
+        "gophish_campaign_list": [],
+        "primary_contact": {
+            "first_name": fake.first_name(),
+            "last_name": fake.last_name(),
+            "title": fake.job(),
+            "office_phone": fake.phone_number(),
+            "mobile_phone": fake.phone_number(),
+            "email": fake.email(),
+            "notes": fake.paragraph(),
+            "active": fake.boolean(),
+        },
+        "status": fake.word(),
+        "target_email_list": [
+            {
+                "first_name": fake.first_name(),
+                "last_name": fake.last_name(),
+                "email": fake.email(),
+                "position": fake.job(),
+            }
+        ],
+        "templates_selected_uuid_list": [],
+        "active": fake.boolean(),
+        "archived": fake.boolean(),
+        "manually_stopped": fake.boolean(),
     }
     serializer = SubscriptionPostSerializer(data=data)
-    return serializer
-
-
-def test_creation():
-    customer_data = {
-        "first_name": "firstname",
-        "last_name": "lastname",
-        "title": "sometitle",
-        "office_phone": "(208)453-9032",
-        "mobile_phone": "(208)453-9032",
-        "email": "someemail@domain.com",
-        "notes": "somenotes",
-        "active": True,
-    }
-    serializer = create(
-        uuid4(),
-        "name",
-        "www.someurl.com",
-        "keywords",
-        datetime.now(),
-        [],
-        customer_data,
-        "status",
-        [],
-        [],
-        False,
-        False,
-        False,
-    )
     assert isinstance(serializer, SubscriptionPostSerializer)
     serializer.is_valid()
     assert len(serializer.errors) == 0
 
 
 def test_serializer_missing_fields():
-    customer_data = {
-        "first_name": "firstname",
-        "last_name": "lastname",
-        "title": "sometitle",
-        "office_phone": "(208)453-9032",
-        "mobile_phone": "(208)453-9032",
-        "email": "someemail@domain.com",
-        "notes": "somenotes",
-        "active": True,
-    }
-
     data = {
-        "customer_uuid": uuid4(),
+        "customer_uuid": fake.uuid4(),
         # missing name and url fields should return an invalid serializer
-        "keywords": "keywords",
-        "start_date": datetime.now(),
+        "keywords": " ".join(fake.words()),
+        "start_date": fake.date_time(),
+        "end_date": fake.date_time(),
         "gophish_campaign_list": [],
-        "primary_contact": customer_data,
-        "status": "status",
-        "target_email_list": [],
+        "primary_contact": {
+            "first_name": fake.first_name(),
+            "last_name": fake.last_name(),
+            "title": fake.job(),
+            "office_phone": fake.phone_number(),
+            "mobile_phone": fake.phone_number(),
+            "email": fake.email(),
+            "notes": fake.paragraph(),
+            "active": fake.boolean(),
+        },
+        "status": fake.word(),
+        "target_email_list": [
+            {
+                "first_name": fake.first_name(),
+                "last_name": fake.last_name(),
+                "email": fake.email(),
+                "position": fake.job(),
+            }
+        ],
         "templates_selected_uuid_list": [],
-        "active": True,
-        "archived": False,
-        "manually_stopped": False,
+        "active": fake.boolean(),
+        "archived": fake.boolean(),
+        "manually_stopped": fake.boolean(),
     }
     serializer = SubscriptionPostSerializer(data=data)
 
