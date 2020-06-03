@@ -1,19 +1,17 @@
 from api.serializers.campaign_serializers import CampaignGroupSerializer
+from faker import Faker
+
+fake = Faker()
 
 
-def create(id, name, targets, modified_date):
+def test_serializer():
     data = {
-        "id": id,
-        "name": name,
-        "targets": targets,
-        "modified_date": modified_date,
+        "id": fake.random_number(),
+        "name": fake.name(),
+        "targets": [],
+        "modified_date": fake.date_time(),
     }
     serializer = CampaignGroupSerializer(data=data)
-    return serializer
-
-
-def test_creation():
-    serializer = create(12943, "somename", [], "2020-03-29 10:26:23.473031")
     assert isinstance(serializer, CampaignGroupSerializer)
     assert serializer.is_valid()
     assert len(serializer.errors) == 0

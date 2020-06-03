@@ -38,7 +38,9 @@ class CustomerGetSerializer(serializers.Serializer):
     name = serializers.CharField(max_length=250)
     identifier = serializers.CharField(max_length=250)
     address_1 = serializers.CharField(max_length=250)
-    address_2 = serializers.CharField(max_length=250)
+    address_2 = serializers.CharField(
+        max_length=250, required=False, allow_blank=True, allow_null=True
+    )
     city = serializers.CharField(max_length=250)
     state = serializers.CharField(max_length=250)
     zip_code = serializers.CharField(max_length=250)
@@ -61,7 +63,7 @@ class CustomerPostSerializer(serializers.Serializer):
     name = serializers.CharField(max_length=250)
     identifier = serializers.CharField(max_length=250)
     address_1 = serializers.CharField(max_length=250)
-    address_2 = serializers.CharField(max_length=250)
+    address_2 = serializers.CharField(max_length=250, required=False)
     city = serializers.CharField(max_length=250)
     state = serializers.CharField(max_length=250)
     zip_code = serializers.CharField(max_length=250)
@@ -110,7 +112,9 @@ class CustomerPatchResponseSerializer(serializers.Serializer):
     name = serializers.CharField(max_length=250)
     identifier = serializers.CharField(max_length=250)
     address_1 = serializers.CharField(max_length=250)
-    address_2 = serializers.CharField(max_length=250)
+    address_2 = serializers.CharField(
+        max_length=250, required=False, allow_blank=True, allow_null=True
+    )
     city = serializers.CharField(max_length=250)
     state = serializers.CharField(max_length=250)
     zip_code = serializers.CharField(max_length=250)

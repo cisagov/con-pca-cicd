@@ -1,84 +1,24 @@
 from api.serializers.campaign_serializers import CampaignResultSerializer
+from faker import Faker
+
+fake = Faker()
 
 
-def create(
-    id,
-    first_name,
-    last_name,
-    position,
-    status,
-    ip,
-    latitude,
-    longitude,
-    send_date,
-    reported,
-):
+def test_serializer():
     data = {
-        "id": id,
-        "first_name": first_name,
-        "last_name": last_name,
-        "position": position,
-        "status": status,
-        "ip": ip,
-        "latitude": latitude,
-        "longitude": longitude,
-        "send_date": send_date,
-        "reported": reported,
+        "id": fake.random_number(),
+        "first_name": fake.first_name(),
+        "last_name": fake.last_name(),
+        "position": fake.job(),
+        "status": fake.word(),
+        "ip": fake.ipv4(),
+        "latitude": fake.latitude(),
+        "longitude": fake.longitude(),
+        "send_date": fake.date_time(),
+        "reported": fake.boolean(),
     }
-    serilaizer = CampaignResultSerializer(data=data)
-    return serilaizer
-
-
-def test_creation():
-    serializer = create(
-        "12345",
-        "firstname",
-        "lastname",
-        "someposition",
-        "inactive",
-        "1.1.1.1",
-        38.9432,
-        -77.8951,
-        "2020-03-29 10:26:23.473031",
-        True,
-    )
+    serializer = CampaignResultSerializer(data=data)
     assert isinstance(serializer, CampaignResultSerializer)
     assert serializer.is_valid()
     assert len(serializer.errors) == 0
     assert serializer.errors.get("active") is None
-
-
-def test_serializer_missing_reported_field():
-    data = {
-        "id": 12345,
-        "first_name": "firstname",
-        "last_name": "lastname",
-        "position": "someposition",
-        "status": "inactive",
-        "ip": "1.1.1.1",
-        "latitude": 38.9432,
-        "longitude": -77.8951,
-        "send_date": "2020-03-29 10:26:23.473031",
-    }
-    serializer = CampaignResultSerializer(data=data)
-    assert serializer.is_valid()
-    assert len(serializer.errors) == 0
-    assert serializer.errors.get("reported") is None
-
-
-def test_serializer_missing_send_date_field():
-    data = {
-        "id": 12345,
-        "first_name": "firstname",
-        "last_name": "lastname",
-        "position": "someposition",
-        "status": "inactive",
-        "ip": "1.1.1.1",
-        "latitude": 38.9432,
-        "longitude": -77.8951,
-        "reported": False,
-    }
-    serializer = CampaignResultSerializer(data=data)
-    assert serializer.is_valid()
-    assert len(serializer.errors) == 0
-    assert serializer.errors.get("send_date") is None
