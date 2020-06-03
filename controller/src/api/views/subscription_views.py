@@ -66,18 +66,32 @@ class SubscriptionsListView(APIView):
                 description="Show archived subscriptions",
                 type=openapi.TYPE_BOOLEAN,
                 default=False,
+            ),
+            openapi.Parameter(
+                "template",
+                openapi.IN_QUERY,
+                description="Show only subscriptions that are using a template",
+                type=openapi.TYPE_STRING                
             )
         ],
     )
     def get(self, request):
         """Get method."""
-        parameters = {"archived": False}
-        if request.GET.get("archived") == "true":
-            parameters.pop("archived", None)
+        parameters = {"archived": {"$in": [False, None]}}
+
+        archivedParm = request.GET.get("archived")
+        if archivedParm:
+            if archivedParm.lower() == "false":
+                archivedParm = {"$in": [False, None]}            
+            parameters["archived"] = archivedParm
+
+        if request.GET.get("template"):
+            parameters["templates_selected_uuid_list"] = request.GET.get("template")
 
         subscription_list = get_list(
             parameters, "subscription", SubscriptionModel, validate_subscription
         )
+
         serializer = SubscriptionGetSerializer(subscription_list, many=True)
         return Response(serializer.data)
 

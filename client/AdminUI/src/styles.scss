@@ -337,6 +337,14 @@ $altTheme: mat-dark-theme($theme-primary, $theme-accent, $theme-warn);
   color:  $light-text !important;
 }
 
+.mat-row:hover {
+  background-color: #eeeeee;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
 .header-logo-background{
   background-color:#3c6f8e;
   border-right:lighten(#3c6f8e, 5%) 1px solid;
