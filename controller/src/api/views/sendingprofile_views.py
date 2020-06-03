@@ -12,7 +12,8 @@ from api.models.customer_models import CustomerModel, validate_customer
 from api.models.subscription_models import SubscriptionModel, validate_subscription
 from api.models.template_models import TemplateModel, validate_template
 from api.serializers.sendingprofile_serializers import (
-    SendingProfileSerializer, SendingProfilePatchSerializer, SendingProfilePatchResponseSerializer
+    SendingProfileSerializer, SendingProfilePatchSerializer, SendingProfilePatchResponseSerializer,
+    SendingProfileDeleteSerializer, SendingProfileDeleteResponseSerializer
 )
 from api.utils.db_utils import (
     delete_single,
@@ -127,6 +128,23 @@ class SendingProfileView(APIView):
         serializer = SendingProfileSerializer(sending_profile)
         return Response(serializer.data)
 
+    """
+    This is the SendingProfileView APIView.
+    This handles the API for PATCHing a Sending Profile with id.
+    https://localhost:3333/api/smtp/:id
+    """
+    @swagger_auto_schema(
+        request_body=SendingProfileDeleteSerializer,
+        responses={"202": SendingProfileDeleteResponseSerializer,
+                   "400": "Bad Request"},
+        security=[],
+        operation_id="Delete single Sending Profile",
+        operation_description="This handles the API for the Delete Sending Profile with uuid.",
+    )
+    def delete(self, request, id):
+        delete_response = campaign_manager.delete("sending_profile", smtp_id=id)
+        serializer = SendingProfileDeleteResponseSerializer(delete_response)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
     def __setAttribute(self, orig, d, attrName):
         if attrName in d:

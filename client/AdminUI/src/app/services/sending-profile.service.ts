@@ -42,12 +42,21 @@ export class SendingProfileService {
   public saveProfile(sp: SendingProfile) {
     if (!sp.id) {
       // if new, post
-      let url = `${environment.apiEndpoint}/api/v1/sendingprofiles/`
+      let url = `${environment.apiEndpoint}/api/v1/sendingprofiles/`;
       return this.http.post(url, sp);
     } else {
       // else patch
-      let url = `${environment.apiEndpoint}/api/v1/sendingprofile/${sp.id}/`
+      let url = `${environment.apiEndpoint}/api/v1/sendingprofile/${sp.id}/`;
       return this.http.patch(url, sp);
     }
+  }
+
+  /**
+   * 
+   * @param sp 
+   */
+  public deleteProfile(spId: number) {
+    let url = `${environment.apiEndpoint}/api/v1/sendingprofile/${spId}`;
+    return this.http.delete(url);
   }
 }

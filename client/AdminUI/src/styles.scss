@@ -269,6 +269,29 @@ $altTheme: mat-dark-theme($theme-primary, $theme-accent, $theme-warn);
 
 // Specific component overrides, pieces that are not in line with the general theming
 
+.mat-button.mat-primary,
+.mat-stroked-button.mat-primary {
+    color: #ffffff !important;
+    background-color: #29Ab87 !important;
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out !important;
+}
+.mat-button.mat-primary:hover,
+.mat-stroked-button.mat-success:hover {
+  background-color: #ffffff !important;
+}
+
+.mat-raised-button.mat-primary,
+.mat-flat-button.mat-primary,
+.mat-fab.mat-primary,
+.mat-mini-fab.mat-primary {
+  color: #f0fff3 !important;
+  background-color: #29Ab87 !important;
+}
+
+.mat-icon-button.mat-primary {
+  color:#29Ab87 !important;
+}
+
 // Handle buttons appropriately, with respect to line-height
 .mat-drawer-container{
   background-color:lighten(#c5d4dd, 10%);

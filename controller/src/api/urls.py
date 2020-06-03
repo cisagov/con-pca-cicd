@@ -12,6 +12,7 @@ from api.views import (
     template_views,
     sendingprofile_views,
     webhook_views,
+    image_views,
 )
 from django.urls import path
 from drf_yasg import openapi
@@ -65,17 +66,22 @@ urlpatterns = [
     path(
         "v1/subscription/template/<template_uuid>/",
         subscription_views.SubscriptionsTemplateListView.as_view(),
-        name="subscriptions_template_get_api"
+        name="subscriptions_template_get_api",
     ),
     path(
         "v1/subscription/stop/<subscription_uuid>/",
         subscription_views.SubscriptionStopView.as_view(),
-        name="subscription_stop_api"
+        name="subscription_stop_api",
     ),
     path(
         "v1/reports/<subscription_uuid>/",
         report_views.ReportsView.as_view(),
         name="reports_get_api",
+    ),
+    path(
+        "v1/reports/<subscription_uuid>/pdf/",
+        report_views.ReportsPDFView.as_view(),
+        name="reports_get_pdf_api",
     ),
     path(
         "v1/templates/",
@@ -124,5 +130,10 @@ urlpatterns = [
         "v1/inboundwebhook/",
         webhook_views.IncomingWebhookView.as_view(),
         name="inbound_webhook_api",
+    ),
+    path(
+        "v1/imageupload/",
+        image_views.ImageView.as_view(),
+        name="image_upload",
     ),
 ]

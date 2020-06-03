@@ -5,9 +5,8 @@ These are Django Rest Framework Serializers. These are used for
 serializing data coming from the db into a request response.
 """
 # Third-Party Libraries
-from rest_framework import serializers
-
 from api.serializers.customer_serializers import CustomerContactSerializer
+from rest_framework import serializers
 
 
 class SubscriptionTargetSerializer(serializers.Serializer):
@@ -101,6 +100,7 @@ class GoPhishCampaignsSerializer(serializers.Serializer):
     timeline = GoPhishTimelineSerializer(many=True)
     target_email_list = SubscriptionTargetSerializer(many=True, required=False)
 
+
 # class GoPhishTemplateSerializer(serializers.Serializer):
 #     """
 #     This is the GoPhish Temaplates Serializer.
@@ -108,7 +108,6 @@ class GoPhishCampaignsSerializer(serializers.Serializer):
 #     This is a formats the data coming out of the Db.
 #     """
 #     template_id = serializers.IntegerField(required=False)
-    
 
 
 class SubscriptionGetSerializer(serializers.Serializer):
@@ -126,6 +125,7 @@ class SubscriptionGetSerializer(serializers.Serializer):
     url = serializers.CharField(required=True, max_length=100)
     keywords = serializers.CharField(max_length=100)
     start_date = serializers.DateTimeField()
+    end_date = serializers.DateTimeField()
     gophish_campaign_list = GoPhishCampaignsSerializer(many=True)
     primary_contact = CustomerContactSerializer()
     status = serializers.CharField(max_length=100)
@@ -153,6 +153,7 @@ class SubscriptionPostSerializer(serializers.Serializer):
     url = serializers.CharField(required=True, max_length=100)
     keywords = serializers.CharField(max_length=100)
     start_date = serializers.DateTimeField()
+    end_date = serializers.DateTimeField(required=False)
     gophish_campaign_list = GoPhishCampaignsSerializer(many=True)
     primary_contact = CustomerContactSerializer()
     status = serializers.CharField(max_length=100)
@@ -183,17 +184,17 @@ class SubscriptionPatchSerializer(serializers.Serializer):
     customer_uuid = serializers.UUIDField(required=False)
     name = serializers.CharField(required=False, max_length=100)
     url = serializers.CharField(required=False, max_length=100)
-    import ipdb; ipdb.set_trace()
-    keywords = serializers.CharField(max_length=100)
+    keywords = serializers.CharField(required=False, max_length=100)
     start_date = serializers.DateTimeField(required=False)
-    gophish_campaign_list = GoPhishCampaignsSerializer(many=True, required=False)
+    end_date = serializers.DateTimeField(required=False)
+    gophish_campaign_list = GoPhishCampaignsSerializer(required=False, many=True)
     primary_contact = CustomerContactSerializer(required=False)
-    status = serializers.CharField(max_length=100, required=False)
-    target_email_list = SubscriptionTargetSerializer(many=True, required=False)
+    status = serializers.CharField(required=False, max_length=100)
+    target_email_list = SubscriptionTargetSerializer(required=False, many=True)
     templates_selected_uuid_list = serializers.ListField(required=False)
     active = serializers.BooleanField(required=False)
-    archived = serializers.BooleanField(default=False)
-    manually_stopped = serializers.BooleanField(default=False)
+    archived = serializers.BooleanField(required=False, default=False)
+    manually_stopped = serializers.BooleanField(required=False, default=False)
 
 
 class SubscriptionPatchResponseSerializer(serializers.Serializer):
@@ -208,6 +209,7 @@ class SubscriptionPatchResponseSerializer(serializers.Serializer):
     url = serializers.CharField(required=False, max_length=100)
     keywords = serializers.CharField(max_length=100)
     start_date = serializers.DateTimeField()
+    end_date = serializers.DateTimeField()
     gophish_campaign_list = GoPhishCampaignsSerializer(many=True)
     primary_contact = CustomerContactSerializer()
     status = serializers.CharField(max_length=100)

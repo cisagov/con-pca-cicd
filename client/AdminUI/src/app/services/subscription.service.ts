@@ -34,8 +34,13 @@ export class SubscriptionService {
   /**
    * 
    */
-  public getSubscriptions() {
+  public getSubscriptions(archived: boolean = false) {
     let url = `${environment.apiEndpoint}/api/v1/subscriptions/`
+
+    if (archived) {
+      url = `${url}?archived=true`
+    }
+
     return this.http.get(url)
   }
 
