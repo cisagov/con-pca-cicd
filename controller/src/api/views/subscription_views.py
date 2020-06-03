@@ -85,8 +85,7 @@ class SubscriptionsListView(APIView):
 
     @swagger_auto_schema(
         request_body=SubscriptionPostSerializer,
-        responses={"201": SubscriptionPostResponseSerializer,
-                   "400": "Bad Request"},
+        responses={"201": SubscriptionPostResponseSerializer, "400": "Bad Request"},
         security=[],
         operation_id="Create Subscription",
         operation_description="This handles Creating a Subscription and launching a Campaign.",
@@ -181,10 +180,10 @@ class SubscriptionsListView(APIView):
             relevant_templates = []
 
         divided_templates = [
-            relevant_templates[x: x + 5] for x in range(0, len(relevant_templates), 5)
+            relevant_templates[x : x + 5] for x in range(0, len(relevant_templates), 5)
         ]
 
-        print('divided_templates: {0} items'.format(len(divided_templates)))
+        print("divided_templates: {0} items".format(len(divided_templates)))
 
         # Get the next date Intervals, if no startdate is sent, default today
         campaign_data_list = get_campaign_dates(start_date)
@@ -197,16 +196,18 @@ class SubscriptionsListView(APIView):
             template_data_list = [
                 x for x in template_list if x["template_uuid"] in template_group
             ]
-            templates = personalize_template(
-                customer, template_data_list, post_data)
+            templates = personalize_template(customer, template_data_list, post_data)
             template_personalized_list.append(templates)
 
         # divide emails
         target_list = post_data.get("target_email_list")
         target_div = target_list_divide(target_list)
         index = 0
-        print('template_personalized_list: {0} items'.format(
-            len(template_personalized_list)))
+        print(
+            "template_personalized_list: {0} items".format(
+                len(template_personalized_list)
+            )
+        )
         for campaign_info in campaign_data_list:
             try:
                 campaign_info["templates"] = template_personalized_list[index]
@@ -301,8 +302,7 @@ class SubscriptionsListView(APIView):
                     "status": campaign.status,
                     "results": [],
                     "groups": [
-                        campaign_serializers.CampaignGroupSerializer(
-                            target_group).data
+                        campaign_serializers.CampaignGroupSerializer(target_group).data
                     ],
                     "timeline": [
                         {
@@ -323,6 +323,7 @@ class SubscriptionsTemplateListView(APIView):
     """
     Returns a list of Subscriptions that are using a given Template
     """
+
     @swagger_auto_schema(
         responses={"200": SubscriptionGetSerializer, "400": "Bad Request"},
         security=[],
@@ -362,8 +363,7 @@ class SubscriptionView(APIView):
 
     @swagger_auto_schema(
         request_body=SubscriptionPatchSerializer,
-        responses={"202": SubscriptionPatchResponseSerializer,
-                   "400": "Bad Request"},
+        responses={"202": SubscriptionPatchResponseSerializer, "400": "Bad Request"},
         security=[],
         operation_id="Update and Patch single subscription",
         operation_description="This handles the API for the Update subscription with subscription_uuid.",
@@ -387,8 +387,7 @@ class SubscriptionView(APIView):
         return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
 
     @swagger_auto_schema(
-        responses={"200": SubscriptionDeleteResponseSerializer,
-                   "400": "Bad Request"},
+        responses={"200": SubscriptionDeleteResponseSerializer, "400": "Bad Request"},
         security=[],
         operation_id="Delete single subscription",
         operation_description="This handles the API for the Delete of a  subscription with subscription_uuid.",
@@ -477,8 +476,7 @@ class SubscriptionsTemplateListView(APIView):
     )
     def get(self, request, template_uuid):
         """Get method."""
-        parameters = {
-            "templates_selected_uuid_list": template_uuid, "archived": False}
+        parameters = {"templates_selected_uuid_list": template_uuid, "archived": False}
         subscription_list = get_list(
             parameters, "subscription", SubscriptionModel, validate_subscription
         )
@@ -494,8 +492,7 @@ class SubscriptionStopView(APIView):
     """
 
     @swagger_auto_schema(
-        responses={"202": SubscriptionPatchResponseSerializer,
-                   "400": "Bad Request"},
+        responses={"202": SubscriptionPatchResponseSerializer, "400": "Bad Request"},
         operation_id="Endpoint for manually stopping a subscription",
         operation_description="Endpoint for manually stopping a subscription",
     )
