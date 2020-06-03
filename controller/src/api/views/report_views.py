@@ -50,20 +50,26 @@ class ReportsView(APIView):
             subscription_uuid, "subscription", SubscriptionModel, validate_subscription
         )
         campaigns = subscription.get("gophish_campaign_list")
+        parameters = {
+            "template_uuid": {"$in": subscription["templates_selected_uuid_list"]}
+        }
         template_list = get_list(
-            subscription["templates_selected_uuid_list"],
-            "template",
-            TemplateModel,
-            validate_template,
+            parameters, "template", TemplateModel, validate_template,
         )
+
+        templates = {
+            template.get("name"): template.get("deception_score")
+            for template in template_list
+        }
         summary = [
             campaign_manager.get("summary", campaign_id=campaign.get("campaign_id"))
             for campaign in campaigns
         ]
+
         target_count = sum([targets.get("stats").get("total") for targets in summary])
         context = {
-            "subscription_uuid": subscription_uuid,
             "customer_name": subscription.get("name"),
+            "templates": templates,
             "start_date": summary[0].get("created_date"),
             "end_date": summary[0].get("send_by_date"),
             "target_count": target_count,
