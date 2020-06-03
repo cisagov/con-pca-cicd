@@ -12,6 +12,7 @@ import { CustomersComponent } from 'src/app/components/customers/customers.compo
 import { XlsxToCsv } from 'src/app/helper/XlsxToCsv';
 import { ArchiveSubscriptionDialogComponent } from '../archive-subscription-dialog/archive-subscription-dialog.component';
 import * as moment from 'node_modules/moment/moment';
+import { LayoutMainService } from 'src/app/services/layout-main.service';
 
 
 @Component({
@@ -59,9 +60,10 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private userSvc: UserService,
     public dialog: MatDialog,
-    public formBuilder: FormBuilder
+    public formBuilder: FormBuilder,
+    public layoutSvc: LayoutMainService
   ) {
-
+      layoutSvc.setTitle("Subscription");
   }
 
   /**
