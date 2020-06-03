@@ -1,5 +1,7 @@
 from api.serializers.template_serializers import TemplateAppearanceSerializer
+from faker import Faker
 
+fake = Faker()
 
 def create(grammar, link_domain, logo_graphics):
     data = {
@@ -12,6 +14,5 @@ def create(grammar, link_domain, logo_graphics):
 
 
 def test_creation():
-    serializer = create(1, 1, 1)
-    assert isinstance(serializer, TemplateAppearanceSerializer)
+    serializer = create(fake.random_number(), fake.random_number(), fake.random_number())
     assert serializer.is_valid()

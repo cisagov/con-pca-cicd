@@ -1,6 +1,7 @@
 from api.serializers.webhook_serializers import InboundWebhookSerializer
-from datetime import datetime
+from faker import Faker
 
+fake = Faker()
 
 def create(campaign_id, email, time, message, details):
     data = {
@@ -15,6 +16,7 @@ def create(campaign_id, email, time, message, details):
 
 
 def test_creation():
-    serializer = create(1, 'someemail@domain.com', datetime.now(), 'message', 'details')
+    serializer = create(fake.random_number(), fake.email(), fake.date_time(), fake.paragraph(), fake.paragraph())
     assert isinstance(serializer, InboundWebhookSerializer)
-    assert serializer.is_valid()
+    serializer.is_valid()
+    assert len(serializer.errors) == 0

@@ -1,6 +1,7 @@
 from api.serializers.template_serializers import TemplatePostResponseSerializer
-from uuid import uuid4
+from faker import Faker
 
+fake = Faker()
 
 def create(template_uuid):
     data = {'template_uuid': template_uuid}
@@ -9,7 +10,7 @@ def create(template_uuid):
 
 
 def test_creation():
-    serializer = create(uuid4())
+    serializer = create(fake.uuid4())
 
     assert isinstance(serializer, TemplatePostResponseSerializer)
     assert serializer.is_valid()

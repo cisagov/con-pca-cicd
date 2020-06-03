@@ -1,5 +1,7 @@
 from api.serializers.template_serializers import TemplatePatchSerializer, TEMPLATE_TYPE_CHOICES
+from faker import Faker
 
+fake = Faker()
 
 def create(name, template_type, deception_score, descriptive_words, description, image_list,
             from_address, retired, retired_description, subject, text, html, topic_list, 
@@ -30,13 +32,14 @@ def create(name, template_type, deception_score, descriptive_words, description,
 
 
 def test_creation():
-    image_data = {'file_name': 'img.jpg', 'file_url': 'someurl.com'}
-    appearance_data = {'grammar': 1, 'link_domain': 1, 'logo_graphics': 1}
-    sender_data = {'external': 1, 'internal': 0, 'authoritative': 1}
-    relevancy_data = {'organization': 1, 'public_news': 0}
-    behavior_data = {'fear': 1, 'duty_obligation': 0, 'curiosity': 0, 'greed': 0}
-    serializer = create('name', TEMPLATE_TYPE_CHOICES[0][0], 2, 'descriptive words', 'description', [image_data], 'someemail@domain.com', False, 'retired description',
-                        'subject', 'text', 'html', ['topic'], appearance_data, sender_data, relevancy_data, behavior_data, 3)
+    image_data = {'file_name': fake.file_name(), 'file_url': fake.image_url()}
+    appearance_data = {'grammar': fake.random_number(), 'link_domain': fake.random_number(), 'logo_graphics': fake.random_number()}
+    sender_data = {'external': fake.random_number(), 'internal': fake.random_number(), 'authoritative': fake.random_number()}
+    relevancy_data = {'organization': fake.random_number(), 'public_news': fake.random_number()}
+    behavior_data = {'fear': fake.random_number(), 'duty_obligation': fake.random_number(), 'curiosity': fake.random_number(), 'greed': fake.random_number()}
+    serializer = create(fake.name(), TEMPLATE_TYPE_CHOICES[0][0], fake.random_number(), fake.word(), fake.paragraph(), [image_data], fake.email(), 
+                        fake.boolean(), fake.paragraph(), fake.word(), fake.paragraph(), fake.paragraph(), [fake.word()], appearance_data, sender_data, 
+                        relevancy_data, behavior_data, fake.random_number())
     
     assert isinstance(serializer, TemplatePatchSerializer)
     assert serializer.is_valid()
@@ -46,13 +49,13 @@ def test_serializer_missing_fields():
     # missing name, template type, deception score, descriptive words, description, appearance, sender, relevancy, behavior, complexity,
     # and image list fields should return a valid serializer
     data = {
-        'from_address': 'email@domain.com',
-        'retired': True,
-        'retired_description': 'retired description',
-        'subject': 'subject',
-        'text': 'text',
-        'html': 'html',
-        'topic_list': ['topic'],
+        'from_address': fake.email(),
+        'retired': fake.boolean(),
+        'retired_description': fake.paragraph(),
+        'subject': fake.word(),
+        'text': fake.paragraph(),
+        'html': fake.paragraph(),
+        'topic_list': [fake.word()],
     }
     serializer = TemplatePatchSerializer(data=data)
     assert serializer.is_valid()

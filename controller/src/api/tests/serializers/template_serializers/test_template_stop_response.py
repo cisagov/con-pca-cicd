@@ -1,7 +1,7 @@
 from api.serializers.template_serializers import TemplateStopResponseSerializer, TEMPLATE_TYPE_CHOICES
-from uuid import uuid4
-from datetime import datetime
+from faker import Faker
 
+fake = Faker()
 
 def create(template, subscriptions):
     data = {'template': template, 'subscriptions': subscriptions}
@@ -10,67 +10,68 @@ def create(template, subscriptions):
 
 
 def test_creation():
-    image_data = {'file_name': 'img.jpg', 'file_url': 'someurl.com'}
-    appearance_data = {'grammar': 1, 'link_domain': 1, 'logo_graphics': 1}
-    sender_data = {'external': 1, 'internal': 0, 'authoritative': 1}
-    relevancy_data = {'organization': 1, 'public_news': 0}
-    behavior_data = {'fear': 1, 'duty_obligation': 0, 'curiosity': 0, 'greed': 0}
+    image_data = {'file_name': fake.file_name(), 'file_url': fake.url()}
+    appearance_data = {'grammar': fake.random_number(), 'link_domain': fake.random_number(), 'logo_graphics': fake.random_number()}
+    sender_data = {'external': fake.random_number(), 'internal': fake.random_number(), 'authoritative': fake.random_number()}
+    relevancy_data = {'organization': fake.random_number(), 'public_news': fake.random_number()}
+    behavior_data = {'fear': fake.random_number(), 'duty_obligation': fake.random_number(), 'curiosity': fake.random_number(), 'greed': fake.random_number()}
     template_patch_data = {
-        'template_uuid': uuid4(),
-        'gophish_template_id': 2,
-        'name': 'name',
+        'template_uuid': fake.uuid4(),
+        'gophish_template_id': fake.random_number(),
+        'name': fake.name(),
         'template_type': TEMPLATE_TYPE_CHOICES[0][0],
-        'deception_score': 1,
-        'descriptive_words': 'descriptive_words',
-        'description': 'description',
+        'deception_score': fake.random_number(),
+        'descriptive_words': fake.word(),
+        'description': fake.paragraph(),
         'image_list': [image_data],
-        'from_address': 'someemail@domain.com',
-        'retired': False,
-        'retired_description': 'retired description',
-        'subject': 'subject',
-        'text': 'text',
-        'html': 'html',
-        'topic_list': ['topic'],
+        'from_address': fake.email(),
+        'retired': fake.boolean(),
+        'retired_description': fake.paragraph(),
+        'subject': fake.word(),
+        'text': fake.paragraph(),
+        'html': fake.paragraph(),
+        'topic_list': [fake.word()],
         'appearance': appearance_data,
         'sender': sender_data,
         'relevancy': relevancy_data,
         'behavior': behavior_data,
-        'complexity': 2,
-        'created_by': 'createdby',
-        'cb_timestamp': datetime.now(),
-        'last_updated_by': 'lastupdatedby',
-        'lub_timestamp': datetime.now()
+        'complexity': fake.random_number(),
+        'created_by': fake.name(),
+        'cb_timestamp': fake.date_time(),
+        'last_updated_by': fake.name(),
+        'lub_timestamp': fake.date_time()
     }
     
     customer_data = {
-        "first_name": "firstname",
-        "last_name": "lastname",
-        "title": "title",
-        "office_phone": "111-222-3333",
-        "mobile_phone": "444-555-6666",
-        "email": "email@email.com",
-        "notes": "notes",
-        "active": True,
+        "first_name": fake.name(),
+        "last_name": fake.last_name(),
+        "title": fake.job(),
+        "office_phone": fake.phone_number(),
+        "mobile_phone": fake.phone_number(),
+        "email": fake.email(),
+        "notes": fake.paragraph(),
+        "active": fake.boolean(),
     }
 
     subscription_patch_data = {
-        'customer_uuid': uuid4(),
-        'name': 'name',
-        'url': 'someurl.com',
-        'keywords': 'keywords',
-        'start_date': datetime.now(),
+        'customer_uuid': fake.uuid4(),
+        'name': fake.name(),
+        'url': fake.url(),
+        'keywords': fake.word(),
+        'start_date': fake.date_time(),
         'gophish_campaign_list': [],
         'primary_contact': customer_data,
-        'status': 'status',
+        'status': fake.word(),
         'target_email_list': [],
         'templates_selected_uuid_list': [],
-        'active': False,
-        'archived': True,
-        'manually_stopped': True,
-        'created_by': 'createdby',
-        'cb_timestamp': datetime.now(),
-        'last_updated_by': 'lastupdatedby',
-        'lub_timestamp': datetime.now()
+        'active': fake.boolean(),
+        'archived': fake.boolean(),
+        'manually_stopped': fake.boolean(),
+        'created_by': fake.name(),
+        'cb_timestamp': fake.date_time(),
+        'last_updated_by': fake.name(),
+        'lub_timestamp': fake.date_time(),
+        'end_date': fake.date_time()
     }
     serializer = create(template_patch_data, [subscription_patch_data])
 

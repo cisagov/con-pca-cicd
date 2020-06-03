@@ -1,6 +1,7 @@
 from api.serializers.template_serializers import TemplatePatchResponseSerializer, TEMPLATE_TYPE_CHOICES
-from uuid import uuid4
-from datetime import datetime
+from faker import Faker
+
+fake = Faker()
 
 def create(template_uuid, gophish_template_id, name, template_type, deception_score, descriptive_words,
             description, image_list, from_address, retired, retired_description, subject, text, html,
@@ -38,15 +39,15 @@ def create(template_uuid, gophish_template_id, name, template_type, deception_sc
 
 
 def test_creation():
-    image_data = {'file_name': 'img.jpg', 'file_url': 'someurl.com'}
-    appearance_data = {'grammar': 1, 'link_domain': 1, 'logo_graphics': 1}
-    sender_data = {'external': 1, 'internal': 0, 'authoritative': 1}
-    relevancy_data = {'organization': 1, 'public_news': 0}
-    behavior_data = {'fear': 1, 'duty_obligation': 0, 'curiosity': 0, 'greed': 0}
-    serializer = create(uuid4(), 2, 'name', TEMPLATE_TYPE_CHOICES[0][0], 2, 'descriptive words', 'description',
-                        [image_data], 'someemail@domain.com', False, 'retired description', 'subject', 'text',
-                        'html', ['topic'], appearance_data, sender_data, relevancy_data, behavior_data, 3, 'createdby', datetime.now(),
-                        'lastupdatedby', datetime.now())
+    image_data = {'file_name': fake.file_name(), 'file_url': fake.image_url()}
+    appearance_data = {'grammar': fake.random_number(), 'link_domain': fake.random_number(), 'logo_graphics': fake.random_number()}
+    sender_data = {'external': fake.random_number(), 'internal': fake.random_number(), 'authoritative': fake.random_number()}
+    relevancy_data = {'organization': fake.random_number(), 'public_news': fake.random_number()}
+    behavior_data = {'fear': fake.random_number(), 'duty_obligation': fake.random_number(), 'curiosity': fake.random_number(), 'greed': fake.random_number()}
+    serializer = create(fake.uuid4(), fake.random_number(), fake.name(), TEMPLATE_TYPE_CHOICES[0][0], fake.random_number(), fake.word(), fake.paragraph(),
+                        [image_data], fake.email(), fake.boolean(), fake.paragraph(), fake.word(), fake.paragraph(),
+                        fake.paragraph(), [fake.word()], appearance_data, sender_data, relevancy_data, behavior_data, fake.random_number(), fake.name(),
+                        fake.date_time(), fake.name(), fake.date_time())
     
     assert isinstance(serializer, TemplatePatchResponseSerializer)
     assert serializer.is_valid()
@@ -54,15 +55,15 @@ def test_creation():
 
 def test_serializer_fields_over_max_length():
     # subject, created by, and last updated by fields over 200 characters should return an invalid serializer
-    image_data = {'file_name': 'img.jpg', 'file_url': 'someurl.com'}
-    appearance_data = {'grammar': 1, 'link_domain': 1, 'logo_graphics': 1}
-    sender_data = {'external': 1, 'internal': 0, 'authoritative': 1}
-    relevancy_data = {'organization': 1, 'public_news': 0}
-    behavior_data = {'fear': 1, 'duty_obligation': 0, 'curiosity': 0, 'greed': 0}
-    serializer = create(uuid4(), 2, 'name', TEMPLATE_TYPE_CHOICES[0][0], 2, 'descriptive words', 'description',
-                        [image_data], 'someemail@domain.com', False, 'retired description', 's'*201, 'text',
-                        'html', ['topic'], appearance_data, sender_data, relevancy_data, behavior_data, 3, 'c'*201, datetime.now(),
-                        'l'*201, datetime.now())
+    image_data = {'file_name': fake.file_name(), 'file_url': fake.image_url()}
+    appearance_data = {'grammar': fake.random_number(), 'link_domain': fake.random_number(), 'logo_graphics': fake.random_number()}
+    sender_data = {'external': fake.random_number(), 'internal': fake.random_number(), 'authoritative': fake.random_number()}
+    relevancy_data = {'organization': fake.random_number(), 'public_news': fake.random_number()}
+    behavior_data = {'fear': fake.random_number(), 'duty_obligation': fake.random_number(), 'curiosity': fake.random_number(), 'greed': fake.random_number()}
+    serializer = create(fake.uuid4(), fake.random_number(), fake.name(), TEMPLATE_TYPE_CHOICES[0][0], fake.random_number(), fake.word(), fake.paragraph(),
+                        [image_data], fake.email(), fake.boolean(), fake.paragraph(), fake.random_letter()*201, fake.paragraph(),
+                        fake.paragraph(), [fake.word()], appearance_data, sender_data, relevancy_data, behavior_data, fake.random_number(), fake.random_letter()*201,
+                        fake.date_time(), fake.random_letter()*201, fake.date_time())
 
     assert serializer.is_valid() is False
     assert len(serializer.errors) == 3
