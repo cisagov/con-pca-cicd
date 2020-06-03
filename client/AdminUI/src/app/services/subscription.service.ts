@@ -5,6 +5,7 @@ import { environment } from 'src/environments/environment';
 import { Subscription } from '../models/subscription.model';
 import { CustomerService } from './customer.service';
 import { Template } from '../models/template.model';
+import { Observable } from 'rxjs';
 
 const headers = {
   headers: new HttpHeaders()
@@ -111,5 +112,13 @@ export class SubscriptionService {
 
   public stopSubscription(subscription: Subscription) {
     return this.http.get(`${environment.apiEndpoint}/api/v1/subscription/stop/${subscription.subscription_uuid}/`)
+  }
+
+  /**
+   * Gets timeline items for the subscription.
+   */
+  public getTimelineItems(subscription_uuid) {
+    let url = `${environment.apiEndpoint}/api/v1/subscription/timeline/${subscription_uuid}/`
+    return this.http.get(url);
   }
 }

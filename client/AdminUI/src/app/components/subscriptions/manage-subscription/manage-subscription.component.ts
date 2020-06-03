@@ -11,6 +11,7 @@ import { CustomerService } from 'src/app/services/customer.service';
 import { CustomersComponent } from 'src/app/components/customers/customers.component';
 import { XlsxToCsv } from 'src/app/helper/XlsxToCsv';
 import { ArchiveSubscriptionDialogComponent } from '../archive-subscription-dialog/archive-subscription-dialog.component';
+import * as moment from 'node_modules/moment/moment';
 
 
 @Component({
@@ -45,6 +46,7 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
   // The raw CSV content of the textarea
   csvText: string;
 
+  timelineItems: any[] = [];
 
 
   /**
@@ -109,8 +111,11 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
     sub.subscription_uuid = Guid.create().toString();
   }
 
-  setCustomer(){
-    if(this.customerSvc.selectedCustomer.length > 0){
+  /**
+   * 
+   */
+  setCustomer() {
+    if (this.customerSvc.selectedCustomer.length > 0) {
       this.subscribeForm.patchValue({
         selectedCustomerUuid: this.customerSvc.selectedCustomer
       });
@@ -121,7 +126,7 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
         }
       )
     }
-    
+
   }
 
   /**
@@ -130,6 +135,22 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
   loadPageForEdit(params: any) {
     let sub = this.subscriptionSvc.subscription;
     sub.subscription_uuid = params.id;
+
+    console.log('loadPageForEdit');
+    this.subscriptionSvc.getTimelineItems(sub.subscription_uuid).subscribe((items: any[]) => {
+      this.timelineItems = items;
+    },
+      error => {
+        console.log('setting dummy data');
+        // DUMMY DATA....
+        this.timelineItems = [
+          { id: 1, icon: 'fa fa-rocket', date: moment('2019-08-01'), title: 'Subscription Started', description: 'Subscription launched.' },
+          { id: 2, icon: 'fa fa-calendar', date: moment('2019-11-01'), title: 'Cycle 1 Complete' },
+          { id: 3, icon: 'fa fa-calendar', date: moment('2020-02-01'), title: 'Cycle 2 Complete' },
+          { id: 4, icon: 'fa fa-calendar', date: moment('2020-05-01'), title: 'Cycle 3 Complete' },
+          { id: 5, icon: 'fa fa-calendar', date: moment('2020-08-01'), title: 'Year 1 Complete' }
+        ];
+      });
 
     this.subscriptionSvc.getSubscription(sub.subscription_uuid)
       .subscribe((s: Subscription) => {
@@ -185,8 +206,8 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
   public showArchiveDialog(): void {
     const dialogRef = this.dialog.open(
       ArchiveSubscriptionDialogComponent, {
-        data: this.subscription
-      }
+      data: this.subscription
+    }
     )
   }
 
@@ -291,7 +312,7 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
       });
   }
 
-  
+
 
   /**
    * 
