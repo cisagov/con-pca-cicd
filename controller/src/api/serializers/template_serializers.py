@@ -227,3 +227,20 @@ class TemplateStopResponseSerializer(serializers.Serializer):
 
     template = TemplatePatchResponseSerializer()
     subscriptions = SubscriptionPatchResponseSerializer(many=True)
+
+
+class TokenSerializer(serializers.Serializer):
+    """
+    """
+
+class TokenResponseSerializer(serializers.Serializer):    
+    """
+    This is the Template Parameter Response Serializer.
+
+    This is a formats the data coming out of the Db.
+    """
+
+    parameter = serializers.CharField()
+    description = serializers.CharField()
+    data_source = serializers.CharField()
+    parameter_type = serializers.CharField()

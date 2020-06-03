@@ -7,7 +7,7 @@ This handles the api for all the Template urls.
 import logging
 
 # Third-Party Libraries
-from api.models.template_models import TemplateModel, validate_template
+from api.models.template_models import TemplateModel, validate_template, TokenModel, validate_token
 from api.models.subscription_models import SubscriptionModel, validate_subscription
 from api.serializers.subscriptions_serializers import (
     SubscriptionPatchSerializer,
@@ -23,6 +23,8 @@ from api.serializers.template_serializers import (
     TemplatePostResponseSerializer,
     TemplatePostSerializer,
     TemplateStopResponseSerializer,
+    TokenSerializer,
+    TokenResponseSerializer,
 )
 from api.utils.db_utils import (
     delete_single,
@@ -209,3 +211,27 @@ class TemplateStopView(APIView):
         resp = {"template": updated_template, "subscriptions": updated_subscriptions}
         serializer = TemplateStopResponseSerializer(resp)
         return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
+
+class TokenView(APIView):
+    """
+    This is the TokenView APIView.
+
+    This returns all supported template substitution tokens.
+    """
+
+    @swagger_auto_schema(
+        responses={"202": TokenResponseSerializer, "400": "Bad Request"},
+        security=[],
+        operation_id="Get all template tokens",
+        operation_description="This handles the API for the Get all template tokens",
+    )
+    def get(self, request):
+        """Get method."""
+        parameters = {}
+        parameter_list = get_list(
+            parameters, "token_definition", TokenModel, validate_token
+        )
+        serializer = TokenResponseSerializer(parameter_list, many=True)
+        return Response(serializer.data)
+
+
