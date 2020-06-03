@@ -42,6 +42,7 @@ class CustomerGetSerializer(serializers.Serializer):
     city = serializers.CharField(max_length=250)
     state = serializers.CharField(max_length=250)
     zip_code = serializers.CharField(max_length=250)
+    customer_type = serializers.CharField(max_length=250, required=False)
     contact_list = CustomerContactSerializer(many=True)
     # db data tracking added below
     created_by = serializers.CharField(max_length=100)
@@ -65,6 +66,7 @@ class CustomerPostSerializer(serializers.Serializer):
     city = serializers.CharField(max_length=250)
     state = serializers.CharField(max_length=250)
     zip_code = serializers.CharField(max_length=250)
+    customer_type = serializers.CharField(max_length=250)
     contact_list = CustomerContactSerializer(many=True)
 
 
@@ -94,6 +96,7 @@ class CustomerPatchSerializer(serializers.Serializer):
     city = serializers.CharField(max_length=250, required=False)
     state = serializers.CharField(max_length=250, required=False)
     zip_code = serializers.CharField(max_length=250, required=False)
+    customer_type = serializers.CharField(max_length=250, required=False)
     contact_list = CustomerContactSerializer(many=True, required=False)
 
 
@@ -114,6 +117,7 @@ class CustomerPatchResponseSerializer(serializers.Serializer):
     city = serializers.CharField(max_length=250)
     state = serializers.CharField(max_length=250)
     zip_code = serializers.CharField(max_length=250)
+    customer_type = serializers.CharField(max_length=250)
     contact_list = CustomerContactSerializer(many=True)
     # db data tracking added below
     created_by = serializers.CharField(max_length=100)

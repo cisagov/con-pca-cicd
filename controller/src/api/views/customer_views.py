@@ -47,6 +47,7 @@ class CustomerListView(APIView):
     def get(self, request):
         """Get method."""
         parameters = request.data.copy()
+        
         customer_list = get_list(
             parameters, "customer", CustomerModel, validate_customer
         )
