@@ -80,6 +80,18 @@ def main():
     print("Step 3/3: create subscriptions...")
 
     subscriptions = json_data["subscription_data"]
+    if not created_customer_uuids:
+        print("customers already exist.. skipping")
+        try:
+            resp = requests.get("http://localhost:8000/api/v1/customers/")
+            customers = resp.json()
+            created_customer_uuids = [
+                customer["customer_uuid"] for customer in customers
+            ]
+            resp.raise_for_status()
+        except requests.exceptions.HTTPError as err:
+            raise err
+
     customer = created_customer_uuids[0]
     created_subcription_uuids = []
 
