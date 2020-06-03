@@ -20,7 +20,8 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { StopTemplateDialogComponent } from './stop-template-dialog/stop-template-dialog.component';
 import { SubscriptionService } from 'src/app/services/subscription.service';
 import { ConfirmComponent } from '../dialogs/confirm/confirm.component';
-
+import { AppSettings } from 'src/app/AppSettings';
+import { MatTableDataSource } from '@angular/material/table';
 
 @Component({
   selector: 'app-template-manager',
@@ -45,11 +46,16 @@ export class TemplateManagerComponent implements OnInit {
   subscriptions = Array<Subscription>();
 
   // Con-PCA Subscriptions for the current Template
-  pcaSubscriptions = new Array<PcaSubscription>();
+  pcaSubscriptions = new MatTableDataSource<PcaSubscription>();
+  displayed_columns = [
+    "name",
+    "start_date"
+  ];
 
   //config vars
   image_upload_url: string = `${environment.apiEndpoint}/api/v1/imageupload/`
 
+  dateFormat = AppSettings.DATE_FORMAT;
 
   //Styling variables, required to properly size and display the angular-editor import
   body_content_height: number;
@@ -152,7 +158,7 @@ export class TemplateManagerComponent implements OnInit {
 
           this.subscriptionSvc.getSubscriptionsByTemplate(t)
             .subscribe((x: PcaSubscription[]) => {
-              this.pcaSubscriptions = x;
+              this.pcaSubscriptions.data = x;
             });
         },
         (error) => {
