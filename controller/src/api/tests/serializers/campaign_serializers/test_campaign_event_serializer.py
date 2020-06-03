@@ -1,19 +1,19 @@
 from api.serializers.campaign_serializers import CampaignEventSerializer
 
+from faker import Faker
 
-def create(email, time, message, details):
-    data = {"email": email, "time": time, "message": message, "details": details}
+fake = Faker()
+
+
+def test_serializer():
+    data = {
+        "email": fake.email(),
+        "time": fake.date_time(),
+        "message": fake.paragraph(),
+        "details": fake.paragraph(),
+    }
+
     serializer = CampaignEventSerializer(data=data)
-    return serializer
-
-
-def test_creation():
-    serializer = create(
-        "someemail@domain.com",
-        "2020-03-29 10:26:23.473031",
-        "some test message",
-        "some test details",
-    )
     assert isinstance(serializer, CampaignEventSerializer)
     assert serializer.is_valid()
     assert len(serializer.errors) == 0

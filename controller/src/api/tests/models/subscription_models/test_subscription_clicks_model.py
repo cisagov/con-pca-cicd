@@ -1,11 +1,12 @@
 from api.models.subscription_models import SubscriptionClicksModel
-from datetime import datetime
-import uuid
+from faker import Faker
+
+fake = Faker()
 
 subscription_clicks_model_data = {
-    "source_ip": "192.168.1.1",
-    "timestamp": datetime.now(),
-    "target_uuid": str(uuid.uuid4()),
+    "source_ip": fake.ipv4(),
+    "timestamp": fake.date_time(),
+    "target_uuid": fake.uuid4(),
 }
 
 

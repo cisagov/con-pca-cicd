@@ -1,16 +1,20 @@
 from api.serializers.customer_serializers import CustomerContactSerializer
 
+from faker import Faker
+
+fake = Faker()
+
 
 def test_serializer():
     data = {
-        "first_name": "firstname",
-        "last_name": "lastname",
-        "title": "title",
-        "office_phone": "111-222-3333",
-        "mobile_phone": "444-555-6666",
-        "email": "email@email.com",
-        "notes": "notes",
-        "active": True,
+        "first_name": fake.first_name(),
+        "last_name": fake.last_name(),
+        "title": fake.job(),
+        "office_phone": fake.phone_number(),
+        "mobile_phone": fake.phone_number(),
+        "email": fake.email(),
+        "notes": fake.paragraph(),
+        "active": fake.boolean(),
     }
 
     serializer = CustomerContactSerializer(data=data)
@@ -19,13 +23,13 @@ def test_serializer():
 
 def test_serializer_null_active():
     data = {
-        "first_name": "firstname",
-        "last_name": "lastname",
-        "title": "title",
-        "office_phone": "111-222-3333",
-        "mobile_phone": "444-555-6666",
-        "email": "email@email.com",
-        "notes": "notes",
+        "first_name": fake.first_name(),
+        "last_name": fake.last_name(),
+        "title": fake.job(),
+        "office_phone": fake.phone_number(),
+        "mobile_phone": fake.phone_number(),
+        "email": fake.email(),
+        "notes": fake.paragraph(),
         "active": None,
     }
 

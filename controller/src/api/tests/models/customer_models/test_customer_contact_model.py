@@ -1,17 +1,20 @@
 from api.models.customer_models import CustomerContactModel
 
+from faker import Faker
+
+fake = Faker()
 
 customer_contact_model_data = {
-    "first_name": "Ronald",
-    "last_name": "McDonald",
-    "title": "Farmer",
-    "office_phone": "123-456-7890",
-    "mobile_phone": "123-456-7891",
-    "email": "ronald.mcdonald@test.com",
-    "notes": "some notes",
+    "first_name": fake.first_name(),
+    "last_name": fake.last_name(),
+    "title": fake.job(),
+    "office_phone": fake.phone_number(),
+    "mobile_phone": fake.phone_number(),
+    "email": fake.email(),
+    "notes": fake.paragraph(),
 }
 
-# add validation to fields
+
 def test_creation():
     cc = CustomerContactModel(customer_contact_model_data)
     assert isinstance(cc, CustomerContactModel) is True

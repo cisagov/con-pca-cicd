@@ -22,36 +22,37 @@ from api.tests.models.template_models.test_template_relevancy_model import (
 from api.tests.models.template_models.test_template_behavior_model import (
     template_behavior_model_data,
 )
-
+from faker import Faker
 from datetime import datetime
-import uuid
+
+fake = Faker()
 
 
 template_model_data = {
-    "template_uuid": str(uuid.uuid4()),
-    "gophish_template_id": 12942,
-    "name": "Test",
-    "template_type": "test",
-    "deception_score": 2,
-    "descriptive_words": "test",
-    "description": "test",
+    "template_uuid": fake.uuid4(),
+    "gophish_template_id": fake.random_number(),
+    "name": fake.name(),
+    "template_type": fake.word(),
+    "deception_score": fake.random_number(),
+    "descriptive_words": " ".join(fake.words()),
+    "description": fake.paragraph(),
     "image_list": [template_image_model_data],
-    "from_address": "test@test.com",
-    "retired": False,
-    "retired_description": "",
-    "subject": "test",
-    "text": "text",
-    "html": "html",
-    "topic_list": ["topic1", "topic2"],
+    "from_address": fake.email(),
+    "retired": fake.boolean(),
+    "retired_description": fake.paragraph(),
+    "subject": fake.word(),
+    "text": fake.paragraph(),
+    "html": fake.paragraph(),
+    "topic_list": fake.words(),
     "appearance": template_appearance_model_data,
     "sender": template_sender_model_data,
     "relevancy": template_relevancy_model_data,
     "behavior": template_behavior_model_data,
-    "complexity": 5,
-    "created_by": "creator",
-    "cb_timestamp": datetime.now(),
-    "last_updated_by": "updater",
-    "lub_timestamp": datetime.now(),
+    "complexity": fake.random_number(),
+    "created_by": fake.name(),
+    "cb_timestamp": fake.date_time(),
+    "last_updated_by": fake.name(),
+    "lub_timestamp": fake.date_time(),
 }
 
 

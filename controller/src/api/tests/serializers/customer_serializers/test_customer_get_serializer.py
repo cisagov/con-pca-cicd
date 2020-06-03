@@ -1,24 +1,25 @@
-from uuid import uuid4
-from datetime import datetime
-
 from api.serializers.customer_serializers import CustomerGetSerializer
+
+from faker import Faker
+
+fake = Faker()
 
 
 def test_serializer():
     data = {
-        "customer_uuid": uuid4(),
-        "name": "JimmyJohns",
-        "identifier": "id",
-        "address_1": "123 Street Street",
-        "address_2": "456 Road Way",
-        "city": "Citysburg",
-        "state": "New Kansas",
-        "zip_code": "12345",
+        "customer_uuid": fake.uuid4(),
+        "name": fake.name(),
+        "identifier": fake.name(),
+        "address_1": fake.street_address(),
+        "city": fake.city(),
+        "state": fake.state(),
+        "zip_code": fake.zipcode(),
         "contact_list": [],
-        "created_by": "creator",
-        "cb_timestamp": datetime(1234, 5, 6),
-        "last_updated_by": "Updater",
-        "lub_timestamp": datetime(9876, 5, 4),
+        "created_by": fake.name(),
+        "cb_timestamp": fake.date_time(),
+        "last_updated_by": fake.name(),
+        "lub_timestamp": fake.date_time(),
     }
     serializer = CustomerGetSerializer(data=data)
+    serializer.is_valid()
     assert serializer.is_valid() is True

@@ -1,7 +1,13 @@
 from api.models.template_models import TemplateRelevancyModel
+from faker import Faker
+
+fake = Faker()
 
 
-template_relevancy_model_data = {"organization": 1, "public_news": 1}
+template_relevancy_model_data = {
+    "organization": fake.random_number(),
+    "public_news": fake.random_number(),
+}
 
 
 def test_creation():

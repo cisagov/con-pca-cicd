@@ -1,15 +1,17 @@
 from api.serializers.customer_serializers import CustomerPatchSerializer
+from faker import Faker
+
+fake = Faker()
 
 
 def test_serializer():
     data = {
-        "name": "Name",
-        "identifier": "id",
-        "address_1": "Address",
-        "address_2": "Address",
-        "city": "City",
-        "state": "State",
-        "zip_code": "12345",
+        "name": fake.name(),
+        "identifier": fake.name(),
+        "address_1": fake.street_address(),
+        "city": fake.city(),
+        "state": fake.state(),
+        "zip_code": fake.zipcode(),
         "contact_list": [],
     }
 
