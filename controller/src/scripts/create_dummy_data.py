@@ -61,7 +61,9 @@ def main():
     created_customer_uuids = []
     for customer in customers:
         try:
-            resp = requests.post("http://localhost:8000/api/v1/customers/", json=customer)
+            resp = requests.post(
+                "http://localhost:8000/api/v1/customers/", json=customer
+            )
             resp.raise_for_status()
         except requests.exceptions.HTTPError as err:
             raise err
@@ -71,26 +73,33 @@ def main():
             created_customer_uuid = resp_json["customer_uuid"]
             print("created customer_uuid: {}".format(created_customer_uuid))
             created_customer_uuids.append(created_customer_uuid)
-        except:
+        except Exception as err:
+            print(err)
             pass
 
     print("Step 3/3: create subscriptions...")
 
     subscriptions = json_data["subscription_data"]
+    if not created_customer_uuids:
+        print("customers already exist.. skipping")
+        try:
+            resp = requests.get("http://localhost:8000/api/v1/customers/")
+            customers = resp.json()
+            created_customer_uuids = [
+                customer["customer_uuid"] for customer in customers
+            ]
+            resp.raise_for_status()
+        except requests.exceptions.HTTPError as err:
+            raise err
+
+    customer = created_customer_uuids[0]
     created_subcription_uuids = []
 
     for subscription in subscriptions:
-        print(subscription)
-        # If testing data (identified by 'testing_customer'), get customer_uuid from db
-        if "testing_customer_identifier" in subscription.keys():       
-            existing_customers = requests.get("http://localhost:8000/api/v1/customers/")
-            print(existing_customers.json())
-            if existing_customers:
-                for customer in existing_customers.json():
-                    if customer["identifier"] == subscription["testing_customer_identifier"]:
-                        subscription["customer_uuid"] = customer["customer_uuid"]
-                subscription.pop("testing_customer_identifier", None)
-
+        subscription["customer_uuid"] = customer
+        subscription["start_date"] = datetime.today().strftime(
+            "%Y-%m-%dT%H:%M:%S"
+        )  # 2020-03-10T09:30:25"
         try:
             print(subscription)
 
@@ -119,7 +128,7 @@ def main():
         data = {
             "created_customers": created_customer_uuids,
             "created_subcription_uuids": created_subcription_uuids,
-            "created_template_uuids": created_template_uuids
+            "created_template_uuids": created_template_uuids,
         }
         json.dump(data, outfile, indent=2)
     print("Finished.....")
