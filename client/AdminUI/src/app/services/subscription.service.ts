@@ -99,7 +99,7 @@ export class SubscriptionService {
    * @param template 
    */
   public getSubscriptionsByTemplate(template: Template) {
-    return this.http.get(`${environment.apiEndpoint}/api/v1/subscription/template/${template.template_uuid}`)
+    return this.http.get(`${environment.apiEndpoint}/api/v1/subscriptions/?template=${template.template_uuid}`)
   }
 
   /**
