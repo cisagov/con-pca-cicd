@@ -66,12 +66,19 @@ class ReportsView(APIView):
             for campaign in campaigns
         ]
 
+        sent = sum([targets.get("stats").get("sent", 0) for targets in summary])
+        opened = sum([targets.get("stats").get("opened", 0) for targets in summary])
+        clicked = sum([targets.get("stats").get("clicked", 0) for targets in summary])
         target_count = sum([targets.get("stats").get("total") for targets in summary])
+
         context = {
             "customer_name": subscription.get("name"),
             "templates": templates,
             "start_date": summary[0].get("created_date"),
             "end_date": summary[0].get("send_by_date"),
+            "sent": sent,
+            "opened": opened,
+            "clicked": clicked,
             "target_count": target_count,
         }
         serializer = ReportsGetSerializer(context)

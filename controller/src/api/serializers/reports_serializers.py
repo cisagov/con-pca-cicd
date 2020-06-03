@@ -20,4 +20,7 @@ class ReportsGetSerializer(serializers.Serializer):
     templates = serializers.DictField()
     start_date = serializers.DateTimeField()
     end_date = serializers.DateTimeField()
+    sent = serializers.IntegerField()
+    opened = serializers.IntegerField()
+    clicked = serializers.IntegerField()
     target_count = serializers.IntegerField()
