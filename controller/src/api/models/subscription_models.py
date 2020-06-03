@@ -168,6 +168,7 @@ class SubscriptionModel(Model):
     gophish_campaign_list = ListType(ModelType(GoPhishCampaignsModel))
     # first_report_timestamp = DateTimeType()
     primary_contact = ModelType(CustomerContactModel)
+    dhs_primary_contact = ModelType(CustomerContactModel)
     status = StringType()
     target_email_list = ListType(ModelType(SubscriptionTargetModel))
     templates_selected_uuid_list = ListType(StringType)

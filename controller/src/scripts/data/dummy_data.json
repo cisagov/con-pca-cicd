@@ -58,6 +58,14 @@
         "mobile_phone": "555-555-5555",
         "office_phone": "555-555-5555"
       },
+      "dhs_primary_contact": {
+        "active": true,
+        "email": "Bigg.Daemon@inl.com",
+        "first_name": "Bigg",
+        "last_name": "Daemon",
+        "mobile_phone": "555-555-5555",
+        "office_phone": "555-555-5555"
+      },
       "start_date": "2020-04-10T09:30:25",
       "status": "  Waiting on SRF",
       "target_email_list": [
