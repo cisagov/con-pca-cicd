@@ -1,0 +1,192 @@
+[
+  {
+    "parameter": "<%URL%>",
+    "description": "a relevant url for the target to click on",
+    "data_source": "{{.URL}}"
+  },
+  {
+    "parameter":"<%TARGET_FIRST_NAME%>",
+    "description": "",
+    "data_source": "{{.FirstName}}"
+  },
+  {
+    "parameter": "<%TARGET_LAST_NAME%>",
+    "description": "",
+    "data_source": "{{.LastName}}"
+  },
+  {
+    "parameter": "<%TARGET_FULL_NAME%>",
+    "description": "",
+    "data_source": "{{.FirstName}} {{.LastName}}"
+  },
+  {
+    "parameter": "<%TARGET_EMAIL%>",
+    "description": "",
+    "data_source": ""
+  },
+  {
+    "parameter": "<%TARGET_POSITION%>",
+    "description": "",
+    "data_source": ""
+  },
+  {
+    "parameter": "<%FROM%>",
+    "description": "",
+    "data_source": ""
+  },
+  {
+    "parameter": "<%CUSTOMER_NAME%>",
+    "description": "",
+    "data_source": ""
+  },
+  {
+    "parameter": "<%CUSTOMER_EMAIL%>",
+    "description": "",
+    "data_source": ""
+  },
+  {
+    "parameter": "<%CUSTOMER_SYSTEM%>",
+    "description": "",
+    "data_source": ""
+  },
+  {
+    "parameter": "<%CUSTOMER_ADDRESS_FULL%>",
+    "description": "",
+    "data_source": ""
+  },
+  {
+    "parameter": "<%CUSTOMER_ADDRESS_1%>",
+    "description": "",
+    "data_source": ""
+  },
+  {
+    "parameter": "<%CUSTOMER_ADDRESS_2%>",
+    "description": "",
+    "data_source": ""
+  },
+  {
+    "parameter": "<%CUSTOMER_STATE%>",
+    "description": "",
+    "data_source": ""
+  },
+  {
+    "parameter": "<%CUSTOMER_CITY%>",
+    "description": "",
+    "data_source": ""
+  },
+  {
+    "parameter": "<%CUSTOMER_ZIPCODE%>",
+    "description": "",
+    "data_source": ""
+  },
+  {
+    "parameter": "<%CURRENT_SEASON%>",
+    "description": "",
+    "data_source": ""
+  },
+  {
+    "parameter": "<%CURRENT_DATE_LONG%>",
+    "description": "",
+    "data_source": ""
+  },
+  {
+    "parameter": "<<%CURRENT_DATE_SHORT%>>",
+    "description": "",
+    "data_source": ""
+  },
+  {
+    "parameter": "<%CURRENT_MONTH_NUM%>",
+    "description": "",
+    "data_source": ""
+  },
+  {
+    "parameter": "<%CURRENT_MONTH_LONG%>",
+    "description": "",
+    "data_source": ""
+  },
+  {
+    "parameter": "<%CURRENT_MONTH_SHORT%>",
+    "description": "",
+    "data_source": ""
+  },
+  {
+    "parameter": "<%CURRENT_YEAR_LONG%>",
+    "description": "",
+    "data_source": ""
+  },
+  {
+    "parameter": "<%CURRENT_YEAR_SHORT%>",
+    "description": "",
+    "data_source": ""
+  },
+  {
+    "parameter": "<%CURRENT_DAY%>",
+    "description": "",
+    "data_source": ""
+  },
+  {
+    "parameter": "<%SPOOF_NAME%>",
+    "description": "",
+    "data_source": ""
+  },
+  {
+    "parameter": "<%EVENT%>",
+    "description": "",
+    "data_source": ""
+  },
+  {
+    "parameter": "<%TIMEFRAME%>",
+    "description": "",
+    "data_source": ""
+  },
+  {
+    "parameter": "<%DOMAIN%>",
+    "description": "",
+    "data_source": ""
+  },
+  {
+    "parameter": "<%ACRONYM%>",
+    "description": "",
+    "data_source": ""
+  },
+  {
+    "parameter": "<%SLOGAN%>",
+    "description": "",
+    "data_source": ""
+  },
+  {
+    "parameter": "<%SIGNATURE%>",
+    "description": "",
+    "data_source": ""
+  },
+  {
+    "parameter": "<%TOPIC%>",
+    "description": "",
+    "data_source": ""
+  },
+  {
+    "parameter": "<%TOKEN%>",
+    "description": "",
+    "data_source": ""
+  },
+  {
+    "parameter": "<%PROGRAM%>",
+    "description": "",
+    "data_source": ""
+  },
+  {
+    "parameter": "<%LOGO%>",
+    "description": "",
+    "data_source": ""
+  },
+  {
+    "parameter": "<%JOB_ROLE%>",
+    "description": "",
+    "data_source": ""
+  },
+  {
+    "parameter": "<%NUMBER%>",
+    "description": "",
+    "data_source": ""
+  }
+]
