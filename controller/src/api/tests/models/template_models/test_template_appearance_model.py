@@ -1,6 +1,13 @@
 from api.models.template_models import TemplateAppearanceModel
+from faker import Faker
 
-template_appearance_model_data = {"grammar": 1, "link_domain": 1, "logo_graphics": 1}
+fake = Faker()
+
+template_appearance_model_data = {
+    "grammar": fake.random_number(),
+    "link_domain": fake.random_number(),
+    "logo_graphics": fake.random_number(),
+}
 
 
 def test_creation():

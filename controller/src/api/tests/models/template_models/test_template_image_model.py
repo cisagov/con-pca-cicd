@@ -1,8 +1,12 @@
 from api.models.template_models import TemplateImageModel
 
+from faker import Faker
+
+fake = Faker()
+
 template_image_model_data = {
-    "file_name": "img.jpg",
-    "file_url": "localhost:8445/image.jpg",
+    "file_name": fake.file_name(),
+    "file_url": fake.image_url(),
 }
 
 

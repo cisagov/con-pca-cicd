@@ -1,10 +1,14 @@
 from api.models.template_models import TemplateBehaviorModel
+from faker import Faker
+
+fake = Faker()
+
 
 template_behavior_model_data = {
-    "fear": 1,
-    "duty_obligation": 1,
-    "curiosity": 0,
-    "greed": 0,
+    "fear": fake.random_number(),
+    "duty_obligation": fake.random_number(),
+    "curiosity": fake.random_number(),
+    "greed": fake.random_number(),
 }
 
 
