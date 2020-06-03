@@ -29,13 +29,15 @@ from api.utils.db_utils import (
     save_single,
     update_single,
 )
-from api.utils.subscription_utils import get_campaign_dates, target_list_divide
+from api.utils.subscription_utils import (
+    get_campaign_dates,
+    get_sub_end_date,
+    stop_subscription,
+    target_list_divide,
+)
 from api.utils.template_utils import format_ztime, personalize_template
-
-from api.utils import subscription_utils
-
-from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
+from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -97,8 +99,7 @@ class SubscriptionsListView(APIView):
 
     @swagger_auto_schema(
         request_body=SubscriptionPostSerializer,
-        responses={"201": SubscriptionPostResponseSerializer,
-                   "400": "Bad Request"},
+        responses={"201": SubscriptionPostResponseSerializer, "400": "Bad Request"},
         security=[],
         operation_id="Create Subscription",
         operation_description="This handles Creating a Subscription and launching a Campaign.",
@@ -112,35 +113,67 @@ class SubscriptionsListView(APIView):
             post_data["customer_uuid"], "customer", CustomerModel, validate_customer
         )
 
+        # Get start date then quater of start date and create names to check
+        start_date = post_data.get(
+            "start_date", datetime.today().strftime("%Y-%m-%dT%H:%M:%S")
+        )
+
+        end_date = get_sub_end_date(start_date)
+        end_date_str = end_date.strftime("%Y-%m-%dT%H:%M:%S")
+
+        # here we generate the increments on the subscriton names
+        # {identifier}_{inc}.{sub_number}
+        # FORD_1.1 < first one created
+        # FORD_2.1 < second created before first ends
+        # FORD_1.2 < created after both end
+        # FORD_2.2 < created if both first hace been created AND second is created but still running
+        # if a sub is created that falls into
+        # {cust}_{sub in 90 days from startdate of _1}.{total}
         # Get list of all subscriptions for incrementing sub name
-        customer_filter = {"customer_uuid": post_data["customer_uuid"]}
+        # subscription_filter = {"customer_uuid": post_data["customer_uuid"]}
+
         subscription_list = get_list(
-            customer_filter, "subscription", SubscriptionModel, validate_subscription
-        )
-        increment_position = (
-            4  # The position the individual subscriptions is being counted from
+            {"customer_uuid": post_data["customer_uuid"]},
+            "subscription",
+            SubscriptionModel,
+            validate_subscription,
         )
 
-        previous_incrments = []
-        for sub in subscription_list:
-            previous_incrments.append(
-                sub["name"].split(".")[increment_position])
+        if len(subscription_list) == 0:
+            # If no subscription was created, create first one:
+            # {customer['identifier']}_1.1
+            base_name = f"{customer['identifier']}_1.1"
 
-        first_increment = (
-            1  # Modify when the first increment value has a purpose determined
-        )
-        second_increment = (
-            1 if not previous_incrments else int(max(previous_incrments)) + 1
-        )
+        else:
+            # Get all names, then split off the identifyers from name
+            names = [x["name"] for x in subscription_list]
+            list_tupe = []
+            for name in names:
+                int_ind, sub_id = name.split(".")
+                _, sub = int_ind.split("_")
+                list_tupe.append((sub, sub_id))
+            # now sort tuple list by second element
+            list_tupe.sort(key=lambda tup: tup[1])
+            # get last run inc values
+            last_ran_x, last_ran_y = list_tupe[-1]
+
+            # now check to see there are any others running durring.
+            active_subscriptions = [x for x in subscription_list if x["active"]]
+            if len(active_subscriptions) <= 0:
+                # if none are actvie, check last running number and create new name
+                next_run_x, next_run_y = "1", str(int(last_ran_y) + 1)
+            else:
+                next_run_x, next_run_y = str(int(last_ran_x) + 1), last_ran_y
+
+            base_name = f"{customer['identifier']}_{next_run_x}.{next_run_y}"
 
         # Generate sub name using customer and increment info
-        post_data[
-            "name"
-        ] = f"{customer['identifier']}.{customer['contact_list'][0]['first_name']}.{customer['contact_list'][0]['last_name']}.{first_increment}.{second_increment}"
+        post_data["name"] = base_name
 
         # Get all Email templates for calc
+        email_template_params = {"template_type": "Email", "retired": False}
         template_list = get_list(
-            {"template_type": "Email"}, "template", TemplateModel, validate_template
+            email_template_params, "template", TemplateModel, validate_template
         )
 
         # Get all Landing pages or defult
@@ -161,15 +194,12 @@ class SubscriptionsListView(APIView):
             relevant_templates = []
 
         divided_templates = [
-            relevant_templates[x: x + 5] for x in range(0, len(relevant_templates), 5)
+            relevant_templates[x : x + 5] for x in range(0, len(relevant_templates), 5)
         ]
 
-        print('divided_templates: {0} items'.format(len(divided_templates)))
+        print("divided_templates: {0} items".format(len(divided_templates)))
 
         # Get the next date Intervals, if no startdate is sent, default today
-        start_date = post_data.get(
-            "start_date", datetime.today().strftime("%Y-%m-%dT%H:%M:%S")
-        )
         campaign_data_list = get_campaign_dates(start_date)
 
         # Return 15 of the most relevant templates
@@ -180,16 +210,18 @@ class SubscriptionsListView(APIView):
             template_data_list = [
                 x for x in template_list if x["template_uuid"] in template_group
             ]
-            templates = personalize_template(
-                customer, template_data_list, post_data)
+            templates = personalize_template(customer, template_data_list, post_data)
             template_personalized_list.append(templates)
 
         # divide emails
         target_list = post_data.get("target_email_list")
         target_div = target_list_divide(target_list)
         index = 0
-        print('template_personalized_list: {0} items'.format(
-            len(template_personalized_list)))
+        print(
+            "template_personalized_list: {0} items".format(
+                len(template_personalized_list)
+            )
+        )
         for campaign_info in campaign_data_list:
             try:
                 campaign_info["templates"] = template_personalized_list[index]
@@ -202,39 +234,26 @@ class SubscriptionsListView(APIView):
             index += 1
 
         # Data for GoPhish
-        first_name = post_data.get("primary_contact").get("first_name", "")
-        last_name = post_data.get("primary_contact").get("last_name", "")
-
-        # get User Groups
-        user_groups = campaign_manager.get("user_group")
-
         # create campaigns
-        group_number = 0
+        group_number = 1
         gophish_campaign_list = []
         for campaign_info in campaign_data_list:
             campaign_group = f"{post_data['name']}.Targets.{group_number} "
             campaign_info["name"] = f"{post_data['name']}.{group_number}"
             group_number += 1
-            # if campaign_group not in [group.name for group in user_groups]:
             target_group = campaign_manager.create(
                 "user_group",
                 group_name=campaign_group,
                 target_list=campaign_info["targets"],
             )
-            # else:
-            #     # get group from list
-            #     for user_group in user_groups:
-            #         if user_group.name == campaign_group:
-            #             target_group = user_group
-            #             break
             gophish_campaign_list.extend(
                 self.__create_and_save_campaigns(
-                    campaign_info, target_group, first_name, last_name, landing_page
+                    campaign_info, target_group, landing_page, end_date
                 )
             )
 
         post_data["gophish_campaign_list"] = gophish_campaign_list
-
+        post_data["end_date"] = end_date_str
         created_response = save_single(
             post_data, "subscription", SubscriptionModel, validate_subscription
         )
@@ -245,7 +264,7 @@ class SubscriptionsListView(APIView):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     def __create_and_save_campaigns(
-        self, campaign_info, target_group, first_name, last_name, landing_page
+        self, campaign_info, target_group, landing_page, end_date
     ):
         """
         Create and Save Campaigns.
@@ -263,15 +282,11 @@ class SubscriptionsListView(APIView):
                 name=template["name"], template=template["data"]
             )
             campaign_start = campaign_info["start_date"].strftime("%Y-%m-%d")
-            campaign_end = campaign_info["send_by_date"].strftime("%Y-%m-%d")
+            campaign_end = end_date.strftime("%Y-%m-%d")
 
             if created_template is not None:
                 template_name = created_template.name
-                if not campaign_info["name"]:
-                    campaign_name = f"{first_name}.{last_name}.1.1 {template_name} {campaign_start}-{campaign_end}"
-                else:
-                    campaign_name = f"{campaign_info['name']}.{template_name}.{campaign_start}-{campaign_end}"
-                print(campaign_info["start_date"])
+                campaign_name = f"{campaign_info['name']}.{template_name}.{campaign_start}-{campaign_end}"
                 campaign = campaign_manager.create(
                     "campaign",
                     campaign_name=campaign_name,
@@ -301,8 +316,7 @@ class SubscriptionsListView(APIView):
                     "status": campaign.status,
                     "results": [],
                     "groups": [
-                        campaign_serializers.CampaignGroupSerializer(
-                            target_group).data
+                        campaign_serializers.CampaignGroupSerializer(target_group).data
                     ],
                     "timeline": [
                         {
@@ -323,6 +337,7 @@ class SubscriptionsTemplateListView(APIView):
     """
     Returns a list of Subscriptions that are using a given Template
     """
+
     @swagger_auto_schema(
         responses={"200": SubscriptionGetSerializer, "400": "Bad Request"},
         security=[],
@@ -362,8 +377,7 @@ class SubscriptionView(APIView):
 
     @swagger_auto_schema(
         request_body=SubscriptionPatchSerializer,
-        responses={"202": SubscriptionPatchResponseSerializer,
-                   "400": "Bad Request"},
+        responses={"202": SubscriptionPatchResponseSerializer, "400": "Bad Request"},
         security=[],
         operation_id="Update and Patch single subscription",
         operation_description="This handles the API for the Update subscription with subscription_uuid.",
@@ -387,8 +401,7 @@ class SubscriptionView(APIView):
         return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
 
     @swagger_auto_schema(
-        responses={"200": SubscriptionDeleteResponseSerializer,
-                   "400": "Bad Request"},
+        responses={"200": SubscriptionDeleteResponseSerializer, "400": "Bad Request"},
         security=[],
         operation_id="Delete single subscription",
         operation_description="This handles the API for the Delete of a  subscription with subscription_uuid.",
@@ -412,19 +425,15 @@ class SubscriptionView(APIView):
                     groups_to_delete.add(group["id"])
             for id in groups_to_delete:
                 try:
-                    group_del_result = campaign_manager.delete(
-                        "user_group", group_id=id
-                    )
-                except:
-                    print(f"failed to delete group ")
+                    campaign_manager.delete("user_group", group_id=id)
+                except Exception as error:
+                    print("failed to delete group: {}".format(error))
             # Delete Templates
-            template_del_result = campaign_manager.delete(
+            campaign_manager.delete(
                 "email_template", template_id=campaign["email_template_id"]
             )
             # Delete Campaigns
-            campaign_del_result = campaign_manager.delete(
-                "campaign", campaign_id=campaign["campaign_id"]
-            )
+            campaign_manager.delete("campaign", campaign_id=campaign["campaign_id"])
         # Delete Groups
         for group_id in groups_to_delete:
             campaign_manager.delete("user_group", group_id=group_id)
@@ -481,8 +490,7 @@ class SubscriptionsTemplateListView(APIView):
     )
     def get(self, request, template_uuid):
         """Get method."""
-        parameters = {
-            "templates_selected_uuid_list": template_uuid, "archived": False}
+        parameters = {"templates_selected_uuid_list": template_uuid, "archived": False}
         subscription_list = get_list(
             parameters, "subscription", SubscriptionModel, validate_subscription
         )
@@ -491,21 +499,26 @@ class SubscriptionsTemplateListView(APIView):
 
 
 class SubscriptionStopView(APIView):
+    """
+    This is the SubscriptionStopView APIView.
+
+    This handles the API to stop a Subscription using subscription_uuid.
+    """
+
     @swagger_auto_schema(
-        responses={"202": SubscriptionPatchResponseSerializer,
-                   "400": "Bad Request"},
+        responses={"202": SubscriptionPatchResponseSerializer, "400": "Bad Request"},
         operation_id="Endpoint for manually stopping a subscription",
         operation_description="Endpoint for manually stopping a subscription",
     )
     def get(self, request, subscription_uuid):
-
+        """Get method."""
         # get subscription
         subscription = get_single(
             subscription_uuid, "subscription", SubscriptionModel, validate_subscription
         )
 
         # Stop subscription
-        resp = subscription_utils.stop_subscription(subscription)
+        resp = stop_subscription(subscription)
 
         # Return updated subscriptions
         serializer = SubscriptionPatchResponseSerializer(resp)
