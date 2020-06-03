@@ -40,6 +40,7 @@ export class AddCustomerDialogComponent implements OnInit {
     let customer: NewCustomer = {
       name: this.form_group.controls['name'].value,
       identifier: this.form_group.controls['identifier'].value,
+      customer_type: this.form_group.controls['customer_type'].value,
       address_1: this.form_group.controls['address_1'].value,
       address_2: this.form_group.controls['address_2'].value,
       city: this.form_group.controls['city'].value,
