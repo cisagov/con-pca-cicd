@@ -42,7 +42,7 @@ def get_campaign_dates(start_date_string):
         {
             "start_date": start_date,
             "send_by_date": sixty_days_later,
-            "templetes": [],
+            "templates": [],
             "targets": [],
         }
     )
@@ -50,7 +50,7 @@ def get_campaign_dates(start_date_string):
         {
             "start_date": start_date,
             "send_by_date": sixty_days_later,
-            "templetes": [],
+            "templates": [],
             "targets": [],
         }
     )
@@ -58,7 +58,7 @@ def get_campaign_dates(start_date_string):
         {
             "start_date": start_date,
             "send_by_date": sixty_days_later,
-            "templetes": [],
+            "templates": [],
             "targets": [],
         }
     )

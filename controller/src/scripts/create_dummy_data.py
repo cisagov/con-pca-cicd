@@ -89,6 +89,8 @@ def main():
             "%Y-%m-%dT%H:%M:%S"
         )  # 2020-03-10T09:30:25"
         try:
+            print(subscription)
+
             resp = requests.post(
                 "http://localhost:8000/api/v1/subscriptions/", json=subscription
             )

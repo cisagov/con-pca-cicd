@@ -241,6 +241,27 @@
 
             </div>
           </mat-tab>
+
+          <mat-tab>
+            <ng-template mat-tab-label>
+              Subscriptions
+            </ng-template>
+            <div
+              class=" p-3 flex-column"
+              [style.height.px]="text_editor_height"
+            >
+              <table>
+                <tr>
+                  <th>Name</th>
+                </tr>
+                <tr *ngFor="let sub of pcaSubscriptions">
+                  <td>{{sub.name}}</td>
+                  <td>{{sub.name}}</td>
+                </tr>
+                </table>  
+            </div>
+          </mat-tab>
+
         </mat-tab-group>
       </div>
 

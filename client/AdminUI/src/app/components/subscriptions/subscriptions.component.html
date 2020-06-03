@@ -52,13 +52,13 @@
         <!-- START DATE -->
         <ng-container matColumnDef="start_date">
             <mat-header-cell *matHeaderCellDef>Start Date</mat-header-cell>
-            <mat-cell *matCellDef="let row"> {{row.subscription.start_date}}</mat-cell>
+            <mat-cell *matCellDef="let row"> {{row.subscription.start_date | date:dateFormat}}</mat-cell>
         </ng-container>
 
         <!-- LAST UDPATED DATE -->
         <ng-container matColumnDef="last_updated">
             <mat-header-cell *matHeaderCellDef>Last Updated</mat-header-cell>
-            <mat-cell *matCellDef="let row"> {{row.subscription.lub_timestamp}}</mat-cell>
+            <mat-cell *matCellDef="let row"> {{row.subscription.lub_timestamp | date:dateFormat}}</mat-cell>
         </ng-container>
 
         <!-- ACTIVE -->
@@ -70,12 +70,23 @@
             </mat-cell>
         </ng-container>
 
+
+      
         <!-- ARCHIVED -->
         <ng-container matColumnDef="archived">
             <mat-header-cell *matHeaderCellDef>Archived</mat-header-cell>
             <mat-cell *matCellDef="let row">{{row.subscription.archived}}</mat-cell>
-        </ng-container>
 
+        </ng-container>
+        <!-- SELECT -->
+        <ng-container matColumnDef="select">
+            <mat-header-cell *matHeaderCellDef>Select</mat-header-cell>
+            <mat-cell *matCellDef="let row">
+              <button class="table-btn-icon" mat-flat-button color="primary" [routerLink]="['/view-subscription', row.subscription.subscription_uuid]">
+                <mat-icon class="table-btn-icon-size">edit</mat-icon>
+              </button>
+            </mat-cell>
+        </ng-container>
         <!-- HEADER ROW -->
         <mat-header-row *matHeaderRowDef="displayed_columns"></mat-header-row>
 
