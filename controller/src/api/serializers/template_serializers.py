@@ -227,3 +227,21 @@ class TemplateStopResponseSerializer(serializers.Serializer):
 
     template = TemplatePatchResponseSerializer()
     subscriptions = SubscriptionPatchResponseSerializer(many=True)
+
+
+class TagSerializer(serializers.Serializer):
+    """
+    Serializes a Tag (replaceable token in a template)
+    """
+
+class TagResponseSerializer(serializers.Serializer):    
+    """
+    Serializes the response for a Tag (replaceable token in a template)
+
+    This is a formats the data coming out of the Db.
+    """
+
+    tag = serializers.CharField()
+    description = serializers.CharField()
+    data_source = serializers.CharField()
+    tag_type = serializers.CharField()

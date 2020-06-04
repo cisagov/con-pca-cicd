@@ -4,14 +4,9 @@ from faker import Faker
 fake = Faker()
 
 
-def create(id):
-    data = {'id': id}
+def test_serializer():
+    data = {"id": fake.random_number()}
     serializer = SendingProfileDeleteSerializer(data=data)
-    return serializer
-
-
-def test_creation():
-    serializer = create(fake.random_number())
 
     assert isinstance(serializer, SendingProfileDeleteSerializer)
     assert serializer.is_valid()

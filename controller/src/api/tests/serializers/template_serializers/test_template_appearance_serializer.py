@@ -3,16 +3,14 @@ from faker import Faker
 
 fake = Faker()
 
-def create(grammar, link_domain, logo_graphics):
+
+def test_serializer():
     data = {
-        'grammar': grammar,
-        'link_domain': link_domain,
-        'logo_graphics': logo_graphics
+        "grammar": fake.random_number(),
+        "link_domain": fake.random_number(),
+        "logo_graphics": fake.random_number(),
     }
     serializer = TemplateAppearanceSerializer(data=data)
-    return serializer
 
-
-def test_creation():
-    serializer = create(fake.random_number(), fake.random_number(), fake.random_number())
+    assert isinstance(serializer, TemplateAppearanceSerializer)
     assert serializer.is_valid()

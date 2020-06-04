@@ -12,6 +12,7 @@ def test_serializer():
         "address_1": fake.street_address(),
         "city": fake.city(),
         "state": fake.state(),
+        "customer_type": fake.word(),
         "zip_code": fake.zipcode(),
         "contact_list": [],
     }

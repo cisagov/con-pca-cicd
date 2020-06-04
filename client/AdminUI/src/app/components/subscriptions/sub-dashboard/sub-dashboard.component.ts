@@ -1,11 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { ChartsService } from 'src/app/services/charts.service';
+import { SubscriptionService } from 'src/app/services/subscription.service';
 
 @Component({
   selector: 'app-sub-dashboard',
   templateUrl: './sub-dashboard.component.html'
 })
 export class SubDashboardComponent implements OnInit {
+
+  @Input()
+  subscriptionUuid: string;
 
   chart: any = {};
   chartSent: any = {};
@@ -24,11 +28,14 @@ export class SubDashboardComponent implements OnInit {
     domain: ['#336600', '#eeeeee']
   };
 
+
+
   /**
    * 
    */
   constructor(
-    public chartsSvc: ChartsService
+    public chartsSvc: ChartsService,
+    private subscriptionSvc: SubscriptionService
   ) { }
 
   /**

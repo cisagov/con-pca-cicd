@@ -7,7 +7,7 @@ This handles the api for all the Template urls.
 import logging
 
 # Third-Party Libraries
-from api.models.template_models import TemplateModel, validate_template
+from api.models.template_models import TemplateModel, validate_template, TagModel, validate_tag
 from api.models.subscription_models import SubscriptionModel, validate_subscription
 from api.serializers.subscriptions_serializers import (
     SubscriptionPatchSerializer,
@@ -23,6 +23,8 @@ from api.serializers.template_serializers import (
     TemplatePostResponseSerializer,
     TemplatePostSerializer,
     TemplateStopResponseSerializer,
+    TagSerializer,
+    TagResponseSerializer,
 )
 from api.utils.db_utils import (
     delete_single,
@@ -209,3 +211,27 @@ class TemplateStopView(APIView):
         resp = {"template": updated_template, "subscriptions": updated_subscriptions}
         serializer = TemplateStopResponseSerializer(resp)
         return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
+
+class TagView(APIView):
+    """
+    This is the TagView APIView.
+
+    This returns all supported template substitution tags.
+    """
+
+    @swagger_auto_schema(
+        responses={"202": TagResponseSerializer, "400": "Bad Request"},
+        security=[],
+        operation_id="Get all template tags",
+        operation_description="Returns a list of all template tags",
+    )
+    def get(self, request):
+        """Get method."""
+        parameters = {}
+        parameter_list = get_list(
+            parameters, "tag_definition", TagModel, validate_tag
+        )
+        serializer = TagResponseSerializer(parameter_list, many=True)
+        return Response(serializer.data)
+
+

@@ -99,6 +99,11 @@ urlpatterns = [
         name="template_stop_api",
     ),
     path(
+        "v1/tags/",
+        template_views.TagView.as_view(),
+        name="tags_list_api",
+    ),
+    path(
         "v1/campaigns/", campaign_views.CampaignListView.as_view(), name="campaign_list"
     ),
     path(
