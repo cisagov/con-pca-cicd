@@ -1,191 +1,191 @@
 [
   {
-    "parameter": "<%URL%>",
+    "tag": "<%URL%>",
     "description": "a relevant url for the target to click on",
     "data_source": "{{.URL}}"
   },
   {
-    "parameter":"<%TARGET_FIRST_NAME%>",
+    "tag":"<%TARGET_FIRST_NAME%>",
     "description": "",
     "data_source": "{{.FirstName}}"
   },
   {
-    "parameter": "<%TARGET_LAST_NAME%>",
+    "tag": "<%TARGET_LAST_NAME%>",
     "description": "",
     "data_source": "{{.LastName}}"
   },
   {
-    "parameter": "<%TARGET_FULL_NAME%>",
+    "tag": "<%TARGET_FULL_NAME%>",
     "description": "",
     "data_source": "{{.FirstName}} {{.LastName}}"
   },
   {
-    "parameter": "<%TARGET_EMAIL%>",
+    "tag": "<%TARGET_EMAIL%>",
     "description": "",
     "data_source": ""
   },
   {
-    "parameter": "<%TARGET_POSITION%>",
+    "tag": "<%TARGET_POSITION%>",
     "description": "",
     "data_source": ""
   },
   {
-    "parameter": "<%FROM%>",
+    "tag": "<%FROM%>",
     "description": "",
     "data_source": ""
   },
   {
-    "parameter": "<%CUSTOMER_NAME%>",
+    "tag": "<%CUSTOMER_NAME%>",
     "description": "",
     "data_source": ""
   },
   {
-    "parameter": "<%CUSTOMER_EMAIL%>",
+    "tag": "<%CUSTOMER_EMAIL%>",
     "description": "",
     "data_source": ""
   },
   {
-    "parameter": "<%CUSTOMER_SYSTEM%>",
+    "tag": "<%CUSTOMER_SYSTEM%>",
     "description": "",
     "data_source": ""
   },
   {
-    "parameter": "<%CUSTOMER_ADDRESS_FULL%>",
+    "tag": "<%CUSTOMER_ADDRESS_FULL%>",
     "description": "",
     "data_source": ""
   },
   {
-    "parameter": "<%CUSTOMER_ADDRESS_1%>",
+    "tag": "<%CUSTOMER_ADDRESS_1%>",
     "description": "",
     "data_source": ""
   },
   {
-    "parameter": "<%CUSTOMER_ADDRESS_2%>",
+    "tag": "<%CUSTOMER_ADDRESS_2%>",
     "description": "",
     "data_source": ""
   },
   {
-    "parameter": "<%CUSTOMER_STATE%>",
+    "tag": "<%CUSTOMER_STATE%>",
     "description": "",
     "data_source": ""
   },
   {
-    "parameter": "<%CUSTOMER_CITY%>",
+    "tag": "<%CUSTOMER_CITY%>",
     "description": "",
     "data_source": ""
   },
   {
-    "parameter": "<%CUSTOMER_ZIPCODE%>",
+    "tag": "<%CUSTOMER_ZIPCODE%>",
     "description": "",
     "data_source": ""
   },
   {
-    "parameter": "<%CURRENT_SEASON%>",
+    "tag": "<%CURRENT_SEASON%>",
     "description": "",
     "data_source": ""
   },
   {
-    "parameter": "<%CURRENT_DATE_LONG%>",
+    "tag": "<%CURRENT_DATE_LONG%>",
     "description": "",
     "data_source": ""
   },
   {
-    "parameter": "<<%CURRENT_DATE_SHORT%>>",
+    "tag": "<<%CURRENT_DATE_SHORT%>>",
     "description": "",
     "data_source": ""
   },
   {
-    "parameter": "<%CURRENT_MONTH_NUM%>",
+    "tag": "<%CURRENT_MONTH_NUM%>",
     "description": "",
     "data_source": ""
   },
   {
-    "parameter": "<%CURRENT_MONTH_LONG%>",
+    "tag": "<%CURRENT_MONTH_LONG%>",
     "description": "",
     "data_source": ""
   },
   {
-    "parameter": "<%CURRENT_MONTH_SHORT%>",
+    "tag": "<%CURRENT_MONTH_SHORT%>",
     "description": "",
     "data_source": ""
   },
   {
-    "parameter": "<%CURRENT_YEAR_LONG%>",
+    "tag": "<%CURRENT_YEAR_LONG%>",
     "description": "",
     "data_source": ""
   },
   {
-    "parameter": "<%CURRENT_YEAR_SHORT%>",
+    "tag": "<%CURRENT_YEAR_SHORT%>",
     "description": "",
     "data_source": ""
   },
   {
-    "parameter": "<%CURRENT_DAY%>",
+    "tag": "<%CURRENT_DAY%>",
     "description": "",
     "data_source": ""
   },
   {
-    "parameter": "<%SPOOF_NAME%>",
+    "tag": "<%SPOOF_NAME%>",
     "description": "",
     "data_source": ""
   },
   {
-    "parameter": "<%EVENT%>",
+    "tag": "<%EVENT%>",
     "description": "",
     "data_source": ""
   },
   {
-    "parameter": "<%TIMEFRAME%>",
+    "tag": "<%TIMEFRAME%>",
     "description": "",
     "data_source": ""
   },
   {
-    "parameter": "<%DOMAIN%>",
+    "tag": "<%DOMAIN%>",
     "description": "",
     "data_source": ""
   },
   {
-    "parameter": "<%ACRONYM%>",
+    "tag": "<%ACRONYM%>",
     "description": "",
     "data_source": ""
   },
   {
-    "parameter": "<%SLOGAN%>",
+    "tag": "<%SLOGAN%>",
     "description": "",
     "data_source": ""
   },
   {
-    "parameter": "<%SIGNATURE%>",
+    "tag": "<%SIGNATURE%>",
     "description": "",
     "data_source": ""
   },
   {
-    "parameter": "<%TOPIC%>",
+    "tag": "<%TOPIC%>",
     "description": "",
     "data_source": ""
   },
   {
-    "parameter": "<%TOKEN%>",
+    "tag": "<%TOKEN%>",
     "description": "",
     "data_source": ""
   },
   {
-    "parameter": "<%PROGRAM%>",
+    "tag": "<%PROGRAM%>",
     "description": "",
     "data_source": ""
   },
   {
-    "parameter": "<%LOGO%>",
+    "tag": "<%LOGO%>",
     "description": "",
     "data_source": ""
   },
   {
-    "parameter": "<%JOB_ROLE%>",
+    "tag": "<%JOB_ROLE%>",
     "description": "",
     "data_source": ""
   },
   {
-    "parameter": "<%NUMBER%>",
+    "tag": "<%NUMBER%>",
     "description": "",
     "data_source": ""
   }
