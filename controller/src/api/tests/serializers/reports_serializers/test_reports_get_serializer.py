@@ -1,26 +1,21 @@
 from api.serializers.reports_serializers import ReportsGetSerializer
 from faker import Faker
 
-
 fake = Faker()
 
-def create(cusomter_name, templates, start_date, end_date, sent, opened, clicked, target_count):
+
+def test_serializer():
     data = {
-        'customer_name': cusomter_name,
-        'templates': templates,
-        'start_date': start_date,
-        'end_date': end_date,
-        'sent': sent,
-        'opened': opened,
-        'clicked': clicked,
-        'target_count': target_count
+        "customer_name": fake.name(),
+        "templates": fake.pydict(),
+        "start_date": fake.date_time(),
+        "end_date": fake.date_time(),
+        "sent": fake.random_number(),
+        "opened": fake.random_number(),
+        "clicked": fake.random_number(),
+        "target_count": fake.random_number(),
     }
     serializer = ReportsGetSerializer(data=data)
-    return serializer
-
-
-def test_creation():
-    serializer = create(fake.name(), fake.pydict(), fake.date_time(), fake.date_time(), fake.random_number(), fake.random_number(), fake.random_number(), fake.random_number())
 
     assert isinstance(serializer, ReportsGetSerializer)
     assert serializer.is_valid()
