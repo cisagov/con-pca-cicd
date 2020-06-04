@@ -10,30 +10,30 @@ from api.tests.models.subscription_models.test_subscription_target_model import 
     subscription_target_model_data,
 )
 
-import uuid
-from datetime import datetime
+from faker import Faker
 
+fake = Faker()
 
 subscription_model_data = {
-    "subscription_uuid": str(uuid.uuid4()),
-    "customer_uuid": str(uuid.uuid4()),
-    "name": "Subscription",
-    "url": "www.google.com",
-    "keywords": "Test, Yes, No",
-    "start_date": datetime.now(),
+    "subscription_uuid": fake.uuid4(),
+    "customer_uuid": fake.uuid4(),
+    "name": fake.name(),
+    "url": fake.url(),
+    "keywords": " ".join(fake.words()),
+    "start_date": fake.date_time(),
     "gophish_campaign_list": [
         gophish_campaigns_model_data,
         gophish_campaigns_model_data,
     ],
     "primary_contact": customer_contact_model_data,
-    "status": "active",
+    "status": fake.word(),
     "target_email_list": [subscription_target_model_data],
-    "templates_selected_uuid_list": [str(uuid.uuid4()), str(uuid.uuid4())],
-    "active": True,
-    "created_by": "Tim",
-    "cb_timestamp": datetime.now(),
-    "last_updated_by": "Jim",
-    "lub_timestamp": datetime.now(),
+    "templates_selected_uuid_list": [fake.uuid4(), fake.uuid4()],
+    "active": fake.boolean(),
+    "created_by": fake.name(),
+    "cb_timestamp": fake.date_time(),
+    "last_updated_by": fake.name(),
+    "lub_timestamp": fake.date_time(),
 }
 
 

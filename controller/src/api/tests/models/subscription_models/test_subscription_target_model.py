@@ -1,10 +1,13 @@
 from api.models.subscription_models import SubscriptionTargetModel
+from faker import Faker
+
+fake = Faker()
 
 subscription_target_model_data = {
-    "first_name": "Johnny",
-    "last_name": "Bravo",
-    "position": "CEO",
-    "email": "johnny.bravo@test.com",
+    "first_name": fake.first_name(),
+    "last_name": fake.last_name(),
+    "position": fake.job(),
+    "email": fake.email(),
 }
 
 

@@ -1,50 +1,24 @@
 from api.serializers.campaign_serializers import CampaignSerializer
+from faker import Faker
 
-
-def create(
-    id,
-    name,
-    created_date,
-    launch_date,
-    send_by_date,
-    completed_by_date,
-    status,
-    url,
-    results,
-    group,
-    timeline,
-):
-    data = {
-        "id": id,
-        "name": name,
-        "created_date": created_date,
-        "launch_date": launch_date,
-        "send_by_date": send_by_date,
-        "completed_date": completed_by_date,
-        "status": status,
-        "url": url,
-        "results": results,
-        "groups": group,
-        "timeline": timeline,
-    }
-    serializer = CampaignSerializer(data=data)
-    return serializer
+fake = Faker()
 
 
 def test_creation():
-    serializer = create(
-        1234,
-        "somename",
-        "2020-03-29 10:26:23.473031",
-        "2020-04-29 10:26:23.473031",
-        "2020-03-29 10:26:23.473031",
-        "2020-03-29 10:26:23.473031",
-        "active",
-        "https://fakedomain.com",
-        [],
-        [],
-        [],
-    )
+    data = {
+        "id": fake.random_number(),
+        "name": fake.name(),
+        "created_date": fake.date_time(),
+        "launch_date": fake.date_time(),
+        "send_by_date": fake.date_time(),
+        "completed_date": fake.date_time(),
+        "status": fake.word(),
+        "url": fake.url(),
+        "results": [],
+        "groups": [],
+        "timeline": [],
+    }
+    serializer = CampaignSerializer(data=data)
     assert isinstance(serializer, CampaignSerializer)
     serializer.is_valid()
     assert len(serializer.errors) == 0
@@ -52,13 +26,13 @@ def test_creation():
 
 def test_serializer_missing_name_field():
     data = {
-        "id": id,
-        "created_date": "2020-03-29 10:26:23.473031",
-        "launch_date": "2020-03-29 10:26:23.473031",
-        "send_by_date": "2020-03-29 10:26:23.473031",
-        "completed_date": "2020-03-29 10:26:23.473031",
-        "status": "active",
-        "url": "https://fakedomain.com",
+        "id": fake.random_number(),
+        "created_date": fake.date_time(),
+        "launch_date": fake.date_time(),
+        "send_by_date": fake.date_time(),
+        "completed_date": fake.date_time(),
+        "status": fake.word(),
+        "url": fake.url(),
         "results": [],
         "groups": [],
         "timeline": [],

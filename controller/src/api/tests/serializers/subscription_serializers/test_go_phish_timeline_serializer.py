@@ -1,16 +1,19 @@
 from api.serializers.subscriptions_serializers import GoPhishTimelineSerializer
 
 from datetime import datetime
+from faker import Faker
+
+fake = Faker()
 
 
-def create(email, time, message, details):
-    data = {"email": email, "time": time, "message": message, "details": details}
+def test_serializer():
+    data = {
+        "email": fake.email(),
+        "time": fake.date_time(),
+        "message": fake.word(),
+        "details": fake.word(),
+    }
     serializer = GoPhishTimelineSerializer(data=data)
-    return serializer
-
-
-def test_creation():
-    serializer = create("email@domain.com", datetime.now(), "message", "details")
 
     assert isinstance(serializer, GoPhishTimelineSerializer)
     assert serializer.is_valid()
@@ -18,7 +21,11 @@ def test_creation():
 
 def test_serializer_missing_email_field():
     # missing email field should return a valid serializer
-    data = {"time": datetime.now(), "message": "message", "details": "details"}
+    data = {
+        "time": fake.date_time(),
+        "message": fake.word(),
+        "details": fake.word(),
+    }
     serializer = GoPhishTimelineSerializer(data=data)
 
     assert serializer.is_valid()
@@ -28,7 +35,13 @@ def test_serializer_missing_email_field():
 
 def test_serializer_message_field_over_max_length():
     # message field over max character length should return an invalid serializer
-    serializer = create("email@domain.com", datetime.now(), "f" * 256, "details",)
+    data = {
+        "email": fake.email(),
+        "time": fake.date_time(),
+        "message": "".join(fake.random_letters(256)),
+        "details": fake.word(),
+    }
+    serializer = GoPhishTimelineSerializer(data=data)
 
     assert serializer.is_valid() is False
     assert len(serializer.errors) == 1

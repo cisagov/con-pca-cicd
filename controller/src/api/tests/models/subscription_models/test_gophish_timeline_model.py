@@ -1,12 +1,13 @@
 from api.models.subscription_models import GoPhishTimelineModel
-from datetime import datetime
+from faker import Faker
 
+fake = Faker()
 
 gophish_timeline_model_data = {
-    "email": "johndoe@test.com",
-    "time": datetime.now(),
-    "message": "Message",
-    "details": "Details",
+    "email": fake.email(),
+    "time": fake.date_time(),
+    "message": fake.paragraph(),
+    "details": fake.paragraph(),
 }
 
 
