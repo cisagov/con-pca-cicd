@@ -33,7 +33,7 @@ export class TemplateManagerComponent implements OnInit {
   dialogRefConfirm: MatDialogRef<ConfirmComponent>;
   dialogRefTagSelection: MatDialogRef<TagSelectionComponent>;
 
-  @ViewChild('angularEditor') angularEditor: ElementRef<AngularEditorComponent>;
+  @ViewChild('angularEditor') angularEditor: any;
 
   //Full template list variables
   search_input: string;
