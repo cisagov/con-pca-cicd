@@ -139,16 +139,17 @@ def validate_template(data_object):
     return TemplateModel(data_object).validate()    
 
 
-class TokenModel(Model):
+class TagModel(Model):
     """
-    A token is a replaceable string in a
+    A Tag is a replaceable string in a
     Template that is replaced by a real value.
     """
-    parameter = StringType()
+    tag = StringType()
     description = StringType()
     data_source = StringType()
+    tag_type = StringType()
 
 
-def validate_token(data_object):
-    return TokenModel(data_object).validate()
+def validate_tag(data_object):
+    return TagModel(data_object).validate()
 
