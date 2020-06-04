@@ -47,6 +47,7 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { SubDashboardComponent } from './components/subscriptions/sub-dashboard/sub-dashboard.component';
 import { TimelineComponent } from './components/subscriptions/timeline/timeline.component';
 import { ConfirmComponent } from './components/dialogs/confirm/confirm.component';
+import { TagSelectionComponent } from './components/dialogs/tag-selection/tag-selection.component';
 
 @NgModule({
   declarations: [
@@ -79,6 +80,7 @@ import { ConfirmComponent } from './components/dialogs/confirm/confirm.component
     SubDashboardComponent,
     TimelineComponent,
     ConfirmComponent,
+    TagSelectionComponent,
   ],
   imports: [
     BrowserModule,

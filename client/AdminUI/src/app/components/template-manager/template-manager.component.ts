@@ -5,12 +5,12 @@ import {
   ElementRef,
 } from '@angular/core';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
-import { AngularEditorConfig } from '@kolkov/angular-editor';
+import { AngularEditorConfig, AngularEditorComponent } from '@kolkov/angular-editor';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MyErrorStateMatcher } from 'src/app/helper/ErrorStateMatcher';
 import { LayoutMainService } from 'src/app/services/layout-main.service';
 import { TemplateManagerService } from 'src/app/services/template-manager.service';
-import { Template } from 'src/app/models/template.model';
+import { Template, TagModel } from 'src/app/models/template.model';
 import { Subscription as PcaSubscription } from 'src/app/models/subscription.model';
 import { Subscription } from 'rxjs';
 import { environment } from 'src/environments/environment';
@@ -22,6 +22,7 @@ import { SubscriptionService } from 'src/app/services/subscription.service';
 import { ConfirmComponent } from '../dialogs/confirm/confirm.component';
 import { AppSettings } from 'src/app/AppSettings';
 import { MatTableDataSource } from '@angular/material/table';
+import { TagSelectionComponent } from '../dialogs/tag-selection/tag-selection.component';
 
 @Component({
   selector: 'app-template-manager',
@@ -30,6 +31,9 @@ import { MatTableDataSource } from '@angular/material/table';
 })
 export class TemplateManagerComponent implements OnInit {
   dialogRefConfirm: MatDialogRef<ConfirmComponent>;
+  dialogRefTagSelection: MatDialogRef<TagSelectionComponent>;
+
+  @ViewChild('angularEditor') angularEditor: ElementRef<AngularEditorComponent>;
 
   //Full template list variables
   search_input: string;
@@ -56,6 +60,8 @@ export class TemplateManagerComponent implements OnInit {
   image_upload_url: string = `${environment.apiEndpoint}/api/v1/imageupload/`
 
   dateFormat = AppSettings.DATE_FORMAT;
+
+  tags: TagModel[];
 
   //Styling variables, required to properly size and display the angular-editor import
   body_content_height: number;
@@ -109,7 +115,6 @@ export class TemplateManagerComponent implements OnInit {
         }
       })
     );
-
   }
 
 
@@ -122,7 +127,9 @@ export class TemplateManagerComponent implements OnInit {
 
   ngAfterViewInit() {
     this.configAngularEditor();
+    this.addInsertTagButtonIntoEditor();
   }
+
 
   onValueChanges(): void {
     //Event fires for every modification to the form, used to update deception score
@@ -445,4 +452,48 @@ export class TemplateManagerComponent implements OnInit {
     toolbarPosition: 'top',
     toolbarHiddenButtons: [['bold', 'italic'], ['fontSize', 'insertVideo']]
   };
+
+  /**
+   * Hack the angular-editor to add a new button after the "clear formatting" button.
+   * Clicking it clicks a hidden button to get us back into Angular.
+   */
+  addInsertTagButtonIntoEditor() { 
+    let btnClearFormatting = $(this.angularEditor.doc).find("[title='Horizontal Line']")[0];
+    let attribs = btnClearFormatting.attributes;
+    // this assumes that the _ngcontent attribute occurs first
+    let ngcontent = attribs.item(0).name;
+    let newButtonHtml1 = `<button ${ngcontent} type="button" title="Insert Tag" tabindex="-1" class="angular-editor-button" id="insertTag-" `;
+    let newButtonHtml2 = 'onclick="var h = document.getElementsByClassName(\'hidden-insert-tag-button\'); h[0].click();">';
+    let newButtonHtml3 = `<i ${ngcontent} class="fa fa-tag"></i></button>`;
+    $(btnClearFormatting).closest('div').append(newButtonHtml1 + newButtonHtml2 + newButtonHtml3);
+  }
+
+  /**
+   * Opens a dialog that presents the tag options.
+   */
+  openTagChoice() {
+    this.angularEditor.textArea.nativeElement.focus();
+    let selection = window.getSelection().getRangeAt(0);
+    this.dialogRefTagSelection = this.dialog.open(TagSelectionComponent, { disableClose: false });
+    this.dialogRefTagSelection.afterClosed().subscribe(result => {
+      if (result) {
+        this.insertTag(selection, result);
+      }
+      this.dialogRefTagSelection = null;
+    });
+  }
+
+  /**
+   * Inserts a span containing the tag at the location of the selection.
+   * @param selection 
+   * @param tag 
+   */
+  insertTag(selection, tagText: string) {
+    let newNode = document.createElement("span");
+    newNode.innerText = tagText;
+    selection.insertNode(newNode);
+    //newNode.insertAdjacentHTML("beforebegin", " ");
+    //newNode.insertAdjacentHTML("afterend", " "); 
+    //add space after and before node to bring cursor outof the node
+  }
 }

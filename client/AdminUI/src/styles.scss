@@ -337,8 +337,12 @@ $altTheme: mat-dark-theme($theme-primary, $theme-accent, $theme-warn);
   color:  $light-text !important;
 }
 
-.mat-row:hover {
+.mat-row:hover, table.table-1 tr:hover {
   background-color: #eeeeee;
+}
+
+table.table-1 td {
+  padding: .3rem;
 }
 
 .cursor-pointer {
