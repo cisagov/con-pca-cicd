@@ -84,7 +84,6 @@ export class TemplateManagerComponent implements OnInit {
     //this.getAllTemplates();
   }
   ngOnInit() {
-    console.log(this.image_upload_url)
     //get subscription to height of page from main layout component
     this.subscriptions.push(
       this.layoutSvc.getContentHeightEmitter().subscribe(height => {
@@ -229,6 +228,11 @@ export class TemplateManagerComponent implements OnInit {
 
   //Get Template model from the form group
   getTemplateFromForm(form: FormGroup) {
+    // form fields might not have the up-to-date content that the angular-editor has
+    form.controls['templateHTML'].setValue(this.angularEditorEle.textArea.nativeElement.innerHTML);
+    form.controls['templateText'].setValue(this.angularEditorEle.textArea.nativeElement.innerText);
+
+
     let formTemplate = new Template(form.value)
     let saveTemplate = new Template({
       template_uuid: form.controls['templateUUID'].value,
@@ -487,8 +491,7 @@ export class TemplateManagerComponent implements OnInit {
    * @param tag 
    */
   insertTag(selection, tagText: string) {
-    let newNode = document.createElement("span");
-    newNode.innerText = tagText;
+    let newNode = document.createTextNode(tagText);
     selection.insertNode(newNode);
     //newNode.insertAdjacentHTML("beforebegin", " ");
     //newNode.insertAdjacentHTML("afterend", " "); 

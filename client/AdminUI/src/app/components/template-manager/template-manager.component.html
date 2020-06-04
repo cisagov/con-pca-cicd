@@ -66,8 +66,8 @@
                 }">HTML View
               </span>
             </ng-template>
-            <div>
-              <button mat-raised-button color="primary" (click)="openTagChoice()" class="hidden-insert-tag-button d-none">Insert Tag</button>
+            <button mat-raised-button color="primary" (click)="openTagChoice()" class="hidden-insert-tag-button d-none">Insert Tag</button>
+            <div>              
               <angular-editor #angularEditor [style.height.px]="text_editor_height" formControlName="templateHTML"
                 [config]="editorConfig"></angular-editor>
             </div>
@@ -162,7 +162,7 @@
             <ng-template mat-tab-label>
               Subscriptions
             </ng-template>
-            <div class=" p-3 flex-column" [style.height.px]="text_editor_height">
+            <div class="p-3 flex-column" [style.height.px]="text_editor_height">
               <mat-table *ngIf="this.pcaSubscriptions.data.length > 0" class="w-100" [dataSource]="pcaSubscriptions">
                 <ng-container matColumnDef="name">
                   <mat-header-cell *matHeaderCellDef>
