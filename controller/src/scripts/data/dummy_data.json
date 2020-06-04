@@ -47,6 +47,14 @@
     {
       "active": true,
       "customer_uuid": "changeme",
+      "dhs_primary_contact": {
+        "active": true,
+        "email": "Bigg.Daemon@inl.com",
+        "first_name": "Bigg",
+        "last_name": "Daemon",
+        "mobile_phone": "555-555-5555",
+        "office_phone": "555-555-5555"
+      },
       "gophish_campaign_list": [],
       "keywords": "research development government work job",
       "name": "changeme",
@@ -54,14 +62,6 @@
         "active": true,
         "email": "Matt.Daemon@example.com",
         "first_name": "Matt",
-        "last_name": "Daemon",
-        "mobile_phone": "555-555-5555",
-        "office_phone": "555-555-5555"
-      },
-      "dhs_primary_contact": {
-        "active": true,
-        "email": "Bigg.Daemon@inl.com",
-        "first_name": "Bigg",
         "last_name": "Daemon",
         "mobile_phone": "555-555-5555",
         "office_phone": "555-555-5555"
@@ -118,6 +118,14 @@
     {
       "active": true,
       "customer_uuid": "changeme",
+      "dhs_primary_contact": {
+        "active": true,
+        "email": "Bigg.Daemon@inl.com",
+        "first_name": "Bigg",
+        "last_name": "Daemon",
+        "mobile_phone": "555-555-5555",
+        "office_phone": "555-555-5555"
+      },
       "gophish_campaign_list": [],
       "keywords": "search query google",
       "name": "changme",
@@ -129,7 +137,7 @@
         "mobile_phone": "555-555-5555",
         "office_phone": "555-555-5555"
       },
-      "start_date": "2020-03-10T09:30:25",
+      "start_date": "2021-03-10T09:30:25",
       "status": "Waiting on SRF",
       "target_email_list": [
         {
