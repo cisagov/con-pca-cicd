@@ -33,8 +33,6 @@ export class TemplateManagerComponent implements OnInit {
   dialogRefConfirm: MatDialogRef<ConfirmComponent>;
   dialogRefTagSelection: MatDialogRef<TagSelectionComponent>;
 
-  @ViewChild('angularEditor') angularEditor: any;
-
   //Full template list variables
   search_input: string;
 
@@ -458,7 +456,7 @@ export class TemplateManagerComponent implements OnInit {
    * Clicking it clicks a hidden button to get us back into Angular.
    */
   addInsertTagButtonIntoEditor() { 
-    let btnClearFormatting = $(this.angularEditor.doc).find("[title='Horizontal Line']")[0];
+    let btnClearFormatting = $(this.angularEditorEle.doc).find("[title='Horizontal Line']")[0];
     let attribs = btnClearFormatting.attributes;
     // this assumes that the _ngcontent attribute occurs first
     let ngcontent = attribs.item(0).name;
@@ -472,7 +470,7 @@ export class TemplateManagerComponent implements OnInit {
    * Opens a dialog that presents the tag options.
    */
   openTagChoice() {
-    this.angularEditor.textArea.nativeElement.focus();
+    this.angularEditorEle.textArea.nativeElement.focus();
     let selection = window.getSelection().getRangeAt(0);
     this.dialogRefTagSelection = this.dialog.open(TagSelectionComponent, { disableClose: false });
     this.dialogRefTagSelection.afterClosed().subscribe(result => {
