@@ -28,6 +28,21 @@
                 </mat-form-field>
             </div>
             <!-- Place holder for Government Type -->
+            <div class="d-flex flex-row">
+                <mat-form-field appearance="outline" class="flex-grow-1" [formGroup]="customerFormGroup">
+                    <mat-label>Customer Type</mat-label>
+                    <mat-select formControlName="customerType">
+                        <mat-option value="FED">Government - FED</mat-option>
+                        <mat-option value="State">Government - State</mat-option>
+                        <mat-option value="Local">Governement - Local</mat-option>
+                        <mat-option value="Private">Private</mat-option>
+
+                    </mat-select>
+                    <mat-error *ngIf="customerFormGroup.controls.customerType.hasError('required')">
+                        Customer type is <strong>required</strong>
+                    </mat-error>
+                </mat-form-field>
+            </div>
             <div class="d-flex flex-row" >
                 <mat-form-field appearance="outline" class="flex-grow-1" [formGroup]="customerFormGroup">
                     <mat-label>Address 1*</mat-label>

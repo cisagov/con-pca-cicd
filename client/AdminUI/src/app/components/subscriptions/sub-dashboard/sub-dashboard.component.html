@@ -1,52 +1,40 @@
 <mat-card class="mb-4">
-    <mat-card-header>
-        <mat-card-title style="margin-left: -16px !important">
-            Statistics For Current Cycle
-        </mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-        <div class="d-flex flex-column">
-            <div style="max-height: 200px; margin-bottom: 1rem;">
-                <h4>Statistics By Level</h4>
-                <ngx-charts-bar-vertical-2d 
-                    [results]="chart.chartResults" 
-                    [scheme]="chart.colorScheme" 
-                    [gradient]="chart.gradient" 
-                    [xAxis]="chart.showXAxis"
-                    [yAxis]="chart.showYAxis" 
-                    [legend]="chart.showLegend" 
-                    [legendPosition]="chart.legendPosition"
-                    [legendTitle]="''"
-                    [showXAxisLabel]="chart.showXAxisLabel" 
-                    [showYAxisLabel]="chart.showYAxisLabel"
-                    [xAxisLabel]="chart.xAxisLabel" 
-                    [yAxisLabel]="chart.yAxisLabel" 
-                    [roundEdges]="false">
-                </ngx-charts-bar-vertical-2d>
-            </div>
+  <mat-card-header>
+    <mat-card-title style="margin-left: -16px !important">
+      Statistics For Current Cycle
+    </mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <div class="d-flex flex-column">
+      <div style="max-height: 200px; margin-bottom: 1rem;">
+        <h4>Statistics By Level</h4>
+        <ngx-charts-bar-vertical-2d [results]="chart.chartResults" [scheme]="chart.colorScheme"
+          [gradient]="chart.gradient" [xAxis]="chart.showXAxis" [yAxis]="chart.showYAxis" [legend]="chart.showLegend"
+          [legendPosition]="chart.legendPosition" [legendTitle]="''" [showXAxisLabel]="chart.showXAxisLabel"
+          [showYAxisLabel]="chart.showYAxisLabel" [xAxisLabel]="chart.xAxisLabel" [yAxisLabel]="chart.yAxisLabel"
+          [roundEdges]="false">
+        </ngx-charts-bar-vertical-2d>
+      </div>
 
-            <div class="d-block mb-5 w-100" style="max-height: 100px;">
-                <h4>Number of Emails Sent</h4>
-                <ngx-charts-bar-horizontal-stacked 
-                    [results]="chartSent.chartResults" 
-                    [scheme]="chartSent.colorScheme" 
-                    [gradient]="chartSent.gradient"
-                    [xAxis]="chartSent.showXAxis" 
-                    [yAxis]="chartSent.showYAxis"
-                    [legend]="chartSent.showLegend" 
-                    [showXAxisLabel]="chartSent.showXAxisLabel"
-                    [showYAxisLabel]="chartSent.showYAxisLabel" 
-                    [xAxisLabel]="chartSent.xAxisLabel"
-                    [yAxisLabel]="chartSent.yAxisLabel">
-                </ngx-charts-bar-horizontal-stacked>
-            </div>
+      <div class="d-block mb-4 w-100" style="max-height: 100px;">
+        <h4>Number of Emails Sent</h4>
+        <ngx-charts-bar-horizontal-stacked [results]="chartSent.chartResults" [scheme]="chartSent.colorScheme"
+          [gradient]="chartSent.gradient" [xAxis]="chartSent.showXAxis" [yAxis]="chartSent.showYAxis"
+          [legend]="chartSent.showLegend" [showXAxisLabel]="chartSent.showXAxisLabel"
+          [showYAxisLabel]="chartSent.showYAxisLabel" [xAxisLabel]="chartSent.xAxisLabel"
+          [yAxisLabel]="chartSent.yAxisLabel">
+        </ngx-charts-bar-horizontal-stacked>
+      </div>
 
-            <div>
-                Average Time to First Click: {{ avgTTFC }}
-            </div>
-            <div>
-                Average Time to First Report: {{ avgTTFR }}
-            </div>
+
+        <h4>Response Averages</h4>
+        <div>
+          Average Time to First Click: {{ avgTTFC }}
         </div>
-    </mat-card-content>
+        <div>
+          Average Time to First Report: {{ avgTTFR }}
+        </div>
+
+    </div>
+  </mat-card-content>
 </mat-card>

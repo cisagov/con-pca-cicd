@@ -16,8 +16,11 @@ class ReportsGetSerializer(serializers.Serializer):
     from the reports api call
     """
 
-    subscription_uuid = serializers.UUIDField()
     customer_name = serializers.CharField()
+    templates = serializers.DictField()
     start_date = serializers.DateTimeField()
     end_date = serializers.DateTimeField()
+    sent = serializers.IntegerField()
+    opened = serializers.IntegerField()
+    clicked = serializers.IntegerField()
     target_count = serializers.IntegerField()
