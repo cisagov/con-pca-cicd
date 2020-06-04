@@ -190,3 +190,4 @@ def validate_subscription(data_object):
     This shows basic validation for the model.
     """
     return SubscriptionModel(data_object).validate()
+
