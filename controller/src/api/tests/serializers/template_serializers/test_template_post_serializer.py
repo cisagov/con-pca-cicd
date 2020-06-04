@@ -90,7 +90,7 @@ def test_serializer_subject_field_over_max_length():
         "from_address": fake.email(),
         "retired": fake.boolean(),
         "retired_description": fake.paragraph(),
-        "subject": fake.letter() * 201,
+        "subject": fake.random_letter() * 201,
         "text": fake.paragraph(),
         "html": fake.paragraph(),
         "topic_list": [fake.word()],
