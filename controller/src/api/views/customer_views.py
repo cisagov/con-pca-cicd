@@ -15,6 +15,7 @@ from api.serializers.customer_serializers import (
     CustomerPatchSerializer,
     CustomerPostResponseSerializer,
     CustomerPostSerializer,
+    SectorGetSerializer,
 )
 from api.utils.db_utils import (
     delete_single,
@@ -22,6 +23,9 @@ from api.utils.db_utils import (
     get_single,
     save_single,
     update_single,
+)
+from api.utils.sector_industry_utils import (
+    get_sectors_industries,
 )
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status
@@ -149,3 +153,54 @@ class CustomerView(APIView):
             return Response(delete_response, status=status.HTTP_400_BAD_REQUEST)
         serializer = CustomerDeleteResponseSerializer(delete_response)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+class SectorIndustryView(APIView):
+    """
+    This is the SectorIndustryView APIView.
+
+    This handles the API for Secotr and Industry elements.
+    """
+
+    @swagger_auto_schema(
+        responses={"200": SectorGetSerializer, "400": "Bad Request"},
+        security=[],
+        operation_id="Get all Sectors",
+        operation_description="This handles the API for the Get sectors and their associated industries",
+    )
+    def get(self, request):
+        """Get method."""
+        logger.debug(f"get industry/sector list")
+        
+        # If added to database, pull data through
+        # sectors_industries = get_list(
+        #     parameters, "sectors", CREATESECTORMODEL, CREATESECTORVALIDATION
+        # )
+        
+        # While usng hard coded sector/industry data, use below
+        sectors_industries = get_sectors_industries()
+
+        serializer = SectorGetSerializer(sectors_industries, many=True)
+        return Response(serializer.data)
+
+    @swagger_auto_schema(
+        request_body=CustomerPatchSerializer,
+        responses={"202": "Industry Patched", "400": "Bad Request"},
+        security=[],
+        operation_id="Update and Patch single Industry",
+        operation_description="This handles the API for the update industry and associated sectors",
+    )
+    def patch(self, request, sector_id):
+        """Patch method."""
+        logger.debug(f"patch sector_id {sector_id}")
+        # Patch logic here
+
+    @swagger_auto_schema(
+        responses={"200": "IndustryDelete", "400": "Bad Request"},
+        security=[],
+        operation_id="Delete single Secotor Industry",
+        operation_description="This handles the API for the delete of industry and associated sectors.",
+    )
+    def delete(self, request, sector_id):
+        """Delete method."""
+        logger.debug(f"delete sector_id {sector_id}")
+        #Delete logic here

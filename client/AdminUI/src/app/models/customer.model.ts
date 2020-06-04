@@ -9,6 +9,8 @@ export class Customer {
     city: string;
     state: string;
     zip_code: string;
+    sector: string;
+    industry: string;
     contact_list: Contact[]
 
     public constructor(init?: Partial<TemplateShort>) {

@@ -47,8 +47,9 @@ export class AddCustomerComponent implements OnInit {
     city: new FormControl('', [Validators.required]),
     state: new FormControl('', [Validators.required]),
     zip: new FormControl('', [Validators.required]),
+    sector: new FormControl(null, [Validators.required]),
+    industry: new FormControl(null, [Validators.required]),
    });
-
    
    contactFormGroup = new FormGroup({
     firstName: new FormControl('', [Validators.required]),
@@ -65,6 +66,9 @@ export class AddCustomerComponent implements OnInit {
   // Customer_uuid if not new
   customer_uuid: string;
   customer: Customer;
+
+  sectorList;
+  industryList;
 
   constructor( 
     public subscriptionSvc: SubscriptionService, 
@@ -84,6 +88,7 @@ export class AddCustomerComponent implements OnInit {
         if (this.customer_uuid != undefined) {
           this.getCustomer()
         } else {
+          this.getSectorList()
           //Use preset empty form
         }
       })
@@ -97,12 +102,27 @@ export class AddCustomerComponent implements OnInit {
         this.customer = data as Customer
         this.setCustomerForm(this.customer)
         this.setContacts(this.customer.contact_list as Contact[])
+        this.getSectorList()
       } else {
         this.orgError = "Specified customer UUID not found";
       }
     },
     (error) => {
       this.orgError = "Failed To load customer";
+    })
+  } 
+  getSectorList() {
+    this.customerSvc.getSectorList().subscribe(
+    (data: any) => {
+      if(data) {
+        this.sectorList = data
+        this.setIndustryList()
+      } else {
+        this.orgError = "Error retreiving sector/industry list";
+      }
+    },
+    (error) => {
+      this.orgError = "Error retreiving sector/industry list";
     })
   }
 
@@ -114,7 +134,9 @@ export class AddCustomerComponent implements OnInit {
      address2: customer.address_2,
      city: customer.city,
      state: customer.state,
-     zip: customer.zip_code
+     zip: customer.zip_code,
+     sector: customer.sector,
+     industry: customer.industry,
    })
   }
   setContacts(contactsList: Contact[]){
@@ -164,6 +186,8 @@ export class AddCustomerComponent implements OnInit {
         city: this.customerFormGroup.controls["city"].value,
         state: this.customerFormGroup.controls["state"].value,
         zip_code: this.customerFormGroup.controls["zip"].value,
+        sector: this.customerFormGroup.controls["sector"].value,
+        industry: this.customerFormGroup.controls["industry"].value,
         contact_list: this.contacts.data
       }
       //If editing existing customer
@@ -277,5 +301,27 @@ export class AddCustomerComponent implements OnInit {
 
   checkDataSourceLength(){
     return this.contacts.data.length > 0;
+  }
+
+  sectorChange(event){
+    this.setIndustryList()
+    this.customerFormGroup.patchValue({
+      industry: null
+    })
+  }
+  setIndustryList(){
+    if(this.sectorSelected()){
+      let sector = this.sectorList.filter(x => x.name == this.customerFormGroup.controls["sector"].value)
+      this.industryList = sector[0].industries
+      console.log(this.industryList)
+    }
+  }
+
+  sectorSelected(){
+    if (this.customerFormGroup.controls["sector"].value != null) {return true;}
+    return false
+  }
+  customerValid(){
+    return this.customerFormGroup.valid && this.contacts.data.length > 0
   }
 }

@@ -131,4 +131,10 @@ urlpatterns = [
         image_views.ImageView.as_view(),
         name="image_upload",
     ),
+    path(
+        "v1/sectorindustry/",
+        customer_views.SectorIndustryView.as_view(),
+        name="sector_industry_list",
+    ),
+    
 ]

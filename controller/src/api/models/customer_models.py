@@ -38,7 +38,6 @@ class CustomerContactModel(Model):
     notes = StringType()
     active = BooleanType(required=True)
 
-
 class CustomerModel(Model):
     """
     This is the Customer Model.
@@ -58,7 +57,8 @@ class CustomerModel(Model):
     state = StringType()
     zip_code = StringType()
     contact_list = ListType(ModelType(CustomerContactModel))
-
+    sector = StringType()
+    industry = StringType()
     # db_tracting data added below
     created_by = StringType()
     cb_timestamp = DateTimeType()

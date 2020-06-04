@@ -74,6 +74,33 @@
                     </mat-error>
                 </mat-form-field>
             </div>
+            <div class="d-flex flex-row">
+                <mat-form-field appearance="outline"  class="flex-grow-1" [formGroup]="customerFormGroup">
+                    <mat-label>Sector*</mat-label>
+                    <mat-select formControlName="sector" (selectionChange)="sectorChange($event)">
+                        <mat-option [value]="null">--Select--</mat-option>
+                        <mat-option *ngFor="let s of sectorList" [value]="s.name">
+                            {{ s.name }}</mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="customerFormGroup.controls.sector.hasError('required')">
+                        Sector is <strong>required</strong>
+                    </mat-error>
+                </mat-form-field>                
+            </div>
+            <div class="d-flex flex-row">
+                <mat-form-field appearance="outline"  class="flex-grow-1" [formGroup]="customerFormGroup">
+                    <mat-label>Industry*</mat-label>
+                    <mat-select formControlName="industry" >
+                        <mat-option *ngIf=!sectorSelected() [value]="null"> <b>Select a sector</b></mat-option>
+                        <mat-option *ngIf=sectorSelected() [value]="null">--Select--</mat-option>
+                        <mat-option *ngFor="let s of industryList" [value]="s.name">
+                            {{ s.name }}</mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="customerFormGroup.controls.industry.hasError('required')">
+                        Industry is <strong>required</strong>
+                    </mat-error>
+                </mat-form-field>
+            </div>
         </div>
     </div>
     <h1>Customer/Organization Contacts</h1>
@@ -220,7 +247,17 @@
                 </div>
             </div>
             <div class="d-flex flex-row flex-grow-1 justify-content-end">
-                <button mat-raised-button color="primary" [disabled]="!customerFormGroup.valid" (click)="pushCustomer()">Save Customer</button>
+                
+                <div 
+                    matTooltip="A customer must have all required fields filled, and at least one contact listed" 
+                    matTooltipPosition="right"
+                    matTooltipShowDelay="500"
+                    [matTooltipDisabled]="customerValid() ">
+                    <button mat-raised-button 
+                        [color]="customerValid() ? 'primary' : 'warn'" 
+                        [disabled]="!customerValid()" (click)="pushCustomer()">Save Customer
+                    </button>
+                </div>
                 <button mat-flat-button (click)="cancelCustomer()">Cancel</button>
             </div>
         </div>

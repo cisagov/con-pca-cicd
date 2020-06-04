@@ -43,6 +43,8 @@ class CustomerGetSerializer(serializers.Serializer):
     state = serializers.CharField(max_length=250)
     zip_code = serializers.CharField(max_length=250)
     contact_list = CustomerContactSerializer(many=True)
+    industry = serializers.CharField(max_length=250)
+    sector = serializers.CharField(max_length=250)
     # db data tracking added below
     created_by = serializers.CharField(max_length=100)
     cb_timestamp = serializers.DateTimeField()
@@ -66,6 +68,8 @@ class CustomerPostSerializer(serializers.Serializer):
     state = serializers.CharField(max_length=250)
     zip_code = serializers.CharField(max_length=250)
     contact_list = CustomerContactSerializer(many=True)
+    industry = serializers.CharField(max_length=250)
+    sector = serializers.CharField(max_length=250)
 
 
 class CustomerPostResponseSerializer(serializers.Serializer):
@@ -95,6 +99,8 @@ class CustomerPatchSerializer(serializers.Serializer):
     state = serializers.CharField(max_length=250, required=False)
     zip_code = serializers.CharField(max_length=250, required=False)
     contact_list = CustomerContactSerializer(many=True, required=False)
+    industry = serializers.CharField(max_length=250, required=False)
+    sector = serializers.CharField(max_length=250, required=False)
 
 
 class CustomerPatchResponseSerializer(serializers.Serializer):
@@ -115,6 +121,8 @@ class CustomerPatchResponseSerializer(serializers.Serializer):
     state = serializers.CharField(max_length=250)
     zip_code = serializers.CharField(max_length=250)
     contact_list = CustomerContactSerializer(many=True)
+    industry = serializers.CharField(max_length=250)
+    sector = serializers.CharField(max_length=250)
     # db data tracking added below
     created_by = serializers.CharField(max_length=100)
     cb_timestamp = serializers.DateTimeField()
@@ -131,3 +139,23 @@ class CustomerDeleteResponseSerializer(serializers.Serializer):
 
     # created by mongodb
     customer_uuid = serializers.UUIDField()
+
+class SectorIndustry(serializers.Serializer):
+    """
+    This is the SectorIndustry Serializer.
+
+    This is a formats the data coming out of the Db.
+    """
+
+    name = serializers.CharField(max_length=250)
+
+class SectorGetSerializer(serializers.Serializer):
+    """
+    This is the SectorIndustryGet Serializer.
+
+    This is a formats the data coming out of the Db.
+    """
+
+    name = serializers.CharField(max_length=250)
+    industries = SectorIndustry(many=True)
+
