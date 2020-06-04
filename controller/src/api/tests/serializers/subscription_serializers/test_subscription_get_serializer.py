@@ -24,6 +24,16 @@ def test_serializer():
             "notes": fake.paragraph(),
             "active": fake.boolean(),
         },
+        "dhs_primary_contact": {
+            "first_name": fake.first_name(),
+            "last_name": fake.last_name(),
+            "title": fake.job(),
+            "office_phone": fake.phone_number(),
+            "mobile_phone": fake.phone_number(),
+            "email": fake.email(),
+            "notes": fake.paragraph(),
+            "active": fake.boolean(),
+        },
         "status": fake.word(),
         "target_email_list": [
             {
@@ -46,8 +56,8 @@ def test_serializer():
     serializer = SubscriptionGetSerializer(data=data)
 
     assert isinstance(serializer, SubscriptionGetSerializer)
-    serializer.is_valid()
-    assert serializer.is_valid()
+    valid = serializer.is_valid()
+    assert valid is True
     assert len(serializer.errors) == 0
 
 
@@ -92,6 +102,7 @@ def test_serializer_missing_fields():
     serializer = SubscriptionGetSerializer(data=data)
 
     assert serializer.is_valid() is False
-    assert len(serializer.errors) == 2
+    assert len(serializer.errors) == 3
     assert serializer.errors.get("name") is not None
     assert serializer.errors.get("url") is not None
+    assert serializer.errors.get("dhs_primary_contact") is not None

@@ -13,6 +13,7 @@ def test_serializer():
         "city": fake.city(),
         "state": fake.state(),
         "zip_code": fake.zipcode(),
+        "customer_type": fake.word(),
         "contact_list": [],
         "created_by": fake.name(),
         "cb_timestamp": fake.date_time(),
