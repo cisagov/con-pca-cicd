@@ -13,6 +13,6 @@ def test_serializer():
         "details": fake.paragraph(),
     }
     serializer = InboundWebhookSerializer(data=data)
-
     assert isinstance(serializer, InboundWebhookSerializer)
-    assert serializer.is_valid()
+    serializer.is_valid()
+    assert len(serializer.errors) == 0

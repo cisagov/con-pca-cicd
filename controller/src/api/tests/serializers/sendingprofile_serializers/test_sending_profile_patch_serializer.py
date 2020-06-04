@@ -11,7 +11,7 @@ def test_serializer():
         "password": fake.password(),
         "host": fake.hostname(),
         "interface_type": fake.word(),
-        "from_address": fake.address(),
+        "from_address": fake.ipv4(),
         "ignore_cert_errors": fake.boolean(),
         "modified_date": fake.date(),
     }
@@ -24,7 +24,7 @@ def test_serializer():
 def test_serializer_missing_fields():
     # missing interface type, host, password, username, and name fields should still return a valid serializer
     data = {
-        "from_address": fake.address(),
+        "from_address": fake.ipv4(),
         "ignore_cert_errors": fake.boolean(),
         "modified_date": fake.date(),
     }

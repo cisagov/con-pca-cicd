@@ -14,12 +14,11 @@ def test_serializer():
         "password": fake.password(),
         "host": fake.hostname(),
         "interface_type": fake.word(),
-        "from_address": fake.address(),
+        "from_address": fake.ipv4(),
         "ignore_cert_errors": fake.boolean(),
         "modified_date": fake.date(),
     }
     serializer = SendingProfilePatchResponseSerializer(data=data)
-
     assert isinstance(serializer, SendingProfilePatchResponseSerializer)
     assert serializer.is_valid()
 
@@ -33,7 +32,7 @@ def test_serializer_host_field_over_max_length():
         "password": fake.password(),
         "host": fake.random_letter() * 256,
         "interface_type": fake.word(),
-        "from_address": fake.address(),
+        "from_address": fake.ipv4(),
         "ignore_cert_errors": fake.boolean(),
         "modified_date": fake.date(),
     }
@@ -42,4 +41,3 @@ def test_serializer_host_field_over_max_length():
     assert serializer.is_valid() is False
     assert len(serializer.errors) == 1
     assert serializer.errors.get("host") is not None
-
