@@ -1,0 +1,123 @@
+@charset "UTF-8";
+@page {
+  size: Letter;
+  margin: 2.5cm;
+}
+
+* {
+    font-family: Arial, sans-serif;
+}
+
+.container-fluid {
+  padding: 0 !important;
+}
+
+h2 {
+  color: #174A91;
+  padding-bottom: 15px;
+}
+
+#firstClickTitle {
+  border: 1px solid black;
+  text-align: right;
+} 
+
+#topBanner {
+  height: 225px;
+  background-color: #1B2352;
+}
+
+.leftsideBar {
+ height: 100%;
+ background-color: #1B2352;
+}
+
+#reportDate {
+  text-align: center;
+  color: black;
+}
+
+#phishLogo {
+  float: left;
+  margin-left: 80px;
+  margin-top: 90px;
+}
+
+#cisaLogo {
+  float: right;
+  margin-top: 20px;
+  margin-right: 20px;
+}
+
+#test {
+  border: 2px solid black;
+}
+
+#test2 {
+  border: 2px solid black;
+}
+
+#reportTitle {
+  font-size: 70px;
+  text-align: center; 
+  color: #174A91;
+  margin-top: 50px;
+  margin-bottom: 200px;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
+  text-align: center;
+
+}
+
+#gonePhishingImage {
+  padding-bottom: 45px;
+}
+
+ul {
+  text-align: center;
+  list-style-position: inside;
+}
+
+#campaignProgress {
+  height: 30px;
+  width: 35%;
+  margin: auto;
+}
+
+#piechartTwo {
+  margin-bottom: 100px;
+}
+
+#chartThree {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-bottom: 35px;
+}
+
+#primaryContact {
+  color: white;
+  text-align: center;
+  padding-bottom: 45px;
+}
+
+#cisaContact {
+  color: white;
+  text-align: center;
+  padding-bottom: 45px;
+}
+
+#numbersTitle {
+  color: white;
+  text-align: center;
+}
+
+#campaignNumbers {
+  color: white;
+  text-align: center;
+  width: 65%;
+  margin-left: auto;
+  margin-right: auto;
+  border: 1px solid #FDC010
+}

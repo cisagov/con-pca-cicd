@@ -1,118 +1,142 @@
-@charset "UTF-8";
-@page {
-  size: Letter;
-  margin: 2.5cm;
+.container-fluid {
+  padding: 0 !important;
 }
 
-* {
-    font-family: Arial, sans-serif;
+.topBanner {
+  background-color: #1B2352;
+  height: 225px;
+  width: 100%;
 }
 
-h2 {
-  color: #174A91;
-  padding-bottom: 15px;
+.sidebar {
+  height: 100%;
+  width: 15%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: #1B2352;
+  overflow-x: hidden;
+  color: white;
 }
 
-.averages {
-  text-align: center;
+.main {
+  margin-left: 20%;
 }
 
 #phishLogo {
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-  text-align: left;
+  text-align: center;
+  margin-top: -15%;
+  margin-left: -70%;
+  position: relative;
+  z-index: 1;
 }
 
 #cisaLogo {
-  display: block;
-  margin: auto;
-  text-align: center;
-  width: 50%;
-}
+  text-align: right;
+  margin-top: 0.5%;
+  margin-right: 0.5%;
 
-#reportTitle {
-  font-size: 70px;
-  text-align: center;
-  color: #174A91;
-  margin-top: 50px;
-  margin-bottom: 200px;
-  margin-left: auto;
-  margin-right: auto;
-  width: 50%;
-  text-align: center;
 }
 
 #reportDate {
+  position: relative;
+  z-index: 1;
+  text-align: left;
+  color: black;
+  background-color: white;
+  margin-top: 0%;
+  padding-top: 5px;
+  padding-left: 25px;
+  height: 50px;
+}
+
+#reportTitle {
   text-align: center;
+  margin-top: -500px;
+  padding-top: -100px;
+  margin-right: 100px;
+  position: relative;
+  z-index: 10;
+}
+
+#averageClickTitle, #averageReportTitle {
+  margin-top: 100px;
   color: #174A91;
-  padding-top: 50px;
-  padding-bottom: 300px;
-  page-break-after: always;
+  text-align: center;
 }
 
-/* Cirlce instead of a box on the averages.
-.circle {
-  width:250px;
-  height:250px;
-  border-radius:250px;
-  font-size:45px;
-  color:#fff;
-  line-height:250px;
+#averageClickTime, #averageReportTime {
   text-align: center;
-  background:#174A91;
-  margin: auto;
-}
-*/
-
-.timeBox {
-  height: 250px;
-  font-size: 60px;
-  text-align: center;
-  border: 1px solid black;
-  background-color: #F5F5F5;
-  color: #174A91;
-  padding-top: 25px;
-  margin-bottom: 150px;
 }
 
-ul {
+#campaignProgressText {
+  margin-top: 100px;
   text-align: center;
-  list-style-position: inside;
 }
 
 #campaignProgress {
   height: 30px;
-  width: 35%;
+  width: 40%;
   margin: auto;
+  margin-top: 20px;
+  border: 1px solid black;
+}
+
+#piechart {
+  margin-top: 100px;
+  margin-left: 30%;
+  margin-bottom: 50px; 
 }
 
 #piechartTwo {
-  margin-bottom: 100px;
+  margin-top: 100px;
+  margin-bottom: 50px;
 }
 
-#chartThree {
+#columnchart {
+  margin-bottom: 50px;
   width: 100%;
-  margin-left: auto;
-  margin-right: auto;
-  margin-bottom: 35px;
+  padding-left: 10%;
+  padding-right: 10%;
+
 }
 
-#campaignNumbers {
-  text-align: left;
-  margin-left: auto;
-  margin-right: auto;
-  margin-bottom: 100px;
+#gonePhishingImage {
+  position: relative;
+  z-index: 1;
 }
 
 #primaryContact {
-  border: 1px solid black;
-  background-color: #F5F5F5;
-  text-align: center;
+  padding-top: 25px;
+  color: white;
+  position: relative;
+  z-index: 1;
+  text-align: left;
+  width: 15%;
 }
 
 #cisaContact {
-  border: 1px solid black;
-  background-color: #F5F5F5;
-  text-align: center;
+  padding-top: 25px;
+  color: white;
+  position: relative;
+  z-index: 1;
+  text-align: left;
+  width: 15%;
+}
+
+#numbersTitle {
+  color: white;
+  position: relative;
+  z-index: 1;
+  text-align: left;
+  width: 15%;
+}
+
+#campaignNumbers {
+  color: white;
+  position: relative;
+  z-index: 1;
+  text-align: left;
+  width: 12%;
+  border: 1px solid #FDC010
 }
