@@ -1,5 +1,6 @@
 black
 coverage
+faker
 pytest
 pytest-django
 pytest-env

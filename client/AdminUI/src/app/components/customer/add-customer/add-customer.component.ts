@@ -34,6 +34,7 @@ export class AddCustomerComponent implements OnInit {
    matchCity = new MyErrorStateMatcher();
    matchState = new MyErrorStateMatcher();
    matchZip = new MyErrorStateMatcher();
+   matchCustomerType = new MyErrorStateMatcher();
    
    matchFirstName = new MyErrorStateMatcher();
    matchLastName = new MyErrorStateMatcher();
@@ -47,6 +48,7 @@ export class AddCustomerComponent implements OnInit {
     city: new FormControl('', [Validators.required]),
     state: new FormControl('', [Validators.required]),
     zip: new FormControl('', [Validators.required]),
+    customerType: new FormControl('', [Validators.required])
    });
 
    
@@ -107,9 +109,10 @@ export class AddCustomerComponent implements OnInit {
   }
 
   setCustomerForm(customer: Customer){    
-   this.customerFormGroup.setValue({
+   this.customerFormGroup.patchValue({
      customerName: customer.name,
      customerIdentifier: customer.identifier,
+     customerType: customer.customer_type,
      address1: customer.address_1,
      address2: customer.address_2,
      city: customer.city,
@@ -164,6 +167,7 @@ export class AddCustomerComponent implements OnInit {
         city: this.customerFormGroup.controls["city"].value,
         state: this.customerFormGroup.controls["state"].value,
         zip_code: this.customerFormGroup.controls["zip"].value,
+        customer_type: this.customerFormGroup.controls["customerType"].value,
         contact_list: this.contacts.data
       }
       //If editing existing customer

@@ -173,6 +173,8 @@ class CampaignManager:
         smtp = SMTP(name=smtp_name)
         landing_page = Page(name=page_name)
 
+        print(smtp_name)
+
         campaign = Campaign(
             name=campaign_name,
             groups=[user_group],

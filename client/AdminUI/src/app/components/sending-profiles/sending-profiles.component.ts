@@ -5,6 +5,7 @@ import { SendingProfileService } from 'src/app/services/sending-profile.service'
 import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
 import { SendingProfileDetailComponent } from './sending-profile-detail.component';
 import { ConfirmComponent } from '../dialogs/confirm/confirm.component';
+import { LayoutMainService } from 'src/app/services/layout-main.service';
 
 @Component({
   selector: 'app-sending-profiles',
@@ -24,8 +25,11 @@ export class SendingProfilesComponent implements OnInit {
 
   constructor(
     private sendingProfileSvc: SendingProfileService,
-    public dialog: MatDialog
-  ) { }
+    public dialog: MatDialog, 
+    public layoutSvc: LayoutMainService
+  ) { 
+    layoutSvc.setTitle("Sending Profiles");
+  }
 
   /**
    * 

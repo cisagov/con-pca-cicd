@@ -57,6 +57,7 @@ class CustomerModel(Model):
     city = StringType()
     state = StringType()
     zip_code = StringType()
+    customer_type = StringType()
     contact_list = ListType(ModelType(CustomerContactModel))
 
     # db_tracting data added below

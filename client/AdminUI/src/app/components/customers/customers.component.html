@@ -46,7 +46,7 @@
             
 
             <mat-header-row *matHeaderRowDef="displayed_columns"></mat-header-row>
-            <mat-row *matRowDef="let row; columns: displayed_columns" (click)="setCustomer(row.customer_uuid)"></mat-row>
+            <mat-row class="cursor-pointer" *matRowDef="let row; columns: displayed_columns" (click)="setCustomer(row.customer_uuid)"></mat-row>
         </mat-table>
     </div>
     <div class="container-fluid" *ngIf="customerSvc.showCustomerInfo">

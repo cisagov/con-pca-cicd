@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { LayoutMainService } from 'src/app/services/layout-main.service';
 
 @Component({
   selector: '',
@@ -7,8 +8,8 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 
 export class DomainsComponent implements OnInit {
-  constructor() {
-
+  constructor(layoutSvc: LayoutMainService) {
+    layoutSvc.setTitle('Domains');
    }
 
   ngOnInit() {
