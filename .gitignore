@@ -22,6 +22,7 @@ controller/src/celerybeat.pid
 controller/src/scripts/data/created_dummy_data_*.json
 controller/.coverage
 controller/htmlcov/
+controller/node_modules
 
 # Gophish
 gophish/.env
