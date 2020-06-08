@@ -3,7 +3,7 @@
     "version": "1.0.0",
     "description": "Continuous Phishing Assessment",
     "scripts": {
-        "build-emails": "./node_modules/mjml/bin/mjml --config.beautify false -l skip src/templates/templates/emails/mjml/*.mjml -o src/templates/templates/emails/"
+        "build-emails": "./node_modules/mjml/bin/mjml --config.beautify false -l skip src/templates/emails/mjml/*.mjml -o src/templates/emails/"
     },
     "author": "INL",
     "license": "ISC",
