@@ -102,4 +102,9 @@ export class CustomerService {
   public addCustomer(customer: NewCustomer) {
     return this.http.post(`${environment.apiEndpoint}/api/v1/customers/`, JSON.stringify(customer), httpOptions);
   }
+
+  public getSectorList() {    
+    let url = `${environment.apiEndpoint}/api/v1/sectorindustry/`;
+    return this.http.get(url);
+  }
 }
