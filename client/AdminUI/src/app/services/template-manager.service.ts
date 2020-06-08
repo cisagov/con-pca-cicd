@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 
-import { Template } from 'src/app/models/template.model';
+import { Template, TagModel } from 'src/app/models/template.model';
 
 const headers = {
   headers: new HttpHeaders().set('Content-Type', 'application/json'),
@@ -11,9 +11,26 @@ const headers = {
 
 @Injectable()
 export class TemplateManagerService {
-  constructor(private http: HttpClient) { }
 
-  //GET a list of all templates
+  public tags: TagModel[];
+
+
+  /**
+   * Constructor.
+   * @param http 
+   */
+  constructor(private http: HttpClient) { 
+
+    // load the tags collection up front
+    this.getAllTags().subscribe((result: TagModel[]) => {
+      this.tags = result;
+    });
+  }
+
+  /**
+   * GET a list of all templates
+   * @param retired 
+   */
   getAllTemplates(retired: boolean = false) {
     let url = `${environment.apiEndpoint}/api/v1/templates/`
     if (retired) {
@@ -22,22 +39,10 @@ export class TemplateManagerService {
     return this.http.get(url, headers);
   }
 
-  // getAllTemplates() {
-  //   return new Promise((resolve, reject) => {
-  //     this.http
-  //     .get('http://localhost:8000/api/v1/templates', headers)
-  //     .subscribe(
-  //       (success) => {
-  //         return success
-  //       },
-  //       (error) => {
-  //         return error
-  //       }
-  //     )
-  //   })
-  // }
-
-  //GET a single template using the provided temlpate_uuid
+  /**
+   * GET a single template using the provided temlpate_uuid
+   * @param uuid 
+   */
   getTemplate(uuid: string) {
     return new Promise((resolve, reject) => {
       this.http
@@ -55,7 +60,10 @@ export class TemplateManagerService {
     });
   }
 
-  //POST a new template
+  /**
+   * POST a new template
+   * @param template 
+   */
   saveNewTemplate(template: Template) {
     return new Promise((resolve, reject) => {
       this.http
@@ -72,7 +80,11 @@ export class TemplateManagerService {
         );
     });
   }
-  //PATCH an existing template with partial data
+
+  /**
+   * PATCH an existing template with partial data
+   * @param template 
+   */
   updateTemplate(template: Template) {
     return new Promise((resolve, reject) => {
       this.http
@@ -89,6 +101,11 @@ export class TemplateManagerService {
         );
     });
   }
+
+  /**
+   * 
+   * @param template 
+   */
   deleteTemplate(template: Template) {
     return new Promise((resolve, reject) => {
       this.http
@@ -104,8 +121,18 @@ export class TemplateManagerService {
     })
   }
 
+  /**
+   * 
+   * @param template 
+   */
   stopTemplate(template: Template) {
     return this.http.get(`${environment.apiEndpoint}/api/v1/template/stop/${template.template_uuid}/`);
   }
 
+  /**
+   * Gets a list of all known Tags
+   */
+  getAllTags() {
+    return this.http.get(`${environment.apiEndpoint}/api/v1/tags`);
+  }
 }
