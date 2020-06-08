@@ -17,11 +17,11 @@ class CustomerContactSerializer(serializers.Serializer):
 
     first_name = serializers.CharField(max_length=250)
     last_name = serializers.CharField(max_length=250)
-    title = serializers.CharField(max_length=250)
+    title = serializers.CharField(required=False, max_length=250)
     office_phone = serializers.CharField(max_length=100)
     mobile_phone = serializers.CharField(max_length=100)
     email = serializers.EmailField(max_length=None, min_length=None, allow_blank=False)
-    notes = serializers.CharField(max_length=None, min_length=None, allow_blank=True)
+    notes = serializers.CharField(required=False, max_length=None, min_length=None, allow_blank=True)
     active = serializers.BooleanField(default=True, allow_null=False)
 
 
@@ -46,8 +46,8 @@ class CustomerGetSerializer(serializers.Serializer):
     zip_code = serializers.CharField(max_length=250)
     customer_type = serializers.CharField(max_length=250, required=False)
     contact_list = CustomerContactSerializer(many=True)
-    industry = serializers.CharField(max_length=250)
-    sector = serializers.CharField(max_length=250)
+    industry = serializers.CharField(required=False, max_length=250)
+    sector = serializers.CharField(required=False, max_length=250)
     # db data tracking added below
     created_by = serializers.CharField(max_length=100)
     cb_timestamp = serializers.DateTimeField()
