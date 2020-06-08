@@ -74,3 +74,7 @@ mi:
 # target: hal - calculates halstead complexity metric
 hal:
 	radon hal ./src/ -e "*.venv*"
+
+# target: build emails - build mjml files to html
+build_emails:
+	npm run build-emails
