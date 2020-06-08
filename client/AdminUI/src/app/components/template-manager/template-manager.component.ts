@@ -5,7 +5,7 @@ import {
   ElementRef,
 } from '@angular/core';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
-import { AngularEditorConfig, AngularEditorComponent } from '@kolkov/angular-editor';
+import { AngularEditorConfig } from '@kolkov/angular-editor';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MyErrorStateMatcher } from 'src/app/helper/ErrorStateMatcher';
 import { LayoutMainService } from 'src/app/services/layout-main.service';
@@ -13,7 +13,6 @@ import { TemplateManagerService } from 'src/app/services/template-manager.servic
 import { Template, TagModel } from 'src/app/models/template.model';
 import { Subscription as PcaSubscription } from 'src/app/models/subscription.model';
 import { Subscription } from 'rxjs';
-import { environment } from 'src/environments/environment';
 import $ from 'jquery';
 import 'src/app/helper/csvToArray';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
@@ -23,6 +22,7 @@ import { ConfirmComponent } from '../dialogs/confirm/confirm.component';
 import { AppSettings } from 'src/app/AppSettings';
 import { MatTableDataSource } from '@angular/material/table';
 import { TagSelectionComponent } from '../dialogs/tag-selection/tag-selection.component';
+import { SettingsService } from 'src/app/services/settings.service';
 
 @Component({
   selector: 'app-template-manager',
@@ -55,7 +55,7 @@ export class TemplateManagerComponent implements OnInit {
   ];
 
   //config vars
-  image_upload_url: string = `${environment.apiEndpoint}/api/v1/imageupload/`
+  image_upload_url: string = `${this.settingsService.settings.apiUrl}/api/v1/imageupload/`
 
   dateFormat = AppSettings.DATE_FORMAT;
 
@@ -76,7 +76,8 @@ export class TemplateManagerComponent implements OnInit {
     private subscriptionSvc: SubscriptionService,
     private route: ActivatedRoute,
     private router: Router,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private settingsService: SettingsService
   ) {
     layoutSvc.setTitle('Template Manager');
     //this.setEmptyTemplateForm();
@@ -459,7 +460,7 @@ export class TemplateManagerComponent implements OnInit {
    * Hack the angular-editor to add a new button after the "clear formatting" button.
    * Clicking it clicks a hidden button to get us back into Angular.
    */
-  addInsertTagButtonIntoEditor() { 
+  addInsertTagButtonIntoEditor() {
     let btnClearFormatting = $(this.angularEditorEle.doc).find("[title='Horizontal Line']")[0];
     let attribs = btnClearFormatting.attributes;
     // this assumes that the _ngcontent attribute occurs first

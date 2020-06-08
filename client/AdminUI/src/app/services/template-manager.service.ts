@@ -1,8 +1,8 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { environment } from 'src/environments/environment';
 
 import { Template, TagModel } from 'src/app/models/template.model';
+import { SettingsService } from './settings.service';
 
 const headers = {
   headers: new HttpHeaders().set('Content-Type', 'application/json'),
@@ -19,7 +19,7 @@ export class TemplateManagerService {
    * Constructor.
    * @param http 
    */
-  constructor(private http: HttpClient) { 
+  constructor(private http: HttpClient, private settingsService: SettingsService) {
 
     // load the tags collection up front
     this.getAllTags().subscribe((result: TagModel[]) => {
@@ -32,7 +32,7 @@ export class TemplateManagerService {
    * @param retired 
    */
   getAllTemplates(retired: boolean = false) {
-    let url = `${environment.apiEndpoint}/api/v1/templates/`
+    let url = `${this.settingsService.settings.apiUrl}/api/v1/templates/`
     if (retired) {
       url = `${url}?retired=true`
     }
@@ -46,7 +46,7 @@ export class TemplateManagerService {
   getTemplate(uuid: string) {
     return new Promise((resolve, reject) => {
       this.http
-        .get(`${environment.apiEndpoint}/api/v1/template/${uuid}`)
+        .get(`${this.settingsService.settings.apiUrl}/api/v1/template/${uuid}`)
         .subscribe(
           success => {
             resolve(success);
@@ -67,7 +67,7 @@ export class TemplateManagerService {
   saveNewTemplate(template: Template) {
     return new Promise((resolve, reject) => {
       this.http
-        .post(`${environment.apiEndpoint}/api/v1/templates/`, template)
+        .post(`${this.settingsService.settings.apiUrl}/api/v1/templates/`, template)
         .subscribe(
           success => {
             resolve(success);
@@ -88,7 +88,7 @@ export class TemplateManagerService {
   updateTemplate(template: Template) {
     return new Promise((resolve, reject) => {
       this.http
-        .patch(`${environment.apiEndpoint}/api/v1/template/${template.template_uuid}/`, template)
+        .patch(`${this.settingsService.settings.apiUrl}/api/v1/template/${template.template_uuid}/`, template)
         .subscribe(
           success => {
             resolve(success);
@@ -109,7 +109,7 @@ export class TemplateManagerService {
   deleteTemplate(template: Template) {
     return new Promise((resolve, reject) => {
       this.http
-        .delete(`${environment.apiEndpoint}/api/v1/template/${template.template_uuid}/`)
+        .delete(`${this.settingsService.settings.apiUrl}/api/v1/template/${template.template_uuid}/`)
         .subscribe(
           success => {
             resolve(success);
@@ -126,13 +126,13 @@ export class TemplateManagerService {
    * @param template 
    */
   stopTemplate(template: Template) {
-    return this.http.get(`${environment.apiEndpoint}/api/v1/template/stop/${template.template_uuid}/`);
+    return this.http.get(`${this.settingsService.settings.apiUrl}/api/v1/template/stop/${template.template_uuid}/`);
   }
 
   /**
    * Gets a list of all known Tags
    */
   getAllTags() {
-    return this.http.get(`${environment.apiEndpoint}/api/v1/tags`);
+    return this.http.get(`${this.settingsService.settings.apiUrl}/api/v1/tags`);
   }
 }
