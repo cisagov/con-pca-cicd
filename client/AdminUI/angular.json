@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "AdminUI": {
+    "adminui": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -131,5 +131,5 @@
       }
     }
   },
-  "defaultProject": "AdminUI"
+  "defaultProject": "adminui"
 }
