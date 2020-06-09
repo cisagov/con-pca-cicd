@@ -30,7 +30,7 @@
           ['Unopened', 11]
         ]);
         
-          var options = {'title':'Emails', 'width':550, 'height':400};
+          var options = {'title':'Emails', 'width':550, 'height':400, 'colors': ['#194F9A', '#FDC010']};
           var chart = new google.visualization.PieChart(document.getElementById('piechart'));
           chart.draw(data, options);
         }
@@ -43,7 +43,7 @@
             ['Clicked', 17]
         ]);
         
-          var options = {'title':'Links', 'width':550, 'height':400};
+          var options = {'title':'Links', 'width':550, 'height':400, 'colors': ['#194F9A', '#FDC010']};
           var chart = new google.visualization.PieChart(document.getElementById('piechartTwo'));
           chart.draw(data, options);
         }
@@ -55,7 +55,7 @@
                ['Sent',  333, 333, 333],
                ['Opened',  300, 300, 300],
                ['Clicked',  50, 100, 150],
-               ['Submitted',  11, 17, 24],
+               ['Submitted',  21, 37, 44],
             ]);
 
             var options = {
@@ -63,7 +63,7 @@
                 vAxis: {title: 'Amount'},
                 hAxis: {title: 'Category'},
                 seriesType: 'bars',
-                series: {4: {type: 'line'}}
+                series: {4: {type: 'bar'}}
             }; 
             var chart = new google.visualization.ComboChart(document.getElementById('columnchart'));
             chart.draw(data, options);

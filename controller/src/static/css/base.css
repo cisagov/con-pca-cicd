@@ -78,7 +78,7 @@
 }
 
 #campaignProgressText {
-  margin-top: 100px;
+  margin-top: 5%;
   text-align: center;
 }
 
@@ -86,28 +86,26 @@
   height: 30px;
   width: 40%;
   margin: auto;
-  margin-top: 20px;
+  margin-top: 1%;
   border: 1px solid black;
 }
 
 #piechart {
-  margin-top: 100px;
+  margin-top: 15%;
   margin-left: 20%;
-  margin-bottom: 50px;
 }
 
 #piechartTwo {
-  margin-top: 100px;
-  margin-bottom: 50px;
+  margin-top: 15%;
   margin-left: 6vw;
 }
 
 #columnchart {
+  margin-top: 7.5%;
   margin-bottom: 50px;
   width: 100%;
   padding-left: 10%;
   padding-right: 10%;
-
 }
 
 #gonePhishingImage {
