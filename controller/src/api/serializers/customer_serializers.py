@@ -172,7 +172,7 @@ class SectorGetSerializer(serializers.Serializer):
     industries = SectorIndustry(many=True)
 
 
-class CustomerQurySerializer(serializers.Serializer):
+class CustomerQuerySerializer(serializers.Serializer):
     """
     This is the Customer Query Serializer.
 
