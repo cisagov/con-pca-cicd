@@ -47,3 +47,4 @@ env/
 aws/terraform/.terraform
 aws/.env
 
+/client/AdminUI/package-lock.json
