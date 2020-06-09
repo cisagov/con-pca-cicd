@@ -250,7 +250,9 @@ old_topic_tags = [
 ]
 
 old_token_tags = [
-    "%TOKEN%"
+    "%TOKEN%",
+    "[LEGIT CONTRACT #]",
+    "[LEGIT SOLICITATION #]"
 ]
 
 old_program_tags = [
@@ -274,8 +276,6 @@ old_job_tags = [
 
 old_number_tags = [
     "[amount or number]",
-    "[LEGIT CONTRACT #]",
-    "[LEGIT SOLICITATION #]"
 ]
 
 # New Uniform Tags
@@ -306,7 +306,7 @@ old_number_tags = [
 #        "<%CURRENT_YEAR_LONG%>": today.strftime("%Y"),
 #        "<%CURRENT_YEAR_SHORT%>": today.strftime("%y"),
 #        "<%CURRENT_DAY%>": today.strftime("%d"),
-#        "<%SPOOF_NAME%>": "FAKE NAME GERNERATOR",
+#        "<%SPOOF_NAME%>": "FAKE NAME GENERATOR",
 #        "<%EVENT%>": "Relevent Event",
 #        "<%TIMEFRAME%>": "Relevent Timeframe",
 #        "<%DOMAIN%>": "Relevenat Domain",
@@ -318,7 +318,7 @@ old_number_tags = [
 #        "<%PROGRAM%>": "Relevant Program",
 #        "<%LOGO%>": "Relevant Logo"
 #        "<%JOB_ROLE%>": "Relevant Job"
-#        "<%NUMBER%>": Relevnant amount or number"
+#        "<%NUMBER%>": Relevant amount or number"
 
 
 def main():
@@ -333,7 +333,7 @@ def main():
     updated_tags = {
         "<%URL%>": old_link_tags , "<%TARGET_FULL_NAME%>": old_target_name_tags, "<%TARGET_EMAIL%>": old_target_email_tags, "<%CUSTOMER_SYSTEM%>": old_customer_system_tags,
         "<%CUSTOMER_NAME%>": old_customer_tags, "<%CUSTOMER_EMAIL%>": old_customer_email_tags, "<%CUSTOMER_ADDRESS_FULL%>": old_address_tags, 
-        "<%CUSTOEMR_STATE%>": old_state_tags, "<%CUSTOMER_CITY%>": old_customer_location_tags, "<%CURRENT_SEASON%>": old_season_tags, "<%CURRENT_DATE_LONG%>": old_date_tags,
+        "<%CUSTOMER_STATE%>": old_state_tags, "<%CUSTOMER_CITY%>": old_customer_location_tags, "<%CURRENT_SEASON%>": old_season_tags, "<%CURRENT_DATE_LONG%>": old_date_tags,
         "<%CURRENT_MONTH_LONG%>": old_month_tags, "<%CURRENT_YEAR_LONG%>": old_year_tags, "<%SPOOF_NAME%>": old_spoof_name_tags, "<%EVENT%>": old_event_tags,
         "<%TIMEFRAME%>": old_time_frame_tags, "<%DOMAIN%>": old_domain_tags, "<%ACRONYM%>": old_acronym_tags, "<%SLOGAN%>": old_slogan_tags, "<%SIGNATURE%>": old_signature_tags,
         "<%TOPIC%>": old_topic_tags, "<%TOKEN%>": old_token_tags, "<%PROGRAM%>": old_program_tags, "<%LOGO%>": old_logo_tags, "<%JOB_ROLE%>": old_job_tags,

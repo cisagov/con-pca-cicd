@@ -1,4 +1,4 @@
-version: '3.2'
+version: '3.5'
 services:
   localstack:
     image: localstack/localstack:latest
@@ -13,6 +13,8 @@ services:
     volumes:
       - pca-localstack-data:/tmp/localstack
       - '/var/run/docker.sock:/var/run/docker.sock'
+    networks:
+      - backend
   terraform:
     build:
       context: .
@@ -23,7 +25,13 @@ services:
     image: cpa-terraform:1.0
     volumes:
       - pca-terraform-data:/app/state
-      - './terraform:/app/resources'
+      - './terraform:/app/resources' 
+    networks:
+      - backend
 volumes:
   pca-localstack-data:
   pca-terraform-data:
+
+networks:
+  backend:
+    name: pca_backend

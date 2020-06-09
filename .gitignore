@@ -6,12 +6,16 @@ __pycache__
 .python-version
 .DS_Store
 src/.DS_Store
+.coverage
 
 # Client
 /client/AdminUI/node_modules
 /client/AdminUI/node_modules/*
 /client/AdminUI/dist
 client/.env
+/client/AdminUI/package-lock.json
+
+
 
 # Controller
 controller/.env
@@ -21,6 +25,10 @@ controller/src/celerybeat.pid
 controller/src/scripts/data/created_dummy_data_*.json
 controller/.coverage
 controller/htmlcov/
+controller/node_modules
+controller/Scripts/
+controller/Lib
+controller/pyvenv.cfg
 
 # Gophish
 gophish/.env
@@ -41,7 +49,3 @@ env/
 # Terraform
 aws/terraform/.terraform
 aws/.env
-/controller/Include
-/controller/Lib
-/controller/Scripts
-/controller/pyvenv.cfg

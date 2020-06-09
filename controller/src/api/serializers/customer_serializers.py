@@ -17,11 +17,11 @@ class CustomerContactSerializer(serializers.Serializer):
 
     first_name = serializers.CharField(max_length=250)
     last_name = serializers.CharField(max_length=250)
-    title = serializers.CharField(max_length=250)
+    title = serializers.CharField(required=False, max_length=250)
     office_phone = serializers.CharField(max_length=100)
     mobile_phone = serializers.CharField(max_length=100)
     email = serializers.EmailField(max_length=None, min_length=None, allow_blank=False)
-    notes = serializers.CharField(max_length=None, min_length=None, allow_blank=True)
+    notes = serializers.CharField(required=False, max_length=None, min_length=None, allow_blank=True)
     active = serializers.BooleanField(default=True, allow_null=False)
 
 
@@ -38,11 +38,16 @@ class CustomerGetSerializer(serializers.Serializer):
     name = serializers.CharField(max_length=250)
     identifier = serializers.CharField(max_length=250)
     address_1 = serializers.CharField(max_length=250)
-    address_2 = serializers.CharField(max_length=250)
+    address_2 = serializers.CharField(
+        max_length=250, required=False, allow_blank=True, allow_null=True
+    )
     city = serializers.CharField(max_length=250)
     state = serializers.CharField(max_length=250)
     zip_code = serializers.CharField(max_length=250)
+    customer_type = serializers.CharField(max_length=250, required=False)
     contact_list = CustomerContactSerializer(many=True)
+    industry = serializers.CharField(required=False, max_length=250)
+    sector = serializers.CharField(required=False, max_length=250)
     # db data tracking added below
     created_by = serializers.CharField(max_length=100)
     cb_timestamp = serializers.DateTimeField()
@@ -61,11 +66,14 @@ class CustomerPostSerializer(serializers.Serializer):
     name = serializers.CharField(max_length=250)
     identifier = serializers.CharField(max_length=250)
     address_1 = serializers.CharField(max_length=250)
-    address_2 = serializers.CharField(max_length=250)
+    address_2 = serializers.CharField(max_length=250, required=False)
     city = serializers.CharField(max_length=250)
     state = serializers.CharField(max_length=250)
     zip_code = serializers.CharField(max_length=250)
+    customer_type = serializers.CharField(max_length=250)
     contact_list = CustomerContactSerializer(many=True)
+    industry = serializers.CharField(max_length=250)
+    sector = serializers.CharField(max_length=250)
 
 
 class CustomerPostResponseSerializer(serializers.Serializer):
@@ -94,7 +102,10 @@ class CustomerPatchSerializer(serializers.Serializer):
     city = serializers.CharField(max_length=250, required=False)
     state = serializers.CharField(max_length=250, required=False)
     zip_code = serializers.CharField(max_length=250, required=False)
+    customer_type = serializers.CharField(max_length=250, required=False)
     contact_list = CustomerContactSerializer(many=True, required=False)
+    industry = serializers.CharField(max_length=250, required=False)
+    sector = serializers.CharField(max_length=250, required=False)
 
 
 class CustomerPatchResponseSerializer(serializers.Serializer):
@@ -110,11 +121,16 @@ class CustomerPatchResponseSerializer(serializers.Serializer):
     name = serializers.CharField(max_length=250)
     identifier = serializers.CharField(max_length=250)
     address_1 = serializers.CharField(max_length=250)
-    address_2 = serializers.CharField(max_length=250)
+    address_2 = serializers.CharField(
+        max_length=250, required=False, allow_blank=True, allow_null=True
+    )
     city = serializers.CharField(max_length=250)
     state = serializers.CharField(max_length=250)
     zip_code = serializers.CharField(max_length=250)
+    customer_type = serializers.CharField(max_length=250)
     contact_list = CustomerContactSerializer(many=True)
+    industry = serializers.CharField(max_length=250)
+    sector = serializers.CharField(max_length=250)
     # db data tracking added below
     created_by = serializers.CharField(max_length=100)
     cb_timestamp = serializers.DateTimeField()
@@ -131,3 +147,23 @@ class CustomerDeleteResponseSerializer(serializers.Serializer):
 
     # created by mongodb
     customer_uuid = serializers.UUIDField()
+
+class SectorIndustry(serializers.Serializer):
+    """
+    This is the SectorIndustry Serializer.
+
+    This is a formats the data coming out of the Db.
+    """
+
+    name = serializers.CharField(max_length=250)
+
+class SectorGetSerializer(serializers.Serializer):
+    """
+    This is the SectorIndustryGet Serializer.
+
+    This is a formats the data coming out of the Db.
+    """
+
+    name = serializers.CharField(max_length=250)
+    industries = SectorIndustry(many=True)
+

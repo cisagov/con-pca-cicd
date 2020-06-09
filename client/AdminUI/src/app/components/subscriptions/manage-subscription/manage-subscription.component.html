@@ -3,7 +3,16 @@
         <div class="d-flex flex-column mb-5">
 
             <div class="w-100">
-                <app-sub-dashboard *ngIf="pageMode!='CREATE'"></app-sub-dashboard>
+                <app-sub-dashboard *ngIf="pageMode!='CREATE'" 
+                    [subscriptionUuid]="subscription?.subscription_uuid">
+                </app-sub-dashboard>
+
+                <div>
+                    <h2>Subscription Timeline</h2>
+                    <div style="margin: 0 2rem 1rem 2rem">
+                        <timeline [timelineItems]="timelineItems"></timeline>
+                    </div>
+                </div>
             </div>
 
             <h2>Customer/Organization</h2>
@@ -11,11 +20,16 @@
                 <div>
                     <mat-card class="mt-0 mr-3 mb-1 ml-0 customer-card" appearance="outline">
                         <input type="hidden" formControlName="selectedCustomerUuid">
-                        <div>{{customer?.name}}</div>
-                        <div>{{customer?.identifier}}</div>
-                        <div>{{customer?.address_1}}</div>
-                        <div>{{customer?.address_2}}</div>
-                        <div>{{customer?.city}}, {{customer?.state}} {{customer?.zip_code}}</div>
+                        <div *ngIf="!!customer.customer_uuid">
+                            <div>{{customer?.name}}</div>
+                            <div>{{customer?.identifier}}</div>
+                            <div>{{customer?.address_1}}</div>
+                            <div>{{customer?.address_2}}</div>
+                            <div>{{customer?.city}}, {{customer?.state}} {{customer?.zip_code}}</div>
+                        </div>
+                        <div *ngIf="!customer.customer_uuid" class="placeholder">
+                            Select a customer
+                        </div>
                     </mat-card>
 
                     <div class="mb-3">
@@ -46,7 +60,7 @@
 
             <mat-label class="h6">Start Date</mat-label>
             <div class="mb-4">
-                <mat-form-field appearance="outline" >
+                <mat-form-field appearance="outline">
                     <input matInput [matDatepicker]="picker" [min]="startAt" formControlName="startDate">
                     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                     <mat-datepicker #picker [startAt]="startAt"></mat-datepicker>

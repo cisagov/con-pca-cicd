@@ -269,6 +269,29 @@ $altTheme: mat-dark-theme($theme-primary, $theme-accent, $theme-warn);
 
 // Specific component overrides, pieces that are not in line with the general theming
 
+.mat-button.mat-primary,
+.mat-stroked-button.mat-primary {
+    color: #ffffff !important;
+    background-color: #29Ab87 !important;
+    transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out !important;
+}
+.mat-button.mat-primary:hover,
+.mat-stroked-button.mat-success:hover {
+  background-color: #ffffff !important;
+}
+
+.mat-raised-button.mat-primary,
+.mat-flat-button.mat-primary,
+.mat-fab.mat-primary,
+.mat-mini-fab.mat-primary {
+  color: #f0fff3 !important;
+  background-color: #29Ab87 !important;
+}
+
+.mat-icon-button.mat-primary {
+  color:#29Ab87 !important;
+}
+
 // Handle buttons appropriately, with respect to line-height
 .mat-drawer-container{
   background-color:lighten(#c5d4dd, 10%);
@@ -314,6 +337,18 @@ $altTheme: mat-dark-theme($theme-primary, $theme-accent, $theme-warn);
   color:  $light-text !important;
 }
 
+.mat-row:hover, table.table-1 tr:hover {
+  background-color: #eeeeee;
+}
+
+table.table-1 td {
+  padding: .3rem;
+}
+
+.cursor-pointer {
+  cursor: pointer !important;
+}
+
 .header-logo-background{
   background-color:#3c6f8e;
   border-right:lighten(#3c6f8e, 5%) 1px solid;
@@ -325,9 +360,9 @@ $altTheme: mat-dark-theme($theme-primary, $theme-accent, $theme-warn);
 
 .table-btn-icon{
   min-width:0 !important;
-  padding-left: 5px !important;
-  padding-right: 5px !important;
-  line-height: 29px !important;
+  padding-left: 4px !important;
+  padding-right: 4px !important;
+  line-height: 28px !important;
 }
 
 .table-btn-icon-size {

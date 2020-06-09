@@ -3,16 +3,13 @@
 from datetime import datetime, timedelta
 
 # Third-Party Libraries
-from lcgit import lcg
-from celery.task.control import revoke
-
 # Local Libraries
-from api.serializers.subscriptions_serializers import SubscriptionPatchSerializer
-from api.models.subscription_models import SubscriptionModel, validate_subscription
-
 from api.manager import CampaignManager
-
+from api.models.subscription_models import SubscriptionModel, validate_subscription
+from api.serializers.subscriptions_serializers import SubscriptionPatchSerializer
 from api.utils import db_utils
+from celery.task.control import revoke
+from lcgit import lcg
 
 campaign_manager = CampaignManager()
 
@@ -24,9 +21,15 @@ def get_campaign_dates(start_date_string):
     Using given start date,
     genereate the 3 campaign dates in 30 days increments.
     """
-    start_date = datetime.strptime(
-        start_date_string, "%Y-%m-%dT%H:%M:%S"
-    )  # Format inbound 2020-03-10T09:30:25
+    try:
+        start_date = datetime.strptime(
+            start_date_string, "%Y-%m-%dT%H:%M:%S"
+        )  # Format inbound 2020-03-10T09:30:25
+    except Exception:
+        start_date = datetime.strptime(
+            start_date_string, "%Y-%m-%dT%H:%M:%S.%fZ"
+        )  # Format inbound 2020-03-10T09:30:25.227Z
+
     sixty_days = timedelta(days=60)
     # your calculated date
     # start: start_date
@@ -39,7 +42,7 @@ def get_campaign_dates(start_date_string):
         {
             "start_date": start_date,
             "send_by_date": sixty_days_later,
-            "templetes": [],
+            "templates": [],
             "targets": [],
         }
     )
@@ -47,7 +50,7 @@ def get_campaign_dates(start_date_string):
         {
             "start_date": start_date,
             "send_by_date": sixty_days_later,
-            "templetes": [],
+            "templates": [],
             "targets": [],
         }
     )
@@ -55,7 +58,7 @@ def get_campaign_dates(start_date_string):
         {
             "start_date": start_date,
             "send_by_date": sixty_days_later,
-            "templetes": [],
+            "templates": [],
             "targets": [],
         }
     )
@@ -133,3 +136,27 @@ def stop_subscription(subscription):
     )
 
     return resp
+
+
+def get_sub_end_date(start_date_string):
+    """
+    Get Sub end date.
+
+    Using given start date,
+    generate the standered end_date 90 after start.
+    """
+    try:
+        start_date = datetime.strptime(
+            start_date_string, "%Y-%m-%dT%H:%M:%S"
+        )  # Format inbound 2020-03-10T09:30:25
+    except Exception:
+        start_date = datetime.strptime(
+            start_date_string, "%Y-%m-%dT%H:%M:%S.%fZ"
+        )  # Format inbound 2020-03-10T09:30:25.227Z
+    ninety_days = timedelta(days=90)
+    # your calculated date
+    # start: start_date
+    # 60 days later: start_date + 60_days
+    # send all at once, send by 60 days, end at 90
+    ninety_days_later = start_date + ninety_days
+    return ninety_days_later

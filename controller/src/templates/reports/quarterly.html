@@ -1,0 +1,34 @@
+{% load static %}
+
+<!doctype html>
+<html>
+
+    <head>
+        <meta charset="utf-8">
+        <link href="{% static '/css/base.css' %}" rel="stylesheet">
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    
+       
+        <title>Quarterly Report</title>
+        <meta name="description" content="Report example">
+    </head>
+    
+    <body>
+        <article id="cover">
+            <div class="banner">
+            </div>
+            <div class="phish_logo">
+                <img src="{% static '/img/phish_logo.png' %}"></img>
+            </div>
+            <div class="cisa_logo">
+                <img src="{% static '/img/cisa_logo.png' %}"></img>
+            </div>
+            <div class="report-title">
+                    Quarterly Subscription <br>
+                    Report
+            </div>
+        </article>
+    </body>
+    
+    </html>

@@ -28,6 +28,21 @@
                 </mat-form-field>
             </div>
             <!-- Place holder for Government Type -->
+            <div class="d-flex flex-row">
+                <mat-form-field appearance="outline" class="flex-grow-1" [formGroup]="customerFormGroup">
+                    <mat-label>Customer Type</mat-label>
+                    <mat-select formControlName="customerType">
+                        <mat-option value="FED">Government - FED</mat-option>
+                        <mat-option value="State">Government - State</mat-option>
+                        <mat-option value="Local">Governement - Local</mat-option>
+                        <mat-option value="Private">Private</mat-option>
+
+                    </mat-select>
+                    <mat-error *ngIf="customerFormGroup.controls.customerType.hasError('required')">
+                        Customer type is <strong>required</strong>
+                    </mat-error>
+                </mat-form-field>
+            </div>
             <div class="d-flex flex-row" >
                 <mat-form-field appearance="outline" class="flex-grow-1" [formGroup]="customerFormGroup">
                     <mat-label>Address 1*</mat-label>
@@ -74,19 +89,46 @@
                     </mat-error>
                 </mat-form-field>
             </div>
+            <div class="d-flex flex-row">
+                <mat-form-field appearance="outline"  class="flex-grow-1" [formGroup]="customerFormGroup">
+                    <mat-label>Sector*</mat-label>
+                    <mat-select formControlName="sector" (selectionChange)="sectorChange($event)">
+                        <mat-option [value]="null">--Select--</mat-option>
+                        <mat-option *ngFor="let s of sectorList" [value]="s.name">
+                            {{ s.name }}</mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="customerFormGroup.controls.sector.hasError('required')">
+                        Sector is <strong>required</strong>
+                    </mat-error>
+                </mat-form-field>                
+            </div>
+            <div class="d-flex flex-row">
+                <mat-form-field appearance="outline"  class="flex-grow-1" [formGroup]="customerFormGroup">
+                    <mat-label>Industry*</mat-label>
+                    <mat-select formControlName="industry" >
+                        <mat-option *ngIf=!sectorSelected() [value]="null"> <b>Select a sector</b></mat-option>
+                        <mat-option *ngIf=sectorSelected() [value]="null">--Select--</mat-option>
+                        <mat-option *ngFor="let s of industryList" [value]="s.name">
+                            {{ s.name }}</mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="customerFormGroup.controls.industry.hasError('required')">
+                        Industry is <strong>required</strong>
+                    </mat-error>
+                </mat-form-field>
+            </div>
         </div>
     </div>
     <h1>Customer/Organization Contacts</h1>
     <div class="d-flex flex-row mb-5">
         <div class="d-flex flex-grow-1 flex-column add-contact-width">
             <div class="d-flex flex-row">
-                <button mat-raised-button color="primary" (click)="showAddContact()" *ngIf="!addContact">Add Contact/Organization</button>
+                <button mat-raised-button color="primary" (click)="showAddContact(false)" *ngIf="!addContact && !isEdit">Add Contact/Organization</button>
             </div>
             
             <div class="d-flex flex-row p-2 flex-grow-1 add-contact-width" *ngIf="addContact">
                 <mat-card class="add-contact-width">
                     <mat-card-header>
-                        <mat-card-title>Add Contact</mat-card-title>
+                        <mat-card-title>{{!isEdit ? 'Add Contact' : 'Edit Contact'}}</mat-card-title>
                     </mat-card-header>
                     <mat-card-content>
                         <div class="d-flex flex-row" >
@@ -130,7 +172,6 @@
                                     <input type="text" matInput placeholder="Mobile Phone" formControlName="mobile_phone">
                                 </mat-form-field>
                             </div>
-                           
                         </div>
                         <div class="d-flex flex-row">
                             <div class="d-flex flex-column mr-2 w-100" [formGroup]="contactFormGroup">
@@ -159,8 +200,9 @@
                                 {{contactError}}
                             </div>
                         </div>
-                        <button mat-raised-button color="primary" (click)="pushContact()" [disabled]="!contactFormGroup.valid">Add</button>
-                        <button mat-flat-button (click)="showAddContact()">Close</button>
+                        <button mat-raised-button color="primary" *ngIf="!isEdit" (click)="pushContact()" [disabled]="!contactFormGroup.valid">Add</button>
+                        <button mat-raised-button color="primary" *ngIf="isEdit" (click)="pushContact()" [disabled]="!contactFormGroup.valid">Edit</button>
+                        <button mat-flat-button (click)="showAddContact(false)">Close</button>
                     </mat-card-content>
                 </mat-card>
             </div>
@@ -196,8 +238,11 @@
                         <td mat-cell *matCellDef="let element"> {{element.office_phone}} </td>
                       </ng-container>
                     <ng-container matColumnDef="action">
-                        <th mat-header-cell *matHeaderCellDef>Select</th>
-                        <td mat-cell *matCellDef="let element; let i = index"><button class="table-btn-icon" mat-flat-button color="warn" (click)="removeContact(element)"><mat-icon class="table-btn-icon-size">delete</mat-icon></button></td>
+                        <th mat-header-cell *matHeaderCellDef></th>
+                        <td mat-cell *matCellDef="let element; let i = index">
+                            <button class="table-btn-icon" mat-flat-button color="primary" (click)="editContact(element)"><mat-icon class="table-btn-icon-size">edit</mat-icon></button>
+                            <button class="table-btn-icon" mat-flat-button color="warn" (click)="removeContact(element)"><mat-icon class="table-btn-icon-size">delete</mat-icon></button>
+                        </td>
                     </ng-container>
 
                     <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
@@ -217,7 +262,17 @@
                 </div>
             </div>
             <div class="d-flex flex-row flex-grow-1 justify-content-end">
-                <button mat-raised-button color="primary" [disabled]="!customerFormGroup.valid" (click)="pushCustomer()">Save Customer</button>
+                
+                <div 
+                    matTooltip="A customer must have all required fields filled, and at least one contact listed" 
+                    matTooltipPosition="right"
+                    matTooltipShowDelay="500"
+                    [matTooltipDisabled]="customerValid() ">
+                    <button mat-raised-button 
+                        [color]="customerValid() ? 'primary' : 'warn'" 
+                        [disabled]="!customerValid()" (click)="pushCustomer()">Save Customer
+                    </button>
+                </div>
                 <button mat-flat-button (click)="cancelCustomer()">Cancel</button>
             </div>
         </div>

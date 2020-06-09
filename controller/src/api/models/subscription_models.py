@@ -4,6 +4,7 @@ Models.
 These are not Django Models, there are created using Schematics Models
 """
 # Third-Party Libraries
+from api.models.customer_models import CustomerContactModel
 from database.repository.models import Model
 from database.repository.types import (
     BooleanType,
@@ -16,8 +17,6 @@ from database.repository.types import (
     StringType,
     UUIDType,
 )
-
-from api.models.customer_models import CustomerContactModel
 
 
 class SubscriptionTargetModel(Model):
@@ -164,18 +163,19 @@ class SubscriptionModel(Model):
     keywords = StringType()
     start_date = DateTimeType()
     # commented out fields for now are unused for the time
-    # end_date = DateTimeType()
+    end_date = DateTimeType()
     # report_count = IntType()
     gophish_campaign_list = ListType(ModelType(GoPhishCampaignsModel))
     # first_report_timestamp = DateTimeType()
     primary_contact = ModelType(CustomerContactModel)
+    dhs_primary_contact = ModelType(CustomerContactModel)
     status = StringType()
     target_email_list = ListType(ModelType(SubscriptionTargetModel))
     templates_selected_uuid_list = ListType(StringType)
     active = BooleanType()
     active_task = BooleanType()
-    archived = BooleanType()
-    manually_stopped = BooleanType()
+    archived = BooleanType(default=False)
+    manually_stopped = BooleanType(default=False)
     # db data tracking added below
     created_by = StringType()
     cb_timestamp = DateTimeType()
@@ -190,3 +190,4 @@ def validate_subscription(data_object):
     This shows basic validation for the model.
     """
     return SubscriptionModel(data_object).validate()
+

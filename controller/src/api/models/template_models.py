@@ -111,7 +111,7 @@ class TemplateModel(Model):
     description = StringType()
     image_list = ListType(ModelType(TemplateImageModel))
     from_address = StringType()
-    retired = BooleanType()
+    retired = BooleanType(default=False)
     retired_description = StringType()
     subject = StringType()
     text = StringType()
@@ -129,8 +129,6 @@ class TemplateModel(Model):
     cb_timestamp = DateTimeType()
     last_updated_by = StringType()
     lub_timestamp = DateTimeType()
-    
-
 
 def validate_template(data_object):
     """
@@ -138,4 +136,20 @@ def validate_template(data_object):
 
     This shows basic validation for the model.
     """
-    return TemplateModel(data_object).validate()
+    return TemplateModel(data_object).validate()    
+
+
+class TagModel(Model):
+    """
+    A Tag is a replaceable string in a
+    Template that is replaced by a real value.
+    """
+    tag = StringType()
+    description = StringType()
+    data_source = StringType()
+    tag_type = StringType()
+
+
+def validate_tag(data_object):
+    return TagModel(data_object).validate()
+

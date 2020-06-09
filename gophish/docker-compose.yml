@@ -1,4 +1,4 @@
-version: "3"
+version: "3.5"
 
 services:
   gophish:
@@ -13,7 +13,7 @@ services:
     depends_on:
       - mysql
     networks:
-      - default
+      - backend
   nginx:
     build:
       context: ./etc/nginx/
@@ -23,7 +23,7 @@ services:
       - "80:80"
       - "443:443"
     networks:
-      - default
+      - backend
   mysql:
     image: mysql:latest
     container_name: pca-gophish-db
@@ -35,7 +35,7 @@ services:
       - ./etc/mysql/:/docker-entrypoint-initdb.d/
       - ./etc/mysql/my.cnf:/etc/mysql/my.cnf
     networks:
-      - default
+      - backend
     env_file:
       - .env
   adminer:
@@ -46,11 +46,12 @@ services:
       - 9000:8080
     links:
       - mysql
+    networks:
+      - backend
 
 volumes:
   mysql_data:
 
 networks:
-  default:
-    external:
-      name: controller_default
+  backend:
+    name: pca_backend

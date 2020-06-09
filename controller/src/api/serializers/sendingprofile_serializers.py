@@ -54,3 +54,12 @@ class SendingProfilePatchResponseSerializer(serializers.Serializer):
     modified_date = serializers.CharField()
     #headers = serializers.CharField()
 
+
+class SendingProfileDeleteSerializer(serializers.Serializer):
+    id = serializers.IntegerField()
+
+
+class SendingProfileDeleteResponseSerializer(serializers.Serializer):
+    """
+    """
+    id = serializers.IntegerField()

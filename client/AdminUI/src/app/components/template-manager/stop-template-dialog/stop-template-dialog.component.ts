@@ -1,9 +1,10 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { Template } from 'src/app/models/template.model';
 import { SubscriptionService } from 'src/app/services/subscription.service';
 import { Subscription } from 'src/app/models/subscription.model';
 import { TemplateManagerService } from 'src/app/services/template-manager.service';
+import { ConfirmComponent } from '../../dialogs/confirm/confirm.component';
 
 @Component({
   selector: 'app-stop-template-dialog',
@@ -11,6 +12,8 @@ import { TemplateManagerService } from 'src/app/services/template-manager.servic
   styleUrls: ['../template-manager.component.scss']
 })
 export class StopTemplateDialogComponent implements OnInit {
+  dialogRefConfirm: MatDialogRef<ConfirmComponent>;
+
   template: Template
   subscriptions: Subscription[]
 
@@ -21,9 +24,10 @@ export class StopTemplateDialogComponent implements OnInit {
     public dialogRef: MatDialogRef<StopTemplateDialogComponent>,
     public subscriptionSvc: SubscriptionService,
     public templateSvc: TemplateManagerService,
-    @Inject(MAT_DIALOG_DATA) data: Template) { 
-      this.template = data
-    }
+    public dialog: MatDialog,
+    @Inject(MAT_DIALOG_DATA) data: Template) {
+    this.template = data
+  }
 
   ngOnInit(): void {
     this.subscriptionSvc.getSubscriptionsByTemplate(this.template).subscribe((data: any[]) => {
@@ -32,20 +36,25 @@ export class StopTemplateDialogComponent implements OnInit {
   }
 
   confirm(): void {
-    if(window.confirm(`Are you sure you want to stop the subscriptions?`)) {
-      this.templateSvc.stopTemplate(this.template).subscribe(() => {
-        this.dialogRef.close()
-      })
-    } else {
-      this.dialogRef.close()
-    }
+    this.dialogRefConfirm = this.dialog.open(ConfirmComponent, { disableClose: false });
+    this.dialogRefConfirm.componentInstance.confirmMessage =
+      "Are you sure you want to stop the subscriptions?";
+    this.dialogRefConfirm.componentInstance.title = 'Confirm Stop Subscriptions';
+    this.dialogRefConfirm.afterClosed().subscribe(result => {
+      if (result) {
+        this.templateSvc.stopTemplate(this.template).subscribe();
+      }
+
+      this.dialogRefConfirm = null;
+    });
+
   }
 
   cancel(): void {
-    this.dialogRef.close()
+    this.dialogRef.close();
   }
 
   onNoClick(): void {
-    this.dialogRef.close()
+    this.dialogRef.close();
   }
 }

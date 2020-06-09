@@ -60,9 +60,25 @@ db_drop_mongo:
 
 # target: coverage - runs pytests against code and generates coverage html
 coverage:
-	coverage run --omit *.venv* -m pytest ./src/ --disable-warnings
+	coverage run --omit *.venv*,*test* -m pytest ./src/ --disable-warnings
 	coverage html
 
-# target: cc - Shows cyclomatic complexity for all code
+# target: cc - calculates cyclomatic complexity
 cc:
 	radon cc ./src/ -e "*.venv*" -s -o SCORE
+
+# target: mi - calculates maintainability index
+mi:
+	radon mi ./src/ -e "*.venv*" -s
+
+# target: hal - calculates halstead complexity metric
+hal:
+	radon hal ./src/ -e "*.venv*"
+
+# target: build emails - build mjml files to html
+build_emails:
+	npm run build-emails
+
+# target: send emails - send reports emails
+send_emails:
+	docker exec -it pca-api python manage.py send_reports_emails

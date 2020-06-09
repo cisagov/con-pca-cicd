@@ -19,7 +19,9 @@
       "identifier": "BoB",
       "name": "Bobs Burgers",
       "state": "California",
-      "zip_code": "12345"
+      "zip_code": "12345",
+      "sector": "Chemical",
+      "industry": "Basic Chemicals"
     },
     {
       "address_1": "321 Test Avenue",
@@ -40,16 +42,26 @@
       "identifier": "NHL",
       "name": "The Ice Rink",
       "state": "Idaho",
-      "zip_code": "12345"
+      "zip_code": "12345",
+      "sector": "Energy",
+      "industry": "Other"
     }
   ],
   "subscription_data": [
     {     
       "active": true,
-      "customer_uuid": "d2e45f21-0460-4a05-865f-a30cb8b6336a",
+      "customer_uuid": "changeme",
+      "dhs_primary_contact": {
+        "active": true,
+        "email": "Bigg.Daemon@inl.com",
+        "first_name": "Bigg",
+        "last_name": "Daemon",
+        "mobile_phone": "555-555-5555",
+        "office_phone": "555-555-5555"
+      },
       "gophish_campaign_list": [],
       "keywords": "research development government work job",
-      "name": "SC-1031.Matt.Daemon.1.1",
+      "name": "changeme",
       "primary_contact": {
         "active": true,
         "email": "Matt.Daemon@example.com",
@@ -105,15 +117,22 @@
         }
       ],
       "templates_selected_uuid_list": [],
-      "testing_customer_identifier": "BoB",
       "url": "https://inl.gov"
     },
     {
       "active": true,
-      "customer_uuid": "6068d85a-4f83-4b5a-958e-a179e5b4c205",
+      "customer_uuid": "changeme",
+      "dhs_primary_contact": {
+        "active": true,
+        "email": "Bigg.Daemon@inl.com",
+        "first_name": "Bigg",
+        "last_name": "Daemon",
+        "mobile_phone": "555-555-5555",
+        "office_phone": "555-555-5555"
+      },
       "gophish_campaign_list": [],
       "keywords": "search query google",
-      "name": "SC-1221.Ben.Aflex.1.1",
+      "name": "changme",
       "primary_contact": {
         "active": true,
         "email": "foo.bar@example.com",
@@ -122,7 +141,7 @@
         "mobile_phone": "555-555-5555",
         "office_phone": "555-555-5555"
       },
-      "start_date": "2020-03-10T09:30:25",
+      "start_date": "2021-03-10T09:30:25",
       "status": "Waiting on SRF",
       "target_email_list": [
         {
@@ -169,7 +188,6 @@
         }
       ],
       "templates_selected_uuid_list": [],
-      "testing_customer_identifier": "NHL",
       "url": "https://google.com"
     }
   ]

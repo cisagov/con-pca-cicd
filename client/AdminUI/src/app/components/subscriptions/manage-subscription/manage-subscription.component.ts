@@ -4,18 +4,20 @@ import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms'
 import { SubscriptionService } from 'src/app/services/subscription.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Customer, Contact } from 'src/app/models/customer.model';
-import { Subscription, Target } from 'src/app/models/subscription.model';
+import { Subscription, Target, GoPhishCampaignModel, TimelineItem } from 'src/app/models/subscription.model';
 import { Guid } from 'guid-typescript';
 import { UserService } from 'src/app/services/user.service';
 import { CustomerService } from 'src/app/services/customer.service';
 import { CustomersComponent } from 'src/app/components/customers/customers.component';
 import { XlsxToCsv } from 'src/app/helper/XlsxToCsv';
 import { ArchiveSubscriptionDialogComponent } from '../archive-subscription-dialog/archive-subscription-dialog.component';
+import * as moment from 'node_modules/moment/moment';
+import { LayoutMainService } from 'src/app/services/layout-main.service';
 
 
 @Component({
   selector: 'app-manage-subscription',
-  templateUrl: './manage-subscription.component.html', 
+  templateUrl: './manage-subscription.component.html',
   styleUrls: ['./manage-subscription.component.scss']
 })
 export class ManageSubscriptionComponent implements OnInit, OnDestroy {
@@ -45,6 +47,7 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
   // The raw CSV content of the textarea
   csvText: string;
 
+  timelineItems: any[] = [];
 
 
   /**
@@ -57,9 +60,10 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private userSvc: UserService,
     public dialog: MatDialog,
-    public formBuilder: FormBuilder
+    public formBuilder: FormBuilder,
+    public layoutSvc: LayoutMainService
   ) {
-
+    layoutSvc.setTitle("Subscription");
   }
 
   /**
@@ -107,34 +111,13 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
     sub = new Subscription();
     this.subscription = sub;
     sub.subscription_uuid = Guid.create().toString();
-
-
-
-
-    // START TEMP ------------------------
-    // find Globex or randomly pick an existing customer for now
-    /*if (!this.subscription.customer_uuid) {
-      this.customerSvc.getCustomers().subscribe((c: Customer[]) => {
-
-        // first look for Globex
-        let globex = c.find(x => x.identifier == 'GLBX');
-        if (globex == null) {
-
-          // if not found, just pick a random customer
-          let rnd = Math.floor(Math.random() * Math.floor(c.length));
-          this.customer = c[rnd];
-        } else {
-          this.customer = globex;
-        }
-
-        this.f.selectedCustomerUuid.setValue(this.customer.customer_uuid);
-      });
-    }*/
-    // END TEMP --------------------------
   }
 
-  setCustomer(){
-    if(this.customerSvc.selectedCustomer.length > 0){
+  /**
+   * 
+   */
+  setCustomer() {
+    if (this.customerSvc.selectedCustomer.length > 0) {
       this.subscribeForm.patchValue({
         selectedCustomerUuid: this.customerSvc.selectedCustomer
       });
@@ -145,7 +128,7 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
         }
       )
     }
-    
+
   }
 
   /**
@@ -166,6 +149,8 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
         this.f.csvText.setValue(this.emailDisplay(s.target_email_list));
         this.f.csvText.disable();
 
+        this.buildSubscriptionTimeline(s);
+
         this.customerSvc.getCustomer(s.customer_uuid)
           .subscribe((c: Customer) => {
             this.customer = c;
@@ -185,6 +170,54 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
       this.customer.contact_list = this.customerSvc.getContactsForCustomer(c);
       this.primaryContact = this.customer.contact_list[0];
     });
+  }
+
+  /**
+   * Boils down all events in all campaigns in the subscription to a simple
+   * series of events:  subscription start, cycle starts and today.
+   * @param s 
+   */
+  buildSubscriptionTimeline(s: Subscription) {
+    let items: TimelineItem[] = [];
+
+    items.push({
+      title: "Subscription Started",
+      description: "Subscription Started",
+      icon: "fa fa-rocket",
+      date: moment(s.start_date)
+    });
+
+    // now extract a simple timeline based on campaign events
+    s.gophish_campaign_list.forEach((c: GoPhishCampaignModel) => {
+      for (let t of c.timeline) {
+
+        // ignore campaigns started on the subscription start date
+        if (t.message.toLowerCase() == "campaign created"
+          && new Date(t.time).setHours(0, 0, 0, 0).valueOf() == new Date(s.start_date).setHours(0, 0, 0, 0).valueOf()) {
+          continue;
+        }
+
+        // let tt = {
+        // };
+        // timelineItems.push(tt);
+      }
+    });
+
+    // add an item for 'today'
+    items.push({
+      title: "Today",
+      description: "Today",
+      icon: "fa fa-calendar-check-o",
+      date: moment()
+    });
+
+    // sort and number the events
+    let id: number = 0;
+    items.sort(function (a, b) { return a.date.unix() - b.date.unix() }).forEach(x => {
+      x.id = ++id;
+    });
+
+    this.timelineItems = items;
   }
 
   /**
@@ -209,8 +242,8 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
   public showArchiveDialog(): void {
     const dialogRef = this.dialog.open(
       ArchiveSubscriptionDialogComponent, {
-        data: this.subscription
-      }
+      data: this.subscription
+    }
     )
   }
 
@@ -315,7 +348,7 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
       });
   }
 
-  
+
 
   /**
    * 

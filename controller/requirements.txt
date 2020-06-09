@@ -2,10 +2,12 @@ amqp==2.5.2
 appdirs==1.4.0
 asgiref==3.2.7
 attrs==19.3.0
+awscli==1.18.68
 backcall==0.1.0
 beautifulsoup4==4.9.0
 billiard==3.6.3.0
 black==19.10b0
+boto3==1.13.10
 cairocffi==1.1.0
 CairoSVG==2.4.2
 celery==4.4.2
@@ -19,7 +21,8 @@ cssselect2==0.3.0
 decorator==4.4.2
 defusedxml==0.6.0
 django-cors-headers==3.2.1
-Django==3.0.4
+Django==3.0.7
+django-storages==1.9.1
 djangorestframework==3.11.0
 drf-yasg==1.17.1
 Faker==4.0.3
@@ -38,7 +41,7 @@ jedi==0.17.0
 Jinja2==2.11.2
 joblib==0.14.1
 kombu==4.6.8
-git+git://github.com/cisagov/lcgit.git@7360374e78661d8dfa5ec550337a4e398c3bb4e8#egg=lcgit
+git+https://github.com/cisagov/lcgit.git@7360374e78661d8dfa5ec550337a4e398c3bb4e8#egg=lcgit
 lxml==4.5.0
 MarkupSafe==1.1.1
 motor==2.0.0

@@ -1,5 +1,5 @@
 ---
-version: '3.4'
+version: '3.5'
 services:
   api:
     build:
@@ -21,6 +21,8 @@ services:
       - ./src:/app
     env_file:
       - .env
+    networks:
+      - backend
 
   celery-beat:
     build:
@@ -36,6 +38,8 @@ services:
       - rabbitmq
     env_file:
       - .env
+    networks:
+      - backend
 
   celery-worker:
     build:
@@ -51,6 +55,8 @@ services:
       - rabbitmq
     env_file:
       - .env
+    networks:
+      - backend
 
   rabbitmq:
     image: rabbitmq:3.6-management-alpine
@@ -73,6 +79,8 @@ services:
 
     env_file:
       - .env
+    networks:
+      - backend
 
   mongodb:
     container_name: pca-mongodb
@@ -88,7 +96,13 @@ services:
       - "mongodb:/data/db"
     env_file:
       - .env
+    networks:
+      - backend
 
 # Host volumes used to store code.
 volumes:
   mongodb:
+
+networks:
+  backend:
+    name: pca_backend
