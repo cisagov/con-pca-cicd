@@ -22,6 +22,10 @@ controller/src/celerybeat.pid
 controller/src/scripts/data/created_dummy_data_*.json
 controller/.coverage
 controller/htmlcov/
+controller/node_modules
+controller/Scripts/
+controller/Lib
+controller/pyvenv.cfg
 
 # Gophish
 gophish/.env
@@ -42,3 +46,5 @@ env/
 # Terraform
 aws/terraform/.terraform
 aws/.env
+
+/client/AdminUI/package-lock.json

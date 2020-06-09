@@ -9,6 +9,8 @@ export class Customer {
     city: string;
     state: string;
     zip_code: string;
+    sector: string;
+    industry: string;
     customer_type: string;
     contact_list: Contact[]
 

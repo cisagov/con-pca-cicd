@@ -1,8 +1,9 @@
-version: "3"
+version: "3.5"
 services:
   web:
     build:
       context: ./AdminUI
+      dockerfile: local.Dockerfile
     container_name: pca-web
     restart: unless-stopped
     ports:
@@ -10,8 +11,11 @@ services:
     volumes:
       - /app/node_modules
       - ./AdminUI:/app
+    networks:
+      - frontend
     env_file:
       - .env
 
 networks:
-  default:
+  frontend:
+    name: pca_frontend

@@ -7,15 +7,16 @@ This handles the api for all the Template urls.
 import logging
 
 # Third-Party Libraries
-from api.models.template_models import TemplateModel, validate_template, TagModel, validate_tag
-from api.models.subscription_models import SubscriptionModel, validate_subscription
-from api.serializers.subscriptions_serializers import (
-    SubscriptionPatchSerializer,
-    SubscriptionGetSerializer,
-)
 from api.manager import CampaignManager
-
+from api.models.subscription_models import SubscriptionModel, validate_subscription
+from api.models.template_models import (
+    TagModel,
+    TemplateModel,
+    validate_tag,
+    validate_template,
+)
 from api.serializers.template_serializers import (
+    TagResponseSerializer,
     TemplateDeleteResponseSerializer,
     TemplateGetSerializer,
     TemplatePatchResponseSerializer,
@@ -23,9 +24,8 @@ from api.serializers.template_serializers import (
     TemplatePostResponseSerializer,
     TemplatePostSerializer,
     TemplateStopResponseSerializer,
-    TagSerializer,
-    TagResponseSerializer,
 )
+from api.utils import subscription_utils
 from api.utils.db_utils import (
     delete_single,
     get_list,
@@ -33,9 +33,8 @@ from api.utils.db_utils import (
     save_single,
     update_single,
 )
-from api.utils import subscription_utils
-from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
+from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -77,7 +76,7 @@ class TemplatesListView(APIView):
             parameters, "template", TemplateModel, validate_template
         )
         serializer = TemplateGetSerializer(template_list, many=True)
-        return Response(serializer.data)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
     @swagger_auto_schema(
         request_body=TemplatePostSerializer,
@@ -180,6 +179,7 @@ class TemplateStopView(APIView):
         operation_description="This handles the API for the Get a Template with template_uuid.",
     )
     def get(self, request, template_uuid):
+        """Get method."""
         # get subscriptions
         parameters = {"templates_selected_uuid_list": template_uuid}
         subscriptions = get_list(
@@ -212,6 +212,7 @@ class TemplateStopView(APIView):
         serializer = TemplateStopResponseSerializer(resp)
         return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
 
+
 class TagView(APIView):
     """
     This is the TagView APIView.
@@ -220,7 +221,7 @@ class TagView(APIView):
     """
 
     @swagger_auto_schema(
-        responses={"202": TagResponseSerializer, "400": "Bad Request"},
+        responses={"200": TagResponseSerializer, "400": "Bad Request"},
         security=[],
         operation_id="Get all template tags",
         operation_description="Returns a list of all template tags",
@@ -228,10 +229,6 @@ class TagView(APIView):
     def get(self, request):
         """Get method."""
         parameters = {}
-        parameter_list = get_list(
-            parameters, "tag_definition", TagModel, validate_tag
-        )
-        serializer = TagResponseSerializer(parameter_list, many=True)
-        return Response(serializer.data)
-
-
+        tag_list = get_list(parameters, "tag_definition", TagModel, validate_tag)
+        serializer = TagResponseSerializer(tag_list, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)

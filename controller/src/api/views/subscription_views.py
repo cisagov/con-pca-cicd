@@ -11,8 +11,18 @@ import logging
 # Local
 from api.manager import CampaignManager, TemplateManager
 from api.models.customer_models import CustomerModel, validate_customer
+<<<<<<< HEAD
 from api.models.subscription_models import SubscriptionModel, CycleModel, validate_subscription
 from api.models.template_models import TemplateModel, validate_template
+=======
+from api.models.subscription_models import SubscriptionModel, validate_subscription
+from api.models.template_models import (
+    TagModel,
+    TemplateModel,
+    validate_tag,
+    validate_template,
+)
+>>>>>>> develop
 from api.serializers import campaign_serializers
 from api.serializers.subscriptions_serializers import (
     SubscriptionDeleteResponseSerializer,
@@ -73,8 +83,8 @@ class SubscriptionsListView(APIView):
                 "template",
                 openapi.IN_QUERY,
                 description="Show only subscriptions that are using a template",
-                type=openapi.TYPE_STRING                
-            )
+                type=openapi.TYPE_STRING,
+            ),
         ],
     )
     def get(self, request):
@@ -82,9 +92,8 @@ class SubscriptionsListView(APIView):
         parameters = {"archived": {"$in": [False, None]}}
         archivedParm = request.GET.get("archived")
         if archivedParm:
-            if archivedParm.lower() == "true":                
+            if archivedParm.lower() == "true":
                 parameters["archived"]["$in"].append(True)
-                
 
         if request.GET.get("template"):
             parameters["templates_selected_uuid_list"] = request.GET.get("template")
@@ -196,7 +205,7 @@ class SubscriptionsListView(APIView):
             relevant_templates[x : x + 5] for x in range(0, len(relevant_templates), 5)
         ]
 
-        print("divided_templates: {0} items".format(len(divided_templates)))
+        print("divided_templates: {} items".format(len(divided_templates)))
 
         # Get the next date Intervals, if no startdate is sent, default today
         campaign_data_list = get_campaign_dates(start_date)
@@ -205,11 +214,14 @@ class SubscriptionsListView(APIView):
         post_data["templates_selected_uuid_list"] = relevant_templates
 
         template_personalized_list = []
+        tag_list = get_list(None, "tag_definition", TagModel, validate_tag)
         for template_group in divided_templates:
             template_data_list = [
                 x for x in template_list if x["template_uuid"] in template_group
             ]
-            templates = personalize_template(customer, template_data_list, post_data)
+            templates = personalize_template(
+                customer, template_data_list, post_data, tag_list
+            )
             template_personalized_list.append(templates)
 
         # divide emails
@@ -217,18 +229,20 @@ class SubscriptionsListView(APIView):
         target_div = target_list_divide(target_list)
         index = 0
         print(
-            "template_personalized_list: {0} items".format(
+            "template_personalized_list: {} items".format(
                 len(template_personalized_list)
             )
         )
         for campaign_info in campaign_data_list:
             try:
                 campaign_info["templates"] = template_personalized_list[index]
-            except:
+            except Exception as err:
+                logger.info("error campaign_info templates {}".format(err))
                 pass
             try:
                 campaign_info["targets"] = target_div[index]
-            except:
+            except Exception as err:
+                logger.info("error campaign_info targets {}".format(err))
                 pass
             index += 1
 
@@ -306,14 +320,14 @@ class SubscriptionsListView(APIView):
         for template in templates:
             # Create new template
             created_template = campaign_manager.generate_email_template(
-                name=template["name"], template=template["data"]
+                name=f"{campaign_info['name']}.{template['name']}",
+                template=template["data"],
             )
             campaign_start = campaign_info["start_date"].strftime("%Y-%m-%d")
             campaign_end = end_date.strftime("%Y-%m-%d")
 
             if created_template is not None:
-                template_name = created_template.name
-                campaign_name = f"{campaign_info['name']}.{template_name}.{campaign_start}-{campaign_end}"
+                campaign_name = f"{campaign_info['name']}.{template['name']}.{campaign_start}.{campaign_end}"
                 campaign = campaign_manager.create(
                     "campaign",
                     campaign_name=campaign_name,
@@ -366,26 +380,6 @@ class SubscriptionsListView(APIView):
                 gophish_campaign_list.append(created_campaign)
 
         return gophish_campaign_list
-
-
-class SubscriptionsTemplateListView(APIView):
-    """
-    Returns a list of Subscriptions that are using a given Template
-    """
-
-    @swagger_auto_schema(
-        responses={"200": SubscriptionGetSerializer, "400": "Bad Request"},
-        security=[],
-        operation_id="List of Subscriptions using Template",
-        operation_description="This handles the API to get a List of Subscriptions using a specified Template.",
-    )
-    def get(self, request, template_uuid):
-        parameters = request.data.copy()
-        subscription_list = get_list(
-            parameters, "subscription", SubscriptionModel, validate_subscription
-        )
-        serializer = SubscriptionGetSerializer(subscription_list, many=True)
-        return Response(serializer.data)
 
 
 class SubscriptionView(APIView):
