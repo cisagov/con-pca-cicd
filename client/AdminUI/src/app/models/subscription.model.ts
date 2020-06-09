@@ -1,8 +1,27 @@
 import { Contact } from './customer.model';
 import * as moment from 'node_modules/moment/moment';
 
-export class GoPhishCampaignsModel {
+export class GoPhishCampaignModel {
+    campaign_id: Number;
+    completed_date?: Date;
+    created_date: Date;
+    email_template: string;
+    groups: any[];
+    landing_page_template: string;
+    launch_date: Date;
+    name: string;
+    results: any[];
+    send_by_date: Date;
+    status: string;
+    target_email_list: any[];
+    timeline: CampaignTimelineItem[];
+}
 
+export class CampaignTimelineItem {
+    email: string;
+    time: Date;
+    message: string;
+    details: string;
 }
 
 // Use Contact class  defined in customer.model
@@ -30,6 +49,7 @@ export class Subscription {
     subscription_uuid: string;
     url: string;
     target_email_list: Target[] = [];
+    gophish_campaign_list: GoPhishCampaignModel[];
 
     /**
      * Converts a string with CSV lines into Targets.
@@ -71,13 +91,14 @@ export class Target {
  * A point in time during the life of a subscription.
  */
 export class TimelineItem {
-    id: number;
+    id?: number;
 
-    // The font awesome class string to show above the timeline ite
+    // The font awesome class string to show above the timeline item
     icon: string;    
+    
     title: string;
-    creatorName: string;
-    description: string;
-    buttonText: string;
+    creatorName?: string = "Joe";
+    description?: string = "Basic Description";
+    buttonText?: string = "Basic button text";
     date: moment.Moment;
   }

@@ -3,6 +3,7 @@ import { TimelineItem } from 'src/app/models/subscription.model';
 import * as moment from 'node_modules/moment/moment';
 import * as $ from 'jquery';
 
+
 @Component({
   selector: 'timeline',
   styleUrls: ['./timeline.component.css'],
@@ -25,7 +26,7 @@ export class TimelineComponent implements OnChanges {
   }
 
   ngAfterViewInit(): void {
-    console.log('ngAfterViewInit');
+
   }
   
 
@@ -33,13 +34,15 @@ export class TimelineComponent implements OnChanges {
    * 
    */
   ngOnChanges(): void {
-    console.log('ngOnchanges');
     var timelines = $('.cd-horizontal-timeline');
+
     if (timelines.length > 0 && this.timelineItems.length > 0) {
       if (this.selectedItemId == 0) {
         this.selectedItemId = this.timelineItems[this.timelineItems.length - 1].id;
       }
-      initTimeline(timelines, this.timelineItems, this.selectedItemId);
+      setTimeout(() => {
+        initTimeline(timelines, this.timelineItems, this.selectedItemId);
+      }, 300);
     }
   }
 
@@ -56,7 +59,7 @@ export class TimelineComponent implements OnChanges {
 function initTimeline(timelines, items, selectedId) {
   timelines.each(function () {
     var eventsMinDistance = $(this).data('spacing');
-    eventsMinDistance = 100;
+    eventsMinDistance = 40;
     var timeline = $(this);
     var timelineComponents = {};
     //cache timeline components 
@@ -162,6 +165,7 @@ function updateTimelinePosition(string, event, timelineComponents) {
 }
 
 function translateTimeline(timelineComponents, value, totWidth) {
+  console.log('translateTimeline totWidth: ' + totWidth);
   var eventsWrapper = timelineComponents['eventsWrapper'].get(0);
   value = (value > 0) ? 0 : value; //only negative translate value
   value = (!(typeof totWidth === 'undefined') && value < totWidth) ? totWidth : value; //do not translate more than timeline width
@@ -173,6 +177,7 @@ function translateTimeline(timelineComponents, value, totWidth) {
 
 function updateFilling(selectedEvent, filling, totWidth) {
   //change .filling-line length according to the selected event
+  console.log('updateFilling: totWidth: ' + totWidth);
   var eventStyle = window.getComputedStyle(selectedEvent.get(0), null),
     eventLeft = eventStyle.getPropertyValue("left"),
     eventWidth = eventStyle.getPropertyValue("width");
@@ -184,18 +189,28 @@ function updateFilling(selectedEvent, filling, totWidth) {
 
 function setDatePosition(timelineComponents, min) {
   for (var i = 0; i < timelineComponents['timelineDates'].length; i++) {
-    var distance = daydiff(timelineComponents['timelineDates'][0], timelineComponents['timelineDates'][i]),
-      distanceNorm = Math.round(distance / timelineComponents['eventsMinLapse']) + 2;
+    var distanceMS = daydiff(timelineComponents['timelineDates'][0], timelineComponents['timelineDates'][i]);
+    var distanceNorm = Math.round(distanceMS / timelineComponents['eventsMinLapse']) + 2;
+
+    console.log(timelineComponents['timelineEvents'].eq(i));
     timelineComponents['timelineEvents'].eq(i).css('left', distanceNorm * min + 'px');
   }
 }
 
 function setTimelineWidth(timelineComponents, width, selectedItemId) {
-  console.log(width);
-  var timeSpan = daydiff(timelineComponents['timelineDates'][0], timelineComponents['timelineDates'][timelineComponents['timelineDates'].length - 1]),
-    timeSpanNorm = timeSpan / timelineComponents['eventsMinLapse'],
-    timeSpanNorm = Math.round(timeSpanNorm) + 4,
-    totalWidth = timeSpanNorm * width;
+  console.log('setTimelineWidth: ' + width);
+  console.log('timelineDates[0] = ' + timelineComponents['timelineDates'][0]);
+  console.log(timelineComponents['timelineDates'][0]);
+  var timeSpanMS = daydiff(timelineComponents['timelineDates'][0], timelineComponents['timelineDates'][timelineComponents['timelineDates'].length - 1]);
+  console.log('setTimelineWidth timeSpan = ' + timeSpanMS + ' ms');
+  var timeSpanNorm = timeSpanMS / timelineComponents['eventsMinLapse'];
+  console.log('timeSpanNorm: ' + timeSpanNorm);
+  timeSpanNorm = Math.round(timeSpanNorm) + 4;
+  var totalWidth = timeSpanNorm * width;
+
+  // RKW
+  //totalWidth = 800;
+
   timelineComponents['eventsWrapper'].css('width', totalWidth + 'px');
 
   updateFilling(timelineComponents['eventsWrapper'].find('a#' + selectedItemId), timelineComponents['fillingLine'], totalWidth);
@@ -210,14 +225,14 @@ function updateVisibleContent(event, eventsContent) {
     selectedContentHeight = selectedContent.height();
 
   if (selectedContent.index() > visibleContent.index()) {
-    var classEnetering = 'selected enter-right',
+    var classEntering = 'selected enter-right',
       classLeaving = 'leave-left';
   } else {
-    var classEnetering = 'selected enter-left',
+    var classEntering = 'selected enter-left',
       classLeaving = 'leave-right';
   }
 
-  selectedContent.attr('class', classEnetering);
+  selectedContent.attr('class', classEntering);
   visibleContent.attr('class', classLeaving).one('webkitAnimationEnd oanimationend msAnimationEnd animationend', function () {
     visibleContent.removeClass('leave-right leave-left');
     selectedContent.removeClass('enter-left enter-right');
