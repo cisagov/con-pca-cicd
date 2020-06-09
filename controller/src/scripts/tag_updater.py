@@ -279,6 +279,7 @@ old_number_tags = [
 ]
 
 # New Uniform Tags
+# Parameter_Name, Parameter_Type (GoPhish or Con-PCA), User Parameter Description, Data Source
 #        "<%URL%>": "{{.URL}}",
 #        "<%TARGET_FIRST_NAME%>": "{{.FirstName}}",
 #        "<%TARGET_LAST_NAME%>": "{{.LastName}}",
@@ -286,6 +287,7 @@ old_number_tags = [
 #        "<%TARGET_EMAIL%>": "{{.Email}}",
 #        "<%TARGET_POSITION%>": "{{.Position}}",
 #        "<%FROM%>": "{{.From}}",
+
 #        "<%CUSTOMER_NAME%>": customer_info["name"],
 #        "<%CUSTOMER_EMAIL%>":
 #        "<%CUSTOMER_SYSTEM%>":
