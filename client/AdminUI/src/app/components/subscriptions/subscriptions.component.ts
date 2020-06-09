@@ -95,9 +95,9 @@ export class SubscriptionsComponent implements OnInit {
 
   public onArchiveToggle(): void {
     if (this.displayed_columns.includes('archived')) {
-      this.displayed_columns.pop()
+      this.displayed_columns.splice(this.displayed_columns.length-2,1);
     } else {
-      this.displayed_columns.push('archived')
+      this.displayed_columns.splice(this.displayed_columns.length -1, 0, 'archived');
     }
     this.refresh()
   }
