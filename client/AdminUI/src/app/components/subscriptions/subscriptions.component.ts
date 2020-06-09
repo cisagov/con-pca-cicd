@@ -6,6 +6,8 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Customer } from 'src/app/models/customer.model';
 import { CustomerService } from 'src/app/services/customer.service';
 import { AppSettings } from 'src/app/AppSettings';
+import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
+import { ConfirmComponent } from '../dialogs/confirm/confirm.component';
 
 interface ICustomerSubscription {
   customer: Customer;
@@ -27,9 +29,9 @@ export class SubscriptionsComponent implements OnInit {
     "customer",
     "start_date",
     "last_updated",
-    "active",
+    "select"
   ];
-
+  dialogRefConfirm: MatDialogRef<ConfirmComponent>;
   showArchived: boolean = false;
 
   dateFormat = AppSettings.DATE_FORMAT;
@@ -37,7 +39,8 @@ export class SubscriptionsComponent implements OnInit {
   constructor(
     private subscription_service: SubscriptionService,
     private customer_service: CustomerService,
-    private layoutSvc: LayoutMainService
+    private layoutSvc: LayoutMainService, 
+    public dialog: MatDialog
   ) {
     layoutSvc.setTitle("Subscriptions");
   }
@@ -97,5 +100,23 @@ export class SubscriptionsComponent implements OnInit {
       this.displayed_columns.push('archived')
     }
     this.refresh()
+  }
+
+  public stopSubscription(row:any){
+    this.dialogRefConfirm = this.dialog.open(ConfirmComponent, { disableClose: false });
+    this.dialogRefConfirm.componentInstance.confirmMessage =
+      `This will stop subscription '${row.subscription.name}'.  Do you want to continue?`;
+    this.dialogRefConfirm.componentInstance.title = 'Confirm Delete';
+
+    this.dialogRefConfirm.afterClosed().subscribe(result => {
+      if (result) {
+        this.subscription_service.stopSubscription(row.subscription.subscription_uuid).subscribe((data: any)=>{
+          this.refresh();
+        });
+        
+        //this.deleteProfile(row);
+      }
+      this.dialogRefConfirm = null;
+    });
   }
 }
