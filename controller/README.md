@@ -85,6 +85,12 @@ Drop DB of all data
 
 - `make db_drop_mongo`
 
+Compile mjml files to html for emails
+- `make build_emails`
+
+Send sample reports emails
+- `make send_emails`
+
 ### Creating and loading random data
 
 Using the makefile command: `make init` you can create data in
