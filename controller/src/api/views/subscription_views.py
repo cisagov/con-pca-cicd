@@ -11,7 +11,7 @@ import logging
 # Local
 from api.manager import CampaignManager, TemplateManager
 from api.models.customer_models import CustomerModel, validate_customer
-from api.models.subscription_models import SubscriptionModel, validate_subscription
+from api.models.subscription_models import SubscriptionModel, CycleModel, validate_subscription
 from api.models.template_models import TemplateModel, validate_template
 from api.serializers import campaign_serializers
 from api.serializers.subscriptions_serializers import (
@@ -236,10 +236,25 @@ class SubscriptionsListView(APIView):
         # create campaigns
         group_number = 1
         gophish_campaign_list = []
+        groups = campaign_manager.get("user_group")
+        group_names = []
+        for group in groups:
+            print(group)
+            group_names.append(group.name)
+
         for campaign_info in campaign_data_list:
-            campaign_group = f"{post_data['name']}.Targets.{group_number} "
+            campaign_group = f"{base_name}.Targets.{group_number}"
+            #Only necesary if an error occurs during the subscription creation process.
+            #Checks against existing target groups and ensures that the newly created group is unique
+            while campaign_group in group_names:
+                name_break_down = campaign_group.split(".")
+                if len(name_break_down) == 4:
+                    campaign_group = f"{campaign_group}.1"
+                else:
+                    name_length = len(name_break_down[4]) + 1
+                    campaign_group = f"{campaign_group[:-name_length]}.{int(name_break_down[4]) + 1}"
             campaign_info["name"] = f"{post_data['name']}.{group_number}"
-            group_number += 1
+            campaign_info["deception_level"] = group_number
             target_group = campaign_manager.create(
                 "user_group",
                 group_name=campaign_group,
@@ -250,9 +265,22 @@ class SubscriptionsListView(APIView):
                     campaign_info, target_group, landing_page, end_date
                 )
             )
+            group_number += 1
 
         post_data["gophish_campaign_list"] = gophish_campaign_list
         post_data["end_date"] = end_date_str
+        campaigns_in_cycle = []
+        for c in gophish_campaign_list:
+            campaigns_in_cycle.append(c["campaign_id"])
+        print(campaigns_in_cycle)
+        post_data["cycles"] =[
+            {
+                "start_date" : start_date,
+                "end_date" : end_date,
+                "active" : True,
+                "campaigns_in_cycle" : campaigns_in_cycle
+            }]
+        
         created_response = save_single(
             post_data, "subscription", SubscriptionModel, validate_subscription
         )
@@ -314,6 +342,14 @@ class SubscriptionsListView(APIView):
                     "landing_page_template": campaign.page.name,
                     "status": campaign.status,
                     "results": [],
+                    "deception_level": campaign_info["deception_level"],
+                    "phish_results": {
+                            "sent": 0,
+                            "opened": 0,
+                            "clicked": 0,
+                            "submitted": 0,
+                            "reported": 0        
+                    },
                     "groups": [
                         campaign_serializers.CampaignGroupSerializer(target_group).data
                     ],

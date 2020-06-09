@@ -37,8 +37,37 @@ class IncomingWebhookView(APIView):
     def post(self, request):
         """Post method."""
         data = request.data.copy()
+        logger.debug(f"webhook post: campaign - {data['campaign_id']} | message - {data['message']}")
+        print("WEB HOOK HIT------------------------------------------")
+        print(data)
         return self.__handle_webhook_data(data)
 
+    def __update_phishing_reults(self, webhook_data, phishing_result):
+        """
+        Update phishing result data based of provided webhook data
+
+        Accepts the webhook data to update off of, and the phishing reults to update
+        """
+        print("Phishing Results-===========================-")
+        print(phishing_result)
+
+        if webhook_data["message"] == "Email Sent":
+            phishing_result["sent"] += 1 
+        if webhook_data["message"] == "Email Opened":
+            phishing_result["opened"] += 1 
+        if webhook_data["message"] == "Clicked Link":
+            phishing_result["clicked"] += 1 
+        if webhook_data["message"] == "Submitted Data":
+            phishing_result["submitted"] += 1 
+        if webhook_data["message"] == "Email Reported":
+            phishing_result["reported"] += 1 
+
+        
+        print("Phishing Results POST-===========================-")
+        print(phishing_result)
+        return phishing_result
+
+        
     def __handle_webhook_data(self, data):
         """
         Handle Webhook Data.
@@ -56,12 +85,16 @@ class IncomingWebhookView(APIView):
         if "message" in data:
             seralized = webhook_serializers.InboundWebhookSerializer(data)
             seralized_data = seralized.data
+            print("Serialized Data--------------------------------")
+            print(seralized_data)
             subscription = get_single_subscription_webhook(
                 seralized_data["campaign_id"],
                 "subscription",
                 SubscriptionModel,
                 validate_subscription,
             )
+            print("Subscription--------------------------------")
+            print(subscription)
             if subscription is None:
                 return Response(status=status.HTTP_404_NOT_FOUND)
 
@@ -88,6 +121,9 @@ class IncomingWebhookView(APIView):
                                 "details": seralized_data["details"],
                             }
                         )
+                        print(campaign["phish_results"])
+                        self.__update_phishing_reults(data,campaign["phish_results"])
+                        print(campaign["phish_results"])
                         campaign["results"] = gophish_campaign_data["results"]
                         campaign["status"] = gophish_campaign_data["status"]
 

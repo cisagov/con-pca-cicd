@@ -59,6 +59,8 @@ def personalize_template(customer_info, template_data, sub_data):
             customer_info["customer_uuid"],
             today.strftime("%Y%m%d%H%M%S"),
         )
+        cleantext += "{{.Tracker}}"
+
 
         personalized_template_data.append(
             {
