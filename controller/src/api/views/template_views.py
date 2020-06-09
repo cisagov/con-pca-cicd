@@ -16,6 +16,7 @@ from api.models.template_models import (
     validate_template,
 )
 from api.serializers.template_serializers import (
+    TagQuerySerializer,
     TagResponseSerializer,
     TemplateDeleteResponseSerializer,
     TemplateGetSerializer,
@@ -23,6 +24,7 @@ from api.serializers.template_serializers import (
     TemplatePatchSerializer,
     TemplatePostResponseSerializer,
     TemplatePostSerializer,
+    TemplateQuerySerializer,
     TemplateStopResponseSerializer,
 )
 from api.utils import subscription_utils
@@ -33,7 +35,6 @@ from api.utils.db_utils import (
     save_single,
     update_single,
 )
-from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status
 from rest_framework.response import Response
@@ -52,26 +53,18 @@ class TemplatesListView(APIView):
     """
 
     @swagger_auto_schema(
+        query_serializer=TemplateQuerySerializer,
         responses={"200": TemplateGetSerializer, "400": "Bad Request"},
         security=[],
         operation_id="List of Templates",
         operation_description="This handles the API to get a List of Templates.",
-        manual_parameters=[
-            openapi.Parameter(
-                "retired",
-                openapi.IN_QUERY,
-                description="Show retired templates",
-                type=openapi.TYPE_BOOLEAN,
-                default=False,
-            )
-        ],
     )
     def get(self, request):
         """Get method."""
-        parameters = {"retired": False}
-        if request.GET.get("retired") == "true":
-            parameters.pop("retired", None)
-
+        serializer = TemplateQuerySerializer(request.GET.dict())
+        parameters = serializer.data
+        if not parameters:
+            parameters = request.data.copy()
         template_list = get_list(
             parameters, "template", TemplateModel, validate_template
         )
@@ -221,6 +214,7 @@ class TagView(APIView):
     """
 
     @swagger_auto_schema(
+        query_serializer=TagQuerySerializer,
         responses={"200": TagResponseSerializer, "400": "Bad Request"},
         security=[],
         operation_id="Get all template tags",
@@ -228,7 +222,10 @@ class TagView(APIView):
     )
     def get(self, request):
         """Get method."""
-        parameters = {}
+        serializer = TagQuerySerializer(request.GET.dict())
+        parameters = serializer.data
+        if not parameters:
+            parameters = request.data.copy()
         tag_list = get_list(parameters, "tag_definition", TagModel, validate_tag)
         serializer = TagResponseSerializer(tag_list, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
