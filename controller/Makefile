@@ -78,3 +78,7 @@ hal:
 # target: build emails - build mjml files to html
 build_emails:
 	npm run build-emails
+
+# target: send emails - send reports emails
+send_emails:
+	docker exec -it pca-api python manage.py send_reports_emails
