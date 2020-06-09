@@ -1,7 +1,7 @@
 <div class="cd-horizontal-timeline mt-timeline-horizontal" data-spacing="60">
     <div class="timeline">
         <div class="events-wrapper">
-            <div class="events">
+            <div class="events" style="width: 100%">
                 <ol>
                     <li *ngFor="let timelineItem of timelineItems">
                         <a href="#0" id="{{timelineItem.id}}" class="border-after-red bg-after-red " [ngClass]="{'selected' : timelineItem.id===selectedItemId}">
@@ -9,7 +9,7 @@
                                 <i class="{{timelineItem.icon}}"></i>
                             </div>
                             <div>
-                                {{timelineItem.date.toDate() | date:'dd MMM'}}
+                                {{timelineItem.date.toDate() | date:'M/d'}}
                             </div>
                         </a>
                     </li>
