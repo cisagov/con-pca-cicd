@@ -94,7 +94,7 @@ Horizontal Timeline
     text-align: center;
     font-size: .6rem;
     padding-bottom: 15px;
-    color: #383838;
+    /* color: #383838; */
     /* fix bug on Safari - text flickering while timeline translates */
     -webkit-transform: translateZ(0);
     -moz-transform: translateZ(0);
