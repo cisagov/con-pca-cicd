@@ -102,8 +102,8 @@ export class SubscriptionService {
     return this.http.get(`${this.settingsService.settings.apiUrl}/api/v1/subscription/customer/${customer.customer_uuid}`)
   }
 
-  public stopSubscription(subscription: Subscription) {
-    return this.http.get(`${this.settingsService.settings.apiUrl}/api/v1/subscription/stop/${subscription.subscription_uuid}/`)
+  public stopSubscription(subscription_uuid: string) {
+    return this.http.get(`${this.settingsService.settings.apiUrl}/api/v1/subscription/stop/${subscription_uuid}/`)
   }
 
   /**

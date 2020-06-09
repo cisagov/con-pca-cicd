@@ -59,19 +59,7 @@
         <ng-container matColumnDef="last_updated">
             <mat-header-cell *matHeaderCellDef>Last Updated</mat-header-cell>
             <mat-cell *matCellDef="let row"> {{row.subscription.lub_timestamp | date:dateFormat}}</mat-cell>
-        </ng-container>
-
-        <!-- ACTIVE -->
-        <ng-container matColumnDef="active">
-            <mat-header-cell *matHeaderCellDef>Active</mat-header-cell>
-            <mat-cell *matCellDef="let row">
-                <!-- {{row?.statusIconAndName?.icon_name}} -->
-                <img src="../../../assets/icon_play.png" style="height: 1rem;">
-            </mat-cell>
-        </ng-container>
-
-
-      
+        </ng-container>      
         <!-- ARCHIVED -->
         <ng-container matColumnDef="archived">
             <mat-header-cell *matHeaderCellDef>Archived</mat-header-cell>
@@ -85,12 +73,15 @@
               <button class="table-btn-icon" mat-flat-button color="primary" [routerLink]="['/view-subscription', row.subscription.subscription_uuid]">
                 <mat-icon class="table-btn-icon-size">edit</mat-icon>
               </button>
+              <button class="table-btn-icon" *ngIf="!row.subscription.manually_stopped" mat-flat-button color="warn" (click)="stopSubscription(row)">
+                <mat-icon class="table-btn-icon-size">stop</mat-icon>
+              </button>
             </mat-cell>
         </ng-container>
         <!-- HEADER ROW -->
         <mat-header-row *matHeaderRowDef="displayed_columns"></mat-header-row>
 
         <!-- ROW DEFINITION -->
-        <mat-row *matRowDef="let row; columns: displayed_columns" class="table-row" [routerLink]="['/view-subscription', row.subscription.subscription_uuid]"></mat-row>
+        <mat-row *matRowDef="let row; columns: displayed_columns" class="table-row" ></mat-row>
     </mat-table>
 </div>
