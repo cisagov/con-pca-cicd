@@ -4,7 +4,7 @@ import {
   HttpClient
 } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AngularEditorModule } from '@kolkov/angular-editor';
 import { MaterialModule } from './material.module';
@@ -37,7 +37,7 @@ import { CustomersComponent } from './components/customers/customers.component';
 import { AddCustomerDialogComponent } from './components/customers/add-customer-dialog/add-customer-dialog.component';
 import { AddContactDialogComponent } from './components/contacts/add-contact-dialog/add-contact-dialog.component';
 import { ViewContactDialogComponent } from './components/contacts/view-contact-dialog/view-contact-dialog.component';
-import { DeleteSubscription, DeleteSubscriptionDialog} from 'src/app/components/subscriptions/delete-subscription/delete-subscription.component';
+import { DeleteSubscription, DeleteSubscriptionDialog } from 'src/app/components/subscriptions/delete-subscription/delete-subscription.component';
 import { StopTemplateDialogComponent } from './components/template-manager/stop-template-dialog/stop-template-dialog.component';
 import { SendingProfilesComponent } from './components/sending-profiles/sending-profiles.component';
 import { SendingProfileDetailComponent } from './components/sending-profiles/sending-profile-detail.component';
@@ -47,6 +47,14 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { SubDashboardComponent } from './components/subscriptions/sub-dashboard/sub-dashboard.component';
 import { TimelineComponent } from './components/subscriptions/timeline/timeline.component';
 import { ConfirmComponent } from './components/dialogs/confirm/confirm.component';
+import { TagSelectionComponent } from './components/dialogs/tag-selection/tag-selection.component';
+import { SettingsHttpService } from './services/settings-http.service';
+
+
+export function app_Init(settingsHttpService: SettingsHttpService) {
+  return () => settingsHttpService.initializeApp()
+}
+
 
 @NgModule({
   declarations: [
@@ -79,6 +87,7 @@ import { ConfirmComponent } from './components/dialogs/confirm/confirm.component
     SubDashboardComponent,
     TimelineComponent,
     ConfirmComponent,
+    TagSelectionComponent,
   ],
   imports: [
     BrowserModule,
@@ -101,11 +110,12 @@ import { ConfirmComponent } from './components/dialogs/confirm/confirm.component
     TemplateManagerService,
     ThemeService,
     LayoutMainService,
-    HttpClient
+    HttpClient,
+    { provide: APP_INITIALIZER, useFactory: app_Init, deps: [SettingsHttpService], multi: true }
   ],
   exports: [
     MatSortModule
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule { }

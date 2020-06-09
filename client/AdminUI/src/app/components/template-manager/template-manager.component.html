@@ -66,30 +66,13 @@
                 }">HTML View
               </span>
             </ng-template>
-            <div>
+            <button mat-raised-button color="primary" (click)="openTagChoice()" class="hidden-insert-tag-button d-none">Insert Tag</button>
+            <div>              
               <angular-editor #angularEditor [style.height.px]="text_editor_height" formControlName="templateHTML"
                 [config]="editorConfig"></angular-editor>
             </div>
           </mat-tab>
-          <mat-tab>
-            <ng-template mat-tab-label>
-              <span [ngClass]="{
-                  'tab-form-error':
-                    currentTemplateFormGroup.controls.templateHTML.hasError(
-                      'required'
-                    ) && currentTemplateFormGroup.controls.templateHTML.touched
-                }">Source View
-              </span>
-            </ng-template>
-            <div class="d-flex flex-column mt-2">
-              <mat-form-field class="flex-grow-1">
-                <mat-label>Template HTML content</mat-label>
-                <textarea [style.height.px]="text_editor_height" [style.margin-bottom.px]="text_area_bot_marg" matInput
-                  formControlName="templateHTML" [value]="currentTemplateFormGroup.value.templateHTML"
-                  placeholder="Select a template on the left to edit" class="flex-1" style="resize: none;"></textarea>
-              </mat-form-field>
-            </div>
-          </mat-tab>
+          
           <!-- <mat-tab label="Template Attributes"
           [ngClass]="{'testing' : currentTemplateFormGroup.controls.templateFromAddress.hasError('required')}"
           class="mb-3"> -->
@@ -179,7 +162,7 @@
             <ng-template mat-tab-label>
               Subscriptions
             </ng-template>
-            <div class=" p-3 flex-column" [style.height.px]="text_editor_height">
+            <div class="p-3 flex-column" [style.height.px]="text_editor_height">
               <mat-table *ngIf="this.pcaSubscriptions.data.length > 0" class="w-100" [dataSource]="pcaSubscriptions">
                 <ng-container matColumnDef="name">
                   <mat-header-cell *matHeaderCellDef>

@@ -89,3 +89,14 @@ export class TemplateImageModel{
     file_name : string
     file_url : string
 }
+
+
+/**
+ * An instance of a "Tag", a substitution token in a Template.
+ */
+export class TagModel {
+  tag: string;
+  description: string;
+  data_source: string;
+  tag_type: string;
+}

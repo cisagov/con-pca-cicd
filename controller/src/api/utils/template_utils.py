@@ -1,34 +1,24 @@
 """Template Utils file for api."""
 # Standard Python Libraries
+import ast
 from datetime import datetime, timedelta
+import logging
+
+logger = logging.getLogger(__name__)
 
 
-def personalize_template(customer_info, template_data, sub_data):
+def personalize_template(customer_info, template_data, sub_data, tag_list):
     """
     Personalize Template.
 
     This takes costomer info, tempalte data and subscription data
     and genereates custom template text to use in gophosh.
     It also fills in GoPhish usable params.
-    """
-    today = datetime.today()
-    customer_full_address = "{} {} {} {} {}".format(
-        customer_info["address_1"],
-        customer_info["address_2"],
-        customer_info["city"],
-        customer_info["state"],
-        customer_info["zip_code"],
-    )
+    Below are old replace tags for refrence:
+
     check_replace = {
-        "<%URL%>": "{{.URL}}",
-        "<%TARGET_FIRST_NAME%>": "{{.FirstName}}",
-        "<%TARGET_LAST_NAME%>": "{{.LastName}}",
-        "<%TARGET_FULLL_NAME%>": "{{.FirstName}} {{.LastName}}",
-        "<%TARGET_EMAIL%>": "{{.Email}}",
-        "<%TARGET_POSITION%>": "{{.Position}}",
-        "<%FROM%>": "{{.From}}",
         "<%CUSTOMER_NAME%>": customer_info["name"],
-        "<%CUSTOMER_ADDRESS_FULL%>": customer_full_address,
+        "<%CUSTOMER_ADDRESS_FULL%>": customer_full_address(customer_info),
         "<%CUSTOMER_ADDRESS_1%>": customer_info["address_1"],
         "<%CUSTOMER_ADDRESS_2%>": customer_info["address_2"],
         "<%CUSTOMER_STATE%>": customer_info["state"],
@@ -47,18 +37,37 @@ def personalize_template(customer_info, template_data, sub_data):
         "<%EVENT%>": "Relevent Event",
         "<%TIMEFRAME%>": "Relevent Timeframe",
     }
+    gophish_tags = {
+        "<%URL%>": "{{.URL}}",
+        "<%TARGET_FIRST_NAME%>": "{{.FirstName}}",
+        "<%TARGET_LAST_NAME%>": "{{.LastName}}",
+        "<%TARGET_FULLL_NAME%>": "{{.FirstName}} {{.LastName}}",
+        "<%TARGET_EMAIL%>": "{{.Email}}",
+        "<%TARGET_POSITION%>": "{{.Position}}",
+        "<%FROM%>": "{{.From}}"
+    }
+    """
     personalized_template_data = []
     for template in template_data:
         cleantext = template["html"]
-        for key, value in check_replace.items():
-            if value is not None:
-                cleantext = cleantext.replace(key, value)
+        for tag in tag_list:
+            if tag["tag_type"] == "gophish":
+                # First check gophish tags
+                cleantext = cleantext.replace(tag["tag"], tag["data_source"])
+            elif tag["tag_type"] == "con-pca":
+                # Then check for other tags
+                try:
+                    cleantext = cleantext.replace(
+                        tag["tag"], ast.literal_eval(tag["data_source"])
+                    )
+                except Exception as err:
+                    logger.info(
+                        "tag eval error: {}, tag: {}, data_source: {}".format(
+                            err, tag["tag"], tag["data_source"]
+                        )
+                    )
 
-        template_unique_name = "{}_{}_{}".format(
-            "".join(template["name"].split(" ")),
-            customer_info["customer_uuid"],
-            today.strftime("%Y%m%d%H%M%S"),
-        )
+        template_unique_name = "".join(template["name"].split(" "))
 
         personalized_template_data.append(
             {
@@ -71,12 +80,13 @@ def personalize_template(customer_info, template_data, sub_data):
     return personalized_template_data
 
 
-def current_season(today):
+def current_season():
     """
     Current Season.
 
     This returns the current season of given Date.
     """
+    today = datetime.today()
     Y = today.year
     seasons = [
         ("winter", (datetime(Y, 1, 1), datetime(Y, 3, 20))),
@@ -98,3 +108,19 @@ def format_ztime(datetime_string):
     t = datetime.strptime(datetime_string.split(".")[0], "%Y-%m-%dT%H:%M:%S")
     t = t + timedelta(microseconds=int(datetime_string.split(".")[1][:-1]) / 1000)
     return t
+
+
+def get_full_customer_address(customer_info):
+    """
+    Get_full_customer_address.
+
+    When passed customer info, it will return an assemebed full address.
+    """
+    customer_full_address = "{} \n {} \n {}, {}, {}".format(
+        customer_info["address_1"],
+        customer_info["address_2"],
+        customer_info["city"],
+        customer_info["state"],
+        customer_info["zip_code"],
+    )
+    return customer_full_address
