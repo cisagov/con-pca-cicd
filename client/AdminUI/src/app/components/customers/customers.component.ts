@@ -12,7 +12,7 @@ import { Customer } from 'src/app/models/customer.model';
   styleUrls: ['./customers.component.scss']
 })
 export class CustomersComponent implements OnInit {
-  public data_source: MatTableDataSource<Customer>;
+
   displayed_columns = [
     "name",
     "identifier",
@@ -22,43 +22,64 @@ export class CustomersComponent implements OnInit {
     "state",
     "zip_code",
     "select"
-  ]
+  ];
+  customersData = new MatTableDataSource<Customer>();
+  search_input = ''
 
+  /**
+   * 
+   */
   constructor(
     private layout_service: LayoutMainService,
     public customerSvc: CustomerService,
     public dialog: MatDialog
-  ) { 
+  ) {
     layout_service.setTitle('Customers');
     this.customerSvc.setCustomerInfo(false);
   }
 
+  /**
+   * 
+   */
+  ngOnInit(): void {
+    this.customersData = new MatTableDataSource();
+    this.customerSvc.getCustomerInfoStatus().subscribe(status => {
+      if (status == false) {
+        this.refresh()
+      }
+    })
+  };
 
-  private refresh(): void {
-    this.customerSvc.getCustomers().subscribe((data: any) => {
-      this.data_source.data = data as Customer[];
-    }) 
+  /**
+   * 
+   */
+  public filterCustomers = (value: string) => {
+    this.customersData.filter = value.trim().toLocaleLowerCase();
   }
 
+  /**
+   * 
+   */
+  private refresh(): void {
+    this.customerSvc.getCustomers().subscribe((data: any) => {
+      this.customersData.data = data as Customer[];
+    })
+  }
+
+  /**
+   * 
+   */
   public open_add_customer_dialog(): void {
     const dialog_config = new MatDialogConfig();
     dialog_config.data = {}
     const dialog_ref = this.dialog.open(AddCustomerDialogComponent, dialog_config);
   }
 
-  public setCustomer(uuid){
+  /**
+   * 
+   */
+  public setCustomer(uuid) {
     this.customerSvc.selectedCustomer = uuid;
     this.dialog.closeAll();
   }
-
-  ngOnInit(): void {
-    this.data_source = new MatTableDataSource();
-    this.customerSvc.getCustomerInfoStatus().subscribe(status => {
-      if(status == false){
-        this.refresh()
-      }
-    })
-    
-  }
-
 }

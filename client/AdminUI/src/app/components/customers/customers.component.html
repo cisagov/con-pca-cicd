@@ -1,12 +1,18 @@
-
-<h1 mat-dialog-title>{{customerSvc.showCustomerInfo ? 'Customer/Organization' : 'Select Customer/Organization'}}</h1>
 <div mat-dialog-content>
     <div class="container-fluid" *ngIf="!customerSvc.showCustomerInfo">
-        <div class="d-inline-flex flex-column mb-2">
-            <button mat-raised-button color="primary" class="search-button" (click)="customerSvc.setCustomerInfo(true)">Add Customer/Organization</button>
+        <div class="d-flex flex-row mb-2 align-items-start">
+            <!-- SEARCH BAR -->
+            <mat-form-field class="d-flex flex-column w-100" appearance="outline">
+                <mat-label>Search</mat-label>
+                <input [(ngModel)]="search_input" (keyup)="filterCustomers($event.target.value)" matInput placeholder="Search" />
+                <mat-icon matSuffix>search</mat-icon>
+            </mat-form-field>
+
+            <button mat-raised-button color="primary" 
+                (click)="customerSvc.setCustomerInfo(true)">New Customer</button>
         </div>
 
-        <mat-table [dataSource]="data_source">
+        <mat-table [dataSource]="customersData">
             <ng-container matColumnDef="name">
                 <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>
                 <mat-cell *matCellDef="let row"> {{row.name}} </mat-cell>
@@ -37,16 +43,18 @@
             </ng-container>
             <ng-container matColumnDef="select">
                 <mat-header-cell *matHeaderCellDef>Edit</mat-header-cell>
-                <mat-cell *matCellDef="let row"> 
-                    <button class="table-btn-icon" mat-flat-button color="primary" [routerLink]="['/customer', row.customer_uuid]">
-                      <mat-icon class="table-btn-icon-size">edit</mat-icon>
+                <mat-cell *matCellDef="let row">
+                    <button class="table-btn-icon" mat-flat-button color="primary"
+                        [routerLink]="['/customer', row.customer_uuid]">
+                        <mat-icon class="table-btn-icon-size">edit</mat-icon>
                     </button>
                 </mat-cell>
             </ng-container>
-            
+
 
             <mat-header-row *matHeaderRowDef="displayed_columns"></mat-header-row>
-            <mat-row class="table-row cursor-pointer" *matRowDef="let row; columns: displayed_columns" (click)="setCustomer(row.customer_uuid)"></mat-row>
+            <mat-row class="table-row cursor-pointer" *matRowDef="let row; columns: displayed_columns"
+                (click)="setCustomer(row.customer_uuid)"></mat-row>
         </mat-table>
     </div>
     <div class="container-fluid" *ngIf="customerSvc.showCustomerInfo">
