@@ -306,17 +306,14 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
     this.submitted = true;
 
     // stop here if form is invalid
-    if (this.subscribeForm.invalid) {
+    if (this.subscribeForm.invalid) {    
       return false;
     }
+    
     return true;
   }
 
-  startSubscription(){
-    
-    if(!this.subValid())
-      return;
-
+  startSubscription(){    
     let sub = this.subscriptionSvc.subscription;
 
     // set up the subscription and persist it in the service
@@ -333,13 +330,12 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
     sub.setTargetsFromCSV(csv);
 
     // call service with everything needed to start the subscription
-    this.subscriptionSvc.submitSubscription(sub).subscribe(
+    this.subscriptionSvc.restartSubscription(sub).subscribe(
       resp => {
-        alert("Your subscription was created as " + sub.name);
-        this.router.navigate(['subscriptions']);
+        alert("Subscription " + sub.name +" was started");        
       },
       error => {
-        alert("An error occurred submitting the subscription: " + error.error);
+        alert("An error occurred restarting the subscription: " + error.error);
       });
   }
   /**
