@@ -1,6 +1,13 @@
-[Con-PCA] Monthly Report
+Dear <Primary Point of Contact Full Name>,
 
-Hello, your Monthly report is attached.
+ 
 
-Thank you,
-Con-PCA
+Thank you for participating in the CISA Phishing Subscription Service Con-PCA. Attached is your monthly phishing progress report for your review.
+
+In the interests of security and efficiency please respond to your DHS contact directly with any questions or concerns you may have regarding your service or this report.
+
+
+Respectfully,
+
+
+CISA Continuous Phishing Program Administrator
