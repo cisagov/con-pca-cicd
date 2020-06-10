@@ -69,6 +69,14 @@ export class SubscriptionService {
   }
 
   /**
+   * Restart the subscription
+   * @param subscription 
+   */
+  restartSubscription(subscription: Subscription){
+    return this.http.post(`${this.settingsService.settings.apiUrl}/api/v1/subscriptions/`, subscription)
+  }
+
+  /**
    * Sends information to the API to update a subscription
    * @param subscription 
    */
