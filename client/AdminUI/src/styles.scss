@@ -213,11 +213,21 @@ $theme-warn: mat-palette($mat-warn, main, lighter, darker);;
 $theme: mat-light-theme($theme-primary, $theme-accent, $theme-warn);
 $altTheme: mat-dark-theme($theme-primary, $theme-accent, $theme-warn);
 
+
+@mixin additional-hover($theme) {
+  .mat-row:hover, table.table-1 tr:hover {    
+    $background: map-get($theme, background);
+    background-color: map-get($background, hover) !important;
+  }
+}
+
 // Theme Init
 @include angular-material-theme($theme);
+@include additional-hover($theme);
 
 .theme-alternate {
   @include angular-material-theme($altTheme);
+  @include additional-hover($altTheme);
 }
 
 // Specific component overrides, pieces that are not in line with the general theming
@@ -335,10 +345,6 @@ $altTheme: mat-dark-theme($theme-primary, $theme-accent, $theme-warn);
 
 .mat-header-cell{ 
   color:  $light-text !important;
-}
-
-.mat-row:hover, table.table-1 tr:hover {
-  background-color: #eeeeee;
 }
 
 table.table-1 td {
