@@ -4,6 +4,7 @@ from typing import List, Any
 # Django Libraries
 from django.conf import settings
 from django.http import HttpResponse
+from django.contrib.staticfiles.storage import staticfiles_storage
 from django.core.files.storage import FileSystemStorage
 from django.core.mail.message import EmailMultiAlternatives
 from django.template.loader import render_to_string
@@ -22,9 +23,10 @@ class ReportsEmailSender:
         self.recipients = recipients
         self.message_type = message_type
 
-    def get_context_data(self, recipient):
+    def get_context_data(self, recipient, subscription):
         context: Dict[str, Any] = {}
-        context["recipient"] = recipient
+        context["first_name"] = subscription.get("primary_contact").get("first_name")
+        context["last_name"] = subscription.get("primary_contact").get("last_name")
         return context
 
     def get_attachment(self, subscription_uuid):
@@ -41,10 +43,11 @@ class ReportsEmailSender:
         subscription_list = get_list(
             parameters, "subscription", SubscriptionModel, validate_subscription
         )
-        subscription_uuid = subscription_list[0].get("subscription_uuid")
+        subscription = subscription_list[0]
+        subscription_uuid = subscription.get("subscription_uuid")
 
         for recipient in self.recipients:
-            context = self.get_context_data(recipient)
+            context = self.get_context_data(recipient, subscription)
             text_content = render_to_string(f"emails/{path}.txt", context)
             html_content = render_to_string(f"emails/{path}.html", context)
             to = [f"Recipient Name <{recipient}>"]

@@ -1,4 +1,4 @@
-Dear <Primary Point of Contact Full Name>,
+Dear {{ first_name }} {{ last_name }},
 
  
 

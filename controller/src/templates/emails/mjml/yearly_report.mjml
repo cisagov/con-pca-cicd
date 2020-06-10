@@ -3,9 +3,13 @@
     <mj-section>
       <mj-column>
 
-        <mj-image width="100px" src="{% static '/img/cisa_logo.png' %}"></mj-image>
+        <mj-image width="100px" src="cid:cisa_logo.png"></mj-image>
 
         <mj-divider border-color="#1B2352"></mj-divider>
+
+        <mj-text font-size="20px" color="#1B2352" font-family="helvetica">
+          Dear {{ first_name }} {{ last_name }},
+        </mj-text>
 
         <mj-text font-size="20px" color="#1B2352" font-family="helvetica">
           Thank you for participating in the CISA Phishing
