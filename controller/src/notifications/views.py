@@ -16,7 +16,6 @@ from weasyprint import HTML
 # Local Libraries
 from notifications.utils import get_notification
 from api.utils.db_utils import get_list
-from api.models.subscription_models import SubscriptionModel, validate_subscription
 
 
 class ReportsEmailSender:
@@ -39,11 +38,6 @@ class ReportsEmailSender:
 
     def send(self):
         subject, path = get_notification(self.message_type)
-        # get subscription
-        parameters = {"archived": {"$in": [False, None]}}
-        subscription_list = get_list(
-            parameters, "subscription", SubscriptionModel, validate_subscription
-        )
 
         # pull subscription data
         subscription_uuid = self.subscription.get("subscription_uuid")
