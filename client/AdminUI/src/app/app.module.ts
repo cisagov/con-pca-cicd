@@ -49,6 +49,7 @@ import { TimelineComponent } from './components/subscriptions/timeline/timeline.
 import { ConfirmComponent } from './components/dialogs/confirm/confirm.component';
 import { TagSelectionComponent } from './components/dialogs/tag-selection/tag-selection.component';
 import { SettingsHttpService } from './services/settings-http.service';
+import { RetireTemplateDialogComponent } from './components/template-manager/retire-template-dialog/retire-template-dialog.component';
 
 
 export function app_Init(settingsHttpService: SettingsHttpService) {
@@ -88,6 +89,7 @@ export function app_Init(settingsHttpService: SettingsHttpService) {
     TimelineComponent,
     ConfirmComponent,
     TagSelectionComponent,
+    RetireTemplateDialogComponent,
   ],
   imports: [
     BrowserModule,
