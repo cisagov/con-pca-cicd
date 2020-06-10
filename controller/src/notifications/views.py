@@ -1,5 +1,6 @@
 # Standard Libraries
 from typing import List, Any
+from email.mime.image import MIMEImage
 
 # Django Libraries
 from django.conf import settings
@@ -57,6 +58,15 @@ class ReportsEmailSender:
                 from_email=settings.SERVER_EMAIL,
                 to=to,
             )
+
+            # pass image files
+            image_files = ["cisa_logo.png"]
+            for image_file in image_files:
+                with staticfiles_storage.open(f"img/{image_file}") as f:
+                    header = MIMEImage(f.read())
+                    header.add_header("Content-ID", f"<{image_file}>")
+                    message.attach(header)
+
             # add html body to email
             message.attach_alternative(html_content, "text/html")
 
