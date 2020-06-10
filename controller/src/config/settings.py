@@ -3,12 +3,9 @@ Setting.py.
 
 Here we set all setting needed for djnago apps within this repo.
 """
-
 # Standard Python Libraries
 import os
-
-# Third-Party Libraries
-from celery.schedules import crontab
+from socket import gethostname, gethostbyname
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -20,12 +17,16 @@ DEBUG = int(os.environ.get("DEBUG", default=0))
 ALLOWED_HOSTS = os.environ.get(
     "DJANGO_ALLOWED_HOSTS", "localhost 127.0.0.1 [::1]"
 ).split()
+ALLOWED_HOSTS.append(gethostname())
+ALLOWED_HOSTS.append(gethostbyname(gethostname()))
 
-CORS_ORIGIN_WHITELIST = [
-    "http://localhost:4200",
-    "https://localhost:3333",
-    "http://localhost:8080",
-]
+CORS_ORIGIN_ALLOW_ALL = True
+
+# CORS_ORIGIN_WHITELIST = [
+#     "http://localhost:4200",
+#     "https://localhost:3333",
+#     "http://localhost:8080",
+# ]
 
 DB_CONFIG = {
     "DB_HOST": os.getenv("DB_HOST"),
@@ -172,8 +173,6 @@ GP_API_KEY = os.environ.get("GP_API_KEY", "")
 PHISH_URL = os.environ.get("PHISH_URL", "")
 
 # AWS
-AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID")
-AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_KEY")
 DEFAULT_FILE_STORAGE = os.environ.get("DEFAULT_FILE_STORAGE")
 AWS_STORAGE_BUCKET_NAME = os.environ.get("AWS_STORAGE_BUCKET_NAME")
 AWS_STORAGE_BUCKET_IMAGES_NAME = os.environ.get("AWS_STORAGE_BUCKET_IMAGES_NAME")
