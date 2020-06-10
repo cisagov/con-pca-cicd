@@ -85,6 +85,9 @@ Drop DB of all data
 
 - `make db_drop_mongo`
 
+Collect static files
+- `make collectstatic`
+
 Compile mjml files to html for emails
 - `make build_emails`
 
