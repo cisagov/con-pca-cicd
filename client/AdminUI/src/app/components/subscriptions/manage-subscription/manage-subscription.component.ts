@@ -75,6 +75,7 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
     this.subscribeForm = new FormGroup({
       selectedCustomerUuid: new FormControl('', Validators.required),
       primaryContact: new FormControl(null, Validators.required),
+      dhsContact: new FormControl(null, Validators.required),
       startDate: new FormControl(new Date()),
       url: new FormControl(''),
       keywords: new FormControl(''),

@@ -54,7 +54,20 @@
                         <div *ngIf="f.primaryContact.errors.required">A primary contact must be selected</div>
                     </div>
                 </div>
+                <div>
+                    <mat-form-field appearance="outline">
+                        <mat-label>DHS Contact</mat-label>
 
+                        <mat-select formControlName="dhsContact" (selectionChange)="changePrimaryContact($event)">
+                            <mat-option [value]="null">--Select--</mat-option>
+                            <mat-option *ngFor="let c of customer?.contact_list" [value]="c.email">
+                                {{ c.first_name }} {{ c.last_name }}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <div *ngIf="submitted && f.dhsContact.errors" class="invalid-feedback">
+                        <div *ngIf="f.dhsContact.errors.required">DHS contact must be selected</div>
+                    </div>
+                </div>
             </div>
 
 
