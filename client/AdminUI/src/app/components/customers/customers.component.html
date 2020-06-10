@@ -1,6 +1,6 @@
 <div mat-dialog-content>
     <div class="container-fluid" *ngIf="!customerSvc.showCustomerInfo">
-        <div class="d-flex flex-row mb-2 align-items-start">
+        <div class="d-flex flex-row align-items-start">
             <!-- SEARCH BAR -->
             <mat-form-field class="d-flex flex-column w-100" appearance="outline">
                 <mat-label>Search</mat-label>
@@ -8,8 +8,10 @@
                 <mat-icon matSuffix>search</mat-icon>
             </mat-form-field>
 
-            <button mat-raised-button color="primary" 
+            <div class="d-inline-flex flex-column ml-2">
+                <button mat-raised-button color="primary" 
                 (click)="customerSvc.setCustomerInfo(true)">New Customer</button>
+            </div>
         </div>
 
         <mat-table [dataSource]="customersData">
