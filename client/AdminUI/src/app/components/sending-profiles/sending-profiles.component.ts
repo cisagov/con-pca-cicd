@@ -73,7 +73,6 @@ export class SendingProfilesComponent implements OnInit {
     this.sendingProfileSvc.deleteProfile(row.id).subscribe(() => {
       this.refresh();
     });
-    
   }
 
   /**
