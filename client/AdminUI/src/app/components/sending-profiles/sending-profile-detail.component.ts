@@ -1,15 +1,14 @@
-import { Component, OnInit, Inject, ChangeDetectorRef, AfterViewChecked, AfterViewInit } from '@angular/core';
+import { Component, OnInit, Inject, ChangeDetectorRef, AfterViewChecked, AfterViewInit, AfterContentInit } from '@angular/core';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { SendingProfileService } from 'src/app/services/sending-profile.service';
 import { SendingProfile, SendingProfileHeader } from 'src/app/models/sending-profile.model';
-import { stringify } from 'querystring';
 
 @Component({
   selector: 'app-sending-profile-detail',
   templateUrl: './sending-profile-detail.component.html'
 })
-export class SendingProfileDetailComponent implements OnInit, AfterViewInit {
+export class SendingProfileDetailComponent implements OnInit, AfterContentInit {
 
   /** 
    * NEW or EDIT
@@ -49,7 +48,7 @@ export class SendingProfileDetailComponent implements OnInit, AfterViewInit {
     this.profileForm = new FormGroup({
       name: new FormControl('', Validators.required),
       interfaceType: new FormControl(''),
-      from: new FormControl('', Validators.required),
+      from: new FormControl('', [Validators.required, Validators.email]),
       host: new FormControl('', Validators.required),
       username: new FormControl(''),
       password: new FormControl(''),
@@ -86,7 +85,7 @@ export class SendingProfileDetailComponent implements OnInit, AfterViewInit {
   /**
    * 
    */
-  ngAfterViewInit(): void {
+  ngAfterContentInit(): void {
     this.changeDetector.detectChanges();
   }
 
@@ -117,6 +116,10 @@ export class SendingProfileDetailComponent implements OnInit, AfterViewInit {
    */
   onSaveClick() {
     this.submitted = true;
+
+    if (this.profileForm.invalid) {
+      return;
+    }
 
     let sp = new SendingProfile();
     sp.name = this.f.name.value;
