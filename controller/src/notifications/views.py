@@ -20,7 +20,8 @@ from api.models.subscription_models import SubscriptionModel, validate_subscript
 
 
 class ReportsEmailSender:
-    def __init__(self, message_type: str):
+    def __init__(self, subscription, message_type: str):
+        self.subscription = subscription
         self.message_type = message_type
 
     def get_context_data(self, first_name, last_name):
@@ -43,14 +44,13 @@ class ReportsEmailSender:
         subscription_list = get_list(
             parameters, "subscription", SubscriptionModel, validate_subscription
         )
-        subscription = subscription_list[0]
 
         # pull subscription data
-        subscription_uuid = subscription.get("subscription_uuid")
-        recipient = subscription.get("primary_contact").get("email")
-        recipient_copy = subscription.get("dhs_primary_contact").get("email")
-        first_name = subscription.get("primary_contact").get("first_name")
-        last_name = subscription.get("primary_contact").get("last_name")
+        subscription_uuid = self.subscription.get("subscription_uuid")
+        recipient = self.subscription.get("primary_contact").get("email")
+        recipient_copy = self.subscription.get("dhs_primary_contact").get("email")
+        first_name = self.subscription.get("primary_contact").get("first_name")
+        last_name = self.subscription.get("primary_contact").get("last_name")
 
         # pass context to email templates
         context = self.get_context_data(first_name, last_name)
