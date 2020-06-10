@@ -2,9 +2,8 @@
     <form [formGroup]="subscribeForm" (ngSubmit)="onSubmit()">
         <div class="d-flex flex-column mb-5">
 
-            <div class="w-100">
-                <app-sub-dashboard *ngIf="pageMode!='CREATE'" 
-                    [subscriptionUuid]="subscription?.subscription_uuid">
+            <div class="w-100" *ngIf="pageMode!='CREATE'" >
+                <app-sub-dashboard [subscriptionUuid]="subscription?.subscription_uuid">
                 </app-sub-dashboard>
 
                 <div>
@@ -40,7 +39,7 @@
                     </div>
                 </div>
 
-                <div>
+                <div *ngIf="!!customer.customer_uuid">
                     <mat-form-field appearance="outline">
                         <mat-label>Primary Contact</mat-label>
 
@@ -125,9 +124,6 @@
                 </div>
                 <div class="startButton"><button mat-raised-button *ngIf="!subscription?.active" color="primary" (click)="startSubscription()">Start Subscription</button></div>                
             </div>
-
-
-
         </div>
     </form>
 </div>

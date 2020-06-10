@@ -1,9 +1,11 @@
 # Standard Libraries
 from typing import List, Any
+from email.mime.image import MIMEImage
 
 # Django Libraries
 from django.conf import settings
 from django.http import HttpResponse
+from django.contrib.staticfiles.storage import staticfiles_storage
 from django.core.files.storage import FileSystemStorage
 from django.core.mail.message import EmailMultiAlternatives
 from django.template.loader import render_to_string
@@ -14,17 +16,17 @@ from weasyprint import HTML
 # Local Libraries
 from notifications.utils import get_notification
 from api.utils.db_utils import get_list
-from api.models.subscription_models import SubscriptionModel, validate_subscription
 
 
 class ReportsEmailSender:
-    def __init__(self, recipients: List, message_type: str):
-        self.recipients = recipients
+    def __init__(self, subscription, message_type: str):
+        self.subscription = subscription
         self.message_type = message_type
 
-    def get_context_data(self, recipient):
+    def get_context_data(self, first_name, last_name):
         context: Dict[str, Any] = {}
-        context["recipient"] = recipient
+        context["first_name"] = first_name
+        context["last_name"] = last_name
         return context
 
     def get_attachment(self, subscription_uuid):
@@ -36,30 +38,41 @@ class ReportsEmailSender:
 
     def send(self):
         subject, path = get_notification(self.message_type)
-        # get subscription
-        parameters = {"archived": {"$in": [False, None]}}
-        subscription_list = get_list(
-            parameters, "subscription", SubscriptionModel, validate_subscription
+
+        # pull subscription data
+        subscription_uuid = self.subscription.get("subscription_uuid")
+        recipient = self.subscription.get("primary_contact").get("email")
+        recipient_copy = self.subscription.get("dhs_primary_contact").get("email")
+        first_name = self.subscription.get("primary_contact").get("first_name")
+        last_name = self.subscription.get("primary_contact").get("last_name")
+
+        # pass context to email templates
+        context = self.get_context_data(first_name, last_name)
+        text_content = render_to_string(f"emails/{path}.txt", context)
+        html_content = render_to_string(f"emails/{path}.html", context)
+
+        to = [f"{first_name} {last_name} <{recipient}>"]
+        bcc = [f"DHS <{recipient_copy}>"]
+        message = EmailMultiAlternatives(
+            subject=subject,
+            body=text_content,
+            from_email=settings.SERVER_EMAIL,
+            to=to,
+            bcc=bcc,
         )
-        subscription_uuid = subscription_list[0].get("subscription_uuid")
 
-        for recipient in self.recipients:
-            context = self.get_context_data(recipient)
-            text_content = render_to_string(f"emails/{path}.txt", context)
-            html_content = render_to_string(f"emails/{path}.html", context)
-            to = [f"Recipient Name <{recipient}>"]
-            message = EmailMultiAlternatives(
-                subject=subject,
-                body=text_content,
-                from_email=settings.SERVER_EMAIL,
-                to=to,
-            )
-            # add html body to email
-            message.attach_alternative(html_content, "text/html")
+        # pass image files
+        image_files = ["cisa_logo.png"]
+        for image_file in image_files:
+            with staticfiles_storage.open(f"img/{image_file}") as f:
+                header = MIMEImage(f.read())
+                header.add_header("Content-ID", f"<{image_file}>")
+                message.attach(header)
 
-            # add pdf attachment
-            attachment = self.get_attachment(subscription_uuid)
-            message.attach(
-                "subscription_report.pdf", attachment.read(), "application/pdf"
-            )
-            message.send(fail_silently=False)
+        # add html body to email
+        message.attach_alternative(html_content, "text/html")
+
+        # add pdf attachment
+        attachment = self.get_attachment(subscription_uuid)
+        message.attach("subscription_report.pdf", attachment.read(), "application/pdf")
+        message.send(fail_silently=False)
