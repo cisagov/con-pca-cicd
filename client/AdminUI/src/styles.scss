@@ -214,20 +214,26 @@ $theme: mat-light-theme($theme-primary, $theme-accent, $theme-warn);
 $altTheme: mat-dark-theme($theme-primary, $theme-accent, $theme-warn);
 
 
-@mixin additional-hover($theme) {
+@mixin additional-overrides($theme) {
+  $foreground: map-get($theme, 'foreground');
+  $background: map-get($theme, 'background');
+
   .mat-row:hover, table.table-1 tr:hover {    
-    $background: map-get($theme, background);
-    background-color: map-get($background, hover) !important;
+    background-color: map-get($background, 'hover') !important;
+  }
+
+  .cd-horizontal-timeline .events a {
+    color: map-get($foreground, 'text') !important;
   }
 }
 
 // Theme Init
 @include angular-material-theme($theme);
-@include additional-hover($theme);
+@include additional-overrides($theme);
 
 .theme-alternate {
   @include angular-material-theme($altTheme);
-  @include additional-hover($altTheme);
+  @include additional-overrides($altTheme);
 }
 
 // Specific component overrides, pieces that are not in line with the general theming
