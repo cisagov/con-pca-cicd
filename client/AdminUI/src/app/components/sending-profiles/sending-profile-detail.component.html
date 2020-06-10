@@ -21,6 +21,7 @@
             <input formControlName="from" matInput [ngClass]="{ 'is-invalid': submitted && f.from.errors }">
             <div *ngIf="submitted && f.from.errors" class="invalid-feedback">
                 <div *ngIf="f.from.errors.required">From address is required</div>
+                <div *ngIf="f.from.errors.email">From address must be a valid email address</div>
             </div>
         </mat-form-field>
 
