@@ -320,23 +320,14 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
     let sub = this.subscriptionSvc.subscription;
 
     // set up the subscription and persist it in the service
-    sub = new Subscription();
-
     sub.customer_uuid = this.customer.customer_uuid;
     sub.primary_contact = this.primaryContact;
-
     sub.active = true;
-
     sub.lub_timestamp = new Date();
-    sub.name = "SC-1." + this.customer.name + ".1.1"; //auto generated name
     sub.start_date = this.startDate;
-    sub.status = "New Not Started";
-
+    sub.status = "Starting";
     sub.url = this.url;
-
-    // keywords
     sub.keywords = this.f.keywords.value;
-
     // set the target list
     let csv = this.f.csvText.value;
     sub.setTargetsFromCSV(csv);
