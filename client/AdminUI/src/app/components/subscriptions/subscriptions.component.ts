@@ -119,4 +119,8 @@ export class SubscriptionsComponent implements OnInit {
       this.dialogRefConfirm = null;
     });
   }
+
+  public checkStopped(status: string){
+    return status.toUpperCase() == "STOPPED";
+  }
 }
