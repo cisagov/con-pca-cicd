@@ -52,10 +52,10 @@
             <h2>Email Headers</h2>
             <div class="d-flex flex-row align-items-center w-100">
                 <mat-form-field appearance="outline" class="mr-2">
-                    <input formControlName="newHeaderName" matInput placeholder="Custom Header">
+                    <input formControlName="newHeaderName" matInput placeholder="Custom Header" maxlength="100">
                 </mat-form-field>
                 <mat-form-field appearance="outline" class="mr-2">
-                    <input formControlName="newHeaderValue" matInput placeholder="Header Value">
+                    <input formControlName="newHeaderValue" matInput placeholder="Header Value" maxlength="100">
                 </mat-form-field>
                 <div class="mb-3">
                     <button mat-raised-button color="primary"
@@ -71,7 +71,7 @@
                     <th class="mat-header-cell">Value</th>
                     <th class="mat-header-cell"></th>
                 </tr>
-                <tr *ngFor="let h of headers.keys()" class="mat-row">
+                <tr *ngFor="let h of headers?.keys()" class="mat-row">
                     <td class="mat-cell">{{h}}</td>
                     <td class="mat-cell">{{headers.get(h)}}</td>
                     <td class="mat-cell">
@@ -81,7 +81,7 @@
                     </td>
                 </tr>
             </table>
-            <div *ngIf="headers.size == 0">
+            <div *ngIf="!headers || headers?.size == 0" class="p-3">
                 No headers defined
             </div>
         </div>
