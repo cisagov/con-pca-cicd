@@ -5,8 +5,10 @@ These are Django Rest Framework Serializers. These are used for
 serializing data coming from the db into a request response.
 """
 # Third-Party Libraries
+from api.serializers.subscriptions_serializers import (
+    SubscriptionPatchResponseSerializer,
+)
 from rest_framework import serializers
-from api.serializers.subscriptions_serializers import SubscriptionPatchResponseSerializer
 
 TEMPLATE_TYPE_CHOICES = (
     ("Email", "Email"),
@@ -221,22 +223,19 @@ class TemplateDeleteResponseSerializer(serializers.Serializer):
 
 
 class TemplateStopResponseSerializer(serializers.Serializer):
-    """
-    This is the Template STOP Response Serializer.
-    """
+    """This is the Template STOP Response Serializer."""
 
     template = TemplatePatchResponseSerializer()
     subscriptions = SubscriptionPatchResponseSerializer(many=True)
 
 
 class TagSerializer(serializers.Serializer):
-    """
-    Serializes a Tag (replaceable token in a template)
-    """
+    """Serializes a Tag (replaceable token in a template)."""
 
-class TagResponseSerializer(serializers.Serializer):    
+
+class TagResponseSerializer(serializers.Serializer):
     """
-    Serializes the response for a Tag (replaceable token in a template)
+    Serializes the response for a Tag (replaceable token in a template).
 
     This is a formats the data coming out of the Db.
     """
@@ -245,3 +244,45 @@ class TagResponseSerializer(serializers.Serializer):
     description = serializers.CharField()
     data_source = serializers.CharField()
     tag_type = serializers.CharField()
+
+
+class TemplateQuerySerializer(serializers.Serializer):
+    """
+    Serializes templete Query.
+
+    This is sets queries we can run on db collection.
+    """
+
+    gophish_template_id = serializers.IntegerField(required=False)
+    name = serializers.CharField(required=False)
+    template_type = serializers.ChoiceField(
+        choices=TEMPLATE_TYPE_CHOICES, required=False
+    )
+    deception_score = serializers.IntegerField(required=False)
+    descriptive_words = serializers.CharField(required=False)
+    description = serializers.CharField(required=False)
+    from_address = serializers.EmailField(required=False)
+    retired = serializers.BooleanField(default=False)
+    retired_description = serializers.CharField(required=False)
+    subject = serializers.CharField(required=False)
+    text = serializers.CharField(required=False)
+    html = serializers.CharField(required=False)
+    topic_list = serializers.ListField(required=False)
+    complexity = serializers.IntegerField(required=False)
+    created_by = serializers.CharField(required=False)
+    cb_timestamp = serializers.DateTimeField(required=False)
+    last_updated_by = serializers.CharField(required=False)
+    lub_timestamp = serializers.DateTimeField(required=False)
+
+
+class TagQuerySerializer(serializers.Serializer):
+    """
+    Serializes Tag Query.
+
+    This is sets queries we can run on db collection.
+    """
+
+    tag = serializers.CharField(required=False)
+    description = serializers.CharField(required=False)
+    data_source = serializers.CharField(required=False)
+    tag_type = serializers.CharField(required=False)

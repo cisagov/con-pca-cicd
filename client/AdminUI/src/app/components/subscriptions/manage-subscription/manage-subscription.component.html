@@ -2,12 +2,11 @@
     <form [formGroup]="subscribeForm" (ngSubmit)="onSubmit()">
         <div class="d-flex flex-column mb-5">
 
-            <div class="w-100">
-                <app-sub-dashboard *ngIf="pageMode!='CREATE'" 
-                    [subscriptionUuid]="subscription?.subscription_uuid">
+            <div class="w-100" *ngIf="pageMode!='CREATE'" >
+                <app-sub-dashboard [subscriptionUuid]="subscription?.subscription_uuid">
                 </app-sub-dashboard>
 
-                <div *ngIf="false">
+                <div>
                     <h2>Subscription Timeline</h2>
                     <div style="margin: 0 2rem 1rem 2rem">
                         <timeline [timelineItems]="timelineItems"></timeline>
@@ -40,7 +39,7 @@
                     </div>
                 </div>
 
-                <div>
+                <div *ngIf="!!customer.customer_uuid">
                     <mat-form-field appearance="outline">
                         <mat-label>Primary Contact</mat-label>
 
@@ -141,9 +140,6 @@
                     <button mat-raised-button color="accent" (click)="showArchiveDialog()">Archive Subscription</button>
                 </div>
             </div>
-
-
-
         </div>
     </form>
 </div>

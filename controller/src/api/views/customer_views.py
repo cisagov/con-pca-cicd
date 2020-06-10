@@ -15,6 +15,7 @@ from api.serializers.customer_serializers import (
     CustomerPatchSerializer,
     CustomerPostResponseSerializer,
     CustomerPostSerializer,
+    CustomerQuerySerializer,
     SectorGetSerializer,
 )
 from api.utils.db_utils import (
@@ -24,9 +25,7 @@ from api.utils.db_utils import (
     save_single,
     update_single,
 )
-from api.utils.sector_industry_utils import (
-    get_sectors_industries,
-)
+from api.utils.sector_industry_utils import get_sectors_industries
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status
 from rest_framework.response import Response
@@ -43,6 +42,7 @@ class CustomerListView(APIView):
     """
 
     @swagger_auto_schema(
+        query_serializer=CustomerQuerySerializer,
         responses={"200": CustomerGetSerializer, "400": "Bad Request"},
         security=[],
         operation_id="List of Customers",
@@ -50,8 +50,11 @@ class CustomerListView(APIView):
     )
     def get(self, request):
         """Get method."""
-        parameters = request.data.copy()
-        
+        serializer = CustomerQuerySerializer(request.GET.dict())
+        parameters = serializer.data
+        if not parameters:
+            parameters = request.data.copy()
+
         customer_list = get_list(
             parameters, "customer", CustomerModel, validate_customer
         )
@@ -72,13 +75,16 @@ class CustomerListView(APIView):
         # Check for existing customer with the same name and identifier pair
         customer_filter = {
             "identifier": post_data["identifier"],
-            "name": post_data["name"]
+            "name": post_data["name"],
         }
         existing_customer = get_list(
             customer_filter, "customer", CustomerModel, validate_customer
         )
         if existing_customer:
-            return Response("User with that identifier already exists",status=status.HTTP_202_ACCEPTED)
+            return Response(
+                "User with that identifier already exists",
+                status=status.HTTP_202_ACCEPTED,
+            )
 
         created_response = save_single(
             post_data, "customer", CustomerModel, validate_customer
@@ -155,6 +161,7 @@ class CustomerView(APIView):
         serializer = CustomerDeleteResponseSerializer(delete_response)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+
 class SectorIndustryView(APIView):
     """
     This is the SectorIndustryView APIView.
@@ -171,12 +178,12 @@ class SectorIndustryView(APIView):
     def get(self, request):
         """Get method."""
         logger.debug(f"get industry/sector list")
-        
+
         # If added to database, pull data through
         # sectors_industries = get_list(
         #     parameters, "sectors", CREATESECTORMODEL, CREATESECTORVALIDATION
         # )
-        
+
         # While usng hard coded sector/industry data, use below
         sectors_industries = get_sectors_industries()
 
@@ -204,4 +211,4 @@ class SectorIndustryView(APIView):
     def delete(self, request, sector_id):
         """Delete method."""
         logger.debug(f"delete sector_id {sector_id}")
-        #Delete logic here
+        # Delete logic here

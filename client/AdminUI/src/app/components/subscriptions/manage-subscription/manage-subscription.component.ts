@@ -4,7 +4,7 @@ import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms'
 import { SubscriptionService } from 'src/app/services/subscription.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Customer, Contact } from 'src/app/models/customer.model';
-import { Subscription, Target } from 'src/app/models/subscription.model';
+import { Subscription, Target, GoPhishCampaignModel, TimelineItem } from 'src/app/models/subscription.model';
 import { Guid } from 'guid-typescript';
 import { UserService } from 'src/app/services/user.service';
 import { CustomerService } from 'src/app/services/customer.service';
@@ -17,7 +17,7 @@ import { LayoutMainService } from 'src/app/services/layout-main.service';
 
 @Component({
   selector: 'app-manage-subscription',
-  templateUrl: './manage-subscription.component.html', 
+  templateUrl: './manage-subscription.component.html',
   styleUrls: ['./manage-subscription.component.scss']
 })
 export class ManageSubscriptionComponent implements OnInit, OnDestroy {
@@ -63,7 +63,7 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
     public formBuilder: FormBuilder,
     public layoutSvc: LayoutMainService
   ) {
-      layoutSvc.setTitle("Subscription");
+    layoutSvc.setTitle("Subscription");
   }
 
   /**
@@ -139,22 +139,6 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
     let sub = this.subscriptionSvc.subscription;
     sub.subscription_uuid = params.id;
 
-    console.log('loadPageForEdit');
-    this.subscriptionSvc.getTimelineItems(sub.subscription_uuid).subscribe((items: any[]) => {
-      this.timelineItems = items;
-    },
-      error => {
-        console.log('setting dummy data');
-        // DUMMY DATA....
-        this.timelineItems = [
-          { id: 1, icon: 'fa fa-rocket', date: moment('2019-08-01'), title: 'Subscription Started', description: 'Subscription launched.' },
-          { id: 2, icon: 'fa fa-calendar', date: moment('2019-11-01'), title: 'Cycle 1 Complete' },
-          { id: 3, icon: 'fa fa-calendar', date: moment('2020-02-01'), title: 'Cycle 2 Complete' },
-          { id: 4, icon: 'fa fa-calendar', date: moment('2020-05-01'), title: 'Cycle 3 Complete' },
-          { id: 5, icon: 'fa fa-calendar', date: moment('2020-08-01'), title: 'Year 1 Complete' }
-        ];
-      });
-
     this.subscriptionSvc.getSubscription(sub.subscription_uuid)
       .subscribe((s: Subscription) => {
         this.subscription = s;
@@ -165,6 +149,8 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
         this.f.keywords.disable();
         this.f.csvText.setValue(this.emailDisplay(s.target_email_list));
         this.f.csvText.disable();
+
+        this.buildSubscriptionTimeline(s);
 
         this.customerSvc.getCustomer(s.customer_uuid)
           .subscribe((c: Customer) => {
@@ -185,6 +171,54 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
       this.customer.contact_list = this.customerSvc.getContactsForCustomer(c);
       this.primaryContact = this.customer.contact_list[0];
     });
+  }
+
+  /**
+   * Boils down all events in all campaigns in the subscription to a simple
+   * series of events:  subscription start, cycle starts and today.
+   * @param s 
+   */
+  buildSubscriptionTimeline(s: Subscription) {
+    let items: TimelineItem[] = [];
+
+    items.push({
+      title: "Subscription Started",
+      description: "Subscription Started",
+      icon: "fa fa-rocket",
+      date: moment(s.start_date)
+    });
+
+    // now extract a simple timeline based on campaign events
+    s.gophish_campaign_list.forEach((c: GoPhishCampaignModel) => {
+      for (let t of c.timeline) {
+
+        // ignore campaigns started on the subscription start date
+        if (t.message.toLowerCase() == "campaign created"
+          && new Date(t.time).setHours(0, 0, 0, 0).valueOf() == new Date(s.start_date).setHours(0, 0, 0, 0).valueOf()) {
+          continue;
+        }
+
+        // let tt = {
+        // };
+        // timelineItems.push(tt);
+      }
+    });
+
+    // add an item for 'today'
+    items.push({
+      title: "Today",
+      description: "Today",
+      icon: "fa fa-calendar-check-o",
+      date: moment()
+    });
+
+    // sort and number the events
+    let id: number = 0;
+    items.sort(function (a, b) { return a.date.unix() - b.date.unix() }).forEach(x => {
+      x.id = ++id;
+    });
+
+    this.timelineItems = items;
   }
 
   /**
