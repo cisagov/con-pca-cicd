@@ -81,13 +81,26 @@ class ReportsEmailSender:
         message.send(fail_silently=False)
 
 
-class NotificationEmailSender:
+class SubscriptionNotificationEmailSender:
     """NotificationEmailSender class."""
 
     def __init__(self, subscription, notification_type):
         """Init method."""
         self.subscription = subscription
         self.notification_type = notification_type
+
+    def create_context_data(self):
+        """Create Contect Data Method."""
+        first_name = self.subscription.get("primary_contact").get("first_name")
+        last_name = self.subscription.get("primary_contact").get("last_name")
+        start_date = self.subscription.get("start_date").strftime("%d %B, %Y")
+        end_date = self.subscription.get("end_date").strftime("%d %B, %Y")
+        return {
+            "first_name": first_name,
+            "last_name": last_name,
+            "start_date": start_date,
+            "end_date": end_date,
+        }
 
     def send(self):
         """Send method."""
@@ -96,15 +109,13 @@ class NotificationEmailSender:
         # pull subscription data
         recipient = self.subscription.get("primary_contact").get("email")
         recipient_copy = self.subscription.get("dhs_primary_contact").get("email")
-        first_name = self.subscription.get("primary_contact").get("first_name")
-        last_name = self.subscription.get("primary_contact").get("last_name")
 
         # pass context to email templates
-        context = {first_name: first_name, last_name: last_name}
+        context = self.create_context_data()
         text_content = render_to_string(f"emails/{path}.txt", context)
         html_content = render_to_string(f"emails/{path}.html", context)
 
-        to = [f"{first_name} {last_name} <{recipient}>"]
+        to = [f"{context['first_name']} {context['last_name']} <{recipient}>"]
         bcc = [f"DHS <{recipient_copy}>"]
         message = EmailMultiAlternatives(
             subject=subject,
@@ -124,6 +135,4 @@ class NotificationEmailSender:
 
         # add html body to email
         message.attach_alternative(html_content, "text/html")
-
-        # add pdf attachment
         message.send(fail_silently=False)
