@@ -67,7 +67,6 @@ class IncomingWebhookView(APIView):
                 return Response(status=status.HTTP_404_NOT_FOUND)
 
             campaign_event = seralized_data["message"]
-            print(campaign_event)
             if campaign_event in [
                 "Email Sent",
                 "Email Opened",
