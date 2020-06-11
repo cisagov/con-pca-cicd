@@ -106,15 +106,29 @@ export class SubscriptionsComponent implements OnInit {
     this.dialogRefConfirm = this.dialog.open(ConfirmComponent, { disableClose: false });
     this.dialogRefConfirm.componentInstance.confirmMessage =
       `This will stop subscription '${row.subscription.name}'.  Do you want to continue?`;
-    this.dialogRefConfirm.componentInstance.title = 'Confirm Delete';
+    this.dialogRefConfirm.componentInstance.title = 'Confirm Stop';
 
     this.dialogRefConfirm.afterClosed().subscribe(result => {
       if (result) {
         this.subscription_service.stopSubscription(row.subscription.subscription_uuid).subscribe((data: any)=>{
           this.refresh();
         });
-        
-        //this.deleteProfile(row);
+      }
+      this.dialogRefConfirm = null;
+    });
+  }
+
+  public startSubscription(row:any){
+    this.dialogRefConfirm = this.dialog.open(ConfirmComponent, { disableClose: false });
+    this.dialogRefConfirm.componentInstance.confirmMessage =
+      `This will start subscription '${row.subscription.name}'.  Do you want to continue?`;
+    this.dialogRefConfirm.componentInstance.title = 'Confirm Start';
+
+    this.dialogRefConfirm.afterClosed().subscribe(result => {
+      if (result) {
+        this.subscription_service.startSubscription(row.subscription.subscription_uuid).subscribe((data: any)=>{
+          this.refresh();
+        });
       }
       this.dialogRefConfirm = null;
     });
