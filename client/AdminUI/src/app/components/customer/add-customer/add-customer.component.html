@@ -62,7 +62,7 @@
             <div class="d-flex flex-row">
                 <mat-form-field appearance="outline" class="flex-grow-1" [formGroup]="customerFormGroup">
                     <mat-label>City*</mat-label>
-                    <input type="text" matInput placeholder="city" formControlName="city"
+                    <input type="text" matInput placeholder="City" formControlName="city"
                     [errorStateMatcher]="matchCity">
                     <mat-error *ngIf="customerFormGroup.controls.city.hasError('required')">
                         City is <strong>required</strong>
