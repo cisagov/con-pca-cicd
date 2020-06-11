@@ -31,8 +31,9 @@
             <!-- Place holder for Government Type -->
             <div class="d-flex flex-row">
                 <mat-form-field appearance="outline" class="flex-grow-1" [formGroup]="customerFormGroup">
-                    <mat-label>Customer Type</mat-label>
+                    <mat-label>Customer Type*</mat-label>
                     <mat-select formControlName="customerType">
+                        <mat-option [value]="null">--Select--</mat-option>
                         <mat-option value="FED">Government - FED</mat-option>
                         <mat-option value="State">Government - State</mat-option>
                         <mat-option value="Local">Governement - Local</mat-option>
