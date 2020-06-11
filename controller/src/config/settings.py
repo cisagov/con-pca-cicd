@@ -125,7 +125,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Email
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-SERVER_EMAIL = "Con-PCA <phishing@conpca.com>"
+SERVER_EMAIL = "CISA Con-PCA <phishing@inltesting.xyz>"
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
@@ -180,12 +180,8 @@ AWS_S3_REGION_NAME = os.environ.get("AWS_S3_REGION_NAME")
 AWS_S3_FILE_OVERWRITE = False
 
 # Email Settings for EMAIL_BACKEND
-EMAIL_HOST = "smtp.gmail.com"  # replace this later with prod mail server
-EMAIL_PORT = 587
-EMAIL_HOST_USER = os.environ.get(
-    "SMTP_USER"
-)  # replace this later with prod mail server
-EMAIL_HOST_PASSWORD = os.environ.get(
-    "SMTP_PASS"
-)  # replace this later with prod mail server
+EMAIL_HOST = os.environ.get("SMTP_HOST", "")
+EMAIL_PORT = os.environ.get("SMTP_PORT", 587)
+EMAIL_HOST_USER = os.environ.get("SMTP_USER")
+EMAIL_HOST_PASSWORD = os.environ.get("SMTP_PASS")
 EMAIL_USE_TLS = True
