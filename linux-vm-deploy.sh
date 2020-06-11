@@ -1,14 +1,14 @@
 cd /app/con-pca
 
 cd client
-make build_prod
-make up_prod
+/usr/local/bin/docker-compose -f prod-docker-compose.yml build
+/usr/local/bin/docker-compose -f prod-docker-compose.yml up -d
 
 cd ../controller
-make build
-make up
+/usr/local/bin/docker-compose build
+/usr/local/bin/docker-compose up -d
 
 
 cd ../aws
-make build
-make up
+/usr/local/bin/docker-compose build
+/usr/local/bin/docker-compose up -d
