@@ -50,6 +50,10 @@ import { ConfirmComponent } from './components/dialogs/confirm/confirm.component
 import { TagSelectionComponent } from './components/dialogs/tag-selection/tag-selection.component';
 import { SettingsHttpService } from './services/settings-http.service';
 import { RetireTemplateDialogComponent } from './components/template-manager/retire-template-dialog/retire-template-dialog.component';
+import { CustomerDialogComponent } from './components/dialogs/customer-dialog/customer-dialog.component';
+import { MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { AlertComponent } from './components/dialogs/alert/alert.component';
+import { SafePipe } from './helper/safe.pipe';
 
 
 export function app_Init(settingsHttpService: SettingsHttpService) {
@@ -90,6 +94,9 @@ export function app_Init(settingsHttpService: SettingsHttpService) {
     ConfirmComponent,
     TagSelectionComponent,
     RetireTemplateDialogComponent,
+    CustomerDialogComponent,
+    AlertComponent,
+    SafePipe,
   ],
   imports: [
     BrowserModule,
@@ -113,6 +120,7 @@ export function app_Init(settingsHttpService: SettingsHttpService) {
     ThemeService,
     LayoutMainService,
     HttpClient,
+    { provide: MAT_DIALOG_DATA, useValue: [] },
     { provide: APP_INITIALIZER, useFactory: app_Init, deps: [SettingsHttpService], multi: true }
   ],
   exports: [
