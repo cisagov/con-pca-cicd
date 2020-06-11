@@ -1,3 +1,5 @@
+cd /app/con-pca
+
 cd client
 make build_prod
 make up_prod
