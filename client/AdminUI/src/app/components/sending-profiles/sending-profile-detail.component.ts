@@ -1,14 +1,15 @@
-import { Component, OnInit, Inject, ChangeDetectorRef, AfterViewChecked, AfterViewInit, AfterContentInit } from '@angular/core';
+import { Component, OnInit, Inject, ChangeDetectorRef, ChangeDetectionStrategy } from '@angular/core';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { SendingProfileService } from 'src/app/services/sending-profile.service';
-import { SendingProfile, SendingProfileHeader } from 'src/app/models/sending-profile.model';
+import { SendingProfile } from 'src/app/models/sending-profile.model';
 
 @Component({
   selector: 'app-sending-profile-detail',
-  templateUrl: './sending-profile-detail.component.html'
+  templateUrl: './sending-profile-detail.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class SendingProfileDetailComponent implements OnInit, AfterContentInit {
+export class SendingProfileDetailComponent implements OnInit {
 
   /** 
    * NEW or EDIT
@@ -16,12 +17,10 @@ export class SendingProfileDetailComponent implements OnInit, AfterContentInit {
   mode: string = 'new';
 
   profileForm: FormGroup;
-  id: number;
   profile: SendingProfile
-
+  id: number;
+  headers: Map<string, string>;
   submitted = false;
-
-  headers: Map<string, string> = new Map<string, string>();
 
 
   /**
@@ -33,7 +32,7 @@ export class SendingProfileDetailComponent implements OnInit, AfterContentInit {
     public dialog_ref: MatDialogRef<SendingProfileDetailComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-    this.id = data.sendingProfileId;
+    this.id = data.sendingProfileId;    
   }
 
   /**
@@ -70,6 +69,7 @@ export class SendingProfileDetailComponent implements OnInit, AfterContentInit {
         this.f.username.setValue(this.profile.username);
         this.f.password.setValue(this.profile.password);
         this.f.ignoreCertErrors.setValue(this.profile.ignore_cert_errors);
+        this.headers = new Map<string, string>();
         for (let h of this.profile.headers) {
           this.headers.set(h.key, h.value);
         }
@@ -78,15 +78,6 @@ export class SendingProfileDetailComponent implements OnInit, AfterContentInit {
           console.log(err);
         });
     }
-
-    this.changeDetector.detectChanges();
-  }
-
-  /**
-   * 
-   */
-  ngAfterContentInit(): void {
-    this.changeDetector.detectChanges();
   }
 
   /**
@@ -97,18 +88,18 @@ export class SendingProfileDetailComponent implements OnInit, AfterContentInit {
     if (key == "") {
       return;
     }
+
     this.headers.set(key, this.f.newHeaderValue.value.trim());
     this.f.newHeaderName.setValue("");
     this.f.newHeaderValue.setValue("");
-    this.changeDetector.detectChanges();
   }
+
 
   /**
    * Deletes a custom email header from the internal list.
    */
   deleteHeader(headerKey: any) {
     this.headers.delete(headerKey);
-    this.changeDetector.detectChanges();
   }
 
   /**
