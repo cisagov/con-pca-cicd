@@ -47,6 +47,28 @@
       "industry": "Other"
     }
   ],
+  "dhs_contacts_data": [
+    {
+      "first_name": "Rand",
+      "last_name": "Al'Thor",
+      "title": "string",
+      "office_phone": "555-555-5555",
+      "mobile_phone": "555-555-5555",
+      "email": "user@example.com",
+      "notes": "string",
+      "active": true
+    },
+    {
+      "first_name": "Mat",
+      "last_name": "Cauthon",
+      "title": "string",
+      "office_phone": "555-555-5555",
+      "mobile_phone": "555-555-5555",
+      "email": "user@example.com",
+      "notes": "string",
+      "active": true
+    }
+  ],
   "subscription_data": [
     {
       "active": true,
