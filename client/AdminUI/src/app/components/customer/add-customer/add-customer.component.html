@@ -17,11 +17,12 @@
                     </mat-error>
                 </mat-form-field>
             </div>
-            <div class="d-flex flex-row" >
+            <div class="d-flex flex-row" style="padding-bottom:10px">
                 <mat-form-field appearance="outline" class="flex-grow-1" [formGroup]="customerFormGroup">
                     <mat-label>Customer Identifier*</mat-label>
                     <input type="text" matInput placeholder="Customer/Organization Identifier" formControlName="customerIdentifier"
                     [errorStateMatcher]="matchCustomerIdentifier">
+                    <mat-hint align="start"><strong>Short acronym or letters to identify the customer</strong></mat-hint>
                     <mat-error *ngIf="customerFormGroup.controls.customerIdentifier.hasError('required')">
                     Customer/Organization identifier is <strong>required</strong>
                     </mat-error>
