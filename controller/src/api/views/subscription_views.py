@@ -263,9 +263,16 @@ class SubscriptionsListView(APIView):
 
         post_data["gophish_campaign_list"] = gophish_campaign_list
         # check if today is the start date of sub
-        start_date_datetime = datetime.strptime(
-            start_date, "%Y-%m-%dT%H:%M:%S"
-        )  # Format inbound 2020-03-10T09:30:25
+        try:
+            # Format inbound 2020-03-10T09:30:25
+            start_date_datetime = datetime.strptime(
+                start_date, "%Y-%m-%dT%H:%M:%S"
+            )  
+        except:
+            # Format inbound 2020-03-10T09:30:25.812Z
+            start_date_datetime = datetime.strptime(
+                start_date, "%Y-%m-%dT%H:%M:%S.%fZ"
+            )  
 
         if start_date_datetime.date() <= datetime.today().date():
             sender = SubscriptionNotificationEmailSender(
