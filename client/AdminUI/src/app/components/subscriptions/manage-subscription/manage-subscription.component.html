@@ -57,9 +57,9 @@
                     <mat-form-field appearance="outline">
                         <mat-label>DHS Contact</mat-label>
 
-                        <mat-select formControlName="dhsContact" (selectionChange)="changePrimaryContact($event)">
+                        <mat-select formControlName="dhsContact" (selectionChange)="changeDhsContact($event)">
                             <mat-option [value]="null">--Select--</mat-option>
-                            <mat-option *ngFor="let c of customer?.contact_list" [value]="c.email">
+                            <mat-option *ngFor="let c of dhsContacts" [value]="c.dhs_contact_uuid">
                                 {{ c.first_name }} {{ c.last_name }}</mat-option>
                         </mat-select>
                     </mat-form-field>
