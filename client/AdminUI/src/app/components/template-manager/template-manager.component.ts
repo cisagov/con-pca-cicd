@@ -23,6 +23,7 @@ import { AppSettings } from 'src/app/AppSettings';
 import { MatTableDataSource } from '@angular/material/table';
 import { TagSelectionComponent } from '../dialogs/tag-selection/tag-selection.component';
 import { SettingsService } from 'src/app/services/settings.service';
+import { RetireTemplateDialogComponent } from './retire-template-dialog/retire-template-dialog.component';
 
 @Component({
   selector: 'app-template-manager',
@@ -38,6 +39,8 @@ export class TemplateManagerComponent implements OnInit {
 
   //Body Form Variables
   templateId: string;
+  retired: boolean;
+  retiredReason: string;
   currentTemplateFormGroup: FormGroup;
   matchSubject = new MyErrorStateMatcher();
   matchFromAddress = new MyErrorStateMatcher();
@@ -160,6 +163,8 @@ export class TemplateManagerComponent implements OnInit {
 
           this.setTemplateForm(t)
           this.templateId = t.template_uuid;
+          this.retired = t.retired;
+          this.retiredReason = t.retired_description;
 
           this.subscriptionSvc.getSubscriptionsByTemplate(t)
             .subscribe((x: PcaSubscription[]) => {
@@ -345,6 +350,32 @@ export class TemplateManagerComponent implements OnInit {
       }
       this.dialogRefConfirm = null;
     });
+  }
+
+  openRetireTemplateDialog() {
+    let template_to_retire = this.getTemplateFromForm(this.currentTemplateFormGroup);
+
+    this.dialog.open(
+      RetireTemplateDialogComponent, {
+      data: template_to_retire
+    }
+    )
+  }
+
+  openRestoreTemplateDialog() {
+    let template_to_restore = this.getTemplateFromForm(this.currentTemplateFormGroup);
+    this.dialogRefConfirm = this.dialog.open(ConfirmComponent, { disableClose: false });
+    this.dialogRefConfirm.componentInstance.confirmMessage =
+      `Are you sure you want to restore ${template_to_restore.name}? Initial Reason for Retiring - ${template_to_restore.retired_description}`
+    this.dialogRefConfirm.componentInstance.title = 'Confirm Restore'
+
+    this.dialogRefConfirm.afterClosed().subscribe(result => {
+      if (result) {
+        template_to_restore.retired = false
+        template_to_restore.retired_description = ''
+        this.templateManagerSvc.updateTemplate(template_to_restore)
+      }
+    })
   }
 
 
