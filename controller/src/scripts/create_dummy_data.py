@@ -77,6 +77,20 @@ def main():
             print(err)
             pass
 
+    print("Creating dhs contacts")
+    dhs_contacts = json_data["dhs_contacts_data"]
+    for c in dhs_contacts:
+        resp = requests.post("http://localhost:8000/api/v1/dhscontacts/", json=c)
+        resp.raise_for_status()
+
+        try:
+            resp_json = resp.json()
+            uuid = resp_json["dhs_contact_uuid"]
+            print(f"created dhs contact uuid: {uuid}")
+        except Exception as e:
+            print(e)
+            pass
+
     print("Step 3/3: create subscriptions...")
 
     subscriptions = json_data["subscription_data"]
