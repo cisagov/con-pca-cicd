@@ -33,9 +33,13 @@ class ReportsEmailSender:
     def get_attachment(self, subscription_uuid):
         """Get_attachment method."""
         html = HTML(f"http://localhost:8000/reports/{subscription_uuid}/")
-        html.write_pdf("/con-cpa/storage/subscription_report.pdf")
+        html.write_pdf(
+            "/con-cpa/storage/subscription_report.pdf"
+        )  # this needs to be replaced with aws storage
 
-        fs = FileSystemStorage("/con-cpa/storage")
+        fs = FileSystemStorage(
+            "/con-cpa/storage"
+        )  # this needs to be replaced with aws storage
         return fs.open("subscription_report.pdf")
 
     def send(self):
