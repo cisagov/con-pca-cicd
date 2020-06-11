@@ -117,4 +117,9 @@ export class SubscriptionService {
     let url = `${this.settingsService.settings.apiUrl}/api/v1/subscription/timeline/${subscription_uuid}/`;
     return this.http.get(url);
   }
+
+  public getDhsContacts(){
+    let url = `${this.settingsService.settings.apiUrl}/api/v1/dhscontacts/`;
+    return this.http.get(url);
+  }
 }

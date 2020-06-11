@@ -39,6 +39,8 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
   subscription: Subscription;
   customer: Customer = new Customer();
   primaryContact: Contact = new Contact();
+  dhsContacts = [];
+  dhsContact: string;
 
   startDate: Date = new Date();
   startAt = new Date();
@@ -66,6 +68,7 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
     public layoutSvc: LayoutMainService
   ) {
     layoutSvc.setTitle('Subscription');
+    this.getDhsContacts();
   }
 
   /**
@@ -131,6 +134,12 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
         }
       );
     }
+  }
+
+  getDhsContacts(){
+    this.subscriptionSvc.getDhsContacts().subscribe((data:any)=>{
+      this.dhsContacts = data;
+    });
   }
 
   /**
@@ -266,6 +275,18 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
     }
   }
 
+  changeDhsContact(e: any) {
+    if (!this.dhsContact) {
+      return;
+    }
+    let contact = this.dhsContacts
+      .find(x => (x.dhs_contact_uuid) === e.value);
+    if(contact){
+      this.dhsContact = contact.dhs_contact_uuid;
+      this.subscription.dhs_contact_uuid = this.dhsContact;
+    }
+  }
+
   /**
    * Programatically clicks the corresponding file upload element.
    */
@@ -318,7 +339,7 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
 
     sub.customer_uuid = this.customer.customer_uuid;
     sub.primary_contact = this.primaryContact;
-
+    sub.dhs_contact_uuid = this.dhsContact;
     sub.active = true;
 
     sub.lub_timestamp = new Date();
