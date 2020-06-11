@@ -109,6 +109,7 @@ class GoPhishTimelineModel(Model):
     time = DateTimeType()
     message = StringType()
     details = StringType()
+    duplicate = BooleanType()
 
 class PhishingResultsModel(Model):
     """
@@ -171,8 +172,7 @@ class CycleModel(Model):
     end_date = DateTimeType()
     active = BooleanType()
     campaigns_in_cycle = ListType(IntType())
-    # Overall Cycle statistics, can be used if generating reports needs to be quickened
-    # phish_results = ModelType(PhishingResultsModel)
+    phish_results = ModelType(PhishingResultsModel)
 
 
 class SubscriptionModel(Model):

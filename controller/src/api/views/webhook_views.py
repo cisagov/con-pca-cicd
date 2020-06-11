@@ -42,15 +42,12 @@ class IncomingWebhookView(APIView):
         print(data)
         return self.__handle_webhook_data(data)
 
-    def __update_phishing_reults(self, webhook_data, phishing_result):
+    def __update_phishing_results(self, webhook_data, phishing_result):
         """
         Update phishing result data based of provided webhook data
 
         Accepts the webhook data to update off of, and the phishing reults to update
         """
-        print("Phishing Results-===========================-")
-        print(phishing_result)
-
         if webhook_data["message"] == "Email Sent":
             phishing_result["sent"] += 1 
         if webhook_data["message"] == "Email Opened":
@@ -62,12 +59,25 @@ class IncomingWebhookView(APIView):
         if webhook_data["message"] == "Email Reported":
             phishing_result["reported"] += 1 
 
-        
-        print("Phishing Results POST-===========================-")
-        print(phishing_result)
+            
         return phishing_result
 
+    def __update_cycle(self, webhook_data, subscription):
+        for cycle in subscription["cycles"]:
+            if cycle["active"]:
+                self.__update_phishing_results(webhook_data,cycle["phish_results"])
+
         
+    def is_duplicate_timeline_entry(self,timeline, webhook_data):
+        for moment in timeline:
+            if moment["message"] == webhook_data["message"] and moment["email"] == webhook_data["email"]:
+                print("IS MOST DEFINITLY A DUPLICATE")
+                return True
+        print("IS NOT DUPLICATE")
+        return False
+
+
+
     def __handle_webhook_data(self, data):
         """
         Handle Webhook Data.
@@ -85,16 +95,12 @@ class IncomingWebhookView(APIView):
         if "message" in data:
             seralized = webhook_serializers.InboundWebhookSerializer(data)
             seralized_data = seralized.data
-            print("Serialized Data--------------------------------")
-            print(seralized_data)
             subscription = get_single_subscription_webhook(
                 seralized_data["campaign_id"],
                 "subscription",
                 SubscriptionModel,
                 validate_subscription,
             )
-            print("Subscription--------------------------------")
-            print(subscription)
             if subscription is None:
                 return Response(status=status.HTTP_404_NOT_FOUND)
 
@@ -103,6 +109,7 @@ class IncomingWebhookView(APIView):
                 "Email Opened",
                 "Clicked Link",
                 "Submitted Data",
+                "Email Reported",
             ]:
                 gophish_campaign = manager.get(
                     "campaign", campaign_id=seralized_data["campaign_id"]
@@ -110,22 +117,25 @@ class IncomingWebhookView(APIView):
                 gophish_campaign_serialized = campaign_serializers.CampaignSerializer(
                     gophish_campaign
                 )
+                is_duplicate = False
                 gophish_campaign_data = gophish_campaign_serialized.data
                 for campaign in subscription["gophish_campaign_list"]:
                     if campaign["campaign_id"] == seralized_data["campaign_id"]:
+                        is_duplicate = self.is_duplicate_timeline_entry(campaign["timeline"], seralized_data)
                         campaign["timeline"].append(
                             {
                                 "email": seralized_data["email"],
                                 "message": seralized_data["message"],
                                 "time": format_ztime(seralized_data["time"]),
                                 "details": seralized_data["details"],
+                                "duplicate": is_duplicate,
                             }
                         )
-                        print(campaign["phish_results"])
-                        self.__update_phishing_reults(data,campaign["phish_results"])
-                        print(campaign["phish_results"])
+                        self.__update_phishing_results(data,campaign["phish_results"])
+                        
                         campaign["results"] = gophish_campaign_data["results"]
                         campaign["status"] = gophish_campaign_data["status"]
+                self.__update_cycle(data,subscription)
 
             updated_response = update_single_webhook(
                 subscription=subscription,

@@ -11,10 +11,6 @@ import logging
 # Local
 from api.manager import CampaignManager, TemplateManager
 from api.models.customer_models import CustomerModel, validate_customer
-<<<<<<< HEAD
-from api.models.subscription_models import SubscriptionModel, CycleModel, validate_subscription
-from api.models.template_models import TemplateModel, validate_template
-=======
 from api.models.subscription_models import SubscriptionModel, validate_subscription
 from api.models.template_models import (
     TagModel,
@@ -22,7 +18,6 @@ from api.models.template_models import (
     validate_tag,
     validate_template,
 )
->>>>>>> develop
 from api.serializers import campaign_serializers
 from api.serializers.subscriptions_serializers import (
     SubscriptionDeleteResponseSerializer,
@@ -292,7 +287,14 @@ class SubscriptionsListView(APIView):
                 "start_date" : start_date,
                 "end_date" : end_date,
                 "active" : True,
-                "campaigns_in_cycle" : campaigns_in_cycle
+                "campaigns_in_cycle" : campaigns_in_cycle,
+                "phish_results": {
+                        "sent" : 0,
+                        "opened" : 0,
+                        "clicked" : 0,
+                        "submitted" : 0,
+                        "reported" : 0,
+                }
             }]
         
         created_response = save_single(
