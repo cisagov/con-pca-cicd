@@ -43,6 +43,7 @@ from api.utils.subscription_utils import (
 from api.utils.template_utils import format_ztime, personalize_template
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
+from notifications.views import SubscriptionNotificationEmailSender
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -261,6 +262,21 @@ class SubscriptionsListView(APIView):
             )
 
         post_data["gophish_campaign_list"] = gophish_campaign_list
+        # check if today is the start date of sub
+        start_date_datetime = datetime.strptime(
+            start_date, "%Y-%m-%dT%H:%M:%S"
+        )  # Format inbound 2020-03-10T09:30:25
+
+        if start_date_datetime.date() <= datetime.today().date():
+            sender = SubscriptionNotificationEmailSender(
+                post_data, "subscription_started"
+            )
+            sender.send()
+            post_data["status"] = "In Progress"
+            logger.info("Subscription Notification email sent")
+        else:
+            post_data["status"] = "Queued"
+
         post_data["end_date"] = end_date_str
         created_response = save_single(
             post_data, "subscription", SubscriptionModel, validate_subscription

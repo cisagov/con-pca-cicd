@@ -5,6 +5,7 @@ Here we set all setting needed for djnago apps within this repo.
 """
 # Standard Python Libraries
 import os
+
 from socket import gethostname, gethostbyname
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
@@ -123,8 +124,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 
 # Email
-
-EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 SERVER_EMAIL = "Con-PCA <phishing@conpca.com>"
 
 # Internationalization
@@ -178,3 +178,14 @@ AWS_STORAGE_BUCKET_NAME = os.environ.get("AWS_STORAGE_BUCKET_NAME")
 AWS_STORAGE_BUCKET_IMAGES_NAME = os.environ.get("AWS_STORAGE_BUCKET_IMAGES_NAME")
 AWS_S3_REGION_NAME = os.environ.get("AWS_S3_REGION_NAME")
 AWS_S3_FILE_OVERWRITE = False
+
+# Email Settings for EMAIL_BACKEND
+EMAIL_HOST = "smtp.gmail.com"  # replace this later with prod mail server
+EMAIL_PORT = 587
+EMAIL_HOST_USER = os.environ.get(
+    "SMTP_USER"
+)  # replace this later with prod mail server
+EMAIL_HOST_PASSWORD = os.environ.get(
+    "SMTP_PASS"
+)  # replace this later with prod mail server
+EMAIL_USE_TLS = True
