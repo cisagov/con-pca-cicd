@@ -12,6 +12,7 @@ from api.serializers.subscriptions_serializers import (
 from api.utils.db_utils import get_single_subscription_webhook, update_single_webhook
 from api.utils.template_utils import format_ztime
 from drf_yasg.utils import swagger_auto_schema
+from notifications.views import NotificationEmailSender
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -65,7 +66,8 @@ class IncomingWebhookView(APIView):
             if subscription is None:
                 return Response(status=status.HTTP_404_NOT_FOUND)
 
-            if seralized_data["message"] in [
+            campaign_event = seralized_data["message"]
+            if campaign_event in [
                 "Email Sent",
                 "Email Opened",
                 "Clicked Link",
@@ -78,8 +80,20 @@ class IncomingWebhookView(APIView):
                     gophish_campaign
                 )
                 gophish_campaign_data = gophish_campaign_serialized.data
+                if (
+                    subscription["status"] == "Queued"
+                    and campaign_event == "Email Sent"
+                ):
+                    sender = NotificationEmailSender(
+                        subscription, "subscription_started"
+                    )
+                    sender.send()
+                    subscription["status"] = "In progress"
+                    print("sending email!")
+
                 for campaign in subscription["gophish_campaign_list"]:
                     if campaign["campaign_id"] == seralized_data["campaign_id"]:
+
                         campaign["timeline"].append(
                             {
                                 "email": seralized_data["email"],
