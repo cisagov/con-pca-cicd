@@ -126,17 +126,6 @@ class SubscriptionsListView(APIView):
         end_date = get_sub_end_date(start_date)
         end_date_str = end_date.strftime("%Y-%m-%dT%H:%M:%S")
 
-        # here we generate the increments on the subscriton names
-        # {identifier}_{inc}.{sub_number}
-        # FORD_1.1 < first one created
-        # FORD_2.1 < second created before first ends
-        # FORD_1.2 < created after both end
-        # FORD_2.2 < created if both first hace been created AND second is created but still running
-        # if a sub is created that falls into
-        # {cust}_{sub in 90 days from startdate of _1}.{total}
-        # Get list of all subscriptions for incrementing sub name
-        # subscription_filter = {"customer_uuid": post_data["customer_uuid"]}
-
         subscription_list = get_list(
             {"customer_uuid": post_data["customer_uuid"]},
             "subscription",
@@ -295,75 +284,7 @@ class SubscriptionsListView(APIView):
         serializer = SubscriptionPostResponseSerializer(created_response)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-    def __create_and_save_campaigns(
-        self, campaign_info, target_group, landing_page, end_date
-    ):
-        """
-        Create and Save Campaigns.
-
-        This method handles the creation of each campain with given template, target group, and data.
-        """
-        templates = campaign_info["templates"]
-        targets = campaign_info["targets"]
-
-        gophish_campaign_list = []
-        # Create a GoPhish Campaigns
-        for template in templates:
-            # Create new template
-            created_template = campaign_manager.generate_email_template(
-                name=f"{campaign_info['name']}.{template['name']}",
-                template=template["data"],
-            )
-            campaign_start = campaign_info["start_date"].strftime("%Y-%m-%d")
-            campaign_end = end_date.strftime("%Y-%m-%d")
-
-            if created_template is not None:
-                campaign_name = f"{campaign_info['name']}.{template['name']}.{campaign_start}.{campaign_end}"
-                campaign = campaign_manager.create(
-                    "campaign",
-                    campaign_name=campaign_name,
-                    smtp_name="SMTP",
-                    # Replace with picked landing page, default init page now.
-                    page_name=landing_page,
-                    user_group=target_group,
-                    email_template=created_template,
-                    launch_date=campaign_info["start_date"].strftime(
-                        "%Y-%m-%dT%H:%M:%S+00:00"
-                    ),
-                    send_by_date=campaign_info["send_by_date"].strftime(
-                        "%Y-%m-%dT%H:%M:%S+00:00"
-                    ),
-                )
-                logger.info("campaign created: {}".format(campaign))
-
-                created_campaign = {
-                    "campaign_id": campaign.id,
-                    "name": campaign_name,
-                    "created_date": format_ztime(campaign.created_date),
-                    "launch_date": campaign_info["start_date"],
-                    "send_by_date": campaign_info["send_by_date"],
-                    "email_template": created_template.name,
-                    "email_template_id": created_template.id,
-                    "landing_page_template": campaign.page.name,
-                    "status": campaign.status,
-                    "results": [],
-                    "groups": [
-                        campaign_serializers.CampaignGroupSerializer(target_group).data
-                    ],
-                    "timeline": [
-                        {
-                            "email": None,
-                            "time": format_ztime(campaign.created_date),
-                            "message": "Campaign Created",
-                            "details": "",
-                        }
-                    ],
-                    "target_email_list": targets,
-                }
-                gophish_campaign_list.append(created_campaign)
-
-        return gophish_campaign_list
-
+  
 
 class SubscriptionView(APIView):
     """
@@ -553,8 +474,8 @@ class SubscriptionRestartView(APIView):
     def post(self, request, format=None):
         """Post method."""
         post_data = request.data.copy()
-        sub_Mgr = SubscriptionCreationManager()
-        created_response  = sub_Mgr.restart(post_data)
+        sub_manager = SubscriptionCreationManager()
+        created_response  = sub_manager.restart(post_data)
         
         if "errors" in created_response:
             return Response(created_response, status=status.HTTP_400_BAD_REQUEST)
