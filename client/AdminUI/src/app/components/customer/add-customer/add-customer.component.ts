@@ -6,7 +6,7 @@ import { Contact, Customer } from 'src/app/models/customer.model';
 import { Guid } from 'guid-typescript';
 import { Router, ActivatedRoute } from '@angular/router';
 import { CustomerService } from 'src/app/services/customer.service';
-import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialog, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { LayoutMainService } from 'src/app/services/layout-main.service'
 import { Subscription } from 'rxjs';
@@ -86,7 +86,16 @@ export class AddCustomerComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+
+    if (this.dialog.openDialogs.length > 0) {
+      this.inDialog = true;
+    } else {
+      this.inDialog = false;
+    }
+
     console.log(this.inDialog);
+
+
     this.angularSubscriptions.push(
       this.route.params.subscribe(params => {
         this.customer_uuid = params['customerId'];
