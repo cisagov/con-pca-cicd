@@ -355,6 +355,7 @@ class SubscriptionsListView(APIView):
                     "send_by_date": campaign_info["send_by_date"],
                     "email_template": created_template.name,
                     "email_template_id": created_template.id,
+                    "template_uuid": template["template_uuid"],
                     "landing_page_template": campaign.page.name,
                     "status": campaign.status,
                     "results": [],
@@ -375,6 +376,7 @@ class SubscriptionsListView(APIView):
                             "time": format_ztime(campaign.created_date),
                             "message": "Campaign Created",
                             "details": "",
+                            "duplicate" : False
                         }
                     ],
                     "target_email_list": targets,

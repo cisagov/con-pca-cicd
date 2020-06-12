@@ -117,7 +117,7 @@ class IncomingWebhookView(APIView):
                 gophish_campaign_serialized = campaign_serializers.CampaignSerializer(
                     gophish_campaign
                 )
-                is_duplicate = False
+                is_duplicate = True
                 gophish_campaign_data = gophish_campaign_serialized.data
                 for campaign in subscription["gophish_campaign_list"]:
                     if campaign["campaign_id"] == seralized_data["campaign_id"]:
@@ -131,12 +131,12 @@ class IncomingWebhookView(APIView):
                                 "duplicate": is_duplicate,
                             }
                         )
-                        self.__update_phishing_results(data,campaign["phish_results"])
-                        
+                        if not is_duplicate:
+                            self.__update_phishing_results(data,campaign["phish_results"])
+                            self.__update_cycle(data,subscription)
                         campaign["results"] = gophish_campaign_data["results"]
                         campaign["status"] = gophish_campaign_data["status"]
-                self.__update_cycle(data,subscription)
-
+      
             updated_response = update_single_webhook(
                 subscription=subscription,
                 collection="subscription",

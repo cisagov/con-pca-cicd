@@ -151,6 +151,7 @@ class GoPhishCampaignsModel(Model):
     completed_date = DateTimeType()
     email_template = StringType()
     email_template_id = IntType()
+    template_uuid = StringType()
     deception_level = IntType()
     landing_page_template = StringType()
     status = StringType()
