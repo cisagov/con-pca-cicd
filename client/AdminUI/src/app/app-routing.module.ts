@@ -55,51 +55,51 @@ const routes: Routes = [
     children: [{ path: '', component: TemplateManagerComponent }]
   },
   {
-    path:'templates', component: LayoutMainComponent, 
+    path: 'templates', component: LayoutMainComponent,
     children: [
-      { path: '', component: TemplatesPageComponent}
+      { path: '', component: TemplatesPageComponent }
     ]
   },
   {
-    path:'contacts', component: LayoutMainComponent, 
+    path: 'contacts', component: LayoutMainComponent,
     children: [
-      { path: '', component: ContactsComponent}
+      { path: '', component: ContactsComponent }
     ]
   },
   {
-    path:'customers', component: LayoutMainComponent,
+    path: 'customers', component: LayoutMainComponent,
     children: [
-      { path: '', component: CustomersComponent}
+      { path: '', component: CustomersComponent }
     ]
   },
   {
-    path:'customer/:customerId', component: LayoutMainComponent,
+    path: 'customer/:customerId', component: LayoutMainComponent,
     children: [
-      { path: '', component: AddCustomerComponent}
+      { path: '', component: AddCustomerComponent }
     ]
   },
   {
-    path:'domains', component: LayoutMainComponent, 
+    path: 'domains', component: LayoutMainComponent,
     children: [
-      { path: '', component: DomainsComponent}
+      { path: '', component: DomainsComponent }
     ]
   },
   {
-    path:'useradmin', component: LayoutMainComponent, 
+    path: 'useradmin', component: LayoutMainComponent,
     children: [
-      { path: '', component: UserAdminComponent}
+      { path: '', component: UserAdminComponent }
     ]
   },
   {
-    path:'sending-profiles', component: LayoutMainComponent, 
+    path: 'sending-profiles', component: LayoutMainComponent,
     children: [
-      { path: '', component: SendingProfilesComponent}
+      { path: '', component: SendingProfilesComponent }
     ]
   },
   {
-    path:'', component: LayoutMainComponent,
+    path: '', component: LayoutMainComponent,
     children: [
-      { path: '', component: SubscriptionsComponent}
+      { path: '', component: SubscriptionsComponent }
     ]
   }
 ];
@@ -108,4 +108,4 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

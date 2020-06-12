@@ -91,7 +91,7 @@ export class SubscriptionService {
    */
   updatePrimaryContact(subscriptUuid: string, contact: Contact) {
     let primary = { primary_contact: contact };
-    return this.http.patch(`${this.settingsService.settings.apiUrl}/api/v1/subscription/${subscriptUuid}/`, primary)
+    return this.http.patch(`${this.settingsService.settings.apiUrl}/api/v1/subscription/${subscriptUuid}/`, primary);
   }
 
   /**
@@ -99,7 +99,7 @@ export class SubscriptionService {
    * @param template 
    */
   public getSubscriptionsByTemplate(template: Template) {
-    return this.http.get(`${this.settingsService.settings.apiUrl}/api/v1/subscriptions/?template=${template.template_uuid}`)
+    return this.http.get(`${this.settingsService.settings.apiUrl}/api/v1/subscriptions/?template=${template.template_uuid}`);
   }
 
   /**
@@ -107,18 +107,27 @@ export class SubscriptionService {
    * @param template 
    */
   public getSubscriptionsByCustomer(customer: Customer) {
-    return this.http.get(`${this.settingsService.settings.apiUrl}/api/v1/subscription/customer/${customer.customer_uuid}`)
+    return this.http.get(`${this.settingsService.settings.apiUrl}/api/v1/subscription/customer/${customer.customer_uuid}`);
   }
 
   public stopSubscription(subscription_uuid: string) {
-    return this.http.get(`${this.settingsService.settings.apiUrl}/api/v1/subscription/stop/${subscription_uuid}/`)
+    return this.http.get(`${this.settingsService.settings.apiUrl}/api/v1/subscription/stop/${subscription_uuid}/`);
+  }
+
+  public startSubscription(subscription_uuid: string){
+    return this.http.get(`${this.settingsService.settings.apiUrl}/api/v1/subscription/start/${subscription_uuid}/`);
   }
 
   /**
    * Gets timeline items for the subscription.
    */
   public getTimelineItems(subscription_uuid) {
-    let url = `${this.settingsService.settings.apiUrl}/api/v1/subscription/timeline/${subscription_uuid}/`
+    let url = `${this.settingsService.settings.apiUrl}/api/v1/subscription/timeline/${subscription_uuid}/`;
+    return this.http.get(url);
+  }
+
+  public getDhsContacts(){
+    let url = `${this.settingsService.settings.apiUrl}/api/v1/dhscontacts/`;
     return this.http.get(url);
   }
 }

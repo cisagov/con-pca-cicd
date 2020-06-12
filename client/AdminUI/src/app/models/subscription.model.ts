@@ -44,6 +44,7 @@ export class Subscription {
     manually_stopped: boolean;
     name: string;
     primary_contact: Contact;
+    dhs_contact_uuid: string;
     start_date: Date;
     status: string;
     subscription_uuid: string;

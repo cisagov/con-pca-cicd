@@ -1,0 +1,18 @@
+<div class="d-flex flex-column">
+    <!-- RETIRED DESCRIPTION -->
+    <h2>Please enter a reason for retiring the template:</h2>
+    <mat-form-field appearance="outline" class="flex-grow-1">
+        <textarea matInput cdkTextareaAutosize cdkAutosizeMinRows="5" cdkAutosizeMaxRows="10" [(ngModel)]="retiredDescription" (ngModelChange)="updateReason()"></textarea>
+    </mat-form-field>
+    <div class="d-flex flex-row mt-3 justify-content-end">
+        <button mat-raised-button color="accent" (click)="cancel()">
+            Cancel
+        </button>
+        <div matTooltip="There must be a reason for retiring the template." matTooltipPosition="right" matTooltipShowDelay="500" [matTooltipDisabled]="canRetire">
+            <button mat-raised-button [mat-dialog-close]="true" [disabled]="!canRetire" cdkFocusInitial color="warn" (click)="retire()">
+                Retire
+            </button>
+        </div>
+
+    </div>
+</div>

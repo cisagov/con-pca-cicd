@@ -9,14 +9,14 @@ import { MatDialogRef } from '@angular/material/dialog';
 })
 export class ConfirmComponent implements OnInit {
 
-  public title = "Please Confirm";
+  public title = 'Please Confirm';
   public confirmMessage: string;
 
-  constructor(public dialogRef: MatDialogRef<ConfirmComponent>) { 
+  constructor(public dialogRef: MatDialogRef<ConfirmComponent>) {
   }
 
   /**
-   * 
+   *
    */
   ngOnInit() {
     if (!!this.dialogRef.componentInstance.title) {

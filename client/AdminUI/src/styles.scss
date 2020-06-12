@@ -218,7 +218,7 @@ $altTheme: mat-dark-theme($theme-primary, $theme-accent, $theme-warn);
   $foreground: map-get($theme, 'foreground');
   $background: map-get($theme, 'background');
 
-  .mat-row:hover, table.table-1 tr:hover {    
+  .mat-row:hover, table.table-1 tr:not(:first-child):hover {    
     background-color: map-get($background, 'hover') !important;
   }
 
@@ -345,11 +345,11 @@ $altTheme: mat-dark-theme($theme-primary, $theme-accent, $theme-warn);
   margin-right:5px !important;
 }
 
-.mat-header-row{
+.mat-header-row {
   background-color: $dark-background !important;
 }
 
-.mat-header-cell{ 
+.mat-header-cell { 
   color:  $light-text !important;
 }
 
