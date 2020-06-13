@@ -46,7 +46,11 @@ class ReportsEmailSender:
         # pull subscription data
         subscription_uuid = self.subscription.get("subscription_uuid")
         recipient = self.subscription.get("primary_contact").get("email")
-        recipient_copy = self.subscription.get("dhs_primary_contact").get("email")
+        dhs_contact_uuid = self.subscription.get("dhs_contact_uuid")
+        recipient_copy = get_single(
+            dhs_contact_uuid, "dhs_contact", DHSContactModel, validate_dhs_contact
+        )
+        recipient_copy = recipient_copy.get("email")
         first_name = self.subscription.get("primary_contact").get("first_name")
         last_name = self.subscription.get("primary_contact").get("last_name")
 
