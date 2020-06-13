@@ -7,19 +7,21 @@ contacts about reports and subscription updates.
 
 
 # Standard Python Libraries
-# Standard Libraries
+from datetime import datetime
 from email.mime.image import MIMEImage
 
-# Third-Party Libraries
 # Django Libraries
-# Local Libraries
 from django.conf import settings
 from django.contrib.staticfiles.storage import staticfiles_storage
 from django.core.files.storage import FileSystemStorage
 from django.core.mail.message import EmailMultiAlternatives
 from django.template.loader import render_to_string
+
+# Local Libraries
+from api.models.dhs_models import DHSContactModel, validate_dhs_contact
 from notifications.utils import get_notification
 from weasyprint import HTML
+from api.utils.db_utils import get_single
 
 
 class ReportsEmailSender:
@@ -44,7 +46,11 @@ class ReportsEmailSender:
         # pull subscription data
         subscription_uuid = self.subscription.get("subscription_uuid")
         recipient = self.subscription.get("primary_contact").get("email")
-        recipient_copy = self.subscription.get("dhs_primary_contact").get("email")
+        dhs_contact_uuid = self.subscription.get("dhs_contact_uuid")
+        recipient_copy = get_single(
+            dhs_contact_uuid, "dhs_contact", DHSContactModel, validate_dhs_contact
+        )
+        recipient_copy = recipient_copy.get("email")
         first_name = self.subscription.get("primary_contact").get("first_name")
         last_name = self.subscription.get("primary_contact").get("last_name")
 
@@ -93,8 +99,16 @@ class SubscriptionNotificationEmailSender:
         """Create Contect Data Method."""
         first_name = self.subscription.get("primary_contact").get("first_name")
         last_name = self.subscription.get("primary_contact").get("last_name")
-        start_date = self.subscription.get("start_date").strftime("%d %B, %Y")
-        end_date = self.subscription.get("end_date").strftime("%d %B, %Y")
+
+        start_date = datetime.strptime(
+            self.subscription.get("start_date"), "%Y-%m-%dT%H:%M:%S"
+        ).strftime("%d %B, %Y")
+        end_date = self.subscription.get("end_date")
+        if end_date is not None:
+            end_date = datetime.strptime(end_date, "%Y-%m-%dT%H:%M:%S").strftime(
+                "%d %B, %Y"
+            )
+
         return {
             "first_name": first_name,
             "last_name": last_name,
@@ -108,7 +122,13 @@ class SubscriptionNotificationEmailSender:
 
         # pull subscription data
         recipient = self.subscription.get("primary_contact").get("email")
-        recipient_copy = self.subscription.get("dhs_primary_contact").get("email")
+
+        # get to and bcc email addresses
+        dhs_contact_uuid = self.subscription.get("dhs_contact_uuid")
+        recipient_copy = get_single(
+            dhs_contact_uuid, "dhs_contact", DHSContactModel, validate_dhs_contact
+        )
+        recipient_copy = recipient_copy.get("email")
 
         # pass context to email templates
         context = self.create_context_data()
