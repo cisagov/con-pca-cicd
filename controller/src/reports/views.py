@@ -34,6 +34,9 @@ class ReportsView(TemplateView):
             target_count = sum(
                 [targets.get("stats").get("total") for targets in summary]
             )
+            import ipdb
+
+            ipdb.set_trace()
             context = {
                 "subscription_uuid": subscription_uuid,
                 "customer_name": subscription.get("name"),
