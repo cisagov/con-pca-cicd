@@ -137,6 +137,7 @@ class SubscriptionsListView(APIView):
         if len(subscription_list) == 0:
             # If no subscription was created, create first one:
             # {customer['identifier']}_1.1
+
             base_name = f"{customer['identifier']}_1.1"
 
         else:
@@ -234,36 +235,39 @@ class SubscriptionsListView(APIView):
             index += 1
 
         # Data for GoPhish
+
         # create campaigns
         group_number = 1
         gophish_campaign_list = []
+        existing_user_groups = [
+            group.name for group in campaign_manager.get("user_group")
+        ]
+
         for campaign_info in campaign_data_list:
-            campaign_group = f"{post_data['name']}.Targets.{group_number} "
+            group_name = f"{post_data['name']}.Targets.{group_number}"
             campaign_info["name"] = f"{post_data['name']}.{group_number}"
-            group_number += 1
-            target_group = campaign_manager.create(
-                "user_group",
-                group_name=campaign_group,
-                target_list=campaign_info["targets"],
-            )
-            gophish_campaign_list.extend(
-                self.__create_and_save_campaigns(
-                    campaign_info, target_group, landing_page, end_date
+
+            if group_name not in existing_user_groups:
+                group_number += 1
+                target_group = campaign_manager.create(
+                    "user_group",
+                    group_name=group_name,
+                    target_list=campaign_info["targets"],
                 )
-            )
+                gophish_campaign_list.extend(
+                    self.__create_and_save_campaigns(
+                        campaign_info, target_group, landing_page, end_date
+                    )
+                )
 
         post_data["gophish_campaign_list"] = gophish_campaign_list
         # check if today is the start date of sub
         try:
             # Format inbound 2020-03-10T09:30:25
-            start_date_datetime = datetime.strptime(
-                start_date, "%Y-%m-%dT%H:%M:%S"
-            )  
+            start_date_datetime = datetime.strptime(start_date, "%Y-%m-%dT%H:%M:%S")
         except:
             # Format inbound 2020-03-10T09:30:25.812Z
-            start_date_datetime = datetime.strptime(
-                start_date, "%Y-%m-%dT%H:%M:%S.%fZ"
-            )  
+            start_date_datetime = datetime.strptime(start_date, "%Y-%m-%dT%H:%M:%S.%fZ")
 
         if start_date_datetime.date() <= datetime.today().date():
             sender = SubscriptionNotificationEmailSender(

@@ -34,6 +34,7 @@ class ReportsView(TemplateView):
             target_count = sum(
                 [targets.get("stats").get("total") for targets in summary]
             )
+
             context = {
                 "subscription_uuid": subscription_uuid,
                 "customer_name": subscription.get("name"),

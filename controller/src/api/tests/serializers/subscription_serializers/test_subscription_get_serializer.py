@@ -24,16 +24,7 @@ def test_serializer():
             "notes": fake.paragraph(),
             "active": fake.boolean(),
         },
-        "dhs_primary_contact": {
-            "first_name": fake.first_name(),
-            "last_name": fake.last_name(),
-            "title": fake.job(),
-            "office_phone": fake.phone_number(),
-            "mobile_phone": fake.phone_number(),
-            "email": fake.email(),
-            "notes": fake.paragraph(),
-            "active": fake.boolean(),
-        },
+        "dhs_contact_uuid": fake.uuid4(),
         "status": fake.word(),
         "target_email_list": [
             {
@@ -105,4 +96,3 @@ def test_serializer_missing_fields():
     assert len(serializer.errors) == 3
     assert serializer.errors.get("name") is not None
     assert serializer.errors.get("url") is not None
-    assert serializer.errors.get("dhs_primary_contact") is not None
