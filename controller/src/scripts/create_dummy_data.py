@@ -30,23 +30,22 @@ def load_file(data_file):
         data = json.load(f)
     return data
 
-def clean_up_first
-    """" drop the collections before starting to add data """
-     mongo_uri = "mongodb://{}:{}@{}:{}/".format(
-        settings.DB_CONFIG["DB_USER"],
-        settings.DB_CONFIG["DB_PW"],
-        settings.DB_CONFIG["DB_HOST"],
-        settings.DB_CONFIG["DB_PORT"],
-    )
-    client = MongoClient(mongo_uri)
-    db=client.subscriptions
-    db.
+# def clean_up_first():
+    # """" drop the collections before starting to add data """
+    #  mongo_uri = "mongodb://{}:{}@{}:{}/".format(
+    #     settings.DB_CONFIG["DB_USER"],
+    #     settings.DB_CONFIG["DB_PW"],
+    #     settings.DB_CONFIG["DB_HOST"],
+    #     settings.DB_CONFIG["DB_PORT"],
+    # )
+    # client = MongoClient(mongo_uri)
+    
 
 
 def main():
     """This if the main def that runs creating data."""
-    ptvsd.enable_attach(address = ('0.0.0.0', 4567))
-    ptvsd.wait_for_attach()
+    # ptvsd.enable_attach(address = ('0.0.0.0', 4567))
+    # ptvsd.wait_for_attach()
 
     print("loading dummy json data")
     json_data = load_file("data/dummy_data.json")

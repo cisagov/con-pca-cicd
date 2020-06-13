@@ -6,6 +6,7 @@ This handles the api for all the Subscription urls.
 # Standard Python Libraries
 from datetime import datetime
 import logging
+import json
 
 # Third-Party Libraries
 # Local
@@ -112,7 +113,7 @@ class SubscriptionsListView(APIView):
     def post(self, request, format=None):
         """Post method."""
         post_data = request.data.copy()
-
+        json.dumps(post_data)
         # get customer data
         customer = get_single(
             post_data["customer_uuid"], "customer", CustomerModel, validate_customer

@@ -89,5 +89,5 @@ send_emails:
 
 # target: debug - run my unit test.
 debug:
-	docker exec -it pca-api python -m ptvsd --host 0.0.0.0 --port 5678 --wait /app/api/tests/ping.py
+	docker exec -it pca-api python -m ptvsd --host 0.0.0.0 --port 4678 --wait /app/api/tests/test_views.py
 	#docker exec -it pca-api python -m ptvsd --host 0.0.0.0 --port 5678 --wait /api/tests/ping.py
