@@ -255,19 +255,19 @@ class SubscriptionsListView(APIView):
         for campaign_info in campaign_data_list:
             group_name = f"{post_data['name']}.Targets.{group_number}"
             campaign_info["name"] = f"{post_data['name']}.{group_number}"
-            target_group = None
-            if group_name in existing_user_groups:
+
+            if group_name not in existing_user_groups:
                 group_number += 1
                 target_group = campaign_manager.create(
                     "user_group",
                     group_name=group_name,
                     target_list=campaign_info["targets"],
                 )
-            gophish_campaign_list.extend(
-                self.__create_and_save_campaigns(
-                    campaign_info, target_group, landing_page, end_date
+                gophish_campaign_list.extend(
+                    self.__create_and_save_campaigns(
+                        campaign_info, target_group, landing_page, end_date
+                    )
                 )
-            )
 
         post_data["gophish_campaign_list"] = gophish_campaign_list
         # check if today is the start date of sub
