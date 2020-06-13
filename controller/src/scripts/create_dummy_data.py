@@ -15,8 +15,6 @@ ToDo: create delete script to get all uuid's of dummy data and delete.
 from datetime import datetime
 import json
 import os
-import ptvsd
-
 
 # Third-Party Libraries
 import requests
