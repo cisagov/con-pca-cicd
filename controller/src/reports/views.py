@@ -13,10 +13,10 @@ from django.views.generic import TemplateView
 
 from . import views
 from .utils import (
+    get_subscription_stats_for_cycle,
+    get_related_subscription_stats,
+    get_cycles_breakdown,
     get_template_details,
-    previous_cycle_stats,
-    region_stats,
-    subscription_stats,
 )
 
 logger = logging.getLogger(__name__)
