@@ -1,0 +1,37 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "start debug file",
+            "type": "process",            
+            "command": "docker",
+            "args": [
+                "exec",
+                "-it",
+                "pca-api",
+                "python",
+                "-m",
+                "ptvsd",
+                "--listen",
+                "localhost:5680",                
+                "/app/api/tests/test_views.py"
+            ]
+        },        
+        {
+            "type": "docker-run",
+            "label": "docker-run: debug",            
+            "dockerRun": {
+                "containerName": "pca-api"
+            },            
+            "python": {            
+              "debugPort": 5680,
+              "args": ["runserver 0.0.0.0:8000"],
+              "module": "ptvsd",
+              "wait": false,
+              "file": "/app/manage.py"
+            }
+          }
+    ]
+}

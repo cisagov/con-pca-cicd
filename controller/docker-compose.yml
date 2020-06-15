@@ -4,6 +4,7 @@ services:
   api:
     build:
       context: .
+      target: debug
       dockerfile: ./etc/Dockerfile
     stdin_open: true
     tty: true
@@ -14,6 +15,9 @@ services:
       - mongodb
     ports:
       - "8000:8000"
+      - 5678:5678
+      - 5679:5679
+      - 5680:5680
     volumes:
       - ./src:/app
     env_file:

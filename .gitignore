@@ -13,6 +13,9 @@ src/.DS_Store
 /client/AdminUI/node_modules/*
 /client/AdminUI/dist
 client/.env
+/client/AdminUI/package-lock.json
+
+
 
 # Controller
 controller/.env
@@ -46,5 +49,3 @@ env/
 # Terraform
 aws/terraform/.terraform
 aws/.env
-
-/client/AdminUI/package-lock.json

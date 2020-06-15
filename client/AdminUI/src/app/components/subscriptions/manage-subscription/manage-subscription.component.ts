@@ -321,16 +321,48 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
     return output;
   }
 
+  subValid(){
+    this.submitted = true;
+
+    // stop here if form is invalid
+    if (this.subscribeForm.invalid) {    
+      return false;
+    }
+    
+    return true;
+  }
+
+  startSubscription(){    
+    let sub = this.subscriptionSvc.subscription;
+
+    // set up the subscription and persist it in the service
+    sub.customer_uuid = this.customer.customer_uuid;
+    sub.primary_contact = this.primaryContact;
+    sub.active = true;
+    sub.lub_timestamp = new Date();
+    sub.start_date = this.startDate;
+    sub.status = "Starting";
+    sub.url = this.url;
+    sub.keywords = this.f.keywords.value;
+    // set the target list
+    let csv = this.f.csvText.value;
+    sub.setTargetsFromCSV(csv);
+
+    // call service with everything needed to start the subscription
+    this.subscriptionSvc.restartSubscription(sub).subscribe(
+      resp => {
+        alert("Subscription " + sub.name +" was started");        
+      },
+      error => {
+        alert("An error occurred restarting the subscription: " + error.error);
+      });
+  }
   /**
    * Submits the form to create a new Subscription.
    */
   onSubmit() {
-    this.submitted = true;
-
-    // stop here if form is invalid
-    if (this.subscribeForm.invalid) {
+    if(!this.subValid())
       return;
-    }
 
     let sub = this.subscriptionSvc.subscription;
 

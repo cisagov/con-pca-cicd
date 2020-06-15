@@ -16,11 +16,11 @@ import { ViewContactDialogComponent } from './view-contact-dialog/view-contact-d
 })
 export class ContactsComponent implements OnInit {
   dataSource: MatTableDataSource<ICustomerContact>;
-  displayedColumns = [
-    "customer_name",
+  displayedColumns = [    
     "first_name",
     "last_name",
     "title",
+    "customer_name",
     "active",
     "select"
   ];
