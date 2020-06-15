@@ -141,14 +141,11 @@
                 </button>
             </div>
 
-            <div class="d-flex flex-row">
-                <div class="d-flex flex-column">
-                    <delete-subscription *ngIf="pageMode != 'CREATE'" [subscription]="subscription">
-                    </delete-subscription>
+            <div class="d-flex flex-row  justify-content-between">
+                <div class="d-flex flex-row"><div><delete-subscription *ngIf="pageMode != 'CREATE'" [subscription]="subscription"></delete-subscription></div>
+                <div><button mat-raised-button *ngIf="!subscription?.active" color="accent" (click)="showArchiveDialog()">Archive Subscription</button></div>
                 </div>
-                <div class="d-flex flex-row" *ngIf="!subscription?.active">
-                    <button mat-raised-button color="accent" (click)="showArchiveDialog()">Archive Subscription</button>
-                </div>
+                <div class="startButton"><button mat-raised-button *ngIf="!subscription?.active" color="primary" (click)="startSubscription()">Start Subscription</button></div>                
             </div>
         </div>
     </form>

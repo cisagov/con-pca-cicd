@@ -15,12 +15,6 @@
 
     <!-- Contacts Table -->
     <mat-table [dataSource]="dataSource">
-      <!-- Company Name Column -->
-      <ng-container matColumnDef="customer_name">
-        <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>
-        <mat-cell *matCellDef="let row"> {{row.customer_name}} </mat-cell>
-      </ng-container>
-
       <!-- First Name Column -->
       <ng-container matColumnDef="first_name">
         <mat-header-cell *matHeaderCellDef>First Name</mat-header-cell>
@@ -37,6 +31,12 @@
       <ng-container matColumnDef="title">
         <mat-header-cell *matHeaderCellDef>Title</mat-header-cell>
         <mat-cell *matCellDef="let row"> {{row.title}} </mat-cell>
+      </ng-container>
+
+      <!-- Company Name Column -->
+      <ng-container matColumnDef="customer_name">
+        <mat-header-cell *matHeaderCellDef>Company/Org Name</mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{row.customer_name}} </mat-cell>
       </ng-container>
 
       <!-- Primary Contact Column -->
