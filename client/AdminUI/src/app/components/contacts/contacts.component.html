@@ -33,7 +33,13 @@
       <mat-header-cell *matHeaderCellDef>Title</mat-header-cell>
       <mat-cell *matCellDef="let row"> {{ row.title }} </mat-cell>
     </ng-container>
-
+    
+    <!-- Company Name Column -->
+    <ng-container matColumnDef="customer_name">
+      <mat-header-cell *matHeaderCellDef>Company/Org Name</mat-header-cell>
+      <mat-cell *matCellDef="let row"> {{row.customer_name}} </mat-cell>
+    </ng-container>
+    
     <!-- Primary Contact Column -->
     <ng-container matColumnDef="primary_contact">
       <mat-header-cell *matHeaderCellDef>Primary Contact</mat-header-cell>
