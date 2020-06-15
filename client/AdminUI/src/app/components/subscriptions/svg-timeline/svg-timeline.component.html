@@ -1,4 +1,36 @@
-<svg>
-
-
-    </svg>
+<svg height="100" width="1000" >
+    <style>
+        .circle {stroke: #eeeeee; fill: none }
+        .text1 {font-size: 11px; fill: #eeeeee; font-family:Arial, Helvetica, sans-serif}
+        .icon {font-family: FontAwesome; fill: #eeeeee}
+        .line {stroke: #555555; stroke-width: 1}
+        .line {stroke: #cccccc;}
+    </style>
+    <g>
+        <line x1="0" y1="60" x2="800" y2="60" class="line"></line>
+    </g>
+    <g *ngFor="let t of items">
+        <text x="t.x" y="40" text-anchor="middle" class="icon">
+            &#xf135;
+        </text>
+        <circle r="5" cx="100" cy="60" stroke-width="1" class="circle"></circle>
+        <g transform="translate(t.x 80)">
+            <text x="0" y="0" text-anchor="middle" class="text1">
+              <tspan x="0" dy="0">Subscription Start</tspan>
+              <tspan x="0" dy="1.2em">5/12/2020</tspan>
+            </text>
+          </g>
+    </g>
+    <g>        
+        <text x="500" y="40" text-anchor="middle" class="icon">
+            &#xf274;
+        </text>
+        <circle r="5" cx="500" cy="60" stroke-width="1" class="circle"></circle>
+        <g transform="translate(500 80)">
+            <text x="0" y="0" text-anchor="middle" class="text1">
+              <tspan x="0" dy="0">Today</tspan>
+              <tspan x="0" dy="1.2em">6/15/2020</tspan>
+            </text>
+          </g>
+    </g>
+</svg>
