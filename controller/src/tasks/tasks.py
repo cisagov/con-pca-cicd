@@ -1,14 +1,14 @@
+# Standard Python Libraries
 import os
 
+# Third-Party Libraries
+# Local Libraries
 # Third Party Libraries
+from api.manager import CampaignManager
+from api.models.subscription_models import SubscriptionModel, validate_subscription
 from celery import Celery, shared_task
 from celery.schedules import crontab
 from config.celery import app
-
-# Local Libraries
-from api.models.subscription_models import SubscriptionModel, validate_subscription
-from api.manager import CampaignManager
-
 
 campaign_manager = CampaignManager()
 

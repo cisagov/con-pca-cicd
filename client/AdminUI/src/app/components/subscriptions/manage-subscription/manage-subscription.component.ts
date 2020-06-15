@@ -1,10 +1,20 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MatDialogConfig, MatDialog } from '@angular/material/dialog';
-import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
+import {
+  FormGroup,
+  FormControl,
+  FormBuilder,
+  Validators
+} from '@angular/forms';
 import { SubscriptionService } from 'src/app/services/subscription.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Customer, Contact } from 'src/app/models/customer.model';
-import { Subscription, Target, GoPhishCampaignModel, TimelineItem } from 'src/app/models/subscription.model';
+import {
+  Subscription,
+  Target,
+  GoPhishCampaignModel,
+  TimelineItem
+} from 'src/app/models/subscription.model';
 import { Guid } from 'guid-typescript';
 import { UserService } from 'src/app/services/user.service';
 import { CustomerService } from 'src/app/services/customer.service';
@@ -13,7 +23,6 @@ import { XlsxToCsv } from 'src/app/helper/XlsxToCsv';
 import { ArchiveSubscriptionDialogComponent } from '../archive-subscription-dialog/archive-subscription-dialog.component';
 import * as moment from 'node_modules/moment/moment';
 import { LayoutMainService } from 'src/app/services/layout-main.service';
-
 
 @Component({
   selector: 'app-manage-subscription',
@@ -26,12 +35,11 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
   subscribeForm: FormGroup;
   submitted = false;
 
-
   action_EDIT: string = 'edit';
   action_CREATE: string = 'create';
   action: string = this.action_EDIT;
 
-  // CREATE or EDIT 
+  // CREATE or EDIT
   pageMode: string = 'CREATE';
 
   subscription: Subscription;
@@ -49,9 +57,8 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
 
   timelineItems: any[] = [];
 
-
   /**
-   * 
+   *
    */
   constructor(
     public subscriptionSvc: SubscriptionService,
@@ -63,14 +70,13 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
     public formBuilder: FormBuilder,
     public layoutSvc: LayoutMainService
   ) {
-    layoutSvc.setTitle("Subscription");
+    layoutSvc.setTitle('Subscription');
   }
 
   /**
    * INIT
    */
   ngOnInit(): void {
-
     // build form
     this.subscribeForm = new FormGroup({
       selectedCustomerUuid: new FormControl('', Validators.required),
@@ -80,7 +86,6 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
       keywords: new FormControl(''),
       csvText: new FormControl('', Validators.required)
     });
-
 
     this.pageMode = 'EDIT';
 
@@ -98,8 +103,9 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
   /**
    * convenience getter for easy access to form fields
    */
-  get f() { return this.subscribeForm.controls; }
-
+  get f() {
+    return this.subscribeForm.controls;
+  }
 
   /**
    * CREATE mode
@@ -114,21 +120,20 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * 
+   *
    */
   setCustomer() {
     if (this.customerSvc.selectedCustomer.length > 0) {
       this.subscribeForm.patchValue({
         selectedCustomerUuid: this.customerSvc.selectedCustomer
       });
-      this.customerSvc.getCustomer(this.customerSvc.selectedCustomer).subscribe(
-        (data: Customer) => {
+      this.customerSvc
+        .getCustomer(this.customerSvc.selectedCustomer)
+        .subscribe((data: Customer) => {
           this.customer = data;
-          this.f.selectedCustomerUuid.setValue(this.customer.customer_uuid)
-        }
-      )
+          this.f.selectedCustomerUuid.setValue(this.customer.customer_uuid);
+        });
     }
-
   }
 
   /**
@@ -138,7 +143,8 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
     let sub = this.subscriptionSvc.subscription;
     sub.subscription_uuid = params.id;
 
-    this.subscriptionSvc.getSubscription(sub.subscription_uuid)
+    this.subscriptionSvc
+      .getSubscription(sub.subscription_uuid)
       .subscribe((s: Subscription) => {
         this.subscription = s;
         this.f.primaryContact.setValue(s.primary_contact.email);
@@ -151,7 +157,8 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
 
         this.buildSubscriptionTimeline(s);
 
-        this.customerSvc.getCustomer(s.customer_uuid)
+        this.customerSvc
+          .getCustomer(s.customer_uuid)
           .subscribe((c: Customer) => {
             this.customer = c;
           });
@@ -159,8 +166,8 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * 
-   * @param customer_uuid 
+   *
+   * @param customer_uuid
    */
   loadContactsForCustomer(customer_uuid: string) {
     // get the customer and contacts from the API
@@ -175,25 +182,27 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
   /**
    * Boils down all events in all campaigns in the subscription to a simple
    * series of events:  subscription start, cycle starts and today.
-   * @param s 
+   * @param s
    */
   buildSubscriptionTimeline(s: Subscription) {
     let items: TimelineItem[] = [];
 
     items.push({
-      title: "Subscription Started",
-      description: "Subscription Started",
-      icon: "fa fa-rocket",
+      title: 'Subscription Started',
+      description: 'Subscription Started',
+      icon: 'fa fa-rocket',
       date: moment(s.start_date)
     });
 
     // now extract a simple timeline based on campaign events
     s.gophish_campaign_list.forEach((c: GoPhishCampaignModel) => {
       for (let t of c.timeline) {
-
         // ignore campaigns started on the subscription start date
-        if (t.message.toLowerCase() == "campaign created"
-          && new Date(t.time).setHours(0, 0, 0, 0).valueOf() == new Date(s.start_date).setHours(0, 0, 0, 0).valueOf()) {
+        if (
+          t.message.toLowerCase() == 'campaign created' &&
+          new Date(t.time).setHours(0, 0, 0, 0).valueOf() ==
+            new Date(s.start_date).setHours(0, 0, 0, 0).valueOf()
+        ) {
           continue;
         }
 
@@ -205,63 +214,70 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
 
     // add an item for 'today'
     items.push({
-      title: "Today",
-      description: "Today",
-      icon: "fa fa-calendar-check-o",
+      title: 'Today',
+      description: 'Today',
+      icon: 'fa fa-calendar-check-o',
       date: moment()
     });
 
     // sort and number the events
     let id: number = 0;
-    items.sort(function (a, b) { return a.date.unix() - b.date.unix() }).forEach(x => {
-      x.id = ++id;
-    });
+    items
+      .sort(function(a, b) {
+        return a.date.unix() - b.date.unix();
+      })
+      .forEach(x => {
+        x.id = ++id;
+      });
 
     this.timelineItems = items;
   }
 
   /**
-   * Presents a customer page to select or create a new customer for 
+   * Presents a customer page to select or create a new customer for
    * this subscription.
    */
   public showCustomerDialog(): void {
     const dialogConfig = new MatDialogConfig();
-    dialogConfig.height = "80vh";
-    dialogConfig.width = "80vw";
+    dialogConfig.height = '80vh';
+    dialogConfig.width = '80vw';
     dialogConfig.data = {};
     const dialogRef = this.dialog.open(CustomersComponent, dialogConfig);
 
     dialogRef.afterClosed().subscribe(value => {
       this.setCustomer();
-    })
+    });
   }
 
   /**
    * Shows Dialog for archiving a subscription
    */
   public showArchiveDialog(): void {
-    const dialogRef = this.dialog.open(
-      ArchiveSubscriptionDialogComponent, {
+    const dialogRef = this.dialog.open(ArchiveSubscriptionDialogComponent, {
       data: this.subscription
-    }
-    )
+    });
   }
 
   /**
-   * 
+   *
    */
   changePrimaryContact(e: any) {
     if (!this.customer) {
       return;
     }
-    this.primaryContact = this.customer.contact_list
-      .find(x => (x.email) == e.value);
+    this.primaryContact = this.customer.contact_list.find(
+      x => x.email == e.value
+    );
     this.subscription.primary_contact = this.primaryContact;
     this.subscriptionSvc.subscription.primary_contact = this.primaryContact;
 
     // patch the subscription in real time if in edit mode
     if (this.pageMode == 'EDIT') {
-      this.subscriptionSvc.updatePrimaryContact(this.subscription.subscription_uuid, this.primaryContact)
+      this.subscriptionSvc
+        .updatePrimaryContact(
+          this.subscription.subscription_uuid,
+          this.primaryContact
+        )
         .subscribe();
     }
   }
@@ -272,7 +288,9 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
    */
   openFileBrowser(event: any) {
     event.preventDefault();
-    const element: HTMLElement = document.getElementById('csvUpload') as HTMLElement;
+    const element: HTMLElement = document.getElementById(
+      'csvUpload'
+    ) as HTMLElement;
     element.click();
   }
 
@@ -288,7 +306,6 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
       this.csvText = xyz;
       this.f.csvText.setValue(xyz);
     });
-
   }
 
   /**
@@ -324,9 +341,9 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
     sub.active = true;
 
     sub.lub_timestamp = new Date();
-    sub.name = "SC-1." + this.customer.name + ".1.1"; //auto generated name
+    sub.name = 'SC-1.' + this.customer.name + '.1.1'; //auto generated name
     sub.start_date = this.startDate;
-    sub.status = "New Not Started";
+    sub.status = 'New Not Started';
 
     sub.url = this.url;
 
@@ -340,20 +357,19 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
     // call service with everything needed to start the subscription
     this.subscriptionSvc.submitSubscription(sub).subscribe(
       resp => {
-        alert("Your subscription was created as " + sub.name);
+        alert('Your subscription was created as ' + sub.name);
         this.router.navigate(['subscriptions']);
       },
       error => {
-        alert("An error occurred submitting the subscription: " + error.error);
-      });
+        alert('An error occurred submitting the subscription: ' + error.error);
+      }
+    );
   }
 
-
-
   /**
-   * 
-   * @param date 
-   * @param days 
+   *
+   * @param date
+   * @param days
    */
   addDays(date, days) {
     var result = new Date(date);
@@ -362,7 +378,7 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * 
+   *
    */
   ngOnDestroy() {
     this.routeSub.unsubscribe();

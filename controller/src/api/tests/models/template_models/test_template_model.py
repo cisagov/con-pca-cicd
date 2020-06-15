@@ -1,29 +1,31 @@
-from api.models.template_models import (
-    TemplateModel,
-    TemplateAppearanceModel,
-    TemplateSenderModel,
-    TemplateRelevancyModel,
-    TemplateBehaviorModel,
-    validate_template,
-)
+# Standard Python Libraries
+from datetime import datetime
 
-from api.tests.models.template_models.test_template_image_model import (
-    template_image_model_data,
+# Third-Party Libraries
+from api.models.template_models import (
+    TemplateAppearanceModel,
+    TemplateBehaviorModel,
+    TemplateModel,
+    TemplateRelevancyModel,
+    TemplateSenderModel,
+    validate_template,
 )
 from api.tests.models.template_models.test_template_appearance_model import (
     template_appearance_model_data,
 )
-from api.tests.models.template_models.test_template_sender_model import (
-    template_sender_model_data,
+from api.tests.models.template_models.test_template_behavior_model import (
+    template_behavior_model_data,
+)
+from api.tests.models.template_models.test_template_image_model import (
+    template_image_model_data,
 )
 from api.tests.models.template_models.test_template_relevancy_model import (
     template_relevancy_model_data,
 )
-from api.tests.models.template_models.test_template_behavior_model import (
-    template_behavior_model_data,
+from api.tests.models.template_models.test_template_sender_model import (
+    template_sender_model_data,
 )
 from faker import Faker
-from datetime import datetime
 
 fake = Faker()
 

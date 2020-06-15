@@ -5,8 +5,10 @@ These are Django Rest Framework Serializers. These are used for
 serializing data coming from the db into a request response.
 """
 # Third-Party Libraries
+from api.serializers.subscriptions_serializers import (
+    SubscriptionPatchResponseSerializer,
+)
 from rest_framework import serializers
-from api.serializers.subscriptions_serializers import SubscriptionPatchResponseSerializer
 
 TEMPLATE_TYPE_CHOICES = (
     ("Email", "Email"),
@@ -234,7 +236,8 @@ class TagSerializer(serializers.Serializer):
     Serializes a Tag (replaceable token in a template)
     """
 
-class TagResponseSerializer(serializers.Serializer):    
+
+class TagResponseSerializer(serializers.Serializer):
     """
     Serializes the response for a Tag (replaceable token in a template)
 

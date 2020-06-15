@@ -14,39 +14,41 @@ import { Customer } from 'src/app/models/customer.model';
 export class CustomersComponent implements OnInit {
   public data_source: MatTableDataSource<Customer>;
   displayed_columns = [
-    "name",
-    "identifier",
-    "address_1",
-    "address_2",
-    "city",
-    "state",
-    "zip_code",
-    "select"
-  ]
+    'name',
+    'identifier',
+    'address_1',
+    'address_2',
+    'city',
+    'state',
+    'zip_code',
+    'select'
+  ];
 
   constructor(
     private layout_service: LayoutMainService,
     public customerSvc: CustomerService,
     public dialog: MatDialog
-  ) { 
+  ) {
     layout_service.setTitle('Customers');
     this.customerSvc.setCustomerInfo(false);
   }
 
-
   private refresh(): void {
     this.customerSvc.getCustomers().subscribe((data: any) => {
       this.data_source.data = data as Customer[];
-    }) 
+    });
   }
 
   public open_add_customer_dialog(): void {
     const dialog_config = new MatDialogConfig();
-    dialog_config.data = {}
-    const dialog_ref = this.dialog.open(AddCustomerDialogComponent, dialog_config);
+    dialog_config.data = {};
+    const dialog_ref = this.dialog.open(
+      AddCustomerDialogComponent,
+      dialog_config
+    );
   }
 
-  public setCustomer(uuid){
+  public setCustomer(uuid) {
     this.customerSvc.selectedCustomer = uuid;
     this.dialog.closeAll();
   }
@@ -54,11 +56,9 @@ export class CustomersComponent implements OnInit {
   ngOnInit(): void {
     this.data_source = new MatTableDataSource();
     this.customerSvc.getCustomerInfoStatus().subscribe(status => {
-      if(status == false){
-        this.refresh()
+      if (status == false) {
+        this.refresh();
       }
-    })
-    
+    });
   }
-
 }

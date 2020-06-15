@@ -9,15 +9,14 @@ import { SendingProfile } from 'src/app/models/sending-profile.model';
   templateUrl: './sending-profile-detail.component.html'
 })
 export class SendingProfileDetailComponent implements OnInit {
-
-  /** 
+  /**
    * NEW or EDIT
    */
   mode: string = 'new';
 
   profileForm: FormGroup;
   id: number;
-  profile: SendingProfile
+  profile: SendingProfile;
 
   submitted = false;
 
@@ -38,10 +37,12 @@ export class SendingProfileDetailComponent implements OnInit {
   /**
    * convenience getter for easy access to form fields
    */
-  get f() { return this.profileForm.controls; }
+  get f() {
+    return this.profileForm.controls;
+  }
 
   /**
-   * 
+   *
    */
   ngOnInit(): void {
     this.profileForm = new FormGroup({
@@ -59,23 +60,24 @@ export class SendingProfileDetailComponent implements OnInit {
     if (!!this.id) {
       this.mode = 'edit';
 
-      this.sendingProfileSvc.getProfile(this.id).subscribe((data: any) => {
-        this.profile = data as SendingProfile;
-  
-        this.f.name.setValue(this.profile.name);
-        this.f.interfaceType.setValue(this.profile.interface_type);
-        this.f.from.setValue(this.profile.from_address);
-        this.f.host.setValue(this.profile.host);
-        this.f.username.setValue(this.profile.username);
-        this.f.password.setValue(this.profile.password);
-        this.f.ignoreCertErrors.setValue(this.profile.ignore_cert_errors);
-      },
-        (err) => {
+      this.sendingProfileSvc.getProfile(this.id).subscribe(
+        (data: any) => {
+          this.profile = data as SendingProfile;
+
+          this.f.name.setValue(this.profile.name);
+          this.f.interfaceType.setValue(this.profile.interface_type);
+          this.f.from.setValue(this.profile.from_address);
+          this.f.host.setValue(this.profile.host);
+          this.f.username.setValue(this.profile.username);
+          this.f.password.setValue(this.profile.password);
+          this.f.ignoreCertErrors.setValue(this.profile.ignore_cert_errors);
+        },
+        err => {
           console.log(err);
-        });
+        }
+      );
     }
   }
-
 
   addHeader() {
     this.headers.set(this.f.newHeaderName.value, this.f.newHeaderValue.value);
@@ -83,7 +85,7 @@ export class SendingProfileDetailComponent implements OnInit {
   }
 
   /**
-   * 
+   *
    */
   onSaveClick() {
     this.submitted = true;
@@ -108,10 +110,9 @@ export class SendingProfileDetailComponent implements OnInit {
   }
 
   /**
-   * 
+   *
    */
   onCancelClick() {
     this.dialog_ref.close();
   }
-
 }

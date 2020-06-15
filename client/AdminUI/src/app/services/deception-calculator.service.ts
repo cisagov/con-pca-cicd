@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable, OnInit } from '@angular/core';
-import { Template } from 'src/app/models/template.model'
+import { Template } from 'src/app/models/template.model';
 import { SettingsService } from './settings.service';
 
 const headers = {
@@ -10,7 +10,10 @@ const headers = {
 
 @Injectable()
 export class DeceptionCalculatorService {
-  constructor(private http: HttpClient, private settingsService: SettingsService) { }
+  constructor(
+    private http: HttpClient,
+    private settingsService: SettingsService
+  ) {}
 
   //GET single template for use in the deception calculator
   getDeception(templateUUID: string) {
@@ -24,16 +27,17 @@ export class DeceptionCalculatorService {
   saveDeception(template: Template) {
     return new Promise((resolve, reject) => {
       this.http
-        .patch(`${this.settingsService.settings.apiUrl}/api/v1/template/${template.template_uuid}/`, template)
+        .patch(
+          `${this.settingsService.settings.apiUrl}/api/v1/template/${template.template_uuid}/`,
+          template
+        )
         .subscribe(
           success => {
             resolve('Template Saved');
           },
-          error => {
-          },
-          () => {
-          }
+          error => {},
+          () => {}
         );
-    })
+    });
   }
 }

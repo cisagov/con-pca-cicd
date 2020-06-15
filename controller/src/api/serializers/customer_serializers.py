@@ -21,7 +21,9 @@ class CustomerContactSerializer(serializers.Serializer):
     office_phone = serializers.CharField(max_length=100)
     mobile_phone = serializers.CharField(max_length=100)
     email = serializers.EmailField(max_length=None, min_length=None, allow_blank=False)
-    notes = serializers.CharField(required=False, max_length=None, min_length=None, allow_blank=True)
+    notes = serializers.CharField(
+        required=False, max_length=None, min_length=None, allow_blank=True
+    )
     active = serializers.BooleanField(default=True, allow_null=False)
 
 
@@ -148,6 +150,7 @@ class CustomerDeleteResponseSerializer(serializers.Serializer):
     # created by mongodb
     customer_uuid = serializers.UUIDField()
 
+
 class SectorIndustry(serializers.Serializer):
     """
     This is the SectorIndustry Serializer.
@@ -156,6 +159,7 @@ class SectorIndustry(serializers.Serializer):
     """
 
     name = serializers.CharField(max_length=250)
+
 
 class SectorGetSerializer(serializers.Serializer):
     """
@@ -166,4 +170,3 @@ class SectorGetSerializer(serializers.Serializer):
 
     name = serializers.CharField(max_length=250)
     industries = SectorIndustry(many=True)
-

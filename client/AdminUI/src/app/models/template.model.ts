@@ -11,9 +11,9 @@ export class TemplateShort {
 export class Template {
   //EMail Data
   template_uuid: string;
-  gophish_template_id : number;
+  gophish_template_id: number;
   name: string;
-  template_type : string;
+  template_type: string;
   //system_path: string;
   deception_score: number;
   descriptive_words: string;
@@ -49,7 +49,6 @@ export class Template {
   curiosity: number;
   greed: number;
 
-
   //DB tracking variables
   created_by?: string;
   cb_timestamp?: Date;
@@ -61,35 +60,34 @@ export class Template {
   }
 }
 
-export class TemplateAppearanceModel{
-    grammar : number
-    link_domain : number
-    logo_graphics : number
+export class TemplateAppearanceModel {
+  grammar: number;
+  link_domain: number;
+  logo_graphics: number;
 }
 
-export class TemplateSenderModel{
-    external : number
-    internal : number
-    authoritative : number
+export class TemplateSenderModel {
+  external: number;
+  internal: number;
+  authoritative: number;
 }
 
-export class TemplateRelevancyModel{
-    organization : number
-    public_news : number
+export class TemplateRelevancyModel {
+  organization: number;
+  public_news: number;
 }
 
-export class TemplateBehaviorModel{
-    fear : number
-    duty_obligation : number
-    curiosity : number
-    greed : number
+export class TemplateBehaviorModel {
+  fear: number;
+  duty_obligation: number;
+  curiosity: number;
+  greed: number;
 }
 
-export class TemplateImageModel{
-    file_name : string
-    file_url : string
+export class TemplateImageModel {
+  file_name: string;
+  file_url: string;
 }
-
 
 /**
  * An instance of a "Tag", a substitution token in a Template.

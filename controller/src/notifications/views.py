@@ -1,20 +1,19 @@
 # Standard Libraries
-from typing import List, Any
-
-# Django Libraries
-from django.conf import settings
-from django.http import HttpResponse
-from django.core.files.storage import FileSystemStorage
-from django.core.mail.message import EmailMultiAlternatives
-from django.template.loader import render_to_string
+# Standard Python Libraries
+from typing import Any, List
 
 # Third-Party Libraries
-from weasyprint import HTML
-
+# Django Libraries
 # Local Libraries
-from notifications.utils import get_notification
-from api.utils.db_utils import get_list
 from api.models.subscription_models import SubscriptionModel, validate_subscription
+from api.utils.db_utils import get_list
+from django.conf import settings
+from django.core.files.storage import FileSystemStorage
+from django.core.mail.message import EmailMultiAlternatives
+from django.http import HttpResponse
+from django.template.loader import render_to_string
+from notifications.utils import get_notification
+from weasyprint import HTML
 
 
 class ReportsEmailSender:

@@ -1,9 +1,10 @@
+# Third-Party Libraries
 from api.models.subscription_models import GoPhishCampaignsModel
-from api.tests.models.subscription_models.test_gophish_result_model import (
-    gophish_result_model_data,
-)
 from api.tests.models.subscription_models.test_gophish_group_model import (
     gophish_group_model_data,
+)
+from api.tests.models.subscription_models.test_gophish_result_model import (
+    gophish_result_model_data,
 )
 from api.tests.models.subscription_models.test_gophish_timeline_model import (
     gophish_timeline_model_data,

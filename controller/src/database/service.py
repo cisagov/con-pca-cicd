@@ -41,7 +41,7 @@ class Service:
         Takes in parameters that are field names and values and
         filters all documents and returns list of results.
         """
-        return await self.service.filter(parameters,fields)
+        return await self.service.filter(parameters, fields)
 
     async def get(self, uuid):
         """

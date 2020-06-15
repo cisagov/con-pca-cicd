@@ -20,12 +20,12 @@ services:
       context: .
       dockerfile: terraform.Dockerfile
     container_name: pca-terraform
-    depends_on: 
+    depends_on:
       - localstack
     image: cpa-terraform:1.0
     volumes:
       - pca-terraform-data:/app/state
-      - './terraform:/app/resources' 
+      - './terraform:/app/resources'
     networks:
       - backend
 volumes:

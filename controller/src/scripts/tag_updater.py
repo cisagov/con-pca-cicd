@@ -5,23 +5,20 @@ It reads in a json file containing the old tags, replaces the tags with more uni
 and writes the results to a new file.
 """
 
+# Standard Python Libraries
 import json
 import sys
 
-old_target_name_tags = [
-    "%To_Name%"
-]
+old_target_name_tags = ["%To_Name%"]
 
-old_target_email_tags = [
-    "%To%"
-]
+old_target_email_tags = ["%To%"]
 
 old_customer_system_tags = [
     "<ORG SYSTEM>",
     "[CUST_SYSTEM]",
     "<ORG WEB PLATFORM/SERVICE>",
     "[System Name]",
-    "<ORG INTRANET>"
+    "<ORG INTRANET>",
 ]
 
 old_customer_tags = [
@@ -56,14 +53,14 @@ old_customer_tags = [
     "[KNOWN CUSTOMER OFFICE]",
     "[CUSTOMER HR OFFICE]",
     "[CUSTOMER LEADERSHIP OFFICE]",
-    "[County Election's Staff, Information Systems personnel across the State]"
+    "[County Election's Staff, Information Systems personnel across the State]",
 ]
 
 old_customer_email_tags = [
     "[CUSTOMER EMAIL]",
     "[SPOOFED CUSTOMER EMAIL]",
     "[CUSTOMER OFFICE EMAIL]",
-    "<NAME@SPOOFED INTERNAL ADDR>"
+    "<NAME@SPOOFED INTERNAL ADDR>",
 ]
 
 old_address_tags = [
@@ -71,7 +68,7 @@ old_address_tags = [
     "[Location]",
     "[RELATED ADDRESS]",
     "[Related Org Address]",
-    "[ACTUAL ADDRESS OF DEPT]"
+    "[ACTUAL ADDRESS OF DEPT]",
 ]
 
 old_date_tags = [
@@ -87,7 +84,7 @@ old_date_tags = [
     "[RECENT DATE]",
     "[Upcoming Date]",
     "[MONTH YEAR]",
-    "[MONTH DAY, YEAR]"
+    "[MONTH DAY, YEAR]",
 ]
 
 old_link_tags = [
@@ -119,7 +116,7 @@ old_link_tags = [
     "[Fake Web Page URL]",
     "%]URL[%",
     "%URL%",
-    "<<%URL%>>"
+    "<<%URL%>>",
 ]
 
 old_state_tags = [
@@ -130,37 +127,23 @@ old_state_tags = [
     "[county or entity]",
 ]
 
-old_season_tags = [
-    "[Season]",
-    "[Select Summer/Spring/Fall/Winter]"
-]
+old_season_tags = ["[Season]", "[Select Summer/Spring/Fall/Winter]"]
 
 old_customer_location_tags = [
     "[Customer Location, ex. Town of...]",
     "[Customer Location ex. Town of...]",
-    "[Customer City]", 
+    "[Customer City]",
     "[CUST_LOCATION/NETWORK]",
     "<CITY/ORG NAME>",
     "[Location or Customer]",
     "[Customer Location]",
     "[Insert location]",
-    "[LEGIT_LOCATION]"
+    "[LEGIT_LOCATION]",
 ]
 
-old_month_tags = [
-    "[Month]",
-    "[Month Year of Campaign]",
-    "[MONTH]",
-    "<Month>"
-]
+old_month_tags = ["[Month]", "[Month Year of Campaign]", "[MONTH]", "<Month>"]
 
-old_year_tags = [
-    "<year>",
-    "<Year>",
-    "[CAMPAIGN END DATE, YEAR]",
-    "[Year]",
-    "[YEAR]"
-]
+old_year_tags = ["<year>", "<Year>", "[CAMPAIGN END DATE, YEAR]", "[Year]", "[YEAR]"]
 
 old_spoof_name_tags = [
     "<FAKE NAME>",
@@ -174,17 +157,12 @@ old_spoof_name_tags = [
     "[MADE UP NAME]",
     "[FAKE NAME]",
     "FIRST LAST",
-    "[FAKE_NAME]"
+    "[FAKE_NAME]",
 ]
 
-old_event_tags = [
-    "[list relevant weather event]",
-    "[CUSTOMER SPECIFIC EVENT]"
-]
+old_event_tags = ["[list relevant weather event]", "[CUSTOMER SPECIFIC EVENT]"]
 
-old_time_frame_tags = [
-    "[Change time frame as needed]"
-]
+old_time_frame_tags = ["[Change time frame as needed]"]
 
 old_domain_tags = [
     "[domain]",
@@ -216,7 +194,7 @@ old_domain_tags = [
     "[UNRELATED_DOMAIN.tld]",
     "[GENERIC_DOMAIN.tld]",
     "NCATS.domain",
-    "[subdomain.domain.tld]"
+    "[subdomain.domain.tld]",
 ]
 
 old_acronym_tags = [
@@ -232,38 +210,24 @@ old_acronym_tags = [
     "[CUSTOMER SPECIFIC GROUP ACRONYM]",
     "[CustomerAcronymLikeSite]",
     "[Stakeholder Acronym]",
-    "[customeracronymorname]"
+    "[customeracronymorname]",
 ]
 
-old_slogan_tags = [
-    "[CUSTOMER SLOGAN]"
-]
+old_slogan_tags = ["[CUSTOMER SLOGAN]"]
 
-old_signature_tags = [
-    "[Organization Signature]",
-    "[Signature]",
-    "[SIGNATURE LINE]"
-]
+old_signature_tags = ["[Organization Signature]", "[Signature]", "[SIGNATURE LINE]"]
 
-old_topic_tags = [
-    "[TOPIC]"
-]
+old_topic_tags = ["[TOPIC]"]
 
-old_token_tags = [
-    "%TOKEN%",
-    "[LEGIT CONTRACT #]",
-    "[LEGIT SOLICITATION #]"
-]
+old_token_tags = ["%TOKEN%", "[LEGIT CONTRACT #]", "[LEGIT SOLICITATION #]"]
 
 old_program_tags = [
     "[TimeCardProgram]",
     "[Time Card Program]",
-    "[NAME OF PARKING OR COMMUTER PROGRAM]"
+    "[NAME OF PARKING OR COMMUTER PROGRAM]",
 ]
 
-old_logo_tags = [
-    "[LOGO]"
-]
+old_logo_tags = ["[LOGO]"]
 
 old_job_tags = [
     "[CUSTOMER-RELEVENT-JOB-ROLE]",
@@ -271,7 +235,7 @@ old_job_tags = [
     "[LEGIT_JOB]",
     "[LEGIT_JOB_PREFIX]",
     "[PROPER TITLE FOR OFFICE SUPPLY MANAGER]",
-    "[Relevant Skill]"
+    "[Relevant Skill]",
 ]
 
 old_number_tags = [
@@ -330,18 +294,37 @@ def main():
         data = json.load(file)
 
     updated_tags = {
-        "<%URL%>": old_link_tags , "<%TARGET_FULL_NAME%>": old_target_name_tags, "<%TARGET_EMAIL%>": old_target_email_tags, "<%CUSTOMER_SYSTEM%>": old_customer_system_tags,
-        "<%CUSTOMER_NAME%>": old_customer_tags, "<%CUSTOMER_EMAIL%>": old_customer_email_tags, "<%CUSTOMER_ADDRESS_FULL%>": old_address_tags, 
-        "<%CUSTOMER_STATE%>": old_state_tags, "<%CUSTOMER_CITY%>": old_customer_location_tags, "<%CURRENT_SEASON%>": old_season_tags, "<%CURRENT_DATE_LONG%>": old_date_tags,
-        "<%CURRENT_MONTH_LONG%>": old_month_tags, "<%CURRENT_YEAR_LONG%>": old_year_tags, "<%SPOOF_NAME%>": old_spoof_name_tags, "<%EVENT%>": old_event_tags,
-        "<%TIMEFRAME%>": old_time_frame_tags, "<%DOMAIN%>": old_domain_tags, "<%ACRONYM%>": old_acronym_tags, "<%SLOGAN%>": old_slogan_tags, "<%SIGNATURE%>": old_signature_tags,
-        "<%TOPIC%>": old_topic_tags, "<%TOKEN%>": old_token_tags, "<%PROGRAM%>": old_program_tags, "<%LOGO%>": old_logo_tags, "<%JOB_ROLE%>": old_job_tags,
-        "<%NUMBER%>": old_number_tags
+        "<%URL%>": old_link_tags,
+        "<%TARGET_FULL_NAME%>": old_target_name_tags,
+        "<%TARGET_EMAIL%>": old_target_email_tags,
+        "<%CUSTOMER_SYSTEM%>": old_customer_system_tags,
+        "<%CUSTOMER_NAME%>": old_customer_tags,
+        "<%CUSTOMER_EMAIL%>": old_customer_email_tags,
+        "<%CUSTOMER_ADDRESS_FULL%>": old_address_tags,
+        "<%CUSTOMER_STATE%>": old_state_tags,
+        "<%CUSTOMER_CITY%>": old_customer_location_tags,
+        "<%CURRENT_SEASON%>": old_season_tags,
+        "<%CURRENT_DATE_LONG%>": old_date_tags,
+        "<%CURRENT_MONTH_LONG%>": old_month_tags,
+        "<%CURRENT_YEAR_LONG%>": old_year_tags,
+        "<%SPOOF_NAME%>": old_spoof_name_tags,
+        "<%EVENT%>": old_event_tags,
+        "<%TIMEFRAME%>": old_time_frame_tags,
+        "<%DOMAIN%>": old_domain_tags,
+        "<%ACRONYM%>": old_acronym_tags,
+        "<%SLOGAN%>": old_slogan_tags,
+        "<%SIGNATURE%>": old_signature_tags,
+        "<%TOPIC%>": old_topic_tags,
+        "<%TOKEN%>": old_token_tags,
+        "<%PROGRAM%>": old_program_tags,
+        "<%LOGO%>": old_logo_tags,
+        "<%JOB_ROLE%>": old_job_tags,
+        "<%NUMBER%>": old_number_tags,
     }
 
     # Update tags in old template data file
     for template in data:
-        text = template['text']
+        text = template["text"]
 
         for key in updated_tags:
             old_tags_list = updated_tags[key]
@@ -349,7 +332,7 @@ def main():
             for old_tag in old_tags_list:
                 text = text.replace(old_tag, key)
 
-        template['text'] = text
+        template["text"] = text
 
     with open(sys.argv[2], "w") as file:
         json.dump(data, file, indent=2)

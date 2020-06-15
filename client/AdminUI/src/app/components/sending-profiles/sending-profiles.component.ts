@@ -2,7 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { SendingProfile } from 'src/app/models/sending-profile.model';
 import { SendingProfileService } from 'src/app/services/sending-profile.service';
-import { MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
+import {
+  MatDialog,
+  MatDialogConfig,
+  MatDialogRef
+} from '@angular/material/dialog';
 import { SendingProfileDetailComponent } from './sending-profile-detail.component';
 import { ConfirmComponent } from '../dialogs/confirm/confirm.component';
 import { LayoutMainService } from 'src/app/services/layout-main.service';
@@ -12,27 +16,21 @@ import { LayoutMainService } from 'src/app/services/layout-main.service';
   templateUrl: './sending-profiles.component.html'
 })
 export class SendingProfilesComponent implements OnInit {
-
-  displayedColumns = [
-    "name",
-    "interface_type",
-    "modified_date",
-    "action"
-  ];
+  displayedColumns = ['name', 'interface_type', 'modified_date', 'action'];
   sendingProfilesData = new MatTableDataSource<SendingProfile>();
 
   dialogRefConfirm: MatDialogRef<ConfirmComponent>;
 
   constructor(
     private sendingProfileSvc: SendingProfileService,
-    public dialog: MatDialog, 
+    public dialog: MatDialog,
     public layoutSvc: LayoutMainService
-  ) { 
-    layoutSvc.setTitle("Sending Profiles");
+  ) {
+    layoutSvc.setTitle('Sending Profiles');
   }
 
   /**
-   * 
+   *
    */
   ngOnInit(): void {
     this.refresh();
@@ -49,12 +47,13 @@ export class SendingProfilesComponent implements OnInit {
 
   /**
    * Confirm that they want to delete the profile.
-   * @param row 
+   * @param row
    */
   confirmDeleteProfile(row: any): void {
-    this.dialogRefConfirm = this.dialog.open(ConfirmComponent, { disableClose: false });
-    this.dialogRefConfirm.componentInstance.confirmMessage =
-      `This will delete sending profile '${row.name}'.  Do you want to continue?`;
+    this.dialogRefConfirm = this.dialog.open(ConfirmComponent, {
+      disableClose: false
+    });
+    this.dialogRefConfirm.componentInstance.confirmMessage = `This will delete sending profile '${row.name}'.  Do you want to continue?`;
     this.dialogRefConfirm.componentInstance.title = 'Confirm Delete';
 
     this.dialogRefConfirm.afterClosed().subscribe(result => {
@@ -66,14 +65,13 @@ export class SendingProfilesComponent implements OnInit {
   }
 
   /**
-   * 
-   * @param row 
+   *
+   * @param row
    */
   deleteProfile(row: any) {
     this.sendingProfileSvc.deleteProfile(row.id).subscribe(() => {
       this.refresh();
     });
-    
   }
 
   /**
@@ -81,14 +79,17 @@ export class SendingProfilesComponent implements OnInit {
    */
   openProfileDialog(row: any): void {
     const dialogConfig = new MatDialogConfig();
-    dialogConfig.width = "60vw";
+    dialogConfig.width = '60vw';
     dialogConfig.data = {
       sendingProfileId: row.id
     };
-    const dialogRef = this.dialog.open(SendingProfileDetailComponent, dialogConfig);
+    const dialogRef = this.dialog.open(
+      SendingProfileDetailComponent,
+      dialogConfig
+    );
 
     dialogRef.afterClosed().subscribe(value => {
       this.refresh();
-    })
+    });
   }
 }

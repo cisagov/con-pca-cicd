@@ -1,6 +1,7 @@
+# Third-Party Libraries
 from api.serializers.template_serializers import (
-    TemplatePostSerializer,
     TEMPLATE_TYPE_CHOICES,
+    TemplatePostSerializer,
 )
 from faker import Faker
 

@@ -3,28 +3,52 @@
     <div class="header-logo ">
       <img src="assets/CPA-logo-white.png" style="height: 3.5rem" />
     </div>
-    <button mat-icon-button class="menu-button" type="button" aria-label="Toggle sidenav" (click)="drawer.toggle()">
+    <button
+      mat-icon-button
+      class="menu-button"
+      type="button"
+      aria-label="Toggle sidenav"
+      (click)="drawer.toggle()"
+    >
       <i class="material-icons">menu</i>
     </button>
 
     <span class="fill-remaining-space"></span>
     <span class="loggin-user">
       Barry Hansen
-      <button mat-icon-button class="menu-button" type="button" aria-label="Toggle sidenav"
-        [matMenuTriggerFor]="userMenu">
+      <button
+        mat-icon-button
+        class="menu-button"
+        type="button"
+        aria-label="Toggle sidenav"
+        [matMenuTriggerFor]="userMenu"
+      >
         <i class="material-icons">settings</i>
       </button>
-      <mat-menu #userMenu="matMenu" yPosition="below" class="mat-menu-custom-header">
+      <mat-menu
+        #userMenu="matMenu"
+        yPosition="below"
+        class="mat-menu-custom-header"
+      >
         <button mat-menu-item>Profile</button>
         <button mat-menu-item>Logout</button>
-        <mat-slide-toggle [checked]="isDark" (change)="setTheme($event)">dark</mat-slide-toggle>
+        <mat-slide-toggle [checked]="isDark" (change)="setTheme($event)"
+          >dark</mat-slide-toggle
+        >
       </mat-menu>
     </span>
   </mat-toolbar>
 
   <mat-sidenav-container class="sidenav-container">
-    <mat-sidenav #drawer class="docs-sidenav" mode="side" opened="true" [fixedInViewport]="false" [fixedTopGap]="0"
-      [fixedBottomGap]="0">
+    <mat-sidenav
+      #drawer
+      class="docs-sidenav"
+      mode="side"
+      opened="true"
+      [fixedInViewport]="false"
+      [fixedTopGap]="0"
+      [fixedBottomGap]="0"
+    >
       <mat-nav-list>
         <a mat-list-item routerLink="/subscriptions">Subscriptions</a>
         <a mat-list-item routerLink="/templates">Templates</a>
@@ -35,7 +59,10 @@
         <a mat-list-item routerLink="/useradmin">User Admin</a>
       </mat-nav-list>
       <div class="ml-3 mt-3 mb-5">
-        <img src="/assets/CISA_wordmark-e1584675152693.png" style="width: 8rem">
+        <img
+          src="/assets/CISA_wordmark-e1584675152693.png"
+          style="width: 8rem"
+        />
       </div>
     </mat-sidenav>
     <mat-sidenav-content #mainContent class="sidenav-content">

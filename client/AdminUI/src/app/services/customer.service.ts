@@ -1,6 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Customer, Contact, NewCustomer, ICustomerContact } from 'src/app/models/customer.model'
+import {
+  Customer,
+  Contact,
+  NewCustomer,
+  ICustomerContact
+} from 'src/app/models/customer.model';
 import { environment } from 'src/environments/environment';
 import { BehaviorSubject } from 'rxjs';
 import { SettingsService } from './settings.service';
@@ -10,19 +15,24 @@ const httpOptions = {
   headers: new HttpHeaders({
     'Content-Type': 'application/json'
   })
-}
+};
 
 @Injectable()
 export class CustomerService {
-  constructor(private http: HttpClient, private settingsService: SettingsService) { }
+  constructor(
+    private http: HttpClient,
+    private settingsService: SettingsService
+  ) {}
 
   showCustomerInfo: boolean = false;
   selectedCustomer: string = '';
-  showCustomerInfoStatus: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(this.showCustomerInfo);
+  showCustomerInfoStatus: BehaviorSubject<boolean> = new BehaviorSubject<
+    boolean
+  >(this.showCustomerInfo);
 
   setCustomerInfo(show: boolean) {
     this.showCustomerInfo = show;
-    this.showCustomerInfoStatus.next(show)
+    this.showCustomerInfoStatus.next(show);
   }
   getCustomerInfoStatus() {
     return this.showCustomerInfoStatus;
@@ -34,7 +44,7 @@ export class CustomerService {
   }
 
   public getAllContacts(customers: Customer[]): ICustomerContact[] {
-    let customerContacts: ICustomerContact[] = []
+    let customerContacts: ICustomerContact[] = [];
     customers.map((customer: Customer) => {
       customer.contact_list.map((contact: Contact) => {
         let customerContact: ICustomerContact = {
@@ -48,10 +58,10 @@ export class CustomerService {
           email: contact.email,
           notes: contact.notes,
           active: contact.active
-        }
-        customerContacts.push(customerContact)
-      })
-    })
+        };
+        customerContacts.push(customerContact);
+      });
+    });
     return customerContacts;
   }
 
@@ -70,8 +80,8 @@ export class CustomerService {
       email: requestData.email,
       notes: requestData.notes,
       active: requestData.active
-    }
-    return contact
+    };
+    return contact;
   }
 
   /**
@@ -91,17 +101,28 @@ export class CustomerService {
   public setContacts(customer_uuid: string, contacts: Contact[]) {
     let data = {
       contact_list: contacts
-    }
+    };
 
-    return this.http.patch(`${this.settingsService.settings.apiUrl}/api/v1/customer/${customer_uuid}/`, JSON.stringify(data), httpOptions);
+    return this.http.patch(
+      `${this.settingsService.settings.apiUrl}/api/v1/customer/${customer_uuid}/`,
+      JSON.stringify(data),
+      httpOptions
+    );
   }
 
   public patchCustomer(data: Customer) {
-    return this.http.patch(`${this.settingsService.settings.apiUrl}/api/v1/customer/${data.customer_uuid}/`, data);
+    return this.http.patch(
+      `${this.settingsService.settings.apiUrl}/api/v1/customer/${data.customer_uuid}/`,
+      data
+    );
   }
 
   public addCustomer(customer: NewCustomer) {
-    return this.http.post(`${this.settingsService.settings.apiUrl}/api/v1/customers/`, JSON.stringify(customer), httpOptions);
+    return this.http.post(
+      `${this.settingsService.settings.apiUrl}/api/v1/customers/`,
+      JSON.stringify(customer),
+      httpOptions
+    );
   }
 
   public getSectorList() {

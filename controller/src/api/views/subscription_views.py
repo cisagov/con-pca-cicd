@@ -253,15 +253,17 @@ class SubscriptionsListView(APIView):
 
         for campaign_info in campaign_data_list:
             campaign_group = f"{base_name}.Targets.{group_number}"
-            #Only necesary if an error occurs during the subscription creation process.
-            #Checks against existing target groups and ensures that the newly created group is unique
+            # Only necesary if an error occurs during the subscription creation process.
+            # Checks against existing target groups and ensures that the newly created group is unique
             while campaign_group in group_names:
                 name_break_down = campaign_group.split(".")
                 if len(name_break_down) == 4:
                     campaign_group = f"{campaign_group}.1"
                 else:
                     name_length = len(name_break_down[4]) + 1
-                    campaign_group = f"{campaign_group[:-name_length]}.{int(name_break_down[4]) + 1}"
+                    campaign_group = (
+                        f"{campaign_group[:-name_length]}.{int(name_break_down[4]) + 1}"
+                    )
             campaign_info["name"] = f"{post_data['name']}.{group_number}"
             campaign_info["deception_level"] = group_number
             target_group = campaign_manager.create(
@@ -282,21 +284,22 @@ class SubscriptionsListView(APIView):
         for c in gophish_campaign_list:
             campaigns_in_cycle.append(c["campaign_id"])
         print(campaigns_in_cycle)
-        post_data["cycles"] =[
+        post_data["cycles"] = [
             {
-                "start_date" : start_date,
-                "end_date" : end_date,
-                "active" : True,
-                "campaigns_in_cycle" : campaigns_in_cycle,
+                "start_date": start_date,
+                "end_date": end_date,
+                "active": True,
+                "campaigns_in_cycle": campaigns_in_cycle,
                 "phish_results": {
-                        "sent" : 0,
-                        "opened" : 0,
-                        "clicked" : 0,
-                        "submitted" : 0,
-                        "reported" : 0,
-                }
-            }]
-        
+                    "sent": 0,
+                    "opened": 0,
+                    "clicked": 0,
+                    "submitted": 0,
+                    "reported": 0,
+                },
+            }
+        ]
+
         created_response = save_single(
             post_data, "subscription", SubscriptionModel, validate_subscription
         )
@@ -361,11 +364,11 @@ class SubscriptionsListView(APIView):
                     "results": [],
                     "deception_level": campaign_info["deception_level"],
                     "phish_results": {
-                            "sent": 0,
-                            "opened": 0,
-                            "clicked": 0,
-                            "submitted": 0,
-                            "reported": 0        
+                        "sent": 0,
+                        "opened": 0,
+                        "clicked": 0,
+                        "submitted": 0,
+                        "reported": 0,
                     },
                     "groups": [
                         campaign_serializers.CampaignGroupSerializer(target_group).data
@@ -376,7 +379,7 @@ class SubscriptionsListView(APIView):
                             "time": format_ztime(campaign.created_date),
                             "message": "Campaign Created",
                             "details": "",
-                            "duplicate" : False
+                            "duplicate": False,
                         }
                     ],
                     "target_email_list": targets,

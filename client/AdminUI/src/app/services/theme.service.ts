@@ -1,4 +1,3 @@
-
 import { Injectable, EventEmitter } from '@angular/core';
 
 export interface SiteTheme {
@@ -15,16 +14,18 @@ export class ThemeService {
 
   storeTheme(isDark: boolean) {
     try {
-        localStorage.setItem(ThemeService.storageKey, isDark.toString());
-        ThemeService.themeIsDark = isDark;
-    } catch { }
+      localStorage.setItem(ThemeService.storageKey, isDark.toString());
+      ThemeService.themeIsDark = isDark;
+    } catch {}
 
     this.onThemeUpdate.emit(ThemeService.themeIsDark);
   }
 
   getStoredTheme(): boolean | null {
     try {
-      return localStorage.getItem(ThemeService.storageKey) == "true" ? true : false;
+      return localStorage.getItem(ThemeService.storageKey) == 'true'
+        ? true
+        : false;
     } catch {
       return null;
     }
@@ -33,6 +34,6 @@ export class ThemeService {
   clearStorage() {
     try {
       localStorage.removeItem(ThemeService.storageKey);
-    } catch { }
+    } catch {}
   }
 }

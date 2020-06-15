@@ -6,13 +6,11 @@ import logging
 import uuid
 
 # Third-Party Libraries
-from database.service import Service
-from django.conf import settings
-
-
 # Models
 from api.models.subscription_models import SubscriptionModel
 from api.models.template_models import TemplateModel
+from database.service import Service
+from django.conf import settings
 
 logger = logging.getLogger(__name__)
 
@@ -60,7 +58,9 @@ def get_list(parameters, collection, model, validation_model, fields=None):
     This handles getting the data from the db.
     """
     service, loop = __get_service_loop(collection, model, validation_model)
-    document_list = loop.run_until_complete(service.filter_list(parameters=parameters,fields=fields))
+    document_list = loop.run_until_complete(
+        service.filter_list(parameters=parameters, fields=fields)
+    )
     return document_list
 
 
@@ -106,8 +106,8 @@ def update_single(uuid, put_data, collection, model, validation_model):
     if isinstance(model, TemplateModel):
         put_data["template_uuid"] = uuid
     elif isinstance(model, SubscriptionModel):
-        put_data['subscription_uuid'] = uuid
-    
+        put_data["subscription_uuid"] = uuid
+
     put_data["last_updated_by"] = current_user
     put_data["lub_timestamp"] = updated_timestamp
 

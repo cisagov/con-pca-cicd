@@ -111,6 +111,7 @@ class GoPhishTimelineModel(Model):
     details = StringType()
     duplicate = BooleanType()
 
+
 class PhishingResultsModel(Model):
     """
     This is the Cycle Model.
@@ -123,7 +124,8 @@ class PhishingResultsModel(Model):
     clicked = IntType()
     submitted = IntType()
     reported = IntType()
-    
+
+
 class GoPhishCampaignsModel(Model):
     """
     This is the GoPhish Campaigns Model.
@@ -160,6 +162,7 @@ class GoPhishCampaignsModel(Model):
     groups = ListType(ModelType(GoPhishGroupModel))
     timeline = ListType(ModelType(GoPhishTimelineModel))
     target_email_list = ListType(ModelType(SubscriptionTargetModel))
+
 
 class CycleModel(Model):
     """
@@ -221,4 +224,3 @@ def validate_subscription(data_object):
     This shows basic validation for the model.
     """
     return SubscriptionModel(data_object).validate()
-

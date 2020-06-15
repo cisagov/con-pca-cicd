@@ -37,46 +37,47 @@ class IncomingWebhookView(APIView):
     def post(self, request):
         """Post method."""
         data = request.data.copy()
-        logger.debug(f"webhook post: campaign - {data['campaign_id']} | message - {data['message']}")
+        logger.debug(
+            f"webhook post: campaign - {data['campaign_id']} | message - {data['message']}"
+        )
         print("WEB HOOK HIT------------------------------------------")
         print(data)
         return self.__handle_webhook_data(data)
 
     def __update_phishing_results(self, webhook_data, phishing_result):
         """
-        Update phishing result data based of provided webhook data
+        Update phishing result data based of provided webhook data.
 
         Accepts the webhook data to update off of, and the phishing reults to update
         """
         if webhook_data["message"] == "Email Sent":
-            phishing_result["sent"] += 1 
+            phishing_result["sent"] += 1
         if webhook_data["message"] == "Email Opened":
-            phishing_result["opened"] += 1 
+            phishing_result["opened"] += 1
         if webhook_data["message"] == "Clicked Link":
-            phishing_result["clicked"] += 1 
+            phishing_result["clicked"] += 1
         if webhook_data["message"] == "Submitted Data":
-            phishing_result["submitted"] += 1 
+            phishing_result["submitted"] += 1
         if webhook_data["message"] == "Email Reported":
-            phishing_result["reported"] += 1 
-
-            
+            phishing_result["reported"] += 1
         return phishing_result
 
     def __update_cycle(self, webhook_data, subscription):
         for cycle in subscription["cycles"]:
             if cycle["active"]:
-                self.__update_phishing_results(webhook_data,cycle["phish_results"])
+                self.__update_phishing_results(webhook_data, cycle["phish_results"])
 
-        
-    def is_duplicate_timeline_entry(self,timeline, webhook_data):
+    def is_duplicate_timeline_entry(self, timeline, webhook_data):
+        """
+        Check if webhook data is already registered in the timeline data.
+        """
         for moment in timeline:
-            if moment["message"] == webhook_data["message"] and moment["email"] == webhook_data["email"]:
-                print("IS MOST DEFINITLY A DUPLICATE")
+            if (
+                moment["message"] == webhook_data["message"]
+                and moment["email"] == webhook_data["email"]
+            ):
                 return True
-        print("IS NOT DUPLICATE")
         return False
-
-
 
     def __handle_webhook_data(self, data):
         """
@@ -121,7 +122,9 @@ class IncomingWebhookView(APIView):
                 gophish_campaign_data = gophish_campaign_serialized.data
                 for campaign in subscription["gophish_campaign_list"]:
                     if campaign["campaign_id"] == seralized_data["campaign_id"]:
-                        is_duplicate = self.is_duplicate_timeline_entry(campaign["timeline"], seralized_data)
+                        is_duplicate = self.is_duplicate_timeline_entry(
+                            campaign["timeline"], seralized_data
+                        )
                         campaign["timeline"].append(
                             {
                                 "email": seralized_data["email"],
@@ -132,11 +135,13 @@ class IncomingWebhookView(APIView):
                             }
                         )
                         if not is_duplicate:
-                            self.__update_phishing_results(data,campaign["phish_results"])
-                            self.__update_cycle(data,subscription)
+                            self.__update_phishing_results(
+                                data, campaign["phish_results"]
+                            )
+                            self.__update_cycle(data, subscription)
                         campaign["results"] = gophish_campaign_data["results"]
                         campaign["status"] = gophish_campaign_data["status"]
-      
+
             updated_response = update_single_webhook(
                 subscription=subscription,
                 collection="subscription",

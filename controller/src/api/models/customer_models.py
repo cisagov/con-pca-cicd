@@ -6,13 +6,13 @@ These are not Django Models, there are created using Schematics Models
 # Third-Party Libraries
 from database.repository.models import Model
 from database.repository.types import (
+    BooleanType,
     DateTimeType,
     EmailType,
     ListType,
     ModelType,
     StringType,
     UUIDType,
-    BooleanType
 )
 
 
@@ -37,6 +37,7 @@ class CustomerContactModel(Model):
     email = EmailType(required=True)
     notes = StringType()
     active = BooleanType(required=True)
+
 
 class CustomerModel(Model):
     """
@@ -66,6 +67,7 @@ class CustomerModel(Model):
     last_updated_by = StringType()
     lub_timestamp = DateTimeType()
 
+
 class TestModel(Model):
     """
     This is the Customer Model.
@@ -81,6 +83,7 @@ class TestModel(Model):
     sector = StringType()
     industry = StringType()
 
+
 def validate_customer(data_object):
     """
     This is an the validate_subscription.
@@ -88,6 +91,7 @@ def validate_customer(data_object):
     This shows basic validation for the model.
     """
     return CustomerModel(data_object).validate()
+
 
 def validate_test(data_object):
     """

@@ -1,18 +1,18 @@
+# Standard Python Libraries
 from datetime import datetime, timedelta
 
-from celery.utils.log import get_logger
+# Third-Party Libraries
 from celery.result import AsyncResult
 from celery.task.control import revoke
-
+from celery.utils.log import get_logger
+from config.celery import app
 from django.views.decorators.csrf import csrf_exempt
+from drf_yasg.utils import swagger_auto_schema
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from drf_yasg.utils import swagger_auto_schema
 
-from config.celery import app
-from .tasks import subscription_report
 from .serializers import SubscriptionReportSerializer, TaskListSerializer
-
+from .tasks import subscription_report
 
 logger = get_logger(__name__)
 inspect = app.control.inspect()
