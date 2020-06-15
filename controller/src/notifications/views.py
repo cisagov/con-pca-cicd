@@ -7,25 +7,21 @@ contacts about reports and subscription updates.
 
 
 # Standard Python Libraries
-<<<<<<< HEAD
-=======
-# Standard Libraries
->>>>>>> adding exists to db uitls
 from datetime import datetime
 from email.mime.image import MIMEImage
 
+# Third-Party Libraries
+# Local Libraries
 # Django Libraries
+from api.models.dhs_models import DHSContactModel, validate_dhs_contact
+from api.utils.db_utils import get_single
 from django.conf import settings
 from django.contrib.staticfiles.storage import staticfiles_storage
 from django.core.files.storage import FileSystemStorage
 from django.core.mail.message import EmailMultiAlternatives
 from django.template.loader import render_to_string
-
-# Local Libraries
-from api.models.dhs_models import DHSContactModel, validate_dhs_contact
 from notifications.utils import get_notification
 from weasyprint import HTML
-from api.utils.db_utils import get_single
 
 
 class ReportsEmailSender:
@@ -113,6 +109,7 @@ class SubscriptionNotificationEmailSender:
                 end_date = datetime.strptime(end_date, "%Y-%m-%dT%H:%M:%S").strftime(
                     "%d %B, %Y"
                 )
+
         except AttributeError:
             # datetime is a string and needs to be converted and reformated
             string_start_date = self.subscription.get("start_date")
@@ -124,7 +121,7 @@ class SubscriptionNotificationEmailSender:
 
         start_date = self.subscription.get("start_date").strftime("%d %B, %Y")
         end_date = self.subscription.get("end_date").strftime("%d %B, %Y")
-        
+
         return {
             "first_name": first_name,
             "last_name": last_name,
