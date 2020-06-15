@@ -8,7 +8,7 @@ services:
     image: pca-web-prod:1.0
     restart: unless-stopped
     ports:
-      - "80:80"
+      - "4200:80"
     networks:
       - frontend
     env_file:
