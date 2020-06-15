@@ -54,6 +54,7 @@ import { CustomerDialogComponent } from './components/dialogs/customer-dialog/cu
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { AlertComponent } from './components/dialogs/alert/alert.component';
 import { SafePipe } from './helper/safe.pipe';
+import { SvgTimelineComponent } from './components/subscriptions/svg-timeline/svg-timeline.component';
 
 
 export function app_Init(settingsHttpService: SettingsHttpService) {
@@ -97,6 +98,7 @@ export function app_Init(settingsHttpService: SettingsHttpService) {
     CustomerDialogComponent,
     AlertComponent,
     SafePipe,
+    SvgTimelineComponent,
   ],
   imports: [
     BrowserModule,
