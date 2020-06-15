@@ -34,20 +34,21 @@ export class CampaignTimelineItem {
 export interface SubscriptionClicksModel {}
 
 export class Subscription {
-  active: boolean;
-  archived: boolean;
-  customer_uuid: string;
-  keywords: string;
-  lub_timestamp: Date;
-  manually_stopped: boolean;
-  name: string;
-  primary_contact: Contact;
-  start_date: Date;
-  status: string;
-  subscription_uuid: string;
-  url: string;
-  target_email_list: Target[] = [];
-  gophish_campaign_list: GoPhishCampaignModel[];
+    active: boolean;
+    archived: boolean;
+    customer_uuid: string;
+    keywords: string;
+    lub_timestamp: Date;
+    manually_stopped: boolean;
+    name: string;
+    primary_contact: Contact;
+    dhs_contact_uuid: string;
+    start_date: Date;
+    status: string;
+    subscription_uuid: string;
+    url: string;
+    target_email_list: Target[] = [];
+    gophish_campaign_list: GoPhishCampaignModel[];
 
   /**
    * Converts a string with CSV lines into Targets.

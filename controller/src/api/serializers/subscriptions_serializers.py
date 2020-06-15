@@ -128,7 +128,7 @@ class SubscriptionGetSerializer(serializers.Serializer):
     end_date = serializers.DateTimeField(required=False)
     gophish_campaign_list = GoPhishCampaignsSerializer(many=True)
     primary_contact = CustomerContactSerializer()
-    dhs_primary_contact = CustomerContactSerializer()
+    dhs_contact_uuid = serializers.UUIDField(required=False)
     status = serializers.CharField(max_length=100)
     target_email_list = SubscriptionTargetSerializer(many=True)
     templates_selected_uuid_list = serializers.ListField(required=False)
@@ -157,6 +157,7 @@ class SubscriptionPostSerializer(serializers.Serializer):
     end_date = serializers.DateTimeField(required=False)
     gophish_campaign_list = GoPhishCampaignsSerializer(many=True)
     primary_contact = CustomerContactSerializer()
+    dhs_contact_uuid = serializers.UUIDField(required=False)
     status = serializers.CharField(max_length=100)
     target_email_list = SubscriptionTargetSerializer(many=True)
     templates_selected_uuid_list = serializers.ListField()
@@ -190,6 +191,7 @@ class SubscriptionPatchSerializer(serializers.Serializer):
     end_date = serializers.DateTimeField(required=False)
     gophish_campaign_list = GoPhishCampaignsSerializer(required=False, many=True)
     primary_contact = CustomerContactSerializer(required=False)
+    dhs_contact_uuid = serializers.UUIDField(required=False)
     status = serializers.CharField(required=False, max_length=100)
     target_email_list = SubscriptionTargetSerializer(required=False, many=True)
     templates_selected_uuid_list = serializers.ListField(required=False)
@@ -213,6 +215,7 @@ class SubscriptionPatchResponseSerializer(serializers.Serializer):
     end_date = serializers.DateTimeField()
     gophish_campaign_list = GoPhishCampaignsSerializer(many=True)
     primary_contact = CustomerContactSerializer()
+    dhs_contact_uuid = serializers.UUIDField(required=False)
     status = serializers.CharField(max_length=100)
     target_email_list = SubscriptionTargetSerializer(many=True)
     templates_selected_uuid_list = serializers.ListField(required=False)
@@ -233,3 +236,28 @@ class SubscriptionDeleteResponseSerializer(serializers.Serializer):
     """
 
     subscription_uuid = serializers.UUIDField()
+
+
+class SubscriptionQuerySerializer(serializers.Serializer):
+    """
+    This is the Subscription Query Serializer.
+
+    This is a formats query coming into for searching db.
+    """
+
+    customer_uuid = serializers.UUIDField()
+    name = serializers.CharField(required=True, max_length=100)
+    url = serializers.CharField(required=True, max_length=100)
+    keywords = serializers.CharField(max_length=100)
+    start_date = serializers.DateTimeField()
+    end_date = serializers.DateTimeField(required=False)
+    status = serializers.CharField(max_length=100)
+    templates_selected_uuid_list = serializers.ListField(required=False)
+    dhs_contact_uuid = serializers.UUIDField(required=False)
+    active = serializers.BooleanField()
+    archived = serializers.BooleanField(default=False)
+    manually_stopped = serializers.BooleanField(default=False)
+    created_by = serializers.CharField(max_length=100)
+    cb_timestamp = serializers.DateTimeField()
+    last_updated_by = serializers.CharField(max_length=100)
+    lub_timestamp = serializers.DateTimeField()

@@ -43,6 +43,7 @@ from api.utils.subscription_utils import (
 from api.utils.template_utils import format_ztime, personalize_template
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
+from notifications.views import SubscriptionNotificationEmailSender
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -145,6 +146,7 @@ class SubscriptionsListView(APIView):
         if len(subscription_list) == 0:
             # If no subscription was created, create first one:
             # {customer['identifier']}_1.1
+
             base_name = f"{customer['identifier']}_1.1"
 
         else:
@@ -242,43 +244,50 @@ class SubscriptionsListView(APIView):
             index += 1
 
         # Data for GoPhish
+
         # create campaigns
         group_number = 1
         gophish_campaign_list = []
-        groups = campaign_manager.get("user_group")
-        group_names = []
-        for group in groups:
-            print(group)
-            group_names.append(group.name)
+        existing_user_groups = [
+            group.name for group in campaign_manager.get("user_group")
+        ]
 
         for campaign_info in campaign_data_list:
-            campaign_group = f"{base_name}.Targets.{group_number}"
-            # Only necesary if an error occurs during the subscription creation process.
-            # Checks against existing target groups and ensures that the newly created group is unique
-            while campaign_group in group_names:
-                name_break_down = campaign_group.split(".")
-                if len(name_break_down) == 4:
-                    campaign_group = f"{campaign_group}.1"
-                else:
-                    name_length = len(name_break_down[4]) + 1
-                    campaign_group = (
-                        f"{campaign_group[:-name_length]}.{int(name_break_down[4]) + 1}"
-                    )
+            group_name = f"{post_data['name']}.Targets.{group_number}"
             campaign_info["name"] = f"{post_data['name']}.{group_number}"
-            campaign_info["deception_level"] = group_number
-            target_group = campaign_manager.create(
-                "user_group",
-                group_name=campaign_group,
-                target_list=campaign_info["targets"],
-            )
-            gophish_campaign_list.extend(
-                self.__create_and_save_campaigns(
-                    campaign_info, target_group, landing_page, end_date
+
+            if group_name not in existing_user_groups:
+                group_number += 1
+                target_group = campaign_manager.create(
+                    "user_group",
+                    group_name=group_name,
+                    target_list=campaign_info["targets"],
                 )
-            )
-            group_number += 1
+                gophish_campaign_list.extend(
+                    self.__create_and_save_campaigns(
+                        campaign_info, target_group, landing_page, end_date
+                    )
+                )
 
         post_data["gophish_campaign_list"] = gophish_campaign_list
+        # check if today is the start date of sub
+        try:
+            # Format inbound 2020-03-10T09:30:25
+            start_date_datetime = datetime.strptime(start_date, "%Y-%m-%dT%H:%M:%S")
+        except:
+            # Format inbound 2020-03-10T09:30:25.812Z
+            start_date_datetime = datetime.strptime(start_date, "%Y-%m-%dT%H:%M:%S.%fZ")
+
+        if start_date_datetime.date() <= datetime.today().date():
+            sender = SubscriptionNotificationEmailSender(
+                post_data, "subscription_started"
+            )
+            sender.send()
+            post_data["status"] = "In Progress"
+            logger.info("Subscription Notification email sent")
+        else:
+            post_data["status"] = "Queued"
+
         post_data["end_date"] = end_date_str
         campaigns_in_cycle = []
         for c in gophish_campaign_list:

@@ -3,18 +3,14 @@
     <!-- SEARCH BAR -->
     <mat-form-field class="d-flex flex-column w-100" appearance="outline">
       <mat-label>Search</mat-label>
-      <input
-        [(ngModel)]="search_input"
-        (keyup)="filterTemplates($event.target.value)"
-        matInput
-        placeholder="Search"
-      />
+      <input [(ngModel)]="search_input" (keyup)="filterTemplates($event.target.value)" matInput placeholder="Search" />
+      <mat-icon matSuffix>search</mat-icon>
     </mat-form-field>
 
     <!-- CREATE TEMPLATE -->
     <div class="d-inline-flex flex-column ml-2">
       <button mat-raised-button color="primary" routerLink="/templatemanager">
-        Create New
+        New Template
       </button>
 
       <mat-slide-toggle

@@ -8,10 +8,12 @@ import { MatDialogRef } from '@angular/material/dialog';
   host: { class: 'd-flex flex-column flex-11a' }
 })
 export class ConfirmComponent implements OnInit {
+
   public title = 'Please Confirm';
   public confirmMessage: string;
 
-  constructor(public dialogRef: MatDialogRef<ConfirmComponent>) {}
+  constructor(public dialogRef: MatDialogRef<ConfirmComponent>) {
+  }
 
   /**
    *

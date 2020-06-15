@@ -1,18 +1,22 @@
-# Standard Python Libraries
+# Python Standard Libaries
 from datetime import datetime, timedelta
 
-# Third-Party Libraries
+# Django Libraries
+from django.views.decorators.csrf import csrf_exempt
+
+# Third Party Libraries
+from celery.utils.log import get_logger
 from celery.result import AsyncResult
 from celery.task.control import revoke
-from celery.utils.log import get_logger
-from config.celery import app
-from django.views.decorators.csrf import csrf_exempt
-from drf_yasg.utils import swagger_auto_schema
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from drf_yasg.utils import swagger_auto_schema
+from config.celery import app
 
+# Local Libraries
+from .tasks import email_subscription_report
 from .serializers import SubscriptionReportSerializer, TaskListSerializer
-from .tasks import subscription_report
+
 
 logger = get_logger(__name__)
 inspect = app.control.inspect()
@@ -52,12 +56,24 @@ class TaskListView(APIView):
         triggered by a GoPhish callback once a subscription has been created.
         """
         data = request.data
-        subscription_uuid = data.get("subscription_uuid")
-        # Execute task in 90 days from campaign launch
-        ninety_days = datetime.utcnow() + timedelta(days=90)
+
+        subscription_uuid = data.get("subscription_uuid", None)
+        message_type = data.get("message_type", None)
+
+        send_date = None
+        if message_type == "monthly_report":
+            # Execute task in 30 days from campaign launch
+            send_date = datetime.utcnow() + timedelta(days=30)
+        elif message_type == "quarterly_report":
+            # Execute task in 90 days from campaign launch
+            send_date = datetime.utcnow() + timedelta(days=90)
+        elif message_type == "yearly_report":
+            # Execute task in 255 days from campaign launch
+            send_date = datetime.utcnow() + timedelta(days=365)
+
         try:
-            task = subscription_report.apply_async(
-                args=[subscription_uuid], eta=ninety_days
+            task = email_subscription_report.apply_async(
+                args=[subscription_uuid, message_type], eta=send_date
             )
         except add.OperationalError as exc:
             logger.exception("Subscription task raised: %r", exc)
@@ -79,7 +95,7 @@ class TaskView(APIView):
         result = {
             "task_id": task_id,
             "task_status": task_result.status,
-            "task_result": task_result.result,
+            "task_result": str(task_result.result),
         }
 
         return Response(result)

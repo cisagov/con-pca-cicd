@@ -7,6 +7,10 @@ serializing data coming from the db into a request response.
 # Third-Party Libraries
 from rest_framework import serializers
 
+class HeaderSerializer(serializers.Serializer):
+    key = serializers.CharField()
+    value = serializers.CharField()
+
 
 class SendingProfileSerializer(serializers.Serializer):
     """
@@ -22,7 +26,7 @@ class SendingProfileSerializer(serializers.Serializer):
     from_address = serializers.CharField()
     ignore_cert_errors = serializers.BooleanField()
     modified_date = serializers.CharField()
-    # headers = serializers.CharField()
+    headers = HeaderSerializer(many=True)
 
 
 class SendingProfilePatchSerializer(serializers.Serializer):
@@ -38,8 +42,8 @@ class SendingProfilePatchSerializer(serializers.Serializer):
     from_address = serializers.CharField(required=False)
     ignore_cert_errors = serializers.BooleanField(required=False)
     modified_date = serializers.CharField(required=False)
-    # headers = serializers.CharField(required=False)
-
+    headers = HeaderSerializer(many=True)
+    
 
 class SendingProfilePatchResponseSerializer(serializers.Serializer):
     """
@@ -55,7 +59,7 @@ class SendingProfilePatchResponseSerializer(serializers.Serializer):
     from_address = serializers.CharField()
     ignore_cert_errors = serializers.BooleanField()
     modified_date = serializers.CharField()
-    # headers = serializers.CharField()
+    headers = HeaderSerializer(many=True)
 
 
 class SendingProfileDeleteSerializer(serializers.Serializer):

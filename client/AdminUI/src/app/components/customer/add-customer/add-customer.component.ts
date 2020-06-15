@@ -1,18 +1,12 @@
-import { Component, OnInit } from '@angular/core';
-import {
-  FormControl,
-  NgForm,
-  FormGroupDirective,
-  Validators,
-  FormGroup
-} from '@angular/forms';
+import { Component, OnInit, Input, OnDestroy, Inject } from '@angular/core';
+import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { MyErrorStateMatcher } from '../../../helper/ErrorStateMatcher';
 import { SubscriptionService } from 'src/app/services/subscription.service';
 import { Contact, Customer } from 'src/app/models/customer.model';
 import { Guid } from 'guid-typescript';
 import { Router, ActivatedRoute } from '@angular/router';
 import { CustomerService } from 'src/app/services/customer.service';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { LayoutMainService } from 'src/app/services/layout-main.service';
 import { Subscription } from 'rxjs';
@@ -22,22 +16,18 @@ import { Subscription } from 'rxjs';
   templateUrl: './add-customer.component.html',
   styleUrls: ['./add-customer.component.scss']
 })
-export class AddCustomerComponent implements OnInit {
+export class AddCustomerComponent implements OnInit, OnDestroy {
+
+  @Input() inDialog: boolean;
+
   model: any;
-  addContact: boolean = false;
+  addContact = false;
   contactDataSource: any = [];
-  displayedColumns: string[] = [
-    'name',
-    'title',
-    'email',
-    'mobile_phone',
-    'office_phone',
-    'action'
-  ];
+  displayedColumns: string[] = ['name', 'title', 'email', 'mobile_phone', 'office_phone', 'action'];
   contactError = '';
   orgError = '';
   contacts = new MatTableDataSource<Contact>();
-  isEdit: boolean = false;
+  isEdit = false;
   tempEditContact: Contact = null;
 
   matchCustomerName = new MyErrorStateMatcher();
@@ -72,7 +62,7 @@ export class AddCustomerComponent implements OnInit {
     email: new FormControl('', [Validators.required, Validators.email]),
     office_phone: new FormControl(''),
     mobile_phone: new FormControl(''),
-    contactNotes: new FormControl('')
+    contactNotes: new FormControl(''),
   });
 
   // List of angular subscriptions, unsubscribed to on delete
@@ -96,14 +86,24 @@ export class AddCustomerComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
+    if (this.dialog.openDialogs.length > 0) {
+      this.inDialog = true;
+    } else {
+      this.inDialog = false;
+    }
+
+    console.log(this.inDialog);
+
+
     this.angularSubscriptions.push(
       this.route.params.subscribe(params => {
         this.customer_uuid = params['customerId'];
-        if (this.customer_uuid != undefined) {
+        if (this.customer_uuid !== undefined) {
           this.getCustomer();
         } else {
           this.getSectorList();
-          //Use preset empty form
+          // Use preset empty form
         }
       })
     );
@@ -114,18 +114,18 @@ export class AddCustomerComponent implements OnInit {
       (data: any) => {
         if (data.customer_uuid != null) {
           this.customer = data as Customer;
-          this.setCustomerForm(this.customer);
+          this.setCustomerForm(this.customer)
           this.setContacts(this.customer.contact_list as Contact[]);
           this.getSectorList();
         } else {
           this.orgError = 'Specified customer UUID not found';
         }
       },
-      error => {
+      (error) => {
         this.orgError = 'Failed To load customer';
-      }
-    );
+      });
   }
+
   getSectorList() {
     this.customerSvc.getSectorList().subscribe(
       (data: any) => {
@@ -136,10 +136,9 @@ export class AddCustomerComponent implements OnInit {
           this.orgError = 'Error retreiving sector/industry list';
         }
       },
-      error => {
+      (error) => {
         this.orgError = 'Error retreiving sector/industry list';
-      }
-    );
+      });
   }
 
   setCustomerForm(customer: Customer) {
@@ -153,9 +152,10 @@ export class AddCustomerComponent implements OnInit {
       state: customer.state,
       zip: customer.zip_code,
       sector: customer.sector,
-      industry: customer.industry
+      industry: customer.industry,
     });
   }
+
   setContacts(contactsList: Contact[]) {
     var newContacts = Array<Contact>();
     contactsList.forEach(contact => {
@@ -176,12 +176,14 @@ export class AddCustomerComponent implements OnInit {
   }
 
   isExistingCustomer(): boolean {
-    if (this.customer_uuid) return true;
+    if (this.customer_uuid) {
+      return true;
+    }
     return false;
   }
 
   ngOnDestroy() {
-    //Unsubscribe from all subscriptions
+    // Unsubscribe from all subscriptions
     this.angularSubscriptions.forEach(sub => {
       sub.unsubscribe();
     });
@@ -193,7 +195,7 @@ export class AddCustomerComponent implements OnInit {
 
   pushCustomer() {
     if (this.customerFormGroup.valid && this.contacts.data.length > 0) {
-      var customer: Customer = {
+      const customer: Customer = {
         customer_uuid: '',
         name: this.customerFormGroup.controls['customerName'].value,
         identifier: this.customerFormGroup.controls['customerIdentifier'].value,
@@ -207,26 +209,28 @@ export class AddCustomerComponent implements OnInit {
         customer_type: this.customerFormGroup.controls['customerType'].value,
         contact_list: this.contacts.data
       };
-      //If editing existing customer
+
       if (this.customer_uuid != null) {
+        // If editing existing customer
         customer.customer_uuid = this.customer_uuid;
-        this.angularSubscriptions.push(
-          this.customerSvc.patchCustomer(customer).subscribe((data: any) => {
-            this.router.navigate(['/customers']);
-          })
-        );
-      }
-      //else creating a new customer
-      else {
+        this.angularSubscriptions.push(this.customerSvc.patchCustomer(customer).subscribe((data: any) => {
+          this.router.navigate(['/customers']);
+        }));
+      } else {
+        // else creating a new customer
         this.customerSvc.addCustomer(customer).subscribe(
           (data: any) => {
-            this.cancelCustomer();
+            // if this customer was added inside a dialog, then we are in the
+            // middle of a subscription -- selected the customer
+            if (this.inDialog) {
+              this.customerSvc.selectedCustomer = data.customer_uuid;
+            } else {
+              this.cancelCustomer();
+            }
             this.dialog.closeAll();
-          },
-          error => {
+          }, (error) => {
             this.orgError = 'Error creating customer';
-          }
-        );
+          });
       }
     } else if (!this.customerFormGroup.valid) {
       this.orgError = 'Fix required fields';
@@ -242,7 +246,7 @@ export class AddCustomerComponent implements OnInit {
         this.tempEditContact = null;
         this.isEdit = false;
       }
-      var contact: Contact = {
+      const contact: Contact = {
         office_phone: this.contactFormGroup.controls['office_phone'].value,
         mobile_phone: this.contactFormGroup.controls['mobile_phone'].value,
         email: this.contactFormGroup.controls['email'].value,
@@ -252,11 +256,12 @@ export class AddCustomerComponent implements OnInit {
         notes: this.contactFormGroup.controls['contactNotes'].value,
         active: true
       };
-      var previousContacts = this.contacts.data;
+      const previousContacts = this.contacts.data;
       previousContacts.push(contact);
       this.contacts.data = previousContacts;
       this.clearContact();
-    } else {
+    }
+    else {
       this.contactError = 'Fix required fields.';
     }
   }
@@ -281,7 +286,7 @@ export class AddCustomerComponent implements OnInit {
   removeContact(contact: Contact) {
     const index = this.contacts.data.findIndex(d => d === contact);
     this.contacts.data.splice(index, 1);
-    let tempContact = this.contacts;
+    const tempContact = this.contacts;
     this.contacts = new MatTableDataSource<Contact>(tempContact.data);
   }
 
@@ -311,7 +316,9 @@ export class AddCustomerComponent implements OnInit {
       this.addContact = true;
     } else {
       this.addContact = this.addContact ? false : true;
-      if (!this.addContact) this.isEdit = false;
+      if (!this.addContact) {
+        this.isEdit = false;
+      }
       if (!this.addContact) {
         this.clearContact();
       }
@@ -323,27 +330,24 @@ export class AddCustomerComponent implements OnInit {
   }
 
   sectorChange(event) {
-    this.setIndustryList();
+    this.setIndustryList()
     this.customerFormGroup.patchValue({
       industry: null
     });
   }
+
   setIndustryList() {
     if (this.sectorSelected()) {
-      let sector = this.sectorList.filter(
-        x => x.name == this.customerFormGroup.controls['sector'].value
-      );
+      const sector = this.sectorList.filter(x => x.name === this.customerFormGroup.controls['sector'].value)
       this.industryList = sector[0].industries;
-      console.log(this.industryList);
     }
   }
 
   sectorSelected() {
-    if (this.customerFormGroup.controls['sector'].value != null) {
-      return true;
-    }
+    if (this.customerFormGroup.controls['sector'].value != null) { return true; }
     return false;
   }
+
   customerValid() {
     return this.customerFormGroup.valid && this.contacts.data.length > 0;
   }

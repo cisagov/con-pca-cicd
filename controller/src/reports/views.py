@@ -67,14 +67,11 @@ class CycleReports(TemplateView):
             subscription_uuid, "subscription", SubscriptionModel, validate_subscription
         )
         _customer = get_single(
-            subscription["customer_uuid"], "customer", CustomerModel, validate_customer
+            subscription.get("customer_uuid"),
+            "customer",
+            CustomerModel,
+            validate_customer,
         )
-        # TODO Pull start date from URL so that previous cycles can be generated if necesary
-        # For testing, pull the start date from the first active cycle in the specified subscription
-        # for cycle in subscription["cycles"]:
-        #     if cycle["active"]:
-        #         print(f"SETTING START DATE (REPLACE WITH URL PARAMETER)-{cycle['start_date']}")
-        #         start_date = cycle["start_date"]
 
         company = {
             "name": _customer.get("name"),
@@ -158,6 +155,5 @@ class CycleReports(TemplateView):
         context["region_stats"] = region_stats
         context["subscription_stats"] = subscription_stats
 
-        print(context)
 
         return context

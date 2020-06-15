@@ -11,6 +11,7 @@ from api.models.subscription_models import SubscriptionModel
 from api.models.template_models import TemplateModel
 from database.service import Service
 from django.conf import settings
+from api.models.dhs_models import DHSContactModel
 
 logger = logging.getLogger(__name__)
 
@@ -107,6 +108,8 @@ def update_single(uuid, put_data, collection, model, validation_model):
         put_data["template_uuid"] = uuid
     elif isinstance(model, SubscriptionModel):
         put_data["subscription_uuid"] = uuid
+    elif isinstance(model, DHSContactModel):
+        put_data["dhs_contact_uuid"] = uuid
 
     put_data["last_updated_by"] = current_user
     put_data["lub_timestamp"] = updated_timestamp

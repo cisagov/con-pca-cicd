@@ -170,3 +170,27 @@ class SectorGetSerializer(serializers.Serializer):
 
     name = serializers.CharField(max_length=250)
     industries = SectorIndustry(many=True)
+
+
+class CustomerQuerySerializer(serializers.Serializer):
+    """
+    This is the Customer Query Serializer.
+
+    This is sets queries we can run on db collection.
+    """
+
+    # user created fields
+    name = serializers.CharField(required=False)
+    identifier = serializers.CharField(required=False)
+    address_1 = serializers.CharField(required=False)
+    address_2 = serializers.CharField(required=False)
+    city = serializers.CharField(required=False)
+    state = serializers.CharField(required=False)
+    zip_code = serializers.CharField(required=False)
+    customer_type = serializers.CharField(max_length=250, required=False)
+    industry = serializers.CharField(required=False, max_length=250)
+    sector = serializers.CharField(required=False, max_length=250)
+    created_by = serializers.CharField(required=False)
+    cb_timestamp = serializers.DateTimeField(required=False)
+    last_updated_by = serializers.CharField(required=False)
+    lub_timestamp = serializers.DateTimeField(required=False)

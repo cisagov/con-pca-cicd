@@ -217,11 +217,27 @@ $theme-warn: mat-palette($mat-warn, main, lighter, darker);
 $theme: mat-light-theme($theme-primary, $theme-accent, $theme-warn);
 $altTheme: mat-dark-theme($theme-primary, $theme-accent, $theme-warn);
 
+
+@mixin additional-overrides($theme) {
+  $foreground: map-get($theme, 'foreground');
+  $background: map-get($theme, 'background');
+
+  .mat-row:hover, table.table-1 tr:not(:first-child):hover {    
+    background-color: map-get($background, 'hover') !important;
+  }
+
+  .cd-horizontal-timeline .events a {
+    color: map-get($foreground, 'text') !important;
+  }
+}
+
 // Theme Init
 @include angular-material-theme($theme);
+@include additional-overrides($theme);
 
 .theme-alternate {
   @include angular-material-theme($altTheme);
+  @include additional-overrides($altTheme);
 }
 
 // Specific component overrides, pieces that are not in line with the general theming
@@ -378,4 +394,10 @@ table.table-1 td {
 
 .table-btn-icon-size {
   font-size: 20px !important;
+}
+
+
+//////// Bootstrap-like atomic classes //////////////
+.pre-wrap {
+  white-space: pre-wrap !important;
 }

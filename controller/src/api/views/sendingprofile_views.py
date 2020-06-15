@@ -127,12 +127,9 @@ class SendingProfileView(APIView):
         sp.host = self.__setAttribute(sp.host, patch_data, "host")
         sp.username = self.__setAttribute(sp.username, patch_data, "username")
         sp.password = self.__setAttribute(sp.password, patch_data, "password")
-        sp.ignore_cert_errors = self.__setAttribute(
-            sp.ignore_cert_errors, patch_data, "ignore_cert_errors"
-        )
-        sp.from_address = self.__setAttribute(
-            sp.from_address, patch_data, "from_address"
-        )
+        sp.ignore_cert_errors = self.__setAttribute(sp.ignore_cert_errors, patch_data, "ignore_cert_errors")
+        sp.from_address = self.__setAttribute(sp.from_address, patch_data, "from_address")
+        sp.headers = self.__setAttribute(sp.headers, patch_data, "headers")
 
         campaign_manager.put_sending_profile(sp)
 

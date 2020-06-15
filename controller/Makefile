@@ -75,6 +75,10 @@ mi:
 hal:
 	radon hal ./src/ -e "*.venv*"
 
+# target: collectstatic - collects static files to serve
+collectstatic:
+	docker exec -it pca-api python manage.py collectstatic
+
 # target: build emails - build mjml files to html
 build_emails:
 	npm run build-emails

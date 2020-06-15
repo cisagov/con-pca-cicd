@@ -14,10 +14,10 @@ API = Gophish(API_KEY, host=URL, verify=False)
 SENDING_PROFILES = [
     {
         "name": "SMTP",
-        "host": os.environ.get("SMTP_HOST"),
-        "from_address": os.environ.get("SMTP_FROM"),
-        "username": os.environ.get("SMTP_USER"),
-        "password": os.environ.get("SMTP_PASS"),
+        "host": os.environ.get("GP_SMTP_HOST"),
+        "from_address": os.environ.get("GP_SMTP_FROM"),
+        "username": os.environ.get("GP_SMTP_USER"),
+        "password": os.environ.get("GP_SMTP_PASS"),
     },
 ]
 

@@ -15,6 +15,7 @@ from api.serializers.customer_serializers import (
     CustomerPatchSerializer,
     CustomerPostResponseSerializer,
     CustomerPostSerializer,
+    CustomerQuerySerializer,
     SectorGetSerializer,
 )
 from api.utils.db_utils import (
@@ -41,6 +42,7 @@ class CustomerListView(APIView):
     """
 
     @swagger_auto_schema(
+        query_serializer=CustomerQuerySerializer,
         responses={"200": CustomerGetSerializer, "400": "Bad Request"},
         security=[],
         operation_id="List of Customers",
@@ -48,7 +50,10 @@ class CustomerListView(APIView):
     )
     def get(self, request):
         """Get method."""
-        parameters = request.data.copy()
+        serializer = CustomerQuerySerializer(request.GET.dict())
+        parameters = serializer.data
+        if not parameters:
+            parameters = request.data.copy()
 
         customer_list = get_list(
             parameters, "customer", CustomerModel, validate_customer

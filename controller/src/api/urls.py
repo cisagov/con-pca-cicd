@@ -7,12 +7,13 @@ This lists all urls under the API app.
 from api.views import (
     campaign_views,
     customer_views,
-    image_views,
     report_views,
-    sendingprofile_views,
     subscription_views,
     template_views,
+    sendingprofile_views,
     webhook_views,
+    image_views,
+    dhs_views,
 )
 from django.urls import path
 from drf_yasg import openapi
@@ -137,5 +138,15 @@ urlpatterns = [
         "v1/sectorindustry/",
         customer_views.SectorIndustryView.as_view(),
         name="sector_industry_list",
+    ),
+    path(
+        "v1/dhscontacts/",
+        dhs_views.DHSContactListView.as_view(),
+        name="dhs_contact_list",
+    ),
+    path(
+        "v1/dhscontact/<dhs_contact_uuid>/",
+        dhs_views.DHSContactView.as_view(),
+        name="dhs_contact_get_api",
     ),
 ]

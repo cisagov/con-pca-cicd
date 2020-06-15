@@ -77,6 +77,30 @@ def main():
             print(err)
             pass
 
+    print("Creating dhs contacts")
+    dhs_contacts = json_data["dhs_contacts_data"]
+    created_dhs_contacts_uuids = []
+    for c in dhs_contacts:
+        resp = requests.post("http://localhost:8000/api/v1/dhscontacts/", json=c)
+        resp.raise_for_status()
+
+        try:
+            resp_json = resp.json()
+            uuid = resp_json["dhs_contact_uuid"]
+            print(f"created dhs contact uuid: {uuid}")
+        except Exception as e:
+            print(e)
+            pass
+
+        try:
+            resp_json = resp.json()
+            created_dhs_contact_uuid = resp_json["dhs_contact_uuid"]
+            print("created customer_uuid: {}".format(created_dhs_contact_uuid))
+            created_dhs_contacts_uuids.append(created_dhs_contact_uuid)
+        except Exception as err:
+            print(err)
+            pass
+
     print("Step 3/3: create subscriptions...")
 
     subscriptions = json_data["subscription_data"]
@@ -92,11 +116,25 @@ def main():
         except requests.exceptions.HTTPError as err:
             raise err
 
+    if not created_dhs_contacts_uuids:
+        print("dhs contacts already exist.. skipping")
+        try:
+            resp = requests.get("http://localhost:8000/api/v1/dhscontacts/")
+            dhs_contacts = resp.json()
+            created_dhs_contacts_uuids = [
+                contact["dhs_contact_uuid"] for contact in dhs_contacts
+            ]
+            resp.raise_for_status()
+        except requests.exceptions.HTTPError as err:
+            raise err
+
     customer = created_customer_uuids[0]
+    dhs_contact = created_dhs_contacts_uuids[0]
     created_subcription_uuids = []
 
     for subscription in subscriptions:
         subscription["customer_uuid"] = customer
+        subscription["dhs_contact_uuid"] = dhs_contact
         subscription["start_date"] = datetime.today().strftime(
             "%Y-%m-%dT%H:%M:%S"
         )  # 2020-03-10T09:30:25"

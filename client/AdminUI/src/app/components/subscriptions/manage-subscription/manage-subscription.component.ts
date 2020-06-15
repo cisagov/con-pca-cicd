@@ -1,20 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MatDialogConfig, MatDialog } from '@angular/material/dialog';
-import {
-  FormGroup,
-  FormControl,
-  FormBuilder,
-  Validators
-} from '@angular/forms';
+import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { SubscriptionService } from 'src/app/services/subscription.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Customer, Contact } from 'src/app/models/customer.model';
-import {
-  Subscription,
-  Target,
-  GoPhishCampaignModel,
-  TimelineItem
-} from 'src/app/models/subscription.model';
+import { Subscription, Target, GoPhishCampaignModel, TimelineItem } from 'src/app/models/subscription.model';
 import { Guid } from 'guid-typescript';
 import { UserService } from 'src/app/services/user.service';
 import { CustomerService } from 'src/app/services/customer.service';
@@ -23,6 +13,9 @@ import { XlsxToCsv } from 'src/app/helper/XlsxToCsv';
 import { ArchiveSubscriptionDialogComponent } from '../archive-subscription-dialog/archive-subscription-dialog.component';
 import * as moment from 'node_modules/moment/moment';
 import { LayoutMainService } from 'src/app/services/layout-main.service';
+import { CustomerDialogComponent } from '../../dialogs/customer-dialog/customer-dialog.component';
+import { AlertComponent } from '../../dialogs/alert/alert.component';
+
 
 @Component({
   selector: 'app-manage-subscription',
@@ -35,16 +28,19 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
   subscribeForm: FormGroup;
   submitted = false;
 
-  action_EDIT: string = 'edit';
-  action_CREATE: string = 'create';
-  action: string = this.action_EDIT;
+
+  actionEDIT = 'edit';
+  actionCREATE = 'create';
+  action: string = this.actionEDIT;
 
   // CREATE or EDIT
-  pageMode: string = 'CREATE';
+  pageMode = 'CREATE';
 
   subscription: Subscription;
   customer: Customer = new Customer();
   primaryContact: Contact = new Contact();
+  dhsContacts = [];
+  dhsContact: string;
 
   startDate: Date = new Date();
   startAt = new Date();
@@ -56,6 +52,7 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
   csvText: string;
 
   timelineItems: any[] = [];
+
 
   /**
    *
@@ -71,21 +68,25 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
     public layoutSvc: LayoutMainService
   ) {
     layoutSvc.setTitle('Subscription');
+    this.getDhsContacts();
   }
 
   /**
    * INIT
    */
   ngOnInit(): void {
+
     // build form
     this.subscribeForm = new FormGroup({
       selectedCustomerUuid: new FormControl('', Validators.required),
       primaryContact: new FormControl(null, Validators.required),
+      dhsContact: new FormControl(null, Validators.required),
       startDate: new FormControl(new Date()),
       url: new FormControl(''),
       keywords: new FormControl(''),
       csvText: new FormControl('', Validators.required)
     });
+
 
     this.pageMode = 'EDIT';
 
@@ -103,16 +104,15 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
   /**
    * convenience getter for easy access to form fields
    */
-  get f() {
-    return this.subscribeForm.controls;
-  }
+  get f() { return this.subscribeForm.controls; }
+
 
   /**
    * CREATE mode
    */
   loadPageForCreate(params: any) {
     this.pageMode = 'CREATE';
-    this.action = this.action_CREATE;
+    this.action = this.actionCREATE;
     let sub = this.subscriptionSvc.subscription;
     sub = new Subscription();
     this.subscription = sub;
@@ -127,24 +127,29 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
       this.subscribeForm.patchValue({
         selectedCustomerUuid: this.customerSvc.selectedCustomer
       });
-      this.customerSvc
-        .getCustomer(this.customerSvc.selectedCustomer)
-        .subscribe((data: Customer) => {
+      this.customerSvc.getCustomer(this.customerSvc.selectedCustomer).subscribe(
+        (data: Customer) => {
           this.customer = data;
           this.f.selectedCustomerUuid.setValue(this.customer.customer_uuid);
-        });
+        }
+      );
     }
+  }
+
+  getDhsContacts(){
+    this.subscriptionSvc.getDhsContacts().subscribe((data:any)=>{
+      this.dhsContacts = data;
+    });
   }
 
   /**
    * EDIT mode
    */
   loadPageForEdit(params: any) {
-    let sub = this.subscriptionSvc.subscription;
+    const sub = this.subscriptionSvc.subscription;
     sub.subscription_uuid = params.id;
 
-    this.subscriptionSvc
-      .getSubscription(sub.subscription_uuid)
+    this.subscriptionSvc.getSubscription(sub.subscription_uuid)
       .subscribe((s: Subscription) => {
         this.subscription = s;
         this.f.primaryContact.setValue(s.primary_contact.email);
@@ -157,8 +162,7 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
 
         this.buildSubscriptionTimeline(s);
 
-        this.customerSvc
-          .getCustomer(s.customer_uuid)
+        this.customerSvc.getCustomer(s.customer_uuid)
           .subscribe((c: Customer) => {
             this.customer = c;
           });
@@ -167,11 +171,10 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
 
   /**
    *
-   * @param customer_uuid
    */
-  loadContactsForCustomer(customer_uuid: string) {
+  loadContactsForCustomer(customerUuid: string) {
     // get the customer and contacts from the API
-    this.customerSvc.getCustomer(customer_uuid).subscribe((c: Customer) => {
+    this.customerSvc.getCustomer(customerUuid).subscribe((c: Customer) => {
       this.customer = c;
 
       this.customer.contact_list = this.customerSvc.getContactsForCustomer(c);
@@ -182,10 +185,9 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
   /**
    * Boils down all events in all campaigns in the subscription to a simple
    * series of events:  subscription start, cycle starts and today.
-   * @param s
    */
   buildSubscriptionTimeline(s: Subscription) {
-    let items: TimelineItem[] = [];
+    const items: TimelineItem[] = [];
 
     items.push({
       title: 'Subscription Started',
@@ -196,13 +198,11 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
 
     // now extract a simple timeline based on campaign events
     s.gophish_campaign_list.forEach((c: GoPhishCampaignModel) => {
-      for (let t of c.timeline) {
+      for (const t of c.timeline) {
+
         // ignore campaigns started on the subscription start date
-        if (
-          t.message.toLowerCase() == 'campaign created' &&
-          new Date(t.time).setHours(0, 0, 0, 0).valueOf() ==
-            new Date(s.start_date).setHours(0, 0, 0, 0).valueOf()
-        ) {
+        if (t.message.toLowerCase() === 'campaign created'
+          && new Date(t.time).setHours(0, 0, 0, 0).valueOf() === new Date(s.start_date).setHours(0, 0, 0, 0).valueOf()) {
           continue;
         }
 
@@ -221,14 +221,10 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
     });
 
     // sort and number the events
-    let id: number = 0;
-    items
-      .sort(function(a, b) {
-        return a.date.unix() - b.date.unix();
-      })
-      .forEach(x => {
-        x.id = ++id;
-      });
+    let id = 0;
+    items.sort((a, b) => a.date.unix() - b.date.unix()).forEach(x => {
+      x.id = ++id;
+    });
 
     this.timelineItems = items;
   }
@@ -239,10 +235,10 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
    */
   public showCustomerDialog(): void {
     const dialogConfig = new MatDialogConfig();
-    dialogConfig.height = '80vh';
+    dialogConfig.maxHeight = '80vh';
     dialogConfig.width = '80vw';
     dialogConfig.data = {};
-    const dialogRef = this.dialog.open(CustomersComponent, dialogConfig);
+    const dialogRef = this.dialog.open(CustomerDialogComponent, dialogConfig);
 
     dialogRef.afterClosed().subscribe(value => {
       this.setCustomer();
@@ -253,9 +249,11 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
    * Shows Dialog for archiving a subscription
    */
   public showArchiveDialog(): void {
-    const dialogRef = this.dialog.open(ArchiveSubscriptionDialogComponent, {
+    const dialogRef = this.dialog.open(
+      ArchiveSubscriptionDialogComponent, {
       data: this.subscription
-    });
+    }
+    );
   }
 
   /**
@@ -265,32 +263,36 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
     if (!this.customer) {
       return;
     }
-    this.primaryContact = this.customer.contact_list.find(
-      x => x.email == e.value
-    );
+    this.primaryContact = this.customer.contact_list
+      .find(x => (x.email) === e.value);
     this.subscription.primary_contact = this.primaryContact;
     this.subscriptionSvc.subscription.primary_contact = this.primaryContact;
 
     // patch the subscription in real time if in edit mode
-    if (this.pageMode == 'EDIT') {
-      this.subscriptionSvc
-        .updatePrimaryContact(
-          this.subscription.subscription_uuid,
-          this.primaryContact
-        )
+    if (this.pageMode === 'EDIT') {
+      this.subscriptionSvc.updatePrimaryContact(this.subscription.subscription_uuid, this.primaryContact)
         .subscribe();
+    }
+  }
+
+  changeDhsContact(e: any) {
+    if (!this.dhsContact) {
+      return;
+    }
+    let contact = this.dhsContacts
+      .find(x => (x.dhs_contact_uuid) === e.value);
+    if(contact){
+      this.dhsContact = contact.dhs_contact_uuid;
+      this.subscription.dhs_contact_uuid = this.dhsContact;
     }
   }
 
   /**
    * Programatically clicks the corresponding file upload element.
-   * @param event
    */
   openFileBrowser(event: any) {
     event.preventDefault();
-    const element: HTMLElement = document.getElementById(
-      'csvUpload'
-    ) as HTMLElement;
+    const element: HTMLElement = document.getElementById('csvUpload') as HTMLElement;
     element.click();
   }
 
@@ -299,9 +301,9 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
    * @param e The 'file' event
    */
   fileSelect(e: any) {
-    let file: any = e.target.files[0];
+    const file: any = e.target.files[0];
 
-    let x = new XlsxToCsv();
+    const x = new XlsxToCsv();
     x.convert(file).then((xyz: string) => {
       this.csvText = xyz;
       this.f.csvText.setValue(xyz);
@@ -337,11 +339,11 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
 
     sub.customer_uuid = this.customer.customer_uuid;
     sub.primary_contact = this.primaryContact;
-
+    sub.dhs_contact_uuid = this.dhsContact;
     sub.active = true;
 
     sub.lub_timestamp = new Date();
-    sub.name = 'SC-1.' + this.customer.name + '.1.1'; //auto generated name
+    sub.name = 'SC-1.' + this.customer.name + '.1.1'; // auto generated name
     sub.start_date = this.startDate;
     sub.status = 'New Not Started';
 
@@ -351,28 +353,38 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
     sub.keywords = this.f.keywords.value;
 
     // set the target list
-    let csv = this.f.csvText.value;
+    const csv = this.f.csvText.value;
     sub.setTargetsFromCSV(csv);
 
     // call service with everything needed to start the subscription
     this.subscriptionSvc.submitSubscription(sub).subscribe(
       resp => {
-        alert('Your subscription was created as ' + sub.name);
+        this.dialog.open(AlertComponent, {
+          data: {
+            title: '',
+            messageText: 'Your subscription was created as ' + sub.name
+          }
+        });
+
         this.router.navigate(['subscriptions']);
       },
       error => {
-        alert('An error occurred submitting the subscription: ' + error.error);
-      }
-    );
+        this.dialog.open(AlertComponent, {
+          data: {
+            title: 'Error',
+            messageText: 'An error occurred submitting the subscription: ' + error.error
+          }
+        });
+      });
   }
+
+
 
   /**
    *
-   * @param date
-   * @param days
    */
   addDays(date, days) {
-    var result = new Date(date);
+    const result = new Date(date);
     result.setDate(result.getDate() + days);
     return result;
   }
