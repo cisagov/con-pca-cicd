@@ -54,8 +54,8 @@ pexpect==4.8.0
 pickleshare==0.7.5
 Pillow==7.1.2
 prompt-toolkit==3.0.5
-ptvsd==4.3.2
 ptyprocess==0.6.0
+ptvsd
 pycparser==2.20
 Pygments==2.6.1
 pymongo==3.10.1

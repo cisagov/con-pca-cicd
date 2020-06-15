@@ -6,10 +6,12 @@ This handles the api for all the Subscription urls.
 # Standard Python Libraries
 from datetime import datetime
 import logging
+import json
 
 # Third-Party Libraries
 # Local
 from api.manager import CampaignManager, TemplateManager
+from api.views.utils.subscription_utils import SubscriptionCreationManager
 from api.models.customer_models import CustomerModel, validate_customer
 from api.models.subscription_models import SubscriptionModel, validate_subscription
 from api.models.template_models import (
@@ -111,7 +113,7 @@ class SubscriptionsListView(APIView):
     def post(self, request, format=None):
         """Post method."""
         post_data = request.data.copy()
-
+        json.dumps(post_data)
         # get customer data
         customer = get_single(
             post_data["customer_uuid"], "customer", CustomerModel, validate_customer
@@ -124,17 +126,6 @@ class SubscriptionsListView(APIView):
 
         end_date = get_sub_end_date(start_date)
         end_date_str = end_date.strftime("%Y-%m-%dT%H:%M:%S")
-
-        # here we generate the increments on the subscriton names
-        # {identifier}_{inc}.{sub_number}
-        # FORD_1.1 < first one created
-        # FORD_2.1 < second created before first ends
-        # FORD_1.2 < created after both end
-        # FORD_2.2 < created if both first hace been created AND second is created but still running
-        # if a sub is created that falls into
-        # {cust}_{sub in 90 days from startdate of _1}.{total}
-        # Get list of all subscriptions for incrementing sub name
-        # subscription_filter = {"customer_uuid": post_data["customer_uuid"]}
 
         subscription_list = get_list(
             {"customer_uuid": post_data["customer_uuid"]},
@@ -398,6 +389,7 @@ class SubscriptionsListView(APIView):
         return gophish_campaign_list
 
 
+
 class SubscriptionView(APIView):
     """
     This is the SubscriptionsView APIView.
@@ -568,3 +560,28 @@ class SubscriptionStopView(APIView):
         # Return updated subscriptions
         serializer = SubscriptionPatchResponseSerializer(resp)
         return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
+
+
+class SubscriptionRestartView(APIView):
+    """
+    This is the SubscriptionRestartView APIView.
+    This handles the API to restart a Subscription 
+    """
+
+    @swagger_auto_schema(
+        request_body=SubscriptionPostSerializer,
+        responses={"202": SubscriptionPatchResponseSerializer, "400": "Bad Request"},
+        security=[],
+        operation_id="Restart Subscription",
+        operation_description="Endpoint for manually restart a subscription",
+    )      
+    def post(self, request, format=None):
+        """Post method."""
+        post_data = request.data.copy()
+        sub_manager = SubscriptionCreationManager()
+        created_response  = sub_manager.restart(post_data)
+        
+        if "errors" in created_response:
+            return Response(created_response, status=status.HTTP_400_BAD_REQUEST)
+        serializer = SubscriptionPostResponseSerializer(created_response)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)

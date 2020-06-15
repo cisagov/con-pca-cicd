@@ -51,8 +51,8 @@ db_load_dummy:
 
 # target: init - initializes gophish and creates dummy data
 init:
-	docker exec -it pca-api python scripts/init_gophish.py
-	docker exec -it pca-api python scripts/create_dummy_data.py
+#	docker exec -it pca-api python scripts/init_gophish.py	
+	docker exec -it pca-api python -m ptvsd --host 0.0.0.0 --port 5679 scripts/create_dummy_data.py
 
 # target: db_drop_mongo - connects to docker and drops mongo volume
 db_drop_mongo:
@@ -86,3 +86,8 @@ build_emails:
 # target: send emails - send reports emails
 send_emails:
 	docker exec -it pca-api python manage.py send_reports_emails
+
+# target: debug - run my unit test.
+debug:
+	docker exec -it pca-api python -m ptvsd --host 0.0.0.0 --port 4678 --wait /app/api/tests/test_views.py
+	#docker exec -it pca-api python -m ptvsd --host 0.0.0.0 --port 5678 --wait /api/tests/ping.py

@@ -70,7 +70,7 @@
     }
   ],
   "subscription_data": [
-    {
+    {     
       "active": true,
       "customer_uuid": "changeme",
       "dhs_contact_uuid": "changeme",

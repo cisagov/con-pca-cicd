@@ -243,6 +243,7 @@ old_number_tags = [
 ]
 
 # New Uniform Tags
+# Parameter_Name, Parameter_Type (GoPhish or Con-PCA), User Parameter Description, Data Source
 #        "<%URL%>": "{{.URL}}",
 #        "<%TARGET_FIRST_NAME%>": "{{.FirstName}}",
 #        "<%TARGET_LAST_NAME%>": "{{.LastName}}",

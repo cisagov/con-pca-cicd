@@ -14,12 +14,7 @@
   </div>
 
   <!-- Contacts Table -->
-  <mat-table [dataSource]="dataSource">
-    <!-- Company Name Column -->
-    <ng-container matColumnDef="customer_name">
-      <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>
-      <mat-cell *matCellDef="let row"> {{ row.customer_name }} </mat-cell>
-    </ng-container>
+  <mat-table [dataSource]="dataSource">   
 
     <!-- First Name Column -->
     <ng-container matColumnDef="first_name">
