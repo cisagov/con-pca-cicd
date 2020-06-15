@@ -52,7 +52,7 @@ db_load_dummy:
 # target: init - initializes gophish and creates dummy data
 init:
 #	docker exec -it pca-api python scripts/init_gophish.py	
-	docker exec -it pca-api python -m ptvsd --host 0.0.0.0 --port 4567 scripts/create_dummy_data.py
+	docker exec -it pca-api python -m ptvsd --host 0.0.0.0 --port 5679 scripts/create_dummy_data.py
 
 # target: db_drop_mongo - connects to docker and drops mongo volume
 db_drop_mongo:
