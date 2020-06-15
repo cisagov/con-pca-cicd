@@ -263,6 +263,7 @@ class SubscriptionsListView(APIView):
                     group_name=group_name,
                     target_list=campaign_info["targets"],
                 )
+                campaign_info["deception_level"] = group_number
                 gophish_campaign_list.extend(
                     self.__create_and_save_campaigns(
                         campaign_info, target_group, landing_page, end_date
@@ -292,7 +293,6 @@ class SubscriptionsListView(APIView):
         campaigns_in_cycle = []
         for c in gophish_campaign_list:
             campaigns_in_cycle.append(c["campaign_id"])
-        print(campaigns_in_cycle)
         post_data["cycles"] = [
             {
                 "start_date": start_date,

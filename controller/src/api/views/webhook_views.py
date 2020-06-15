@@ -41,8 +41,6 @@ class IncomingWebhookView(APIView):
         logger.debug(
             f"webhook post: campaign - {data['campaign_id']} | message - {data['message']}"
         )
-        print("WEB HOOK HIT------------------------------------------")
-        print(data)
         return self.__handle_webhook_data(data)
 
     def __update_phishing_results(self, webhook_data, phishing_result):

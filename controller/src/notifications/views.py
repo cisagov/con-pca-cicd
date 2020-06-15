@@ -106,12 +106,13 @@ class SubscriptionNotificationEmailSender:
         first_name = self.subscription.get("primary_contact").get("first_name")
         last_name = self.subscription.get("primary_contact").get("last_name")
 
-        start_date = datetime.strptime(
-            self.subscription.get("start_date"), "%Y-%m-%dT%H:%M:%S"
+        start_date = datetime.fromisoformat(
+            self.subscription.get("start_date").replace('Z', '+00:00')
         ).strftime("%d %B, %Y")
+
         end_date = self.subscription.get("end_date")
         if end_date is not None:
-            end_date = datetime.strptime(end_date, "%Y-%m-%dT%H:%M:%S").strftime(
+            end_date = datetime.fromisoformat(end_date.replace('Z', '+00:00')).strftime(
                 "%d %B, %Y"
             )
 
@@ -128,14 +129,17 @@ class SubscriptionNotificationEmailSender:
 
         # pull subscription data
         recipient = self.subscription.get("primary_contact").get("email")
-
+        
         # get to and bcc email addresses
         dhs_contact_uuid = self.subscription.get("dhs_contact_uuid")
+        print("==========================================")
+        print(dhs_contact_uuid)
         recipient_copy = get_single(
             dhs_contact_uuid, "dhs_contact", DHSContactModel, validate_dhs_contact
         )
         recipient_copy = recipient_copy.get("email")
 
+        print(recipient_copy)
         # pass context to email templates
         context = self.create_context_data()
         text_content = render_to_string(f"emails/{path}.txt", context)

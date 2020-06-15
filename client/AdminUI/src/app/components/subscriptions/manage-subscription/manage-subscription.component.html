@@ -1,148 +1,148 @@
 <div>
-  <form [formGroup]="subscribeForm" (ngSubmit)="onSubmit()">
-      <div class="d-flex flex-column mb-5">
+    <form [formGroup]="subscribeForm" (ngSubmit)="onSubmit()">
+        <div class="d-flex flex-column mb-5">
 
-          <div class="w-100" *ngIf="pageMode!='CREATE'" >
-              <app-sub-dashboard [subscriptionUuid]="subscription?.subscription_uuid">
-              </app-sub-dashboard>
+            <div class="w-100" *ngIf="pageMode!='CREATE'" >
+                <app-sub-dashboard [subscriptionUuid]="subscription?.subscription_uuid">
+                </app-sub-dashboard>
 
-              <div>
-                  <h2>Subscription Timeline</h2>
-                  <div style="margin: 0 2rem 1rem 2rem">
-                      <timeline [timelineItems]="timelineItems"></timeline>
-                  </div>
-                  <div style="margin: 0 2rem 1rem 2rem">
-                      <app-svg-timeline [timelineItems]="timelineItems"></app-svg-timeline>
-                  </div>
-              </div>
-          </div>
+                <div>
+                    <h2>Subscription Timeline</h2>
+                    <div style="margin: 0 2rem 1rem 2rem">
+                        <timeline [timelineItems]="timelineItems"></timeline>
+                    </div>
+                    <!-- <div style="margin: 0 2rem 1rem 2rem">
+                        <app-svg-timeline [timelineItems]="timelineItems"></app-svg-timeline>
+                    </div> -->
+                </div>
+            </div>
 
-          <h2>Customer/Organization</h2>
-          <div class="d-flex flex-row mb-4">
-              <div>
-                  <mat-card class="mt-0 mr-3 mb-1 ml-0 customer-card" appearance="outline">
-                      <input type="hidden" formControlName="selectedCustomerUuid">
-                      <div *ngIf="!!customer.customer_uuid">
-                          <div>{{customer?.name}}</div>
-                          <div>{{customer?.identifier}}</div>
-                          <div>{{customer?.address_1}}</div>
-                          <div>{{customer?.address_2}}</div>
-                          <div>{{customer?.city}}, {{customer?.state}} {{customer?.zip_code}}</div>
-                      </div>
-                      <div *ngIf="!customer.customer_uuid" class="placeholder">
-                          Select a customer
-                      </div>
-                  </mat-card>
+            <h2>Customer/Organization</h2>
+            <div class="d-flex flex-row mb-4">
+                <div>
+                    <mat-card class="mt-0 mr-3 mb-1 ml-0 customer-card" appearance="outline">
+                        <input type="hidden" formControlName="selectedCustomerUuid">
+                        <div *ngIf="!!customer.customer_uuid">
+                            <div>{{customer?.name}}</div>
+                            <div>{{customer?.identifier}}</div>
+                            <div>{{customer?.address_1}}</div>
+                            <div>{{customer?.address_2}}</div>
+                            <div>{{customer?.city}}, {{customer?.state}} {{customer?.zip_code}}</div>
+                        </div>
+                        <div *ngIf="!customer.customer_uuid" class="placeholder">
+                            Select a customer
+                        </div>
+                    </mat-card>
 
-                  <div class="mb-3">
-                      <button mat-raised-button color="primary" *ngIf="pageMode == 'CREATE'"
-                          (click)="showCustomerDialog()">Assign Customer
-                          <i class="fa fa-search" style="font-size: 1rem;"></i>
-                      </button>
-                  </div>
-              </div>
+                    <div class="mb-3">
+                        <button mat-raised-button color="primary" *ngIf="pageMode == 'CREATE'"
+                            (click)="showCustomerDialog()">Assign Customer
+                            <i class="fa fa-search" style="font-size: 1rem;"></i>
+                        </button>
+                    </div>
+                </div>
 
-              <div *ngIf="!!customer.customer_uuid">
-                  <mat-form-field appearance="outline">
-                      <mat-label>Primary Contact</mat-label>
+                <div *ngIf="!!customer.customer_uuid">
+                    <mat-form-field appearance="outline">
+                        <mat-label>Primary Contact</mat-label>
 
-                      <mat-select formControlName="primaryContact" (selectionChange)="changePrimaryContact($event)">
-                          <mat-option [value]="null">--Select--</mat-option>
-                          <mat-option *ngFor="let c of customer?.contact_list" [value]="c.email">
-                              {{ c.first_name }} {{ c.last_name }}</mat-option>
-                      </mat-select>
-                  </mat-form-field>
-                  <div *ngIf="submitted && f.primaryContact.errors" class="invalid-feedback">
-                      <div *ngIf="f.primaryContact.errors.required">A primary contact must be selected</div>
-                  </div>
-              </div>
-              <div>
-                  <mat-form-field appearance="outline">
-                      <mat-label>DHS Contact</mat-label>
+                        <mat-select formControlName="primaryContact" (selectionChange)="changePrimaryContact($event)">
+                            <mat-option [value]="null">--Select--</mat-option>
+                            <mat-option *ngFor="let c of customer?.contact_list" [value]="c.email">
+                                {{ c.first_name }} {{ c.last_name }}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <div *ngIf="submitted && f.primaryContact.errors" class="invalid-feedback">
+                        <div *ngIf="f.primaryContact.errors.required">A primary contact must be selected</div>
+                    </div>
+                </div>
+                <div>
+                    <mat-form-field appearance="outline">
+                        <mat-label>DHS Contact</mat-label>
 
-                      <mat-select formControlName="dhsContact" (selectionChange)="changeDhsContact($event)">
-                          <mat-option [value]="null">--Select--</mat-option>
-                          <mat-option *ngFor="let c of dhsContacts" [value]="c.dhs_contact_uuid">
-                              {{ c.first_name }} {{ c.last_name }}</mat-option>
-                      </mat-select>
-                  </mat-form-field>
-                  <div *ngIf="submitted && f.dhsContact.errors" class="invalid-feedback">
-                      <div *ngIf="f.dhsContact.errors.required">DHS contact must be selected</div>
-                  </div>
-              </div>
-          </div>
-
-
-          <mat-label class="h6">Start Date</mat-label>
-          <div class="mb-4">
-              <mat-form-field appearance="outline">
-                  <input matInput [matDatepicker]="picker" [min]="startAt" formControlName="startDate">
-                  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                  <mat-datepicker #picker [startAt]="startAt"></mat-datepicker>
-              </mat-form-field>
-          </div>
+                        <mat-select formControlName="dhsContact" (selectionChange)="changeDhsContact($event)">
+                            <mat-option [value]="null">--Select--</mat-option>
+                            <mat-option *ngFor="let c of dhsContacts" [value]="c.dhs_contact_uuid">
+                                {{ c.first_name }} {{ c.last_name }}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <div *ngIf="submitted && f.dhsContact.errors" class="invalid-feedback">
+                        <div *ngIf="f.dhsContact.errors.required">DHS contact must be selected</div>
+                    </div>
+                </div>
+            </div>
 
 
-          <mat-label class="h6">Customer Website</mat-label>
-          <div class="text-muted">The customer's page will be analyzed
-              to send phishing emails relevant to their industry.
-          </div>
-          <mat-form-field class="w-100" appearance="outline">
-              <input matInput formControlName="url" type="text">
-          </mat-form-field>
+            <mat-label class="h6">Start Date</mat-label>
+            <div class="mb-4">
+                <mat-form-field appearance="outline">
+                    <input matInput [matDatepicker]="picker" [min]="startAt" formControlName="startDate">
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker [startAt]="startAt"></mat-datepicker>
+                </mat-form-field>
+            </div>
 
 
-          <mat-label class="h6">Keywords</mat-label>
-          <div class="text-muted">Optionally enter words that describe the
-              organization, separated by commas.
-              They will be used to select applicable templates.</div>
-          <mat-form-field class="w-100" appearance="outline">
-              <mat-label>Applicability Word Tags</mat-label>
-              <textarea matInput autosize formControlName="keywords"></textarea>
-          </mat-form-field>
+            <mat-label class="h6">Customer Website</mat-label>
+            <div class="text-muted">The customer's page will be analyzed
+                to send phishing emails relevant to their industry.
+            </div>
+            <mat-form-field class="w-100" appearance="outline">
+                <input matInput formControlName="url" type="text">
+            </mat-form-field>
 
 
-          <div class="mb-3">
-              <div>
-                  <mat-label class="h6">Target Recipients</mat-label>
-              </div>
-              <div class="text-muted">Upload an Excel spreadsheet or comma-separated value text
-                  file containing the list of target individuals or enter them
-                  directly in the field below.
-              </div>
-              <div class="text-muted"><em>Format: email, firstname, lastname, position</em></div>
-          </div>
+            <mat-label class="h6">Keywords</mat-label>
+            <div class="text-muted">Optionally enter words that describe the
+                organization, separated by commas.
+                They will be used to select applicable templates.</div>
+            <mat-form-field class="w-100" appearance="outline">
+                <mat-label>Applicability Word Tags</mat-label>
+                <textarea matInput autosize formControlName="keywords"></textarea>
+            </mat-form-field>
 
-          <button mat-raised-button color="primary" class="mb-3" *ngIf="pageMode == 'CREATE'"
-              (click)="openFileBrowser($event)">
-              Upload Email Targets List <i class="fa fa-upload"></i>
-          </button>
-          <input id="csvUpload" type="file" accept=".csv,.xls,.xlsx" (change)="fileSelect($event)" class="d-none">
-          <mat-form-field class="w-100 flex-grow-1" appearance="outline">
-              <mat-label>Target Emails</mat-label>
-              <textarea matInput autosize formControlName="csvText"
-                  [ngClass]="{ 'is-invalid': submitted && f.csvText.errors }">
-                  </textarea>
-              <div *ngIf="submitted && f.csvText.errors" class="invalid-feedback">
-                  <div *ngIf="f.csvText.errors.required">Targets must be defined</div>
-              </div>
-          </mat-form-field>
 
-          <div class="text-right mt-3">
-              <button type="submit" mat-raised-button color="primary" *ngIf="pageMode == 'CREATE'">
-                  Create and Launch Subscription
-              </button>
-          </div>
+            <div class="mb-3">
+                <div>
+                    <mat-label class="h6">Target Recipients</mat-label>
+                </div>
+                <div class="text-muted">Upload an Excel spreadsheet or comma-separated value text
+                    file containing the list of target individuals or enter them
+                    directly in the field below.
+                </div>
+                <div class="text-muted"><em>Format: email, firstname, lastname, position</em></div>
+            </div>
 
-          <div class="d-flex flex-row">
-              <div class="d-flex flex-column">
-                  <delete-subscription *ngIf="pageMode != 'CREATE'" [subscription]="subscription">
-                  </delete-subscription>
-              </div>
-              <div class="d-flex flex-row" *ngIf="!subscription?.active">
-                  <button mat-raised-button color="accent" (click)="showArchiveDialog()">Archive Subscription</button>
-              </div>
-          </div>
-      </div>
-  </form>
+            <button mat-raised-button color="primary" class="mb-3" *ngIf="pageMode == 'CREATE'"
+                (click)="openFileBrowser($event)">
+                Upload Email Targets List <i class="fa fa-upload"></i>
+            </button>
+            <input id="csvUpload" type="file" accept=".csv,.xls,.xlsx" (change)="fileSelect($event)" class="d-none">
+            <mat-form-field class="w-100 flex-grow-1" appearance="outline">
+                <mat-label>Target Emails</mat-label>
+                <textarea matInput autosize formControlName="csvText"
+                    [ngClass]="{ 'is-invalid': submitted && f.csvText.errors }">
+                    </textarea>
+                <div *ngIf="submitted && f.csvText.errors" class="invalid-feedback">
+                    <div *ngIf="f.csvText.errors.required">Targets must be defined</div>
+                </div>
+            </mat-form-field>
+
+            <div class="text-right mt-3">
+                <button type="submit" mat-raised-button color="primary" *ngIf="pageMode == 'CREATE'">
+                    Create and Launch Subscription
+                </button>
+            </div>
+
+            <div class="d-flex flex-row">
+                <div class="d-flex flex-column">
+                    <delete-subscription *ngIf="pageMode != 'CREATE'" [subscription]="subscription">
+                    </delete-subscription>
+                </div>
+                <div class="d-flex flex-row" *ngIf="!subscription?.active">
+                    <button mat-raised-button color="accent" (click)="showArchiveDialog()">Archive Subscription</button>
+                </div>
+            </div>
+        </div>
+    </form>
 </div>
