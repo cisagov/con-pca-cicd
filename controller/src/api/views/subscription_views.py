@@ -265,26 +265,27 @@ class SubscriptionsListView(APIView):
         # check if today is the start date of sub
         try:
             # Format inbound 2020-03-10T09:30:25
-            start_date_datetime = datetime.strptime(
-                start_date, "%Y-%m-%dT%H:%M:%S"
-            )  
-        except:
+            start_date_datetime = datetime.strptime(start_date, "%Y-%m-%dT%H:%M:%S")
+        except Exception:
             # Format inbound 2020-03-10T09:30:25.812Z
-            start_date_datetime = datetime.strptime(
-                start_date, "%Y-%m-%dT%H:%M:%S.%fZ"
-            )  
-
+            start_date_datetime = datetime.strptime(start_date, "%Y-%m-%dT%H:%M:%S.%fZ")
+        post_data["end_date"] = end_date_str
         if start_date_datetime.date() <= datetime.today().date():
-            sender = SubscriptionNotificationEmailSender(
-                post_data, "subscription_started"
-            )
-            sender.send()
-            post_data["status"] = "In Progress"
-            logger.info("Subscription Notification email sent")
+            try:
+                sender = SubscriptionNotificationEmailSender(
+                    post_data, "subscription_started"
+                )
+                sender.send()
+                post_data["status"] = "In Progress"
+                logger.info("Subscription Notification email sent")
+            except Exception as err:
+                logger.info("error sending notification email: {}".format(err))
+                post_data["status"] = "Queued"
+                pass
+
         else:
             post_data["status"] = "Queued"
 
-        post_data["end_date"] = end_date_str
         created_response = save_single(
             post_data, "subscription", SubscriptionModel, validate_subscription
         )

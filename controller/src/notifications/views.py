@@ -8,6 +8,7 @@ contacts about reports and subscription updates.
 
 # Standard Python Libraries
 # Standard Libraries
+from datetime import datetime
 from email.mime.image import MIMEImage
 
 # Third-Party Libraries
@@ -33,8 +34,8 @@ class ReportsEmailSender:
     def get_attachment(self, subscription_uuid):
         """Get_attachment method."""
         html = HTML(f"http://localhost:8000/reports/{subscription_uuid}/")
-        html.write_pdf("/tmp/subscription_report.pdf")
-        fs = FileSystemStorage("/tmp")
+        html.write_pdf("/storage/subscription_report.pdf")  # change to AWS storage var
+        fs = FileSystemStorage("/storage")
         return fs.open("subscription_report.pdf")
 
     def send(self):
@@ -93,6 +94,18 @@ class SubscriptionNotificationEmailSender:
         """Create Contect Data Method."""
         first_name = self.subscription.get("primary_contact").get("first_name")
         last_name = self.subscription.get("primary_contact").get("last_name")
+        try:
+            start_date = self.subscription.get("start_date").strftime("%d %B, %Y")
+            end_date = self.subscription.get("end_date").strftime("%d %B, %Y")
+        except AttributeError:
+            # datetime is a string and needs to be converted and reformated
+            string_start_date = self.subscription.get("start_date")
+            string_end_date = self.subscription.get("end_date")
+            dt_start_date = datetime.strptime(string_start_date, "%Y-%m-%dT%H:%M:%S")
+            dt_end_date = datetime.strptime(string_end_date, "%Y-%m-%dT%H:%M:%S")
+            start_date = dt_start_date.strftime("%d %B, %Y")
+            end_date = dt_end_date.strftime("%d %B, %Y")
+
         start_date = self.subscription.get("start_date").strftime("%d %B, %Y")
         end_date = self.subscription.get("end_date").strftime("%d %B, %Y")
         return {
