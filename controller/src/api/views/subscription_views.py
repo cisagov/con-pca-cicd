@@ -4,7 +4,7 @@ Subscription Views.
 This handles the api for all the Subscription urls.
 """
 # Standard Python Libraries
-from datetime import datetime
+from datetime import datetime, timedelta
 import logging
 import json
 
@@ -45,6 +45,7 @@ from api.utils.subscription_utils import (
     target_list_divide,
 )
 from api.utils.template_utils import format_ztime, personalize_template
+from tasks.tasks import email_subscription_report
 
 # Third Party Libraries
 from drf_yasg import openapi
@@ -288,7 +289,22 @@ class SubscriptionsListView(APIView):
             post_data, "subscription", SubscriptionModel, validate_subscription
         )
 
-        subscription_uuid = created_response.get("subscription_uuid")
+        # Create scheduled email tasks
+        if not settings.DEBUG:
+            subscription_uuid = created_response.get("subscription_uuid")
+            message_types = {
+                "monthly_report": datetime.utcnow() + timedelta(days=30),
+                "cycle_report": datetime.utcnow() + timedelta(days=90),
+                "yearly_report": datetime.utcnow() + timedelta(days=365),
+            }
+
+            for message_type, send_date in message_types:
+                try:
+                    task = email_subscription_report.apply_async(
+                        args=[subscription_uuid, message_type], eta=send_date
+                    )
+                except task.OperationalError as exc:
+                    logger.exception("Subscription task raised: %r", exc)
 
         if "errors" in created_response:
             return Response(created_response, status=status.HTTP_400_BAD_REQUEST)
