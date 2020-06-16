@@ -249,6 +249,10 @@ $altTheme: mat-dark-theme($theme-primary, $theme-accent, $theme-warn);
     font-family: FontAwesome; 
     fill: map-get($foreground, 'text') !important;
   }
+
+  .ngx-charts text {
+    fill: map-get($foreground, 'text') !important;
+  }
 }
 
 // Theme Init
