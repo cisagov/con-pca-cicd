@@ -17,14 +17,12 @@ export class SubscriptionService {
   cameFromSubscription: boolean;
 
   /**
-   * 
-   * @param http 
-   * @param customer_service 
+   *
    */
   constructor(private http: HttpClient, private customer_service: CustomerService, private settingsService: SettingsService) { }
 
   /**
-   * 
+   *
    */
   public getSubscriptions(archived: boolean = false) {
     let url = `${this.settingsService.settings.apiUrl}/api/v1/subscriptions/`
@@ -72,7 +70,7 @@ export class SubscriptionService {
    * Restart the subscription
    * @param subscription 
    */
-  restartSubscription(subscription: Subscription){
+  restartSubscription(subscription: Subscription) {
     return this.http.post(`${this.settingsService.settings.apiUrl}/api/v1/subscriptions/`, subscription)
   }
 
@@ -114,7 +112,7 @@ export class SubscriptionService {
     return this.http.get(`${this.settingsService.settings.apiUrl}/api/v1/subscription/stop/${subscription_uuid}/`);
   }
 
-  public startSubscription(subscription_uuid: string){
+  public startSubscription(subscription_uuid: string) {
     return this.http.get(`${this.settingsService.settings.apiUrl}/api/v1/subscription/start/${subscription_uuid}/`);
   }
 
@@ -126,7 +124,7 @@ export class SubscriptionService {
     return this.http.get(url);
   }
 
-  public getDhsContacts(){
+  public getDhsContacts() {
     let url = `${this.settingsService.settings.apiUrl}/api/v1/dhscontacts/`;
     return this.http.get(url);
   }

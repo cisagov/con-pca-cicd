@@ -92,14 +92,6 @@ export class Target {
  * A point in time during the life of a subscription.
  */
 export class TimelineItem {
-    id?: number;
-
-    // The font awesome class string to show above the timeline item
-    icon: string;    
-    
     title: string;
-    creatorName?: string = "Joe";
-    description?: string = "Basic Description";
-    buttonText?: string = "Basic button text";
     date: moment.Moment;
   }

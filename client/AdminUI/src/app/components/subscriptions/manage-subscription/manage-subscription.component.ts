@@ -15,6 +15,7 @@ import * as moment from 'node_modules/moment/moment';
 import { LayoutMainService } from 'src/app/services/layout-main.service';
 import { CustomerDialogComponent } from '../../dialogs/customer-dialog/customer-dialog.component';
 import { AlertComponent } from '../../dialogs/alert/alert.component';
+import { isSameDate } from 'src/app/helper/utilities';
 
 
 @Component({
@@ -136,8 +137,8 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
     }
   }
 
-  getDhsContacts(){
-    this.subscriptionSvc.getDhsContacts().subscribe((data:any)=>{
+  getDhsContacts() {
+    this.subscriptionSvc.getDhsContacts().subscribe((data: any) => {
       this.dhsContacts = data;
     });
   }
@@ -191,8 +192,6 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
 
     items.push({
       title: 'Subscription Started',
-      description: 'Subscription Started',
-      icon: 'fa fa-rocket',
       date: moment(s.start_date)
     });
 
@@ -202,28 +201,29 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
 
         // ignore campaigns started on the subscription start date
         if (t.message.toLowerCase() === 'campaign created'
-          && new Date(t.time).setHours(0, 0, 0, 0).valueOf() === new Date(s.start_date).setHours(0, 0, 0, 0).valueOf()) {
+          && isSameDate(t.time, s.start_date)) {
           continue;
         }
 
-        // let tt = {
-        // };
-        // timelineItems.push(tt);
+        // ignore extra campaign starts we have already put into the list
+        if (t.message.toLowerCase() === 'campaign created'
+          && items.find(x => isSameDate(x.date, t.time)) !== null) {
+          continue;
+        }
+
+        if (t.message.toLowerCase() === 'campaign created') {
+          items.push({
+            title: 'Cycle Start',
+            date: moment(t.time)
+          });
+        }
       }
     });
 
     // add an item for 'today'
     items.push({
       title: 'Today',
-      description: 'Today',
-      icon: 'fa fa-calendar-check-o',
       date: moment()
-    });
-
-    // sort and number the events
-    let id = 0;
-    items.sort((a, b) => a.date.unix() - b.date.unix()).forEach(x => {
-      x.id = ++id;
     });
 
     this.timelineItems = items;
@@ -279,9 +279,9 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
     if (!this.dhsContact) {
       return;
     }
-    let contact = this.dhsContacts
+    const contact = this.dhsContacts
       .find(x => (x.dhs_contact_uuid) === e.value);
-    if(contact){
+    if (contact) {
       this.dhsContact = contact.dhs_contact_uuid;
       this.subscription.dhs_contact_uuid = this.dhsContact;
     }
@@ -321,19 +321,19 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
     return output;
   }
 
-  subValid(){
+  subValid() {
     this.submitted = true;
 
     // stop here if form is invalid
-    if (this.subscribeForm.invalid) {    
+    if (this.subscribeForm.invalid) {
       return false;
     }
-    
+
     return true;
   }
 
-  startSubscription(){    
-    let sub = this.subscriptionSvc.subscription;
+  startSubscription() {
+    const sub = this.subscriptionSvc.subscription;
 
     // set up the subscription and persist it in the service
     sub.customer_uuid = this.customer.customer_uuid;
@@ -341,28 +341,29 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
     sub.active = true;
     sub.lub_timestamp = new Date();
     sub.start_date = this.startDate;
-    sub.status = "Starting";
+    sub.status = 'Starting';
     sub.url = this.url;
     sub.keywords = this.f.keywords.value;
     // set the target list
-    let csv = this.f.csvText.value;
+    const csv = this.f.csvText.value;
     sub.setTargetsFromCSV(csv);
 
     // call service with everything needed to start the subscription
     this.subscriptionSvc.restartSubscription(sub).subscribe(
       resp => {
-        alert("Subscription " + sub.name +" was started");        
+        alert('Subscription ' + sub.name + ' was started');
       },
       error => {
-        alert("An error occurred restarting the subscription: " + error.error);
+        alert('An error occurred restarting the subscription: ' + error.error);
       });
   }
   /**
    * Submits the form to create a new Subscription.
    */
   onSubmit() {
-    if(!this.subValid())
+    if (!this.subValid()) {
       return;
+    }
 
     let sub = this.subscriptionSvc.subscription;
 

@@ -1,5 +1,6 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ElementRef, ViewChild, ViewChildren } from '@angular/core';
 import { TimelineItem } from 'src/app/models/subscription.model';
+import * as moment from 'node_modules/moment/moment';
 
 @Component({
   selector: 'app-svg-timeline',
@@ -10,9 +11,14 @@ export class SvgTimelineComponent implements OnInit {
   @Input()
   timelineItems: TimelineItem[];
 
+  @ViewChildren('tick') ticks: ElementRef[];
+
   items: any[] = [];
 
-  totalWidth = 1000;
+  pixelWidth = 1000;
+  lifespanSeconds: number;
+  firstDate: moment.Moment;
+  lastDate: moment.Moment;
 
   iconLaunch = '&#xf135;';
   iconCalendar = '&#xf073';
@@ -21,13 +27,21 @@ export class SvgTimelineComponent implements OnInit {
   /**
    *
    */
-  constructor() { }
+  constructor(
+    private el: ElementRef
+  ) { }
 
   /**
    *
    */
   ngOnInit(): void {
     setTimeout(() => {
+      this.sortEvents();
+
+      this.lifespanSeconds = this.timelineItems[this.timelineItems.length - 1].date
+        .diff(this.timelineItems[0].date, 'seconds');
+      this.firstDate = this.timelineItems[0].date;
+
       this.drawTimeline();
     }, 300);
   }
@@ -35,28 +49,58 @@ export class SvgTimelineComponent implements OnInit {
   /**
    *
    */
+  onResize(evt: any) {
+    this.ticks.forEach(t => {
+      t.nativeElement.remove();
+    });
+    this.drawTimeline();
+  }
+
+  /**
+   * Builds a collection of items that drive the
+   * SVG template creation.
+   */
   drawTimeline() {
-    let itemX = 100;
+    this.pixelWidth = this.el.nativeElement.offsetWidth;
+
     this.timelineItems.forEach(x => {
+      const diff = x.date.diff(this.firstDate, 'seconds');
+      let percent = diff / this.lifespanSeconds;
+
+      // now normalize the percentage to emulate 'margins'
+      percent = percent * .85 + .075;
+
+      const myX = percent * this.pixelWidth;
+
       const item = {
-        x: itemX,
+        x: myX,
         date: x.date,
         title: x.title,
-        icon: this.iconCalendar
+        icon: ''
       };
 
-      if (item.title.toLowerCase() === 'subscription started') {
-        item.icon = this.iconLaunch;
-      }
-
-      if (item.title.toLowerCase() === 'today') {
-        item.icon = this.iconToday;
+      switch (item.title.toLowerCase()) {
+        case 'subscription started': {
+          item.icon = this.iconLaunch;
+          break;
+        }
+        case 'today': {
+          item.icon = this.iconToday;
+          break;
+        }
+        default: {
+          item.icon = this.iconCalendar;
+        }
       }
 
       this.items.push(item);
-
-      itemX += 200;
     });
   }
 
+  /**
+   * Sort the events by timestamp
+   */
+  sortEvents() {
+    this.timelineItems.sort((a, b) => a.date.unix() - b.date.unix());
+  }
 }
