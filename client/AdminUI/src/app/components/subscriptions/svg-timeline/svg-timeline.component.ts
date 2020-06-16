@@ -12,6 +12,12 @@ export class SvgTimelineComponent implements OnInit {
 
   items: any[] = [];
 
+  totalWidth = 1000;
+
+  iconLaunch = '&#xf135;';
+  iconCalendar = '&#xf073';
+  iconToday = '&#xf274;';
+
   /**
    *
    */
@@ -21,24 +27,35 @@ export class SvgTimelineComponent implements OnInit {
    *
    */
   ngOnInit(): void {
-    this.xyz();
+    setTimeout(() => {
+      this.drawTimeline();
+    }, 300);
   }
 
   /**
    *
    */
-  xyz() {
-    console.log('xyz');
-    console.log(this.timelineItems);
-    let itemIndex = 0;
+  drawTimeline() {
+    let itemX = 100;
     this.timelineItems.forEach(x => {
       const item = {
-        x: itemIndex * 100
+        x: itemX,
+        date: x.date,
+        title: x.title,
+        icon: this.iconCalendar
       };
+
+      if (item.title.toLowerCase() === 'subscription started') {
+        item.icon = this.iconLaunch;
+      }
+
+      if (item.title.toLowerCase() === 'today') {
+        item.icon = this.iconToday;
+      }
 
       this.items.push(item);
 
-      itemIndex = itemIndex + 1;
+      itemX += 200;
     });
   }
 
