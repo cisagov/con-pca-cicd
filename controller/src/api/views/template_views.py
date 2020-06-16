@@ -16,6 +16,7 @@ from api.models.template_models import (
     validate_template,
 )
 from api.serializers.template_serializers import (
+    TagPostSerializer,
     TagQuerySerializer,
     TagResponseSerializer,
     TemplateDeleteResponseSerializer,
@@ -36,6 +37,7 @@ from api.utils.db_utils import (
     save_single,
     update_single,
 )
+from api.utils.template_utils import check_tag_format
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status
 from rest_framework.response import Response
@@ -239,3 +241,40 @@ class TagView(APIView):
         tag_list = get_list(parameters, "tag_definition", TagModel, validate_tag)
         serializer = TagResponseSerializer(tag_list, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
+
+    @swagger_auto_schema(
+        request_body=TagPostSerializer,
+        responses={"201": TagResponseSerializer, "400": "Bad Request"},
+        security=[],
+        operation_id="Create Tag",
+        operation_description="This handles Creating a Tags.",
+    )
+    def post(self, request):
+        """Post Method.
+
+        Args:
+            request (Django request object): Django request object
+
+        Returns:
+            Response: HTTP Response object with serializzed data and HTTP reponce.
+        """
+        post_data = request.data.copy()
+
+        if not check_tag_format(post_data["tag"]):
+            return Response(
+                {"error": "incorrect tag format"}, status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        if exists({"tag": post_data["tag"]}, "tag_definition", TagModel, validate_tag):
+            return Response(
+                {"error": "Tag already exists"}, status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        created_response = save_single(
+            post_data, "tag_definition", TagModel, validate_tag
+        )
+        logger.info("created response {}".format(created_response))
+        if "errors" in created_response:
+            return Response(created_response, status=status.HTTP_400_BAD_REQUEST)
+        serializer = TemplatePostResponseSerializer(created_response)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)

@@ -229,8 +229,22 @@ class TemplateStopResponseSerializer(serializers.Serializer):
     subscriptions = SubscriptionPatchResponseSerializer(many=True)
 
 
-class TagSerializer(serializers.Serializer):
+class TagGetSerializer(serializers.Serializer):
     """Serializes a Tag (replaceable token in a template)."""
+
+    tag = serializers.CharField()
+    description = serializers.CharField()
+    data_source = serializers.CharField()
+    tag_type = serializers.CharField()
+
+
+class TagPostSerializer(serializers.Serializer):
+    """Serializes a Tag (replaceable token in a template)."""
+
+    tag = serializers.CharField(required=True)
+    description = serializers.CharField(required=True)
+    data_source = serializers.CharField(required=True)
+    tag_type = serializers.CharField(required=True)
 
 
 class TagResponseSerializer(serializers.Serializer):
