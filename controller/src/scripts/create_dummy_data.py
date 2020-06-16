@@ -70,13 +70,10 @@ def main():
             except requests.exceptions.HTTPError as err:
                 raise err
             rep_json = resp.json()
-
-            try:
+            if "error" in rep_json:
+                print("Template Creation error: {}".format(rep_json))
+            else:
                 created_template_uuids.append(rep_json["template_uuid"])
-            except Exception as err:
-                print("Template Creation error:")
-                print(err)
-                print(rep_json)
 
     print("created templates_list: {}".format(created_template_uuids))
 
