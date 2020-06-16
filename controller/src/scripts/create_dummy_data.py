@@ -66,10 +66,14 @@ def main():
                     "http://localhost:8000/api/v1/templates/", json=template
                 )
                 resp.raise_for_status()
+
             except requests.exceptions.HTTPError as err:
                 raise err
             rep_json = resp.json()
-            created_template_uuids.append(rep_json["template_uuid"])
+            if "error" in rep_json:
+                print("Template Creation error: {}".format(rep_json))
+            else:
+                created_template_uuids.append(rep_json["template_uuid"])
 
     print("created templates_list: {}".format(created_template_uuids))
 

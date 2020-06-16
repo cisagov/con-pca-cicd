@@ -1,4 +1,17 @@
-<svg>
+<svg height="100" width="100%" (window:resize)="onResize($event)">
+    <g>
+        <line x1="0" y1="60" [attr.x2]="pixelWidth" y2="60" class="timeline-line"></line>
+    </g>
 
-
-    </svg>
+    <g *ngFor="let t of items" #tick>
+        <text [attr.x]="t.x" y="40" text-anchor="middle" class="timeline-icon" [innerHTML]="t.icon">
+        </text>
+        <circle r="5" [attr.cx]="t.x" cy="60" stroke-width="1" class="timeline-circle"></circle>
+        <g [attr.transform]="'translate(' + t.x  + ' 80)'">
+            <text x="0" y="0" text-anchor="middle" class="timeline-text">
+              <tspan x="0" dy="0">{{t.title}}</tspan>
+              <tspan x="0" dy="1.2em">{{t.date | date}}</tspan>
+            </text>
+          </g>
+    </g>
+</svg>

@@ -2,20 +2,15 @@
     <form [formGroup]="subscribeForm" (ngSubmit)="onSubmit()">
         <div class="d-flex flex-column mb-5">
 
-            <div class="w-100" *ngIf="pageMode!='CREATE'" >
+            <div class="w-100" *ngIf="pageMode!='CREATE'">
                 <app-sub-dashboard [subscriptionUuid]="subscription?.subscription_uuid">
                 </app-sub-dashboard>
 
                 <div>
                     <h2>Subscription Timeline</h2>
-                    <div style="margin: 0 2rem 1rem 2rem">
-                        <timeline [timelineItems]="timelineItems"></timeline>
+                    <div style="margin: 0 2rem 2rem 2rem">
+                        <app-svg-timeline [timelineItems]="timelineItems"></app-svg-timeline>
                     </div>
-
-                    <div style="margin: 0 2rem 1rem 2rem">
-                        
-                    </div>
-
                 </div>
             </div>
 
@@ -137,10 +132,16 @@
             </div>
 
             <div class="d-flex flex-row  justify-content-between">
-                <div class="d-flex flex-row"><div><delete-subscription *ngIf="pageMode != 'CREATE'" [subscription]="subscription"></delete-subscription></div>
-                <div><button mat-raised-button *ngIf="!subscription?.active" color="accent" (click)="showArchiveDialog()">Archive Subscription</button></div>
+                <div class="d-flex flex-row">
+                    <div>
+                        <delete-subscription *ngIf="pageMode != 'CREATE'" [subscription]="subscription">
+                        </delete-subscription>
+                    </div>
+                    <div><button mat-raised-button *ngIf="!subscription?.active" color="accent"
+                            (click)="showArchiveDialog()">Archive Subscription</button></div>
                 </div>
-                <div class="startButton"><button mat-raised-button *ngIf="!subscription?.active" color="primary" (click)="startSubscription()">Start Subscription</button></div>                
+                <div class="startButton"><button mat-raised-button *ngIf="!subscription?.active" color="primary"
+                        (click)="startSubscription()">Start Subscription</button></div>
             </div>
         </div>
     </form>
