@@ -1,13 +1,13 @@
 {
-    "name": "conpca",
-    "version": "1.0.0",
-    "description": "Continuous Phishing Assessment",
-    "scripts": {
-        "build-emails": "./node_modules/mjml/bin/mjml --config.beautify false -l skip src/templates/emails/mjml/*.mjml -o src/templates/emails/"
-    },
-    "author": "INL",
-    "license": "ISC",
-    "dependencies": {
-        "mjml": "^4.5.1"
-    }
+  "author": "INL",
+  "dependencies": {
+    "mjml": "^4.5.1"
+  },
+  "description": "Continuous Phishing Assessment",
+  "license": "ISC",
+  "name": "conpca",
+  "scripts": {
+    "build-emails": "./node_modules/mjml/bin/mjml --config.beautify false -l skip src/templates/emails/mjml/*.mjml -o src/templates/emails/"
+  },
+  "version": "1.0.0"
 }

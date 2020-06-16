@@ -6,13 +6,10 @@ import { LayoutMainService } from 'src/app/services/layout-main.service';
   templateUrl: './domains.component.html',
   styleUrls: ['./domains.component.scss']
 })
-
 export class DomainsComponent implements OnInit {
   constructor(layoutSvc: LayoutMainService) {
     layoutSvc.setTitle('Domains');
-   }
-
-  ngOnInit() {
   }
 
+  ngOnInit() {}
 }

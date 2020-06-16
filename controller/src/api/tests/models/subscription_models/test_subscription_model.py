@@ -1,15 +1,14 @@
+# Third-Party Libraries
 from api.models.subscription_models import SubscriptionModel
-
-from api.tests.models.subscription_models.test_gophish_campaigns_model import (
-    gophish_campaigns_model_data,
-)
 from api.tests.models.customer_models.test_customer_contact_model import (
     customer_contact_model_data,
+)
+from api.tests.models.subscription_models.test_gophish_campaigns_model import (
+    gophish_campaigns_model_data,
 )
 from api.tests.models.subscription_models.test_subscription_target_model import (
     subscription_target_model_data,
 )
-
 from faker import Faker
 
 fake = Faker()

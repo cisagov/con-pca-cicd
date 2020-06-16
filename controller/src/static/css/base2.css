@@ -5,7 +5,7 @@
 }
 
 * {
-    font-family: Arial, sans-serif;
+  font-family: Arial, sans-serif;
 }
 
 .container-fluid {
@@ -13,23 +13,23 @@
 }
 
 h2 {
-  color: #174A91;
+  color: #174a91;
   padding-bottom: 15px;
 }
 
 #firstClickTitle {
   border: 1px solid black;
   text-align: right;
-} 
+}
 
 #topBanner {
   height: 225px;
-  background-color: #1B2352;
+  background-color: #1b2352;
 }
 
 .leftsideBar {
- height: 100%;
- background-color: #1B2352;
+  height: 100%;
+  background-color: #1b2352;
 }
 
 #reportDate {
@@ -59,15 +59,14 @@ h2 {
 
 #reportTitle {
   font-size: 70px;
-  text-align: center; 
-  color: #174A91;
+  text-align: center;
+  color: #174a91;
   margin-top: 50px;
   margin-bottom: 200px;
   margin-left: auto;
   margin-right: auto;
   width: 50%;
   text-align: center;
-
 }
 
 #gonePhishingImage {
@@ -119,5 +118,5 @@ ul {
   width: 65%;
   margin-left: auto;
   margin-right: auto;
-  border: 1px solid #FDC010
+  border: 1px solid #fdc010;
 }

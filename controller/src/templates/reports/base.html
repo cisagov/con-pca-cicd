@@ -21,7 +21,7 @@
         google.charts.setOnLoadCallback(drawChart);
         google.charts.setOnLoadCallback(drawChartTwo);
         google.charts.setOnLoadCallback(drawChartThree);
-        
+
         // Pie Chart One
         function drawChart() {
           var data = google.visualization.arrayToDataTable([
@@ -29,12 +29,12 @@
           ['Opened', 289],
           ['Unopened', 11]
         ]);
-        
+
           var options = {'title':'Emails', 'width':550, 'height':400, 'colors': ['#194F9A', '#FDC010']};
           var chart = new google.visualization.PieChart(document.getElementById('piechart'));
           chart.draw(data, options);
         }
-        
+
         // Pie Chart Two
         function drawChartTwo() {
             var data = google.visualization.arrayToDataTable([
@@ -42,7 +42,7 @@
             ['Viewed', 83],
             ['Clicked', 17]
         ]);
-        
+
           var options = {'title':'Links', 'width':550, 'height':400, 'colors': ['#194F9A', '#FDC010']};
           var chart = new google.visualization.PieChart(document.getElementById('piechartTwo'));
           chart.draw(data, options);
@@ -64,7 +64,7 @@
                 hAxis: {title: 'Category'},
                 seriesType: 'bars',
                 series: {4: {type: 'bar'}}
-            }; 
+            };
             var chart = new google.visualization.ComboChart(document.getElementById('columnchart'));
             chart.draw(data, options);
          }
@@ -82,7 +82,7 @@
                 <div class="row">
                     <div class="col-12">
                         <div id="cisaLogo">
-                            <img src="{% static '/img/cisa_logo.png' %}"></img>
+                            <img src="{% static '/img/cisa_logo.png' %}">
                         </div>
                     </div>
                 </div>
@@ -92,7 +92,7 @@
                 </div>
             </div>
         </div>
-        
+
         <!-- Left side bar -->
         <div class="sidebar">
         </div>

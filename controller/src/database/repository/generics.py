@@ -70,7 +70,6 @@ def format_params(model_cls=None, params=None):
                             params[key] = False
                     if field.typeclass == DateTimeType:
                         params[key] = parse_datetime(value)
-
     return params
 
 
@@ -89,7 +88,7 @@ class GenericRepositoryInterface(object):
         """
         self.repository = repository
 
-    def filter(self, parameters=None):
+    def filter(self, parameters=None, fields=None):
         """
         Filter.
 
@@ -97,7 +96,7 @@ class GenericRepositoryInterface(object):
         parameters or empty filter of None.
         Returns list of documents with applied filter.
         """
-        return self.repository.filter(parameters or {})
+        return self.repository.filter(parameters or {}, fields or {})
 
     def count(self, parameters=None):
         """
@@ -210,7 +209,7 @@ class GenericRepository(object):
         params = format_params(self.model_cls, params)
         return await self.collection.count_documents(params)
 
-    async def filter(self, params=None):
+    async def filter(self, params=None, fields=None):
         """
         Filter.
 
@@ -221,7 +220,10 @@ class GenericRepository(object):
             params = {}
         params = format_params(self.model_cls, params)
         result = []
-        fields = {"_id": 0}
+        if fields is not None:
+            fields["_id"] = 0
+        elif 0 in fields.values():
+            fields = {"_id": 0}
         async for document in self.collection.find(params, fields):
             result.append(document)
         return result

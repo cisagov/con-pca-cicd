@@ -130,13 +130,14 @@ class TemplateModel(Model):
     last_updated_by = StringType()
     lub_timestamp = DateTimeType()
 
+
 def validate_template(data_object):
     """
     This is an the validate_subscription.
 
     This shows basic validation for the model.
     """
-    return TemplateModel(data_object).validate()    
+    return TemplateModel(data_object).validate()
 
 
 class TagModel(Model):
@@ -144,6 +145,7 @@ class TagModel(Model):
     A Tag is a replaceable string in a
     Template that is replaced by a real value.
     """
+
     tag = StringType()
     description = StringType()
     data_source = StringType()
@@ -152,4 +154,3 @@ class TagModel(Model):
 
 def validate_tag(data_object):
     return TagModel(data_object).validate()
-

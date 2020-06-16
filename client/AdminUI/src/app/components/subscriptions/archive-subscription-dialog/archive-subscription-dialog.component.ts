@@ -9,26 +9,28 @@ import { SubscriptionService } from 'src/app/services/subscription.service';
   styleUrls: ['./archive-subscription-dialog.component.scss']
 })
 export class ArchiveSubscriptionDialogComponent implements OnInit {
-  subscription: Subscription
+  subscription: Subscription;
 
   constructor(
     public dialogRef: MatDialogRef<ArchiveSubscriptionDialogComponent>,
     public subscriptionSvc: SubscriptionService,
-    @Inject(MAT_DIALOG_DATA) data: Subscription) { 
-      this.subscription = data
-    }
-
-  ngOnInit(): void {
+    @Inject(MAT_DIALOG_DATA) data: Subscription
+  ) {
+    this.subscription = data;
   }
 
+  ngOnInit(): void {}
+
   cancel(): void {
-    this.dialogRef.close()
+    this.dialogRef.close();
   }
 
   archive(): void {
-    this.subscription.archived = true
-    this.subscriptionSvc.patchSubscription(this.subscription).subscribe((data: any) => {
-      this.dialogRef.close()
-    })
+    this.subscription.archived = true;
+    this.subscriptionSvc
+      .patchSubscription(this.subscription)
+      .subscribe((data: any) => {
+        this.dialogRef.close();
+      });
   }
 }

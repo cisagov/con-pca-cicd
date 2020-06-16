@@ -5,7 +5,7 @@ import { MatDialogRef } from '@angular/material/dialog';
   selector: 'app-confirm',
   templateUrl: './confirm.component.html',
   // tslint:disable-next-line:use-host-property-decorator
-  host: {class: 'd-flex flex-column flex-11a'}
+  host: { class: 'd-flex flex-column flex-11a' }
 })
 export class ConfirmComponent implements OnInit {
 
@@ -23,5 +23,4 @@ export class ConfirmComponent implements OnInit {
       this.title = this.dialogRef.componentInstance.title;
     }
   }
-
 }

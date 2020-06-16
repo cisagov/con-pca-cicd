@@ -1,56 +1,72 @@
 <div class="cd-horizontal-timeline mt-timeline-horizontal" data-spacing="60">
-    <div class="timeline">
-        <div class="events-wrapper">
-            <div class="events" style="width: 100%">
-                <ol>
-                    <li *ngFor="let timelineItem of timelineItems">
-                        <a href="#0" id="{{timelineItem.id}}" class="border-after-red bg-after-red " [ngClass]="{'selected' : timelineItem.id===selectedItemId}">
-                            <div>
-                                <i class="{{timelineItem.icon}}"></i>
-                            </div>
-                            <div>
-                                {{timelineItem.date.toDate() | date:'M/d'}}
-                            </div>
-                        </a>
-                    </li>
-                </ol>
-                <span class="filling-line bg-red" aria-hidden="true"></span>
-            </div>            
-        </div>
-        
-        <ul class="cd-timeline-navigation mt-ht-nav-icon">
-            <li>
-                <a href="#0" class="prev btn btn-outline-secondary">
-                    <i class="fa fa-chevron-left"></i>
-                </a>
-            </li>
-            <li>
-                <a href="#0" class="next btn btn-outline-secondary">
-                    <i class="fa fa-chevron-right"></i>
-                </a>
-            </li>
-        </ul>
-    </div>
-    
-    <div class="events-content">
+  <div class="timeline">
+    <div class="events-wrapper">
+      <div class="events" style="width: 100%">
         <ol>
-            <li *ngFor="let timelineItem of timelineItems" [ngClass]="{'selected' : timelineItem.id===selectedItemId}" id="{{timelineItem.id}}">
-                <div class="mt-title">
-                    <h2 class="mt-content-title"><i class="{{timelineItem.icon}}"></i> {{timelineItem.title}}</h2>
-                </div>
-                <div class="mt-author">                    
-                    
-                    <div class="mt-author-name">
-                        <a class="font-blue-madison">{{timelineItem.creatorName}}</a>
-                    </div>
-                    <div class="mt-author-datetime font-grey-mint">{{timelineItem.date.toDate() | date:'MM-dd-yyyy'}}</div>
-                </div>
-                <div class="mt-content border-grey-steel">         
-                    <p>{{timelineItem.description}}</p>          
-                    <a href="javascript:;" class="d-none   btn btn-primary" (click)="timelineItemClick(timelineItem)">{{timelineItem.buttonText}}</a>                    
-                </div>
-            </li>                       
+          <li *ngFor="let timelineItem of timelineItems">
+            <a
+              href="#0"
+              id="{{ timelineItem.id }}"
+              class="border-after-red bg-after-red "
+              [ngClass]="{ selected: timelineItem.id === selectedItemId }"
+            >
+              <div>
+                <i class="{{ timelineItem.icon }}"></i>
+              </div>
+              <div>
+                {{ timelineItem.date.toDate() | date: "M/d" }}
+              </div>
+            </a>
+          </li>
         </ol>
+        <span class="filling-line bg-red" aria-hidden="true"></span>
+      </div>
     </div>
-</div>
 
+    <ul class="cd-timeline-navigation mt-ht-nav-icon">
+      <li>
+        <a href="#0" class="prev btn btn-outline-secondary">
+          <i class="fa fa-chevron-left"></i>
+        </a>
+      </li>
+      <li>
+        <a href="#0" class="next btn btn-outline-secondary">
+          <i class="fa fa-chevron-right"></i>
+        </a>
+      </li>
+    </ul>
+  </div>
+
+  <div class="events-content">
+    <ol>
+      <li
+        *ngFor="let timelineItem of timelineItems"
+        [ngClass]="{ selected: timelineItem.id === selectedItemId }"
+        id="{{ timelineItem.id }}"
+      >
+        <div class="mt-title">
+          <h2 class="mt-content-title">
+            <i class="{{ timelineItem.icon }}"></i> {{ timelineItem.title }}
+          </h2>
+        </div>
+        <div class="mt-author">
+          <div class="mt-author-name">
+            <a class="font-blue-madison">{{ timelineItem.creatorName }}</a>
+          </div>
+          <div class="mt-author-datetime font-grey-mint">
+            {{ timelineItem.date.toDate() | date: "MM-dd-yyyy" }}
+          </div>
+        </div>
+        <div class="mt-content border-grey-steel">
+          <p>{{ timelineItem.description }}</p>
+          <a
+            href="javascript:;"
+            class="d-none   btn btn-primary"
+            (click)="timelineItemClick(timelineItem)"
+            >{{ timelineItem.buttonText }}</a
+          >
+        </div>
+      </li>
+    </ol>
+  </div>
+</div>

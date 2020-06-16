@@ -4,13 +4,12 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class UserService {
-
-  constructor() { }
+  constructor() {}
 
   /**
    * Returns the current logged-in user
    */
   getCurrentUser() {
-    return "TEST USER";
+    return 'TEST USER';
   }
 }

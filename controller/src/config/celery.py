@@ -1,7 +1,8 @@
+# Standard Python Libraries
 import os
 
+# Third-Party Libraries
 from celery import Celery
-
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
 app = Celery("core")

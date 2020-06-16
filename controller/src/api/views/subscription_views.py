@@ -259,6 +259,7 @@ class SubscriptionsListView(APIView):
                     group_name=group_name,
                     target_list=campaign_info["targets"],
                 )
+                campaign_info["deception_level"] = group_number
                 gophish_campaign_list.extend(
                     SubscriptionCreationManager().__create_and_save_campaigns(
                         campaign_info, target_group, landing_page, end_date
@@ -285,6 +286,25 @@ class SubscriptionsListView(APIView):
             post_data["status"] = "Queued"
 
         post_data["end_date"] = end_date_str
+        campaigns_in_cycle = []
+        for c in gophish_campaign_list:
+            campaigns_in_cycle.append(c["campaign_id"])
+        post_data["cycles"] = [
+            {
+                "start_date": start_date,
+                "end_date": end_date,
+                "active": True,
+                "campaigns_in_cycle": campaigns_in_cycle,
+                "phish_results": {
+                    "sent": 0,
+                    "opened": 0,
+                    "clicked": 0,
+                    "submitted": 0,
+                    "reported": 0,
+                },
+            }
+        ]
+
         created_response = save_single(
             post_data, "subscription", SubscriptionModel, validate_subscription
         )

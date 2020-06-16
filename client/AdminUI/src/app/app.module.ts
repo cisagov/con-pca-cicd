@@ -8,7 +8,7 @@ import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AngularEditorModule } from '@kolkov/angular-editor';
 import { MaterialModule } from './material.module';
-import { MatSortModule } from '@angular/material/sort'
+import { MatSortModule } from '@angular/material/sort';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -37,7 +37,10 @@ import { CustomersComponent } from './components/customers/customers.component';
 import { AddCustomerDialogComponent } from './components/customers/add-customer-dialog/add-customer-dialog.component';
 import { AddContactDialogComponent } from './components/contacts/add-contact-dialog/add-contact-dialog.component';
 import { ViewContactDialogComponent } from './components/contacts/view-contact-dialog/view-contact-dialog.component';
-import { DeleteSubscription, DeleteSubscriptionDialog } from 'src/app/components/subscriptions/delete-subscription/delete-subscription.component';
+import {
+  DeleteSubscription,
+  DeleteSubscriptionDialog
+} from 'src/app/components/subscriptions/delete-subscription/delete-subscription.component';
 import { StopTemplateDialogComponent } from './components/template-manager/stop-template-dialog/stop-template-dialog.component';
 import { SendingProfilesComponent } from './components/sending-profiles/sending-profiles.component';
 import { SendingProfileDetailComponent } from './components/sending-profiles/sending-profile-detail.component';
@@ -56,11 +59,9 @@ import { AlertComponent } from './components/dialogs/alert/alert.component';
 import { SafePipe } from './helper/safe.pipe';
 import { SvgTimelineComponent } from './components/subscriptions/svg-timeline/svg-timeline.component';
 
-
 export function app_Init(settingsHttpService: SettingsHttpService) {
-  return () => settingsHttpService.initializeApp()
+  return () => settingsHttpService.initializeApp();
 }
-
 
 @NgModule({
   declarations: [
@@ -125,9 +126,7 @@ export function app_Init(settingsHttpService: SettingsHttpService) {
     { provide: MAT_DIALOG_DATA, useValue: [] },
     { provide: APP_INITIALIZER, useFactory: app_Init, deps: [SettingsHttpService], multi: true }
   ],
-  exports: [
-    MatSortModule
-  ],
+  exports: [MatSortModule],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}

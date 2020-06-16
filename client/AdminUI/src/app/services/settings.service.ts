@@ -5,7 +5,7 @@ import { Settings } from '../models/settings';
   providedIn: 'root'
 })
 export class SettingsService {
-  public settings: Settings
+  public settings: Settings;
   constructor() {
     this.settings = new Settings();
   }
