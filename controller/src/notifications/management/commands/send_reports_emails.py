@@ -20,6 +20,6 @@ class Command(BaseCommand):
         )
         subscription = subscription_list[0]
 
-        message_type = "quarterly_report"
+        message_type = "cycle_report"
         sender = ReportsEmailSender(subscription, message_type)
         sender.send()

@@ -64,7 +64,7 @@ class TaskListView(APIView):
         if message_type == "monthly_report":
             # Execute task in 30 days from campaign launch
             send_date = datetime.utcnow() + timedelta(days=30)
-        elif message_type == "quarterly_report":
+        elif message_type == "cycle_report":
             # Execute task in 90 days from campaign launch
             send_date = datetime.utcnow() + timedelta(days=90)
         elif message_type == "yearly_report":

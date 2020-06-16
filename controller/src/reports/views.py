@@ -91,7 +91,7 @@ class QuarterlyReports(TemplateView):
     #     - avg_time_to_first_click
     #     - avg_time_to_first_report
     #     - most_successful_template
-    template_name = "reports/quarterly.html"
+    template_name = "reports/cycle.html"
 
     def get_context_data(self, **kwargs):
 
