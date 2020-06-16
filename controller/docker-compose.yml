@@ -1,10 +1,9 @@
 ---
-version: '3.5'
+version: "3.5"
 services:
   api:
     build:
       context: .
-      target: debug
       dockerfile: ./etc/Dockerfile
     stdin_open: true
     tty: true
@@ -74,9 +73,9 @@ services:
     # colon).
     ports:
       # The standard AMQP protocol port
-      - '5672:5672'
+      - "5672:5672"
       # HTTP management UI
-      - '15672:15672'
+      - "15672:15672"
 
     env_file:
       - .env
