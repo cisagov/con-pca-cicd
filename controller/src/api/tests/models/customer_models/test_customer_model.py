@@ -1,9 +1,8 @@
+# Third-Party Libraries
 from api.models.customer_models import CustomerModel
-
 from api.tests.models.customer_models.test_customer_contact_model import (
     customer_contact_model_data,
 )
-
 from faker import Faker
 
 fake = Faker()

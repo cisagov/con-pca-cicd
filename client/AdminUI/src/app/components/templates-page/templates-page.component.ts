@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
-import { Router } from '@angular/router'
+import { Router } from '@angular/router';
 import { LayoutMainService } from 'src/app/services/layout-main.service';
 import { TemplateManagerService } from 'src/app/services/template-manager.service';
 import { Template } from 'src/app/models/template.model';
@@ -11,56 +11,51 @@ import { MatSort } from '@angular/material/sort';
   templateUrl: './templates-page.component.html',
   styleUrls: ['./templates-page.component.scss']
 })
-
 export class TemplatesPageComponent implements OnInit, AfterViewInit {
-
-  displayedColumns = [
-    "name",
-    "deception_score",
-    "template_type",
-    "created_by"
-  ];
+  displayedColumns = ['name', 'deception_score', 'template_type', 'created_by'];
   templatesData = new MatTableDataSource<Template>();
-  search_input = ''
-  @ViewChild(MatSort) sort: MatSort
+  search_input = '';
+  @ViewChild(MatSort) sort: MatSort;
 
   showRetired: boolean = false;
 
   constructor(
     private templateSvc: TemplateManagerService,
     private router: Router,
-    private layoutSvc: LayoutMainService,
+    private layoutSvc: LayoutMainService
   ) {
-    layoutSvc.setTitle("Templates");
+    layoutSvc.setTitle('Templates');
   }
 
   ngOnInit() {
-    this.refresh()
+    this.refresh();
   }
 
   refresh() {
-    this.templateSvc.getAllTemplates(this.showRetired).subscribe((data: any) => {
-      this.templatesData.data = data as Template[]
-    })
+    this.templateSvc
+      .getAllTemplates(this.showRetired)
+      .subscribe((data: any) => {
+        this.templatesData.data = data as Template[];
+      });
   }
 
   ngAfterViewInit(): void {
-    this.templatesData.sort = this.sort
+    this.templatesData.sort = this.sort;
   }
 
   public filterTemplates = (value: string) => {
     this.templatesData.filter = value.trim().toLocaleLowerCase();
-  }
+  };
   public editTemplate(template: Template) {
     this.router.navigate(['/templatemanager', template.template_uuid]);
   }
 
   onRetiredToggle() {
     if (this.displayedColumns.includes('retired')) {
-      this.displayedColumns.pop()
+      this.displayedColumns.pop();
     } else {
-      this.displayedColumns.push('retired')
+      this.displayedColumns.push('retired');
     }
-    this.refresh()
+    this.refresh();
   }
 }

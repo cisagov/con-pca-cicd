@@ -7,15 +7,14 @@ import { SettingsService } from './settings.service';
   providedIn: 'root'
 })
 export class SendingProfileService {
-
   /**
    * Constructor.
-   * @param http 
+   * @param http
    */
   constructor(
     private http: HttpClient,
     private settingsService: SettingsService
-  ) { }
+  ) {}
 
   /**
    * Returns a promise with all sending profiles.
@@ -26,11 +25,11 @@ export class SendingProfileService {
   }
 
   /**
-   * 
-   * @param id 
+   *
+   * @param id
    */
   public getProfile(id: number) {
-    let url = `${this.settingsService.settings.apiUrl}/api/v1/sendingprofile/${id}/`
+    let url = `${this.settingsService.settings.apiUrl}/api/v1/sendingprofile/${id}/`;
     return this.http.get(url);
   }
 
@@ -38,7 +37,7 @@ export class SendingProfileService {
    * Posts a new Sending Profile
    * -or-
    * patches an existing Sending Profile
-   * @param sp 
+   * @param sp
    */
   public saveProfile(sp: SendingProfile) {
     if (!sp.id) {
@@ -53,8 +52,8 @@ export class SendingProfileService {
   }
 
   /**
-   * 
-   * @param sp 
+   *
+   * @param sp
    */
   public deleteProfile(spId: number) {
     let url = `${this.settingsService.settings.apiUrl}/api/v1/sendingprofile/${spId}`;

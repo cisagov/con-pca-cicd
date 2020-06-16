@@ -6,24 +6,21 @@ This handles the api for all the Reports urls.
 # Standard Python Libraries
 import logging
 
-# Django Libraries
-from django.core.files.storage import FileSystemStorage
-from django.http import HttpResponse, FileResponse
-
 # Third-Party Libraries
-from weasyprint import HTML
+# Local Libraries
+# Django Libraries
+from api.manager import CampaignManager
+from api.models.subscription_models import SubscriptionModel, validate_subscription
+from api.models.template_models import TemplateModel, validate_template
+from api.serializers.reports_serializers import ReportsGetSerializer
+from api.utils.db_utils import get_list, get_single
+from django.core.files.storage import FileSystemStorage
+from django.http import FileResponse, HttpResponse
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
-
-# Local Libraries
-from api.serializers.reports_serializers import ReportsGetSerializer
-from api.models.subscription_models import SubscriptionModel, validate_subscription
-from api.models.template_models import TemplateModel, validate_template
-from api.utils.db_utils import get_single, get_list
-from api.manager import CampaignManager
-
+from weasyprint import HTML
 
 logger = logging.getLogger(__name__)
 

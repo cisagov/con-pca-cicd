@@ -49,7 +49,6 @@ export class Template {
   curiosity: number;
   greed: number;
 
-
   //DB tracking variables
   created_by?: string;
   cb_timestamp?: Date;
@@ -62,34 +61,33 @@ export class Template {
 }
 
 export class TemplateAppearanceModel {
-  grammar: number
-  link_domain: number
-  logo_graphics: number
+  grammar: number;
+  link_domain: number;
+  logo_graphics: number;
 }
 
 export class TemplateSenderModel {
-  external: number
-  internal: number
-  authoritative: number
+  external: number;
+  internal: number;
+  authoritative: number;
 }
 
 export class TemplateRelevancyModel {
-  organization: number
-  public_news: number
+  organization: number;
+  public_news: number;
 }
 
 export class TemplateBehaviorModel {
-  fear: number
-  duty_obligation: number
-  curiosity: number
-  greed: number
+  fear: number;
+  duty_obligation: number;
+  curiosity: number;
+  greed: number;
 }
 
 export class TemplateImageModel {
-  file_name: string
-  file_url: string
+  file_name: string;
+  file_url: string;
 }
-
 
 /**
  * An instance of a "Tag", a substitution token in a Template.

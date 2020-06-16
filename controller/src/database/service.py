@@ -34,14 +34,14 @@ class Service:
         """
         return await self.service.count(parameters)
 
-    async def filter_list(self, parameters=None):
+    async def filter_list(self, parameters=None, fields=None):
         """
         Filter_list.
 
         Takes in parameters that are field names and values and
         filters all documents and returns list of results.
         """
-        return await self.service.filter(parameters)
+        return await self.service.filter(parameters, fields)
 
     async def get(self, uuid):
         """

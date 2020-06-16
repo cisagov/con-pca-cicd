@@ -17,11 +17,11 @@
         }
       ],
       "identifier": "BoB",
+      "industry": "Basic Chemicals",
       "name": "Bobs Burgers",
-      "state": "California",
-      "zip_code": "12345",
       "sector": "Chemical",
-      "industry": "Basic Chemicals"
+      "state": "California",
+      "zip_code": "12345"
     },
     {
       "address_1": "321 Test Avenue",
@@ -40,11 +40,11 @@
         }
       ],
       "identifier": "NHL",
+      "industry": "Other",
       "name": "The Ice Rink",
-      "state": "Idaho",
-      "zip_code": "12345",
       "sector": "Energy",
-      "industry": "Other"
+      "state": "Idaho",
+      "zip_code": "12345"
     }
   ],
   "dhs_contacts_data": [

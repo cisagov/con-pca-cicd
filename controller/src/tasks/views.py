@@ -64,7 +64,7 @@ class TaskListView(APIView):
         if message_type == "monthly_report":
             # Execute task in 30 days from campaign launch
             send_date = datetime.utcnow() + timedelta(days=30)
-        elif message_type == "quarterly_report":
+        elif message_type == "cycle_report":
             # Execute task in 90 days from campaign launch
             send_date = datetime.utcnow() + timedelta(days=90)
         elif message_type == "yearly_report":
@@ -75,7 +75,7 @@ class TaskListView(APIView):
             task = email_subscription_report.apply_async(
                 args=[subscription_uuid, message_type], eta=send_date
             )
-        except add.OperationalError as exc:
+        except task.OperationalError as exc:
             logger.exception("Subscription task raised: %r", exc)
         context = {"task id": task.id, "subscription_uuid": subscription_uuid}
         return Response(context)

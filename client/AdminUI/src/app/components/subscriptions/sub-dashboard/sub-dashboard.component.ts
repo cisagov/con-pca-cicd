@@ -7,7 +7,6 @@ import { SubscriptionService } from 'src/app/services/subscription.service';
   templateUrl: './sub-dashboard.component.html'
 })
 export class SubDashboardComponent implements OnInit {
-
   @Input()
   subscriptionUuid: string;
 
@@ -21,32 +20,30 @@ export class SubDashboardComponent implements OnInit {
   avgTTFR = '17 minutes';
 
   schemeLowMedHigh = {
-    domain: ['#064875', '#fcbf10', '#007bc1' ]
+    domain: ['#064875', '#fcbf10', '#007bc1']
   };
 
   schemeSent = {
     domain: ['#336600', '#eeeeee']
   };
 
-
-
   /**
-   * 
+   *
    */
   constructor(
     public chartsSvc: ChartsService,
     private subscriptionSvc: SubscriptionService
-  ) { }
+  ) {}
 
   /**
-   * 
+   *
    */
   ngOnInit(): void {
     this.drawGraphs();
   }
 
   /**
-   * 
+   *
    */
   drawGraphs() {
     // set display options
@@ -65,7 +62,6 @@ export class SubDashboardComponent implements OnInit {
 
     // get content
     this.chart.chartResults = this.chartsSvc.getStatisticsByLevel();
-
 
     this.chartSent.showXAxis = true;
     this.chartSent.showYAxis = true;

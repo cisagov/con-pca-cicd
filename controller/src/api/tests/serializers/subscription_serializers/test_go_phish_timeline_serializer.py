@@ -1,6 +1,8 @@
-from api.serializers.subscriptions_serializers import GoPhishTimelineSerializer
-
+# Standard Python Libraries
 from datetime import datetime
+
+# Third-Party Libraries
+from api.serializers.subscriptions_serializers import GoPhishTimelineSerializer
 from faker import Faker
 
 fake = Faker()

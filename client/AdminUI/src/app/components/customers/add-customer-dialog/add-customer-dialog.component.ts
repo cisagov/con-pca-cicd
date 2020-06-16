@@ -4,7 +4,6 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { CustomerService } from 'src/app/services/customer.service';
 import { NewCustomer } from 'src/app/models/customer.model';
 
-
 @Component({
   selector: 'app-add-customer-dialog',
   templateUrl: './add-customer-dialog.component.html',
@@ -19,21 +18,20 @@ export class AddCustomerDialogComponent implements OnInit {
     city: new FormControl(),
     state: new FormControl(),
     zip_code: new FormControl()
-  })
+  });
   constructor(
     public dialog_ref: MatDialogRef<AddCustomerDialogComponent>,
     public customer_service: CustomerService
-  ) { }
+  ) {}
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   onNoClick(): void {
-    this.dialog_ref.close()
+    this.dialog_ref.close();
   }
 
   onCancelClick(): void {
-    this.dialog_ref.close()
+    this.dialog_ref.close();
   }
 
   onSaveClick(): void {
@@ -47,10 +45,10 @@ export class AddCustomerDialogComponent implements OnInit {
       state: this.form_group.controls['state'].value,
       zip_code: this.form_group.controls['zip_code'].value,
       contact_list: []
-    }
+    };
 
-    this.customer_service.addCustomer(customer).subscribe()
+    this.customer_service.addCustomer(customer).subscribe();
 
-    this.dialog_ref.close()
+    this.dialog_ref.close();
   }
 }

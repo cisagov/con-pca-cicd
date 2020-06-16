@@ -7,19 +7,20 @@ import { Settings } from '../models/settings';
   providedIn: 'root'
 })
 export class SettingsHttpService {
-
-  constructor(private http: HttpClient, private settingsService: SettingsService) { }
+  constructor(
+    private http: HttpClient,
+    private settingsService: SettingsService
+  ) {}
 
   initializeApp(): Promise<any> {
-    return new Promise(
-      (resolve) => {
-        this.http.get('assets/settings.json')
-          .toPromise()
-          .then(response => {
-            this.settingsService.settings = <Settings>response;
-            resolve();
-          })
-      }
-    )
+    return new Promise(resolve => {
+      this.http
+        .get('assets/settings.json')
+        .toPromise()
+        .then(response => {
+          this.settingsService.settings = <Settings>response;
+          resolve();
+        });
+    });
   }
 }

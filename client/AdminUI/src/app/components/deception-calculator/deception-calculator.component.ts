@@ -12,7 +12,7 @@ import { switchMap } from 'rxjs/operators';
 import { MyErrorStateMatcher } from 'src/app/helper/ErrorStateMatcher';
 import { DeceptionCalculatorService } from 'src/app/services/deception-calculator.service';
 import { DeceptionCalculation } from 'src/app/models/deception-calculator.model';
-import { Template } from 'src/app/models/template.model'
+import { Template } from 'src/app/models/template.model';
 import { LayoutMainService } from 'src/app/services/layout-main.service';
 import { Subscription, Observable } from 'rxjs';
 import { temporaryAllocator } from '@angular/compiler/src/render3/view/util';
@@ -30,7 +30,7 @@ export class DeceptionCalculatorComponent implements OnInit {
   templateId: string;
   deceptionFormGroup: FormGroup;
   templateName: string;
-  templateSubject: string
+  templateSubject: string;
   templateHTML: string;
 
   //Subscriptions
@@ -46,7 +46,7 @@ export class DeceptionCalculatorComponent implements OnInit {
     layoutSvc.setTitle('Deception Calculator');
 
     //Set formGroup to empty model to avoid collision when HTML is rendered
-    this.setDeceptionFormFromModel(new Template)
+    this.setDeceptionFormFromModel(new Template());
   }
 
   ngOnInit(): void {
@@ -55,12 +55,16 @@ export class DeceptionCalculatorComponent implements OnInit {
       this.route.params.subscribe(params => {
         this.templateId = params['templateId'];
         if (this.templateId != undefined) {
-          this.subscriptions.push(this.deceptionService.getDeception(this.templateId).subscribe((templateData: Template) => {
-            this.templateId = templateData.template_uuid
-            this.setDeceptionFormFromModel(templateData)
-            this.setTemplatePreview(templateData)
-            this.onValueChanges();
-          }))
+          this.subscriptions.push(
+            this.deceptionService
+              .getDeception(this.templateId)
+              .subscribe((templateData: Template) => {
+                this.templateId = templateData.template_uuid;
+                this.setDeceptionFormFromModel(templateData);
+                this.setTemplatePreview(templateData);
+                this.onValueChanges();
+              })
+          );
         } else {
           this.router.navigate(['/templatemanager']);
         }
@@ -83,10 +87,12 @@ export class DeceptionCalculatorComponent implements OnInit {
 
   saveDeceptionCalculation() {
     if (this.deceptionFormGroup.valid) {
-      let template_to_save = this.getTemplateModelFromForm(this.deceptionFormGroup)
-      this.deceptionService.saveDeception(template_to_save)
+      let template_to_save = this.getTemplateModelFromForm(
+        this.deceptionFormGroup
+      );
+      this.deceptionService.saveDeception(template_to_save);
     } else {
-      alert("Errors on deception form" + this.deceptionFormGroup.errors)
+      alert('Errors on deception form' + this.deceptionFormGroup.errors);
     }
   }
 
@@ -105,91 +111,108 @@ export class DeceptionCalculatorComponent implements OnInit {
   /**
    * Calculate the deception score using the provided Template model
    */
-  calcDeceptionScore(formValues: Template){
-    return formValues.authoritative +
-    formValues.grammar +
-    formValues.internal + 
-    formValues.link_domain +
-    formValues.logo_graphics +
-    formValues.public_news +
-    formValues.organization +
-    formValues.external
+  calcDeceptionScore(formValues: Template) {
+    return (
+      formValues.authoritative +
+      formValues.grammar +
+      formValues.internal +
+      formValues.link_domain +
+      formValues.logo_graphics +
+      formValues.public_news +
+      formValues.organization +
+      formValues.external
+    );
   }
-  
 
   /**
    * Set the angular form data from the provided DeceptionCalculation model
    */
   setDeceptionFormFromModel(template: Template) {
+    if (!template.appearance) {
+      template.appearance = <any>{};
+    }
+    if (!template.sender) {
+      template.sender = <any>{};
+    }
+    if (!template.relevancy) {
+      template.relevancy = <any>{};
+    }
+    if (!template.behavior) {
+      template.behavior = <any>{};
+    }
 
-    if(!template.appearance){template.appearance = <any>{}}
-    if(!template.sender){template.sender = <any>{}}
-    if(!template.relevancy){template.relevancy = <any>{}}
-    if(!template.behavior){template.behavior = <any>{}}
-
-    
     this.deceptionFormGroup = new FormGroup({
       authoritative: new FormControl(template.sender?.authoritative ?? 0),
       external: new FormControl(template.sender?.external ?? 0),
-      internal: new FormControl(template.sender?.internal ?? 0),      
+      internal: new FormControl(template.sender?.internal ?? 0),
       grammar: new FormControl(template.appearance?.grammar ?? 0),
       link_domain: new FormControl(template.appearance?.link_domain ?? 0),
       logo_graphics: new FormControl(template.appearance?.logo_graphics ?? 0),
       organization: new FormControl(template.relevancy.organization ?? 0),
       public_news: new FormControl(template.relevancy.public_news ?? 0),
       fear: new FormControl(template.behavior?.fear ?? false),
-      duty_obligation: new FormControl(template.behavior?.duty_obligation ?? false),
+      duty_obligation: new FormControl(
+        template.behavior?.duty_obligation ?? false
+      ),
       curiosity: new FormControl(template.behavior?.curiosity ?? false),
       greed: new FormControl(template.behavior?.greed ?? false),
-      descriptive_words: new FormControl(template.descriptive_words ?? " ", { updateOn: 'blur' }),
+      descriptive_words: new FormControl(template.descriptive_words ?? ' ', {
+        updateOn: 'blur'
+      }),
       final_deception_score: new FormControl({
-        value: this.calcDeceptionScore(template), disabled:true}
-      )
+        value: this.calcDeceptionScore(template),
+        disabled: true
+      })
     });
-
   }
   /**
    * Sets the template preview for display
-   * @param template 
+   * @param template
    */
-  setTemplatePreview(template: Template){
-    this.templateName = template.name ? template.name : "Template name not found" 
-    this.templateSubject = template.subject ? template.subject : "Template subject not found"
-    this.templateHTML = template.html ? template.html : "<h1>Preivew not Found</h1>"
+  setTemplatePreview(template: Template) {
+    this.templateName = template.name
+      ? template.name
+      : 'Template name not found';
+    this.templateSubject = template.subject
+      ? template.subject
+      : 'Template subject not found';
+    this.templateHTML = template.html
+      ? template.html
+      : '<h1>Preivew not Found</h1>';
   }
 
   /**
    * Returns a Template model initialized from a provided formgroup
-   * @param decep_form 
+   * @param decep_form
    */
-  getTemplateModelFromForm(decep_form: FormGroup) { 
-      //Multiple templates used to easily strip the data from the form, and transfer to a template format the API expects
-      let formTemplate = new Template(decep_form.value)
-      let saveTemplate = new Template()
-      saveTemplate.appearance = { 
-        'grammar': formTemplate.grammar,
-        'link_domain': formTemplate.link_domain,
-        'logo_graphics': formTemplate.logo_graphics
-      }
-      saveTemplate.sender = {
-        'authoritative': formTemplate.authoritative,
-        'external': formTemplate.external,
-        'internal': formTemplate.internal
-      }
-      saveTemplate.relevancy = {
-        'organization': formTemplate.organization,
-        'public_news': formTemplate.public_news
-      }
-      saveTemplate.behavior = {
-        'curiosity': formTemplate.curiosity,
-        'duty_obligation': formTemplate.duty_obligation,
-        'fear': formTemplate.fear,
-        'greed': formTemplate.greed
-      }
-      saveTemplate.descriptive_words = formTemplate.descriptive_words
-      saveTemplate.template_uuid = this.templateId
-      saveTemplate.deception_score = this.calcDeceptionScore(formTemplate)
-      return saveTemplate
+  getTemplateModelFromForm(decep_form: FormGroup) {
+    //Multiple templates used to easily strip the data from the form, and transfer to a template format the API expects
+    let formTemplate = new Template(decep_form.value);
+    let saveTemplate = new Template();
+    saveTemplate.appearance = {
+      grammar: formTemplate.grammar,
+      link_domain: formTemplate.link_domain,
+      logo_graphics: formTemplate.logo_graphics
+    };
+    saveTemplate.sender = {
+      authoritative: formTemplate.authoritative,
+      external: formTemplate.external,
+      internal: formTemplate.internal
+    };
+    saveTemplate.relevancy = {
+      organization: formTemplate.organization,
+      public_news: formTemplate.public_news
+    };
+    saveTemplate.behavior = {
+      curiosity: formTemplate.curiosity,
+      duty_obligation: formTemplate.duty_obligation,
+      fear: formTemplate.fear,
+      greed: formTemplate.greed
+    };
+    saveTemplate.descriptive_words = formTemplate.descriptive_words;
+    saveTemplate.template_uuid = this.templateId;
+    saveTemplate.deception_score = this.calcDeceptionScore(formTemplate);
+    return saveTemplate;
   }
 
   /**
