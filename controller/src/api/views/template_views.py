@@ -87,6 +87,12 @@ class TemplatesListView(APIView):
         if exists(
             {"name": post_data["name"]}, "template", TemplateModel, validate_template
         ):
+            return Response(
+                {"error": "Template with name already exists"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        else:
             created_response = save_single(
                 post_data, "template", TemplateModel, validate_template
             )
@@ -95,12 +101,6 @@ class TemplatesListView(APIView):
                 return Response(created_response, status=status.HTTP_400_BAD_REQUEST)
             serializer = TemplatePostResponseSerializer(created_response)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
-
-        else:
-            return Response(
-                {"error": "Template with name already exists"},
-                status=status.HTTP_400_BAD_REQUEST,
-            )
 
 
 class TemplateView(APIView):
