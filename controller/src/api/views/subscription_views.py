@@ -20,7 +20,6 @@ from api.models.template_models import (
     validate_tag,
     validate_template,
 )
-from api.serializers import campaign_serializers
 from api.serializers.subscriptions_serializers import (
     SubscriptionDeleteResponseSerializer,
     SubscriptionGetSerializer,
@@ -42,7 +41,7 @@ from api.utils.subscription_utils import (
     stop_subscription,
     target_list_divide,
 )
-from api.utils.template_utils import format_ztime, personalize_template
+from api.utils.template_utils import personalize_template
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
 from notifications.views import SubscriptionNotificationEmailSender
@@ -55,6 +54,7 @@ logger = logging.getLogger(__name__)
 campaign_manager = CampaignManager()
 # Template Calculator Manager
 template_manager = TemplateManager()
+subscription_manager = SubscriptionCreationManager()
 
 
 class SubscriptionsListView(APIView):
@@ -255,7 +255,7 @@ class SubscriptionsListView(APIView):
                     target_list=campaign_info["targets"],
                 )
                 gophish_campaign_list.extend(
-                    self.__create_and_save_campaigns(
+                    subscription_manager.create_and_save_campaigns(
                         campaign_info, target_group, landing_page, end_date
                     )
                 )
@@ -289,7 +289,6 @@ class SubscriptionsListView(APIView):
         serializer = SubscriptionPostResponseSerializer(created_response)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-  
 
 class SubscriptionView(APIView):
     """
@@ -466,7 +465,7 @@ class SubscriptionStopView(APIView):
 class SubscriptionRestartView(APIView):
     """
     This is the SubscriptionRestartView APIView.
-    This handles the API to restart a Subscription 
+    This handles the API to restart a Subscription
     """
 
     @swagger_auto_schema(
@@ -475,13 +474,12 @@ class SubscriptionRestartView(APIView):
         security=[],
         operation_id="Restart Subscription",
         operation_description="Endpoint for manually restart a subscription",
-    )      
+    )
     def post(self, request, format=None):
         """Post method."""
         post_data = request.data.copy()
-        sub_manager = SubscriptionCreationManager()
-        created_response  = sub_manager.restart(post_data)
-        
+        created_response = subscription_manager.restart(post_data)
+
         if "errors" in created_response:
             return Response(created_response, status=status.HTTP_400_BAD_REQUEST)
         serializer = SubscriptionPostResponseSerializer(created_response)

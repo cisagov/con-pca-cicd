@@ -64,12 +64,12 @@ class TemplateManager:
         preprocessed_data = [self.preprocess_keywords(url, keywords)] + [
             *template_data.values()
         ]
-        
-        while("" in preprocessed_data) : 
-            preprocessed_data.remove("") 
 
-        while(None in preprocessed_data) : 
-            preprocessed_data.remove(None) 
+        while "" in preprocessed_data:
+            preprocessed_data.remove("")
+
+        while None in preprocessed_data:
+            preprocessed_data.remove(None)
 
         if not preprocessed_data:
             return []
@@ -141,7 +141,7 @@ class CampaignManager:
             return self.get_campaign_summary(kwargs.get("campaign_id", None))
         else:
             return "method not found"
-    
+
     def delete(self, method, **kwargs):
         """DELETE Method."""
         if method == "email_template":
@@ -156,7 +156,6 @@ class CampaignManager:
             return self.delete_campaign(kwargs.get("campaign_id", None))
         else:
             return "method not found"
-
 
     # Create methods
     def generate_campaign(
@@ -190,31 +189,27 @@ class CampaignManager:
 
         return campaign
 
-
     def generate_sending_profile(self):
         """Generate Sending Profiles."""
         smtp = SMTP(name="HyreGuard")
         return self.gp_api.smtp.post(smtp=smtp)
 
-
     def create_sending_profile(self, sp):
         smtp = SMTP(
             name=sp.get("name"),
-            username=sp.get("username"),          
-            password=sp.get("password"),           
-            host=sp.get("host"),               
-            interface_type=sp.get("interface_type"),     
-            from_address=sp.get("from_address"),       
-            ignore_cert_errors=sp.get("ignore_cert_errors"),     
-            headers=sp.get("headers")            
+            username=sp.get("username"),
+            password=sp.get("password"),
+            host=sp.get("host"),
+            interface_type=sp.get("interface_type"),
+            from_address=sp.get("from_address"),
+            ignore_cert_errors=sp.get("ignore_cert_errors"),
+            headers=sp.get("headers"),
         )
 
         return self.gp_api.smtp.post(smtp=smtp)
 
-
     def put_sending_profile(self, sp):
         return self.gp_api.smtp.put(smtp=sp)
-
 
     def generate_email_template(self, name: str, template: str):
         """Generate Email Templates."""
@@ -225,12 +220,10 @@ class CampaignManager:
         email_template = Template(name=name, html=template)
         return self.gp_api.templates.post(email_template)
 
-
     def generate_landing_page(self, name: str, template: str):
         """Generate Landing Page."""
         landing_page = Page(name=name, html=template)
         return self.gp_api.pages.post(landing_page)
-
 
     def generate_user_group(self, group_name: str = None, target_list: Dict = None):
         """Generate User Group."""
@@ -246,8 +239,6 @@ class CampaignManager:
 
         target_group = Group(name=group_name, targets=users)
         return self.gp_api.groups.post(target_group)
-        
-
 
     # Get methods
     def get_campaign(self, campaign_id: int = None):
@@ -258,14 +249,12 @@ class CampaignManager:
             campaign = self.gp_api.campaigns.get()
         return campaign
 
-
     def get_campaign_summary(self, campaign_id: int = None):
         if campaign_id:
             summary = self.gp_api.campaigns.summary(campaign_id=campaign_id)
         else:
             summary = self.gp_api.campaigns.summary()
         return summary.as_dict()
-
 
     def get_sending_profile(self, smtp_id: int = None):
         """GET Sending Profile."""
@@ -275,7 +264,6 @@ class CampaignManager:
             sending_profile = self.gp_api.smtp.get()
         return sending_profile
 
-
     def get_email_template(self, template_id: int = None):
         """GET Email Temp."""
         if template_id:
@@ -284,7 +272,6 @@ class CampaignManager:
             template = self.gp_api.templates.get()
         return template
 
-
     def get_landing_page(self, page_id: int = None):
         """GET landingpage."""
         if page_id:
@@ -292,7 +279,6 @@ class CampaignManager:
         else:
             landing_page = self.gp_api.pages.get()
         return landing_page
-
 
     def get_user_group(self, group_id: int = None):
         """GET User group."""
@@ -340,7 +326,7 @@ class CampaignManager:
         if group_id:
             try:
                 status = self.gp_api.groups.delete(group_id=group_id)
-            except: 
+            except:
                 status = None
         else:
             status = None

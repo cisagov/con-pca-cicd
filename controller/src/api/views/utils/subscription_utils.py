@@ -52,29 +52,32 @@ campaign_manager = CampaignManager()
 template_manager = TemplateManager()
 
 
-
 class SubscriptionCreationManager:
-
     def start(self):
         raise NotImplementedError
 
     def restart(self, post_data, format=None):
         # get customer data
-        customer = get_single(post_data["customer_uuid"], "customer", CustomerModel, validate_customer)
+        customer = get_single(
+            post_data["customer_uuid"], "customer", CustomerModel, validate_customer
+        )
 
         # Get start date then quater of start date and create names to check
-        start_date = post_data.get("start_date", datetime.today().strftime("%Y-%m-%dT%H:%M:%S"))
-        #check to ensure the start date was not in the past
+        start_date = post_data.get(
+            "start_date", datetime.today().strftime("%Y-%m-%dT%H:%M:%S")
+        )
+        # check to ensure the start date was not in the past
         today = datetime.now()
         if start_date < today:
             start_date = today
-
 
         end_date = get_sub_end_date(start_date)
         end_date_str = end_date.strftime("%Y-%m-%dT%H:%M:%S")
         # Get all Email templates for calc
         email_template_params = {"template_type": "Email", "retired": False}
-        template_list = get_list(email_template_params, "template", TemplateModel, validate_template)
+        template_list = get_list(
+            email_template_params, "template", TemplateModel, validate_template
+        )
 
         # Get all Landing pages or default
         # This is currently selecting the default page on creation.
@@ -93,7 +96,9 @@ class SubscriptionCreationManager:
         else:
             relevant_templates = []
 
-        divided_templates = [relevant_templates[x : x + 5] for x in range(0, len(relevant_templates), 5)]
+        divided_templates = [
+            relevant_templates[x : x + 5] for x in range(0, len(relevant_templates), 5)
+        ]
         # Get the next date Intervals, if no startdate is sent, default today
         campaign_data_list = get_campaign_dates(start_date)
 
@@ -115,7 +120,11 @@ class SubscriptionCreationManager:
         target_list = post_data.get("target_email_list")
         target_div = target_list_divide(target_list)
         index = 0
-        print("template_personalized_list: {} items".format(len(template_personalized_list)))
+        print(
+            "template_personalized_list: {} items".format(
+                len(template_personalized_list)
+            )
+        )
         for campaign_info in campaign_data_list:
             try:
                 campaign_info["templates"] = template_personalized_list[index]
@@ -143,7 +152,7 @@ class SubscriptionCreationManager:
                 target_list=campaign_info["targets"],
             )
             gophish_campaign_list.extend(
-                self.__create_and_save_campaigns(
+                self.create_and_save_campaigns(
                     campaign_info, target_group, landing_page, end_date
                 )
             )
@@ -154,7 +163,7 @@ class SubscriptionCreationManager:
             post_data, "subscription", SubscriptionModel, validate_subscription
         )
 
-    def __create_and_save_campaigns(
+    def create_and_save_campaigns(
         self, campaign_info, target_group, landing_page, end_date
     ):
         """
@@ -222,4 +231,3 @@ class SubscriptionCreationManager:
                 gophish_campaign_list.append(created_campaign)
 
         return gophish_campaign_list
-
