@@ -4,12 +4,14 @@ Subscription Views.
 This handles the api for all the Subscription urls.
 """
 # Standard Python Libraries
-from datetime import datetime
+from datetime import datetime, timedelta
 import logging
 import json
 
-# Third-Party Libraries
-# Local
+# Django Libraries
+from django.conf import settings
+
+# Local Libraries
 from api.manager import CampaignManager, TemplateManager
 from api.views.utils.subscription_utils import SubscriptionCreationManager
 from api.models.customer_models import CustomerModel, validate_customer
@@ -43,6 +45,9 @@ from api.utils.subscription_utils import (
     target_list_divide,
 )
 from api.utils.template_utils import format_ztime, personalize_template
+from tasks.tasks import email_subscription_report
+
+# Third Party Libraries
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
 from notifications.views import SubscriptionNotificationEmailSender
@@ -256,7 +261,7 @@ class SubscriptionsListView(APIView):
                 )
                 campaign_info["deception_level"] = group_number
                 gophish_campaign_list.extend(
-                    self.__create_and_save_campaigns(
+                    SubscriptionCreationManager().__create_and_save_campaigns(
                         campaign_info, target_group, landing_page, end_date
                     )
                 )
@@ -304,90 +309,27 @@ class SubscriptionsListView(APIView):
             post_data, "subscription", SubscriptionModel, validate_subscription
         )
 
+        # Create scheduled email tasks
+        if not settings.DEBUG:
+            subscription_uuid = created_response.get("subscription_uuid")
+            message_types = {
+                "monthly_report": datetime.utcnow() + timedelta(days=30),
+                "cycle_report": datetime.utcnow() + timedelta(days=90),
+                "yearly_report": datetime.utcnow() + timedelta(days=365),
+            }
+
+            for message_type, send_date in message_types:
+                try:
+                    task = email_subscription_report.apply_async(
+                        args=[subscription_uuid, message_type], eta=send_date
+                    )
+                except task.OperationalError as exc:
+                    logger.exception("Subscription task raised: %r", exc)
+
         if "errors" in created_response:
             return Response(created_response, status=status.HTTP_400_BAD_REQUEST)
         serializer = SubscriptionPostResponseSerializer(created_response)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
-
-    def __create_and_save_campaigns(
-        self, campaign_info, target_group, landing_page, end_date
-    ):
-        """
-        Create and Save Campaigns.
-
-        This method handles the creation of each campain with given template, target group, and data.
-        """
-        templates = campaign_info["templates"]
-        targets = campaign_info["targets"]
-
-        gophish_campaign_list = []
-        # Create a GoPhish Campaigns
-        for template in templates:
-            # Create new template
-            created_template = campaign_manager.generate_email_template(
-                name=f"{campaign_info['name']}.{template['name']}",
-                template=template["data"],
-            )
-            campaign_start = campaign_info["start_date"].strftime("%Y-%m-%d")
-            campaign_end = end_date.strftime("%Y-%m-%d")
-
-            if created_template is not None:
-                campaign_name = f"{campaign_info['name']}.{template['name']}.{campaign_start}.{campaign_end}"
-                campaign = campaign_manager.create(
-                    "campaign",
-                    campaign_name=campaign_name,
-                    smtp_name="SMTP",
-                    # Replace with picked landing page, default init page now.
-                    page_name=landing_page,
-                    user_group=target_group,
-                    email_template=created_template,
-                    launch_date=campaign_info["start_date"].strftime(
-                        "%Y-%m-%dT%H:%M:%S+00:00"
-                    ),
-                    send_by_date=campaign_info["send_by_date"].strftime(
-                        "%Y-%m-%dT%H:%M:%S+00:00"
-                    ),
-                )
-                logger.info("campaign created: {}".format(campaign))
-
-                created_campaign = {
-                    "campaign_id": campaign.id,
-                    "name": campaign_name,
-                    "created_date": format_ztime(campaign.created_date),
-                    "launch_date": campaign_info["start_date"],
-                    "send_by_date": campaign_info["send_by_date"],
-                    "email_template": created_template.name,
-                    "email_template_id": created_template.id,
-                    "template_uuid": template["template_uuid"],
-                    "landing_page_template": campaign.page.name,
-                    "status": campaign.status,
-                    "results": [],
-                    "deception_level": campaign_info["deception_level"],
-                    "phish_results": {
-                        "sent": 0,
-                        "opened": 0,
-                        "clicked": 0,
-                        "submitted": 0,
-                        "reported": 0,
-                    },
-                    "groups": [
-                        campaign_serializers.CampaignGroupSerializer(target_group).data
-                    ],
-                    "timeline": [
-                        {
-                            "email": None,
-                            "time": format_ztime(campaign.created_date),
-                            "message": "Campaign Created",
-                            "details": "",
-                            "duplicate": False,
-                        }
-                    ],
-                    "target_email_list": targets,
-                }
-                gophish_campaign_list.append(created_campaign)
-
-        return gophish_campaign_list
-
 
 
 class SubscriptionView(APIView):
@@ -574,13 +516,13 @@ class SubscriptionRestartView(APIView):
         security=[],
         operation_id="Restart Subscription",
         operation_description="Endpoint for manually restart a subscription",
-    )      
+    )
     def post(self, request, format=None):
         """Post method."""
         post_data = request.data.copy()
         sub_manager = SubscriptionCreationManager()
-        created_response  = sub_manager.restart(post_data)
-        
+        created_response = sub_manager.restart(post_data)
+
         if "errors" in created_response:
             return Response(created_response, status=status.HTTP_400_BAD_REQUEST)
         serializer = SubscriptionPostResponseSerializer(created_response)
