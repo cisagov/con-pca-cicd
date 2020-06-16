@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnDestroy, Inject } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy, Inject, ChangeDetectionStrategy } from '@angular/core';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { MyErrorStateMatcher } from '../../../helper/ErrorStateMatcher';
 import { SubscriptionService } from 'src/app/services/subscription.service';
@@ -8,13 +8,14 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { CustomerService } from 'src/app/services/customer.service';
 import { MatDialog, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
-import { LayoutMainService } from 'src/app/services/layout-main.service'
+import { LayoutMainService } from 'src/app/services/layout-main.service';
 import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-add-customer',
   templateUrl: './add-customer.component.html',
-  styleUrls: ['./add-customer.component.scss']
+  styleUrls: ['./add-customer.component.scss'], 
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AddCustomerComponent implements OnInit, OnDestroy {
 
@@ -50,8 +51,8 @@ export class AddCustomerComponent implements OnInit, OnDestroy {
     city: new FormControl('', [Validators.required]),
     state: new FormControl('', [Validators.required]),
     zip: new FormControl('', [Validators.required]),
-    sector: new FormControl(null, [Validators.required]),
-    industry: new FormControl(null, [Validators.required]),
+    sector: new FormControl(null),
+    industry: new FormControl(null),
     customerType: new FormControl('', [Validators.required])
   });
 
@@ -83,6 +84,7 @@ export class AddCustomerComponent implements OnInit, OnDestroy {
     public layoutSvc: LayoutMainService
   ) {
     layoutSvc.setTitle('Customers');
+    
   }
 
   ngOnInit(): void {
@@ -92,9 +94,17 @@ export class AddCustomerComponent implements OnInit, OnDestroy {
     } else {
       this.inDialog = false;
     }
-
-    console.log(this.inDialog);
-
+    
+    this.customerFormGroup.get('customerType').valueChanges.subscribe( value => {
+      if(value == "Private") {
+        this.customerFormGroup.controls['sector'].setValidators(Validators.required);
+        this.customerFormGroup.controls['industry'].setValidators(Validators.required);
+        
+      } else {
+        this.customerFormGroup.controls['sector'].clearValidators();
+        this.customerFormGroup.controls['industry'].clearValidators();
+      }
+    });
 
     this.angularSubscriptions.push(
       this.route.params.subscribe(params => {
@@ -169,7 +179,7 @@ export class AddCustomerComponent implements OnInit, OnDestroy {
         notes: contact.notes,
         active: true
       };
-      newContacts.push(contactToAdd)
+      newContacts.push(contactToAdd);
       // this.contacts.data.push(contactToAdd)
     });
     this.contacts.data = newContacts;
@@ -193,8 +203,24 @@ export class AddCustomerComponent implements OnInit, OnDestroy {
     this.clearCustomer();
   }
 
+  checkCustomerType(){
+    let customerType = this.customerFormGroup.controls['customerType'].value;
+    if(customerType == "Private")
+    {
+      return true;
+    }
+    
+    return false;
+  }
+
   pushCustomer() {
     if (this.customerFormGroup.valid && this.contacts.data.length > 0) {
+      let sector = '';
+      let industry ='';
+      if(this.checkCustomerType()){
+        sector = this.customerFormGroup.controls['sector'].value;
+        industry = this.customerFormGroup.controls['industry'].value;
+      }
       const customer: Customer = {
         customer_uuid: '',
         name: this.customerFormGroup.controls['customerName'].value,
@@ -204,8 +230,8 @@ export class AddCustomerComponent implements OnInit, OnDestroy {
         city: this.customerFormGroup.controls['city'].value,
         state: this.customerFormGroup.controls['state'].value,
         zip_code: this.customerFormGroup.controls['zip'].value,
-        sector: this.customerFormGroup.controls['sector'].value,
-        industry: this.customerFormGroup.controls['industry'].value,
+        sector: sector,
+        industry: industry,
         customer_type: this.customerFormGroup.controls['customerType'].value,
         contact_list: this.contacts.data
       };
@@ -269,8 +295,12 @@ export class AddCustomerComponent implements OnInit, OnDestroy {
   editContact(contact: Contact) {
     this.isEdit = true;
     this.tempEditContact = contact;
-    this.contactFormGroup.controls['office_phone'].setValue(contact.office_phone);
-    this.contactFormGroup.controls['mobile_phone'].setValue(contact.mobile_phone);
+    this.contactFormGroup.controls['office_phone'].setValue(
+      contact.office_phone
+    );
+    this.contactFormGroup.controls['mobile_phone'].setValue(
+      contact.mobile_phone
+    );
     this.contactFormGroup.controls['email'].setValue(contact.email);
     this.contactFormGroup.controls['firstName'].setValue(contact.first_name);
     this.contactFormGroup.controls['lastName'].setValue(contact.last_name);

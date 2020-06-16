@@ -16,6 +16,7 @@ class SendingProfileSerializer(serializers.Serializer):
     """
     This is the Sending Profile Serializer.
     """
+
     id = serializers.IntegerField()
     name = serializers.CharField()
     username = serializers.CharField()
@@ -32,6 +33,7 @@ class SendingProfilePatchSerializer(serializers.Serializer):
     """
     This is the Sending Profile Serializer.
     """
+
     name = serializers.CharField(required=False)
     username = serializers.CharField(required=False)
     password = serializers.CharField(required=False)
@@ -47,6 +49,7 @@ class SendingProfilePatchResponseSerializer(serializers.Serializer):
     """
     This is the Sending Profile Serializer.
     """
+
     id = serializers.IntegerField()
     name = serializers.CharField()
     username = serializers.CharField()
@@ -66,4 +69,5 @@ class SendingProfileDeleteSerializer(serializers.Serializer):
 class SendingProfileDeleteResponseSerializer(serializers.Serializer):
     """
     """
+
     id = serializers.IntegerField()

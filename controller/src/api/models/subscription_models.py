@@ -109,6 +109,21 @@ class GoPhishTimelineModel(Model):
     time = DateTimeType()
     message = StringType()
     details = StringType()
+    duplicate = BooleanType()
+
+
+class PhishingResultsModel(Model):
+    """
+    This is the Cycle Model.
+
+    This hold the results for each campaign. Filled by webhook response data
+    """
+
+    sent = IntType()
+    opened = IntType()
+    clicked = IntType()
+    submitted = IntType()
+    reported = IntType()
 
 
 class GoPhishCampaignsModel(Model):
@@ -138,12 +153,30 @@ class GoPhishCampaignsModel(Model):
     completed_date = DateTimeType()
     email_template = StringType()
     email_template_id = IntType()
+    template_uuid = StringType()
+    deception_level = IntType()
     landing_page_template = StringType()
     status = StringType()
     results = ListType(ModelType(GoPhishResultModel))
+    phish_results = ModelType(PhishingResultsModel)
     groups = ListType(ModelType(GoPhishGroupModel))
     timeline = ListType(ModelType(GoPhishTimelineModel))
     target_email_list = ListType(ModelType(SubscriptionTargetModel))
+
+
+class CycleModel(Model):
+    """
+    This is the Cycle Model.
+
+    This tracks the quarterly cycle and the campaigns involved
+    in each cycle.
+    """
+
+    start_date = DateTimeType()
+    end_date = DateTimeType()
+    active = BooleanType()
+    campaigns_in_cycle = ListType(IntType())
+    phish_results = ModelType(PhishingResultsModel)
 
 
 class SubscriptionModel(Model):
@@ -176,6 +209,7 @@ class SubscriptionModel(Model):
     active_task = BooleanType()
     archived = BooleanType(default=False)
     manually_stopped = BooleanType(default=False)
+    cycles = ListType(ModelType(CycleModel))
     # db data tracking added below
     created_by = StringType()
     cb_timestamp = DateTimeType()

@@ -1,8 +1,9 @@
-from api.serializers.subscriptions_serializers import SubscriptionPatchSerializer
-
+# Standard Python Libraries
 from datetime import datetime
 from uuid import uuid4
 
+# Third-Party Libraries
+from api.serializers.subscriptions_serializers import SubscriptionPatchSerializer
 from faker import Faker
 
 fake = Faker()

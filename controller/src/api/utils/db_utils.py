@@ -6,14 +6,12 @@ import logging
 import uuid
 
 # Third-Party Libraries
-from database.service import Service
-from django.conf import settings
-
-
 # Models
+from api.models.dhs_models import DHSContactModel
 from api.models.subscription_models import SubscriptionModel
 from api.models.template_models import TemplateModel
-from api.models.dhs_models import DHSContactModel
+from database.service import Service
+from django.conf import settings
 
 logger = logging.getLogger(__name__)
 
@@ -54,14 +52,16 @@ def __get_service_loop(collection, model, validation_model):
     return service, loop
 
 
-def get_list(parameters, collection, model, validation_model):
+def get_list(parameters, collection, model, validation_model, fields=None):
     """
     Get_data private method.
 
     This handles getting the data from the db.
     """
     service, loop = __get_service_loop(collection, model, validation_model)
-    document_list = loop.run_until_complete(service.filter_list(parameters=parameters))
+    document_list = loop.run_until_complete(
+        service.filter_list(parameters=parameters, fields=fields)
+    )
     return document_list
 
 
@@ -156,3 +156,13 @@ def update_single_webhook(subscription, collection, model, validation_model):
     if "errors" in update_response:
         return update_response
     return subscription
+
+
+def exists(parameters, collection, model, validation_model):
+    """Check if item exists for given parameter."""
+    service, loop = __get_service_loop(collection, model, validation_model)
+
+    document_list = loop.run_until_complete(service.filter_list(parameters=parameters))
+    if document_list:
+        return True
+    return False

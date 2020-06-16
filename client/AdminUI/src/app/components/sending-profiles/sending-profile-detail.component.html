@@ -1,6 +1,18 @@
 <h1>{{ mode | titlecase }} Sending Profile</h1>
 
 <form [formGroup]="profileForm">
+  <div style="overflow: auto">
+    <mat-form-field appearance="outline" class="w-100">
+      <mat-label>Name</mat-label>
+      <input
+        formControlName="name"
+        matInput
+        [ngClass]="{ 'is-invalid': submitted && f.name.errors }"
+      />
+      <div *ngIf="submitted && f.name.errors" class="invalid-feedback">
+        <div *ngIf="f.name.errors.required">Profile name is required</div>
+      </div>
+    </mat-form-field>
 
     <div style="max-height: 70vh; overflow-y: auto; overflow-x: hidden">
         <mat-form-field appearance="outline" class="w-100">
@@ -25,23 +37,27 @@
             </div>
         </mat-form-field>
 
-        <mat-form-field appearance="outline" class="w-100">
-            <mat-label>Host</mat-label>
-            <input formControlName="host" matInput [ngClass]="{ 'is-invalid': submitted && f.host.errors }">
-            <div *ngIf="submitted && f.host.errors" class="invalid-feedback">
-                <div *ngIf="f.host.errors.required">Host is required</div>
-            </div>
-        </mat-form-field>
+    <mat-form-field appearance="outline" class="w-100">
+      <mat-label>Host</mat-label>
+      <input
+        formControlName="host"
+        matInput
+        [ngClass]="{ 'is-invalid': submitted && f.host.errors }"
+      />
+      <div *ngIf="submitted && f.host.errors" class="invalid-feedback">
+        <div *ngIf="f.host.errors.required">Host is required</div>
+      </div>
+    </mat-form-field>
 
-        <mat-form-field appearance="outline" class="w-100">
-            <mat-label>Username</mat-label>
-            <input formControlName="username" matInput>
-        </mat-form-field>
+    <mat-form-field appearance="outline" class="w-100">
+      <mat-label>Username</mat-label>
+      <input formControlName="username" matInput />
+    </mat-form-field>
 
-        <mat-form-field appearance="outline" class="w-100">
-            <mat-label>Password</mat-label>
-            <input formControlName="password" matInput type="password">
-        </mat-form-field>
+    <mat-form-field appearance="outline" class="w-100">
+      <mat-label>Password</mat-label>
+      <input formControlName="password" matInput type="password" />
+    </mat-form-field>
 
         <div class="valign-bottom mb-3">
             <mat-checkbox formControlName="ignoreCertErrors" color="primary">
@@ -86,7 +102,11 @@
             </div>
         </div>
 
+      <div *ngIf="headers.size == 0">
+        No headers defined
+      </div>
     </div>
+  </div>
 
     <div class="text-right mt-3">
         <button mat-flat-button class="add-button" color="basic" (click)="onCancelClick()">

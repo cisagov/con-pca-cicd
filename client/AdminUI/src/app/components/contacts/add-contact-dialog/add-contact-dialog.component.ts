@@ -5,9 +5,9 @@ import { CustomerService } from 'src/app/services/customer.service';
 import { Contact, Customer } from 'src/app/models/customer.model';
 
 interface ICustomer {
-  customer_uuid: string,
-  customer_name: string,
-  contact_list: Contact[]
+  customer_uuid: string;
+  customer_name: string;
+  contact_list: Contact[];
 }
 
 @Component({
@@ -25,26 +25,26 @@ export class AddContactDialogComponent implements OnInit {
     mobile_phone: new FormControl(),
     email: new FormControl(),
     notes: new FormControl()
-  })
+  });
   customers: Customer[];
 
   constructor(
     public dialog_ref: MatDialogRef<AddContactDialogComponent>,
     public customer_service: CustomerService
-  ) { }
+  ) {}
 
   ngOnInit(): void {
     this.customer_service.getCustomers().subscribe((data: any[]) => {
-      this.customers = data as Customer[]
-    })
+      this.customers = data as Customer[];
+    });
   }
 
   onNoClick(): void {
-    this.dialog_ref.close()
+    this.dialog_ref.close();
   }
 
   onCancelClick(): void {
-    this.dialog_ref.close()
+    this.dialog_ref.close();
   }
 
   onSaveClick(): void {
@@ -52,12 +52,12 @@ export class AddContactDialogComponent implements OnInit {
     let contact = this.getContactFromForm();
     let contacts = this.getContactsFromUuid(uuid);
     contacts.push(contact);
-    this.customer_service.setContacts(uuid, contacts).subscribe()
+    this.customer_service.setContacts(uuid, contacts).subscribe();
     this.dialog_ref.close();
   }
 
   getUuidFromForm(): string {
-    return this.form_group.controls['customer_uuid'].value
+    return this.form_group.controls['customer_uuid'].value;
   }
 
   getContactFromForm(): Contact {
@@ -70,8 +70,8 @@ export class AddContactDialogComponent implements OnInit {
       email: this.form_group.controls['email'].value,
       notes: this.form_group.controls['notes'].value,
       active: true
-    }
-    return contact
+    };
+    return contact;
   }
 
   getContactsFromUuid(uuid: string) {
@@ -80,8 +80,7 @@ export class AddContactDialogComponent implements OnInit {
       if (customer.customer_uuid == uuid) {
         contacts = customer.contact_list;
       }
-    })
+    });
     return contacts;
   }
-
 }

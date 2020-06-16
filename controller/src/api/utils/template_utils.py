@@ -50,6 +50,7 @@ def personalize_template(customer_info, template_data, sub_data, tag_list):
     personalized_template_data = []
     for template in template_data:
         cleantext = template["html"]
+
         for tag in tag_list:
             if tag["tag_type"] == "gophish":
                 # First check gophish tags
@@ -68,6 +69,7 @@ def personalize_template(customer_info, template_data, sub_data, tag_list):
                     )
 
         template_unique_name = "".join(template["name"].split(" "))
+        cleantext += "{{.Tracker}}"
 
         personalized_template_data.append(
             {
