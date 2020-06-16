@@ -260,7 +260,7 @@ class SubscriptionsListView(APIView):
                     target_list=campaign_info["targets"],
                 )
                 gophish_campaign_list.extend(
-                    SubscriptionCreationManager.__create_and_save_campaigns(
+                    SubscriptionCreationManager().__create_and_save_campaigns(
                         campaign_info, target_group, landing_page, end_date
                     )
                 )
