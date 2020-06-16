@@ -1,11 +1,11 @@
+# Third-Party Libraries
 from api.serializers.template_serializers import (
-    TemplateStopResponseSerializer,
     TEMPLATE_TYPE_CHOICES,
+    TemplateStopResponseSerializer,
 )
 from faker import Faker
 
 fake = Faker()
-
 
 
 def test_serializer():

@@ -8,7 +8,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { CustomerService } from 'src/app/services/customer.service';
 import { MatDialog, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
-import { LayoutMainService } from 'src/app/services/layout-main.service'
+import { LayoutMainService } from 'src/app/services/layout-main.service';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -169,7 +169,7 @@ export class AddCustomerComponent implements OnInit, OnDestroy {
         notes: contact.notes,
         active: true
       };
-      newContacts.push(contactToAdd)
+      newContacts.push(contactToAdd);
       // this.contacts.data.push(contactToAdd)
     });
     this.contacts.data = newContacts;
@@ -269,8 +269,12 @@ export class AddCustomerComponent implements OnInit, OnDestroy {
   editContact(contact: Contact) {
     this.isEdit = true;
     this.tempEditContact = contact;
-    this.contactFormGroup.controls['office_phone'].setValue(contact.office_phone);
-    this.contactFormGroup.controls['mobile_phone'].setValue(contact.mobile_phone);
+    this.contactFormGroup.controls['office_phone'].setValue(
+      contact.office_phone
+    );
+    this.contactFormGroup.controls['mobile_phone'].setValue(
+      contact.mobile_phone
+    );
     this.contactFormGroup.controls['email'].setValue(contact.email);
     this.contactFormGroup.controls['firstName'].setValue(contact.first_name);
     this.contactFormGroup.controls['lastName'].setValue(contact.last_name);

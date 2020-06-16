@@ -3,7 +3,7 @@
 }
 
 .topBanner {
-  background-color: #1B2352;
+  background-color: #1b2352;
   height: 225px;
   width: 100%;
 }
@@ -14,7 +14,7 @@
   position: fixed;
   top: 0;
   left: 0;
-  background-color: #1B2352;
+  background-color: #1b2352;
   overflow-x: hidden;
   color: white;
 }
@@ -35,7 +35,6 @@
   text-align: right;
   margin-top: 0.5%;
   margin-right: 0.5%;
-
 }
 
 #reportDate {
@@ -58,18 +57,20 @@
   z-index: 10;
 }
 
-#averageClickTitle, #averageReportTitle {
+#averageClickTitle,
+#averageReportTitle {
   margin-top: 100px;
-  color: #174A91;
+  color: #174a91;
   text-align: center;
 }
 
-#averageClickTime, #averageReportTime {
+#averageClickTime,
+#averageReportTime {
   text-align: center;
   font-size: 30px;
   margin-top: 10%;
   transform: translate(0%, 125%);
-  color: #174A91
+  color: #174a91;
 }
 
 .circles {
@@ -148,7 +149,7 @@
   z-index: 1;
   text-align: left;
   width: 12%;
-  border: 1px solid #FDC010;
+  border: 1px solid #fdc010;
   margin-left: 0.5%;
   padding-left: 0.2%;
 }

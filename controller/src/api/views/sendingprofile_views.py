@@ -3,8 +3,9 @@ Sending Profile Views.
 This handles the api for all the Sending Profile urls.
 """
 # Standard Python Libraries
-import logging
 import copy
+import logging
+
 # Third-Party Libraries
 # Local
 from api.manager import CampaignManager
@@ -12,8 +13,11 @@ from api.models.customer_models import CustomerModel, validate_customer
 from api.models.subscription_models import SubscriptionModel, validate_subscription
 from api.models.template_models import TemplateModel, validate_template
 from api.serializers.sendingprofile_serializers import (
-    SendingProfileSerializer, SendingProfilePatchSerializer, SendingProfilePatchResponseSerializer,
-    SendingProfileDeleteSerializer, SendingProfileDeleteResponseSerializer
+    SendingProfileDeleteResponseSerializer,
+    SendingProfileDeleteSerializer,
+    SendingProfilePatchResponseSerializer,
+    SendingProfilePatchSerializer,
+    SendingProfileSerializer,
 )
 from api.utils.db_utils import (
     delete_single,
@@ -27,6 +31,7 @@ from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
+
 logger = logging.getLogger(__name__)
 # GoPhish API Manager
 campaign_manager = CampaignManager()
@@ -37,6 +42,7 @@ class SendingProfilesListView(APIView):
     This is the SendingProfilesListView APIView.
     This handles the API to get a List of Sending Profiles.
     """
+
     @swagger_auto_schema(
         responses={"200": SendingProfileSerializer, "400": "Bad Request"},
         security=[],
@@ -54,10 +60,10 @@ class SendingProfilesListView(APIView):
     This handles the API for creating a new Sending Profile.
     https://localhost:3333/api/smtp/:id
     """
+
     @swagger_auto_schema(
         request_body=SendingProfilePatchSerializer,
-        responses={"202": SendingProfilePatchResponseSerializer,
-                   "400": "Bad Request"},
+        responses={"202": SendingProfilePatchResponseSerializer, "400": "Bad Request"},
         security=[],
         operation_id="Create Sending Profile",
         operation_description="This handles the API for the Update Sending Profile with uuid.",
@@ -73,7 +79,7 @@ class SendingProfilesListView(APIView):
             interface_type=sp.get("interface_type"),
             from_address=sp.get("from_address"),
             ignore_cert_errors=sp.get("ignore_cert_errors"),
-            headers=sp.get("headers")
+            headers=sp.get("headers"),
         )
         serializer = SendingProfileSerializer(sending_profile)
         return Response(serializer.data)
@@ -84,6 +90,7 @@ class SendingProfileView(APIView):
     This is the SendingProfileView APIView.
     This handles the API for the Get a Sending Profile with id.
     """
+
     @swagger_auto_schema(
         responses={"200": SendingProfileSerializer, "400": "Bad Request"},
         security=[],
@@ -100,10 +107,10 @@ class SendingProfileView(APIView):
     This handles the API for PATCHing a Sending Profile with id.
     https://localhost:3333/api/smtp/:id
     """
+
     @swagger_auto_schema(
         request_body=SendingProfilePatchSerializer,
-        responses={"202": SendingProfilePatchResponseSerializer,
-                   "400": "Bad Request"},
+        responses={"202": SendingProfilePatchResponseSerializer, "400": "Bad Request"},
         security=[],
         operation_id="Update and Patch single Sending Profile",
         operation_description="This handles the API for the Update Sending Profile with uuid.",
@@ -114,7 +121,9 @@ class SendingProfileView(APIView):
         patch_data = request.data.copy()
 
         sp.name = self.__setAttribute(sp.name, patch_data, "name")
-        sp.interface_type = self.__setAttribute(sp.interface_type, patch_data, "interface_type")
+        sp.interface_type = self.__setAttribute(
+            sp.interface_type, patch_data, "interface_type"
+        )
         sp.host = self.__setAttribute(sp.host, patch_data, "host")
         sp.username = self.__setAttribute(sp.username, patch_data, "username")
         sp.password = self.__setAttribute(sp.password, patch_data, "password")
@@ -134,10 +143,10 @@ class SendingProfileView(APIView):
     This handles the API for PATCHing a Sending Profile with id.
     https://localhost:3333/api/smtp/:id
     """
+
     @swagger_auto_schema(
         request_body=SendingProfileDeleteSerializer,
-        responses={"202": SendingProfileDeleteResponseSerializer,
-                   "400": "Bad Request"},
+        responses={"202": SendingProfileDeleteResponseSerializer, "400": "Bad Request"},
         security=[],
         operation_id="Delete single Sending Profile",
         operation_description="This handles the API for the Delete Sending Profile with uuid.",

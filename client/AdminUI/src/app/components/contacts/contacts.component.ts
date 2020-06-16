@@ -1,21 +1,31 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { LayoutMainService } from 'src/app/services/layout-main.service';
 import { FormGroup, FormControl } from '@angular/forms';
-import { MatDialogRef, MatDialog, MatDialogConfig, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import {
+  MatDialogRef,
+  MatDialog,
+  MatDialogConfig,
+  MAT_DIALOG_DATA
+} from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
-import {CustomerService} from 'src/app/services/customer.service'
-import { MatTab } from '@angular/material/tabs'; 
-import { Contact, Customer, ICustomerContact } from 'src/app/models/customer.model';
+import { CustomerService } from 'src/app/services/customer.service';
+import { MatTab } from '@angular/material/tabs';
+import {
+  Contact,
+  Customer,
+  ICustomerContact
+} from 'src/app/models/customer.model';
 import { AddContactDialogComponent } from './add-contact-dialog/add-contact-dialog.component';
 import { ViewContactDialogComponent } from './view-contact-dialog/view-contact-dialog.component';
 
 @Component({
   selector: '',
   templateUrl: './contacts.component.html',
-  styleUrls: ['./contacts.component.scss'],
+  styleUrls: ['./contacts.component.scss']
 })
 export class ContactsComponent implements OnInit {
   dataSource: MatTableDataSource<ICustomerContact>;
+
   displayedColumns = [    
     "first_name",
     "last_name",
@@ -26,9 +36,10 @@ export class ContactsComponent implements OnInit {
   ];
 
   constructor(
-    private layoutSvc: LayoutMainService, 
+    private layoutSvc: LayoutMainService,
     public dialog: MatDialog,
-    public customerService: CustomerService) {
+    public customerService: CustomerService
+  ) {
     layoutSvc.setTitle('Contacts');
   }
 
@@ -39,42 +50,45 @@ export class ContactsComponent implements OnInit {
 
   openAddDialog(): void {
     const dialogConfig = new MatDialogConfig();
-    dialogConfig.data = {}
+    dialogConfig.data = {};
     const dialogRef = this.dialog.open(AddContactDialogComponent, dialogConfig);
 
     dialogRef.afterClosed().subscribe(value => {
-      this.refresh()
-    })
+      this.refresh();
+    });
   }
 
   openViewDialog(row: ICustomerContact): void {
-    const dialogRef = this.dialog.open(
-      ViewContactDialogComponent, {
-        data: row
-      }
-    );
+    const dialogRef = this.dialog.open(ViewContactDialogComponent, {
+      data: row
+    });
     dialogRef.afterClosed().subscribe(value => {
-      this.refresh()
-    })
+      this.refresh();
+    });
   }
 
   private refresh(): void {
     this.customerService.getCustomers().subscribe((data: any[]) => {
-      let customerContacts = this.customerService.getAllContacts(data as Customer[]);
-      this.dataSource.data = customerContacts
-    })
+      let customerContacts = this.customerService.getAllContacts(
+        data as Customer[]
+      );
+      this.dataSource.data = customerContacts;
+    });
   }
 
   private setFilterPredicate() {
-    this.dataSource.filterPredicate = (data: ICustomerContact, filter: string) => {
+    this.dataSource.filterPredicate = (
+      data: ICustomerContact,
+      filter: string
+    ) => {
       var words = filter.split(' ');
-      let searchData = `${data.first_name.toLowerCase()} ${data.last_name.toLowerCase()} ${data.customer_name.toLowerCase()} ${data.title.toLowerCase()}`
+      let searchData = `${data.first_name.toLowerCase()} ${data.last_name.toLowerCase()} ${data.customer_name.toLowerCase()} ${data.title.toLowerCase()}`;
       for (var i = 0; i < words.length; i++) {
         if (words[i] == null || words[i] == '' || words[i] == ' ') {
           continue;
         }
         var isMatch = searchData.indexOf(words[i].trim().toLowerCase()) > -1;
-        
+
         if (!isMatch) {
           return false;
         }

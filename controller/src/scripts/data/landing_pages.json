@@ -17,7 +17,7 @@
     "descriptive_words": "default phishing basic",
     "from_address": "",
     "gophish_template_id": 0,
-    "html": "<html><head><title>You've been phished!</title></head><body><h1>You've Been Phished!</h1><p>This is a message from a Gophish campaign</p><p>:p We got you!</p>From: Con-CPA Team.</body></html>",
+    "html": "<html><head><title>You've been phished!</title></head><body><h1>You've Been Phished!</h1><p>This is a message from a Gophish campaign</p><p>:p We got you!</p>From: Con-CPA Team.<html> <form action=\"\" method=\"post\" name=\"form\"><label>Username:</label> <input name=\"username\" type=\"text\" /><br /><label>Password:</label> <input name=\"password\" type=\"password\" /><br /><input id=\"login\" name=\"login\" type=\"submit\" value=\"Login\" />&nbsp;</form> </html>",
     "image_list": [],
     "name": "You've Been Phished!",
     "relevancy": {

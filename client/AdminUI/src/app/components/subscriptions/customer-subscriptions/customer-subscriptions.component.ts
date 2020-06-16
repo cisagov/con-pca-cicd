@@ -11,7 +11,6 @@ import { AppSettings } from 'src/app/AppSettings';
   templateUrl: './customer-subscriptions.component.html',
   styleUrls: ['./customer-subscriptions.component.scss']
 })
-
 export class CustomerSubscriptionsComponent implements OnInit {
 
 

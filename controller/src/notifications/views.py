@@ -10,12 +10,18 @@ contacts about reports and subscription updates.
 from datetime import datetime
 from email.mime.image import MIMEImage
 import logging
+from typing import Any, List
 
+# Third-Party Libraries
 # Django Libraries
+# Local Libraries
+from api.models.subscription_models import SubscriptionModel, validate_subscription
+from api.utils.db_utils import get_list
 from django.conf import settings
 from django.contrib.staticfiles.storage import staticfiles_storage
 from django.core.files.storage import FileSystemStorage
 from django.core.mail.message import EmailMultiAlternatives
+from django.http import HttpResponse
 from django.template.loader import render_to_string
 
 # Local Libraries
@@ -110,6 +116,7 @@ class SubscriptionNotificationEmailSender:
         start_date = datetime.strptime(
             self.subscription.get("start_date").split(".")[0], "%Y-%m-%dT%H:%M:%S"
         ).strftime("%d %B, %Y")
+
         end_date = self.subscription.get("end_date")
         if end_date is not None:
             end_date = datetime.strptime(
@@ -137,6 +144,7 @@ class SubscriptionNotificationEmailSender:
         )
         recipient_copy = dhs_contact.get("email") if dhs_contact else None
 
+        print(recipient_copy)
         # pass context to email templates
         context = self.create_context_data()
         text_content = render_to_string(f"emails/{path}.txt", context)

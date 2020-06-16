@@ -16,7 +16,7 @@ from sklearn.metrics.pairwise import cosine_similarity
 # cisagov Libraries
 # GoPhish Libraries
 from gophish import Gophish
-from gophish.models import Campaign, Group, SMTP, Stat, Page, Template, User
+from gophish.models import SMTP, Campaign, Group, Page, Stat, Template, User
 
 logger = logging.getLogger(__name__)
 faker = Faker()

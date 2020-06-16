@@ -1,8 +1,11 @@
-import boto3
-import os
-import uuid
-from urllib.parse import urlparse
+# Standard Python Libraries
 import logging
+import os
+from urllib.parse import urlparse
+import uuid
+
+# Third-Party Libraries
+import boto3
 
 logger = logging.getLogger()
 

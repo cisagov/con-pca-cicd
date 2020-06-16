@@ -6,13 +6,10 @@ import { LayoutMainService } from 'src/app/services/layout-main.service';
   templateUrl: './user-admin.component.html',
   styleUrls: ['./user-admin.component.scss']
 })
-
 export class UserAdminComponent implements OnInit {
   constructor(public layoutSvc: LayoutMainService) {
-    layoutSvc.setTitle("User Admin");
-   }
-
-  ngOnInit() {
+    layoutSvc.setTitle('User Admin');
   }
 
+  ngOnInit() {}
 }

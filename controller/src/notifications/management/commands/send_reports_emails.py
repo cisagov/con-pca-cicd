@@ -1,11 +1,15 @@
 # Standard Libraries
+# Standard Python Libraries
 from typing import Any
 
+# Third-Party Libraries
 # Django Libraries
-from django.core.management.base import BaseCommand
-
 # Local Libraries
+<<<<<<< HEAD
+from django.core.management.base import BaseCommand
+=======
 from api.models.subscription_models import SubscriptionModel, validate_subscription
+>>>>>>> develop
 from notifications.views import ReportsEmailSender
 from api.utils.db_utils import get_list
 
@@ -20,6 +24,6 @@ class Command(BaseCommand):
         )
         subscription = subscription_list[0]
 
-        message_type = "quarterly_report"
+        message_type = "cycle_report"
         sender = ReportsEmailSender(subscription, message_type)
         sender.send()

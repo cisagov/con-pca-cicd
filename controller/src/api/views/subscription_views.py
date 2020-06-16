@@ -4,12 +4,14 @@ Subscription Views.
 This handles the api for all the Subscription urls.
 """
 # Standard Python Libraries
-from datetime import datetime
+from datetime import datetime, timedelta
 import logging
 import json
 
-# Third-Party Libraries
-# Local
+# Django Libraries
+from django.conf import settings
+
+# Local Libraries
 from api.manager import CampaignManager, TemplateManager
 from api.views.utils.subscription_utils import SubscriptionCreationManager
 from api.models.customer_models import CustomerModel, validate_customer
@@ -41,7 +43,10 @@ from api.utils.subscription_utils import (
     stop_subscription,
     target_list_divide,
 )
-from api.utils.template_utils import personalize_template
+from api.utils.template_utils import format_ztime, personalize_template
+from tasks.tasks import email_subscription_report
+
+# Third Party Libraries
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
 from notifications.views import SubscriptionNotificationEmailSender
@@ -254,6 +259,7 @@ class SubscriptionsListView(APIView):
                     group_name=group_name,
                     target_list=campaign_info["targets"],
                 )
+                campaign_info["deception_level"] = group_number
                 gophish_campaign_list.extend(
                     subscription_manager.create_and_save_campaigns(
                         campaign_info, target_group, landing_page, end_date
@@ -280,9 +286,45 @@ class SubscriptionsListView(APIView):
             post_data["status"] = "Queued"
 
         post_data["end_date"] = end_date_str
+        campaigns_in_cycle = []
+        for c in gophish_campaign_list:
+            campaigns_in_cycle.append(c["campaign_id"])
+        post_data["cycles"] = [
+            {
+                "start_date": start_date,
+                "end_date": end_date,
+                "active": True,
+                "campaigns_in_cycle": campaigns_in_cycle,
+                "phish_results": {
+                    "sent": 0,
+                    "opened": 0,
+                    "clicked": 0,
+                    "submitted": 0,
+                    "reported": 0,
+                },
+            }
+        ]
+
         created_response = save_single(
             post_data, "subscription", SubscriptionModel, validate_subscription
         )
+
+        # Create scheduled email tasks
+        if not settings.DEBUG:
+            subscription_uuid = created_response.get("subscription_uuid")
+            message_types = {
+                "monthly_report": datetime.utcnow() + timedelta(days=30),
+                "cycle_report": datetime.utcnow() + timedelta(days=90),
+                "yearly_report": datetime.utcnow() + timedelta(days=365),
+            }
+
+            for message_type, send_date in message_types:
+                try:
+                    task = email_subscription_report.apply_async(
+                        args=[subscription_uuid, message_type], eta=send_date
+                    )
+                except task.OperationalError as exc:
+                    logger.exception("Subscription task raised: %r", exc)
 
         if "errors" in created_response:
             return Response(created_response, status=status.HTTP_400_BAD_REQUEST)

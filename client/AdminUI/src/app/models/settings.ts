@@ -1,3 +1,3 @@
 export class Settings {
-    apiUrl: string;
+  apiUrl: string;
 }
