@@ -53,7 +53,7 @@ class ReportsView(TemplateView):
         return context
 
 
-class QuarterlyReports(TemplateView):
+class CycleReports(TemplateView):
     # DATA NEEDED
     # Compnay
     #     - name
@@ -194,6 +194,5 @@ class QuarterlyReports(TemplateView):
         context["previous_cycles"] = previous_cycle_stats
         context["region_stats"] = region_stats
         context["subscription_stats"] = subscription_stats
-
 
         return context

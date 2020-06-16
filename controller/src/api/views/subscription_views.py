@@ -22,7 +22,6 @@ from api.models.template_models import (
     validate_tag,
     validate_template,
 )
-from api.serializers import campaign_serializers
 from api.serializers.subscriptions_serializers import (
     SubscriptionDeleteResponseSerializer,
     SubscriptionGetSerializer,
@@ -60,6 +59,7 @@ logger = logging.getLogger(__name__)
 campaign_manager = CampaignManager()
 # Template Calculator Manager
 template_manager = TemplateManager()
+subscription_manager = SubscriptionCreationManager()
 
 
 class SubscriptionsListView(APIView):
@@ -261,7 +261,7 @@ class SubscriptionsListView(APIView):
                 )
                 campaign_info["deception_level"] = group_number
                 gophish_campaign_list.extend(
-                    SubscriptionCreationManager().__create_and_save_campaigns(
+                    subscription_manager.create_and_save_campaigns(
                         campaign_info, target_group, landing_page, end_date
                     )
                 )
@@ -507,7 +507,7 @@ class SubscriptionStopView(APIView):
 class SubscriptionRestartView(APIView):
     """
     This is the SubscriptionRestartView APIView.
-    This handles the API to restart a Subscription 
+    This handles the API to restart a Subscription
     """
 
     @swagger_auto_schema(
@@ -520,8 +520,7 @@ class SubscriptionRestartView(APIView):
     def post(self, request, format=None):
         """Post method."""
         post_data = request.data.copy()
-        sub_manager = SubscriptionCreationManager()
-        created_response = sub_manager.restart(post_data)
+        created_response = subscription_manager.restart(post_data)
 
         if "errors" in created_response:
             return Response(created_response, status=status.HTTP_400_BAD_REQUEST)
