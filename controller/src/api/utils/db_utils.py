@@ -162,5 +162,5 @@ def exists(parameters, collection, model, validation_model):
 
     document_list = loop.run_until_complete(service.filter_list(parameters=parameters))
     if document_list:
-        return False
-    return True
+        return True
+    return False
