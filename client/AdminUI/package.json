@@ -13,7 +13,6 @@
     "@kolkov/angular-editor": "^1.1.2",
     "@swimlane/ngx-charts": "^14.0.0",
     "bootstrap": "^4.5.0",
-    "codyhouse-framework": "^2.7.0",
     "font-awesome": "^4.7.0",
     "guid-typescript": "^1.0.9",
     "jquery": "^3.5.1",
