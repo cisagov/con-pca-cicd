@@ -8,8 +8,10 @@ from datetime import datetime
 import logging
 import json
 
-# Third-Party Libraries
-# Local
+# Django Libraries
+from django.conf import settings
+
+# Local Libraries
 from api.manager import CampaignManager, TemplateManager
 from api.views.utils.subscription_utils import SubscriptionCreationManager
 from api.models.customer_models import CustomerModel, validate_customer
@@ -43,6 +45,8 @@ from api.utils.subscription_utils import (
     target_list_divide,
 )
 from api.utils.template_utils import format_ztime, personalize_template
+
+# Third Party Libraries
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
 from notifications.views import SubscriptionNotificationEmailSender
@@ -284,9 +288,7 @@ class SubscriptionsListView(APIView):
             post_data, "subscription", SubscriptionModel, validate_subscription
         )
 
-        import ipdb
-
-        ipdb.set_trace()
+        subscription_uuid = created_response.get("subscription_uuid")
 
         if "errors" in created_response:
             return Response(created_response, status=status.HTTP_400_BAD_REQUEST)
