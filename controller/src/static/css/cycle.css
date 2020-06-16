@@ -1,0 +1,23 @@
+@charset "UTF-8";
+@page {
+  size: Letter;
+  margin: 2.5cm;
+}
+
+* {
+    font-family: Arial, sans-serif;
+}
+
+.container-fluid {
+  padding: 0;
+}
+
+#centerCisaLogo {
+  text-align: center;
+}
+
+#assessmentTitle {
+  font-size: 25px;
+  text-align: center;
+  margin-top: 2%;
+}
