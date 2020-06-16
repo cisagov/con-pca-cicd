@@ -30,6 +30,7 @@ from api.serializers.template_serializers import (
 from api.utils import subscription_utils
 from api.utils.db_utils import (
     delete_single,
+    exists,
     get_list,
     get_single,
     save_single,
@@ -81,6 +82,15 @@ class TemplatesListView(APIView):
     def post(self, request, format=None):
         """Post method."""
         post_data = request.data.copy()
+
+        if exists(
+            {"name": post_data["name"]}, "template", TemplateModel, validate_template
+        ):
+            return Response(
+                {"error": "Template with name already exists"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
         created_response = save_single(
             post_data, "template", TemplateModel, validate_template
         )
