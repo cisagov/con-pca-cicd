@@ -30,7 +30,7 @@ campaign_manager = CampaignManager()
 
 
 class ReportsView(TemplateView):
-    template_name = "reports/base.html"
+    template_name = "reports/monthly.html"
 
     def get_context_data(self, **kwargs):
         subscription_uuid = self.kwargs["subscription_uuid"]
