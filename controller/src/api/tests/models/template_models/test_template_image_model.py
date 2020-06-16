@@ -1,5 +1,5 @@
+# Third-Party Libraries
 from api.models.template_models import TemplateImageModel
-
 from faker import Faker
 
 fake = Faker()

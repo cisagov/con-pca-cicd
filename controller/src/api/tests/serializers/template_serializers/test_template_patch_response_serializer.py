@@ -1,6 +1,7 @@
+# Third-Party Libraries
 from api.serializers.template_serializers import (
-    TemplatePatchResponseSerializer,
     TEMPLATE_TYPE_CHOICES,
+    TemplatePatchResponseSerializer,
 )
 from faker import Faker
 

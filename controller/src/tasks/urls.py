@@ -1,7 +1,8 @@
-from django.urls import path, include
+# Third-Party Libraries
 from django.conf.urls import url
-from . import views
+from django.urls import include, path
 
+from . import views
 
 urlpatterns = [
     path("", views.TaskListView.as_view(), name="run_task"),

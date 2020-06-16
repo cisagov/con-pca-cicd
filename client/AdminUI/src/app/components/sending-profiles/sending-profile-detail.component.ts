@@ -10,8 +10,7 @@ import { SendingProfile } from 'src/app/models/sending-profile.model';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SendingProfileDetailComponent implements OnInit {
-
-  /** 
+  /**
    * NEW or EDIT
    */
   mode: string = 'new';
@@ -38,10 +37,12 @@ export class SendingProfileDetailComponent implements OnInit {
   /**
    * convenience getter for easy access to form fields
    */
-  get f() { return this.profileForm.controls; }
+  get f() {
+    return this.profileForm.controls;
+  }
 
   /**
-   * 
+   *
    */
   ngOnInit(): void {
     this.profileForm = new FormGroup({
@@ -76,7 +77,8 @@ export class SendingProfileDetailComponent implements OnInit {
       },
         (err) => {
           console.log(err);
-        });
+        }
+      );
     }
   }
 
@@ -103,7 +105,7 @@ export class SendingProfileDetailComponent implements OnInit {
   }
 
   /**
-   * 
+   *
    */
   onSaveClick() {
     this.submitted = true;
@@ -139,7 +141,7 @@ export class SendingProfileDetailComponent implements OnInit {
   }
 
   /**
-   * 
+   *
    */
   onCancelClick() {
     this.dialog_ref.close();

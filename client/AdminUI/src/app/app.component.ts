@@ -7,20 +7,13 @@ import { ThemeService } from '../app/services/theme.service';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  
-  title = 'AdminUI';  
+  title = 'AdminUI';
 
-  constructor(
-    private themeSvc: ThemeService
-  ) {
+  constructor(private themeSvc: ThemeService) {}
 
-  }
-
-  getTheme(){
+  getTheme() {
     return this.themeSvc.getStoredTheme();
   }
 
-  ngAfterViewInit(): void {
-  }
-
+  ngAfterViewInit(): void {}
 }

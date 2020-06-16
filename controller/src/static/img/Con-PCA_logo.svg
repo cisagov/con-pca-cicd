@@ -198,7 +198,7 @@
 		<path fill="#E6E7E8" d="M170.627,34.035v7.018h-0.857v-7.018h-1.285v-0.857h3.429v0.857H170.627z"/>
 	</g>
 	<g id="Hook">
-		
+
 			<image overflow="visible" opacity="0.35" enable-background="new    " width="46" height="63" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAC4AAAA/CAYAAACfM/oJAAAACXBIWXMAAC4jAAAuIwF4pT92AAAA
 GXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAABYFJREFUeNrsmutS20gQhXXzDd8S
 JxBDSHb3/R8qIRuWtYmNwQZbtmztqOp0cWgky1o0Ij9QVZegLJtvjs90z/TgOG/Xiy7X+htKhtR/
@@ -237,7 +237,7 @@ d5XtO90XPM/gTsrPb9fb9Ttc/wkwAJkCTOj9LRfeAAAAAElFTkSuQmCC" transform="matrix(0.20
 		</g>
 	</g>
 	<g id="Hook_Shaft">
-		
+
 			<image overflow="visible" opacity="0.35" enable-background="new    " width="125" height="29" id="Shadow_1_" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAH0AAAAdCAYAAACHdGN/AAAACXBIWXMAAC4jAAAuIwF4pT92AAAA
 GXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAA5lJREFUeNrsmltv2zAMhSXbcdI6
 SbsbNuz//7M9DOt6Sa9pc/Nk4BA94eRYTvqQFiRAuAZSQ/BHHpGUnTMzMzMz+4Dm7RUcJZNULjXc
@@ -271,7 +271,7 @@ AABJRU5ErkJggg==" transform="matrix(0.2304 0 0 0.2069 66.2925 11.563)">
 	<path id="HL_1_" fill="#FFFFFF" d="M88.795,13.258c0,0,1.01-0.617,2.096-0.463c-1.076,0.162-1.471,0.472-1.471,0.472L88.795,13.258
 		z"/>
 	<g id="Con_PCA">
-		
+
 			<image overflow="visible" enable-background="new    " width="725" height="129" id="Shadow" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAtUAAACBCAYAAAAPM0ajAAAACXBIWXMAAC4jAAAuIwF4pT92AAAA
 GXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAMcVJREFUeNrsXYl24kqSDUA2tstL
 uVz7637d8///NNPLvFe798LGBjRkV8ToKixAwhJoufecPNiUiyUzI+PmzciIvhAEQRAEQRAE8Sz0
@@ -499,7 +499,7 @@ ImcZhskSqNkDJmsaD/7frFKzba6oKM8k0asMCDeIvS2MbRMcDfuo/WSCY9w+ct0ln1GFnxbYnMyg
 v3olvw9tZfvrV6GxiTZgvDENtPBiV9aC2eZ+jzdklL0S3itu8Riwj7rhnDjG3SDZ9NXF53BZ9kFb
 qff6lWts/k+AAQAako0h21O3hQAAAABJRU5ErkJggg==" transform="matrix(0.239 0 0 0.2344 0.8218 0.5742)">
 		</image>
-		
+
 			<linearGradient id="Con-PCA_1_" gradientUnits="userSpaceOnUse" x1="86.9141" y1="14.3755" x2="86.9141" y2="41.5415" gradientTransform="matrix(1 0 0 -1 0 43.125)">
 			<stop  offset="0" style="stop-color:#C2C4C6"/>
 			<stop  offset="0.0686" style="stop-color:#C7C9CB"/>
@@ -521,7 +521,7 @@ qff6lWts/k+AAQAako0h21O3hQAAAABJRU5ErkJggg==" transform="matrix(0.239 0 0 0.2344
 			h-12.125l1.791-3.691h8.543L157.273,7.73l-10.262,20.982L142.582,28.713L142.582,28.713z"/>
 	</g>
 	<g id="Hook_End">
-		
+
 			<image overflow="visible" opacity="0.35" enable-background="new    " width="75" height="38" id="Shadow_2_" xlink:href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEsAAAAmCAYAAACMJGZuAAAACXBIWXMAAC4jAAAuIwF4pT92AAAA
 GXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAABBxJREFUeNrsmQuPmzAQhHEwx716
 11Z9/P9/WLVNSHiYgrQrjUaLMQmXS3VYWpE2F8AfO7tjk2Xb2MY23nm4K5ybr9HT8UPDckYwLI4P

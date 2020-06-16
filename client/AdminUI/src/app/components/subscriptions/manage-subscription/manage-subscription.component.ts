@@ -276,15 +276,16 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
   }
 
   changeDhsContact(e: any) {
-    if (!this.dhsContact) {
-      return;
-    }
+    // if (!this.dhsContact) {
+    //   return;
+    // }
     let contact = this.dhsContacts
       .find(x => (x.dhs_contact_uuid) === e.value);
     if(contact){
       this.dhsContact = contact.dhs_contact_uuid;
       this.subscription.dhs_contact_uuid = this.dhsContact;
     }
+    console.log(this.subscription.dhs_contact_uuid)
   }
 
   /**

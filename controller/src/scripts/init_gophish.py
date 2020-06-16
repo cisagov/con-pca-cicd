@@ -1,10 +1,11 @@
-import os
+# Standard Python Libraries
 import logging
+import os
 
+# cisagov Libraries
 # Third Party Libraries
 from gophish import Gophish
 from gophish.models import SMTP, Page
-
 
 API_KEY = os.environ.get("GP_API_KEY")
 URL = os.environ.get("GP_URL")
