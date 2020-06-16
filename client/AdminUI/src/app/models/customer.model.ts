@@ -40,6 +40,7 @@ export class Contact {
   email: string;
   notes: string;
   active: boolean;
+  dhs_contact_uuid?: string;
 
   public constructor(init?: Partial<TemplateShort>) {
     Object.assign(this, init);

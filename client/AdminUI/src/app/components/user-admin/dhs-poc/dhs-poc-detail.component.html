@@ -1,0 +1,32 @@
+<h1>{{ mode | titlecase }} DHS Contact</h1>
+
+<form [formGroup]="contactForm">
+
+    <div style="max-height: 70vh; overflow-y: auto; overflow-x: hidden;">
+        <mat-form-field appearance="outline" class="w-100">
+            <mat-label>First Name</mat-label>
+            <input formControlName="firstName" matInput [ngClass]="{ 'is-invalid': submitted && f.firstName.errors }">
+            <div *ngIf="submitted && f.firstName.errors" class="invalid-feedback">
+                <div *ngIf="f.firstName.errors.required">First name is required</div>
+            </div>
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="w-100">
+            <mat-label>Last Name</mat-label>
+            <input formControlName="lastName" matInput [ngClass]="{ 'is-invalid': submitted && f.lastName.errors }">
+            <div *ngIf="submitted && f.lastName.errors" class="invalid-feedback">
+                <div *ngIf="f.lastName.errors.required">Last name is required</div>
+            </div>
+        </mat-form-field>
+      
+    </div>
+
+
+    <div class="text-right mt-3">
+        <button mat-flat-button class="add-button" color="basic" (click)="onCancelClick()">
+            Cancel
+        </button>
+        <button mat-raised-button class="add-button" color="primary" (click)="onSaveClick()">
+            Save Contact
+        </button>
+    </div>
+</form>
