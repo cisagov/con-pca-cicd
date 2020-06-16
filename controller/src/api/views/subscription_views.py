@@ -255,7 +255,7 @@ class SubscriptionsListView(APIView):
                     target_list=campaign_info["targets"],
                 )
                 gophish_campaign_list.extend(
-                    self.__create_and_save_campaigns(
+                    SubscriptionCreationManager.__create_and_save_campaigns(
                         campaign_info, target_group, landing_page, end_date
                     )
                 )
@@ -284,12 +284,15 @@ class SubscriptionsListView(APIView):
             post_data, "subscription", SubscriptionModel, validate_subscription
         )
 
+        import ipdb
+
+        ipdb.set_trace()
+
         if "errors" in created_response:
             return Response(created_response, status=status.HTTP_400_BAD_REQUEST)
         serializer = SubscriptionPostResponseSerializer(created_response)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-  
 
 class SubscriptionView(APIView):
     """
@@ -475,13 +478,13 @@ class SubscriptionRestartView(APIView):
         security=[],
         operation_id="Restart Subscription",
         operation_description="Endpoint for manually restart a subscription",
-    )      
+    )
     def post(self, request, format=None):
         """Post method."""
         post_data = request.data.copy()
         sub_manager = SubscriptionCreationManager()
-        created_response  = sub_manager.restart(post_data)
-        
+        created_response = sub_manager.restart(post_data)
+
         if "errors" in created_response:
             return Response(created_response, status=status.HTTP_400_BAD_REQUEST)
         serializer = SubscriptionPostResponseSerializer(created_response)
