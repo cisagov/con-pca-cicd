@@ -41,12 +41,12 @@ export class DhsPocDetailComponent implements OnInit {
     this.contactForm = new FormGroup({
       firstName: new FormControl('', Validators.required),
       lastName: new FormControl('', Validators.required),
-      title: new FormControl('', Validators.required),
+      title: new FormControl(''),
       email: new FormControl('', [Validators.required, Validators.email]),
-      officePhone: new FormControl(),
-      mobilePhone: new FormControl(),
-      notes: new FormControl(),
-      active: new FormControl()
+      officePhone: new FormControl(''),
+      mobilePhone: new FormControl(''),
+      notes: new FormControl(''),
+      active: new FormControl(true)
     });
 
     if (!!this.contact?.dhs_contact_uuid) {
@@ -60,8 +60,6 @@ export class DhsPocDetailComponent implements OnInit {
       this.f.mobilePhone.setValue(this.contact.mobile_phone);
       this.f.notes.setValue(this.contact.notes);
       this.f.active.setValue(this.contact.active);
-    } else {
-      this.f.active.setValue(true);
     }
   }
 

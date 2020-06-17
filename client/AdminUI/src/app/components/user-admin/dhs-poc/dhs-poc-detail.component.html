@@ -7,6 +7,9 @@
             <mat-form-field appearance="outline">
                 <mat-label>First Name</mat-label>
                 <input matInput type="text" formControlName="firstName" />
+                <mat-error *ngIf="f.firstName.hasError('required')">
+                    First name <strong>required</strong>
+                </mat-error>
             </mat-form-field>
         </div>
         <!-- LAST NAME -->
@@ -14,6 +17,9 @@
             <mat-form-field appearance="outline">
                 <mat-label>Last Name</mat-label>
                 <input matInput type="text" formControlName="lastName" />
+                <mat-error *ngIf="f.lastName.hasError('required')">
+                    Last name <strong>required</strong>
+                </mat-error>
             </mat-form-field>
         </div>
     </div>
