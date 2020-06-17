@@ -40,14 +40,28 @@ export class DhsPocDetailComponent implements OnInit {
   ngOnInit(): void {
     this.contactForm = new FormGroup({
       firstName: new FormControl('', Validators.required),
-      lastName: new FormControl('', Validators.required)
+      lastName: new FormControl('', Validators.required),
+      title: new FormControl('', Validators.required),
+      email: new FormControl('', [Validators.required, Validators.email]),
+      officePhone: new FormControl(),
+      mobilePhone: new FormControl(),
+      notes: new FormControl(),
+      active: new FormControl()
     });
 
-    if (!!this.contact.dhs_contact_uuid) {
+    if (!!this.contact?.dhs_contact_uuid) {
       this.mode = 'edit';
 
       this.f.firstName.setValue(this.contact.first_name);
       this.f.lastName.setValue(this.contact.last_name);
+      this.f.title.setValue(this.contact.title);
+      this.f.email.setValue(this.contact.email);
+      this.f.officePhone.setValue(this.contact.office_phone);
+      this.f.mobilePhone.setValue(this.contact.mobile_phone);
+      this.f.notes.setValue(this.contact.notes);
+      this.f.active.setValue(this.contact.active);
+    } else {
+      this.f.active.setValue(true);
     }
   }
 
@@ -62,8 +76,15 @@ export class DhsPocDetailComponent implements OnInit {
     }
 
     const c = new Contact();
+    c.dhs_contact_uuid = this.contact?.dhs_contact_uuid;
     c.first_name = this.f.firstName.value;
     c.last_name = this.f.lastName.value;
+    c.title = this.f.title.value;
+    c.email = this.f.email.value;
+    c.office_phone = this.f.officePhone.value;
+    c.mobile_phone = this.f.mobilePhone.value;
+    c.notes = this.f.notes.value;
+    c.active = this.f.active.value;
 
     this.subscriptionSvc.saveDhsContact(c).subscribe(() => {
       this.dialogRef.close();

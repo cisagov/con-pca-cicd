@@ -60,14 +60,14 @@
 
     <!-- Active Column -->
     <ng-container matColumnDef="active">
-      <mat-header-cell *matHeaderCellDef>Active</mat-header-cell>
-      <mat-cell *matCellDef="let row"> {{ row.active }} </mat-cell>
+      <mat-header-cell *matHeaderCellDef class="text-center">Active</mat-header-cell>
+      <mat-cell class="text-center" *matCellDef="let row"> <i *ngIf="row.active" class="fa fa-check"></i> </mat-cell>
     </ng-container>
 
     <!-- Action Column -->
     <ng-container matColumnDef="select">
-      <mat-header-cell *matHeaderCellDef>Select</mat-header-cell>
-      <mat-cell *matCellDef="let row">
+      <mat-header-cell *matHeaderCellDef class="text-right"></mat-header-cell>
+      <mat-cell *matCellDef="let row" class="text-right">
         <button
           class="table-btn-icon"
           mat-flat-button

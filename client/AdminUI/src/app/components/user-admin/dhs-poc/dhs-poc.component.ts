@@ -1,10 +1,12 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { LayoutMainService } from 'src/app/services/layout-main.service';
-import { Contact } from 'src/app/models/customer.model';
 import { SubscriptionService } from 'src/app/services/subscription.service';
 import { MatDialogRef, MAT_DIALOG_DATA, MatDialogConfig, MatDialog } from '@angular/material/dialog';
 import { DhsPocDetailComponent } from './dhs-poc-detail.component';
 import { ConfirmComponent } from '../../dialogs/confirm/confirm.component';
+import { MatTableDataSource } from '@angular/material/table';
+import { Contact } from 'src/app/models/customer.model';
+import { ViewContactDialogComponent } from '../../contacts/view-contact-dialog/view-contact-dialog.component';
 
 @Component({
   selector: 'app-dhs-poc',
@@ -12,10 +14,13 @@ import { ConfirmComponent } from '../../dialogs/confirm/confirm.component';
 })
 export class DhsPocComponent implements OnInit {
 
-  public dhsContacts: any[] = [];
+  public dhsContacts = new MatTableDataSource<Contact>();
+
   public displayedColumns = [
     'name',
+    'title',
     'email',
+    'active',
     'select'
   ];
 
@@ -29,25 +34,31 @@ export class DhsPocComponent implements OnInit {
     private subscriptionSvc: SubscriptionService,
     public dialog: MatDialog
   ) {
-    this.layoutSvc.setTitle('DHS Points of Contact');
+    this.layoutSvc.setTitle('DHS Contacts');
   }
 
   /**
    *
    */
   ngOnInit(): void {
-    this.getDhsContacts();
+    this.dhsContacts = new MatTableDataSource();
+    this.refresh();
   }
 
   /**
    *
    */
-  getDhsContacts() {
-    this.subscriptionSvc.getDhsContacts().subscribe((data: any) => {
-      this.dhsContacts = data;
-
-      console.log(this.dhsContacts);
+  refresh() {
+    this.subscriptionSvc.getDhsContacts().subscribe((data: any[]) => {
+      this.dhsContacts.data = data as Contact[];
     });
+  }
+
+  /**
+   *
+   */
+  public filterContacts = (value: string) => {
+    this.dhsContacts.filter = value.trim().toLocaleLowerCase();
   }
 
   /**
@@ -55,7 +66,7 @@ export class DhsPocComponent implements OnInit {
    */
   editContact(contact) {
     const dialogConfig = new MatDialogConfig();
-    dialogConfig.width = '60vw';
+    // dialogConfig.width = '60vw';
     dialogConfig.data = {
       contact
     };
@@ -65,7 +76,7 @@ export class DhsPocComponent implements OnInit {
     );
 
     dialogRef.afterClosed().subscribe(value => {
-      this.getDhsContacts();
+      this.refresh();
     });
   }
 
@@ -92,7 +103,7 @@ export class DhsPocComponent implements OnInit {
    */
   deleteContact(c) {
     this.subscriptionSvc.deleteDhsContact(c).subscribe(() => {
-      this.getDhsContacts();
+      this.refresh();
     });
   }
 }

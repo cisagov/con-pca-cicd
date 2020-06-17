@@ -59,7 +59,7 @@
         <mat-header-cell *matHeaderCellDef mat-sort-header
           >Retired</mat-header-cell
         >
-        <mat-cell *matCellDef="let row">{{ row.retired }}</mat-cell>
+        <mat-cell *matCellDef="let row"><i *ngIf="row.retired" class="fa fa-check"></i></mat-cell>
       </ng-container>
 
       <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
