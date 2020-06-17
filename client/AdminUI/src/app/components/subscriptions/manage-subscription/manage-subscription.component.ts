@@ -154,6 +154,7 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
       .subscribe((s: Subscription) => {
         this.subscription = s;
         this.f.primaryContact.setValue(s.primary_contact.email);
+        this.f.dhsContact.setValue(s.dhs_contact_uuid);
         this.f.url.setValue(s.url);
         this.f.keywords.setValue(s.keywords);
         this.f.csvText.setValue(this.emailDisplay(s.target_email_list));
@@ -280,9 +281,6 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
   }
 
   changeDhsContact(e: any) {
-    // if (!this.dhsContact) {
-    //   return;
-    // }
     const contact = this.dhsContacts
       .find(x => (x.dhs_contact_uuid) === e.value);
     if (contact) {
@@ -392,7 +390,7 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
 
     sub.customer_uuid = this.customer.customer_uuid;
     sub.primary_contact = this.primaryContact;
-    sub.dhs_contact_uuid = this.dhsContact;
+    sub.dhs_contact_uuid = this.dhsContactUuid;
     sub.active = true;
 
     sub.lub_timestamp = new Date();
