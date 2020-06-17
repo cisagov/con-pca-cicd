@@ -6,7 +6,6 @@ import { DhsPocDetailComponent } from './dhs-poc-detail.component';
 import { ConfirmComponent } from '../../dialogs/confirm/confirm.component';
 import { MatTableDataSource } from '@angular/material/table';
 import { Contact } from 'src/app/models/customer.model';
-import { ViewContactDialogComponent } from '../../contacts/view-contact-dialog/view-contact-dialog.component';
 
 @Component({
   selector: 'app-dhs-poc',
