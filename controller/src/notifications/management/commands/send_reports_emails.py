@@ -1,12 +1,10 @@
 """Send Reports Command."""
-
-# Third-Party Libraries
-# Standard Libraries
 # Django Libraries
+from django.core.management.base import BaseCommand
+
 # Local Libraries
 from api.models.subscription_models import SubscriptionModel, validate_subscription
 from api.utils.db_utils import get_list
-from django.core.management.base import BaseCommand
 from notifications.views import ReportsEmailSender
 
 
@@ -14,7 +12,7 @@ class Command(BaseCommand):
     """Command.
 
     Args:
-        BaseCommand (Django Base): Setting up Command for hancling report creation.
+        BaseCommand (Django Base): Setting up Command for handling report creation.
     """
 
     help_text = "Sends reports emails"
