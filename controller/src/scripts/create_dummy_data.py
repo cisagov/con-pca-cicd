@@ -58,7 +58,7 @@ def main():
 
     existing_templates = requests.get("http://localhost:8000/api/v1/templates")
 
-    if not existing_templates.json:
+    if not existing_templates.json():
         for template in templates:
             try:
                 template["deception_score"] = template["complexity"]
