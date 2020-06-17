@@ -19,6 +19,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { TagSelectionComponent } from '../dialogs/tag-selection/tag-selection.component';
 import { SettingsService } from 'src/app/services/settings.service';
 import { RetireTemplateDialogComponent } from './retire-template-dialog/retire-template-dialog.component';
+import { AlertComponent } from '../dialogs/alert/alert.component';
 
 @Component({
   selector: 'app-template-manager',
@@ -328,7 +329,12 @@ export class TemplateManagerComponent implements OnInit {
           invalid.push(name);
         }
       }
-      alert('Invalid form fields: ' + invalid);
+      this.dialog.open(AlertComponent, {
+        data: {
+          title: '',
+          messageText: 'Invalid form fields: ' + invalid
+        }
+      });
     }
   }
 
