@@ -4,24 +4,11 @@ Subscription Views.
 This handles the api for all the Subscription urls.
 """
 # Standard Python Libraries
-from datetime import datetime, timedelta
 import logging
-import json
-
-# Django Libraries
-from django.conf import settings
 
 # Local Libraries
 from api.manager import CampaignManager, TemplateManager
-from api.views.utils.subscription_utils import SubscriptionCreationManager
-from api.models.customer_models import CustomerModel, validate_customer
 from api.models.subscription_models import SubscriptionModel, validate_subscription
-from api.models.template_models import (
-    TagModel,
-    TemplateModel,
-    validate_tag,
-    validate_template,
-)
 from api.serializers.subscriptions_serializers import (
     SubscriptionDeleteResponseSerializer,
     SubscriptionGetSerializer,
@@ -34,22 +21,14 @@ from api.utils.db_utils import (
     delete_single,
     get_list,
     get_single,
-    save_single,
     update_single,
 )
-from api.utils.subscription_utils import (
-    get_campaign_dates,
-    get_sub_end_date,
-    stop_subscription,
-    target_list_divide,
-)
-from api.utils.template_utils import format_ztime, personalize_template
-from tasks.tasks import email_subscription_report
+
+from api.utils import subscription_utils
 
 # Third Party Libraries
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
-from notifications.views import SubscriptionNotificationEmailSender
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -59,7 +38,6 @@ logger = logging.getLogger(__name__)
 campaign_manager = CampaignManager()
 # Template Calculator Manager
 template_manager = TemplateManager()
-subscription_manager = SubscriptionCreationManager()
 
 
 class SubscriptionsListView(APIView):
@@ -118,213 +96,8 @@ class SubscriptionsListView(APIView):
     def post(self, request, format=None):
         """Post method."""
         post_data = request.data.copy()
-        json.dumps(post_data)
-        # get customer data
-        customer = get_single(
-            post_data["customer_uuid"], "customer", CustomerModel, validate_customer
-        )
 
-        # Get start date then quater of start date and create names to check
-        start_date = post_data.get(
-            "start_date", datetime.today().strftime("%Y-%m-%dT%H:%M:%S")
-        )
-
-        end_date = get_sub_end_date(start_date)
-        end_date_str = end_date.strftime("%Y-%m-%dT%H:%M:%S")
-
-        subscription_list = get_list(
-            {"customer_uuid": post_data["customer_uuid"]},
-            "subscription",
-            SubscriptionModel,
-            validate_subscription,
-        )
-
-        if len(subscription_list) == 0:
-            # If no subscription was created, create first one:
-            # {customer['identifier']}_1.1
-
-            base_name = f"{customer['identifier']}_1.1"
-
-        else:
-            # Get all names, then split off the identifyers from name
-            names = [x["name"] for x in subscription_list]
-            list_tupe = []
-            for name in names:
-                int_ind, sub_id = name.split(".")
-                _, sub = int_ind.split("_")
-                list_tupe.append((sub, sub_id))
-            # now sort tuple list by second element
-            list_tupe.sort(key=lambda tup: tup[1])
-            # get last run inc values
-            last_ran_x, last_ran_y = list_tupe[-1]
-
-            # now check to see there are any others running durring.
-            active_subscriptions = [x for x in subscription_list if x["active"]]
-            if len(active_subscriptions) <= 0:
-                # if none are actvie, check last running number and create new name
-                next_run_x, next_run_y = "1", str(int(last_ran_y) + 1)
-            else:
-                next_run_x, next_run_y = str(int(last_ran_x) + 1), last_ran_y
-
-            base_name = f"{customer['identifier']}_{next_run_x}.{next_run_y}"
-
-        # Generate sub name using customer and increment info
-        post_data["name"] = base_name
-
-        # Get all Email templates for calc
-        email_template_params = {"template_type": "Email", "retired": False}
-        template_list = get_list(
-            email_template_params, "template", TemplateModel, validate_template
-        )
-
-        # Get all Landing pages or defult
-        # This is currently selecting the default page on creation.
-        # landing_template_list = get_list({"template_type": "Landing"}, "template", TemplateModel, validate_template)
-        landing_page = "Phished"
-
-        template_data = {
-            i.get("template_uuid"): i.get("descriptive_words") for i in template_list
-        }
-
-        # Data for Template calculation
-        if post_data.get("keywords"):
-            relevant_templates = template_manager.get_templates(
-                post_data.get("url"), post_data.get("keywords"), template_data
-            )[:15]
-        else:
-            relevant_templates = []
-
-        divided_templates = [
-            relevant_templates[x : x + 5] for x in range(0, len(relevant_templates), 5)
-        ]
-
-        print("divided_templates: {} items".format(len(divided_templates)))
-
-        # Get the next date Intervals, if no startdate is sent, default today
-        campaign_data_list = get_campaign_dates(start_date)
-
-        # Return 15 of the most relevant templates
-        post_data["templates_selected_uuid_list"] = relevant_templates
-
-        template_personalized_list = []
-        tag_list = get_list(None, "tag_definition", TagModel, validate_tag)
-        for template_group in divided_templates:
-            template_data_list = [
-                x for x in template_list if x["template_uuid"] in template_group
-            ]
-            templates = personalize_template(
-                customer, template_data_list, post_data, tag_list
-            )
-            template_personalized_list.append(templates)
-
-        # divide emails
-        target_list = post_data.get("target_email_list")
-        target_div = target_list_divide(target_list)
-        index = 0
-        print(
-            "template_personalized_list: {} items".format(
-                len(template_personalized_list)
-            )
-        )
-        for campaign_info in campaign_data_list:
-            try:
-                campaign_info["templates"] = template_personalized_list[index]
-            except Exception as err:
-                logger.info("error campaign_info templates {}".format(err))
-                pass
-            try:
-                campaign_info["targets"] = target_div[index]
-            except Exception as err:
-                logger.info("error campaign_info targets {}".format(err))
-                pass
-            index += 1
-
-        # Data for GoPhish
-
-        # create campaigns
-        group_number = 1
-        gophish_campaign_list = []
-        existing_user_groups = [
-            group.name for group in campaign_manager.get("user_group")
-        ]
-
-        for campaign_info in campaign_data_list:
-            group_name = f"{post_data['name']}.Targets.{group_number}"
-            campaign_info["name"] = f"{post_data['name']}.{group_number}"
-
-            if group_name not in existing_user_groups:
-                group_number += 1
-                target_group = campaign_manager.create(
-                    "user_group",
-                    group_name=group_name,
-                    target_list=campaign_info["targets"],
-                )
-                campaign_info["deception_level"] = group_number
-                gophish_campaign_list.extend(
-                    subscription_manager.create_and_save_campaigns(
-                        campaign_info, target_group, landing_page, end_date
-                    )
-                )
-
-        post_data["gophish_campaign_list"] = gophish_campaign_list
-        # check if today is the start date of sub
-        try:
-            # Format inbound 2020-03-10T09:30:25
-            start_date_datetime = datetime.strptime(start_date, "%Y-%m-%dT%H:%M:%S")
-        except:
-            # Format inbound 2020-03-10T09:30:25.812Z
-            start_date_datetime = datetime.strptime(start_date, "%Y-%m-%dT%H:%M:%S.%fZ")
-
-        if start_date_datetime.date() <= datetime.today().date():
-            sender = SubscriptionNotificationEmailSender(
-                post_data, "subscription_started"
-            )
-            sender.send()
-            post_data["status"] = "In Progress"
-            logger.info("Subscription Notification email sent")
-        else:
-            post_data["status"] = "Queued"
-
-        post_data["end_date"] = end_date_str
-        campaigns_in_cycle = []
-        for c in gophish_campaign_list:
-            campaigns_in_cycle.append(c["campaign_id"])
-        post_data["cycles"] = [
-            {
-                "start_date": start_date,
-                "end_date": end_date,
-                "active": True,
-                "campaigns_in_cycle": campaigns_in_cycle,
-                "phish_results": {
-                    "sent": 0,
-                    "opened": 0,
-                    "clicked": 0,
-                    "submitted": 0,
-                    "reported": 0,
-                },
-            }
-        ]
-
-        created_response = save_single(
-            post_data, "subscription", SubscriptionModel, validate_subscription
-        )
-
-        # Create scheduled email tasks
-        if not settings.DEBUG:
-            subscription_uuid = created_response.get("subscription_uuid")
-            message_types = {
-                "monthly_report": datetime.utcnow() + timedelta(days=30),
-                "cycle_report": datetime.utcnow() + timedelta(days=90),
-                "yearly_report": datetime.utcnow() + timedelta(days=365),
-            }
-
-            for message_type, send_date in message_types:
-                try:
-                    task = email_subscription_report.apply_async(
-                        args=[subscription_uuid, message_type], eta=send_date
-                    )
-                except task.OperationalError as exc:
-                    logger.exception("Subscription task raised: %r", exc)
+        created_response = subscription_utils.start_subscription(post_data)
 
         if "errors" in created_response:
             return Response(created_response, status=status.HTTP_400_BAD_REQUEST)
@@ -497,7 +270,7 @@ class SubscriptionStopView(APIView):
         )
 
         # Stop subscription
-        resp = stop_subscription(subscription)
+        resp = subscription_utils.stop_subscription(subscription)
 
         # Return updated subscriptions
         serializer = SubscriptionPatchResponseSerializer(resp)
@@ -520,7 +293,7 @@ class SubscriptionRestartView(APIView):
     def post(self, request, format=None):
         """Post method."""
         post_data = request.data.copy()
-        created_response = subscription_manager.restart(post_data)
+        created_response = subscription_utils.start_subscription(post_data)
 
         if "errors" in created_response:
             return Response(created_response, status=status.HTTP_400_BAD_REQUEST)
