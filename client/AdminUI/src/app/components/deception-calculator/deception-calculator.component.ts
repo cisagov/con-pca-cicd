@@ -16,6 +16,8 @@ import { Template } from 'src/app/models/template.model';
 import { LayoutMainService } from 'src/app/services/layout-main.service';
 import { Subscription, Observable } from 'rxjs';
 import { temporaryAllocator } from '@angular/compiler/src/render3/view/util';
+import { AlertComponent } from '../dialogs/alert/alert.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'deception-calculator',
@@ -41,7 +43,8 @@ export class DeceptionCalculatorComponent implements OnInit {
     private layoutSvc: LayoutMainService,
     private fb: FormBuilder,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    public dialog: MatDialog
   ) {
     layoutSvc.setTitle('Deception Calculator');
 
@@ -92,7 +95,12 @@ export class DeceptionCalculatorComponent implements OnInit {
       );
       this.deceptionService.saveDeception(template_to_save);
     } else {
-      alert('Errors on deception form' + this.deceptionFormGroup.errors);
+      this.dialog.open(AlertComponent, {
+        data: {
+          title: 'Error',
+          messageText: 'Errors on deception form' + this.deceptionFormGroup.errors
+        }
+      });
     }
   }
 

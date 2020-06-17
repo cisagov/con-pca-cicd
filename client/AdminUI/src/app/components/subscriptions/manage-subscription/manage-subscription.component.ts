@@ -155,11 +155,15 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
         this.subscription = s;
         this.f.primaryContact.setValue(s.primary_contact.email);
         this.f.url.setValue(s.url);
-        this.f.url.disable();
         this.f.keywords.setValue(s.keywords);
-        this.f.keywords.disable();
         this.f.csvText.setValue(this.emailDisplay(s.target_email_list));
-        this.f.csvText.disable();
+
+        // disable some fields for in-progress subscriptions
+        if (s.status.toLowerCase() === 'in progress') {
+          this.f.url.disable();
+          this.f.keywords.disable();
+          this.f.csvText.disable();
+        }
 
         this.buildSubscriptionTimeline(s);
 
@@ -352,10 +356,20 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
     // call service with everything needed to start the subscription
     this.subscriptionSvc.restartSubscription(sub).subscribe(
       resp => {
-        alert('Subscription ' + sub.name + ' was started');
+        this.dialog.open(AlertComponent, {
+          data: {
+            title: '',
+            messageText: 'Subscription ' + sub.name + ' was started'
+          }
+        });
       },
       error => {
-        alert('An error occurred restarting the subscription: ' + error.error);
+        this.dialog.open(AlertComponent, {
+          data: {
+            title: 'Error',
+            messageText: 'An error occurred restarting the subscription: ' + error.error
+          }
+        });
       });
   }
   /**
