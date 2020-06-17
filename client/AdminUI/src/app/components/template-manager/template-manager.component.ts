@@ -331,7 +331,7 @@ export class TemplateManagerComponent implements OnInit {
       }
       this.dialog.open(AlertComponent, {
         data: {
-          title: '',
+          title: 'Error',
           messageText: 'Invalid form fields: ' + invalid
         }
       });

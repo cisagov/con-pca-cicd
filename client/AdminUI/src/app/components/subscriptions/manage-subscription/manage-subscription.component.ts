@@ -41,7 +41,7 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
   customer: Customer = new Customer();
   primaryContact: Contact = new Contact();
   dhsContacts = [];
-  dhsContact: string;
+  dhsContactUuid: string;
 
   startDate: Date = new Date();
   startAt = new Date();
@@ -274,7 +274,7 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
 
     // patch the subscription in real time if in edit mode
     if (this.pageMode === 'EDIT') {
-      this.subscriptionSvc.updatePrimaryContact(this.subscription.subscription_uuid, this.primaryContact)
+      this.subscriptionSvc.changePrimaryContact(this.subscription.subscription_uuid, this.primaryContact)
         .subscribe();
     }
   }
@@ -283,13 +283,18 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
     // if (!this.dhsContact) {
     //   return;
     // }
-    let contact = this.dhsContacts
+    const contact = this.dhsContacts
       .find(x => (x.dhs_contact_uuid) === e.value);
     if (contact) {
-      this.dhsContact = contact.dhs_contact_uuid;
-      this.subscription.dhs_contact_uuid = this.dhsContact;
+      this.dhsContactUuid = contact.dhs_contact_uuid;
+      this.subscription.dhs_contact_uuid = this.dhsContactUuid;
+
+      // patch the subscription in real time if in edit mode
+      if (this.pageMode === 'EDIT') {
+        this.subscriptionSvc.changeDhsContact(this.subscription.subscription_uuid, this.dhsContactUuid)
+          .subscribe();
+      }
     }
-    console.log(this.subscription.dhs_contact_uuid)
   }
 
   /**

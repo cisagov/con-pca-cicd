@@ -96,12 +96,18 @@ export class SubscriptionService {
 
   /**
    * Patches the subscription with the new primary contact.
-   * @param subscriptUuid
-   * @param contact
    */
-  updatePrimaryContact(subscriptUuid: string, contact: Contact) {
-    let primary = { primary_contact: contact };
-    return this.http.patch(`${this.settingsService.settings.apiUrl}/api/v1/subscription/${subscriptUuid}/`, primary);
+  changePrimaryContact(subscriptUuid: string, contact: Contact) {
+    const c = { primary_contact: contact };
+    return this.http.patch(`${this.settingsService.settings.apiUrl}/api/v1/subscription/${subscriptUuid}/`, this.changePrimaryContact);
+  }
+
+  /**
+   * Patches the subscription with the new DHS contact.
+   */
+  changeDhsContact(subscriptUuid: string, contactUuid: string) {
+    const c = { dhs_contact_uuid: contactUuid };
+    return this.http.patch(`${this.settingsService.settings.apiUrl}/api/v1/subscription/${subscriptUuid}/`, c);
   }
 
   /**
