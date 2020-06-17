@@ -387,6 +387,22 @@ $altTheme: mat-dark-theme($theme-primary, $theme-accent, $theme-warn);
   color: $light-text !important;
 }
 
+.mat-header-cell.text-center {
+  justify-content: center !important;
+}
+
+.mat-header-cell.text-right {
+  justify-content: flex-end !important;
+}
+
+.mat-cell.text-center {
+  justify-content: center !important;
+}
+
+.mat-cell.text-right {
+  justify-content: flex-end !important;
+}
+
 .mat-row:hover,
 table.table-1 tr:hover {
   background-color: #eeeeee;

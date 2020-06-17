@@ -23,7 +23,7 @@ export class SubscriptionService {
     private http: HttpClient,
     private customer_service: CustomerService,
     private settingsService: SettingsService
-  ) {}
+  ) { }
 
   /**
    *
@@ -136,8 +136,34 @@ export class SubscriptionService {
     return this.http.get(url);
   }
 
+  /**
+   * Returns a list of DHS contacts.
+   */
   public getDhsContacts() {
-    let url = `${this.settingsService.settings.apiUrl}/api/v1/dhscontacts/`;
+    const url = `${this.settingsService.settings.apiUrl}/api/v1/dhscontacts/`;
     return this.http.get(url);
+  }
+
+  /**
+   * Posts or patches a DHS contact.
+   */
+  public saveDhsContact(c: Contact) {
+    if (!!c.dhs_contact_uuid) {
+      // patch existing contact
+      const url = `${this.settingsService.settings.apiUrl}/api/v1/dhscontact/${c.dhs_contact_uuid}/`;
+      return this.http.patch(url, c);
+    } else {
+      // insert new contact
+      const url = `${this.settingsService.settings.apiUrl}/api/v1/dhscontacts/`;
+      return this.http.post(url, c);
+    }
+  }
+
+  /**
+   * Deletes a DHS contact.
+   */
+  public deleteDhsContact(c: Contact) {
+    const url = `${this.settingsService.settings.apiUrl}/api/v1/dhscontact/${c.dhs_contact_uuid}/`;
+    return this.http.delete(url);
   }
 }

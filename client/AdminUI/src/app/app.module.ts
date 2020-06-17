@@ -57,6 +57,8 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { AlertComponent } from './components/dialogs/alert/alert.component';
 import { SafePipe } from './helper/safe.pipe';
 import { SvgTimelineComponent } from './components/subscriptions/svg-timeline/svg-timeline.component';
+import { DhsPocComponent } from './components/user-admin/dhs-poc/dhs-poc.component';
+import { DhsPocDetailComponent } from './components/user-admin/dhs-poc/dhs-poc-detail.component';
 
 export function app_Init(settingsHttpService: SettingsHttpService) {
   return () => settingsHttpService.initializeApp();
@@ -98,6 +100,8 @@ export function app_Init(settingsHttpService: SettingsHttpService) {
     AlertComponent,
     SafePipe,
     SvgTimelineComponent,
+    DhsPocComponent,
+    DhsPocDetailComponent,
   ],
   imports: [
     BrowserModule,
