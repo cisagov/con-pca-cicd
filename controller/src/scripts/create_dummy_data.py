@@ -43,9 +43,6 @@ def load_file(data_file):
 
 def main():
     """This if the main def that runs creating data."""
-    # ptvsd.enable_attach(address = ('0.0.0.0', 5679))
-    # ptvsd.wait_for_attach()
-
     print("loading dummy json data")
     json_data = load_file("data/dummy_data.json")
     print("done loading data")
