@@ -229,6 +229,30 @@ $altTheme: mat-dark-theme($theme-primary, $theme-accent, $theme-warn);
   .cd-horizontal-timeline .events a {
     color: map-get($foreground, 'text') !important;
   }
+
+  .timeline-line {
+    stroke: map-get($foreground, 'text') !important;
+  }
+
+  .timeline-circle {
+    stroke: map-get($foreground, 'text') !important;
+    fill: map-get($background, 'background') !important;
+  }
+
+  .timeline-text {
+    font-size: 11px; 
+    fill: map-get($foreground, 'text') !important;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+
+  .timeline-icon {
+    font-family: FontAwesome; 
+    fill: map-get($foreground, 'text') !important;
+  }
+
+  .ngx-charts text {
+    fill: map-get($foreground, 'text') !important;
+  }
 }
 
 // Theme Init
@@ -363,6 +387,22 @@ $altTheme: mat-dark-theme($theme-primary, $theme-accent, $theme-warn);
   color: $light-text !important;
 }
 
+.mat-header-cell.text-center {
+  justify-content: center !important;
+}
+
+.mat-header-cell.text-right {
+  justify-content: flex-end !important;
+}
+
+.mat-cell.text-center {
+  justify-content: center !important;
+}
+
+.mat-cell.text-right {
+  justify-content: flex-end !important;
+}
+
 .mat-row:hover,
 table.table-1 tr:hover {
   background-color: #eeeeee;
@@ -401,3 +441,4 @@ table.table-1 td {
 .pre-wrap {
   white-space: pre-wrap !important;
 }
+

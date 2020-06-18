@@ -37,6 +37,8 @@
                       <mat-option value="FED">Government - FED</mat-option>
                       <mat-option value="State">Government - State</mat-option>
                       <mat-option value="Local">Governement - Local</mat-option>
+                      <mat-option value="Tribal">Government - Tribal</mat-option>
+                      <mat-option value="Tribal">Government - Territorial</mat-option>
                       <mat-option value="Private">Private</mat-option>
 
                   </mat-select>
@@ -91,7 +93,7 @@
                   </mat-error>
               </mat-form-field>
           </div>
-          <div class="d-flex flex-row">
+          <div class="d-flex flex-row" *ngIf="checkCustomerType()">
               <mat-form-field appearance="outline"  class="flex-grow-1" [formGroup]="customerFormGroup">
                   <mat-label>Sector*</mat-label>
                   <mat-select formControlName="sector" (selectionChange)="sectorChange($event)">
@@ -104,7 +106,7 @@
                   </mat-error>
               </mat-form-field>                
           </div>
-          <div class="d-flex flex-row">
+          <div class="d-flex flex-row" *ngIf="checkCustomerType()">
               <mat-form-field appearance="outline"  class="flex-grow-1" [formGroup]="customerFormGroup">
                   <mat-label>Industry*</mat-label>
                   <mat-select formControlName="industry" >

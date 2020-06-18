@@ -15,6 +15,7 @@ ToDo: create delete script to get all uuid's of dummy data and delete.
 from datetime import datetime
 import json
 import os
+import time
 
 # Third-Party Libraries
 import requests
@@ -28,23 +29,20 @@ def load_file(data_file):
         data = json.load(f)
     return data
 
+
 # def clean_up_first():
-    # """" drop the collections before starting to add data """
-    #  mongo_uri = "mongodb://{}:{}@{}:{}/".format(
-    #     settings.DB_CONFIG["DB_USER"],
-    #     settings.DB_CONFIG["DB_PW"],
-    #     settings.DB_CONFIG["DB_HOST"],
-    #     settings.DB_CONFIG["DB_PORT"],
-    # )
-    # client = MongoClient(mongo_uri)
-    
+# """" drop the collections before starting to add data """
+#  mongo_uri = "mongodb://{}:{}@{}:{}/".format(
+#     settings.DB_CONFIG["DB_USER"],
+#     settings.DB_CONFIG["DB_PW"],
+#     settings.DB_CONFIG["DB_HOST"],
+#     settings.DB_CONFIG["DB_PORT"],
+# )
+# client = MongoClient(mongo_uri)
 
 
 def main():
     """This if the main def that runs creating data."""
-    # ptvsd.enable_attach(address = ('0.0.0.0', 5679))
-    # ptvsd.wait_for_attach()
-
     print("loading dummy json data")
     json_data = load_file("data/dummy_data.json")
     print("done loading data")
@@ -55,17 +53,24 @@ def main():
     templates = email_templates + laning_page_tempalte
     created_template_uuids = []
 
-    for template in templates:
-        try:
-            template["deception_score"] = template["complexity"]
-            resp = requests.post(
-                "http://localhost:8000/api/v1/templates/", json=template
-            )
-            resp.raise_for_status()
-        except requests.exceptions.HTTPError as err:
-            raise err
-        rep_json = resp.json()
-        created_template_uuids.append(rep_json["template_uuid"])
+    existing_templates = requests.get("http://localhost:8000/api/v1/templates")
+
+    if not existing_templates.json():
+        for template in templates:
+            try:
+                template["deception_score"] = template["complexity"]
+                resp = requests.post(
+                    "http://localhost:8000/api/v1/templates/", json=template
+                )
+                resp.raise_for_status()
+
+            except requests.exceptions.HTTPError as err:
+                raise err
+            rep_json = resp.json()
+            if "error" in rep_json:
+                print("Template Creation error: {}".format(rep_json))
+            else:
+                created_template_uuids.append(rep_json["template_uuid"])
 
     print("created templates_list: {}".format(created_template_uuids))
 
@@ -159,12 +164,12 @@ def main():
                 "http://localhost:8000/api/v1/subscriptions/", json=subscription
             )
             resp.raise_for_status()
+            resp_json = resp.json()
+            created_subcription_uuids.append(resp_json["subscription_uuid"])
         except requests.exceptions.HTTPError as err:
             print(err)
-            raise err
 
-        resp_json = resp.json()
-        created_subcription_uuids.append(resp_json["subscription_uuid"])
+        time.sleep(5)
 
     print("created subcription_list: {}".format(created_subcription_uuids))
     current_dir = os.path.dirname(os.path.abspath(__file__))

@@ -7,11 +7,11 @@ import uuid
 
 # Third-Party Libraries
 # Models
+from api.models.dhs_models import DHSContactModel
 from api.models.subscription_models import SubscriptionModel
 from api.models.template_models import TemplateModel
 from database.service import Service
 from django.conf import settings
-from api.models.dhs_models import DHSContactModel
 
 logger = logging.getLogger(__name__)
 
@@ -156,3 +156,13 @@ def update_single_webhook(subscription, collection, model, validation_model):
     if "errors" in update_response:
         return update_response
     return subscription
+
+
+def exists(parameters, collection, model, validation_model):
+    """Check if item exists for given parameter."""
+    service, loop = __get_service_loop(collection, model, validation_model)
+
+    document_list = loop.run_until_complete(service.filter_list(parameters=parameters))
+    if document_list:
+        return True
+    return False

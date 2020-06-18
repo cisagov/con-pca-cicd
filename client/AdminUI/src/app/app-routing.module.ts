@@ -13,6 +13,7 @@ import { UserAdminComponent } from './components/user-admin/user-admin.component
 import { CustomersComponent } from './components/customers/customers.component';
 import { AddCustomerComponent } from './components/customer/add-customer/add-customer.component'
 import { SendingProfilesComponent } from './components/sending-profiles/sending-profiles.component';
+import { DhsPocComponent } from './components/user-admin/dhs-poc/dhs-poc.component';
 
 
 const routes: Routes = [
@@ -88,6 +89,12 @@ const routes: Routes = [
     path: 'useradmin', component: LayoutMainComponent,
     children: [
       { path: '', component: UserAdminComponent }
+    ]
+  },
+  {
+    path: 'dhspoc', component: LayoutMainComponent,
+    children: [
+      { path: '', component: DhsPocComponent }
     ]
   },
   {

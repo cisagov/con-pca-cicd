@@ -1,8 +1,11 @@
 """Template Utils file for api."""
 # Standard Python Libraries
-import ast
 from datetime import datetime, timedelta
 import logging
+import re
+
+# Third-Party Libraries
+from simpleeval import simple_eval
 
 logger = logging.getLogger(__name__)
 
@@ -24,7 +27,7 @@ def personalize_template(customer_info, template_data, sub_data, tag_list):
         "<%CUSTOMER_STATE%>": customer_info["state"],
         "<%CUSTOMER_CITY%>": customer_info["city"],
         "<%CUSTOMER_ZIPCODE%>": customer_info["zip_code"],
-        "<%CURRENT_SEASON%>": current_season(today),
+        "<%CURRENT_SEASON%>": current_season(),
         "<%CURRENT_DATE_LONG%>": today.strftime("%B %d, %Y"),
         "<%CURRENT_DATE_SHORT%>": today.strftime("%m/%d/%y"),
         "<%CURRENT_MONTH_NUM%>": today.strftime("%m"),
@@ -47,6 +50,14 @@ def personalize_template(customer_info, template_data, sub_data, tag_list):
         "<%FROM%>": "{{.From}}"
     }
     """
+    simple_eval_options = {
+        "names": {"today": datetime.today(), "customer_info": customer_info},
+        "functions": {
+            "current_season": current_season,
+            "get_full_customer_address": get_full_customer_address,
+        },
+    }
+
     personalized_template_data = []
     for template in template_data:
         cleantext = template["html"]
@@ -58,8 +69,14 @@ def personalize_template(customer_info, template_data, sub_data, tag_list):
             elif tag["tag_type"] == "con-pca":
                 # Then check for other tags
                 try:
+                    # ast.literal_eval(tag["data_source"]) replaced with smarter eval
                     cleantext = cleantext.replace(
-                        tag["tag"], ast.literal_eval(tag["data_source"])
+                        tag["tag"],
+                        simple_eval(
+                            tag["data_source"],
+                            names=simple_eval_options["names"],
+                            functions=simple_eval_options["functions"],
+                        ),
                     )
                 except Exception as err:
                     logger.info(
@@ -126,3 +143,20 @@ def get_full_customer_address(customer_info):
         customer_info["zip_code"],
     )
     return customer_full_address
+
+
+def check_tag_format(tag):
+    """Check_tag_format.
+
+    Checks if the given string is in the format required for a tag.
+    Correct: <%TEST_TAG%>
+    Args:
+        tag (string): Tag string from tag object
+
+    Returns:
+        bool: True if in correct format, false otherwise.
+    """
+    r = re.compile("<%.*%>")
+    if r.match(tag) is not None and tag.isupper():
+        return True
+    return False

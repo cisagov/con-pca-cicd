@@ -1,3 +1,5 @@
+service docker start
+
 cd /app/con-pca
 
 cd client

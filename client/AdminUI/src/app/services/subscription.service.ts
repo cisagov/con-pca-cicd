@@ -18,14 +18,12 @@ export class SubscriptionService {
 
   /**
    *
-   * @param http
-   * @param customer_service
    */
   constructor(
     private http: HttpClient,
     private customer_service: CustomerService,
     private settingsService: SettingsService
-  ) {}
+  ) { }
 
   /**
    *
@@ -81,7 +79,7 @@ export class SubscriptionService {
    * Restart the subscription
    * @param subscription 
    */
-  restartSubscription(subscription: Subscription){
+  restartSubscription(subscription: Subscription) {
     return this.http.post(`${this.settingsService.settings.apiUrl}/api/v1/subscriptions/`, subscription)
   }
 
@@ -98,12 +96,18 @@ export class SubscriptionService {
 
   /**
    * Patches the subscription with the new primary contact.
-   * @param subscriptUuid
-   * @param contact
    */
-  updatePrimaryContact(subscriptUuid: string, contact: Contact) {
-    let primary = { primary_contact: contact };
-    return this.http.patch(`${this.settingsService.settings.apiUrl}/api/v1/subscription/${subscriptUuid}/`, primary);
+  changePrimaryContact(subscriptUuid: string, contact: Contact) {
+    const c = { primary_contact: contact };
+    return this.http.patch(`${this.settingsService.settings.apiUrl}/api/v1/subscription/${subscriptUuid}/`, this.changePrimaryContact);
+  }
+
+  /**
+   * Patches the subscription with the new DHS contact.
+   */
+  changeDhsContact(subscriptUuid: string, contactUuid: string) {
+    const c = { dhs_contact_uuid: contactUuid };
+    return this.http.patch(`${this.settingsService.settings.apiUrl}/api/v1/subscription/${subscriptUuid}/`, c);
   }
 
   /**
@@ -126,7 +130,7 @@ export class SubscriptionService {
     return this.http.get(`${this.settingsService.settings.apiUrl}/api/v1/subscription/stop/${subscription_uuid}/`);
   }
 
-  public startSubscription(subscription_uuid: string){
+  public startSubscription(subscription_uuid: string) {
     return this.http.get(`${this.settingsService.settings.apiUrl}/api/v1/subscription/start/${subscription_uuid}/`);
   }
 
@@ -138,8 +142,34 @@ export class SubscriptionService {
     return this.http.get(url);
   }
 
-  public getDhsContacts(){
-    let url = `${this.settingsService.settings.apiUrl}/api/v1/dhscontacts/`;
+  /**
+   * Returns a list of DHS contacts.
+   */
+  public getDhsContacts() {
+    const url = `${this.settingsService.settings.apiUrl}/api/v1/dhscontacts/`;
     return this.http.get(url);
+  }
+
+  /**
+   * Posts or patches a DHS contact.
+   */
+  public saveDhsContact(c: Contact) {
+    if (!!c.dhs_contact_uuid) {
+      // patch existing contact
+      const url = `${this.settingsService.settings.apiUrl}/api/v1/dhscontact/${c.dhs_contact_uuid}/`;
+      return this.http.patch(url, c);
+    } else {
+      // insert new contact
+      const url = `${this.settingsService.settings.apiUrl}/api/v1/dhscontacts/`;
+      return this.http.post(url, c);
+    }
+  }
+
+  /**
+   * Deletes a DHS contact.
+   */
+  public deleteDhsContact(c: Contact) {
+    const url = `${this.settingsService.settings.apiUrl}/api/v1/dhscontact/${c.dhs_contact_uuid}/`;
+    return this.http.delete(url);
   }
 }
