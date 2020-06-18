@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { MatDialogConfig, MatDialog } from '@angular/material/dialog';
+import { MatDialogConfig, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { SubscriptionService } from 'src/app/services/subscription.service';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -8,14 +8,13 @@ import { Subscription, Target, GoPhishCampaignModel, TimelineItem } from 'src/ap
 import { Guid } from 'guid-typescript';
 import { UserService } from 'src/app/services/user.service';
 import { CustomerService } from 'src/app/services/customer.service';
-import { CustomersComponent } from 'src/app/components/customers/customers.component';
 import { XlsxToCsv } from 'src/app/helper/XlsxToCsv';
-import { ArchiveSubscriptionDialogComponent } from '../archive-subscription-dialog/archive-subscription-dialog.component';
 import * as moment from 'node_modules/moment/moment';
 import { LayoutMainService } from 'src/app/services/layout-main.service';
 import { CustomerDialogComponent } from '../../dialogs/customer-dialog/customer-dialog.component';
 import { AlertComponent } from '../../dialogs/alert/alert.component';
 import { isSameDate } from 'src/app/helper/utilities';
+import { ConfirmComponent } from '../../dialogs/confirm/confirm.component';
 
 
 @Component({
@@ -25,6 +24,7 @@ import { isSameDate } from 'src/app/helper/utilities';
 })
 export class ManageSubscriptionComponent implements OnInit, OnDestroy {
   private routeSub: any;
+  dialogRefConfirm: MatDialogRef<ConfirmComponent>;
 
   subscribeForm: FormGroup;
   submitted = false;
@@ -253,12 +253,35 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
   /**
    * Shows Dialog for archiving a subscription
    */
-  public showArchiveDialog(): void {
-    const dialogRef = this.dialog.open(
-      ArchiveSubscriptionDialogComponent, {
-      data: this.subscription
-    }
-    );
+  public archiveSubscription(): void {
+    this.dialogRefConfirm = this.dialog.open(ConfirmComponent, { disableClose: false });
+    this.dialogRefConfirm.componentInstance.confirmMessage =
+      `Archive '${this.subscription.name}?'`;
+    this.dialogRefConfirm.componentInstance.title = 'Confirm Archive';
+    this.dialogRefConfirm.afterClosed().subscribe(result => {
+      if (result) {
+        this.subscription.archived = true;
+        this.subscriptionSvc
+          .patchSubscription(this.subscription).subscribe(() => { });
+      }
+    });
+  }
+
+  /**
+   * Shows Dialog for unarchiving a subscription
+   */
+  public unarchiveSubscription(): void {
+    this.dialogRefConfirm = this.dialog.open(ConfirmComponent, { disableClose: false });
+    this.dialogRefConfirm.componentInstance.confirmMessage =
+      `Unarchive '${this.subscription.name}?'`;
+    this.dialogRefConfirm.componentInstance.title = 'Confirm unarchive';
+    this.dialogRefConfirm.afterClosed().subscribe(result => {
+      if (result) {
+        this.subscription.archived = false;
+        this.subscriptionSvc
+          .patchSubscription(this.subscription).subscribe(() => { });
+      }
+    });
   }
 
   /**
