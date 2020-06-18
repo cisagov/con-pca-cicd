@@ -11,9 +11,6 @@ sends to api
 
 if tag does not exist, create, else ignore.
 
-done.
-
-ToDo: create delete script to get all uuid's of dummy data and delete.
 """
 # Standard Python Libraries
 import json
