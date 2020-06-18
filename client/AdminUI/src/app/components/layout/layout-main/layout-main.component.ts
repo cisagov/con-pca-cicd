@@ -6,6 +6,7 @@ import {
   HostListener
 } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
+import { OverlayContainer } from '@angular/cdk/overlay';
 import { ThemeService } from '../../../services/theme.service';
 import { LayoutMainService } from 'src/app/services/layout-main.service';
 import { UserService } from 'src/app/services/user.service';
@@ -23,10 +24,14 @@ export class LayoutMainComponent implements OnInit {
   constructor(
     private themeSvc: ThemeService,
     public layoutSvc: LayoutMainService, 
-    public userSvc: UserService
+    public userSvc: UserService, 
+    public overlayContainer: OverlayContainer
   ) {
     this.isDark = themeSvc.getStoredTheme();
     this.username = userSvc.getCurrentUser();
+    if(this.isDark){
+      overlayContainer.getContainerElement().classList.add('theme-alternate');
+    } 
   }
 
   @ViewChild('drawer', { static: false })
@@ -36,6 +41,12 @@ export class LayoutMainComponent implements OnInit {
 
   setTheme(event) {
     this.themeSvc.storeTheme(event.checked);
+    this.isDark = event.checked;
+    if(event.checked){
+      this.overlayContainer.getContainerElement().classList.add('theme-alternate');
+    } else {
+      this.overlayContainer.getContainerElement().classList.remove('theme-alternate');
+    }
   }
 
   ngOnInit(): void {}
