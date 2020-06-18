@@ -8,6 +8,7 @@ import {
 import { MatSidenav } from '@angular/material/sidenav';
 import { ThemeService } from '../../../services/theme.service';
 import { LayoutMainService } from 'src/app/services/layout-main.service';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-layout-main',
@@ -17,12 +18,15 @@ import { LayoutMainService } from 'src/app/services/layout-main.service';
 })
 export class LayoutMainComponent implements OnInit {
   isDark: boolean = false;
+  username: string = '';
 
   constructor(
     private themeSvc: ThemeService,
-    public layoutSvc: LayoutMainService
+    public layoutSvc: LayoutMainService, 
+    public userSvc: UserService
   ) {
     this.isDark = themeSvc.getStoredTheme();
+    this.username = userSvc.getCurrentUser();
   }
 
   @ViewChild('drawer', { static: false })

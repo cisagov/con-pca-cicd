@@ -10,6 +10,9 @@ export class UserService {
    * Returns the current logged-in user
    */
   getCurrentUser() {
-    return 'TEST USER';
+    let user = localStorage.getItem("username");
+    if (user)
+       return user;
+    return "Hello"
   }
 }

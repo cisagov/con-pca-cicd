@@ -3,110 +3,61 @@
 from datetime import datetime, timedelta
 import logging
 
-# Django
-from django.conf import settings
-
+# Third-Party Libraries
+# Managers
 # Models
+# Serizliers
+# Utils
+# Other
+# Django
+# Notifications
+# Tasks
+from api.manager import CampaignManager, TemplateManager
 from api.models.customer_models import CustomerModel, validate_customer
 from api.models.subscription_models import SubscriptionModel, validate_subscription
 from api.models.template_models import (
-    TemplateModel,
-    validate_template,
     TagModel,
+    TemplateModel,
     validate_tag,
+    validate_template,
 )
-
-# Managers
-from api.manager import CampaignManager, TemplateManager
-
-# Serizliers
-from api.serializers.subscriptions_serializers import SubscriptionPatchSerializer
 from api.serializers import campaign_serializers
-
-# Utils
+from api.serializers.subscriptions_serializers import SubscriptionPatchSerializer
 from api.utils import db_utils as db
 from api.utils import template_utils
-
-# Notifications
-from notifications.views import SubscriptionNotificationEmailSender
-
-# Tasks
-from tasks.tasks import email_subscription_report
-
-# Other
 from celery.task.control import revoke
+from django.conf import settings
 from lcgit import lcg
+from notifications.views import SubscriptionNotificationEmailSender
+from tasks.tasks import email_subscription_report
 
 logger = logging.getLogger()
 campaign_manager = CampaignManager()
 template_manager = TemplateManager()
 
 
-def start_subscription(post_data):
-    """
-    Starts a new subscription
-    """
-    customer = __get_customer(post_data)
-    post_data["name"] = __get_subscription_name(post_data, customer)
-    start_date, end_date = __get_subscription_start_end_date(post_data)
-
-    # Get batched personalized templates
-    relevant_templates, personalized_templates = __personalize_template_batch(
-        customer, post_data.get("url"), post_data.get("keywords"), post_data,
-    )
-
-    # Get batched targets
-    batched_targets = __batch_targets(post_data)
-
-    # Get all Landing pages or default
-    # This is currently selecting the default page on creation.
-    # landing_template_list = get_list({"template_type": "Landing"}, "template", TemplateModel, validate_template)
-    landing_page = "Phished"
-
-    gophish_campaigns = __process_batches(
-        post_data,
-        personalized_templates,
-        batched_targets,
-        landing_page,
-        start_date,
-        end_date,
-    )
-
-    post_data["gophish_campaign_list"] = gophish_campaigns
-    post_data["templates_selected_uuid_list"] = relevant_templates
-    post_data["end_date"] = end_date.strftime("%Y-%m-%dT%H:%M:%S")
-    post_data["status"] = __get_subscription_status(start_date)
-    post_data["cycles"] = __get_subscription_cycles(
-        gophish_campaigns, start_date, end_date
-    )
-
-    __send_start_notification(post_data, start_date)
-
-    created_response = db.save_single(
-        post_data, "subscription", SubscriptionModel, validate_subscription
-    )
-
-    __create_scheduled_email_tasks(created_response)
-
-    return created_response
-
-
-def restart_subscription(subscription_uuid):
-    """
-    Restarts a stopped subscription
-    """
-
-    subscription = db.get_single(
-        subscription_uuid, "subscription", SubscriptionModel, validate_subscription
-    )
+def start_subscription(data=None, subscription_uuid=None):
+    """Starts a new subscription."""
+    if subscription_uuid:
+        subscription = db.get_single(
+            subscription_uuid, "subscription", SubscriptionModel, validate_subscription
+        )
+    else:
+        subscription = data
 
     customer = __get_customer(subscription)
+
+    if not subscription_uuid:
+        subscription["name"] = __get_subscription_name(subscription, customer)
     start_date, end_date = __get_subscription_start_end_date(subscription)
 
     # Get batched personalized templates
-    _, personalized_templates = __personalize_template_batch(
+    relevant_templates, personalized_templates = __personalize_template_batch(
         customer, subscription.get("url"), subscription.get("keywords"), subscription,
     )
+
+    # Get batched targets
+    batched_targets = __batch_targets(subscription)
 
     # Get all Landing pages or default
     # This is currently selecting the default page on creation.
@@ -116,33 +67,47 @@ def restart_subscription(subscription_uuid):
     gophish_campaigns = __process_batches(
         subscription,
         personalized_templates,
-        subscription.get("target_email_list"),
+        batched_targets,
         landing_page,
         start_date,
         end_date,
     )
 
-    put_data = {}
-    put_data["gophish_campaign_list"] = gophish_campaigns
-    put_data["end_date"] = end_date.strftime("%Y-%m-%dT%H:%M:%S")
-    put_data["status"] = __get_subscription_status(start_date)
-    put_data["cycles"] = __get_subscription_cycles(
+    subscription["gophish_campaign_list"] = gophish_campaigns
+    subscription["templates_selected_uuid_list"] = relevant_templates
+    subscription["end_date"] = end_date.strftime("%Y-%m-%dT%H:%M:%S")
+    subscription["status"] = __get_subscription_status(start_date)
+    subscription["cycles"] = __get_subscription_cycles(
         gophish_campaigns, start_date, end_date
     )
 
     __send_start_notification(subscription, start_date)
 
-    created_response = db.update_single(
-        subscription_uuid,
-        put_data,
-        "subscription",
-        SubscriptionModel,
-        validate_subscription,
-    )
+    if subscription_uuid:
+        db_data = {
+            "gophish_campaign_list": gophish_campaigns,
+            "templates_selected_uuid_list": relevant_templates,
+            "end_date": end_date.strftime("%Y-%m-%dT%H:%M:%S"),
+            "status": __get_subscription_status(start_date),
+            "cycles": __get_subscription_cycles(
+                gophish_campaigns, start_date, end_date
+            ),
+        }
+        response = db.update_single(
+            subscription_uuid,
+            db_data,
+            "subscription",
+            SubscriptionModel,
+            validate_subscription,
+        )
+    else:
+        response = db.save_single(
+            subscription, "subscription", SubscriptionModel, validate_subscription
+        )
 
-    __create_scheduled_email_tasks(created_response)
+    __create_scheduled_email_tasks(response)
 
-    return created_response
+    return response
 
 
 def __get_subscription_name(post_data, customer):
@@ -181,9 +146,7 @@ def __get_subscription_name(post_data, customer):
 
 
 def __get_subscription_start_end_date(post_data):
-    """
-    Gets the start and end date for a subscription
-    """
+    """Gets the start and end date for a subscription."""
     # split date string in case float is put at the end.
     date = post_data.get("start_date")
     now = datetime.now()
@@ -211,9 +174,7 @@ def __get_customer(post_data):
 
 
 def __get_email_templates():
-    """
-    Queries the database for all non-retired email templates
-    """
+    """Queries the database for all non-retired email templates."""
     return db.get_list(
         {"template_type": "Email", "retired": False},
         "template",
@@ -223,9 +184,7 @@ def __get_email_templates():
 
 
 def __get_relevant_templates(url, keywords, templates):
-    """
-    Returns 15 relevant templates
-    """
+    """Returns 15 relevant templates."""
     template_data = {
         t.get("template_uuid"): t.get("descriptive_words") for t in templates
     }
@@ -238,9 +197,7 @@ def __get_relevant_templates(url, keywords, templates):
 
 
 def __batch_templates(templates):
-    """
-    Batches templates into 3 groups of 5
-    """
+    """Batches templates into 3 groups of 5."""
     return [templates[x : x + 5] for x in range(0, len(templates), 5)]
 
 
@@ -271,17 +228,12 @@ def __lcgit_list_randomizer(object_list):
 
 
 def __get_tags():
-    """
-    Returns a list of tags.
-    """
+    """Returns a list of tags."""
     return db.get_list(None, "tag_definition", TagModel, validate_tag)
 
 
 def __personalize_template_batch(customer, url, keywords, data):
-    """
-    Returns templates with tags replaced
-    """
-
+    """Returns templates with tags replaced."""
     # Get tags for personalizing templates
     tags = __get_tags()
 
@@ -299,9 +251,11 @@ def __personalize_template_batch(customer, url, keywords, data):
         personalize_list = list(
             filter(lambda x: x["template_uuid"] in batch, templates)
         )
-        personalized_templates.append(personalize_list)
 
-        template_utils.personalize_template(customer, personalize_list, data, tags)
+        personalized_data = template_utils.personalize_template(
+            customer, personalize_list, data, tags
+        )
+        personalized_templates.append(personalized_data)
 
     return relevant_templates, personalized_templates
 
@@ -376,13 +330,12 @@ def __process_batches(
 
 def __create_and_save_campaigns(campaign_info, target_group, landing_page, end_date):
     """
-        Create and Save Campaigns.
+    Create and Save Campaigns.
 
-        This method handles the creation of each campain with given template, target group, and data.
-        """
+    This method handles the creation of each campain with given template, target group, and data.
+    """
     templates = campaign_info["templates"]
     targets = campaign_info["targets"]
-
     gophish_campaign_list = []
     # Create a GoPhish Campaigns
     for template in templates:
