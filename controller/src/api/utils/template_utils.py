@@ -68,11 +68,11 @@ def personalize_template(customer_info, template_data, sub_data, tag_list):
             if tag["tag_type"] == "gophish":
                 # First check gophish tags
                 cleantext = cleantext.replace(tag["tag"], tag["data_source"])
-            if tag["tag_type"] == "con-pca-literal":
-                # First check gophish tags
+            elif tag["tag_type"] == "con-pca-literal":
+                # literal replace
                 cleantext = cleantext.replace(tag["tag"], tag["data_source"])
             elif tag["tag_type"] == "con-pca-eval":
-                # Then check for other tags
+                # eval replace
                 try:
                     # ast.literal_eval(tag["data_source"]) replaced with smarter eval
                     cleantext = cleantext.replace(
@@ -91,6 +91,9 @@ def personalize_template(customer_info, template_data, sub_data, tag_list):
                     )
                     # Upon error, replaces tag with tag
                     cleantext = cleantext.replace(tag["tag"], tag["tag"])
+            else:
+                # Default literal replace
+                cleantext = cleantext.replace(tag["tag"], tag["data_source"])
 
         template_unique_name = "".join(template["name"].split(" "))
         cleantext += "{{.Tracker}}"

@@ -210,10 +210,10 @@
     "tag_type": "con-pca"
   },
   {
-    "data_source": "",
+    "data_source": "customer_info['identifier']",
     "description": "An abbreviated form of a phrase, such as a company/organization's name (i.e. CISA for Cybersecurity and Infrastructure Security Agency).",
     "tag": "<%ACRONYM%>",
-    "tag_type": "con-pca"
+    "tag_type": "con-pca-eval"
   },
   {
     "data_source": "",
