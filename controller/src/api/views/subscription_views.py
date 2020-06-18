@@ -71,10 +71,11 @@ class SubscriptionsListView(APIView):
     def get(self, request):
         """Get method."""
         parameters = {"archived": {"$in": [False, None]}}
+
         archivedParm = request.GET.get("archived")
         if archivedParm:
             if archivedParm.lower() == "true":
-                parameters["archived"]["$in"].append(True)
+                parameters["archived"] = True
 
         if request.GET.get("template"):
             parameters["templates_selected_uuid_list"] = request.GET.get("template")
