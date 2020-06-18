@@ -8,6 +8,8 @@ import {
 import { MatSidenav } from '@angular/material/sidenav';
 import { ThemeService } from '../../../services/theme.service';
 import { LayoutMainService } from 'src/app/services/layout-main.service';
+import { UserAuthService } from '../../../services/user-auth.service'
+import { Subscription, BehaviorSubject } from 'rxjs'
 
 @Component({
   selector: 'app-layout-main',
@@ -17,12 +19,17 @@ import { LayoutMainService } from 'src/app/services/layout-main.service';
 })
 export class LayoutMainComponent implements OnInit {
   isDark: boolean = false;
+  currentUserName: string = "N/A";
 
   constructor(
     private themeSvc: ThemeService,
-    public layoutSvc: LayoutMainService
+    public layoutSvc: LayoutMainService,
+    private userAuthSvc: UserAuthService, 
   ) {
     this.isDark = themeSvc.getStoredTheme();
+    this.userAuthSvc.getUserBehaviorSubject().subscribe(value => {
+      this.currentUserName = value["username"]
+    })
   }
 
   @ViewChild('drawer', { static: false })
@@ -34,7 +41,12 @@ export class LayoutMainComponent implements OnInit {
     this.themeSvc.storeTheme(event.checked);
   }
 
-  ngOnInit(): void {}
+  logOut(){
+    this.userAuthSvc.signOut()
+  }
+
+  ngOnInit(): void {
+  }
 
   ngAfterViewInit() {
     setTimeout(() => {

@@ -11,6 +11,7 @@ import { MaterialModule } from './material.module';
 import { MatSortModule } from '@angular/material/sort';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { AmplifyService } from 'aws-amplify-angular';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SubscriptionsComponent } from './components/subscriptions/subscriptions.component';
 import { LayoutBlankComponent } from './components/layout/layout-blank/layout-blank.component';
@@ -18,6 +19,7 @@ import { LayoutMainComponent } from './components/layout/layout-main/layout-main
 import { SearchPanelComponent } from './components/search-panel/search-panel.component';
 import { ManageSubscriptionComponent } from './components/subscriptions/manage-subscription/manage-subscription.component';
 import { DeceptionCalculatorComponent } from './components/deception-calculator/deception-calculator.component';
+import { UserAuthService } from './services/user-auth.service';
 import { DeceptionCalculatorService } from './services/deception-calculator.service';
 import { TemplateManagerComponent } from './components/template-manager/template-manager.component';
 import { TemplateManagerService } from './services/template-manager.service';
@@ -37,10 +39,7 @@ import { CustomersComponent } from './components/customers/customers.component';
 import { AddCustomerDialogComponent } from './components/customers/add-customer-dialog/add-customer-dialog.component';
 import { AddContactDialogComponent } from './components/contacts/add-contact-dialog/add-contact-dialog.component';
 import { ViewContactDialogComponent } from './components/contacts/view-contact-dialog/view-contact-dialog.component';
-import {
-  DeleteSubscription,
-  DeleteSubscriptionDialog
-} from 'src/app/components/subscriptions/delete-subscription/delete-subscription.component';
+import { DeleteSubscription, DeleteSubscriptionDialog } from 'src/app/components/subscriptions/delete-subscription/delete-subscription.component';
 import { StopTemplateDialogComponent } from './components/template-manager/stop-template-dialog/stop-template-dialog.component';
 import { SendingProfilesComponent } from './components/sending-profiles/sending-profiles.component';
 import { SendingProfileDetailComponent } from './components/sending-profiles/sending-profile-detail.component';
@@ -58,10 +57,12 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { AlertComponent } from './components/dialogs/alert/alert.component';
 import { SafePipe } from './helper/safe.pipe';
 import { SvgTimelineComponent } from './components/subscriptions/svg-timeline/svg-timeline.component';
+import { AuthAppendInterceptor } from './helper/jwtIncomingInterceptor'
 
 export function app_Init(settingsHttpService: SettingsHttpService) {
-  return () => settingsHttpService.initializeApp();
+  return () => settingsHttpService.initializeApp()
 }
+
 
 @NgModule({
   declarations: [
@@ -113,7 +114,7 @@ export function app_Init(settingsHttpService: SettingsHttpService) {
     ReactiveFormsModule,
     AutosizeModule,
     HttpClientModule,
-    NgxChartsModule
+    NgxChartsModule,
   ],
   providers: [
     SubscriptionService,
@@ -123,10 +124,15 @@ export function app_Init(settingsHttpService: SettingsHttpService) {
     ThemeService,
     LayoutMainService,
     HttpClient,
+    AmplifyService,
+    UserAuthService,
     { provide: MAT_DIALOG_DATA, useValue: [] },
-    { provide: APP_INITIALIZER, useFactory: app_Init, deps: [SettingsHttpService], multi: true }
+    { provide: APP_INITIALIZER, useFactory: app_Init, deps: [SettingsHttpService], multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: AuthAppendInterceptor, multi: true}
   ],
-  exports: [MatSortModule],
+  exports: [
+    MatSortModule
+  ],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule { }

@@ -1,0 +1,22 @@
+{
+    "dev": {
+        "awscloudformation": {
+            "AuthRoleName": "amplify-adminui-dev-102339-authRole",
+            "UnauthRoleArn": "arn:aws:iam::864850916055:role/amplify-adminui-dev-102339-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::864850916055:role/amplify-adminui-dev-102339-authRole",
+            "Region": "us-east-2",
+            "DeploymentBucketName": "amplify-adminui-dev-102339-deployment",
+            "UnauthRoleName": "amplify-adminui-dev-102339-unauthRole",
+            "StackName": "amplify-adminui-dev-102339",
+            "StackId": "arn:aws:cloudformation:us-east-2:864850916055:stack/amplify-adminui-dev-102339/be5eb850-afed-11ea-babd-02d970724e3a",
+            "AmplifyAppId": "d1ak5agxqcw3l"
+        },
+        "categories": {
+            "auth": {
+                "adminui7d6153a7": {
+                    "hostedUIProviderCreds": "[{\"ProviderName\":\"LoginWithAmazon\",\"client_id\":\"3acjsurlr4537dctn48dp2vmn7\",\"client_secret\":\"(no secret key)\"}]"
+                }
+            }
+        }
+    }
+}
