@@ -68,11 +68,17 @@ class ReportsView(APIView):
         clicked = sum([targets.get("stats").get("clicked", 0) for targets in summary])
         target_count = sum([targets.get("stats").get("total") for targets in summary])
 
+        created_date = ""
+        end_date = ""
+        if len(summary):
+            created_date = summary[0].get("created_date")
+            end_date = summary[0].get("end_date")
+
         context = {
             "customer_name": subscription.get("name"),
             "templates": templates,
-            "start_date": summary[0].get("created_date"),
-            "end_date": summary[0].get("send_by_date"),
+            "start_date": created_date,
+            "end_date": end_date,
             "sent": sent,
             "opened": opened,
             "clicked": clicked,
