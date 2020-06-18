@@ -75,7 +75,7 @@ urlpatterns = [
         name="subscription_stop_api",
     ),
     path(
-        "v1/subscription/restart/",
+        "v1/subscription/restart/<subscription_uuid>/",
         subscription_views.SubscriptionRestartView.as_view(),
         name="subscription_restart_api",
     ),
