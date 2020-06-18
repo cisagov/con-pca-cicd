@@ -54,6 +54,10 @@ init:
 	docker exec -it pca-api python scripts/init_gophish.py
 	docker exec -it pca-api python scripts/create_dummy_data.py
 
+# target: init - initializes gophish and creates dummy data
+tags:
+	docker exec -it pca-api python scripts/load_tags.py
+
 # target: db_drop_mongo - connects to docker and drops mongo volume
 db_drop_mongo:
 	docker volume rm controller_mongodb
