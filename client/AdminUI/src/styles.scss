@@ -217,7 +217,6 @@ $theme-warn: mat-palette($mat-warn, main, lighter, darker);
 $theme: mat-light-theme($theme-primary, $theme-accent, $theme-warn);
 $altTheme: mat-dark-theme($theme-primary, $theme-accent, $theme-warn);
 
-
 @mixin additional-overrides($theme) {
   $foreground: map-get($theme, 'foreground');
   $background: map-get($theme, 'background');
@@ -256,6 +255,7 @@ $altTheme: mat-dark-theme($theme-primary, $theme-accent, $theme-warn);
 }
 
 // Theme Init
+
 @include angular-material-theme($theme);
 @include additional-overrides($theme);
 

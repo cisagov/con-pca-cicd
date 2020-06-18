@@ -386,9 +386,7 @@ Nm54/BNgAKu8j5lw6E+GAAAAAElFTkSuQmCC" transform="matrix(0.2176 0 0 0.2084 59.162
       >
         <!--<button mat-menu-item>Profile</button>-->
         <button mat-menu-item>Logout</button>
-        <mat-slide-toggle [checked]="isDark" (change)="setTheme($event)"
-          >dark</mat-slide-toggle
-        >
+        <mat-slide-toggle [checked]="isDark" (change)="setTheme($event)"><mat-label [ngStyle]="{'color': isDark ? '#fff' : '#000'}">dark</mat-label></mat-slide-toggle>
       </mat-menu>
     </span>
   </mat-toolbar>
