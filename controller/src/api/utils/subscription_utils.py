@@ -50,25 +50,10 @@ def start_subscription(post_data):
     post_data["name"] = __get_subscription_name(post_data, customer)
     start_date, end_date = __get_subscription_start_end_date(post_data)
 
-    # Gets list of all templates
-    templates = __get_email_templates()
-
-    # Finds relevant templates
-    relevant_templates = __get_relevant_templates(
-        post_data.get("url"), post_data.get("keywords"), templates
+    # Get batched personalized templates
+    relevant_templates, personalized_templates = __personalize_template_batch(
+        customer, post_data.get("url"), post_data.get("keywords"), post_data,
     )
-
-    # Batch templates
-    batched_templates = __batch_templates(relevant_templates)
-
-    # Get tags for personalizing templates
-    tags = __get_tags()
-
-    # Get batched personalied templates
-    personalized_templates = [
-        __personalize_template_batch(customer, b, templates, post_data, tags)
-        for b in batched_templates
-    ]
 
     # Get batched targets
     batched_targets = __batch_targets(post_data)
@@ -118,25 +103,10 @@ def restart_subscription(subscription_uuid):
     customer = __get_customer(subscription)
     start_date, end_date = __get_subscription_start_end_date(subscription)
 
-    # Gets list of all templates
-    templates = __get_email_templates()
-
-    # Finds relevant templates
-    relevant_templates = __get_relevant_templates(
-        subscription.get("url"), subscription.get("keywords"), templates
+    # Get batched personalized templates
+    _, personalized_templates = __personalize_template_batch(
+        customer, subscription.get("url"), subscription.get("keywords"), subscription,
     )
-
-    # Batch templates
-    batched_templates = __batch_templates(relevant_templates)
-
-    # Get tags for personalizing templates
-    tags = __get_tags()
-
-    # Get batched personalied templates
-    personalized_templates = [
-        __personalize_template_batch(customer, b, templates, subscription, tags)
-        for b in batched_templates
-    ]
 
     # Get all Landing pages or default
     # This is currently selecting the default page on creation.
@@ -307,14 +277,33 @@ def __get_tags():
     return db.get_list(None, "tag_definition", TagModel, validate_tag)
 
 
-def __personalize_template_batch(customer, batch, templates, post_data, tags):
+def __personalize_template_batch(customer, url, keywords, data):
     """
     Returns templates with tags replaced
     """
-    personalize_list = list(filter(lambda x: x["template_uuid"] in batch, templates))
-    return template_utils.personalize_template(
-        customer, personalize_list, post_data, tags
-    )
+
+    # Get tags for personalizing templates
+    tags = __get_tags()
+
+    # Gets list of all templates
+    templates = __get_email_templates()
+
+    # Finds relevant templates
+    relevant_templates = __get_relevant_templates(url, keywords, templates)
+
+    # Batch templates
+    batched_templates = __batch_templates(relevant_templates)
+
+    personalized_templates = []
+    for batch in batched_templates:
+        personalize_list = list(
+            filter(lambda x: x["template_uuid"] in batch, templates)
+        )
+        personalized_templates.append(personalize_list)
+
+        template_utils.personalize_template(customer, personalize_list, data, tags)
+
+    return relevant_templates, personalized_templates
 
 
 def __process_batches(
