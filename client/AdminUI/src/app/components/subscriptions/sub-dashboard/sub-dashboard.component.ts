@@ -33,17 +33,21 @@ export class SubDashboardComponent implements OnInit {
   constructor(
     public chartsSvc: ChartsService,
     private subscriptionSvc: SubscriptionService
-  ) {}
+  ) { }
 
   /**
    *
    */
   ngOnInit(): void {
+    this.subscriptionUuid = this.subscriptionSvc.subscription.subscription_uuid;
     this.drawGraphs();
   }
 
   /**
-   *
+   * Gathers statistics and renders information for two graphs,
+   * chart and chartSent.  Chart shows the various statistics for
+   * how the targets have responded to the phishing emails.
+   * ChartSent indicates how many emails have been sent thus far.
    */
   drawGraphs() {
     // set display options
@@ -61,17 +65,22 @@ export class SubDashboardComponent implements OnInit {
     this.chart.colorScheme = this.schemeLowMedHigh;
 
     // get content
-    this.chart.chartResults = this.chartsSvc.getStatisticsByLevel();
+    this.chartsSvc.getStatisticsReport(this.subscriptionUuid)
+      .subscribe((stats: any) => {
+        // series of vertical bar charts
+        this.chart.chartResults = this.chartsSvc.formatStatistics(stats);
 
-    this.chartSent.showXAxis = true;
-    this.chartSent.showYAxis = true;
-    this.chartSent.showXAxisLabel = true;
-    this.chartSent.xAxisLabel = '';
-    this.chartSent.showYAxisLabel = true;
-    this.chartSent.yAxisLabel = '';
-    this.chartSent.showDataLabel = true;
-    this.chartSent.colorScheme = this.schemeSent;
-    this.chartSent.view = [500, 100];
-    this.chartSent.chartResults = this.chartsSvc.getSentEmailNumbers();
+        // stacked horizontal bar chart for number of emails sent vs scheduled
+        this.chartSent.showXAxis = true;
+        this.chartSent.showYAxis = true;
+        this.chartSent.showXAxisLabel = true;
+        this.chartSent.xAxisLabel = '';
+        this.chartSent.showYAxisLabel = true;
+        this.chartSent.yAxisLabel = '';
+        this.chartSent.showDataLabel = true;
+        this.chartSent.colorScheme = this.schemeSent;
+        this.chartSent.view = [500, 100];
+        this.chartSent.chartResults = this.chartsSvc.getSentEmailNumbers(stats);
+      });
   }
 }
