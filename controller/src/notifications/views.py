@@ -113,15 +113,20 @@ class SubscriptionNotificationEmailSender:
 
         logger.info(f'start_date={self.subscription.get("start_date")}')
         # Putting .split on the start and end date because sometimes it comes formatted with a float at the end.
-        start_date = datetime.strptime(
-            self.subscription.get("start_date").split(".")[0], "%Y-%m-%dT%H:%M:%S"
-        ).strftime("%d %B, %Y")
+        if not isinstance(self.subscription.get("start_date"), datetime):
+            start_date = datetime.strptime(
+                self.subscription.get("start_date").split(".")[0], "%Y-%m-%dT%H:%M:%S"
+            ).strftime("%d %B, %Y")
+        else:
+            start_date = self.subscription.get("start_date")
 
         end_date = self.subscription.get("end_date")
+
         if end_date is not None:
-            end_date = datetime.strptime(
-                end_date.split(".")[0], "%Y-%m-%dT%H:%M:%S"
-            ).strftime("%d %B, %Y")
+            if not isinstance(end_date, datetime):
+                end_date = datetime.strptime(
+                    end_date.split(".")[0], "%Y-%m-%dT%H:%M:%S"
+                ).strftime("%d %B, %Y")
 
         return {
             "first_name": first_name,

@@ -1513,42 +1513,6 @@
   },
   {
     "appearance": {
-      "grammar": 1,
-      "link_domain": 0,
-      "logo_graphics": 0
-    },
-    "behavior": {
-      "curiosity": 0,
-      "duty_obligation": 0,
-      "fear": 1,
-      "greed": 0
-    },
-    "complexity": 2,
-    "deception_score": 5,
-    "description": "Electronic Payment Rejected",
-    "descriptive_words": "automatic electronic payment id recently initiated bank account persons rejected financal institution rejected transaction transaction id reason rejection see details report transaction report https mail contract services us rejected payment id michel angelo drive suite jersey city nj digital payments group",
-    "from_address": "AGENCY Budget and Resources <OBR@[domain] >",
-    "gophish_template_id": 0,
-    "html": "<br>The automatic electronic payment (ID:9384620948211), recently initiated<br>from you bank account (by you or any other persons), was rejected by the<br>other financal institution.<br><br>Rejected transaction<br>Transaction ID: 9384620948211<br>Reason for rejection: See details in report<br>Transaction Report:<br>https://mail.contract-services.us/rejected_payment?id=12948374<br><br>3929 Michel Angelo Drive, Suite 100, Jersey City, NJ 07030<br>The Digital Payments Group<br> <br>",
-    "image_list": [],
-    "name": "Electronic Payment Rejected",
-    "relevancy": {
-      "organization": 0,
-      "public_news": 0
-    },
-    "retired": false,
-    "sender": {
-      "authoritative": 0,
-      "external": 1,
-      "internal": 0
-    },
-    "subject": "Future Budget Plans",
-    "template_type": "Email",
-    "text": "\nThe automatic electronic payment (ID:9384620948211), recently initiated\nfrom you bank account (by you or any other persons), was rejected by the\nother financal institution.\n\nRejected transaction\nTransaction ID: 9384620948211\nReason for rejection: See details in report\nTransaction Report:\nhttps://mail.contract-services.us/rejected_payment?id=12948374\n\n3929 Michel Angelo Drive, Suite 100, Jersey City, NJ 07030\nThe Digital Payments Group\n \n",
-    "topic_list": []
-  },
-  {
-    "appearance": {
       "grammar": 2,
       "link_domain": 1,
       "logo_graphics": 0
@@ -3103,42 +3067,6 @@
     },
     "behavior": {
       "curiosity": 0,
-      "duty_obligation": 0,
-      "fear": 0,
-      "greed": 1
-    },
-    "complexity": 5,
-    "deception_score": 11,
-    "description": "Salary Guidelines [Unknown Sender]",
-    "descriptive_words": "requirements navigate opm website view updated salary guidance following link url office budget resource management customer name",
-    "from_address": "AGENCY Budget and Resources <OBR@[domain] >",
-    "gophish_template_id": 0,
-    "html": "requirements. You can navigate to OPM's website and view the updated salary<br>guidance at the following link <<%URL%>><br><br>Office of Budget and Resource Management<br><%CUSTOMER_NAME%><br>",
-    "image_list": [],
-    "name": "Salary Guidelines [Unknown Sender]",
-    "relevancy": {
-      "organization": 0,
-      "public_news": 0
-    },
-    "retired": false,
-    "sender": {
-      "authoritative": 2,
-      "external": 0,
-      "internal": 0
-    },
-    "subject": "Future Budget Plans",
-    "template_type": "Email",
-    "text": "requirements. You can navigate to OPM's website and view the updated salary\nguidance at the following link <<%URL%>>\n\nOffice of Budget and Resource Management\n<%CUSTOMER_NAME%>\n",
-    "topic_list": []
-  },
-  {
-    "appearance": {
-      "grammar": 2,
-      "link_domain": 1,
-      "logo_graphics": 0
-    },
-    "behavior": {
-      "curiosity": 0,
       "duty_obligation": 1,
       "fear": 0,
       "greed": 0
@@ -3277,42 +3205,6 @@
   },
   {
     "appearance": {
-      "grammar": 0,
-      "link_domain": 1,
-      "logo_graphics": 0
-    },
-    "behavior": {
-      "curiosity": 1,
-      "duty_obligation": 0,
-      "fear": 0,
-      "greed": 0
-    },
-    "complexity": 1,
-    "deception_score": 3,
-    "description": "Hey_Wire_Transfer [No Logo]",
-    "descriptive_words": "hey hey busy talked lara said could help need u process elctronic payment today let know free pay u back later nxt week url thanx owe jamie sent via mobile",
-    "from_address": "AGENCY Budget and Resources <OBR@[domain] >",
-    "gophish_template_id": 0,
-    "html": "Hey,<br><br>Hey!<br>Are you busy?? I talked to Lara and she said you could help me. I need u to<br>process an elctronic payment for me today. Let me know when you are free so<br>I can pay u back later nxt week.<br><<%URL%>><br><br>Thanx! I owe you!!<br>Jamie<br>Sent via mobile<br>",
-    "image_list": [],
-    "name": "Hey_Wire_Transfer [No Logo]",
-    "relevancy": {
-      "organization": 0,
-      "public_news": 0
-    },
-    "retired": false,
-    "sender": {
-      "authoritative": 0,
-      "external": 0,
-      "internal": 0
-    },
-    "subject": "Future Budget Plans",
-    "template_type": "Email",
-    "text": "Hey,\n\nHey!\nAre you busy?? I talked to Lara and she said you could help me. I need u to\nprocess an elctronic payment for me today. Let me know when you are free so\nI can pay u back later nxt week.\n<<%URL%>>\n\nThanx! I owe you!!\nJamie\nSent via mobile\n",
-    "topic_list": []
-  },
-  {
-    "appearance": {
       "grammar": 2,
       "link_domain": 1,
       "logo_graphics": 0
@@ -3345,42 +3237,6 @@
     "subject": "2019 [Customer] University Travel Voucher",
     "template_type": "Email",
     "text": "\n\nI am pleased to announce that we have partnered with local [State] travel\nagencies to provide a steeply discounted travel package for all <%CUSTOMER_NAME%>\nUniversity Faculty and Staff Employees for a limited time only.\n\nTravel vouchers for the 2019 vacation period are available for review.\nThere are 8 vacation packages available to choose from which you can\nview now. There is no need to register a new account as you can login\nwith your work email address and a temporary password will be sent to\nyou.\n\nPortal Login:\n<<%URL%>>\nDestinations and travel times are subject to availability and confirmed\non a first come, first served bases. Vouchers include travel costs and\nexcludes expenses that incurred after reservations are confirmed. For\nadditional terms and conditions, visit:\n<<%URL%>>\n\nThank you.\nWill Bentley\n<%CUSTOMER_NAME%> Travel Coordinator\n\nText or HTML text of this\nphishing message goes here.\nLine breaks are preserved.\n",
-    "topic_list": []
-  },
-  {
-    "appearance": {
-      "grammar": 2,
-      "link_domain": 1,
-      "logo_graphics": 0
-    },
-    "behavior": {
-      "curiosity": 1,
-      "duty_obligation": 0,
-      "fear": 0,
-      "greed": 0
-    },
-    "complexity": 6,
-    "deception_score": 13,
-    "description": "Career Event",
-    "descriptive_words": "greetings customer city career fair coming university customer name hosting employers insert date event designed help students faculty familiarize local business opportunities school districts organizations throughout commonwealth event held insert location order accommodate high volume employers students faculty planning attend event business casual recommended details participating businesses organizations visit customer city career fair url attendees encouraged research organizations prior event bring plenty resumes customer name students alumni resumes reviewed career services staff free contact fake name career services fakename fakedomain information register url insert date participate upcoming career event text html text phishing message goes line breaks preserved",
-    "from_address": "[Customer] Career Fair <noreply@ncats.domain.tld>",
-    "gophish_template_id": 0,
-    "html": "<br>Greetings,<br><br>The [Customer City] Career Fair is coming to University of <%CUSTOMER_NAME%> and will be<br>hosting more than 100 employers on [Insert Date]. This event is designed<br>to help students and faculty to familiarize themselves with local business<br>opportunities, school districts and organizations throughout the commonwealth.<br><br>The event will be held in the [Insert location] in order to<br>accommodate the high volume of employers, students, and faculty planning<br>to attend the event. Business casual is recommended.<br>For more details about participating businesses and organizations, visit<br>[Customer City] Career Fair <<%URL%>>.<br><br>Attendees are encouraged to research organizations prior to the event <br>and to bring plenty of resumes.<br><%CUSTOMER_NAME%> students and alumni can have their resumes reviewed by career<br>services staff for free.<br><br>Contact [Fake Name] in Career Services at [fakename][@]<br>[fakedomain]for more information.<br>Register <<%URL%>> by [Insert Date] to participate in the Upcoming<br>Career Event.<br><br><br>Text or HTML text of this<br>phishing message goes here.<br>Line breaks are preserved.<br>",
-    "image_list": [],
-    "name": "Career Event",
-    "relevancy": {
-      "organization": 1,
-      "public_news": 0
-    },
-    "retired": false,
-    "sender": {
-      "authoritative": 0,
-      "external": 0,
-      "internal": 2
-    },
-    "subject": "Upcoming Career Event",
-    "template_type": "Email",
-    "text": "\nGreetings,\n\nThe [Customer City] Career Fair is coming to University of <%CUSTOMER_NAME%> and will be\nhosting more than 100 employers on [Insert Date]. This event is designed\nto help students and faculty to familiarize themselves with local business\nopportunities, school districts and organizations throughout the commonwealth.\n\nThe event will be held in the [Insert location] in order to\naccommodate the high volume of employers, students, and faculty planning\nto attend the event. Business casual is recommended.\nFor more details about participating businesses and organizations, visit\n[Customer City] Career Fair <<%URL%>>.\n\nAttendees are encouraged to research organizations prior to the event \nand to bring plenty of resumes.\n<%CUSTOMER_NAME%> students and alumni can have their resumes reviewed by career\nservices staff for free.\n\nContact [Fake Name] in Career Services at [fakename][@]\n[fakedomain]for more information.\nRegister <<%URL%>> by [Insert Date] to participate in the Upcoming\nCareer Event.\n\n\nText or HTML text of this\nphishing message goes here.\nLine breaks are preserved.\n",
     "topic_list": []
   },
   {
@@ -3561,42 +3417,6 @@
     "subject": "IMPORTANT NOTICE: Jury Summon",
     "template_type": "Email",
     "text": "You have been summoned for jury service to the County Courthouse.\n*Your Group Number is: 2329*\n*Scheduled Appearance Date: [Insert Date and Time]\n*Where You Must Appear: County Courthouse*\n[Insert Address Here]\n\nPlease fill out the identification verification form found here\n<[https]://countycourt.[gov]/jury-service/verification/>and bring two\ngovernment IDs along with the attached letter. Be prepared to attend\ncourt from your assigned reporting time up to 5:00 PM.\n\nReasonable accommodations for persons with ADA disabilities must be\nrequested at least ten days in advanced from the jury Office ADA- Coordinator,\nemail:OfficeADA[@]countycourt.[gov]\nFree parking is available.\n\nPlease report to jury service wearing respectable clothes. As a general\nrule, business or business casual clothing is acceptable. The following\ntypes of clothing are not suitable for court proceedings:\nshorts, tube tops, halter tops, suggestive or inflammatory\nprint or images, and clothes that are overly dirty or ragged.\n\nTo view details about your appearance or request a first time\npostponement, use our website for additional information:\n  [https]://countycourt.[gov]/jury-service-FAQ/\n  [https]://countycourt.[gov]/jury-service-FAQ/>\n***IMPORTANT*** Prospective jurors are required by law to attend the\njury duty selection process. If you fail to do so you may be held in\ncontempt of court*\n",
-    "topic_list": []
-  },
-  {
-    "appearance": {
-      "grammar": 2,
-      "link_domain": 0,
-      "logo_graphics": 0
-    },
-    "behavior": {
-      "curiosity": 1,
-      "duty_obligation": 0,
-      "fear": 0,
-      "greed": 0
-    },
-    "complexity": 4,
-    "deception_score": 9,
-    "description": "Employee Survey",
-    "descriptive_words": "greetings order make effective improvements employee workplace need assistance input link employee satisfaction service survey internal network opportunity answer questions provide feedback improve work conditions environment survey takes minutes complete https employeesurveyteam com feedback reference id survey available next hours thank employee survey team",
-    "from_address": "Employee Survey Team<no-reply[@]ncats.domain.tld>",
-    "gophish_template_id": 0,
-    "html": "<br>Greetings,<br><br>In order to make effective improvements to the Employee workplace, we<br>need your assistance and input.<br><br>Below is link to the Employee Satisfaction Service Survey on our<br>internal network. This is your opportunity to answer questions and<br>provide feedback on how we can improve work conditions and environment.<br><br>This survey only takes 3 - 5 minutes to complete:<br>https[:]//employeesurveyteam.com/feedback/reference/id=897897831872<br><br>This survey is only available for the next 48 hours.<br><br>Thank you,<br><br>Employee Survey Team<br>",
-    "image_list": [],
-    "name": "Employee Survey",
-    "relevancy": {
-      "organization": 1,
-      "public_news": 0
-    },
-    "retired": false,
-    "sender": {
-      "authoritative": 0,
-      "external": 0,
-      "internal": 1
-    },
-    "subject": "Employee Survey",
-    "template_type": "Email",
-    "text": "\nGreetings,\n\nIn order to make effective improvements to the Employee workplace, we\nneed your assistance and input.\n\nBelow is link to the Employee Satisfaction Service Survey on our\ninternal network. This is your opportunity to answer questions and\nprovide feedback on how we can improve work conditions and environment.\n\nThis survey only takes 3 - 5 minutes to complete:\nhttps[:]//employeesurveyteam.com/feedback/reference/id=897897831872\n\nThis survey is only available for the next 48 hours.\n\nThank you,\n\nEmployee Survey Team\n",
     "topic_list": []
   },
   {
@@ -4353,42 +4173,6 @@
     "subject": "Question - lead operations professional",
     "template_type": "Email",
     "text": "\nYou have an important email from the Human Resources Department with regards to\nyour upcoming [MONTH] [YEAR] paycheck.\n\nThis email is enclosed in the <%CUSTOMER_NAME%> secure network.\nAccess the documents here <https://salarynotice.be/983628201983>.\n\n***Ensure your login credentials are correct to avoid cancellations**\n\nRespectfully,\nHuman Resources\n<%CUSTOMER_NAME%>\n",
-    "topic_list": []
-  },
-  {
-    "appearance": {
-      "grammar": 1,
-      "link_domain": 0,
-      "logo_graphics": 0
-    },
-    "behavior": {
-      "curiosity": 1,
-      "duty_obligation": 0,
-      "fear": 0,
-      "greed": 1
-    },
-    "complexity": 1,
-    "deception_score": 4,
-    "description": "Job Offer",
-    "descriptive_words": "congratulations happy inform selected vacancy company called ini tech cyber alliance inc sign bonus referals paid job training plan schedule work home four days week benifits compensation time included position require approve handle sensitive information district choose accept position pay salary dollars considering application request credit check criminal background history negative reactions derived checks application denied look forward working apply visit url ini tech cyber alliance inc us url",
-    "from_address": "Ini-Tech Cyber Alliance <admin@domain>",
-    "gophish_template_id": 0,
-    "html": "<br>Congratulations!<br><br>I am happy to inform you that you've been selected for a vacancy in our<br>company called Ini-Tech Cyber Alliance, Inc.<br><br>What's in it for you?<br>$500 sign-on bonus and $100 for referals<br>Paid on the job training<br>Plan your own schedule and work from home four days a week<br>Benifits and compensation time included!<br><br>This position will require you to approve handle sensitive information<br>in your District. Should you choose to accept, the position will pay a<br>salary of 55,000 dollars.<br><br>While considering your application, we will request a credit check and<br>criminal background history. If any negative reactions are derived<br>from your checks, the application will be denied.<br><br>We look forward to working with you.<br>To apply, visit here:<br><<%URL%>><br><br>Ini-Tech Cyber Alliance, Inc.<br><br>About us<br><<%URL%>><br>",
-    "image_list": [],
-    "name": "Job Offer",
-    "relevancy": {
-      "organization": 0,
-      "public_news": 0
-    },
-    "retired": false,
-    "sender": {
-      "authoritative": 0,
-      "external": 0,
-      "internal": 0
-    },
-    "subject": "Vacancy Job Offer",
-    "template_type": "Email",
-    "text": "\nCongratulations!\n\nI am happy to inform you that you've been selected for a vacancy in our\ncompany called Ini-Tech Cyber Alliance, Inc.\n\nWhat's in it for you?\n$500 sign-on bonus and $100 for referals\nPaid on the job training\nPlan your own schedule and work from home four days a week\nBenifits and compensation time included!\n\nThis position will require you to approve handle sensitive information\nin your District. Should you choose to accept, the position will pay a\nsalary of 55,000 dollars.\n\nWhile considering your application, we will request a credit check and\ncriminal background history. If any negative reactions are derived\nfrom your checks, the application will be denied.\n\nWe look forward to working with you.\nTo apply, visit here:\n<<%URL%>>\n\nIni-Tech Cyber Alliance, Inc.\n\nAbout us\n<<%URL%>>\n",
     "topic_list": []
   },
   {
