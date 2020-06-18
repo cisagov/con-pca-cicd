@@ -42,71 +42,30 @@ campaign_manager = CampaignManager()
 template_manager = TemplateManager()
 
 
-def start_subscription(post_data):
+def start_subscription(data=None, subscription_uuid=None):
     """
     Starts a new subscription
     """
-    customer = __get_customer(post_data)
-    post_data["name"] = __get_subscription_name(post_data, customer)
-    start_date, end_date = __get_subscription_start_end_date(post_data)
-
-    # Get batched personalized templates
-    relevant_templates, personalized_templates = __personalize_template_batch(
-        customer, post_data.get("url"), post_data.get("keywords"), post_data,
-    )
-
-    # Get batched targets
-    batched_targets = __batch_targets(post_data)
-
-    # Get all Landing pages or default
-    # This is currently selecting the default page on creation.
-    # landing_template_list = get_list({"template_type": "Landing"}, "template", TemplateModel, validate_template)
-    landing_page = "Phished"
-
-    gophish_campaigns = __process_batches(
-        post_data,
-        personalized_templates,
-        batched_targets,
-        landing_page,
-        start_date,
-        end_date,
-    )
-
-    post_data["gophish_campaign_list"] = gophish_campaigns
-    post_data["templates_selected_uuid_list"] = relevant_templates
-    post_data["end_date"] = end_date.strftime("%Y-%m-%dT%H:%M:%S")
-    post_data["status"] = __get_subscription_status(start_date)
-    post_data["cycles"] = __get_subscription_cycles(
-        gophish_campaigns, start_date, end_date
-    )
-
-    __send_start_notification(post_data, start_date)
-
-    created_response = db.save_single(
-        post_data, "subscription", SubscriptionModel, validate_subscription
-    )
-
-    __create_scheduled_email_tasks(created_response)
-
-    return created_response
-
-
-def restart_subscription(subscription_uuid):
-    """
-    Restarts a stopped subscription
-    """
-
-    subscription = db.get_single(
-        subscription_uuid, "subscription", SubscriptionModel, validate_subscription
-    )
+    if subscription_uuid:
+        subscription = db.get_single(
+            subscription_uuid, "subscription", SubscriptionModel, validate_subscription
+        )
+    else:
+        subscription = data
 
     customer = __get_customer(subscription)
+
+    if not subscription_uuid:
+        subscription["name"] = __get_subscription_name(subscription, customer)
     start_date, end_date = __get_subscription_start_end_date(subscription)
 
     # Get batched personalized templates
-    _, personalized_templates = __personalize_template_batch(
+    relevant_templates, personalized_templates = __personalize_template_batch(
         customer, subscription.get("url"), subscription.get("keywords"), subscription,
     )
+
+    # Get batched targets
+    batched_targets = __batch_targets(subscription)
 
     # Get all Landing pages or default
     # This is currently selecting the default page on creation.
@@ -116,33 +75,47 @@ def restart_subscription(subscription_uuid):
     gophish_campaigns = __process_batches(
         subscription,
         personalized_templates,
-        subscription.get("target_email_list"),
+        batched_targets,
         landing_page,
         start_date,
         end_date,
     )
 
-    put_data = {}
-    put_data["gophish_campaign_list"] = gophish_campaigns
-    put_data["end_date"] = end_date.strftime("%Y-%m-%dT%H:%M:%S")
-    put_data["status"] = __get_subscription_status(start_date)
-    put_data["cycles"] = __get_subscription_cycles(
+    subscription["gophish_campaign_list"] = gophish_campaigns
+    subscription["templates_selected_uuid_list"] = relevant_templates
+    subscription["end_date"] = end_date.strftime("%Y-%m-%dT%H:%M:%S")
+    subscription["status"] = __get_subscription_status(start_date)
+    subscription["cycles"] = __get_subscription_cycles(
         gophish_campaigns, start_date, end_date
     )
 
     __send_start_notification(subscription, start_date)
 
-    created_response = db.update_single(
-        subscription_uuid,
-        put_data,
-        "subscription",
-        SubscriptionModel,
-        validate_subscription,
-    )
+    if subscription_uuid:
+        db_data = {
+            "gophish_campaign_list": gophish_campaigns,
+            "templates_selected_uuid_list": relevant_templates,
+            "end_date": end_date.strftime("%Y-%m-%dT%H:%M:%S"),
+            "status": __get_subscription_status(start_date),
+            "cycles": __get_subscription_cycles(
+                gophish_campaigns, start_date, end_date
+            ),
+        }
+        response = db.update_single(
+            subscription_uuid,
+            db_data,
+            "subscription",
+            SubscriptionModel,
+            validate_subscription,
+        )
+    else:
+        response = db.save_single(
+            subscription, "subscription", SubscriptionModel, validate_subscription
+        )
 
-    __create_scheduled_email_tasks(created_response)
+    __create_scheduled_email_tasks(response)
 
-    return created_response
+    return response
 
 
 def __get_subscription_name(post_data, customer):
