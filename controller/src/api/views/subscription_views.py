@@ -97,7 +97,7 @@ class SubscriptionsListView(APIView):
         """Post method."""
         post_data = request.data.copy()
 
-        created_response = subscription_utils.start_subscription(post_data)
+        created_response = subscription_utils.start_subscription(data=post_data)
 
         if "errors" in created_response:
             return Response(created_response, status=status.HTTP_400_BAD_REQUEST)
@@ -290,7 +290,9 @@ class SubscriptionRestartView(APIView):
         operation_description="Endpoint for manually restart a subscription",
     )
     def get(self, request, subscription_uuid):
-        created_response = subscription_utils.restart_subscription(subscription_uuid)
+        created_response = subscription_utils.start_subscription(
+            subscription_uuid=subscription_uuid
+        )
         # Return updated subscription
         serializer = SubscriptionPatchResponseSerializer(created_response)
         return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
