@@ -50,7 +50,7 @@ export class SubDashboardComponent implements OnInit {
    * ChartSent indicates how many emails have been sent thus far.
    */
   drawGraphs() {
-    // set display options
+    // vertical bar chart groups for stats by template level
     this.chart.showXAxis = true;
     this.chart.showYAxis = true;
     this.chart.showXAxisLabel = true;
@@ -58,28 +58,25 @@ export class SubDashboardComponent implements OnInit {
     this.chart.showYAxisLabel = true;
     this.chart.yAxisLabel = '';
     this.chart.showDataLabel = true;
-
     this.chart.showLegend = true;
     this.chart.legendPosition = 'right';
-
     this.chart.colorScheme = this.schemeLowMedHigh;
+
+    // stacked horizontal bar chart for number of emails sent vs scheduled
+    this.chartSent.showXAxis = true;
+    this.chartSent.showYAxis = true;
+    this.chartSent.showXAxisLabel = true;
+    this.chartSent.xAxisLabel = '';
+    this.chartSent.showYAxisLabel = true;
+    this.chartSent.yAxisLabel = '';
+    this.chartSent.showDataLabel = true;
+    this.chartSent.view = [500, 100];
+    this.chartSent.colorScheme = this.schemeSent;
 
     // get content
     this.chartsSvc.getStatisticsReport(this.subscriptionUuid)
       .subscribe((stats: any) => {
-        // series of vertical bar charts
         this.chart.chartResults = this.chartsSvc.formatStatistics(stats);
-
-        // stacked horizontal bar chart for number of emails sent vs scheduled
-        this.chartSent.showXAxis = true;
-        this.chartSent.showYAxis = true;
-        this.chartSent.showXAxisLabel = true;
-        this.chartSent.xAxisLabel = '';
-        this.chartSent.showYAxisLabel = true;
-        this.chartSent.yAxisLabel = '';
-        this.chartSent.showDataLabel = true;
-        this.chartSent.colorScheme = this.schemeSent;
-        this.chartSent.view = [500, 100];
         this.chartSent.chartResults = this.chartsSvc.getSentEmailNumbers(stats);
       });
   }
@@ -88,7 +85,7 @@ export class SubDashboardComponent implements OnInit {
    * Prevents decimal ticks from being displayed
    */
   axisFormat(val) {
-    if (val % 1 === 0) {
+    if (val % 1 === 0 || val === 0) {
       return val.toLocaleString();
     } else {
       return '';

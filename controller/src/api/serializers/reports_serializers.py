@@ -8,6 +8,14 @@ serializing data coming from the db into a request response.
 from rest_framework import serializers
 
 
+class StatLevelSerializer(serializers.Serializer):
+    level = serializers.CharField()
+    level_number = serializers.IntegerField()
+    sent = serializers.IntegerField(required=False)
+    opened = serializers.IntegerField(required=False)
+    clicked = serializers.IntegerField(required=False)
+
+
 class ReportsGetSerializer(serializers.Serializer):
     """
     This is the Reports Serializer.
@@ -15,12 +23,13 @@ class ReportsGetSerializer(serializers.Serializer):
     This formats the data returned
     from the reports api call
     """
-
     customer_name = serializers.CharField()
     templates = serializers.DictField()
     start_date = serializers.DateTimeField()
     end_date = serializers.DateTimeField()
     sent = serializers.IntegerField()
-    opened = serializers.IntegerField()
-    clicked = serializers.IntegerField()
     target_count = serializers.IntegerField()
+    #opened = serializers.IntegerField()
+    #clicked = serializers.IntegerField()
+    levels = StatLevelSerializer(many=True)
+
