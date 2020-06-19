@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Input } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { ChartsService } from 'src/app/services/charts.service';
 import { SubscriptionService } from 'src/app/services/subscription.service';
 
@@ -82,5 +82,16 @@ export class SubDashboardComponent implements OnInit {
         this.chartSent.view = [500, 100];
         this.chartSent.chartResults = this.chartsSvc.getSentEmailNumbers(stats);
       });
+  }
+
+  /**
+   * Prevents decimal ticks from being displayed
+   */
+  axisFormat(val) {
+    if (val % 1 === 0) {
+      return val.toLocaleString();
+    } else {
+      return '';
+    }
   }
 }
