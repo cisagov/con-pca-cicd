@@ -57,7 +57,7 @@
     "data_source": "",
     "description": "A relevant system in the customer organization that relates to the content of the email, i.e., a computer system that needs maintenance.",
     "tag": "<%CUSTOMER_SYSTEM%>",
-    "tag_type": "con-pca-eval"
+    "tag_type": "con-pca"
   },
   {
     "data_source": "customer_full_address(customer_info)",
@@ -110,7 +110,7 @@
   {
     "data_source": "today.strftime('%m/%d/%y')",
     "description": "The current date written out in a shortened format (i.e. 12/27/19).",
-    "tag": "<<%CURRENT_DATE_SHORT%>>",
+    "tag": "<%CURRENT_DATE_SHORT%>",
     "tag_type": "con-pca-eval"
   },
   {

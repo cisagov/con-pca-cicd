@@ -93,10 +93,10 @@ def personalize_template(customer_info, template_data, sub_data, tag_list):
                     cleantext = cleantext.replace(tag["tag"], tag["tag"])
             else:
                 # Default literal replace
-                cleantext = cleantext.replace(tag["tag"], tag["data_source"])
+                cleantext = cleantext.replace(tag["tag"], tag["tag"])
 
         template_unique_name = "".join(template["name"].split(" "))
-        cleantext += "{{.Tracker}}"
+        cleantext += "\n {{.Tracker}} "
 
         personalized_template_data.append(
             {

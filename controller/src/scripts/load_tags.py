@@ -16,6 +16,9 @@ if tag does not exist, create, else ignore.
 import json
 import os
 
+# Third-Party Libraries
+import requests
+
 
 def load_file(data_file):
     """This loads json file of tag data from filepath."""
@@ -32,7 +35,19 @@ def main():
     tags = load_file("data/tags_info.json")
     print("done loading data")
     for tag in tags:
-        print(tag)
+        try:
+            resp = requests.post("http://localhost:8000/api/v1/tags/", json=tag)
+            status = resp.status_code
+            if status == 400:
+                resp_json = resp.json()
+                if resp_json["error"] != "Tag already exists":
+                    print(resp_json)
+                    resp.raise_for_status()
+
+        except requests.exceptions.HTTPError as err:
+            raise err
+
+    print("Finished Loading Tag data.")
 
 
 if __name__ == "__main__":
