@@ -31,7 +31,7 @@ def load_file(data_file):
 
 def main():
     """This if the main def that runs creating data."""
-    print("Step 1/3: loading tag data from tags_info.json ...")
+    print("Step 1/1: loading tag data from tags_info.json ...")
     tags = load_file("data/tags_info.json")
     print("done loading data")
     for tag in tags:
