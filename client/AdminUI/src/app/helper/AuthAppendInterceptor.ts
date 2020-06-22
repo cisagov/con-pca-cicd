@@ -18,6 +18,7 @@ export class AuthAppendInterceptor implements HttpInterceptor {
       switchMap(token => {
          const headers = httpRequest.headers
                   .set('Authorization', 'Bearer ' + token["idToken"])
+                //   .set('Authorization', token["idToken"])
                   .append('Content-Type', 'application/json');
          const requestClone = httpRequest.clone({
            headers 

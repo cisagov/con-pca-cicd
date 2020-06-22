@@ -57,7 +57,8 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { AlertComponent } from './components/dialogs/alert/alert.component';
 import { SafePipe } from './helper/safe.pipe';
 import { SvgTimelineComponent } from './components/subscriptions/svg-timeline/svg-timeline.component';
-import { AuthAppendInterceptor } from './helper/jwtIncomingInterceptor'
+import { AuthAppendInterceptor } from './helper/AuthAppendInterceptor'
+import { UnauthorizedInterceptor } from './helper/UnauthorizedInterceptor'
 
 export function app_Init(settingsHttpService: SettingsHttpService) {
   return () => settingsHttpService.initializeApp()
@@ -128,7 +129,8 @@ export function app_Init(settingsHttpService: SettingsHttpService) {
     UserAuthService,
     { provide: MAT_DIALOG_DATA, useValue: [] },
     { provide: APP_INITIALIZER, useFactory: app_Init, deps: [SettingsHttpService], multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: AuthAppendInterceptor, multi: true}
+    { provide: HTTP_INTERCEPTORS, useClass: AuthAppendInterceptor, multi: true},
+    { provide: HTTP_INTERCEPTORS, useClass: UnauthorizedInterceptor, multi: true},
   ],
   exports: [
     MatSortModule
