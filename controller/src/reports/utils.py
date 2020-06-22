@@ -277,8 +277,6 @@ def get_subscription_stats_for_cycle(subscription, start_date=None):
 
     Determine the cycle by the provided start_date.
     """
-    import ipdb; ipdb.set_trace()
-    
     # Get the correct cycle based on the provided start_date
     active_cycle = get_closest_cycle_within_day_range(subscription, start_date)
 
