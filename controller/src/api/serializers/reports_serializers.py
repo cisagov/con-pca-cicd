@@ -23,13 +23,13 @@ class ReportsGetSerializer(serializers.Serializer):
     This formats the data returned
     from the reports api call
     """
+
     customer_name = serializers.CharField()
     templates = serializers.DictField()
     start_date = serializers.DateTimeField()
     end_date = serializers.DateTimeField()
+    levels = StatLevelSerializer(many=True)
     sent = serializers.IntegerField()
     target_count = serializers.IntegerField()
-    #opened = serializers.IntegerField()
-    #clicked = serializers.IntegerField()
-    levels = StatLevelSerializer(many=True)
+    metrics = serializers.DictField()
 
