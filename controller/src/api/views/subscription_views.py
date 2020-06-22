@@ -293,7 +293,7 @@ class SubscriptionRestartView(APIView):
     """
 
     @swagger_auto_schema(
-        responses={"201": SubscriptionPostResponseSerializer, "400": "Bad Request"},
+        responses={"201": SubscriptionPatchResponseSerializer, "400": "Bad Request"},
         security=[],
         operation_id="Restart Subscription",
         operation_description="Endpoint for manually restart a subscription",

@@ -21,7 +21,6 @@ export class SubscriptionService {
    */
   constructor(
     private http: HttpClient,
-    private customer_service: CustomerService,
     private settingsService: SettingsService
   ) { }
 
@@ -76,11 +75,11 @@ export class SubscriptionService {
   }
 
   /**
-   * Restart the subscription
-   * @param subscription 
+   * Restarts a subscription
+   * @param uuid The uuid of the subscription to restart.
    */
-  restartSubscription(subscription: Subscription) {
-    return this.http.post(`${this.settingsService.settings.apiUrl}/api/v1/subscriptions/`, subscription)
+  restartSubscription(uuid: string) {
+    return this.http.get(`${this.settingsService.settings.apiUrl}/api/v1/subscription/restart/${uuid}`);
   }
 
   /**
@@ -131,7 +130,7 @@ export class SubscriptionService {
   }
 
   public startSubscription(subscription_uuid: string) {
-    return this.http.get(`${this.settingsService.settings.apiUrl}/api/v1/subscription/start/${subscription_uuid}/`);
+    return this.http.get(`${this.settingsService.settings.apiUrl}/api/v1/subscription/restart/${subscription_uuid}/`);
   }
 
   /**
