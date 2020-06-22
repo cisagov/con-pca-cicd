@@ -49,9 +49,10 @@ format:
 db_load_dummy:
 	docker exec -it pca-api python scripts/create_dummy_data.py
 
-# target: init - initializes gophish and creates dummy data
+# target: init - initializes gophish, creates tags, and creates dummy data
 init:
 	docker exec -it pca-api python scripts/init_gophish.py
+	docker exec -it pca-api python scripts/load_tags.py
 	docker exec -it pca-api python scripts/create_dummy_data.py
 
 # target: tags - initializes tags for cpa
