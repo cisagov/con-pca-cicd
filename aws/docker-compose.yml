@@ -20,6 +20,8 @@ services:
     container_name: pca-terraform
     depends_on:
       - localstack
+    env_file:
+      - .env
     image: cpa-terraform:1.0
     volumes:
       - pca-terraform-data:/app/state
