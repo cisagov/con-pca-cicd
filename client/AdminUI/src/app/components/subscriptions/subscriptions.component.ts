@@ -137,6 +137,6 @@ export class SubscriptionsComponent implements OnInit {
   }
 
   public checkStopped(status: string) {
-    return status.toUpperCase() == "STOPPED";
+    return status.toUpperCase() === 'STOPPED';
   }
 }
