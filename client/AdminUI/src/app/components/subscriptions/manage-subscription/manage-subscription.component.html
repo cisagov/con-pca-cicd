@@ -144,6 +144,9 @@
                     <button mat-raised-button *ngIf="subscription?.status == 'stopped' && !subscription?.archived" color="primary" (click)="startSubscription()">
                         Start Subscription
                     </button>
+                    <button mat-raised-button *ngIf="subscription?.status == 'In Progress' && !subscription?.archived" color="accent" (click)="stopSubscription()">
+                        Stop Subscription
+                    </button>
                     <button mat-raised-button *ngIf="subscription?.archived" color="primary" (click)="unarchiveSubscription()">
                         Unarchive Subscription
                     </button>

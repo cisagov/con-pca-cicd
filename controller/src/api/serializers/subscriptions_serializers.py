@@ -207,6 +207,7 @@ class SubscriptionPatchResponseSerializer(serializers.Serializer):
     This is a formats the data coming out of the Db.
     """
 
+    subscription_uuid = serializers.UUIDField()
     customer_uuid = serializers.UUIDField()
     name = serializers.CharField(required=True, max_length=100)
     url = serializers.CharField(required=False, max_length=100)
