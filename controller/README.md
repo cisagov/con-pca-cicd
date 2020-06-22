@@ -133,6 +133,11 @@ Django base app located at [localhost:8000](http://localhost:8000)
 
 RabbitMQ management dashboard located at [localhost:15672](http://localhost:15672)
 
+### To access the Celery Flower dashboard:
+
+- visit:
+  - `localhost:5555/dashboard`
+
 ## Api Usage
 
 To run the containers, use:
