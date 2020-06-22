@@ -11,7 +11,7 @@ import logging
 # Django Libraries
 from api.manager import CampaignManager
 from api.models.subscription_models import SubscriptionModel, validate_subscription
-from api.models.template_models import TemplateModel, validate_template
+from api.models.template_models import TemplateModel, validate_template, DeceptionLevelStatsModel
 from api.serializers.reports_serializers import ReportsGetSerializer
 from api.utils.db_utils import get_list, get_single
 from django.core.files.storage import FileSystemStorage
@@ -46,36 +46,61 @@ class ReportsView(APIView):
         subscription = get_single(
             subscription_uuid, "subscription", SubscriptionModel, validate_subscription
         )
+
         campaigns = subscription.get("gophish_campaign_list")
+
         parameters = {
             "template_uuid": {"$in": subscription["templates_selected_uuid_list"]}
         }
+
         template_list = get_list(
             parameters, "template", TemplateModel, validate_template,
         )
 
+        # boil it all down to a template name and a score in one object
         templates = {
             template.get("name"): template.get("deception_score")
             for template in template_list
         }
+
         summary = [
             campaign_manager.get("summary", campaign_id=campaign.get("campaign_id"))
             for campaign in campaigns
         ]
 
-        sent = sum([targets.get("stats").get("sent", 0) for targets in summary])
-        opened = sum([targets.get("stats").get("opened", 0) for targets in summary])
-        clicked = sum([targets.get("stats").get("clicked", 0) for targets in summary])
+        # distribute statistics into deception levels
+        levels = []
+        levels.append(DeceptionLevelStatsModel("low", 1))
+        levels.append(DeceptionLevelStatsModel("medium", 2))
+        levels.append(DeceptionLevelStatsModel("high", 3))
+
+        for c in summary:
+            cmpgn = next(cc for cc in campaigns if cc.get("campaign_id") == c.get("id"))
+            level_number = cmpgn.get("deception_level")
+            if not level_number:
+                continue
+
+            bucket = next(level for level in levels if level.level_number == level_number)
+            bucket.sent += c.get("stats").get("sent")
+            
+
+        # aggregate statistics
+        sent = sum([targets.get("stats").get("sent", 0) for targets in summary])        
         target_count = sum([targets.get("stats").get("total") for targets in summary])
+
+        created_date = ""
+        end_date = ""
+        if len(summary):
+            created_date = summary[0].get("created_date")
+            end_date = summary[0].get("end_date")
 
         context = {
             "customer_name": subscription.get("name"),
             "templates": templates,
-            "start_date": summary[0].get("created_date"),
-            "end_date": summary[0].get("send_by_date"),
+            "start_date": created_date,
+            "end_date": end_date,
+            "levels": levels,
             "sent": sent,
-            "opened": opened,
-            "clicked": clicked,
             "target_count": target_count,
         }
         serializer = ReportsGetSerializer(context)

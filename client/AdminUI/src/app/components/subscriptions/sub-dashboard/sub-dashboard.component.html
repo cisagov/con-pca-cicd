@@ -13,14 +13,16 @@
           [scheme]="chart.colorScheme"
           [gradient]="chart.gradient"
           [xAxis]="chart.showXAxis"
+          [showXAxisLabel]="chart.showXAxisLabel"
+          [xAxisLabel]="chart.xAxisLabel"
           [yAxis]="chart.showYAxis"
+          [showYAxisLabel]="chart.showYAxisLabel"
+          [yAxisLabel]="chart.yAxisLabel"
+          [yScaleMin]=0
+          [yAxisTickFormatting]="axisFormat"
           [legend]="chart.showLegend"
           [legendPosition]="chart.legendPosition"
           [legendTitle]="''"
-          [showXAxisLabel]="chart.showXAxisLabel"
-          [showYAxisLabel]="chart.showYAxisLabel"
-          [xAxisLabel]="chart.xAxisLabel"
-          [yAxisLabel]="chart.yAxisLabel"
           [roundEdges]="false"
         >
         </ngx-charts-bar-vertical-2d>
@@ -33,9 +35,11 @@
           [scheme]="chartSent.colorScheme"
           [gradient]="chartSent.gradient"
           [xAxis]="chartSent.showXAxis"
+          [xScaleMin]=0
           [yAxis]="chartSent.showYAxis"
           [legend]="chartSent.showLegend"
           [showXAxisLabel]="chartSent.showXAxisLabel"
+          [xAxisTickFormatting]="axisFormat"
           [showYAxisLabel]="chartSent.showYAxisLabel"
           [xAxisLabel]="chartSent.xAxisLabel"
           [yAxisLabel]="chartSent.yAxisLabel"
