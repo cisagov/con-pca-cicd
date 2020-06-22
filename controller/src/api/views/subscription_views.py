@@ -191,6 +191,10 @@ class SubscriptionView(APIView):
         for group_id in groups_to_delete:
             campaign_manager.delete("user_group", group_id=group_id)
 
+        # Remove from the scheduler
+        if subscription["task_uuid"]:
+            revoke(subscription["task_uuid"], terminate=True)
+
         delete_response = delete_single(
             uuid=subscription_uuid,
             collection="subscription",
@@ -272,6 +276,10 @@ class SubscriptionStopView(APIView):
 
         # Stop subscription
         resp = subscription_utils.stop_subscription(subscription)
+
+        # Cancel scheduled subscription emails
+        if subscription["task_uuid"]:
+            revoke(subscription["task_uuid"], terminate=True)
 
         # Return updated subscriptions
         serializer = SubscriptionPatchResponseSerializer(resp)

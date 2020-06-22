@@ -4,14 +4,12 @@ from datetime import datetime, timedelta
 import logging
 
 # Third-Party Libraries
-# Managers
-# Models
-# Serizliers
-# Utils
-# Other
-# Django
-# Notifications
-# Tasks
+from lcgit import lcg
+from django.conf import settings
+from celery.task.control import revoke
+
+
+# Local Libraries
 from api.manager import CampaignManager, TemplateManager
 from api.models.customer_models import CustomerModel, validate_customer
 from api.models.subscription_models import SubscriptionModel, validate_subscription
@@ -25,9 +23,6 @@ from api.serializers import campaign_serializers
 from api.serializers.subscriptions_serializers import SubscriptionPatchSerializer
 from api.utils import db_utils as db
 from api.utils import template_utils
-from celery.task.control import revoke
-from django.conf import settings
-from lcgit import lcg
 from notifications.views import SubscriptionNotificationEmailSender
 from tasks.tasks import email_subscription_report
 
@@ -105,6 +100,7 @@ def start_subscription(data=None, subscription_uuid=None):
             subscription, "subscription", SubscriptionModel, validate_subscription
         )
 
+    # Schedule client side reports emails
     __create_scheduled_email_tasks(response)
 
     return response
@@ -466,7 +462,8 @@ def stop_subscription(subscription):
     updated_campaigns = list(map(stop_campaign, subscription["gophish_campaign_list"]))
 
     # Remove from the scheduler
-    revoke(subscription["task_uuid"], terminate=True)
+    if subscription["task_uuid"]:
+        revoke(subscription["task_uuid"], terminate=True)
 
     # Update subscription
     subscription["gophish_campaign_list"] = updated_campaigns
