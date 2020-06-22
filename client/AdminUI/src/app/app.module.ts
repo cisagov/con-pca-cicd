@@ -45,7 +45,6 @@ import { StopTemplateDialogComponent } from './components/template-manager/stop-
 import { SendingProfilesComponent } from './components/sending-profiles/sending-profiles.component';
 import { SendingProfileDetailComponent } from './components/sending-profiles/sending-profile-detail.component';
 import { CustomerSubscriptionsComponent } from './components/subscriptions/customer-subscriptions/customer-subscriptions.component';
-import { ArchiveSubscriptionDialogComponent } from './components/subscriptions/archive-subscription-dialog/archive-subscription-dialog.component';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { SubDashboardComponent } from './components/subscriptions/sub-dashboard/sub-dashboard.component';
 import { ConfirmComponent } from './components/dialogs/confirm/confirm.component';
@@ -91,7 +90,6 @@ export function app_Init(settingsHttpService: SettingsHttpService) {
     SendingProfilesComponent,
     SendingProfileDetailComponent,
     CustomerSubscriptionsComponent,
-    ArchiveSubscriptionDialogComponent,
     SubDashboardComponent,
     ConfirmComponent,
     TagSelectionComponent,
@@ -131,4 +129,4 @@ export function app_Init(settingsHttpService: SettingsHttpService) {
   exports: [MatSortModule],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule { }

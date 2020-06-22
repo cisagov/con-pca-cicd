@@ -26,6 +26,7 @@ django-storages==1.9.1
 djangorestframework==3.11.0
 drf-yasg==1.17.1
 Faker==4.0.3
+flower==0.9.4
 gophish==0.4.0
 gunicorn==20.0.4
 html5lib==1.0.1
@@ -45,6 +46,7 @@ git+https://github.com/cisagov/lcgit.git@7360374e78661d8dfa5ec550337a4e398c3bb4e
 lxml==4.5.0
 MarkupSafe==1.1.1
 motor==2.0.0
+names==0.3.0
 nltk==3.5
 numpy==1.18.4
 packaging==20.3

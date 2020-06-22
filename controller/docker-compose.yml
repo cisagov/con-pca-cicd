@@ -14,9 +14,6 @@ services:
       - mongodb
     ports:
       - "8000:8000"
-      - 5678:5678
-      - 5679:5679
-      - 5680:5680
     volumes:
       - ./src:/app
     env_file:
@@ -57,6 +54,21 @@ services:
       - .env
     networks:
       - backend
+
+  flower:
+    build:
+      context: .
+      dockerfile: ./etc/Dockerfile
+    container_name: pca-flower
+    entrypoint: flower -A config --port=5555 --broker=amqp://rabbitmq:5672
+    ports:
+      - "5555:5555"
+    depends_on:
+      - api
+      - rabbitmq
+      - celery-worker
+    env_file:
+      - .env
 
   rabbitmq:
     image: rabbitmq:3.6-management-alpine
