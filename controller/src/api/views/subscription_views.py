@@ -273,6 +273,9 @@ class SubscriptionStopView(APIView):
         # Stop subscription
         resp = subscription_utils.stop_subscription(subscription)
 
+        # Cancel scheduled subscription emails
+        revoke(subscription["task_uuid"], terminate=True)
+
         # Return updated subscriptions
         serializer = SubscriptionPatchResponseSerializer(resp)
         return Response(serializer.data, status=status.HTTP_202_ACCEPTED)
