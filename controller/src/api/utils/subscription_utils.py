@@ -462,7 +462,8 @@ def stop_subscription(subscription):
     updated_campaigns = list(map(stop_campaign, subscription["gophish_campaign_list"]))
 
     # Remove from the scheduler
-    revoke(subscription["task_uuid"], terminate=True)
+    if subscription["task_uuid"]:
+        revoke(subscription["task_uuid"], terminate=True)
 
     # Update subscription
     subscription["gophish_campaign_list"] = updated_campaigns
