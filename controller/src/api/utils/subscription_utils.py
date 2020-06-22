@@ -51,6 +51,7 @@ def start_subscription(data=None, subscription_uuid=None):
         customer, subscription.get("url"), subscription.get("keywords"), subscription,
     )
 
+
     # Get batched targets
     batched_targets = __batch_targets(subscription)
 
@@ -187,8 +188,8 @@ def __get_relevant_templates(url, keywords, templates):
 
     return (
         template_manager.get_templates(url, keywords, template_data)[:15]
-        if keywords
-        else []
+        # if keywords
+        # else []
     )
 
 
@@ -308,18 +309,21 @@ def __process_batches(
         campaign_info["name"] = f"{post_data['name']}.{group_number}"
 
         if group_name not in existing_user_groups:
-            group_number += 1
+            
             target_group = campaign_manager.create(
                 "user_group",
                 group_name=group_name,
                 target_list=campaign_info["targets"],
             )
+
             campaign_info["deception_level"] = group_number
             gophish_campaigns.extend(
                 __create_and_save_campaigns(
                     campaign_info, target_group, landing_page, end_date
                 )
             )
+        
+        group_number += 1
 
     return gophish_campaigns
 
@@ -371,6 +375,7 @@ def __create_and_save_campaigns(campaign_info, target_group, landing_page, end_d
                 "email_template": created_template.name,
                 "email_template_id": created_template.id,
                 "landing_page_template": campaign.page.name,
+                "deception_level": campaign_info["deception_level"],
                 "status": campaign.status,
                 "results": [],
                 "groups": [
@@ -386,6 +391,7 @@ def __create_and_save_campaigns(campaign_info, target_group, landing_page, end_d
                 ],
                 "target_email_list": targets,
             }
+
             gophish_campaign_list.append(created_campaign)
 
     return gophish_campaign_list
