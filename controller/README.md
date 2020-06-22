@@ -133,6 +133,11 @@ Django base app located at [localhost:8000](http://localhost:8000)
 
 RabbitMQ management dashboard located at [localhost:15672](http://localhost:15672)
 
+### To access the Celery Flower dashboard:
+
+- visit:
+  - `localhost:5555/dashboard`
+
 ## Api Usage
 
 To run the containers, use:
@@ -209,7 +214,7 @@ MONGO_INITDB_ROOT_USERNAME=root
 MONGO_INITDB_DATABASE=pca_data_dev
 ```
 
-# AWS
+### AWS
 AWS_ENDPOINT_URL=http://host.docker.internal:4566
 AWS_ACCESS_KEY_ID=mock_access_key
 AWS_SECRET_ACCESS_KEY=mock_secret_key
@@ -221,7 +226,7 @@ DEFAULT_FILE_STORAGE=storages.backends.s3boto3.S3Boto3Storage
 
 `DB_PW` and `DB_USER` should match `MONGO_INITDB_ROOT_PASSWORD` and `MONGO_INITDB_ROOT_USERNAME`
 
-2.) Whipe DB
+2.) Wipe DB
 
 first take down containers `make down`
 
@@ -258,6 +263,9 @@ Notes: see
 [additional docker refs](https://linuxize.com/post/how-to-remove-docker-images-containers-volumes-and-networks/)
 for trouble shooting Docker
 
+### Celery Flower Dashboard
+
+If you can't get Flower dashbaord to run, make sure to delete `celerybeat.pid` file found in `controller/src/`
 ## Testing
 
 ### Requirements
