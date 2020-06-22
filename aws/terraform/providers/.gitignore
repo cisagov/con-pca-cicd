@@ -1,0 +1,4 @@
+*
+!.gitignore
+!local.provider.tf
+!prod.provider.tf
