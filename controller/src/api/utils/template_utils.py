@@ -103,6 +103,7 @@ def personalize_template(customer_info, template_data, sub_data, tag_list):
                 "template_uuid": template["template_uuid"],
                 "data": cleantext,
                 "name": template_unique_name,
+                "subject": template["subject"]
             }
         )
 

@@ -91,7 +91,7 @@ class ReportsView(APIView):
         for c in summary:
             cmpgn = next(cc for cc in campaigns if cc.get("campaign_id") == c.get("id"))
             level_number = cmpgn.get("deception_level")
-            if not level_number:
+            if level_number not in [1, 2, 3]:
                 continue
 
             bucket = next(

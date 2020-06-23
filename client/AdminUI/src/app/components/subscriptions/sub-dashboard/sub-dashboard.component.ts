@@ -14,10 +14,10 @@ export class SubDashboardComponent implements OnInit {
   chartSent: any = {};
 
   // average time to first click
-  avgTTFC = '3 minutes';
+  avgTTFC: string;
 
   // average time to first report
-  avgTTFR = '17 minutes';
+  avgTTFR: string;
 
   schemeLowMedHigh = {
     domain: ['#064875', '#fcbf10', '#007bc1']
@@ -78,6 +78,15 @@ export class SubDashboardComponent implements OnInit {
       .subscribe((stats: any) => {
         this.chart.chartResults = this.chartsSvc.formatStatistics(stats);
         this.chartSent.chartResults = this.chartsSvc.getSentEmailNumbers(stats);
+
+        this.avgTTFC = stats.metrics.avg_time_to_first_click;
+        if (!this.avgTTFC) {
+          this.avgTTFC = '(no emails clicked yet)';
+        }
+        this.avgTTFR = stats.metrics.avg_time_to_first_report;
+        if (!this.avgTTFR) {
+          this.avgTTFR = '(no emails reported yet)';
+        }
       });
   }
 
