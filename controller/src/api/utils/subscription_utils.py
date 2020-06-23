@@ -78,8 +78,6 @@ def start_subscription(data=None, subscription_uuid=None):
         gophish_campaigns, start_date, end_date
     )
 
-    __send_start_notification(subscription, start_date)
-
     if subscription_uuid:
         db_data = {
             "gophish_campaign_list": gophish_campaigns,
@@ -103,7 +101,9 @@ def start_subscription(data=None, subscription_uuid=None):
         )
 
     # Schedule client side reports emails
-    __create_scheduled_email_tasks(response)
+    __create_scheduled_email_tasks(response)    
+    # schedule a task 
+    __send_start_notification(subscription, start_date)
 
     return response
 
