@@ -211,13 +211,13 @@ class CampaignManager:
     def put_sending_profile(self, sp):
         return self.gp_api.smtp.put(smtp=sp)
 
-    def generate_email_template(self, name: str, template: str):
+    def generate_email_template(self, name: str, template: str, subject: str):
         """Generate Email Templates."""
         existing_names = {email.name for email in self.gp_api.templates.get()}
         if name in existing_names:
             logger.info("Template, {}, already exists.. skipping".format(name))
             return
-        email_template = Template(name=name, html=template)
+        email_template = Template(name=name, subject=subject, html=template)
         return self.gp_api.templates.post(email_template)
 
     def generate_landing_page(self, name: str, template: str):
