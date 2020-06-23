@@ -30,7 +30,7 @@ campaign_manager = CampaignManager()
 
 
 class ReportsView(TemplateView):
-    template_name = "reports/base.html"
+    template_name = "reports/monthly.html"
 
     def get_context_data(self, **kwargs):
         subscription_uuid = self.kwargs["subscription_uuid"]
@@ -62,14 +62,12 @@ class CycleReports(TemplateView):
         """
         # Get Args from url
         subscription_uuid = self.kwargs["subscription_uuid"]
-        start_date = datetime.strptime(
-            self.kwargs["start_date"], "%Y-%m-%d %H:%M:%S.%f%z"
-        )
 
         # Get targeted subscription and associated customer data
         subscription = get_single(
             subscription_uuid, "subscription", SubscriptionModel, validate_subscription
         )
+
         _customer = get_single(
             subscription.get("customer_uuid"),
             "customer",
@@ -81,6 +79,9 @@ class CycleReports(TemplateView):
             "name": _customer.get("name"),
             "address": f"{_customer.get('address_1')} {_customer.get('address_2')}",
         }
+
+        start_date = subscription["start_date"]
+
         # TODO : Fill in DHS contact when it has been added
         subscription_primary_contact = subscription.get("primary_contact")
         DHS_contact = {
@@ -98,6 +99,7 @@ class CycleReports(TemplateView):
             "vulnerabilty_team_lead_email": None,
         }
         cycles = subscription["cycles"]
+        current_cycle = ""
         for cycle in subscription["cycles"]:
             if cycle["start_date"] == start_date:
                 current_cycle = cycle
@@ -158,6 +160,5 @@ class CycleReports(TemplateView):
         context["previous_cycles"] = previous_cycle_stats
         context["region_stats"] = region_stats
         context["subscription_stats"] = subscription_stats
-
 
         return context

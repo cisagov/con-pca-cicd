@@ -45,6 +45,7 @@ filelock==3.0.12
 flake8==3.8.3
 flake8-polyfill==1.0.2
 future==0.18.2
+flower==0.9.4
 gophish==0.4.0
 gunicorn==20.0.4
 html5lib==1.0.1
@@ -62,13 +63,14 @@ Jinja2==2.11.2
 jmespath==0.10.0
 joblib==0.14.1
 kombu==4.6.8
-lcgit @ git+git://github.com/cisagov/lcgit.git@7360374e78661d8dfa5ec550337a4e398c3bb4e8
+lcgit @ git+https://github.com/cisagov/lcgit.git@7360374e78661d8dfa5ec550337a4e398c3bb4e8
 lxml==4.5.0
 mando==0.6.4
 MarkupSafe==1.1.1
 mccabe==0.6.1
 more-itertools==8.3.0
 motor==2.0.0
+names==0.3.0
 nltk==3.5
 nodeenv==1.4.0
 numpy==1.18.4
@@ -113,6 +115,7 @@ s3transfer==0.3.3
 schematics==2.1.0
 scikit-learn==0.22.2.post1
 scipy==1.4.1
+simpleeval==0.9.10
 six==1.14.0
 soupsieve==2.0
 sqlparse==0.3.1

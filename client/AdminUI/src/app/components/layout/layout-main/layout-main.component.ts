@@ -6,10 +6,10 @@ import {
   HostListener
 } from '@angular/core';
 import { MatSidenav } from '@angular/material/sidenav';
+import { OverlayContainer } from '@angular/cdk/overlay';
 import { ThemeService } from '../../../services/theme.service';
 import { LayoutMainService } from 'src/app/services/layout-main.service';
 import { UserAuthService } from '../../../services/user-auth.service'
-import { Subscription, BehaviorSubject } from 'rxjs'
 
 @Component({
   selector: 'app-layout-main',
@@ -19,14 +19,18 @@ import { Subscription, BehaviorSubject } from 'rxjs'
 })
 export class LayoutMainComponent implements OnInit {
   isDark: boolean = false;
-  currentUserName: string = "N/A";
+  currentUserName: string = '';
 
   constructor(
     private themeSvc: ThemeService,
-    public layoutSvc: LayoutMainService,
+    public layoutSvc: LayoutMainService, 
     private userAuthSvc: UserAuthService, 
+    public overlayContainer: OverlayContainer
   ) {
     this.isDark = themeSvc.getStoredTheme();
+    if(this.isDark){
+      overlayContainer.getContainerElement().classList.add('theme-alternate');
+    } 
     this.userAuthSvc.getUserNameBehaviorSubject().subscribe(value => {      
       this.currentUserName = value      
     })
@@ -39,6 +43,12 @@ export class LayoutMainComponent implements OnInit {
 
   setTheme(event) {
     this.themeSvc.storeTheme(event.checked);
+    this.isDark = event.checked;
+    if(event.checked){
+      this.overlayContainer.getContainerElement().classList.add('theme-alternate');
+    } else {
+      this.overlayContainer.getContainerElement().classList.remove('theme-alternate');
+    }
   }
 
   logOut(){

@@ -59,14 +59,12 @@ export class SubscriptionsComponent implements OnInit {
   refresh() {
     this.subscription_service
       .getSubscriptions(this.showArchived)
-      .subscribe((data: any[]) => {
-        let subscriptions = data as Subscription[];
-        this.customer_service.getCustomers().subscribe((data: any[]) => {
-          let customers = data as Customer[];
-          let customerSubscriptions: ICustomerSubscription[] = [];
+      .subscribe((subscriptions: Subscription[]) => {
+        this.customer_service.getCustomers().subscribe((customers: Customer[]) => {
+          const customerSubscriptions: ICustomerSubscription[] = [];
           subscriptions.map((s: Subscription) => {
-            let customerSubscription: ICustomerSubscription = {
-              customer: customers.find(o => o.customer_uuid == s.customer_uuid),
+            const customerSubscription: ICustomerSubscription = {
+              customer: customers.find(o => o.customer_uuid === s.customer_uuid),
               subscription: s
             };
             customerSubscriptions.push(customerSubscription);
@@ -103,19 +101,10 @@ export class SubscriptionsComponent implements OnInit {
   }
 
   public onArchiveToggle(): void {
-    if (this.displayed_columns.includes('archived')) {
-      this.displayed_columns.splice(this.displayed_columns.length - 2, 1);
-    } else {
-      this.displayed_columns.splice(
-        this.displayed_columns.length - 1,
-        0,
-        'archived'
-      );
-    }
     this.refresh();
   }
 
-  public stopSubscription(row:any){
+  public stopSubscription(row: any) {
     this.dialogRefConfirm = this.dialog.open(ConfirmComponent, { disableClose: false });
     this.dialogRefConfirm.componentInstance.confirmMessage =
       `This will stop subscription '${row.subscription.name}'.  Do you want to continue?`;
@@ -123,7 +112,7 @@ export class SubscriptionsComponent implements OnInit {
 
     this.dialogRefConfirm.afterClosed().subscribe(result => {
       if (result) {
-        this.subscription_service.stopSubscription(row.subscription.subscription_uuid).subscribe((data: any)=>{
+        this.subscription_service.stopSubscription(row.subscription.subscription_uuid).subscribe((data: any) => {
           this.refresh();
         });
       }
@@ -131,7 +120,7 @@ export class SubscriptionsComponent implements OnInit {
     });
   }
 
-  public startSubscription(row:any){
+  public startSubscription(row: any) {
     this.dialogRefConfirm = this.dialog.open(ConfirmComponent, { disableClose: false });
     this.dialogRefConfirm.componentInstance.confirmMessage =
       `This will start subscription '${row.subscription.name}'.  Do you want to continue?`;
@@ -139,7 +128,7 @@ export class SubscriptionsComponent implements OnInit {
 
     this.dialogRefConfirm.afterClosed().subscribe(result => {
       if (result) {
-        this.subscription_service.startSubscription(row.subscription.subscription_uuid).subscribe((data: any)=>{
+        this.subscription_service.startSubscription(row.subscription.subscription_uuid).subscribe((data: any) => {
           this.refresh();
         });
       }
@@ -147,7 +136,7 @@ export class SubscriptionsComponent implements OnInit {
     });
   }
 
-  public checkStopped(status: string){
-    return status.toUpperCase() == "STOPPED";
+  public checkStopped(status: string) {
+    return status.toUpperCase() === 'STOPPED';
   }
 }

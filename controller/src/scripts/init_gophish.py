@@ -1,5 +1,4 @@
 # Standard Python Libraries
-import logging
 import os
 
 # cisagov Libraries

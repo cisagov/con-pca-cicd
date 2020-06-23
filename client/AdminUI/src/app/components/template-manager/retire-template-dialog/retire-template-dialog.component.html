@@ -1,6 +1,7 @@
 <div class="d-flex flex-column">
     <!-- RETIRED DESCRIPTION -->
-    <h2>Please enter a reason for retiring the template:</h2>
+    <h3>Retiring a template will disable it from being used in any future subscriptions, unless brought out of retirement.</h3>
+    <h3>Please enter a reason for retiring the template:</h3>
     <mat-form-field appearance="outline" class="flex-grow-1">
         <textarea matInput cdkTextareaAutosize cdkAutosizeMinRows="5" cdkAutosizeMaxRows="10" [(ngModel)]="retiredDescription" (ngModelChange)="updateReason()"></textarea>
     </mat-form-field>

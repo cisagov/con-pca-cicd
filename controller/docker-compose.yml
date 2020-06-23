@@ -1,10 +1,9 @@
 ---
-version: '3.5'
+version: "3.5"
 services:
   api:
     build:
       context: .
-      target: debug
       dockerfile: ./etc/Dockerfile
     stdin_open: true
     tty: true
@@ -15,9 +14,6 @@ services:
       - mongodb
     ports:
       - "8000:8000"
-      - 5678:5678
-      - 5679:5679
-      - 5680:5680
     volumes:
       - ./src:/app
     env_file:
@@ -59,6 +55,21 @@ services:
     networks:
       - backend
 
+  flower:
+    build:
+      context: .
+      dockerfile: ./etc/Dockerfile
+    container_name: pca-flower
+    entrypoint: flower -A config --port=5555 --broker=amqp://rabbitmq:5672
+    ports:
+      - "5555:5555"
+    depends_on:
+      - api
+      - rabbitmq
+      - celery-worker
+    env_file:
+      - .env
+
   rabbitmq:
     image: rabbitmq:3.6-management-alpine
     # There is a prebuilt RabbitMQ image; see
@@ -74,9 +85,9 @@ services:
     # colon).
     ports:
       # The standard AMQP protocol port
-      - '5672:5672'
+      - "5672:5672"
       # HTTP management UI
-      - '15672:15672'
+      - "15672:15672"
 
     env_file:
       - .env

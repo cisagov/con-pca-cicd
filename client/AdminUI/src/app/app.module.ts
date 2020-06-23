@@ -44,10 +44,8 @@ import { StopTemplateDialogComponent } from './components/template-manager/stop-
 import { SendingProfilesComponent } from './components/sending-profiles/sending-profiles.component';
 import { SendingProfileDetailComponent } from './components/sending-profiles/sending-profile-detail.component';
 import { CustomerSubscriptionsComponent } from './components/subscriptions/customer-subscriptions/customer-subscriptions.component';
-import { ArchiveSubscriptionDialogComponent } from './components/subscriptions/archive-subscription-dialog/archive-subscription-dialog.component';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { SubDashboardComponent } from './components/subscriptions/sub-dashboard/sub-dashboard.component';
-import { TimelineComponent } from './components/subscriptions/timeline/timeline.component';
 import { ConfirmComponent } from './components/dialogs/confirm/confirm.component';
 import { TagSelectionComponent } from './components/dialogs/tag-selection/tag-selection.component';
 import { SettingsHttpService } from './services/settings-http.service';
@@ -59,6 +57,8 @@ import { SafePipe } from './helper/safe.pipe';
 import { SvgTimelineComponent } from './components/subscriptions/svg-timeline/svg-timeline.component';
 import { AuthAppendInterceptor } from './helper/AuthAppendInterceptor'
 import { UnauthorizedInterceptor } from './helper/UnauthorizedInterceptor'
+import { DhsPocComponent } from './components/user-admin/dhs-poc/dhs-poc.component';
+import { DhsPocDetailComponent } from './components/user-admin/dhs-poc/dhs-poc-detail.component';
 
 export function app_Init(settingsHttpService: SettingsHttpService) {
   return () => settingsHttpService.initializeApp()
@@ -92,9 +92,7 @@ export function app_Init(settingsHttpService: SettingsHttpService) {
     SendingProfilesComponent,
     SendingProfileDetailComponent,
     CustomerSubscriptionsComponent,
-    ArchiveSubscriptionDialogComponent,
     SubDashboardComponent,
-    TimelineComponent,
     ConfirmComponent,
     TagSelectionComponent,
     RetireTemplateDialogComponent,
@@ -102,6 +100,8 @@ export function app_Init(settingsHttpService: SettingsHttpService) {
     AlertComponent,
     SafePipe,
     SvgTimelineComponent,
+    DhsPocComponent,
+    DhsPocDetailComponent,
   ],
   imports: [
     BrowserModule,

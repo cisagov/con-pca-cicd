@@ -1,3 +1,5 @@
+service docker start
+
 cd /app/con-pca
 
 cd client
@@ -12,3 +14,5 @@ cd ../controller
 cd ../aws
 /usr/local/bin/docker-compose build
 /usr/local/bin/docker-compose up -d
+
+docker image prune -f

@@ -7,13 +7,13 @@ This lists all urls under the API app.
 from api.views import (
     campaign_views,
     customer_views,
+    dhs_views,
+    image_views,
     report_views,
+    sendingprofile_views,
     subscription_views,
     template_views,
-    sendingprofile_views,
     webhook_views,
-    image_views,
-    dhs_views,
 )
 from django.urls import path
 from drf_yasg import openapi
@@ -75,7 +75,7 @@ urlpatterns = [
         name="subscription_stop_api",
     ),
     path(
-        "v1/subscription/restart/",
+        "v1/subscription/restart/<subscription_uuid>/",
         subscription_views.SubscriptionRestartView.as_view(),
         name="subscription_restart_api",
     ),
@@ -104,7 +104,8 @@ urlpatterns = [
         template_views.TemplateStopView.as_view(),
         name="template_stop_api",
     ),
-    path("v1/tags/", template_views.TagView.as_view(), name="tags_list_api",),
+    path("v1/tags/", template_views.TagsView.as_view(), name="tags_list_api",),
+    path("v1/tag/<tag_uuid>/", template_views.TagView.as_view(), name="tags_get_api",),
     path(
         "v1/campaigns/", campaign_views.CampaignListView.as_view(), name="campaign_list"
     ),

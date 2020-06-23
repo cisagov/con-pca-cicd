@@ -142,15 +142,54 @@ def validate_template(data_object):
 
 class TagModel(Model):
     """
+    Tag Model.
+
     A Tag is a replaceable string in a
     Template that is replaced by a real value.
     """
 
+    # created by mongodb
+    tag_definition_uuid = UUIDType()
+    # User Defined
     tag = StringType()
     description = StringType()
     data_source = StringType()
     tag_type = StringType()
+    # db_tracting data added below
+    created_by = StringType()
+    cb_timestamp = DateTimeType()
+    last_updated_by = StringType()
+    lub_timestamp = DateTimeType()
 
 
 def validate_tag(data_object):
+    """
+    This is an the validate_tag.
+
+    This shows basic validation for the model.
+    """
     return TagModel(data_object).validate()
+
+
+class DeceptionLevelStatsModel:
+    """
+    Statistics for a deception level
+    """
+    level = StringType()
+    level_number = IntType()
+    sent = IntType()
+    total = IntType()
+    opened = IntType()
+    clicked = IntType()
+    submitted_data = IntType()
+    email_reported = IntType()
+
+    def __init__(self, level, level_number):
+        self.level = level
+        self.level_number = level_number
+        self.sent = 0
+        self.total = 0
+        self.opened = 0
+        self.clicked = 0
+        self.submitted_data = 0
+        self.email_reported = 0

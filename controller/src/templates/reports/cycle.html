@@ -3,33 +3,581 @@
 <!doctype html>
 <html>
 
-<head>
-    <meta charset="utf-8">
-    <link href="{% static '/css/base.css' %}" rel="stylesheet">
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <head>
+        <meta charset="utf-8">
+        <link href="{% static '/css/cycle.css' %}" rel="stylesheet">
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    
+       
+        <title>Cycle Report</title>
+        <meta name="description" content="Report example">
+    </head>
+    
+    <body>
+        <article id="cover">
+            <div class="banner">
+            </div>
+        </article>
 
+        <article id="pageOne">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-12">
+                        <div id="centerCisaLogo">
+                            <img src="{% static '/img/cisa_logo.png' %}"></img>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div id="assessmentTitle">
+                            Continuous Phishing Campaign Assessment Details
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-3">
+                        <div class="assessmentDetailsOne">
+                            Customer Name:
+                            Customer POC:
+                            Vulnerability Management Lead:
+                            Dates:
+                            Test Location:
+                            Services:
+                            Vulnerability Management ID:
+                            Scope:
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="assessmentDetailsTwo">
+                            OFFICE OF [SHORT COMPANY NAME]
+                            [PERSON NAME], [JOHN DOE @ EMAIL.GOV]
+                            [DATE RANGE - DATE RANGE]
+                            DHS/VM Lab
+                            Continuos Phishing Campaign Assessment
+                            [ID NUMBER]
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-3">
+                        <div class="quarter">
+                            Quarter
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="dateTitle">
+                            Start Date - End Date
+                        </div>
+                     </div>
+                </div>
+                <div class="row">
+                    <div class="col-3">
+                        2020 Q1 <br>
+                        2020 Q2
+                    </div>
+                    <div class="col-6">
+                        January 1, 2020 - March 30, 2020 <br>
+                        April 1, 2020 - June 30, 2020
+                    </div>
+                </div>
+            </div>
+        </article>
 
-    <title>Quarterly Report</title>
-    <meta name="description" content="Report example">
-</head>
+        <article id="pageTwo">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-6">
+                        <div class="reportInstructions">
+                            <b>Instructions for reading this report:</b><br>
+                            <p>The CON-CON-PCA Phishing Assessments are organized into 90-day campaigns in which each of your users will be phished once every 90 days from the start of your subscription.</p>
 
-<body>
-    <article id="cover">
-        <div class="banner">
-        </div>
-        <div class="phish_logo">
-            <img src="{% static '/img/phish_logo.png' %}"></img>
-        </div>
-        <div class="cisa_logo">
-            <img src="{% static '/img/cisa_logo.png' %}"></img>
-        </div>
-        <div class="report-title">
-            Subscription Cycle <br>
-            Report
-        </div>
-    </article>
-</body>
+                            <p>Each of these individuals here after referred to as targets are tracked on 4 potential actions.</p>
+                            
+                            <ol>
+                                <li>Opening the email.</li>
+                                <li>Clicked a malicious link</li>
+                                <li>Submitted data on malicious site, or</li>
+                                <li>Reported the email</li>
+                            </ol>
+                            
+                            <p>To track statistics on the reported email, that information must be supplied to DHS in a preconfigured and a reporting mailbox must be available and advertised in the consuming organization.</p>
 
-</html>
+                            <b>Instructions for understanding and reading this report.</b>
+                            <p>Low, Moderate, High explanation. Breakdown by each level.</p>
+                    </div>
+                </div>
+            </div>
+        </article>
+
+        <article id="pageThree">
+            <h2>Executive Report</h2>
+            <p>This report provides the results for the Department of Homeland Security (DHS) National Cybersecurity Assessments and Technical Services- (Vulnerability Management) led Continuous Phishing Campaign Assessment (CON-PCA) for [ FULL CUSTOMER NAME. The CON-PCA is a practical exercise intended to support and measure the effectiveness of security awareness training for information system users. The results of this CON-PCA show the susceptibility of [ SHORT CUSTOMER NAME ] personnel to social engineering attacks—specifically email phishing attacks—in which an adversary tricks an email user into clicking a malicious link to gain unauthorized network access. In the scenario that this CON-PCA tested, the phishing attack bypassed technical controls that would normally detect and/or block malicious emails and links. The CON-PCA, therefore, measured [ SHORT CUSTOMER NAME ]’s level of vulnerability to a successful phishing attack by targeted user click rates, click times, response rates, and response times, as shown in Table 1.<br/><br/>
+
+            This report aims to enhance EXAMPLE’s understanding of their information system users’ cybersecurity behavior and to promote a more secure and resilient workforce.</p>
+
+            <table>
+                <tr>
+                    <th>User Metrics</th>
+                    <th>Results</th>
+                </tr>
+                <tr>
+                    <th>Total users targeted for phishing</th>
+                    <th>1000</th>
+                </tr>
+                <tr>
+                    <th># of emails (phishing attempts) sent overall</th>
+                    <th>2000 (2 per user)</th>
+                </tr>
+                <tr>
+                    <th># of clicked emails (successful phishing attempts) overall</th>
+                    <th>219 (10.95% click rate)</th>
+                </tr>
+                <tr>
+                    <th># of phished users overall</th>
+                    <th>203 (20.3% of target population)</th>
+                </tr>
+                <tr>
+                    <th># of user reports sent to helpdesk overall</th>
+                    <th>148 (7.4% report rate)</th>
+                </tr>
+                <tr>
+                    <th>Ratio of reports-to-clicks</th>
+                    <th>.68</th>
+                </tr>
+                <tr>
+                    <th>Average time to first click</th>
+                    <th>0 hours 52 minutes 41 seconds</th>
+                </tr>
+                <tr>
+                    <th>Average time to first report</th>
+                    <th>0 hours 30 minutes 25 seconds</th>
+                </tr>
+                <tr>
+                    <th>Most successful phishing template</th>
+                    <th>Level 6 "Update Paycheck System Policy</th>
+                </tr>
+            </table>
+            <br/><br/>
+            <p>Vulnerability Management has provided this CON-PCA to [COMPANY SHORTNAME] at no cost and coordinated all activities—including planning and testing–with [COMPANY SHORTNAME]’s point of contact. [COMPANY SHORTNAME] maintained control over the testing, including providing target email addresses, approving phishing email templates, approving testing timeframes, and adjusting mail security setting to ensure inbox access. This CON-PCA was not intended to, and did not, test technical controls or electronic protections designed to block phishing attempts. This CON-PCA spanned a six-week period and aimed to capture behavior-based metrics of [COMPANY SHORTNAME] information system users’ reaction to phishing emails of multiple complexity levels.</p>
+        </article>
+
+        <article id="pageFour">
+            <p>Vulnerability Management has established this voluntary service to help organizations</p> 
+            <ul>
+                <li>support security awareness training efforts and</li>
+                <li>decrease information system user vulnerability to phishing attempts.</li>
+            </ul>
+            <p>Based on the assessment data, Vulnerability Managements recommends implementing the following:</p><br/><br/>
+
+            <h3>Table 2: Recommendations<br/>
+                Summary Recommendations</h3>
+
+            <p><b>Recommendation 1:</b> Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+            <p><b>Recommendation 2:</b>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+            <p><b>Recommendation 3:</b>Egestas diam in arcu cursus. Facilisis leo vel fringilla est ullamcorper eget nulla. Gravida quis blandit turpis cursus in hac habitasse platea dictumst. Sit amet risus nullam eget felis eget.</p>
+            <p><b>Recommendation 4:</b>Elit eget gravida cum sociis natoque penatibus et magnis. Diam maecenas sed enim ut sem viverra aliquet eget sit. Massa ultricies mi quis hendrerit dolor magna eget. Facilisis volutpat est velit egestas dui id. Ornare massa eget egestas purus viverra accumsan in nisl nisi. Id interdum velit laoreet id donec ultrices tincidunt.</p>
+            <p><b>Recommendation 5:</b>Suspendisse ultrices gravida dictum fusce ut placerat. Nulla malesuada pellentesque elit eget gravida cum sociis natoque penatibus. Orci sagittis eu volutpat odio facilisis mauris sit amet massa. Vestibulum mattis ullamcorper velit sed ullamcorper morbi tincidunt ornare. Facilisis volutpat est velit egestas dui id. Ornare massa eget egestas purus viverra accumsan in nisl nisi. Id interdum velit laoreet id donec ultrices tincidunt.</p>
+            <p><b>Recommendation 6:</b> Dictum non consectetur a erat nam at lectus urna duis. Id venenatis a condimentum vitae sapien pellentesque. Tempor orci dapibus ultrices in iaculis. Ut morbi tincidunt augue interdum. Ligula ullamcorper malesuada proin libero nunc consequat interdum varius. Mollis nunc sed id semper risus in. Sagittis id consectetur purus ut faucibus pulvinar elementum. Eu scelerisque felis imperdiet proin fermentum leo vel. Sed viverra ipsum nunc aliquet bibendum.</p>
+            
+            <ol>
+                <li>Click rate is the total number of phishing emails that users clicked on divided by the total number of emails sent. Users had to click on the “malicious” link in the email in order to be counted as “phished.”</li>
+                <li>There were 203 users who clicked a “malicious” email link at least once by the end of the PCA out of the 1000 that were phished. There were 16 users who clicked in more than one campaign.</li>
+                <li>Reporting rate is total number of user reports to the helpdesk divided by total phishing emails sent.</li>
+                <li>Average time to first click and first report is calculated with geometric mean to compensate for a small sample size that is sensitive to being skewed by outliers.</li>
+                <li>Click time is the time NCATS sent the email minus the time user clicked the link within th email.</li>
+                <li> Report time is the time NCATS sent the emails minus the time user alerts security office or helpdesk.</li>
+            </ol>
+        </article>
+
+        <article id="pageFive">
+            <h2>Summary</h2>
+            <p>Percentage of targets who clicked a malicious link in phishing emails this quarter.</p>
+
+            <h3>Trends</h3>
+            <p>These trends show the effect of phishing training and email filtering investments.</p>
+            
+            LINE GRAPH <br/><br/>
+
+            <table>
+                <tr>
+                    <th>Time from Start of Quarterly Campaign until first reports:</th>
+                    <th>13 hours</th>
+                </tr>
+                <tr>
+                    <th>Median Time to open email from first sent:</th>
+                    <th>13 hours</th>
+                </tr>
+                <tr>
+                    <th>Geometic Mean</th>
+                </tr>
+                <tr>
+                    <th>Shortest Time to open email:</th>
+                    <th>0 hours 0 minutes 55 seconds</th>
+                </tr>
+                <tr>
+                    <th>Longest Time to open email:</th>
+                    <th>8 days 1 hours 0 minutes 0 seconds</th>
+                </tr>
+            </table>
+        </article>
+
+        <article id="pageSix">
+            LINE GRAPH <br/><br/>
+
+            COMBO GRAPH <br/><br/>
+        </article>
+
+        <article id="pageSeven">
+            <p>The remainder of this report provides findings and metrics of the VM phishing service for EXAMPLE.</p>
+
+            <h2>Example Methodology Specifics</h2>
+            <p>VM used the methodology documented in Appendix A: Methodology to perform testing EXAMPLE. Specific phishing templates can be reviewed in Appendix C: Templates with corresponding complexity calculations. VM divided the 1000 email addresses that EXAMPLE provided into three groups. Group 1 had 333 addresses and received levels 1 and 4. Group 2 had 333 addresses and received levels 2 and 5. Group 3 had 334 addresses and received levels 3 and 6. See Table 3 for descriptions of email levels 1 – 6.</p>
+            <p>The assessment’s goal was to capture the behavior-based responses of EXAMPLE to email phishing attempts; and the assessment operated under the scenario that no technical controls were able to detect, report, or stop the email phishing attempts. VM, as an external body conducting this PCA, did not have direct knowledge whether or not emails successfully arrived in targeted EXAMPLE user inboxes. To allow for a clear determination of click rates (email links clicked divided by emails sent), EXAMPLE or VM performed the following:</p>
+
+            <h2>Summary of Testing Activities and Results</h2>
+            <p>This PCA concentrated on how phishing email complexity affected EXAMPLE user click behavior and response behavior. VM expects that a more complex and deceptive phishing email has a higher likelihood of being clicked and a lower likelihood of being reported. This assessment also gathered organizational emails through open-source intelligence techniques to determine EXAMPLE’s potentially attackable online presence. See Appendix B: Detailed Results for detailed phishing and customer email data and Appendix C: Templates for a detailed explanation on complexity levels.</p>
+            <p>Over six weeks, EXAMPLE’s targeted users received at least two phishing emails of increasing complexity. Levels 1 – 3 were “easier to detect” and levels 4 – 6 were “more difficult to detect,” based on the number and type of indicators used. The table below summarizes the phishing templates used in this PCA.</p>
+        </article>
+
+        <article id="pageEight">
+            <table>
+                <tr>
+                    <th>Level Campaign</th>
+                    <th>Description</th>
+                    <th>Displayed Link</th>
+                </tr>
+                <tr>
+                    <th>1</th>
+                    <th>Urgent Store Error - Poorly worded email coming from a fake company describing
+                        purchase error</th>
+                    <th>www.purchaseerror22992.com</th>
+                </tr>
+                <tr>
+                    <th>2</th>
+                    <th>Software Update - Reasonably worded email from “IT Solutions Co” stating computer soft-
+                        ware is out of date</th>
+                    <th>www.immediateupdates.net</th>
+                </tr>
+                <tr>
+                    <th>3</th>
+                    <th>Important - Reasonably worded email from “HR Services” Requesting feedback on a new
+                        program.</th>
+                    <th>www.requestedfeedbackprogram.com</th>
+                </tr>
+                <tr>
+                    <th>4</th>
+                    <th>News - News source asking individuals to view news articles or requesting users unsubscribe
+                        if they wish</th>
+                    <th>www.localbreakingnews.biz</th>
+                </tr>
+                <tr>
+                    <th>5</th>
+                    <th>Upcoming Parking Program - “Human Resourses” about a mandatory survey</th>
+                    <th>www.examplelink.net/SurveyID=182</th>
+                </tr>
+                <tr>
+                    <th>6</th>
+                    <th>Survey Updated Accounting System Well worded, informational email from an internal
+                        financial office describing relevant accounting system updates</th>
+                    <th>www.sharepoint.EXAMPLE.com/acco</th>
+                </tr>
+            </table>
+
+            <h3>Click Rate vs. Report Rate</h3>
+            <p>One of the most common measures of an organization’s susceptibility to phishing attacks is targeted-user click rates. If an actual phishing attack is able to bypass technical controls and arrive in a user’s inbox, the human target must agree to click on the malicious link or attachment for the attack to be successful. In practical exercises such as this PCA, targeted-user click rates will fluctuate depending on the email complexity used in testing. Effective security awareness training, however, should result in a noticeable click rate decrease over time and to a level deemed acceptable based on the organization’s risk management posture.</p>
+
+            <p>The counterpart to user click rates is the user-reporting rate, determined by the number of emails sent or calls to alert EXAMPLE’s helpdesk during each campaign. Based on previous testing, VM recommends that organizations aim to have two people reporting the phishing attempts for every person that clicks. This ratio ensures that there is not only reporting coverage for the person clicking, but also redundant coverage in case the person who clicks the link does not report or does not realize they have been phished. Effective security awareness training should result in a noticeable report rate increase over time and to a level deemed acceptable based on the organization’s risk management posture.</p>
+        </article>
+
+        <article id="pageNine">
+            <p>In this report, the percentages shown by the user click rate and user report rate represent, respectively, the percentage of targeted people (determined by a unique email address) who have clicked at least once on a “malicious” link and those who reported a suspicious email. The number of unique clicks correlates to the number of end user devices potentially compromised in each campaign. The number of user reports correlates to the number of opportunities the EXAMPLE security team had to identify a potential breach and reduce its impact. Table 4 and Figure 1 summarize click and report rates.</p><br/>
+
+            <table>
+                <tr>
+                    <th>Level</th>
+                    <th>Campaign</th>
+                    <th>User Click Rate</th>
+                    <th>Unique Clicks</th>
+                    <th>User Report Rate</th>
+                    <th>User Reports</th>
+                    <th>Reporting Ratio</th>
+                </tr>
+                <tr>
+                    <th>1</th>
+                    <th>Store Error</th>
+                    <th>3.60%</th>
+                    <th>12</th>
+                    <th>13.84%</th>
+                    <th>46</th>
+                    <th>3.83</th>
+                </tr>
+                <tr>
+                    <th>2</th>
+                    <th>Urgent Software Update</th>
+                    <th>1.20%</th>
+                    <th>4</th>
+                    <th>4.21%</th>
+                    <th>14</th>
+                    <th>3.50</th>
+                </tr>
+                <tr>
+                    <th>3</th>
+                    <th>Important Feedback Requested</th>
+                    <th>11.08%</th>
+                    <th>37</th>
+                    <th>9.58</th>
+                    <th>32</th>
+                    <th>0.86</th>
+                </tr>
+                <tr>
+                    <th>4</th>
+                    <th>News Subscription Alert</th>
+                    <th>12.01%</th>
+                    <th>40</th>
+                    <th>11.41%</th>
+                    <th>38</th>
+                    <th>0.95</th>
+                </tr>
+                <tr>
+                    <th>5</th>
+                    <th>Upcoming Parking Program Survey</th>
+                    <th>11.11%</th>
+                    <th>37</th>
+                    <th>3.60%</th>
+                    <th>12</th>
+                    <th>0.32</th>
+                </tr>
+                <tr>
+                    <th>6</th>
+                    <th>Updated Accounting System Policy</th>
+                    <th>26.65%</th>
+                    <th>89</th>
+                    <th>1.80%</th>
+                    <th>6</th>
+                    <th>0.07</th>
+                </tr>
+            </table>
+            <br/><br/>
+
+            COMBO GRAPH
+
+        </article>
+        <article id="pageTen">
+            <h2>Click Time vs. Report Time</h2>
+            <p>To contain an attack, an organization’s security team must be aware of the potential breach. In the scenario that this PCA tested, no technical controls were triggered during a phishing attack and the clock for a potential breach started once a targeted user clicked on a “malicious” link. Timely user reporting decreases the window of opportunity that an adversary has to access data or gain further network entry. Timely reporting also increases the opportunity the security team has to detect and respond to a potential breach. By educating users on how to both spot and promptly respond to phishing attempts, an organization can improve their anti-phishing defenses.</p>
+            <p>The following table details the time to first click and first report throughout the assessment and the lead or lag times for incident response measures to be activated(time elapsed represented in hours:minutes:seconds).</p>
+
+            <b>Table 5:</b> Click Time vs. Report Time
+            <br/>
+
+            <table>
+                <tr>
+                    <th>Level</th>
+                    <th>Time to First Click</th>
+                    <th>Time to First Report</th>
+                    <th>Time Gap (Lead or Lag)</th>
+                </tr>
+                <tr>
+                    <th>1</th>
+                    <th>3:25:00</th>
+                    <th>0:01:00</th>
+                    <th>3:24:00 (Lead)</th>
+                </tr>
+                <tr>
+                    <th>2</th>
+                    <th>1:19:00</th>
+                    <th>5:03:00</th>
+                    <th>20:16:00 (Lead)</th>
+                </tr>
+                <tr>
+                    <th>3</th>
+                    <th>0:21:00</th>
+                    <th>3:42:00</th>
+                    <th>3:21:00 (Lag)</th>
+                </tr>
+                <tr>
+                    <th>4</th>
+                    <th>0:09:00</th>
+                    <th>0:23:00</th>
+                    <th>0:14:00 (Lag)</th>
+                </tr>
+                <tr>
+                    <th>5</th>
+                    <th>6:03:00</th>
+                    <th>2:08:00</th>
+                    <th>3:55:00 (Lead)</th>
+                </tr>
+                <tr>
+                    <th>6</th>
+                    <th>0:01:00</th>
+                    <th>0:04:00</th>
+                    <th>0:03:00 (Lag)</th>
+                </tr>
+            </table>
+
+            <p>The firgure below shos the percentage of users who clicked during certain time intervals in the first 24 hours of a campaign. Overall, nearly 67 percent of all clicks occured within one hour of receiving a phishing email. The median time to click was 2 hours, 4 minutes, and 37 seconds across all campaigns.</p>
+
+            BAR GRAPH
+        </article>
+        <article id="pageEleven">
+            BAR GRAPH
+
+            <p>For this PCA, VM looked for EXAMPLE email addresses publicly available online. The following email addresses were discovered through passive reconnaissance and collected using open-source information gathering tools. The emails VM discovered were not used in this engagement unless previously provided by the technical POC. See Appendix B: Detailed Results for a complete enumeration of discovered emails.</p>
+
+            <b>Table 6:</b> Email Reconnaissance Results
+
+            <table>
+                <tr>
+                    <th>Item</th>
+                    <th>Result</th>
+                </tr>
+                <tr>
+                    <th>Email domain searched</th>
+                    <th>EXAMPLE.gov</th>
+                </tr>
+                <tr>
+                    <th>Date search performed</th>
+                    <th>August 18, 2018 15:18 EST</th>
+                </tr>
+                <tr>
+                    <th># Unique email addresses found</th>
+                    <th>25</th>
+                </tr>
+                <tr>
+                    <th># Matching list of user emails provided</th>
+                    <th>7 (0.7%)</th>
+                </tr>
+            </table>
+
+            <p>Based on previous testing, most of email addresses discovered during passive reconnaissance are sourced from organizational documents and presentations shared online. To limit the exposure of exploitable organizational information, VM recommends that employee names and emails be limited in use on websites and in reports or presentations stored on the public Internet. When announcing new products or updating online registrations, VM also recommends that organizations use generic distribution email address as opposed to specific employee names.</p>
+
+        </article>
+
+        <article id="pageTwelve">
+            <h2>Closing</h2>
+
+            <b>Detailed Conclusion 1</b> - Assessment Summary<br/>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p><br/><br/>
+
+            <b>Detailed Conclusion 2</b> - Click Rates and Click Times<br/>
+            <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit an aborum Ornare massa eget egestas purus viverra accumsan in nisl nisi. Id interdum velit laoreet id donec ultrices tincidunt.</p><br/><br/>
+
+            <b>Detailed Conclusion 3</b> - Reporting Rates and Reporting Times<br/>
+            <p>Egestas diam in arcu cursus. Facilisis leo vel fringilla est ullamcorper eget nulla. Gravida quis blandi turpis cursus in hac habitasse platea dictumst. Sit amet risus nullam eget felis eget.</p><br/><br/>
+
+            <b>Detailed Conclusion 4</b> - Open Source Intelligence<br/>
+            <p>Elit eget gravida cum sociis natoque penatibus et magnis. Diam maecenas sed enim ut sem viverra aliquet eget sit. Massa ultricies mi quis hendrerit dolor magna eget. Facilisis volutpat est velit egestas dui id.</p><br/><br/>
+
+            <p>PCA is a young service with limited but meaningful data made available to EXAMPLE. VM hopes this data will be actionable and allow EXAMPLE to reduce some level of risk within their organization. As more PCAs are completed over time, statistical reporting will be enhanced and a non-attributable overview of phishing results will be collected as part of the VM annual service review.</p>
+            
+            <p>As this new service continues to mature, VM looks forward to enhancing the PCA and building new test capabilities that include technical control checks. VM appreciates any comments to improve this report or service as a whole. For questions about this report or for future engagements with VM, please send an email to VM_info@hq.dhs.gov.</p>
+        </article>
+
+        <article id="pageThirteen">
+            <h2>Appendix C: Templates</h2>
+
+            <p>The phishing tempaltes used throughtout this service include six levels of variying complexity. Each level is based on a calculation of the factors designed to entice users to click on a malicious link. An emplanation of four factors used when determining an email’s level of complexity can be found in C1: Complexity. The following defines key differences between each level:</p>
+
+            <h3>Level Descriptions</h3>
+            <b>Level 1:</b><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p><br/><br/>
+
+            <b>Level 2:</b><p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit an aborum Ornare massa eget egestas purus viverra accumsan in nisl nisi. Id interdum velit laoreet id donec ultrices tincidunt.</p><br/><br/>
+
+            <b>Level 3:</b><p>Egestas diam in arcu cursus. Facilisis leo vel fringilla est ullamcorper eget nulla. Gravida quis blandit turpis cursus in hac habitasse platea dictumst. Sit amet risus nullam eget felis eget. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit an aborum</p><br/><br/>
+
+            <b>Level 4:</b><p>Elit eget gravida cum sociis natoque penatibus et magnis. Diam maecenas sed enim ut sem viverra aliquet eget sit. Massa ultricies mi quis hendrerit dolor magna eget. Facilisis volutpat est velit egestas dui id.</p><br/><br/>
+
+            <b>Level 5:</b><p>Ornare massa eget egestas purus viverra accumsan in nisl nisi. Id interdum velit laoreet id donec ultrices tincidunt. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p><br/><br/>
+
+            <b>Level 6:</b><p>Facilisis leo vel fringilla est ullamcorper eget nulla. Gravida quis blandit turpis cursus in hac habitasse platea dictumst. Sit amet risus nullam eget felis eget. Elit eget gravida cum sociis natoque penatibus et magnis. Diam maecenas sed enim ut sem viverra aliquet eget sit. Massa ultricies mi quis hendrerit dolor magna eget. Facilisis volutpat est velit egestas dui id.</p><br/><br/>
+        </article>
+
+        <article id="pageFourteen">
+            <h2>Appendix C2: Engagement Specific Templates</h2>
+            <p>Below are details about the templates used during PCA with EXAMPLE. The complexities shown in the table below.</p>
+
+            <b>Table 11:</b> Phishing Email Template Complexity Rating Calculator
+
+            <table>
+                BIG TABLE
+            </table>
+        </article>
+        
+        <article id="pageFifteen">
+            <h3>Low Templates/Dumb Phish</h3>
+            <p><b>Template Name:</b> Job Offer</p>
+            <p><b>Deception Level:</b> Low</p>
+            <p><b>Percent of Total Campaign:</b> 5%</p>
+            <p><b>Total Sent:</b> 50</p>
+            <p><b>Clicked:</b> 5</p>
+            <p><b>Submitted Data:</b> 1</p>
+            <p><b>Reported:</b> 2</p>
+
+            <br/><br/>
+            <p><b>Subject:</b> Dream Job</p>
+            <p><b>From Address:</b> fake.email@fakesite.com</p>
+
+            <p><b>Email Body:</b> </p>
+            <p>Congratulations!
+                I’m happy to inform you that you’ve been selected for a vacancy in our company called Vintage Cars of USA, Inc. My company helps citizens sell their vintage car for a small fee. What’s in it for ME?
+
+                * You do not have to pay any fees or attract other poeple
+                * No special eduation or skills or anything is required
+                * You can plan your own work schedule and work from home anytime * You immediately get money/salary for your precious time
+                
+                Vintage Car of USA, Inc. is offering you the position of District Sales Approver. This position will require you to approve the sales of cars in your District. Should you choose to accept, the position will pay a salary of $45,000 dollars. While considering your application, we will request a credit check and criminal background history. If any negative reactions are derived from your checks, the application will be denied.
+                We look forward to working with you. To apply, visit here: [link]</p>
+        </article>
+
+        <article id="pageSixteen">
+            <h3>Moderate Templates/Harder to Detect Phish</h3>
+            <p><b>Template Name:</b> System Update</p>
+            <p><b>Deception Level:</b> Moderate</p>
+            <p><b>Percent of Total Campaign:</b> 5%</p>
+            <p><b>Total Sent:</b> 50</p>
+            <p><b>Clicked:</b> 5</p>
+            <p><b>Submitted Data:</b> 1</p>
+            <p><b>Reported:</b> 2</p>
+
+            <br/><br/>
+            <p><b>Subject:</b> Beware</p>
+            <p><b>From Address:</b> fake.email@fakesite.com</p>
+
+            <p><b>Email Body:</b> </p>
+            <p>Due to the recent WannaCry ransomware outbreak, our security team is pushing a high-priority, out-of-band patch. It is imperative to visit the following site to ensure your machine has been updated and is secure. There is no time for your IT administrator to update all machines themselves. You’re help is required! Update now at [link]</p>
+        </article>
+
+        <article id="pageSeventeen">
+            <h3>High Templates/Difficult to Detect Phish</h3>
+            <p><b>Template Name:</b> Security Audit</p>
+            <p><b>Deception Level:</b> High</p>
+            <p><b>Percent of Total Campaign:</b> 5%</p>
+            <p><b>Total Sent:</b> 50</p>
+            <p><b>Clicked:</b> 5</p>
+            <p><b>Submitted Data:</b> 1</p>
+            <p><b>Reported:</b> 2</p>
+
+            <br/><br/>
+            <p><b>Subject:</b> Annual Audit</p>
+            <p><b>From Address:</b> fake.email@fakesite.com</p>
+
+            <p><b>Email Body:</b> </p>
+            <p>All staff:
+            In accordance with Office of Management and Budget (OMB) memorandum, we are required to host the Department of Homeland Security in an annual audit of our security practices. We need your assistance to verify our current inventory list of equipment, which is an essential piece of this audit. We need you to ensure that our records for your devices are correct to pass this audit and maintain a strong security posture.
+                
+            What you need to do:
+            1. Find all devices (desktops, laptops, tablets, cell phones, etc) that were signed out to you • Locate the serial number on these devices
+            2. Verify our current records
+            3. If anything is incorrect, please update the form
+            
+            Please complete the following form within the next 3 business days. We appreciate your assistance in maintaining our compliance with OMB. You are a key aspect to ensuring this security audit is an easy pass.
+            
+            Respectfully,
+            Office of the Chief Information Security Officer</p>
+        </article>
+
+    </body>
+    
+    </html>

@@ -19,6 +19,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { TagSelectionComponent } from '../dialogs/tag-selection/tag-selection.component';
 import { SettingsService } from 'src/app/services/settings.service';
 import { RetireTemplateDialogComponent } from './retire-template-dialog/retire-template-dialog.component';
+import { AlertComponent } from '../dialogs/alert/alert.component';
 
 @Component({
   selector: 'app-template-manager',
@@ -28,6 +29,7 @@ import { RetireTemplateDialogComponent } from './retire-template-dialog/retire-t
 export class TemplateManagerComponent implements OnInit {
   dialogRefConfirm: MatDialogRef<ConfirmComponent>;
   dialogRefTagSelection: MatDialogRef<TagSelectionComponent>;
+  dialogRefRetire: MatDialogRef<RetireTemplateDialogComponent>;
 
   //Full template list variables
   search_input: string;
@@ -71,8 +73,8 @@ export class TemplateManagerComponent implements OnInit {
     private subscriptionSvc: SubscriptionService,
     private route: ActivatedRoute,
     private router: Router,
-    public dialog: MatDialog,
-    private settingsService: SettingsService
+    private settingsService: SettingsService,
+    public dialog: MatDialog
   ) {
     layoutSvc.setTitle('Template Manager');
     //this.setEmptyTemplateForm();
@@ -189,8 +191,6 @@ export class TemplateManagerComponent implements OnInit {
       templateFromAddress: new FormControl(template.from_address, [
         Validators.required
       ]),
-      templateRetired: new FormControl(template.retired),
-      templateRetiredDescription: new FormControl(template.retired_description),
       templateSubject: new FormControl(template.subject, [Validators.required]),
       templateText: new FormControl(template.text),
       templateHTML: new FormControl(template.html, [Validators.required]),
@@ -251,8 +251,6 @@ export class TemplateManagerComponent implements OnInit {
       descriptive_words: form.controls['templateDescriptiveWords'].value,
       description: form.controls['templateDescription'].value,
       from_address: form.controls['templateFromAddress'].value,
-      retired: form.controls['templateRetired'].value,
-      retired_description: form.controls['templateRetiredDescription'].value,
       subject: form.controls['templateSubject'].value,
       text: form.controls['templateText'].value,
       html: form.controls['templateHTML'].value
@@ -328,7 +326,12 @@ export class TemplateManagerComponent implements OnInit {
           invalid.push(name);
         }
       }
-      alert('Invalid form fields: ' + invalid);
+      this.dialog.open(AlertComponent, {
+        data: {
+          title: 'Error',
+          messageText: 'Invalid form fields: ' + invalid
+        }
+      });
     }
   }
 
@@ -351,7 +354,7 @@ export class TemplateManagerComponent implements OnInit {
             // this.setEmptyTemplateForm()
             this.router.navigate(['/templates']);
           },
-          error => {}
+          error => { }
         );
       }
       this.dialogRefConfirm = null;
@@ -359,29 +362,34 @@ export class TemplateManagerComponent implements OnInit {
   }
 
   openRetireTemplateDialog() {
-    let template_to_retire = this.getTemplateFromForm(this.currentTemplateFormGroup);
-
-    this.dialog.open(
-      RetireTemplateDialogComponent, {
-      data: template_to_retire
-    }
-    )
+    const templateToRetire = this.getTemplateFromForm(this.currentTemplateFormGroup);
+    this.dialogRefRetire = this.dialog.open(RetireTemplateDialogComponent, {
+      disableClose: false,
+      data: templateToRetire
+    });
+    this.dialogRefRetire.afterClosed().subscribe(result => {
+      if (result.retired) {
+        this.retired = result.retired;
+        this.retiredReason = result.description;
+      }
+    });
   }
 
   openRestoreTemplateDialog() {
-    let template_to_restore = this.getTemplateFromForm(this.currentTemplateFormGroup);
+    const templateToRestore = this.getTemplateFromForm(this.currentTemplateFormGroup);
     this.dialogRefConfirm = this.dialog.open(ConfirmComponent, { disableClose: false });
     this.dialogRefConfirm.componentInstance.confirmMessage =
-      `Are you sure you want to restore ${template_to_restore.name}? Initial Reason for Retiring - ${template_to_restore.retired_description}`
-    this.dialogRefConfirm.componentInstance.title = 'Confirm Restore'
+      `Are you sure you want to restore ${templateToRestore.name}? Initial Reason for Retiring - ${templateToRestore.retired_description}`;
+    this.dialogRefConfirm.componentInstance.title = 'Confirm Restore';
 
     this.dialogRefConfirm.afterClosed().subscribe(result => {
       if (result) {
-        template_to_restore.retired = false
-        template_to_restore.retired_description = ''
-        this.templateManagerSvc.updateTemplate(template_to_restore)
+        templateToRestore.retired = false;
+        templateToRestore.retired_description = '';
+        this.templateManagerSvc.updateTemplate(templateToRestore);
+        this.retired = templateToRestore.retired;
       }
-    })
+    });
   }
 
 

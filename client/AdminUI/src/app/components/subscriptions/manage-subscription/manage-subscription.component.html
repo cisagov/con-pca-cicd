@@ -2,20 +2,14 @@
     <form [formGroup]="subscribeForm" (ngSubmit)="onSubmit()">
         <div class="d-flex flex-column mb-5">
 
-            <div class="w-100" *ngIf="pageMode!='CREATE'" >
-                <app-sub-dashboard [subscriptionUuid]="subscription?.subscription_uuid">
-                </app-sub-dashboard>
+            <div class="w-100" *ngIf="pageMode!='CREATE'">
+                <app-sub-dashboard></app-sub-dashboard>
 
                 <div>
                     <h2>Subscription Timeline</h2>
-                    <div style="margin: 0 2rem 1rem 2rem">
-                        <timeline [timelineItems]="timelineItems"></timeline>
+                    <div style="margin: 0 2rem 2rem 2rem">
+                        <app-svg-timeline [timelineItems]="timelineItems"></app-svg-timeline>
                     </div>
-
-                    <div style="margin: 0 2rem 1rem 2rem">
-                        
-                    </div>
-
                 </div>
             </div>
 
@@ -37,8 +31,7 @@
                     </mat-card>
 
                     <div class="mb-3">
-                        <button mat-raised-button color="primary" *ngIf="pageMode == 'CREATE'"
-                            (click)="showCustomerDialog()">Assign Customer
+                        <button mat-raised-button color="primary" *ngIf="pageMode == 'CREATE'" (click)="showCustomerDialog()">Assign Customer
                             <i class="fa fa-search" style="font-size: 1rem;"></i>
                         </button>
                     </div>
@@ -115,15 +108,13 @@
                 <div class="text-muted"><em>Format: email, firstname, lastname, position</em></div>
             </div>
 
-            <button mat-raised-button color="primary" class="mb-3" *ngIf="pageMode == 'CREATE'"
-                (click)="openFileBrowser($event)">
+            <button mat-raised-button color="primary" class="mb-3" *ngIf="pageMode == 'CREATE'" (click)="openFileBrowser($event)">
                 Upload Email Targets List <i class="fa fa-upload"></i>
             </button>
             <input id="csvUpload" type="file" accept=".csv,.xls,.xlsx" (change)="fileSelect($event)" class="d-none">
             <mat-form-field class="w-100 flex-grow-1" appearance="outline">
                 <mat-label>Target Emails</mat-label>
-                <textarea matInput autosize formControlName="csvText"
-                    [ngClass]="{ 'is-invalid': submitted && f.csvText.errors }">
+                <textarea matInput autosize formControlName="csvText" [ngClass]="{ 'is-invalid': submitted && f.csvText.errors }">
                     </textarea>
                 <div *ngIf="submitted && f.csvText.errors" class="invalid-feedback">
                     <div *ngIf="f.csvText.errors.required">Targets must be defined</div>
@@ -137,10 +128,29 @@
             </div>
 
             <div class="d-flex flex-row  justify-content-between">
-                <div class="d-flex flex-row"><div><delete-subscription *ngIf="pageMode != 'CREATE'" [subscription]="subscription"></delete-subscription></div>
-                <div><button mat-raised-button *ngIf="!subscription?.active" color="accent" (click)="showArchiveDialog()">Archive Subscription</button></div>
+                <div class="d-flex flex-row">
+                    <div>
+                        <delete-subscription *ngIf="pageMode != 'CREATE'" [subscription]="subscription">
+                        </delete-subscription>
+                    </div>
+                    <div>
+                        <button mat-raised-button *ngIf="subscription?.status == 'stopped' && !subscription?.archived" color="accent" (click)="archiveSubscription()">
+                            Archive Subscription
+                        </button>
+
+                    </div>
                 </div>
-                <div class="startButton"><button mat-raised-button *ngIf="!subscription?.active" color="primary" (click)="startSubscription()">Start Subscription</button></div>                
+                <div class="startButton">
+                    <button mat-raised-button *ngIf="subscription?.status == 'stopped' && !subscription?.archived" color="primary" (click)="startSubscription()">
+                        Start Subscription
+                    </button>
+                    <button mat-raised-button *ngIf="subscription?.status == 'In Progress' && !subscription?.archived" color="accent" (click)="stopSubscription()">
+                        Stop Subscription
+                    </button>
+                    <button mat-raised-button *ngIf="subscription?.archived" color="primary" (click)="unarchiveSubscription()">
+                        Unarchive Subscription
+                    </button>
+                </div>
             </div>
         </div>
     </form>

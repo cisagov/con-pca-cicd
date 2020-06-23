@@ -1,23 +1,24 @@
-# Standard Libraries
-# Standard Python Libraries
-from typing import Any
-
-# Third-Party Libraries
+"""Send Reports Command."""
 # Django Libraries
-# Local Libraries
-<<<<<<< HEAD
 from django.core.management.base import BaseCommand
-=======
+
+# Local Libraries
 from api.models.subscription_models import SubscriptionModel, validate_subscription
->>>>>>> develop
-from notifications.views import ReportsEmailSender
 from api.utils.db_utils import get_list
+from notifications.views import ReportsEmailSender
 
 
 class Command(BaseCommand):
+    """Command.
+
+    Args:
+        BaseCommand (Django Base): Setting up Command for handling report creation.
+    """
+
     help_text = "Sends reports emails"
 
-    def handle(self, *args: Any, **options: Any) -> None:
+    def handle(self, *args, **options):
+        """Handle Command."""
         parameters = {"archived": {"$in": [False, None]}}
         subscription_list = get_list(
             parameters, "subscription", SubscriptionModel, validate_subscription
