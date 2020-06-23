@@ -298,10 +298,10 @@ class SubscriptionRestartView(APIView):
         operation_id="Restart Subscription",
         operation_description="Endpoint for manually restart a subscription",
     )
-    def get(self, request, subscription_uuid):
+    def get(self, request, subscription_uuid):        
         created_response = subscription_utils.start_subscription(
             subscription_uuid=subscription_uuid
         )
-        # Return updated subscription
+        # Return updated subscription        
         serializer = SubscriptionPatchResponseSerializer(created_response)
         return Response(serializer.data, status=status.HTTP_202_ACCEPTED)

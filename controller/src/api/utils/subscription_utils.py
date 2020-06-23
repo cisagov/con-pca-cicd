@@ -32,6 +32,7 @@ template_manager = TemplateManager()
 
 
 def start_subscription(data=None, subscription_uuid=None):
+    """if we get data then create else if subscription_uuid then restart """
     """Starts a new subscription."""
     if subscription_uuid:
         subscription = db.get_single(
@@ -308,14 +309,12 @@ def __process_batches(
         group_name = f"{post_data['name']}.Targets.{group_number}"
         campaign_info["name"] = f"{post_data['name']}.{group_number}"
 
-        if group_name not in existing_user_groups:
-            
+        if group_name not in existing_user_groups:            
             target_group = campaign_manager.create(
                 "user_group",
                 group_name=group_name,
                 target_list=campaign_info["targets"],
             )
-
             campaign_info["deception_level"] = group_number
             gophish_campaigns.extend(
                 __create_and_save_campaigns(
