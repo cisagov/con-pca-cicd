@@ -12,12 +12,416 @@
   padding: 0;
 }
 
-#centerCisaLogo {
+#bluePhishLogo {
+  margin-top: 2.5%;
+  margin-right: 5%;
+  text-align: right;
+}
+
+#blueHacker {
+  margin-top: 4%;
+  margin-left: 7.5%;
+}
+
+#reportTitle {
+  font-size: 125px;
+  color: #015596;
+  margin-top: 7.5%;
+  margin-bottom: 10%;
   text-align: center;
 }
 
-#assessmentTitle {
-  font-size: 25px;
+#preparationDetails {
+  margin-top: 20%;
+  margin-left: 33%;
   text-align: center;
-  margin-top: 2%;
+}
+
+#dhsContactDetails {
+  margin-top: 15%;
+  margin-left: 20%;
+  width: 60%;
+  text-align: center;
+}
+
+#cisa_logo {
+  margin-top: 12%;
+  margin-left: 15%;
+}
+
+#centerCisaLogo {
+  text-align: center;
+  margin-top: 40%;
+}
+
+#assessmentTitle {
+  text-align: center;
+  margin-top: 3%;
+}
+
+#subscriptionDetailsTable {
+  margin-top: 5%;
+  margin-right: auto;
+  margin-left: 25%;
+  width: 60%;
+}
+
+#datesTable {
+  margin-top: 5%;
+  margin-right: auto;
+  margin-left: 25%;
+  width: 60%;
+}
+
+#reportInstructions {
+  margin-top: 10%;
+  margin-left: auto;
+  margin-right: auto;
+  width: 60%;
+}
+
+#executiveReportTitle {
+  margin-top: 10%;
+  margin-left: 10%;
+  width: 60%;
+  color: #015596;
+}
+
+.executiveReportDetails {
+  margin-top: 2.5%;
+  margin-left: 10%;
+  width: 80%;
+}
+
+#userMetrics {
+  margin-left: 10%;
+  padding: 5px 5px 5px 5px;
+  width: 80%;
+  border: 1px solid black;
+}
+
+#subNotesOne {
+  margin-top: 1%;
+  margin-left: 10%;
+  width: 80%;
+}
+
+#recommendationsTitle {
+  margin-top: 2.5%;
+  margin-left: 10%;
+}
+
+#recommendations {
+  margin-left: 10%;
+  width: 80%;
+}
+
+#summaryTitle {
+  margin-top: 10%;
+  margin-left: 10%;
+  color: #015596;
+}
+
+#summary {
+  margin-top: 2.5%;
+  margin-left: 10%;
+  margin-bottom: 5%;
+  width: 60%;
+}
+
+#companyAverageText {
+  text-align: center;
+}
+
+#industryAverageText {
+  text-align: center;
+}
+
+#sectorAverageText {
+  text-align: center;
+}
+
+#companyAverageBox {
+  color: white;
+  background-color: #006AA7;
+  font-size: 75px;
+  height: 175px;
+  width: 250px;
+  border: 1px solid black;
+  margin-top: 5%;
+  margin-right: auto;
+  margin-left: auto;
+  padding-top: 5%;
+}
+
+#industryAverageBox {
+  color: white;
+  background-color: #006AA7;
+  font-size: 75px;
+  height: 175px;
+  width: 250px;
+  border: 1px solid black;
+  margin-top: 5%;
+  margin-right: auto;
+  margin-left: auto;
+  padding-top: 5%;
+}
+
+#sectorAverageBox {
+  color: white;
+  background-color: #006AA7;
+  font-size: 75px;
+  height: 175px;
+  width: 250px;
+  border: 1px solid black;
+  margin-top: 5%;
+  margin-right: auto;
+  margin-left: auto;
+  padding-top: 5%;
+}
+
+#yearTrendsTitle {
+  margin-top: 10%;
+  margin-left: 10%;
+}
+
+#trendLineGraph {
+  margin-left: 5%;
+  width: 80%;
+  height: 400px;
+}
+
+#trendStatistics {
+  margin-top: 3%;
+  margin-left: 10%;
+}
+
+#subNotesTwo {
+  margin-top: 1%;
+  margin-left: 10%;
+}
+
+#phishingSuccessGraph {
+  margin-top: 5%;
+  margin-left: 10%;
+}
+
+#levelGraphTitle {
+  margin-top: 5%;
+  margin-left: 10%;
+}
+
+#numbersByLevelGraph {
+  margin-left: 5%;
+  width: 80%;
+  height: 400px;
+}
+
+#methodologyTitle {
+  margin-top: 10%;
+  margin-left: 10%;
+  color: #015596;
+}
+
+#methodologyText {
+  margin-top: 2.5%;
+  margin-left: 10%;
+  width: 80%;
+}
+
+#testingSummaryTitle {
+  margin-top: 7.55%;
+  margin-left: 10%;
+  color: #015596;
+}
+
+#testingSummaryText {
+  margin-top: 2.5%;
+  margin-left: 10%;
+  width: 80%;
+}
+
+#templateOverviewTable {
+  margin-top: 2.5%;
+  margin-left: auto;
+  margin-right: auto;
+  width: 60%;
+}
+
+#rateComparisonTitle {
+  margin-top: 5%;
+  margin-left: 10%;
+}
+
+#rateComparisonText {
+  margin-top: 1%;
+  margin-left: 10%;
+  width: 80%;
+}
+
+#rateComparisonTable {
+  margin-top: 3%;
+  margin-left: auto;
+  margin-right: auto;
+  width: 60%;
+}
+
+#timeComparisonTitle {
+  margin-top: 5%;
+  margin-left: 10%;
+}
+
+#timeComparisonText {
+  margin-top: 3%;
+  margin-left: 10%;
+  width: 80%;
+}
+
+#timeComparisonTable {
+  margin-top: 3%;
+  margin-left: auto;
+  margin-right: auto;
+  width: 60%;
+}
+
+#intervalGraphDetails {
+  margin-top: 7.5%;
+  margin-left: 10%;
+  width: 60%;
+}
+
+#timeIntervalTitle {
+  margin-top: 5%;
+  margin-left: 10%;
+}
+
+#timeIntervalGraph {
+  margin-left: auto;
+  margin-right: auto;
+  width: 80%;
+  height: 400px;
+}
+
+#timeComplexityTitle {
+  margin-top: 5%;
+  margin-left: 10%;
+}
+
+#timeComplexityGraph {
+  margin-left: auto;
+  margin-right: auto;
+  width: 80%;
+  height: 400px;
+}
+
+#closingTitle {
+  margin-top: 10%;
+  margin-left: 10%;
+  color: #015596;
+}
+
+#closingText {
+  margin-top: 2.5%;
+  margin-left: 10%;
+  width: 80%;
+}
+
+#appendixOneTitle {
+  margin-top: 5%;
+  margin-left: 10%;
+}
+
+#appendixOneText {
+  margin-top: 2.5%;
+  margin-left: 10%;
+  width: 80%;
+}
+
+#levelTitle {
+  margin-top: 5%;
+  margin-left: 10%;
+}
+
+#levelText {
+  margin-top: 3%;
+  margin-left: 10%;
+  width: 60%;
+}
+
+#appendixTwoTitle {
+  margin-top: 10%;
+  margin-left: 10%;
+}
+
+#appendixTwoText {
+  margin-top: 3%;
+  margin-left: 10%;
+}
+
+#emailComplexityTable {
+  margin-top: 5%;
+  margin-left: 10%;
+}
+
+#dumbPhishTitle {
+  margin-top: 10%;
+  margin-left: 10%;
+  color: #015596;
+}
+
+#dumbPhishTable {
+  margin-top: 1%;
+  margin-left: 15%;
+}
+
+#dumbPhishDetails {
+  margin-top: 3%;
+  margin-left: 15%;
+  width: 60%;
+}
+
+#dumbEmailBody {
+  margin-left: 5%;
+}
+
+#mediumPhishTitle {
+  margin-top: 5%;
+  margin-left: 10%;
+  color: #015596;
+}
+
+#mediumPhishTable {
+  margin-top: 1%;
+  margin-left: 15%;
+}
+
+#mediumPhishDetails {
+  margin-top: 3%;
+  margin-left: 15%;
+  width: 60%;
+}
+
+#mediumEmailBody {
+  margin-left: 5%;
+}
+
+#hardPhishTitle {
+  margin-top: 5%;
+  margin-left: 10%;
+  color: #015596;
+}
+
+#hardPhishTable {
+  margin-top: 1%;
+  margin-left: 15%;
+}
+
+#hardPhishDetails {
+  margin-top: 3%;
+  margin-left: 15%;
+  width: 60%;
+}
+
+#hardEmailBody {
+  margin-left: 5%;
 }
