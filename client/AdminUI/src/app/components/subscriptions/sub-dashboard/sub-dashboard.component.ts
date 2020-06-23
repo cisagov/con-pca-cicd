@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Input } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { ChartsService } from 'src/app/services/charts.service';
 import { SubscriptionService } from 'src/app/services/subscription.service';
 
@@ -14,10 +14,10 @@ export class SubDashboardComponent implements OnInit {
   chartSent: any = {};
 
   // average time to first click
-  avgTTFC = '3 minutes';
+  avgTTFC: string;
 
   // average time to first report
-  avgTTFR = '17 minutes';
+  avgTTFR: string;
 
   schemeLowMedHigh = {
     domain: ['#064875', '#fcbf10', '#007bc1']
@@ -33,20 +33,24 @@ export class SubDashboardComponent implements OnInit {
   constructor(
     public chartsSvc: ChartsService,
     private subscriptionSvc: SubscriptionService
-  ) {}
+  ) { }
 
   /**
    *
    */
   ngOnInit(): void {
+    this.subscriptionUuid = this.subscriptionSvc.subscription.subscription_uuid;
     this.drawGraphs();
   }
 
   /**
-   *
+   * Gathers statistics and renders information for two graphs,
+   * chart and chartSent.  Chart shows the various statistics for
+   * how the targets have responded to the phishing emails.
+   * ChartSent indicates how many emails have been sent thus far.
    */
   drawGraphs() {
-    // set display options
+    // vertical bar chart groups for stats by template level
     this.chart.showXAxis = true;
     this.chart.showYAxis = true;
     this.chart.showXAxisLabel = true;
@@ -54,15 +58,11 @@ export class SubDashboardComponent implements OnInit {
     this.chart.showYAxisLabel = true;
     this.chart.yAxisLabel = '';
     this.chart.showDataLabel = true;
-
     this.chart.showLegend = true;
     this.chart.legendPosition = 'right';
-
     this.chart.colorScheme = this.schemeLowMedHigh;
 
-    // get content
-    this.chart.chartResults = this.chartsSvc.getStatisticsByLevel();
-
+    // stacked horizontal bar chart for number of emails sent vs scheduled
     this.chartSent.showXAxis = true;
     this.chartSent.showYAxis = true;
     this.chartSent.showXAxisLabel = true;
@@ -70,8 +70,34 @@ export class SubDashboardComponent implements OnInit {
     this.chartSent.showYAxisLabel = true;
     this.chartSent.yAxisLabel = '';
     this.chartSent.showDataLabel = true;
-    this.chartSent.colorScheme = this.schemeSent;
     this.chartSent.view = [500, 100];
-    this.chartSent.chartResults = this.chartsSvc.getSentEmailNumbers();
+    this.chartSent.colorScheme = this.schemeSent;
+
+    // get content
+    this.chartsSvc.getStatisticsReport(this.subscriptionUuid)
+      .subscribe((stats: any) => {
+        this.chart.chartResults = this.chartsSvc.formatStatistics(stats);
+        this.chartSent.chartResults = this.chartsSvc.getSentEmailNumbers(stats);
+
+        this.avgTTFC = stats.metrics.avg_time_to_first_click;
+        if (!this.avgTTFC) {
+          this.avgTTFC = '(no emails clicked yet)';
+        }
+        this.avgTTFR = stats.metrics.avg_time_to_first_report;
+        if (!this.avgTTFR) {
+          this.avgTTFR = '(no emails reported yet)';
+        }
+      });
+  }
+
+  /**
+   * Prevents decimal ticks from being displayed
+   */
+  axisFormat(val) {
+    if (val % 1 === 0 || val === 0) {
+      return val.toLocaleString();
+    } else {
+      return '';
+    }
   }
 }

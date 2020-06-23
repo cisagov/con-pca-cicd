@@ -41,7 +41,8 @@ class S3(AWS):
         # the tester to retreive the image on there local machine
         if self.endpoint_url:
             parsed_url = urlparse(self.endpoint_url)
-            host = f"{parsed_url.scheme}://localhost:{parsed_url.port}"
+            external_host = os.environ.get("AWS_S3_EXTERNAL_HOST", "localhost")
+            host = f"{parsed_url.scheme}://{external_host}:{parsed_url.port}"
         else:
             host = "https://s3.amazonaws.com"
 

@@ -5,6 +5,7 @@ import logging
 import re
 
 # Third-Party Libraries
+import names
 from simpleeval import simple_eval
 
 logger = logging.getLogger(__name__)
@@ -55,6 +56,7 @@ def personalize_template(customer_info, template_data, sub_data, tag_list):
         "functions": {
             "current_season": current_season,
             "get_full_customer_address": get_full_customer_address,
+            "generate_random_name": generate_random_name,
         },
     }
 
@@ -66,8 +68,11 @@ def personalize_template(customer_info, template_data, sub_data, tag_list):
             if tag["tag_type"] == "gophish":
                 # First check gophish tags
                 cleantext = cleantext.replace(tag["tag"], tag["data_source"])
-            elif tag["tag_type"] == "con-pca":
-                # Then check for other tags
+            elif tag["tag_type"] == "con-pca-literal":
+                # literal replace
+                cleantext = cleantext.replace(tag["tag"], tag["data_source"])
+            elif tag["tag_type"] == "con-pca-eval":
+                # eval replace
                 try:
                     # ast.literal_eval(tag["data_source"]) replaced with smarter eval
                     cleantext = cleantext.replace(
@@ -86,15 +91,19 @@ def personalize_template(customer_info, template_data, sub_data, tag_list):
                     )
                     # Upon error, replaces tag with tag
                     cleantext = cleantext.replace(tag["tag"], tag["tag"])
+            else:
+                # Default literal replace
+                cleantext = cleantext.replace(tag["tag"], tag["tag"])
 
         template_unique_name = "".join(template["name"].split(" "))
-        cleantext += "{{.Tracker}}"
+        cleantext += "\n {{.Tracker}} "
 
         personalized_template_data.append(
             {
                 "template_uuid": template["template_uuid"],
                 "data": cleantext,
                 "name": template_unique_name,
+                "subject": template["subject"]
             }
         )
 
@@ -162,3 +171,24 @@ def check_tag_format(tag):
     if r.match(tag) is not None and tag.isupper():
         return True
     return False
+
+
+def generate_random_name(name_type, gender=None):
+    """Generate random name.
+
+    This uses Python package `names`
+    to genrate names.
+    See https://pypi.org/project/names/ for more info.
+    Args:
+        name_type (string): name type: 'Full', 'First', 'Last'
+        gender (string, optional): can be either either 'male', 'female'. Defaults to None.
+
+    Returns:
+        string: returns randomly genrated name string.
+    """
+    if name_type == "Full":
+        return names.get_full_name(gender=gender)
+    elif name_type == "First":
+        return names.get_first_name(gender=gender)
+    elif name_type == "Last":
+        return names.get_last_name()

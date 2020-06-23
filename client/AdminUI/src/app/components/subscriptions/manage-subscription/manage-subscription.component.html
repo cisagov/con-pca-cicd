@@ -3,8 +3,7 @@
         <div class="d-flex flex-column mb-5">
 
             <div class="w-100" *ngIf="pageMode!='CREATE'">
-                <app-sub-dashboard [subscriptionUuid]="subscription?.subscription_uuid">
-                </app-sub-dashboard>
+                <app-sub-dashboard></app-sub-dashboard>
 
                 <div>
                     <h2>Subscription Timeline</h2>
@@ -144,6 +143,9 @@
                 <div class="startButton">
                     <button mat-raised-button *ngIf="subscription?.status == 'stopped' && !subscription?.archived" color="primary" (click)="startSubscription()">
                         Start Subscription
+                    </button>
+                    <button mat-raised-button *ngIf="subscription?.status == 'In Progress' && !subscription?.archived" color="accent" (click)="stopSubscription()">
+                        Stop Subscription
                     </button>
                     <button mat-raised-button *ngIf="subscription?.archived" color="primary" (click)="unarchiveSubscription()">
                         Unarchive Subscription
