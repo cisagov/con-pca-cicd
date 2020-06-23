@@ -343,6 +343,7 @@ def __create_and_save_campaigns(campaign_info, target_group, landing_page, end_d
         created_template = campaign_manager.generate_email_template(
             name=f"{campaign_info['name']}.{template['name']}",
             template=template["data"],
+            subject=template["subject"],
         )
         campaign_start = campaign_info["start_date"].strftime("%Y-%m-%d")
         campaign_end = end_date.strftime("%Y-%m-%d")
