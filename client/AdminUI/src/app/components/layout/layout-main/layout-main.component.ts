@@ -27,8 +27,8 @@ export class LayoutMainComponent implements OnInit {
     private userAuthSvc: UserAuthService, 
   ) {
     this.isDark = themeSvc.getStoredTheme();
-    this.userAuthSvc.getUserBehaviorSubject().subscribe(value => {
-      this.currentUserName = value["username"]
+    this.userAuthSvc.getUserNameBehaviorSubject().subscribe(value => {      
+      this.currentUserName = value      
     })
   }
 

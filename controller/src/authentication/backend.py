@@ -52,7 +52,10 @@ class JSONWebTokenAuthentication(BaseAuthentication):
 
         # USER_MODEL = self.get_user_model()
         # user = USER_MODEL.objects.get_or_create_for_cognito(jwt_payload)
-        user = {"username": jwt_payload["username"], "groups": jwt_payload["cognito:groups"]}
+        if "cognito:groups" in jwt_payload:
+            user = {"username": jwt_payload["username"], "groups": jwt_payload["cognito:groups"]}
+        else:
+            user = {"username": jwt_payload["username"], "groups": "None"}
         return (user, jwt_token)
 
     def get_user_model(self):
