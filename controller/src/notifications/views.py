@@ -95,7 +95,13 @@ class ReportsEmailSender:
         # add pdf attachment
         attachment = self.get_attachment(subscription_uuid)
         message.attach("subscription_report.pdf", attachment.read(), "application/pdf")
-        message.send(fail_silently=False)
+        try:
+            message.send(fail_silently=False)
+        except ConnectionRefusedError:            
+            print("failed to send email")
+        except ConnectionError:
+            print("failed to send email for some other reason")
+        
 
 
 class SubscriptionNotificationEmailSender:
@@ -175,4 +181,9 @@ class SubscriptionNotificationEmailSender:
 
         # add html body to email
         message.attach_alternative(html_content, "text/html")
-        message.send(fail_silently=False)
+        try:
+            message.send(fail_silently=False)
+        except ConnectionRefusedError:            
+            print("failed to send email")
+        except ConnectionError:
+            print("failed to send email for some other reason")
