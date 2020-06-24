@@ -24,7 +24,7 @@ from api.utils.db_utils import (
     update_single,
 )
 
-from api.utils import subscription_utils
+from api.utils.subscription.actions import stop_subscription, start_subscription
 
 # Third Party Libraries
 from drf_yasg import openapi
@@ -99,7 +99,7 @@ class SubscriptionsListView(APIView):
         """Post method."""
         post_data = request.data.copy()
 
-        created_response = subscription_utils.start_subscription(data=post_data)
+        created_response = start_subscription(data=post_data)
 
         if "errors" in created_response:
             return Response(created_response, status=status.HTTP_400_BAD_REQUEST)
@@ -279,7 +279,7 @@ class SubscriptionStopView(APIView):
         )
 
         # Stop subscription
-        resp = subscription_utils.stop_subscription(subscription)
+        resp = stop_subscription(subscription)
 
         # Cancel scheduled subscription emails
         if subscription["tasks"]:
@@ -305,10 +305,8 @@ class SubscriptionRestartView(APIView):
         operation_id="Restart Subscription",
         operation_description="Endpoint for manually restart a subscription",
     )
-    def get(self, request, subscription_uuid):        
-        created_response = subscription_utils.start_subscription(
-            subscription_uuid=subscription_uuid
-        )
-        # Return updated subscription        
+    def get(self, request, subscription_uuid):
+        created_response = start_subscription(subscription_uuid=subscription_uuid)
+        # Return updated subscription
         serializer = SubscriptionPatchResponseSerializer(created_response)
         return Response(serializer.data, status=status.HTTP_202_ACCEPTED)

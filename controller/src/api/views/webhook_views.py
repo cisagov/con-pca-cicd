@@ -10,7 +10,7 @@ from api.serializers.subscriptions_serializers import (
     SubscriptionPatchResponseSerializer,
 )
 from api.utils.db_utils import get_single_subscription_webhook, update_single_webhook
-from api.utils.template_utils import format_ztime
+from api.utils.generic import format_ztime
 from drf_yasg.utils import swagger_auto_schema
 from notifications.views import SubscriptionNotificationEmailSender
 from rest_framework import status
