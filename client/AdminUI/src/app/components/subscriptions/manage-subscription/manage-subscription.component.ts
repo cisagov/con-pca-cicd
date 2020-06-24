@@ -93,9 +93,11 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
       keywords: new FormControl(''),
       csvText: new FormControl('', {
         validators: Validators.required
-      })
+      }),
+      removeDuplicateTargets: new FormControl(true)
     }, {
       updateOn: 'blur'
+
     });
 
     this.onChanges();
@@ -131,7 +133,11 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
     });
     this.f.csvText.valueChanges.subscribe(val => {
       this.subscription.target_email_list = this.buildTargetsFromCSV(val);
+      this.f.csvText.setValue(this.formatTargetsToCSV(this.subscription.target_email_list), { emitEvent: false });
       this.persistChanges();
+    });
+    this.f.removeDuplicateTargets.valueChanges.subscribe(val => {
+      this.subscriptionSvc.removeDupeTargets = val;
     });
   }
 
@@ -179,6 +185,7 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
         this.f.url.setValue(s.url);
         this.f.keywords.setValue(s.keywords);
         this.f.csvText.setValue(this.formatTargetsToCSV(s.target_email_list));
+        this.f.removeDuplicateTargets.setValue(this.subscriptionSvc.removeDupeTargets);
 
         this.enableDisableFields();
 
@@ -550,7 +557,7 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
    * @param csv A comma-separated string with linefeed delimiters
    */
   public buildTargetsFromCSV(csv: string): Target[] {
-    const targetList = [];
+    let targetList: Target[] = [];
     if (!csv) {
       return;
     }
@@ -566,6 +573,17 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
         targetList.push(t);
       }
     });
+
+    // remove duplicate emails if desired
+    if (this.subscriptionSvc.removeDupeTargets) {
+      const uniqueArray: Target[] = targetList.filter((t1, index) => {
+        return index === targetList.findIndex(t2 => {
+          return t2.email.toLowerCase() === t1.email.toLowerCase();
+        });
+      });
+      targetList = uniqueArray;
+    }
+
     return targetList;
   }
 
@@ -573,10 +591,18 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
    * Formats Targets for display in the form.
    */
   formatTargetsToCSV(targetList: Target[]) {
+    if (!targetList) {
+      return '';
+    }
     let output = '';
     targetList.forEach((t: Target) => {
       output += `${t.email}, ${t.first_name}, ${t.last_name}, ${t.position}\n`;
     });
+
+    if (output.length > 0) {
+      output = output.substring(0, output.length - 1);
+    }
+
     return output;
   }
 
