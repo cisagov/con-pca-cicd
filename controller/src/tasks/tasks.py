@@ -1,9 +1,6 @@
 # Standard Python Libraries
 import os
 
-# Third-Party Libraries
-# Local Libraries
-# Third Party Libraries
 from api.manager import CampaignManager
 from api.models.subscription_models import SubscriptionModel, validate_subscription
 from celery import Celery, shared_task
@@ -14,6 +11,7 @@ from config.celery import app
 from api.models.subscription_models import SubscriptionModel, validate_subscription
 from notifications.views import ReportsEmailSender
 from api.manager import CampaignManager
+from api.utils.db_utils import get_single
 
 
 campaign_manager = CampaignManager()
