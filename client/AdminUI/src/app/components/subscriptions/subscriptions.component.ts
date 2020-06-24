@@ -39,6 +39,8 @@ export class SubscriptionsComponent implements OnInit {
   showArchived: boolean = false;
 
   dateFormat = AppSettings.DATE_FORMAT;
+  spinnerMap = new Map<string, boolean>();
+
 
   constructor(
     private subscription_service: SubscriptionService,
@@ -120,20 +122,34 @@ export class SubscriptionsComponent implements OnInit {
     });
   }
 
+
   public startSubscription(row: any) {
     this.dialogRefConfirm = this.dialog.open(ConfirmComponent, { disableClose: false });
     this.dialogRefConfirm.componentInstance.confirmMessage =
       `This will start subscription '${row.subscription.name}'.  Do you want to continue?`;
     this.dialogRefConfirm.componentInstance.title = 'Confirm Start';
 
+    
     this.dialogRefConfirm.afterClosed().subscribe(result => {
       if (result) {
-        this.subscription_service.startSubscription(row.subscription.subscription_uuid).subscribe((data: any) => {
+        this.setSpinner(row.subscription.subscription_uuid, true);
+        this.subscription_service.startSubscription(row.subscription.subscription_uuid).subscribe((data: any) => {          
+          this.setSpinner(row.subscription.subscription_uuid,false);
           this.refresh();
         });
       }
+      
       this.dialogRefConfirm = null;
     });
+  }
+
+  public setSpinner(uuid: string, show: boolean){
+    this.spinnerMap.set(uuid, show);
+  }
+
+
+  public checkSpinner(uuid: string){
+      return this.spinnerMap.get(uuid);
   }
 
   public checkStopped(status: string) {
