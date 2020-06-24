@@ -25,20 +25,18 @@ def email_subscription_report(subscription_uuid, message_type):
     subscription = get_single(
         subscription_uuid, "subscription", SubscriptionModel, validate_subscription
     )
-    campaigns = subscription.get("gophish_campaign_list")
 
     # Send email
     sender = ReportsEmailSender(subscription, message_type)
     sender.send()
 
-    # Set Subscription's Active task to True
-    subscription["active_task"] = True
-
-    # Set GoPhish Campaign to Complete
-    [
-        campaign_manager.complete_campaign(campaign_id=campaign_id)
-        for campaign in campaigns
-    ]
+    # Set GoPhish Campaign to Complete for Cycle Reports
+    if message_type == "cycle_report":
+        campaigns = subscription.get("gophish_campaign_list")
+        [
+            campaign_manager.complete_campaign(campaign_id=campaign.get("campaign_id"))
+            for campaign in campaigns
+        ]
 
     context = {
         "subscription_uuid": subscription_uuid,

@@ -78,6 +78,11 @@ def start_subscription(data=None, subscription_uuid=None):
 
     __send_start_notification(subscription, start_date)
 
+    # Schedule client side reports emails
+    if not settings.DEBUG:
+        tasks = __create_scheduled_email_tasks(response)
+        subscription["tasks"] = tasks
+
     if subscription_uuid:
         db_data = {
             "gophish_campaign_list": gophish_campaigns,
@@ -99,9 +104,6 @@ def start_subscription(data=None, subscription_uuid=None):
         response = db.save_single(
             subscription, "subscription", SubscriptionModel, validate_subscription
         )
-
-    # Schedule client side reports emails
-    __create_scheduled_email_tasks(response)
 
     return response
 
@@ -128,10 +130,10 @@ def __get_subscription_name(post_data, customer):
         # get last run inc values
         last_ran_x, last_ran_y = list_tupe[-1]
 
-        # now check to see there are any others running durring.
+        # now check to see there are any others running during.
         active_subscriptions = [x for x in subscription_list if x["active"]]
         if len(active_subscriptions) <= 0:
-            # if none are actvie, check last running number and create new name
+            # if none are active, check last running number and create new name
             next_run_x, next_run_y = "1", str(int(last_ran_y) + 1)
         else:
             next_run_x, next_run_y = str(int(last_ran_x) + 1), last_ran_y
@@ -430,20 +432,23 @@ def __get_subscription_cycles(campaigns, start_date, end_date):
 
 
 def __create_scheduled_email_tasks(created_response):
-    if not settings.DEBUG:
-        subscription_uuid = created_response.get("subscription_uuid")
-        message_types = {
-            "monthly_report": datetime.utcnow() + timedelta(days=30),
-            "cycle_report": datetime.utcnow() + timedelta(days=90),
-            "yearly_report": datetime.utcnow() + timedelta(days=365),
-        }
-        for message_type, send_date in message_types:
-            try:
-                task = email_subscription_report.apply_async(
-                    args=[subscription_uuid, message_type], eta=send_date
-                )
-            except task.OperationalError as exc:
-                logger.exception("Subscription task raised: %r", exc)
+    subscription_uuid = created_response.get("subscription_uuid")
+    message_types = {
+        "monthly_report": datetime.utcnow() + timedelta(days=30),
+        "cycle_report": datetime.utcnow() + timedelta(days=90),
+        "yearly_report": datetime.utcnow() + timedelta(days=365),
+    }
+
+    context = []
+    for message_type, send_date in message_types.items():
+        try:
+            task = email_subscription_report.apply_async(
+                args=[subscription_uuid, message_type], eta=send_date
+            )
+            context.append({"task_uuid": task.id, "message_type": message_type})
+        except task.OperationalError as exc:
+            logger.exception("Subscription task raised: %r", exc)
+    return context
 
 
 def stop_subscription(subscription):
