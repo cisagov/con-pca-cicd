@@ -4,11 +4,6 @@ from datetime import datetime, timedelta
 import logging
 
 # Third-Party Libraries
-from lcgit import lcg
-from django.conf import settings
-from celery.task.control import revoke
-
-
 # Local Libraries
 from api.manager import CampaignManager, TemplateManager
 from api.models.customer_models import CustomerModel, validate_customer
@@ -23,6 +18,9 @@ from api.serializers import campaign_serializers
 from api.serializers.subscriptions_serializers import SubscriptionPatchSerializer
 from api.utils import db_utils as db
 from api.utils import template_utils
+from celery.task.control import revoke
+from django.conf import settings
+from lcgit import lcg
 from notifications.views import SubscriptionNotificationEmailSender
 from tasks.tasks import email_subscription_report
 
@@ -78,11 +76,6 @@ def start_subscription(data=None, subscription_uuid=None):
 
     __send_start_notification(subscription, start_date)
 
-    # Schedule client side reports emails
-    if not settings.DEBUG:
-        tasks = __create_scheduled_email_tasks(response)
-        subscription["tasks"] = tasks
-
     if subscription_uuid:
         db_data = {
             "gophish_campaign_list": gophish_campaigns,
@@ -104,6 +97,13 @@ def start_subscription(data=None, subscription_uuid=None):
         response = db.save_single(
             subscription, "subscription", SubscriptionModel, validate_subscription
         )
+
+    # Schedule client side reports emails
+    if not settings.DEBUG:
+        tasks = __create_scheduled_email_tasks(response)
+        subscription["tasks"] = tasks
+    else:
+        subscription["tasks"] = []
 
     return response
 
@@ -146,6 +146,7 @@ def __get_subscription_name(post_data, customer):
 def __get_subscription_start_end_date(post_data):
     """Gets the start and end date for a subscription."""
     # split date string in case float is put at the end.
+    print(post_data)
     date = post_data.get("start_date")
     now = datetime.now()
 
@@ -472,6 +473,9 @@ def stop_subscription(subscription):
     # Stop Campaigns
     updated_campaigns = list(map(stop_campaign, subscription["gophish_campaign_list"]))
 
+    # Delete User Groups in each campaign
+    __delete_subscription_user_groups(subscription["gophish_campaign_list"])
+
     # Remove subscription tasks from the scheduler
     if subscription["tasks"]:
         [revoke(task["task_uuid"], terminate=True) for task in subscription["tasks"]]
@@ -491,3 +495,15 @@ def stop_subscription(subscription):
     )
 
     return resp
+
+
+def __delete_subscription_user_groups(gophish_campaign_list):
+    for campaign in gophish_campaign_list:
+        groups = list({v["name"]: v for v in campaign["groups"]}.values())
+        for group in groups:
+            try:
+                campaign_manager.delete_user_group(group_id=group["id"])
+            except Exception as err:
+                logger.exception("Deleting group raised: %r", err)
+                pass
+    return
