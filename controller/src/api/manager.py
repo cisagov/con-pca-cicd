@@ -260,10 +260,9 @@ class CampaignManager:
     def get_campaign(self, campaign_id: int = None):
         """GET Campaign."""
         if campaign_id:
-            campaign = self.gp_api.campaigns.get(campaign_id=campaign_id)
-        else:
-            campaign = self.gp_api.campaigns.get()
-        return campaign
+            return self.gp_api.campaigns.get(campaign_id=campaign_id)
+
+        return self.gp_api.campaigns.get()
 
     def get_campaign_summary(self, campaign_id: int = None):
         """Get Campaign Summary.
@@ -282,26 +281,22 @@ class CampaignManager:
     def get_sending_profile(self, smtp_id: int = None):
         """GET Sending Profile."""
         if smtp_id:
-            sending_profile = self.gp_api.smtp.get(smtp_id=smtp_id)
-        else:
-            sending_profile = self.gp_api.smtp.get()
-        return sending_profile
+            return self.gp_api.smtp.get(smtp_id=smtp_id)
+
+        return self.gp_api.smtp.get()
 
     def get_email_template(self, template_id: int = None):
         """GET Email Temp."""
         if template_id:
-            template = self.gp_api.templates.get(template_id=template_id)
-        else:
-            template = self.gp_api.templates.get()
-        return template
+            return self.gp_api.templates.get(template_id=template_id)
+        return self.gp_api.templates.get()
 
     def get_landing_page(self, page_id: int = None):
         """GET landingpage."""
         if page_id:
-            landing_page = self.gp_api.pages.get(page_id=page_id)
-        else:
-            landing_page = self.gp_api.pages.get()
-        return landing_page
+            return self.gp_api.pages.get(page_id=page_id)
+
+        return self.gp_api.pages.get()
 
     def get_user_group(self, group_id: int = None):
         """GET User group."""
