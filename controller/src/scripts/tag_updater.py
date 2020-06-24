@@ -48,11 +48,13 @@ old_customer_tags = [
     "[CUSTOMER SPECIFIC GROUP]",
     "[Actual Division that Handles Pay]",
     "<CUST_IT_Dept_NAME>",
+    "<CUST_IT_Dept_NAME",
     "[Related Budget/Finance Department]",
     "[PROGRAM DEPARTMENT]",
     "[KNOWN CUSTOMER OFFICE]",
     "[CUSTOMER HR OFFICE]",
     "[CUSTOMER LEADERSHIP OFFICE]",
+    "[CUSTOMER SPECIFIC OFFICE]",
     "[County Election's Staff, Information Systems personnel across the State]",
 ]
 
@@ -95,8 +97,13 @@ old_link_tags = [
     "<Link>",
     "[<%URL%>]",
     "<spoofed link>",
+    "[Spoofed Link]",
+    "connect.spoofed.org",
+    "connect.SPOOFED.org",
+    "SPOOFED.org",
     "<hidden link>",
     "<LINK TO ACTUAL CUST PAYMENT SITE OR SIMILAR>",
+    "[RELEVANT EXTERNAL SPECIFIC SITE]",
     "<[Fake link]>",
     "<HIDDEN>",
     "<HIDDEN LINK>",
@@ -160,20 +167,25 @@ old_spoof_name_tags = [
     "[FAKE_NAME]",
 ]
 
-old_event_tags = ["[list relevant weather event]", "[CUSTOMER SPECIFIC EVENT]"]
+old_event_tags = ["[list relevant weather event]", "[CUSTOMER SPECIFIC EVENT]", "[APPLICABLE EVENT]"]
 
-old_time_frame_tags = ["[Change time frame as needed]"]
+old_time_frame_tags = [
+    "[Change time frame as needed]",
+    "[TIMEFRAME]"
+    ]
 
 old_domain_tags = [
     "[domain]",
     "[Domain]",
     "[DOMAIN]",
     "[Spoofed Domain]",
+    "[SpoofedDomain]",
     "[SPOOFED_DOMAIN]",
     "[UNIVERSITY-DOMAIN]",
     "[UNIVERSITY_DOMAIN]",
     "[NCATS_DOMAIN]",
     "[NCATS DOMAIN]",
+    "NCATS-DOMAIN>",
     "[WRITTEN OUT SPOOFED CUSTOMER SURVEY DOMAIN]",
     "[CUSTOMER-DOMAIN]",
     "[WRITTEN OUT SPOOFED CUSTOMER DOMAIN]",
@@ -185,6 +197,7 @@ old_domain_tags = [
     "NCATS_DOMAIN.tld",
     "ncats.domain.tld",
     "spoofedfakeinteneral.ncatsdomain.tld",
+    "CUST_DOMAIN.NCATS-DOMAIN>",
     "[SPOOFED_CUST_DOMAIN]",
     "[CUSTOM_DOMAIN]",
     "[CUST_DOMAIN]",
@@ -195,6 +208,10 @@ old_domain_tags = [
     "[GENERIC_DOMAIN.tld]",
     "NCATS.domain",
     "[subdomain.domain.tld]",
+    "DOMAIN.org",
+    "domain.com",
+    "domain.net",
+    "domain.tld",
 ]
 
 old_acronym_tags = [
@@ -271,8 +288,8 @@ old_number_tags = [
 #        "<%CURRENT_YEAR_SHORT%>": today.strftime("%y"),
 #        "<%CURRENT_DAY%>": today.strftime("%d"),
 #        "<%SPOOF_NAME%>": "FAKE NAME GENERATOR",
-#        "<%EVENT%>": "Relevent Event",
-#        "<%TIMEFRAME%>": "Relevent Timeframe",
+#        "<%EVENT%>": "Relevant Event",
+#        "<%TIMEFRAME%>": "Relevant Timeframe",
 #        "<%DOMAIN%>": "Relevenat Domain",
 #        "<%ACRONYM%>": "Relevant Acronym",
 #        "<%SLOGAN%>": "Relevant Slogan",
@@ -325,15 +342,27 @@ def main():
 
     # Update tags in old template data file
     for template in data:
+        name = template["name"]
+        subject = template["subject"]
         text = template["text"]
+        html = template["html"]
+        from_address = template["from_address"]
 
         for key in updated_tags:
             old_tags_list = updated_tags[key]
 
             for old_tag in old_tags_list:
+                name = name.replace(old_tag, key)
+                subject = subject.replace(old_tag, key)
                 text = text.replace(old_tag, key)
+                from_address = from_address.replace(old_tag, key)
+                html = html.replace(old_tag, key)
 
+        template["name"] = name
+        template["subject"] = subject
         template["text"] = text
+        template["from_address"] = from_address
+        template["html"] = html
 
     with open(sys.argv[2], "w") as file:
         json.dump(data, file, indent=2)
