@@ -31,7 +31,7 @@ from api.serializers.template_serializers import (
     TemplateQuerySerializer,
     TemplateStopResponseSerializer,
 )
-from api.utils import subscription_utils
+from api.utils.subscription.actions import stop_subscription
 from api.utils.db_utils import (
     delete_single,
     exists,
@@ -40,7 +40,7 @@ from api.utils.db_utils import (
     save_single,
     update_single,
 )
-from api.utils.template_utils import check_tag_format
+from api.utils.tag.tags import check_tag_format
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status
 from rest_framework.response import Response
@@ -201,9 +201,7 @@ class TemplateStopView(APIView):
         )
 
         # Stop subscriptions
-        updated_subscriptions = list(
-            map(subscription_utils.stop_subscription, subscriptions)
-        )
+        updated_subscriptions = list(map(stop_subscription, subscriptions))
 
         # Get template
         template = get_single(
