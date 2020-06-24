@@ -30,7 +30,7 @@
                   "with": "src/environments/environment.prod.ts"
                 },
                 {
-                  "replace": "src/aws-export.js",
+                  "replace": "src/aws-exports.js",
                   "with": "src/aws-export-production.js"
                 }
               ],
