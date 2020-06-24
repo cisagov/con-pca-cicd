@@ -16,7 +16,7 @@ from sklearn.metrics.pairwise import cosine_similarity
 # cisagov Libraries
 # GoPhish Libraries
 from gophish import Gophish
-from gophish.models import SMTP, Campaign, Group, Page, Stat, Template, User
+from gophish.models import SMTP, Campaign, Group, Page, Template, User
 
 logger = logging.getLogger(__name__)
 faker = Faker()
@@ -195,6 +195,14 @@ class CampaignManager:
         return self.gp_api.smtp.post(smtp=smtp)
 
     def create_sending_profile(self, sp):
+        """Create Sending Profile.
+
+        Args:
+            sp (object): Sending Profile object
+
+        Returns:
+            onject: Responce object
+        """
         smtp = SMTP(
             name=sp.get("name"),
             username=sp.get("username"),
@@ -209,6 +217,14 @@ class CampaignManager:
         return self.gp_api.smtp.post(smtp=smtp)
 
     def put_sending_profile(self, sp):
+        """Put Sending Profile.
+
+        Args:
+            sp (smtp): smtp information
+
+        Returns:
+            status: returns status of creation of smtp profile.
+        """
         return self.gp_api.smtp.put(smtp=sp)
 
     def generate_email_template(self, name: str, template: str, subject: str):
@@ -250,11 +266,18 @@ class CampaignManager:
         return campaign
 
     def get_campaign_summary(self, campaign_id: int = None):
+        """Get Campaign Summary.
+
+        Args:
+            campaign_id (int, optional): Gophish Campaign ID. Defaults to None.
+
+        Returns:
+            Dict: Return Campaign Summary object.
+        """
         if campaign_id:
-            summary = self.gp_api.campaigns.summary(campaign_id=campaign_id)
-        else:
-            summary = self.gp_api.campaigns.summary()
-        return summary.as_dict()
+            return self.gp_api.campaigns.summary(campaign_id=campaign_id)
+
+        return self.gp_api.campaigns.summary()
 
     def get_sending_profile(self, smtp_id: int = None):
         """GET Sending Profile."""
@@ -283,59 +306,98 @@ class CampaignManager:
     def get_user_group(self, group_id: int = None):
         """GET User group."""
         if group_id:
-            user_group = self.gp_api.groups.get(group_id=group_id)
-        else:
-            user_group = self.gp_api.groups.get()
-        return user_group
+            return self.gp_api.groups.get(group_id=group_id)
+
+        return self.gp_api.groups.get()
 
     # Delete methods
-    def delete_campaign(self, campaign_id: int):
-        """DELETE Campaign."""
-        if campaign_id:
-            status = self.gp_api.campaigns.delete(campaign_id=campaign_id)
-        else:
-            status: None
-        return status
+    def delete_campaign(self, campaign_id):
+        """Delete Campaign.
 
-    def delete_sending_profile(self, smtp_id: int):
-        """DELETE Sending Profile."""
-        if smtp_id:
-            status = self.gp_api.smtp.delete(smtp_id=smtp_id)
-        else:
-            status = None
-        return status
+        Args:
+            campaign_id (int): Campaign ID for gophish
 
-    def delete_email_template(self, template_id: int):
-        """DELETE Email Temp."""
-        if template_id:
-            status = self.gp_api.templates.delete(template_id=template_id)
-        else:
-            status = None
-        return status
+        Returns:
+            dict: {
+                "message": string,
+                "success": bool,
+                "data": null
+            }
+        """
+        return self.gp_api.campaigns.delete(campaign_id=campaign_id)
 
-    def delete_landing_page(self, page_id: int):
-        """DELETE landingpage."""
-        if page_id:
-            status = self.gp_api.pages.delete(page_id=page_id)
-        else:
-            status = None
-        return status
+    def delete_sending_profile(self, smtp_id):
+        """Delete Sending Profiles.
 
-    def delete_user_group(self, group_id: int):
-        """DELETE User group."""
-        if group_id:
-            try:
-                status = self.gp_api.groups.delete(group_id=group_id)
-            except:
-                status = None
-        else:
-            status = None
-        return status
+        Args:
+            smtp_id (int): Sending Profile ID for gophish
+
+        Returns:
+            dict: {
+                "message": string,
+                "success": bool,
+                "data": null
+            }
+        """
+        return self.gp_api.smtp.delete(smtp_id=smtp_id)
+
+    def delete_email_template(self, template_id):
+        """Delete Email Template.
+
+        Args:
+            template_id (int): Template ID for gophish
+
+        Returns:
+            dict: {
+                "message": string,
+                "success": bool,
+                "data": null
+            }
+        """
+        return self.gp_api.templates.delete(template_id=template_id)
+
+    def delete_landing_page(self, page_id):
+        """Delete Landing Page.
+
+        Args:
+            page_id (int): Landing Page ID for gophish
+
+        Returns:
+            dict: {
+                "message": string,
+                "success": bool,
+                "data": null
+            }
+        """
+        return self.gp_api.pages.delete(page_id=page_id)
+
+    def delete_user_group(self, group_id):
+        """Delete User Group.
+
+        Args:
+            group_id (int): Group ID for gophish
+
+        Returns:
+            dict: {
+                "message": string,
+                "success": bool,
+                "data": null
+            }
+        """
+        return self.gp_api.groups.delete(group_id=group_id)
 
     # Other Methods
-    def complete_campaign(self, campaign_id: int):
-        if campaign_id:
-            status = self.gp_api.campaigns.complete(campaign_id=campaign_id)
-        else:
-            status: None
-        return status
+    def complete_campaign(self, campaign_id):
+        """Complete Campaign.
+
+        Args:
+            campaign_id (int): Gophish Campaign ID
+
+        Returns:
+            dict: {
+                "message": string,
+                "success": bool,
+                "data": null
+            }
+        """
+        return self.gp_api.campaigns.complete(campaign_id=campaign_id)
