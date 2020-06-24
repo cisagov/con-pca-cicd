@@ -179,6 +179,17 @@ class CycleModel(Model):
     phish_results = ModelType(PhishingResultsModel)
 
 
+class ScheduledTaskModel(Model):
+    """
+    This is the Scheduled Task Model.
+
+    This keeps track of a list of active tasks by their Celery task ID
+    """
+
+    task_uuid = StringType()
+    message_type = StringType()
+
+
 class SubscriptionModel(Model):
     """
     This is the Subscription Model.
@@ -190,7 +201,7 @@ class SubscriptionModel(Model):
     subscription_uuid = UUIDType()
     # values being passed in.
     customer_uuid = UUIDType()
-    task_uuid = StringType()
+    tasks = ListType(ModelType(ScheduledTaskModel))
     name = StringType()
     url = StringType()
     keywords = StringType()
@@ -206,7 +217,6 @@ class SubscriptionModel(Model):
     target_email_list = ListType(ModelType(SubscriptionTargetModel))
     templates_selected_uuid_list = ListType(StringType)
     active = BooleanType()
-    active_task = BooleanType()
     archived = BooleanType(default=False)
     manually_stopped = BooleanType(default=False)
     cycles = ListType(ModelType(CycleModel))

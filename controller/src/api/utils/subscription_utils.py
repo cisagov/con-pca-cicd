@@ -51,7 +51,6 @@ def start_subscription(data=None, subscription_uuid=None):
         customer, subscription.get("url"), subscription.get("keywords"), subscription,
     )
 
-
     # Get batched targets
     batched_targets = __batch_targets(subscription)
 
@@ -309,7 +308,7 @@ def __process_batches(
         campaign_info["name"] = f"{post_data['name']}.{group_number}"
 
         if group_name not in existing_user_groups:
-            
+
             target_group = campaign_manager.create(
                 "user_group",
                 group_name=group_name,
@@ -322,7 +321,7 @@ def __process_batches(
                     campaign_info, target_group, landing_page, end_date
                 )
             )
-        
+
         group_number += 1
 
     return gophish_campaigns
@@ -468,9 +467,9 @@ def stop_subscription(subscription):
     # Stop Campaigns
     updated_campaigns = list(map(stop_campaign, subscription["gophish_campaign_list"]))
 
-    # Remove from the scheduler
-    if subscription["task_uuid"]:
-        revoke(subscription["task_uuid"], terminate=True)
+    # Remove subscription tasks from the scheduler
+    if subscription["tasks"]:
+        [revoke(task["task_uuid"], terminate=True) for task in subscription["tasks"]]
 
     # Update subscription
     subscription["gophish_campaign_list"] = updated_campaigns
