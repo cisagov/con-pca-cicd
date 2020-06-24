@@ -146,7 +146,6 @@ def __get_subscription_name(post_data, customer):
 def __get_subscription_start_end_date(post_data):
     """Gets the start and end date for a subscription."""
     # split date string in case float is put at the end.
-    print(post_data)
     date = post_data.get("start_date")
     now = datetime.now()
 
