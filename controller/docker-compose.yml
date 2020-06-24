@@ -46,6 +46,9 @@ services:
     restart: on-failure
     entrypoint: celery worker --app=config.celery:app
       --loglevel=info --logfile=tasks/logs/celery.log
+    ports:
+      # Port needed to debug tasks
+      - "6900-7000:6900-7000"
     volumes:
       - ./src:/app
     depends_on:

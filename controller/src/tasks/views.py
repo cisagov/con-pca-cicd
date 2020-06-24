@@ -70,6 +70,8 @@ class TaskListView(APIView):
         elif message_type == "yearly_report":
             # Execute task in 255 days from campaign launch
             send_date = datetime.utcnow() + timedelta(days=365)
+        elif message_type == "now":
+            send_date = datetime.utcnow()
 
         try:
             task = email_subscription_report.apply_async(
