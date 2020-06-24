@@ -29,6 +29,7 @@ from api.utils import subscription_utils
 # Third Party Libraries
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
+from celery.task.control import revoke
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -191,9 +192,12 @@ class SubscriptionView(APIView):
         for group_id in groups_to_delete:
             campaign_manager.delete("user_group", group_id=group_id)
 
-        # Remove from the scheduler
-        if subscription["task_uuid"]:
-            revoke(subscription["task_uuid"], terminate=True)
+        # Remove subscription tasks from the scheduler
+        if subscription["tasks"]:
+            [
+                revoke(task["task_uuid"], terminate=True)
+                for task in subscription["tasks"]
+            ]
 
         delete_response = delete_single(
             uuid=subscription_uuid,
@@ -278,8 +282,11 @@ class SubscriptionStopView(APIView):
         resp = subscription_utils.stop_subscription(subscription)
 
         # Cancel scheduled subscription emails
-        if subscription["task_uuid"]:
-            revoke(subscription["task_uuid"], terminate=True)
+        if subscription["tasks"]:
+            [
+                revoke(task["task_uuid"], terminate=True)
+                for task in subscription["tasks"]
+            ]
 
         # Return updated subscriptions
         serializer = SubscriptionPatchResponseSerializer(resp)
@@ -298,10 +305,10 @@ class SubscriptionRestartView(APIView):
         operation_id="Restart Subscription",
         operation_description="Endpoint for manually restart a subscription",
     )
-    def get(self, request, subscription_uuid):
+    def get(self, request, subscription_uuid):        
         created_response = subscription_utils.start_subscription(
             subscription_uuid=subscription_uuid
         )
-        # Return updated subscription
+        # Return updated subscription        
         serializer = SubscriptionPatchResponseSerializer(created_response)
         return Response(serializer.data, status=status.HTTP_202_ACCEPTED)

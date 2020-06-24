@@ -17,6 +17,8 @@
           </mat-slide-toggle>
       </div>
   </div>
+  
+  
 
   <!-- TABLE -->
   <mat-table [dataSource]="data_source">
@@ -75,6 +77,7 @@
             <button class="table-btn-icon" *ngIf="!checkStopped(row.subscription.status)" mat-flat-button color="warn" (click)="stopSubscription(row)">
               <mat-icon class="table-btn-icon-size">stop</mat-icon>
             </button>
+            <mat-spinner class="spinner" *ngIf="checkSpinner(row.subscription.subscription_uuid)" diameter="25" ></mat-spinner>
           </mat-cell>
       </ng-container>
       <!-- HEADER ROW -->
