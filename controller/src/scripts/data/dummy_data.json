@@ -85,6 +85,7 @@
         "mobile_phone": "555-555-5555",
         "office_phone": "555-555-5555"
       },
+      "sending_profile_name": "SMTP",
       "start_date": "2020-04-10T09:30:25",
       "status": "  Waiting on SRF",
       "target_email_list": [
@@ -149,6 +150,7 @@
         "mobile_phone": "555-555-5555",
         "office_phone": "555-555-5555"
       },
+      "sending_profile_name": "SMTP",
       "start_date": "2021-03-10T09:30:25",
       "status": "Waiting on SRF",
       "target_email_list": [
