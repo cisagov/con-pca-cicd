@@ -79,6 +79,20 @@ class GoPhishTimelineSerializer(serializers.Serializer):
     details = serializers.CharField(required=False)
 
 
+class PhishingResultsSerializer(serializers.Serializer):
+    """
+    This is the Phishing Results Serializer.
+
+    This hold the results for each campaign. Filled by webhook response data
+    """
+
+    sent = serializers.IntegerField(default=0)
+    opened = serializers.IntegerField(default=0)
+    clicked = serializers.IntegerField(default=0)
+    submitted = serializers.IntegerField(default=0)
+    reported = serializers.IntegerField(default=0)
+
+
 class GoPhishCampaignsSerializer(serializers.Serializer):
     """
     This is the GoPhishCampaigns Serializer.
@@ -93,9 +107,13 @@ class GoPhishCampaignsSerializer(serializers.Serializer):
     send_by_date = serializers.DateTimeField(required=False)
     completed_date = serializers.DateTimeField(required=False)
     email_template = serializers.CharField(required=False)
+    email_template_id = serializers.IntegerField(required=False)
+    template_uuid = serializers.UUIDField()
+    deception_level = serializers.IntegerField(required=False)
     landing_page_template = serializers.CharField(required=False)
     status = serializers.CharField(max_length=255)
     results = GoPhishResultSerializer(many=True)
+    phish_results = PhishingResultsSerializer()
     groups = GoPhishGroupSerializer(many=True)
     timeline = GoPhishTimelineSerializer(many=True)
     target_email_list = SubscriptionTargetSerializer(many=True, required=False)
@@ -209,7 +227,7 @@ class SubscriptionPatchSerializer(serializers.Serializer):
     status = serializers.CharField(required=False, max_length=100)
     target_email_list = SubscriptionTargetSerializer(required=False, many=True)
     templates_selected_uuid_list = serializers.ListField(required=False)
-    sending_profile_name = serializers.CharField()
+    sending_profile_name = serializers.CharField(required=False)
     active = serializers.BooleanField(required=False)
     archived = serializers.BooleanField(required=False, default=False)
     manually_stopped = serializers.BooleanField(required=False, default=False)
@@ -235,7 +253,7 @@ class SubscriptionPatchResponseSerializer(serializers.Serializer):
     status = serializers.CharField(max_length=100)
     target_email_list = SubscriptionTargetSerializer(many=True)
     templates_selected_uuid_list = serializers.ListField(required=False)
-    sending_profile_name = serializers.CharField()
+    sending_profile_name = serializers.CharField(required=False)
     active = serializers.BooleanField()
     archived = serializers.BooleanField(default=False)
     manually_stopped = serializers.BooleanField(default=False)
