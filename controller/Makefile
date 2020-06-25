@@ -1,4 +1,6 @@
 .PHONY: all help build logs loc up stop down
+include .env
+export
 
 # make all - Default Target. Does nothing.
 all:
@@ -96,3 +98,11 @@ send_emails:
 # target: debug_ptvsd - run debugger with ptvsd
 debug_ptvsd:
 	docker exec -it pca-api python -m ptvsd --host 0.0.0.0 --port 5679 scripts/create_dummy_data.py
+
+# target: mongo_dump - dumps latest mongodb into scripts/data/db_dumps/db_latest.dump
+mongo_dump:
+	docker exec pca-mongodb sh -c 'mongodump --host mongodb --port 27017 -u ${DB_USER} -p ${DB_PW} --authenticationDatabase admin -d pca_data_dev --archive' > src/scripts/data/db_dumps/db.dump
+
+# target: mongo_dump - dumps latest mongodb into scripts/data/db_dumps/db_latest.dump
+mongo_restore:
+	docker exec pca-mongodb sh -c 'mongorestore --host mongodb --port 27017 -u ${DB_USER} -p ${DB_PW} --authenticationDatabase admin -d pca_data_dev --archive' > src/scripts/data/db_dumps/db.dump
