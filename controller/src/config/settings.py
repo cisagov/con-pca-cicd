@@ -125,7 +125,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 # Email
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-SERVER_EMAIL = "CISA Con-PCA <phishing@inltesting.xyz>"
+SERVER_EMAIL = os.environ.get("SMTP_FROM")
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
