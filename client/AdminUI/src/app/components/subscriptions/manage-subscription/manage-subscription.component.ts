@@ -15,6 +15,7 @@ import { CustomerDialogComponent } from '../../dialogs/customer-dialog/customer-
 import { AlertComponent } from '../../dialogs/alert/alert.component';
 import { isSameDate } from 'src/app/helper/utilities';
 import { ConfirmComponent } from '../../dialogs/confirm/confirm.component';
+import { SendingProfileService } from 'src/app/services/sending-profile.service';
 
 
 @Component({
@@ -49,6 +50,8 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
   url: string;
   keywords: string;
 
+  sendingProfiles = [];
+
   // The raw CSV content of the textarea
   csvText: string;
 
@@ -61,6 +64,7 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
   constructor(
     public subscriptionSvc: SubscriptionService,
     public customerSvc: CustomerService,
+    public sendingProfileSvc: SendingProfileService,
     private router: Router,
     private route: ActivatedRoute,
     private userSvc: UserService,
@@ -70,6 +74,7 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
   ) {
     layoutSvc.setTitle('Subscription');
     this.loadDhsContacts();
+    this.loadSendingProfiles();
   }
 
   /**
@@ -91,6 +96,9 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
       startDate: new FormControl(new Date()),
       url: new FormControl(''),
       keywords: new FormControl(''),
+      sendingProfile: new FormControl('', {
+        validators: Validators.required
+      }),
       csvText: new FormControl('', {
         validators: Validators.required
       }),
@@ -130,6 +138,9 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
     this.f.keywords.valueChanges.subscribe(val => {
       this.subscription.keywords = val;
       this.persistChanges();
+    });
+    this.f.sendingProfile.valueChanges.subscribe(val => {
+      this.subscription.sending_profile_name = val;
     });
     this.f.csvText.valueChanges.subscribe(val => {
       this.subscription.target_email_list = this.buildTargetsFromCSV(val);
@@ -186,6 +197,7 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
         this.f.keywords.setValue(s.keywords);
         this.f.csvText.setValue(this.formatTargetsToCSV(s.target_email_list));
         this.f.removeDuplicateTargets.setValue(this.subscriptionSvc.removeDupeTargets);
+        this.f.sendingProfile.setValue(s.sending_profile_name);
 
         this.enableDisableFields();
 
@@ -234,6 +246,17 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
 
       this.customer.contact_list = this.customerSvc.getContactsForCustomer(c);
       this.primaryContact = this.customer.contact_list[0];
+    });
+  }
+
+  /**
+   *
+   */
+  loadSendingProfiles() {
+    // get the customer and contacts from the API
+    this.sendingProfileSvc.getAllProfiles().subscribe((data: any) => {
+      console.log(data);
+      this.sendingProfiles = data;
     });
   }
 
@@ -495,7 +518,7 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
     sub.start_date = this.startDate;
     sub.status = 'New Not Started';
 
-    sub.url = this.url;
+    sub.url = this.f.url.value;
 
     // keywords
     sub.keywords = this.f.keywords.value;
@@ -503,6 +526,8 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
     // set the target list
     const csv = this.f.csvText.value;
     sub.target_email_list = this.buildTargetsFromCSV(csv);
+
+    sub.sending_profile_name = this.f.sendingProfile.value;
 
     // call service with everything needed to start the subscription
     this.subscriptionSvc.submitSubscription(sub).subscribe(
@@ -530,14 +555,16 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
    * Enables and disabled fields based on the subscription status.
    */
   enableDisableFields() {
-    const status = this.subscription?.status.toLowerCase();
+    const status = this.subscription?.status?.toLowerCase();
     if (status === 'in progress') {
       this.f.url.disable();
       this.f.keywords.disable();
+      this.f.sendingProfile.disable();
       this.f.csvText.disable();
     } else {
       this.f.url.enable();
       this.f.keywords.enable();
+      this.f.sendingProfile.enable();
       this.f.csvText.enable();
     }
   }
