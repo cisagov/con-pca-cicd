@@ -44,23 +44,26 @@ def update_target_history(campaign_info, seralized_data):
     if document_list:
         # If object exists, update with latest template info
         target = document_list[0]
-        for hist in target["history_list"]:
-            if hist["template_uuid"] == campaign_info["template_uuid"]:
-                pass
-            else:
-                target["history_list"].append(
-                    {
-                        "template_uuid": campaign_info["template_uuid"],
-                        "sent_timestamp": format_ztime(seralized_data["time"]),
-                    }
-                )
-                db.update_single(
-                    target["target_uuid"],
-                    target,
-                    "target",
-                    TargetHistoryModel,
-                    validate_history,
-                )
+        filter_target_history = list(
+            filter(
+                lambda x: x["template_uuid"] == campaign_info["template_uuid"],
+                target["history_list"],
+            )
+        )
+        if not filter_target_history:
+            target["history_list"].append(
+                {
+                    "template_uuid": campaign_info["template_uuid"],
+                    "sent_timestamp": format_ztime(seralized_data["time"]),
+                }
+            )
+            db.update_single(
+                target["target_uuid"],
+                target,
+                "target",
+                TargetHistoryModel,
+                validate_history,
+            )
     else:
         # create new target history if not exisiting
         targert_hist = {
