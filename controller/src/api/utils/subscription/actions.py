@@ -52,7 +52,7 @@ def start_subscription(data=None, subscription_uuid=None):
     )
 
     # Get details for the customer that is attached to the subscription
-    customer = get_customer(data["customer_uuid"])
+    customer = get_customer(subscription["customer_uuid"])
 
     # Create the needed subscription levels to fill.
     sub_levels = {
@@ -117,18 +117,9 @@ def start_subscription(data=None, subscription_uuid=None):
     )
 
     if subscription_uuid:
-        db_data = {
-            "gophish_campaign_list": subscription["gophish_campaign_list"],
-            "templates_selected_uuid_list": subscription[
-                "templates_selected_uuid_list"
-            ],
-            "end_date": end_date.strftime("%Y-%m-%dT%H:%M:%S"),
-            "status": subscription["status"],
-            "cycles": subscription["cycles"],
-        }
         response = db.update_single(
             subscription_uuid,
-            db_data,
+            subscription,
             "subscription",
             SubscriptionModel,
             validate_subscription,
