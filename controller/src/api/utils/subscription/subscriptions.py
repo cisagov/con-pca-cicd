@@ -104,9 +104,11 @@ def get_subscription_cycles(campaigns, start_date, end_date):
     ]
 
 
-def send_start_notification(post_data, start_date):
+def send_start_notification(subscription, start_date):
     if start_date <= datetime.now():
-        sender = SubscriptionNotificationEmailSender(post_data, "subscription_started")
+        sender = SubscriptionNotificationEmailSender(
+            subscription, "subscription_started"
+        )
         sender.send()
 
 
@@ -122,9 +124,12 @@ def create_scheduled_email_tasks(created_response):
     for message_type, send_date in message_types.items():
         try:
             task = email_subscription_report.apply_async(
-                args=[subscription_uuid, message_type], eta=send_date
+                args=[subscription_uuid, message_type, send_date],
+                eta=send_date,
+                retry=True,
             )
             context.append({"task_uuid": task.id, "message_type": message_type})
         except task.OperationalError as exc:
             logger.exception("Subscription task raised: %r", exc)
+
     return context

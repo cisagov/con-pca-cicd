@@ -52,7 +52,7 @@ def start_subscription(data=None, subscription_uuid=None):
     )
 
     # Get details for the customer that is attached to the subscription
-    customer = get_customer(data["customer_uuid"])
+    customer = get_customer(subscription["customer_uuid"])
 
     # Create the needed subscription levels to fill.
     sub_levels = {
@@ -117,18 +117,9 @@ def start_subscription(data=None, subscription_uuid=None):
     )
 
     if subscription_uuid:
-        db_data = {
-            "gophish_campaign_list": subscription["gophish_campaign_list"],
-            "templates_selected_uuid_list": subscription[
-                "templates_selected_uuid_list"
-            ],
-            "end_date": end_date.strftime("%Y-%m-%dT%H:%M:%S"),
-            "status": subscription["status"],
-            "cycles": subscription["cycles"],
-        }
         response = db.update_single(
             subscription_uuid,
-            db_data,
+            subscription,
             "subscription",
             SubscriptionModel,
             validate_subscription,
@@ -144,6 +135,14 @@ def start_subscription(data=None, subscription_uuid=None):
         subscription["tasks"] = tasks
     else:
         subscription["tasks"] = []
+
+    db.update_single(
+        response["subscription_uuid"],
+        {"tasks": subscription["tasks"]},
+        "subscription",
+        SubscriptionModel,
+        validate_subscription,
+    )
 
     send_start_notification(subscription, start_date)
 
@@ -176,14 +175,17 @@ def stop_subscription(subscription):
     __delete_subscription_user_groups(subscription["gophish_campaign_list"])
 
     # Remove subscription tasks from the scheduler
-    if subscription["tasks"]:
-        [revoke(task["task_uuid"], terminate=True) for task in subscription["tasks"]]
+    if subscription.get("tasks"):
+        [
+            revoke(task["task_uuid"], terminate=True)
+            for task in subscription.get("tasks", [])
+        ]
 
     # Update subscription
     subscription["gophish_campaign_list"] = updated_campaigns
     subscription["active"] = False
     subscription["manually_stopped"] = True
-    subscription["active_task"] = False
+
     subscription["status"] = "stopped"
     resp = db.update_single(
         uuid=subscription["subscription_uuid"],
