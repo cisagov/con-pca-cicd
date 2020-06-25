@@ -7,6 +7,7 @@ from api.models.template_models import (
     validate_template,
 )
 from api.utils import db_utils as db
+from api.utils.generic import format_ztime
 
 deception_level = {"high": 3, "moderate": 2, "low": 1}
 
@@ -26,23 +27,47 @@ def get_email_templates():
     )
 
 
-def update_target_history(campaign_info, target_email):
+def update_target_history(campaign_info, seralized_data):
     """Update target History.
 
     Args:
         campaign_info (dict): campaign_info
-        target_email (string): target_email
+        seralized_data (dict): seralized_data
     """
     # check if email target exists, if not, create
     document_list = db.get_list(
-        {"email": target_email}, "target", TargetHistoryModel, validate_history
+        {"email": seralized_data["email"]},
+        "target",
+        TargetHistoryModel,
+        validate_history,
     )
     if document_list:
-        # get object and update
-        print("get object and update")
-        print(document_list[0])
+        # If object exists, update with latest template info
+        target = document_list[0]
+        target["history_list"].append(
+            {
+                "template_uuid": campaign_info["template_uuid"],
+                "sent_timestamp": format_ztime(seralized_data["time"]),
+            }
+        )
+        db.update_single(
+            target["target_uuid"],
+            target,
+            "target",
+            TargetHistoryModel,
+            validate_history,
+        )
     else:
-        # create new
-        print("create new target history")
+        # create new target history if not exisiting
+        targert_hist = {
+            "email": seralized_data["email"],
+            "history_list": [
+                {
+                    "template_uuid": campaign_info["template_uuid"],
+                    "sent_timestamp": format_ztime(seralized_data["time"]),
+                }
+            ],
+        }
+        db.save_single(targert_hist, "target", TargetHistoryModel, validate_history)
 
     return

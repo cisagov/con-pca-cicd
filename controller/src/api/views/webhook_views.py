@@ -167,10 +167,8 @@ class IncomingWebhookView(APIView):
 
                 # update target history
                 if campaign_event == "Email Sent":
-                    # send campaign info and email gophish_campaign_data, seralized_data["email"]
-                    update_target_history(
-                        gophish_campaign_data, seralized_data["email"]
-                    )
+                    # send campaign info and email gophish_campaign_data, seralized_data
+                    update_target_history(campaign, seralized_data)
 
             updated_response = update_single_webhook(
                 subscription=subscription,
