@@ -55,6 +55,10 @@ def email_subscription_report(subscription_uuid, message_type, send_date):
             args=[subscription], eta=next_send_date
         )
 
+    next_task = {"task_uuid": task.id, "message_type": message_type}
+    if subscription.get("tasks"):
+        subscription.get("tasks").append(next_task)
+
     context = {
         "subscription_uuid": subscription_uuid,
     }
