@@ -36,6 +36,9 @@ export class SvgTimelineComponent implements OnInit {
    */
   ngOnInit(): void {
     setTimeout(() => {
+      if (!this.timelineItems) {
+        return;
+      }
       this.sortEvents();
 
       this.lifespanSeconds = this.timelineItems[this.timelineItems.length - 1].date

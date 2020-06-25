@@ -48,9 +48,9 @@ def main():
     print("done loading data")
     print("Step 1/3: create templates...")
 
-    email_templates = load_file("data/reformated_template_data.json")
-    laning_page_tempalte = load_file("data/landing_pages.json")
-    templates = email_templates + laning_page_tempalte
+    email_templates = load_file("data/reformatted_template_data.json")
+    landing_page_template = load_file("data/landing_pages.json")
+    templates = email_templates + landing_page_template
     created_template_uuids = []
 
     existing_templates = requests.get("http://localhost:8000/api/v1/templates")

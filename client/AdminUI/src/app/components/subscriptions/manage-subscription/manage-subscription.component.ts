@@ -15,6 +15,7 @@ import { CustomerDialogComponent } from '../../dialogs/customer-dialog/customer-
 import { AlertComponent } from '../../dialogs/alert/alert.component';
 import { isSameDate } from 'src/app/helper/utilities';
 import { ConfirmComponent } from '../../dialogs/confirm/confirm.component';
+import { SendingProfileService } from 'src/app/services/sending-profile.service';
 
 
 @Component({
@@ -49,6 +50,8 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
   url: string;
   keywords: string;
 
+  sendingProfiles = [];
+
   // The raw CSV content of the textarea
   csvText: string;
 
@@ -61,6 +64,7 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
   constructor(
     public subscriptionSvc: SubscriptionService,
     public customerSvc: CustomerService,
+    public sendingProfileSvc: SendingProfileService,
     private router: Router,
     private route: ActivatedRoute,
     private userSvc: UserService,
@@ -69,7 +73,8 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
     public layoutSvc: LayoutMainService
   ) {
     layoutSvc.setTitle('Subscription');
-    this.getDhsContacts();
+    this.loadDhsContacts();
+    this.loadSendingProfiles();
   }
 
   /**
@@ -79,15 +84,31 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
 
     // build form
     this.subscribeForm = new FormGroup({
-      selectedCustomerUuid: new FormControl('', Validators.required),
-      primaryContact: new FormControl(null, Validators.required),
-      dhsContact: new FormControl(null, Validators.required),
+      selectedCustomerUuid: new FormControl('', {
+        validators: Validators.required
+      }),
+      primaryContact: new FormControl(null, {
+        validators: Validators.required
+      }),
+      dhsContact: new FormControl(null, {
+        validators: Validators.required
+      }),
       startDate: new FormControl(new Date()),
       url: new FormControl(''),
       keywords: new FormControl(''),
-      csvText: new FormControl('', Validators.required)
+      sendingProfile: new FormControl('', {
+        validators: Validators.required
+      }),
+      csvText: new FormControl('', {
+        validators: Validators.required
+      }),
+      removeDuplicateTargets: new FormControl(true)
+    }, {
+      updateOn: 'blur'
+
     });
 
+    this.onChanges();
 
     this.pageMode = 'EDIT';
 
@@ -103,6 +124,45 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
   }
 
   /**
+   * Setup handlers for form field updates
+   */
+  onChanges(): void {
+    this.f.startDate.valueChanges.subscribe(val => {
+      this.subscription.start_date = val;
+      this.persistChanges();
+    });
+    this.f.url.valueChanges.subscribe(val => {
+      this.subscription.url = val;
+      this.persistChanges();
+    });
+    this.f.keywords.valueChanges.subscribe(val => {
+      this.subscription.keywords = val;
+      this.persistChanges();
+    });
+    this.f.sendingProfile.valueChanges.subscribe(val => {
+      this.subscription.sending_profile_name = val;
+    });
+    this.f.csvText.valueChanges.subscribe(val => {
+      this.subscription.target_email_list = this.buildTargetsFromCSV(val);
+      this.f.csvText.setValue(this.formatTargetsToCSV(this.subscription.target_email_list), { emitEvent: false });
+      this.persistChanges();
+    });
+    this.f.removeDuplicateTargets.valueChanges.subscribe(val => {
+      this.subscriptionSvc.removeDupeTargets = val;
+    });
+  }
+
+  /**
+   * Sends the model to the API if the subscription is in edit mode.
+   */
+  persistChanges() {
+    // patch the subscription in real time if in edit mode
+    if (this.pageMode.toLowerCase() === 'edit') {
+      this.subscriptionSvc.patchSubscription(this.subscription).subscribe();
+    }
+  }
+
+  /**
    * convenience getter for easy access to form fields
    */
   get f() { return this.subscribeForm.controls; }
@@ -114,10 +174,40 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
   loadPageForCreate(params: any) {
     this.pageMode = 'CREATE';
     this.action = this.actionCREATE;
-    let sub = this.subscriptionSvc.subscription;
-    sub = new Subscription();
-    this.subscription = sub;
-    sub.subscription_uuid = Guid.create().toString();
+    this.subscription = new Subscription();
+    this.subscription.subscription_uuid = Guid.create().toString();
+    this.enableDisableFields();
+  }
+
+  /**
+   * EDIT mode
+   */
+  loadPageForEdit(params: any) {
+    const sub = this.subscriptionSvc.subscription;
+    sub.subscription_uuid = params.id;
+
+    this.subscriptionSvc.getSubscription(sub.subscription_uuid)
+      .subscribe((s: Subscription) => {
+        this.subscription = s as Subscription;
+        this.subscriptionSvc.subscription = this.subscription;
+        this.layoutSvc.setTitle(`Subscription - ${this.subscription.name}`);
+        this.f.primaryContact.setValue(s.primary_contact.email);
+        this.f.dhsContact.setValue(s.dhs_contact_uuid);
+        this.f.url.setValue(s.url);
+        this.f.keywords.setValue(s.keywords);
+        this.f.csvText.setValue(this.formatTargetsToCSV(s.target_email_list));
+        this.f.removeDuplicateTargets.setValue(this.subscriptionSvc.removeDupeTargets);
+        this.f.sendingProfile.setValue(s.sending_profile_name);
+
+        this.enableDisableFields();
+
+        this.buildSubscriptionTimeline(s);
+
+        this.customerSvc.getCustomer(s.customer_uuid)
+          .subscribe((c: Customer) => {
+            this.customer = c;
+          });
+      });
   }
 
   /**
@@ -137,43 +227,13 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
     }
   }
 
-  getDhsContacts() {
+  /**
+   * Gets all known DHS contacts from the API.
+   */
+  loadDhsContacts() {
     this.subscriptionSvc.getDhsContacts().subscribe((data: any) => {
       this.dhsContacts = data;
     });
-  }
-
-  /**
-   * EDIT mode
-   */
-  loadPageForEdit(params: any) {
-    const sub = this.subscriptionSvc.subscription;
-    sub.subscription_uuid = params.id;
-
-    this.subscriptionSvc.getSubscription(sub.subscription_uuid)
-      .subscribe((s: Subscription) => {
-        this.subscription = s;
-        this.layoutSvc.setTitle(`Subscription - ${this.subscription.name}`)
-        this.f.primaryContact.setValue(s.primary_contact.email);
-        this.f.dhsContact.setValue(s.dhs_contact_uuid);
-        this.f.url.setValue(s.url);
-        this.f.keywords.setValue(s.keywords);
-        this.f.csvText.setValue(this.emailDisplay(s.target_email_list));
-
-        // disable some fields for in-progress subscriptions
-        if (s.status.toLowerCase() === 'in progress') {
-          this.f.url.disable();
-          this.f.keywords.disable();
-          this.f.csvText.disable();
-        }
-
-        this.buildSubscriptionTimeline(s);
-
-        this.customerSvc.getCustomer(s.customer_uuid)
-          .subscribe((c: Customer) => {
-            this.customer = c;
-          });
-      });
   }
 
   /**
@@ -186,6 +246,17 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
 
       this.customer.contact_list = this.customerSvc.getContactsForCustomer(c);
       this.primaryContact = this.customer.contact_list[0];
+    });
+  }
+
+  /**
+   *
+   */
+  loadSendingProfiles() {
+    // get the customer and contacts from the API
+    this.sendingProfileSvc.getAllProfiles().subscribe((data: any) => {
+      console.log(data);
+      this.sendingProfiles = data;
     });
   }
 
@@ -264,6 +335,7 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
         this.subscription.archived = true;
         this.subscriptionSvc
           .patchSubscription(this.subscription).subscribe(() => { });
+        this.enableDisableFields();
       }
     });
   }
@@ -281,6 +353,7 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
         this.subscription.archived = false;
         this.subscriptionSvc
           .patchSubscription(this.subscription).subscribe(() => { });
+        this.enableDisableFields();
       }
     });
   }
@@ -304,6 +377,9 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
     }
   }
 
+  /**
+   *
+   */
   changeDhsContact(e: any) {
     const contact = this.dhsContacts
       .find(x => (x.dhs_contact_uuid) === e.value);
@@ -342,17 +418,6 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
     });
   }
 
-  /**
-   * Formats emails for display in the form.
-   */
-  emailDisplay(targetList: Target[]) {
-    let output = '';
-    targetList.forEach((t: Target) => {
-      output += `${t.email}, ${t.first_name}, ${t.last_name}, ${t.position}\n`;
-    });
-    return output;
-  }
-
   subValid() {
     this.submitted = true;
 
@@ -372,24 +437,30 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
 
     this.dialogRefConfirm.afterClosed().subscribe(result => {
       if (result) {
-        this.subscriptionSvc.restartSubscription(this.subscription.subscription_uuid).subscribe(
-          (resp: Subscription) => {
-            this.subscription = resp;
-            this.dialog.open(AlertComponent, {
-              data: {
-                title: '',
-                messageText: `Subscription ${this.subscription.name} was restarted.`
-              }
+        // persist any changes before restart
+        this.subscriptionSvc.patchSubscription(this.subscription).subscribe(x => {
+
+          // restart
+          this.subscriptionSvc.restartSubscription(this.subscription.subscription_uuid).subscribe(
+            (resp: Subscription) => {
+              this.subscription = resp;
+              this.enableDisableFields();
+              this.dialog.open(AlertComponent, {
+                data: {
+                  title: '',
+                  messageText: `Subscription ${this.subscription.name} was restarted.`
+                }
+              });
+            },
+            error => {
+              this.dialog.open(AlertComponent, {
+                data: {
+                  title: 'Error',
+                  messageText: 'An error occurred restarting the subscription: ' + error.error
+                }
+              });
             });
-          },
-          error => {
-            this.dialog.open(AlertComponent, {
-              data: {
-                title: 'Error',
-                messageText: 'An error occurred restarting the subscription: ' + error.error
-              }
-            });
-          });
+        });
       }
     });
   }
@@ -405,6 +476,7 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
         this.subscriptionSvc.stopSubscription(this.subscription.subscription_uuid).subscribe(
           (resp: Subscription) => {
             this.subscription = resp;
+            this.enableDisableFields();
             this.dialog.open(AlertComponent, {
               data: {
                 title: '',
@@ -446,14 +518,16 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
     sub.start_date = this.startDate;
     sub.status = 'New Not Started';
 
-    sub.url = this.url;
+    sub.url = this.f.url.value;
 
     // keywords
     sub.keywords = this.f.keywords.value;
 
     // set the target list
     const csv = this.f.csvText.value;
-    sub.setTargetsFromCSV(csv);
+    sub.target_email_list = this.buildTargetsFromCSV(csv);
+
+    sub.sending_profile_name = this.f.sendingProfile.value;
 
     // call service with everything needed to start the subscription
     this.subscriptionSvc.submitSubscription(sub).subscribe(
@@ -477,7 +551,23 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
       });
   }
 
-
+  /**
+   * Enables and disabled fields based on the subscription status.
+   */
+  enableDisableFields() {
+    const status = this.subscription?.status?.toLowerCase();
+    if (status === 'in progress') {
+      this.f.url.disable();
+      this.f.keywords.disable();
+      this.f.sendingProfile.disable();
+      this.f.csvText.disable();
+    } else {
+      this.f.url.enable();
+      this.f.keywords.enable();
+      this.f.sendingProfile.enable();
+      this.f.csvText.enable();
+    }
+  }
 
   /**
    *
@@ -486,6 +576,61 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
     const result = new Date(date);
     result.setDate(result.getDate() + days);
     return result;
+  }
+
+  /**
+   * Converts a string with CSV lines into Targets.
+   * Format: email, firstname, lastname, position
+   * @param csv A comma-separated string with linefeed delimiters
+   */
+  public buildTargetsFromCSV(csv: string): Target[] {
+    let targetList: Target[] = [];
+    if (!csv) {
+      return;
+    }
+    const lines = csv.split('\n');
+    lines.forEach((line: string) => {
+      const parts = line.split(',');
+      if (parts.length === 4) {
+        const t = new Target();
+        t.email = parts[0].trim();
+        t.first_name = parts[1].trim();
+        t.last_name = parts[2].trim();
+        t.position = parts[3].trim();
+        targetList.push(t);
+      }
+    });
+
+    // remove duplicate emails if desired
+    if (this.subscriptionSvc.removeDupeTargets) {
+      const uniqueArray: Target[] = targetList.filter((t1, index) => {
+        return index === targetList.findIndex(t2 => {
+          return t2.email.toLowerCase() === t1.email.toLowerCase();
+        });
+      });
+      targetList = uniqueArray;
+    }
+
+    return targetList;
+  }
+
+  /**
+   * Formats Targets for display in the form.
+   */
+  formatTargetsToCSV(targetList: Target[]) {
+    if (!targetList) {
+      return '';
+    }
+    let output = '';
+    targetList.forEach((t: Target) => {
+      output += `${t.email}, ${t.first_name}, ${t.last_name}, ${t.position}\n`;
+    });
+
+    if (output.length > 0) {
+      output = output.substring(0, output.length - 1);
+    }
+
+    return output;
   }
 
   /**

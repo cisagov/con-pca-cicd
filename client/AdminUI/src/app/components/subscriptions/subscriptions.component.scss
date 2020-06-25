@@ -1,3 +1,8 @@
 .search-bar {
   width: 100%;
 }
+
+.spinner {
+  display: flex;
+  flex-flow: row-reverse wrap;
+}

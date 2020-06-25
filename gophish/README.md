@@ -50,12 +50,12 @@ A registered domain name
 - test the connection via `ping` button
 - Webhooks are now setup for `con-pca`
 
-### Credentials
-
+### GoPhish Credentials
+- run `docker logs pca-gophish`
+  - look for your username and password
 - visit: `localhost:3333`
-  - Default credentials:
-    - username: `admin`
-    - password: `gophish`
+  - login with the credentials found in the logs
+  - update your password
 
 ### Stop and Remove project containers
 

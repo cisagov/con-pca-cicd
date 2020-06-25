@@ -31,7 +31,8 @@
                     </mat-card>
 
                     <div class="mb-3">
-                        <button mat-raised-button color="primary" *ngIf="pageMode == 'CREATE'" (click)="showCustomerDialog()">Assign Customer
+                        <button mat-raised-button color="primary" *ngIf="pageMode == 'CREATE'"
+                            (click)="showCustomerDialog()">Assign Customer
                             <i class="fa fa-search" style="font-size: 1rem;"></i>
                         </button>
                     </div>
@@ -54,7 +55,6 @@
                 <div>
                     <mat-form-field appearance="outline">
                         <mat-label>DHS Contact</mat-label>
-
                         <mat-select formControlName="dhsContact" (selectionChange)="changeDhsContact($event)">
                             <mat-option [value]="null">--Select--</mat-option>
                             <mat-option *ngFor="let c of dhsContacts" [value]="c.dhs_contact_uuid">
@@ -80,7 +80,7 @@
 
             <mat-label class="h6">Customer Website</mat-label>
             <div class="text-muted">The customer's page will be analyzed
-                to send phishing emails relevant to their industry.
+                to prioritize phishing emails relevant to their industry.
             </div>
             <mat-form-field class="w-100" appearance="outline">
                 <input matInput formControlName="url" type="text">
@@ -96,25 +96,54 @@
                 <textarea matInput autosize formControlName="keywords"></textarea>
             </mat-form-field>
 
+            <mat-label class="h6">Sending Profile</mat-label>
+            <div class="mb-4">
+                <div class="text-muted" *ngIf="sendingProfiles.length > 0">Select the sending profile that will be used
+                </div>
+                <mat-form-field appearance="outline" *ngIf="sendingProfiles.length > 0">
+                    <mat-label>Sending Profile</mat-label>
+                    <mat-select formControlName="sendingProfile">
+                        <mat-option [value]="null">--Select--</mat-option>
+                        <mat-option *ngFor="let sp of sendingProfiles" [value]="sp.name">
+                            {{ sp.name }}</mat-option>
+                    </mat-select>
+                    <div *ngIf="submitted && f.sendingProfile.errors" class="invalid-feedback">
+                        <div *ngIf="f.sendingProfile.errors.required">Sending Profile required</div>
+                    </div>
+                </mat-form-field>
+                <div class="error-color" *ngIf="sendingProfiles.length === 0">
+                    A Sending Profile is required, but none are currently configured.  
+                    Create one or more Sending Profiles before proceeding. 
+                </div>
+            </div>
+
 
             <div class="mb-3">
                 <div>
                     <mat-label class="h6">Target Recipients</mat-label>
                 </div>
-                <div class="text-muted">Upload an Excel spreadsheet or comma-separated value text
+                <div class="text-muted" *ngIf="f.csvText?.enabled">Upload an Excel spreadsheet or comma-separated value
+                    text
                     file containing the list of target individuals or enter them
                     directly in the field below.
                 </div>
                 <div class="text-muted"><em>Format: email, firstname, lastname, position</em></div>
             </div>
 
-            <button mat-raised-button color="primary" class="mb-3" *ngIf="pageMode == 'CREATE'" (click)="openFileBrowser($event)">
+            <button mat-raised-button color="primary" class="mb-3" *ngIf="f.csvText?.enabled"
+                (click)="openFileBrowser($event)">
                 Upload Email Targets List <i class="fa fa-upload"></i>
             </button>
             <input id="csvUpload" type="file" accept=".csv,.xls,.xlsx" (change)="fileSelect($event)" class="d-none">
+
+            <mat-checkbox formControlName="removeDuplicateTargets" *ngIf="f.csvText?.enabled">
+                <mat-label>Automatically remove duplicate emails</mat-label>
+            </mat-checkbox>
+
             <mat-form-field class="w-100 flex-grow-1" appearance="outline">
                 <mat-label>Target Emails</mat-label>
-                <textarea matInput autosize formControlName="csvText" [ngClass]="{ 'is-invalid': submitted && f.csvText.errors }">
+                <textarea matInput autosize formControlName="csvText"
+                    [ngClass]="{ 'is-invalid': submitted && f.csvText.errors }">
                     </textarea>
                 <div *ngIf="submitted && f.csvText.errors" class="invalid-feedback">
                     <div *ngIf="f.csvText.errors.required">Targets must be defined</div>
@@ -134,20 +163,24 @@
                         </delete-subscription>
                     </div>
                     <div>
-                        <button mat-raised-button *ngIf="subscription?.status == 'stopped' && !subscription?.archived" color="accent" (click)="archiveSubscription()">
+                        <button mat-raised-button *ngIf="subscription?.status == 'stopped' && !subscription?.archived"
+                            color="accent" (click)="archiveSubscription()">
                             Archive Subscription
                         </button>
 
                     </div>
                 </div>
                 <div class="startButton">
-                    <button mat-raised-button *ngIf="subscription?.status == 'stopped' && !subscription?.archived" color="primary" (click)="startSubscription()">
+                    <button mat-raised-button *ngIf="subscription?.status == 'stopped' && !subscription?.archived"
+                        color="primary" (click)="startSubscription()">
                         Start Subscription
                     </button>
-                    <button mat-raised-button *ngIf="subscription?.status == 'In Progress' && !subscription?.archived" color="accent" (click)="stopSubscription()">
+                    <button mat-raised-button *ngIf="subscription?.status == 'In Progress' && !subscription?.archived"
+                        color="accent" (click)="stopSubscription()">
                         Stop Subscription
                     </button>
-                    <button mat-raised-button *ngIf="subscription?.archived" color="primary" (click)="unarchiveSubscription()">
+                    <button mat-raised-button *ngIf="subscription?.archived" color="primary"
+                        (click)="unarchiveSubscription()">
                         Unarchive Subscription
                     </button>
                 </div>

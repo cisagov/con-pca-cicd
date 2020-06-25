@@ -49,30 +49,7 @@ export class Subscription {
     url: string;
     target_email_list: Target[] = [];
     gophish_campaign_list: GoPhishCampaignModel[];
-
-  /**
-   * Converts a string with CSV lines into Targets.
-   * Format: email, firstname, lastname, position
-   * @param csv
-   */
-  public setTargetsFromCSV(csv: string) {
-    this.target_email_list = [];
-    if (!csv) {
-      return;
-    }
-    let lines = csv.split('\n');
-    lines.forEach((line: string) => {
-      let parts = line.split(',');
-      if (parts.length == 4) {
-        let t = new Target();
-        t.email = parts[0].trim();
-        t.first_name = parts[1].trim();
-        t.last_name = parts[2].trim();
-        t.position = parts[3].trim();
-        this.target_email_list.push(t);
-      }
-    });
-  }
+    sending_profile_name: string;
 }
 
 /**
