@@ -12,22 +12,24 @@
   padding: 0;
 }
 
+#cover, #pageOne, #pageTwo, #pageThree, #pageFour, #pageFive, #pageSix, #pageSeven, #pageEight, #pageNine, #pageTen, #pageEleven, #pageTwelve {
+  page-break-after: always;
+}
+
 #bluePhishLogo {
-  margin-top: 2.5%;
-  margin-right: 5%;
+  margin-right: -2.5%;
   text-align: right;
 }
 
 #blueHacker {
-  margin-top: 4%;
-  margin-left: 7.5%;
+  margin-top: 8%;
+  margin-left: 10%;
 }
 
 #reportTitle {
   font-size: 125px;
   color: #015596;
   margin-top: 7.5%;
-  margin-bottom: 10%;
   text-align: center;
 }
 
@@ -51,16 +53,17 @@
 
 #centerCisaLogo {
   text-align: center;
-  margin-top: 40%;
 }
 
 #assessmentTitle {
   text-align: center;
   margin-top: 3%;
+  margin-bottom: 5%;
 }
 
 #subscriptionDetailsTable {
   margin-top: 5%;
+  margin-bottom: 5%;
   margin-right: auto;
   margin-left: 25%;
   width: 60%;
@@ -77,56 +80,42 @@
   margin-top: 10%;
   margin-left: auto;
   margin-right: auto;
-  width: 60%;
 }
 
 #executiveReportTitle {
-  margin-top: 10%;
-  margin-left: 10%;
   width: 60%;
   color: #015596;
 }
 
 .executiveReportDetails {
   margin-top: 2.5%;
-  margin-left: 10%;
-  width: 80%;
 }
 
 #userMetrics {
   margin-left: 10%;
-  padding: 5px 5px 5px 5px;
-  width: 80%;
   border: 1px solid black;
 }
 
 #subNotesOne {
   margin-top: 1%;
   margin-left: 10%;
-  width: 80%;
+  font-size: 10px;
 }
 
 #recommendationsTitle {
   margin-top: 2.5%;
-  margin-left: 10%;
 }
 
 #recommendations {
-  margin-left: 10%;
   width: 80%;
 }
 
 #summaryTitle {
-  margin-top: 10%;
-  margin-left: 10%;
   color: #015596;
 }
 
 #summary {
-  margin-top: 2.5%;
-  margin-left: 10%;
   margin-bottom: 5%;
-  width: 60%;
 }
 
 #companyAverageText {
@@ -151,7 +140,7 @@
   margin-top: 5%;
   margin-right: auto;
   margin-left: auto;
-  padding-top: 5%;
+  padding-top: 10%;
 }
 
 #industryAverageBox {
@@ -164,7 +153,7 @@
   margin-top: 5%;
   margin-right: auto;
   margin-left: auto;
-  padding-top: 5%;
+  padding-top: 10%;
 }
 
 #sectorAverageBox {
@@ -177,12 +166,11 @@
   margin-top: 5%;
   margin-right: auto;
   margin-left: auto;
-  padding-top: 5%;
+  padding-top: 10%;
 }
 
 #yearTrendsTitle {
   margin-top: 10%;
-  margin-left: 10%;
 }
 
 #trendLineGraph {
@@ -193,12 +181,11 @@
 
 #trendStatistics {
   margin-top: 3%;
-  margin-left: 10%;
 }
 
 #subNotesTwo {
-  margin-top: 1%;
-  margin-left: 10%;
+  margin-top: 2.5%;
+  font-size: 10px;
 }
 
 #phishingSuccessGraph {
@@ -207,8 +194,6 @@
 }
 
 #levelGraphTitle {
-  margin-top: 5%;
-  margin-left: 10%;
 }
 
 #numbersByLevelGraph {
@@ -218,81 +203,71 @@
 }
 
 #methodologyTitle {
-  margin-top: 10%;
-  margin-left: 10%;
   color: #015596;
 }
 
 #methodologyText {
   margin-top: 2.5%;
-  margin-left: 10%;
   width: 80%;
 }
 
 #testingSummaryTitle {
   margin-top: 7.55%;
-  margin-left: 10%;
   color: #015596;
 }
 
 #testingSummaryText {
   margin-top: 2.5%;
-  margin-left: 10%;
   width: 80%;
 }
 
 #templateOverviewTable {
   margin-top: 2.5%;
-  margin-left: auto;
-  margin-right: auto;
-  width: 60%;
+  width: 80%
 }
 
 #rateComparisonTitle {
-  margin-top: 5%;
-  margin-left: 10%;
+
 }
 
 #rateComparisonText {
   margin-top: 1%;
-  margin-left: 10%;
   width: 80%;
 }
 
 #rateComparisonTable {
-  margin-top: 3%;
+  margin-top: 10%;
   margin-left: auto;
   margin-right: auto;
-  width: 60%;
+  width: 80%;
+  border: 1px solid black;
+  text-align: center;
 }
 
 #timeComparisonTitle {
-  margin-top: 5%;
-  margin-left: 10%;
 }
 
 #timeComparisonText {
   margin-top: 3%;
-  margin-left: 10%;
   width: 80%;
 }
 
 #timeComparisonTable {
-  margin-top: 3%;
+  margin-top: 5%;
   margin-left: auto;
   margin-right: auto;
-  width: 60%;
+  width: 80%;
+  border: 1px solid black;
+  text-align: center;
 }
 
 #intervalGraphDetails {
-  margin-top: 7.5%;
-  margin-left: 10%;
-  width: 60%;
+  margin-top: 10%;
+  width: 80%;
 }
 
 #timeIntervalTitle {
   margin-top: 5%;
-  margin-left: 10%;
 }
 
 #timeIntervalGraph {
@@ -304,7 +279,6 @@
 
 #timeComplexityTitle {
   margin-top: 5%;
-  margin-left: 10%;
 }
 
 #timeComplexityGraph {
@@ -315,31 +289,24 @@
 }
 
 #closingTitle {
-  margin-top: 10%;
-  margin-left: 10%;
   color: #015596;
 }
 
 #closingText {
-  margin-top: 2.5%;
-  margin-left: 10%;
+  margin-top: 5%;
   width: 80%;
 }
 
 #appendixOneTitle {
-  margin-top: 5%;
-  margin-left: 10%;
 }
 
 #appendixOneText {
   margin-top: 2.5%;
-  margin-left: 10%;
   width: 80%;
 }
 
 #levelTitle {
   margin-top: 5%;
-  margin-left: 10%;
 }
 
 #levelText {
@@ -348,29 +315,12 @@
   width: 60%;
 }
 
-#appendixTwoTitle {
-  margin-top: 10%;
-  margin-left: 10%;
-}
-
-#appendixTwoText {
-  margin-top: 3%;
-  margin-left: 10%;
-}
-
-#emailComplexityTable {
-  margin-top: 5%;
-  margin-left: 10%;
-}
-
 #dumbPhishTitle {
-  margin-top: 10%;
-  margin-left: 10%;
   color: #015596;
 }
 
 #dumbPhishTable {
-  margin-top: 1%;
+  margin-top: 10%;
   margin-left: 15%;
 }
 
@@ -385,13 +335,11 @@
 }
 
 #mediumPhishTitle {
-  margin-top: 5%;
-  margin-left: 10%;
   color: #015596;
 }
 
 #mediumPhishTable {
-  margin-top: 1%;
+  margin-top: 10%;
   margin-left: 15%;
 }
 
@@ -406,13 +354,11 @@
 }
 
 #hardPhishTitle {
-  margin-top: 5%;
-  margin-left: 10%;
   color: #015596;
 }
 
 #hardPhishTable {
-  margin-top: 1%;
+  margin-top: 10%;
   margin-left: 15%;
 }
 

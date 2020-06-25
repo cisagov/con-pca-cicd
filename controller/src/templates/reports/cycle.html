@@ -38,9 +38,14 @@
                 vAxis: {title: 'Percent'}
             };
 
-            var chart = new google.visualization.LineChart(document.getElementById('trendLineGraph'));
-            chart.draw(data, options);
-    }
+            var chart_div = document.getElementById('trendLineGraph');
+            var chart = new google.visualization.LineChart(chart_div);
+
+            google.visualization.events.addListener(chart, 'ready', function() {
+                chart_div.innerHTML = '<img src="' + chart.getImageURI() + '">';
+            });
+            chart.draw(data, options); 
+        }
 
         // Graph of numbers by phishing difficulty
         function drawNumbersByLevel() {
@@ -58,7 +63,14 @@
                 seriesType: 'bars',
                 series: {4: {type: 'bar'}}
             }; 
-            var chart = new google.visualization.ComboChart(document.getElementById('numbersByLevelGraph'));
+
+            var chart_div = document.getElementById('numbersByLevelGraph');
+            var chart = new google.visualization.ComboChart(chart_div);
+
+            google.visualization.events.addListener(chart, 'ready', function() {
+                chart_div.innerHTML = '<img src="' + chart.getImageURI() + '">';
+                console.log(chart_div.innerHTML);
+            });
             chart.draw(data, options);
          }
 
@@ -82,7 +94,14 @@
                 vAxis: {title: '% of Unique User Clicks'}
             };
 
-            var chart = new google.visualization.ColumnChart(document.getElementById('timeIntervalGraph'));
+            var chart_div = document.getElementById('timeIntervalGraph');
+            var chart = new google.visualization.ColumnChart(chart_div);
+
+            google.visualization.events.addListener(chart, 'ready', function() {
+                chart_div.innerHTML = '<img src="' + chart.getImageURI() + '">';
+                console.log(chart_div.innerHTML);
+            });
+
             chart.draw(data, options);
         }
 
@@ -103,7 +122,14 @@
                 vAxis: {title: 'Elapsed Time'}
             };
 
-            var chart = new google.visualization.ColumnChart(document.getElementById('timeComplexityGraph'));
+            var chart_div = document.getElementById('timeComplexityGraph');
+            var chart = new google.visualization.ColumnChart(chart_div);
+
+            google.visualization.events.addListener(chart, 'ready', function() {
+                chart_div.innerHTML = '<img src="' + chart.getImageURI() + '">';
+                console.log(chart_div.innerHTML);
+            });
+
             chart.draw(data, options);
         }
     
@@ -126,7 +152,7 @@
             <div class="row">
                 <div class="col-12">
                     <div id="blueHacker">
-                        <img src="{% static '/img/blue_hacker2.png' %}"></img>
+                        <img src="{% static '/img/blue_hacker.png' %}"></img>
                         </div>
                 </div>
             </div>
@@ -170,9 +196,7 @@
                 </div>
                 <div class="row">
                     <div class="col-12">
-                        <div id="assessmentTitle">
-                            <h1>Continuous Phishing Campaign Assessment Details</h1>
-                        </div>
+                        <h1 id="assessmentTitle">Continuous Phishing Campaign Assessment Details</h1>
                     </div>
                 </div>
                 <div class="row">
@@ -230,11 +254,6 @@
                         </table>
                     </div>
                 </div>
-            </div>
-        </article>
-
-        <article id="pageTwo">
-            <div class="container-fluid">
                 <div class="row">
                     <div class="col-12">
                         <div id="reportInstructions">
@@ -257,9 +276,10 @@
                         </div>
                     </div>
                 </div>
+            </div>
         </article>
 
-        <article id="pageThree">
+        <article id="pageTwo">
             <div class="row">
                 <div class="col-12">
                     <h1 id="executiveReportTitle">Executive Report</h1>    
@@ -286,11 +306,11 @@
                             <td>1000</td>
                         </tr>
                         <tr>
-                            <td># of emails (phishing attempts) sent overall</td>
+                            <td># of emails sent overall</td>
                             <td>2000 (2 per user)</td>
                         </tr>
                         <tr>
-                            <td># of clicked emails (successful phishing attempts) overall</td>
+                            <td style="padding:0 150px 0 0;"># of clicked emails overall</td>
                             <td>219 (10.95% click rate)</td>
                         </tr>
                         <tr>
@@ -298,20 +318,8 @@
                             <td>203 (20.3% of target population)</td>
                         </tr>
                         <tr>
-                            <td># of user reports sent to helpdesk overall</td>
-                            <td>148 (7.4% report rate)</td>
-                        </tr>
-                        <tr>
-                            <td>Ratio of reports-to-clicks</td>
-                            <td>.68</td>
-                        </tr>
-                        <tr>
                             <td>Average time to first click</td>
                             <td>0 hours 52 minutes 41 seconds</td>
-                        </tr>
-                        <tr>
-                            <td>Average time to first report</td>
-                            <td>0 hours 30 minutes 25 seconds</td>
                         </tr>
                         <tr>
                             <td>Most successful phishing template</td>
@@ -324,12 +332,12 @@
                 <div class="col-12">
                     <div id="subNotesOne">
                         <ol>
-                            <sub><li>Click rate is the total number of phishing emails that users clicked on divided by the total number of emails sent. Users had to click on the “malicious” link in the email in order to be counted as “phished.”</li><br>
+                            <li>Click rate is the total number of phishing emails that users clicked on divided by the total number of emails sent. Users had to click on the “malicious” link in the email in order to be counted as “phished.”</li><br>
                             <li>There were 203 users who clicked a “malicious” email link at least once by the end of the PCA out of the 1000 that were phished. There were 16 users who clicked in more than one campaign.</li><br>
                             <li>Reporting rate is total number of user reports to the helpdesk divided by total phishing emails sent.</li><br>
                             <li>Average time to first click and first report is calculated with geometric mean to compensate for a small sample size that is sensitive to being skewed by outliers.</li><br>
                             <li>Click time is the time NCATS sent the email minus the time user clicked the link within th email.</li><br>
-                            <li> Report time is the time NCATS sent the emails minus the time user alerts security office or helpdesk.</li></sub>
+                            <li> Report time is the time NCATS sent the emails minus the time user alerts security office or helpdesk.</li>
                         </ol>
                     </div>
                 </div>
@@ -341,9 +349,6 @@
                     Vulnerability Management has established this voluntary service to help your organization support security awareness training efforts and decrease information system user vulnerability to phishing attempts.</P>
                 </div>
             </div>
-        </article>
-
-        <article id="pageFour">
             <div class="row">
                 <div class="col-12">
                     <h3 id="recommendationsTitle">Recommendations</h3>
@@ -410,7 +415,7 @@
                             <td>13 hours</td>
                         </tr>
                         <tr>
-                            <th>Median Time of opening from first send: </th>
+                            <th style="padding: 0 75px 0 0;">Median Time of opening from first send: </th>
                             <td>13 hours</td>
                         </tr>
                         <tr>
@@ -428,26 +433,15 @@
                 <div class="col-12">
                     <div id="subNotesTwo">
                         <ul>
-                            <sub><li>Time from start shows how quickly your organization detects a phishing campaign</li><br>
+                            <li>Time from start shows how quickly your organization detects a phishing campaign</li><br>
                             <li>Comparing median time and first reported time is the attacker window.</li><br>
                             <li>Shortest time to open compared to first report indicates the window of time the attacker has before detection.</li><br>
                             <li>An indicator of how long a phishing campaign could potentially be viable.</li><br>
-                            <li>Values based on phishing assessments conducted by CISA VM.</li></sub><br>
+                            <li>Values based on phishing assessments conducted by CISA VM.</li><br>
                         </ul>
                     </div>
                 </div>
             </div>
-        </article>
-
-        <article id="pageSix">
-            <!--<div class="row">
-                <div class="col-12">
-                    <div id="phishingSuccessGraph">
-                        <b>Phishing Success Overview Table Title</b>
-                        <b>LINE GRAPH</b>
-                    </div>
-                </div>
-            </div>-->
             <div class="row">
                 <div class="col-12">
                     <div id="levelGraphTitle">
@@ -458,7 +452,7 @@
             </div>
         </article>
 
-        <article id="pageSeven">
+        <article id="pageSix">
             <div class="row">
                 <div class="col-12">
                     <h1 id="methodologyTitle">Example Methodology Specifics</h1>
@@ -477,15 +471,12 @@
                     </div>
                 </div>
             </div>
-        </article>
-
-        <article id="pageEight">
             <div class="row">
                 <div class="col-12">
                     <table id="templateOverviewTable">
                         <tr>
-                            <th style="padding:0 15px 0 0;">Level</th>
-                            <th>Description</th>
+                            <th style="padding:0 75px 0 0;">Level</th>
+                            <th style="padding: 0 225px 0 0;">Description</th>
                             <th>Displayed Link</th>
                         </tr>
                         <tr>
@@ -530,14 +521,11 @@
                     </div>
                 </div>
             </div>
-        </article>
-
-        <article id="pageNine">
             <div class="row">
                 <div class="col-12">
                     <table id="rateComparisonTable">
                         <tr>
-                            <th>Level</th>
+                            <th style="padding:0 15px 0 0;">Level</th>
                             <th>Campaign</th>
                             <th>User Click Rate</th>
                             <th>Unique Clicks</th>
@@ -605,7 +593,7 @@
         </article>
 
         </article>
-        <article id="pageTen">
+        <article id="pageSeven">
             <div class="row">
                 <div class="col-12">
                     <h2 id="timeComparisonTitle">Click Time vs. Report Time</h2>
@@ -682,7 +670,7 @@
             </div>
         </article>
         
-        <article id="pageEleven">
+        <article id="pageEight">
             <div class="row">
                 <div class="col-12">
                     <h1 id="closingTitle">Closing</h1>
@@ -706,7 +694,7 @@
                 </div>
         </article>
 
-        <article id="pageTwelve">
+        <article id="pageNine">
             <div class="row">
                 <div class="col-12">
                     <h2 id="appendixOneTitle">Appendix C: Templates</h2>
@@ -730,7 +718,7 @@
             </div>
         </article>
         
-        <article id="pageThirteen">
+        <article id="pageTen">
             <div class="row">
                 <div class="col-12">
                     <h3 id="dumbPhishTitle">Low Templates/Dumb Phish</h3>
@@ -788,7 +776,7 @@
             </div>
         </article>
 
-        <article id="pageFourteen">
+        <article id="pageEleven">
             <div class="row">
                 <div class="col-12">
                     <h3 id="mediumPhishTitle">Medium Templates/Moderate Phish</h3>
@@ -838,7 +826,7 @@
             </div>
         </article>
 
-        <article id="pageFifteen">
+        <article id="pageTwelve">
             <div class="row">
                 <div class="col-12">
                     <h3 id="hardPhishTitle">Difficult Templates/Spear Phish</h3>
