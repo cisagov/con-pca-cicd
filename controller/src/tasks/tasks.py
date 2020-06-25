@@ -33,6 +33,9 @@ def email_subscription_report(subscription_uuid, message_type, send_date):
     # Schedule next task
     if message_type == "monthly_report":
         next_send_date = send_date + timedelta(days=30)
+        task = email_subscription_monthly.apply_async(
+            args=[subscription], eta=next_send_date
+        )
     elif message_type == "cycle_report":
         # Set GoPhish Campaign to Complete for Cycle Reports
         campaigns = subscription.get("gophish_campaign_list")
@@ -43,8 +46,14 @@ def email_subscription_report(subscription_uuid, message_type, send_date):
 
         # Schedule next task
         next_send_date = send_date + timedelta(days=90)
+        task = email_subscription_cycle.apply_async(
+            args=[subscription], eta=next_send_date
+        )
     elif message_type == "yearly_report":
         next_send_date = send_date + timedelta(days=365)
+        task = email_subscription_yearly.apply_async(
+            args=[subscription], eta=next_send_date
+        )
 
     context = {
         "subscription_uuid": subscription_uuid,

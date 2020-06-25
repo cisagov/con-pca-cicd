@@ -127,4 +127,5 @@ def create_scheduled_email_tasks(created_response):
             context.append({"task_uuid": task.id, "message_type": message_type})
         except task.OperationalError as exc:
             logger.exception("Subscription task raised: %r", exc)
+
     return context
