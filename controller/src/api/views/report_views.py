@@ -176,7 +176,7 @@ class ReportsPDFView(APIView):
         operation_description="This downloads a subscription report PDF by subscription uuid",
     )
     def get(self, request, subscription_uuid):
-        html = HTML(f"http://localhost:8000/reports/{subscription_uuid}/")
+        html = HTML(f"http://localhost:8000/reports/{subscription_uuid}/cycle/")
         html.write_pdf("/tmp/subscription_report.pdf")
 
         fs = FileSystemStorage("/tmp")
