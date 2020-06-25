@@ -177,14 +177,14 @@ class MonthlyReportsPDFView(APIView):
     )
     def get(self, request, subscription_uuid):
         html = HTML(f"http://localhost:8000/reports/{subscription_uuid}/monthly/")
-        html.write_pdf("/tmp/subscription_report.pdf")
+        html.write_pdf("/tmp/monthly_subscription_report.pdf")
 
         fs = FileSystemStorage("/tmp")
-        with fs.open("subscription_report.pdf") as pdf:
+        with fs.open("monthly_subscription_report.pdf") as pdf:
             response = HttpResponse(pdf, content_type="application/pdf")
             response[
                 "Content-Disposition"
-            ] = 'attachment; filename="subscription_report.pdf"'
+            ] = 'attachment; filename="monthly_subscription_report.pdf"'
             return response
 
 
@@ -203,14 +203,14 @@ class CycleReportsPDFView(APIView):
     )
     def get(self, request, subscription_uuid):
         html = HTML(f"http://localhost:8000/reports/{subscription_uuid}/cycle/")
-        html.write_pdf("/tmp/subscription_report.pdf")
+        html.write_pdf("/tmp/subscription_cycle_report.pdf")
 
         fs = FileSystemStorage("/tmp")
-        with fs.open("subscription_report.pdf") as pdf:
+        with fs.open("subscription_cycle_report.pdf") as pdf:
             response = HttpResponse(pdf, content_type="application/pdf")
             response[
                 "Content-Disposition"
-            ] = 'attachment; filename="subscription_report.pdf"'
+            ] = 'attachment; filename="subscription_cycle_report.pdf"'
             return response
 
 
@@ -229,12 +229,12 @@ class YearlyReportsPDFView(APIView):
     )
     def get(self, request, subscription_uuid):
         html = HTML(f"http://localhost:8000/reports/{subscription_uuid}/yearly/")
-        html.write_pdf("/tmp/subscription_report.pdf")
+        html.write_pdf("/tmp/yearly_subscription_report.pdf")
 
         fs = FileSystemStorage("/tmp")
-        with fs.open("subscription_report.pdf") as pdf:
+        with fs.open("yearly_subscription_report.pdf") as pdf:
             response = HttpResponse(pdf, content_type="application/pdf")
             response[
                 "Content-Disposition"
-            ] = 'attachment; filename="subscription_report.pdf"'
+            ] = 'attachment; filename="yearly_subscription_report.pdf"'
             return response
