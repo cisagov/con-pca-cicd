@@ -117,6 +117,15 @@
                 </div>
             </div>
 
+            <mat-label class="h6">Reports</mat-label>
+            <div class="mb-4">
+                <div class="text-muted">View or send this subscription's reports</div>
+                <a mat-raised-button color="primary" class="mb-3" href="localhost:8000/api/v1/reports/7977b8ee-d897-4c64-bd04-6cc0edd4ac57/pdf/monthly/" (click)="viewMonthlyReport()">View Monthly Report</a>
+                <button mat-raised-button color="primary" class="mb-3" (click)="viewCycleReport()">View Cycle Report</button><br><br>
+                <button mat-raised-button color="accent" class="mb-3" (click)="sendMonthlyReport()">Send Monthly Report</button>
+                <button mat-raised-button color="accent" class="mb-3" (click)="sendCycleReport()">Send Cycle Report</button><br>
+            </div>
+
 
             <div class="mb-3">
                 <div>
