@@ -193,7 +193,7 @@ class SubscriptionView(APIView):
             campaign_manager.delete("user_group", group_id=group_id)
 
         # Remove subscription tasks from the scheduler
-        if subscription["tasks"]:
+        if "tasks" in subscription:
             [
                 revoke(task["task_uuid"], terminate=True)
                 for task in subscription["tasks"]
@@ -282,7 +282,7 @@ class SubscriptionStopView(APIView):
         resp = stop_subscription(subscription)
 
         # Cancel scheduled subscription emails
-        if subscription["tasks"]:
+        if "tasks" in subscription:
             [
                 revoke(task["task_uuid"], terminate=True)
                 for task in subscription["tasks"]
