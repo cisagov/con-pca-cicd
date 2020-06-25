@@ -88,10 +88,12 @@ def __create_campaign(
 
     campaign_name = f"{base_name}.{template['name']}.{campaign_start.strftime('%Y-%m-%d')}.{campaign_end.strftime('%Y-%m-%d')}"
 
+    sending_profile_name = subscription.get("sending_profile_name")
+
     campaign = campaign_manager.create(
         "campaign",
         campaign_name=campaign_name,
-        smtp_name="SMTP",
+        smtp_name=sending_profile_name,
         page_name=landing_page,
         user_group=target_group,
         email_template=created_template,
