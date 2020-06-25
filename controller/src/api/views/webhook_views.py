@@ -11,6 +11,7 @@ from api.serializers.subscriptions_serializers import (
 )
 from api.utils.db_utils import get_single_subscription_webhook, update_single_webhook
 from api.utils.generic import format_ztime
+from api.utils.template.templates import update_target_history
 from drf_yasg.utils import swagger_auto_schema
 from notifications.views import SubscriptionNotificationEmailSender
 from rest_framework import status
@@ -67,9 +68,7 @@ class IncomingWebhookView(APIView):
                 self.__update_phishing_results(webhook_data, cycle["phish_results"])
 
     def is_duplicate_timeline_entry(self, timeline, webhook_data):
-        """
-        Check if webhook data is already registered in the timeline data.
-        """
+        """Check if webhook data is already registered in the timeline data."""
         for moment in timeline:
             if (
                 moment["message"] == webhook_data["message"]
@@ -150,12 +149,26 @@ class IncomingWebhookView(APIView):
                             }
                         )
                         if not is_duplicate:
+                            if campaign["phish_results"] is None:
+                                campaign["phish_results"] = {
+                                    "sent": 0,
+                                    "opened": 0,
+                                    "clicked": 0,
+                                    "submitted": 0,
+                                    "reported": 0,
+                                }
+
                             self.__update_phishing_results(
                                 data, campaign["phish_results"]
                             )
                             self.__update_cycle(data, subscription)
                         campaign["results"] = gophish_campaign_data["results"]
                         campaign["status"] = gophish_campaign_data["status"]
+
+                # update target history
+                if campaign_event == "Email Sent":
+                    # send campaign info and email gophish_campaign_data, seralized_data
+                    update_target_history(campaign, seralized_data)
 
             updated_response = update_single_webhook(
                 subscription=subscription,
