@@ -52,8 +52,9 @@ A registered domain name
 
 ### GoPhish Credentials
 - run `docker logs pca-gophish`
-  - look for your username and password in the logs
+  - look for your username and password
 - visit: `localhost:3333`
+  - login with the credentials found in the logs
   - update your password
 
 ### Stop and Remove project containers
