@@ -255,6 +255,7 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
   loadSendingProfiles() {
     // get the customer and contacts from the API
     this.sendingProfileSvc.getAllProfiles().subscribe((data: any) => {
+      console.log(data);
       this.sendingProfiles = data;
     });
   }
