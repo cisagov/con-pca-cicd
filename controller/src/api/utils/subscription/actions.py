@@ -1,34 +1,37 @@
-from api.utils.subscription.subscriptions import (
-    get_subscription,
-    create_subscription_name,
-    calculate_subscription_start_end_date,
-    get_subscription_status,
-    get_subscription_cycles,
-    send_start_notification,
-    create_scheduled_email_tasks,
-)
-from api.utils.subscription.template_selector import personalize_template_batch
-from api.utils.subscription.targets import batch_targets
-from api.utils.customer.customers import get_customer
-from api.utils.subscription.campaigns import generate_campaigns
-from api.utils import db_utils as db
+"""Subscription Util Actions."""
+
+# Standard Python Libraries
+from datetime import datetime
+import logging
+
+# Third-Party Libraries
+from api.manager import CampaignManager
 from api.models.subscription_models import SubscriptionModel, validate_subscription
 from api.serializers.subscriptions_serializers import SubscriptionPatchSerializer
+from api.utils import db_utils as db
+from api.utils.customer.customers import get_customer
+from api.utils.subscription.campaigns import generate_campaigns
+from api.utils.subscription.subscriptions import (
+    calculate_subscription_start_end_date,
+    create_scheduled_email_tasks,
+    create_subscription_name,
+    get_subscription,
+    get_subscription_cycles,
+    get_subscription_status,
+    send_start_notification,
+)
+from api.utils.subscription.targets import batch_targets
+from api.utils.subscription.template_selector import personalize_template_batch
 from api.utils.template.templates import deception_level
-
+from celery.task.control import revoke
 from django.conf import settings
 
-from celery.task.control import revoke
-
-from api.manager import CampaignManager
-from datetime import datetime
-
-import logging
+logger = logging.getLogger(__name__)
 
 
 def start_subscription(data=None, subscription_uuid=None):
     """
-    Returns a subscription from database
+    Returns a subscription from database.
 
     Parameters:
         data (dict): posted data of subscription to start.
@@ -139,6 +142,8 @@ def start_subscription(data=None, subscription_uuid=None):
     if not settings.DEBUG:
         tasks = create_scheduled_email_tasks(response)
         subscription["tasks"] = tasks
+    else:
+        subscription["tasks"] = []
 
     send_start_notification(subscription, start_date)
 
@@ -167,6 +172,9 @@ def stop_subscription(subscription):
     # Stop Campaigns
     updated_campaigns = list(map(stop_campaign, subscription["gophish_campaign_list"]))
 
+    # Delete User Groups
+    __delete_subscription_user_groups(subscription["gophish_campaign_list"])
+
     # Remove subscription tasks from the scheduler
     if subscription["tasks"]:
         [revoke(task["task_uuid"], terminate=True) for task in subscription["tasks"]]
@@ -186,3 +194,17 @@ def stop_subscription(subscription):
     )
 
     return resp
+
+
+def __delete_subscription_user_groups(gophish_campaign_list):
+    campaign_manager = CampaignManager()
+
+    for campaign in gophish_campaign_list:
+        groups = list({v["name"]: v for v in campaign["groups"]}.values())
+        for group in groups:
+            try:
+                campaign_manager.delete_user_group(group_id=group["id"])
+            except Exception as err:
+                logger.exception("Deleting group raised: %r", err)
+                pass
+    return
