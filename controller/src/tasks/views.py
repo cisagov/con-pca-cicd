@@ -75,7 +75,7 @@ class TaskListView(APIView):
 
         try:
             task = email_subscription_report.apply_async(
-                args=[subscription_uuid, message_type], eta=send_date
+                args=[subscription_uuid, message_type, send_date], eta=send_date
             )
         except task.OperationalError as exc:
             logger.exception("Subscription task raised: %r", exc)
