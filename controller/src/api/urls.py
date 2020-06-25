@@ -100,6 +100,21 @@ urlpatterns = [
         name="reports_get_pdf_yearly_api",
     ),
     path(
+        "v1/reports/<subscription_uuid>/email/monthly/",
+        report_views.MonthlyReportsEmailView.as_view(),
+        name="reports_get_pdf_monthly_api",
+    ),
+    path(
+        "v1/reports/<subscription_uuid>/email/cycle/",
+        report_views.CycleReportsEmailView.as_view(),
+        name="reports_get_pdf_cycle_api",
+    ),
+    path(
+        "v1/reports/<subscription_uuid>/email/yearly/",
+        report_views.YearlyReportsEmailView.as_view(),
+        name="reports_get_pdf_yearly_api",
+    ),
+    path(
         "v1/templates/",
         template_views.TemplatesListView.as_view(),
         name="templates_list_api",

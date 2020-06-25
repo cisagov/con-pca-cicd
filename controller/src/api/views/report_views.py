@@ -6,9 +6,6 @@ This handles the api for all the Reports urls.
 # Standard Python Libraries
 import logging
 
-# Third-Party Libraries
-# Local Libraries
-# Django Libraries
 from api.manager import CampaignManager
 from api.models.subscription_models import SubscriptionModel, validate_subscription
 from api.models.template_models import (
@@ -16,7 +13,10 @@ from api.models.template_models import (
     validate_template,
     DeceptionLevelStatsModel,
 )
-from api.serializers.reports_serializers import ReportsGetSerializer
+from api.serializers.reports_serializers import (
+    ReportsGetSerializer,
+    EmailReportsGetSerializer,
+)
 from api.utils.db_utils import get_list, get_single
 from reports.utils import (
     get_subscription_stats_for_cycle,
@@ -28,6 +28,7 @@ from reports.utils import (
     campaign_templates_to_string,
     get_most_successful_campaigns,
 )
+from notifications.views import ReportsEmailSender
 from django.core.files.storage import FileSystemStorage
 from django.http import FileResponse, HttpResponse
 from drf_yasg.utils import swagger_auto_schema
@@ -164,7 +165,7 @@ class ReportsView(APIView):
 
 class MonthlyReportsPDFView(APIView):
     """
-    This is the ReportsView Pdf API Endpoint.
+    This is the MonthlyReportsView Pdf API Endpoint.
 
     This handles the API a Get request for download a pdf document
     """
@@ -172,7 +173,7 @@ class MonthlyReportsPDFView(APIView):
     @swagger_auto_schema(
         responses={"200": ReportsGetSerializer, "400": "Bad Request",},
         security=[],
-        operation_id="Get Subscription Report PDF",
+        operation_id="Get Monthly Subscription Report PDF",
         operation_description="This downloads a subscription report PDF by subscription uuid",
     )
     def get(self, request, subscription_uuid):
@@ -190,7 +191,7 @@ class MonthlyReportsPDFView(APIView):
 
 class CycleReportsPDFView(APIView):
     """
-    This is the ReportsView Pdf API Endpoint.
+    This is the CycleReportsView Pdf API Endpoint.
 
     This handles the API a Get request for download a pdf document
     """
@@ -198,7 +199,7 @@ class CycleReportsPDFView(APIView):
     @swagger_auto_schema(
         responses={"200": ReportsGetSerializer, "400": "Bad Request",},
         security=[],
-        operation_id="Get Subscription Report PDF",
+        operation_id="Get Subscription Cycle Report PDF",
         operation_description="This downloads a subscription report PDF by subscription uuid",
     )
     def get(self, request, subscription_uuid):
@@ -216,7 +217,7 @@ class CycleReportsPDFView(APIView):
 
 class YearlyReportsPDFView(APIView):
     """
-    This is the ReportsView Pdf API Endpoint.
+    This is the YearlyReportsView Pdf API Endpoint.
 
     This handles the API a Get request for download a pdf document
     """
@@ -224,7 +225,7 @@ class YearlyReportsPDFView(APIView):
     @swagger_auto_schema(
         responses={"200": ReportsGetSerializer, "400": "Bad Request",},
         security=[],
-        operation_id="Get Subscription Report PDF",
+        operation_id="Get Yearly Subscription Report PDF",
         operation_description="This downloads a subscription report PDF by subscription uuid",
     )
     def get(self, request, subscription_uuid):
@@ -238,3 +239,84 @@ class YearlyReportsPDFView(APIView):
                 "Content-Disposition"
             ] = 'attachment; filename="yearly_subscription_report.pdf"'
             return response
+
+
+class MonthlyReportsEmailView(APIView):
+    """
+    This is the ReportsView Email API Endpoint.
+
+    This handles the API a Get request for emailing a reports document
+    """
+
+    @swagger_auto_schema(
+        responses={"200": EmailReportsGetSerializer, "400": "Bad Request",},
+        security=[],
+        operation_id="Send Email Subscription Report PDF",
+        operation_description="This sends a subscription report email by subscription uuid",
+    )
+    def get(self, request, subscription_uuid):
+        subscription = get_single(
+            subscription_uuid, "subscription", SubscriptionModel, validate_subscription
+        )
+        message_type = "monthly_report"
+
+        # Send email
+        sender = ReportsEmailSender(subscription, message_type)
+        sender.send()
+
+        serializer = EmailReportsGetSerializer(subscription_uuid)
+        return Response(serializer.data)
+
+
+class CycleReportsEmailView(APIView):
+    """
+    This is the ReportsView Email API Endpoint.
+
+    This handles the API a Get request for emailing a reports document
+    """
+
+    @swagger_auto_schema(
+        responses={"200": EmailReportsGetSerializer, "400": "Bad Request",},
+        security=[],
+        operation_id="Send Email Subscription Report PDF",
+        operation_description="This sends a subscription report email by subscription uuid",
+    )
+    def get(self, request, subscription_uuid):
+        subscription = get_single(
+            subscription_uuid, "subscription", SubscriptionModel, validate_subscription
+        )
+        message_type = "cycle_report"
+
+        # Send email
+        sender = ReportsEmailSender(subscription, message_type)
+        sender.send()
+
+        serializer = EmailReportsGetSerializer(subscription_uuid)
+        return Response(serializer.data)
+
+
+class YearlyReportsEmailView(APIView):
+    """
+    This is the ReportsView Email API Endpoint.
+
+    This handles the API a Get request for emailing a reports document
+    """
+
+    @swagger_auto_schema(
+        responses={"200": EmailReportsGetSerializer, "400": "Bad Request",},
+        security=[],
+        operation_id="Send Email Subscription Report PDF",
+        operation_description="This sends a subscription report email by subscription uuid",
+    )
+    def get(self, request, subscription_uuid):
+        subscription = get_single(
+            subscription_uuid, "subscription", SubscriptionModel, validate_subscription
+        )
+        message_type = "yearly_report"
+
+        # Send email
+        sender = ReportsEmailSender(subscription, message_type)
+        sender.send()
+
+        serializer = EmailReportsGetSerializer(subscription_uuid)
+        return Response(serializer.data)
