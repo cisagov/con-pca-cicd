@@ -97,19 +97,25 @@
             </mat-form-field>
 
             <mat-label class="h6">Sending Profile</mat-label>
-            <div class="text-muted">Select the sending profile that will be used
-            </div>
-            <mat-form-field appearance="outline">
-                <mat-label>Sending Profile</mat-label>
-                <mat-select formControlName="sendingProfile">
-                    <mat-option [value]="null">--Select--</mat-option>
-                    <mat-option *ngFor="let sp of sendingProfiles" [value]="sp.name">
-                        {{ sp.name }}</mat-option>
-                </mat-select>
-                <div *ngIf="submitted && f.sendingProfile.errors" class="invalid-feedback">
-                    <div *ngIf="f.sendingProfile.errors.required">Sending Profile required</div>
+            <div class="mb-4">
+                <div class="text-muted" *ngIf="sendingProfiles.length > 0">Select the sending profile that will be used
                 </div>
-            </mat-form-field>
+                <mat-form-field appearance="outline" *ngIf="sendingProfiles.length > 0">
+                    <mat-label>Sending Profile</mat-label>
+                    <mat-select formControlName="sendingProfile">
+                        <mat-option [value]="null">--Select--</mat-option>
+                        <mat-option *ngFor="let sp of sendingProfiles" [value]="sp.name">
+                            {{ sp.name }}</mat-option>
+                    </mat-select>
+                    <div *ngIf="submitted && f.sendingProfile.errors" class="invalid-feedback">
+                        <div *ngIf="f.sendingProfile.errors.required">Sending Profile required</div>
+                    </div>
+                </mat-form-field>
+                <div class="error-color" *ngIf="sendingProfiles.length === 0">
+                    A Sending Profile is required, but none are currently configured.  
+                    Create one or more Sending Profiles before proceeding. 
+                </div>
+            </div>
 
 
             <div class="mb-3">
