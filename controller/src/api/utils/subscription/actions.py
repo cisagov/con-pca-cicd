@@ -136,6 +136,14 @@ def start_subscription(data=None, subscription_uuid=None):
     else:
         subscription["tasks"] = []
 
+    db.update_single(
+        response["subscription_uuid"],
+        {"tasks": subscription["tasks"]},
+        "subscription",
+        SubscriptionModel,
+        validate_subscription,
+    )
+
     send_start_notification(subscription, start_date)
 
     return response
@@ -167,8 +175,11 @@ def stop_subscription(subscription):
     __delete_subscription_user_groups(subscription["gophish_campaign_list"])
 
     # Remove subscription tasks from the scheduler
-    if "tasks" in subscription:
-        [revoke(task["task_uuid"], terminate=True) for task in subscription["tasks"]]
+    if subscription.get("tasks"):
+        [
+            revoke(task["task_uuid"], terminate=True)
+            for task in subscription.get("tasks", [])
+        ]
 
     # Update subscription
     subscription["gophish_campaign_list"] = updated_campaigns
