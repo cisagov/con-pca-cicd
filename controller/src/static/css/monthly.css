@@ -4,44 +4,37 @@
   margin: 2.5cm;
 }
 
-.container-fluid {
-  padding: 0 !important;
-}
-
 .topBanner {
   background-color: #1B2352;
   height: 225px;
-  width: 100%;
+  width: 1130px;
+  margin-left: -10%;
+  margin-top: -10%;
+}
+
+#cisaLogo {
+  text-align: right;
+  margin-top: 2.5%;
+  margin-right: -5%;
 }
 
 .sidebar {
   height: 100%;
-  width: 15%;
+  width: 28.85%;
   position: fixed;
   top: 0;
-  left: 0;
+  left: -10.25%;
   background-color: #1B2352;
   overflow-x: hidden;
   color: white;
 }
 
-.main {
-  margin-left: 20%;
-}
-
 #phishLogo {
   text-align: center;
-  margin-top: -15%;
-  margin-left: -70%;
+  margin-top: -25%;
+  margin-left: -80%;
   position: relative;
   z-index: 1;
-}
-
-#cisaLogo {
-  text-align: right;
-  margin-top: 0.5%;
-  margin-right: 0.5%;
-
 }
 
 #reportDate {
@@ -50,16 +43,63 @@
   text-align: left;
   color: black;
   background-color: white;
-  margin-top: 0%;
+  margin-top: -1.5px;
+  margin-left: -9.4%;
   padding-top: 5px;
-  padding-left: 25px;
+  padding-left: 7.5px;
   height: 50px;
+}
+
+#gonePhishingImage {
+  position: relative;
+  z-index: 1;
+  margin-left: -9.75%;
+}
+
+#primaryContact {
+  padding-top: 25px;
+  color: white;
+  position: relative;
+  z-index: 1;
+  text-align: left;
+  width: 15%;
+  margin-left: 0.5%;
+}
+
+#cisaContact {
+  padding-top: 25px;
+  color: white;
+  position: relative;
+  z-index: 1;
+  text-align: left;
+  width: 15%;
+  margin-left: 0.5%;
+}
+
+#numbersTitle {
+  color: white;
+  position: relative;
+  z-index: 1;
+  text-align: left;
+  width: 15%;
+  margin-left: 0.5%;
+}
+
+#campaignNumbers {
+  color: white;
+  position: relative;
+  z-index: 1;
+  text-align: left;
+  width: 12%;
+  border: 1px solid #FDC010;
+  margin-left: 0.5%;
+  padding-left: 0.2%;
 }
 
 #reportTitle {
   text-align: center;
-  margin-top: -500px;
-  padding-top: -100px;
+  margin-top: -116%;
+  margin-left: 24%;
   position: relative;
   z-index: 10;
 }
@@ -112,49 +152,4 @@
   width: 100%;
   padding-left: 10%;
   padding-right: 10%;
-}
-
-#gonePhishingImage {
-  position: relative;
-  z-index: 1;
-}
-
-#primaryContact {
-  padding-top: 25px;
-  color: white;
-  position: relative;
-  z-index: 1;
-  text-align: left;
-  width: 15%;
-  margin-left: 0.5%;
-}
-
-#cisaContact {
-  padding-top: 25px;
-  color: white;
-  position: relative;
-  z-index: 1;
-  text-align: left;
-  width: 15%;
-  margin-left: 0.5%;
-}
-
-#numbersTitle {
-  color: white;
-  position: relative;
-  z-index: 1;
-  text-align: left;
-  width: 15%;
-  margin-left: 0.5%;
-}
-
-#campaignNumbers {
-  color: white;
-  position: relative;
-  z-index: 1;
-  text-align: left;
-  width: 12%;
-  border: 1px solid #FDC010;
-  margin-left: 0.5%;
-  padding-left: 0.2%;
 }

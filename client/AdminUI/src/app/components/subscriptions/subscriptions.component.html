@@ -31,7 +31,7 @@
       <!-- STATUS -->
       <ng-container matColumnDef="status">
           <mat-header-cell *matHeaderCellDef>Status</mat-header-cell>
-          <mat-cell *matCellDef="let row"> {{row.subscription.status}}</mat-cell>
+          <mat-cell *matCellDef="let row"> {{row.subscription.status | titlecase}}</mat-cell>
       </ng-container>
 
       <!-- PRIMARY CONTACT -->
