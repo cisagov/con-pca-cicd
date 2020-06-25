@@ -104,9 +104,11 @@ def get_subscription_cycles(campaigns, start_date, end_date):
     ]
 
 
-def send_start_notification(post_data, start_date):
+def send_start_notification(subscription, start_date):
     if start_date <= datetime.now():
-        sender = SubscriptionNotificationEmailSender(post_data, "subscription_started")
+        sender = SubscriptionNotificationEmailSender(
+            subscription, "subscription_started"
+        )
         sender.send()
 
 
