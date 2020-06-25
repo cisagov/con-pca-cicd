@@ -264,7 +264,7 @@ class MonthlyReportsEmailView(APIView):
         sender = ReportsEmailSender(subscription, message_type)
         sender.send()
 
-        serializer = EmailReportsGetSerializer(subscription_uuid)
+        serializer = EmailReportsGetSerializer({"subscription_uuid": subscription_uuid})
         return Response(serializer.data)
 
 
@@ -291,7 +291,7 @@ class CycleReportsEmailView(APIView):
         sender = ReportsEmailSender(subscription, message_type)
         sender.send()
 
-        serializer = EmailReportsGetSerializer(subscription_uuid)
+        serializer = EmailReportsGetSerializer({"subscription_uuid": subscription_uuid})
         return Response(serializer.data)
 
 
@@ -315,8 +315,8 @@ class YearlyReportsEmailView(APIView):
         message_type = "yearly_report"
 
         # Send email
-        sender = ReportsEmailSender(subscription, message_type)
-        sender.send()
+        # sender = ReportsEmailSender(subscription, message_type)
+        # sender.send()
 
-        serializer = EmailReportsGetSerializer(subscription_uuid)
+        serializer = EmailReportsGetSerializer({"subscription_uuid": subscription_uuid})
         return Response(serializer.data)
