@@ -168,14 +168,14 @@ def stop_subscription(subscription):
     updated_campaigns = list(map(stop_campaign, subscription["gophish_campaign_list"]))
 
     # Remove subscription tasks from the scheduler
-    if subscription["tasks"]:
+    if "tasks" in subscription:
         [revoke(task["task_uuid"], terminate=True) for task in subscription["tasks"]]
 
     # Update subscription
     subscription["gophish_campaign_list"] = updated_campaigns
     subscription["active"] = False
     subscription["manually_stopped"] = True
-    subscription["active_task"] = False
+
     subscription["status"] = "stopped"
     resp = db.update_single(
         uuid=subscription["subscription_uuid"],
