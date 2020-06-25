@@ -13,10 +13,10 @@ export class SendingProfileDetailComponent implements OnInit {
   /**
    * NEW or EDIT
    */
-  mode: string = 'new';
+  mode = 'new';
 
   profileForm: FormGroup;
-  profile: SendingProfile
+  profile: SendingProfile;
   id: number;
   headers: Map<string, string>;
   submitted = false;
@@ -31,7 +31,7 @@ export class SendingProfileDetailComponent implements OnInit {
     public dialog_ref: MatDialogRef<SendingProfileDetailComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-    this.id = data.sendingProfileId;    
+    this.id = data.sendingProfileId;
   }
 
   /**
@@ -71,7 +71,7 @@ export class SendingProfileDetailComponent implements OnInit {
         this.f.password.setValue(this.profile.password);
         this.f.ignoreCertErrors.setValue(this.profile.ignore_cert_errors);
         this.headers = new Map<string, string>();
-        for (let h of this.profile.headers) {
+        for (const h of this.profile.headers) {
           this.headers.set(h.key, h.value);
         }
       },
@@ -86,14 +86,14 @@ export class SendingProfileDetailComponent implements OnInit {
    * Adds a custom email header to the internal list.
    */
   addHeader() {
-    let key = this.f.newHeaderName.value.trim();
-    if (key == "") {
+    const key = this.f.newHeaderName.value.trim();
+    if (key === '') {
       return;
     }
 
     this.headers.set(key, this.f.newHeaderValue.value.trim());
-    this.f.newHeaderName.setValue("");
-    this.f.newHeaderValue.setValue("");
+    this.f.newHeaderName.setValue('');
+    this.f.newHeaderValue.setValue('');
   }
 
 
@@ -114,7 +114,7 @@ export class SendingProfileDetailComponent implements OnInit {
       return;
     }
 
-    let sp = new SendingProfile();
+    const sp = new SendingProfile();
     sp.name = this.f.name.value;
     sp.username = this.f.username.value;
     sp.password = this.f.password.value;
@@ -123,14 +123,15 @@ export class SendingProfileDetailComponent implements OnInit {
     sp.from_address = this.f.from.value;
     sp.ignore_cert_errors = this.f.ignoreCertErrors.value;
     sp.headers = [];
-    for (let [key, value] of this.headers) {
-      let h = {
-        "key": key,
-        "value": value
-      };
-      sp.headers.push(h);
-    };
-    
+    if (!!this.headers) {
+      for (const [key, value] of this.headers) {
+        const h = {
+          key, value
+        };
+        sp.headers.push(h);
+      }
+    }
+
     if (this.id) {
       sp.id = this.id;
     }
