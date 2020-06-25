@@ -162,7 +162,33 @@ class ReportsView(APIView):
         return Response(serializer.data)
 
 
-class ReportsPDFView(APIView):
+class MonthlyReportsPDFView(APIView):
+    """
+    This is the ReportsView Pdf API Endpoint.
+
+    This handles the API a Get request for download a pdf document
+    """
+
+    @swagger_auto_schema(
+        responses={"200": ReportsGetSerializer, "400": "Bad Request",},
+        security=[],
+        operation_id="Get Subscription Report PDF",
+        operation_description="This downloads a subscription report PDF by subscription uuid",
+    )
+    def get(self, request, subscription_uuid):
+        html = HTML(f"http://localhost:8000/reports/{subscription_uuid}/monthly/")
+        html.write_pdf("/tmp/subscription_report.pdf")
+
+        fs = FileSystemStorage("/tmp")
+        with fs.open("subscription_report.pdf") as pdf:
+            response = HttpResponse(pdf, content_type="application/pdf")
+            response[
+                "Content-Disposition"
+            ] = 'attachment; filename="subscription_report.pdf"'
+            return response
+
+
+class CycleReportsPDFView(APIView):
     """
     This is the ReportsView Pdf API Endpoint.
 
@@ -177,6 +203,32 @@ class ReportsPDFView(APIView):
     )
     def get(self, request, subscription_uuid):
         html = HTML(f"http://localhost:8000/reports/{subscription_uuid}/cycle/")
+        html.write_pdf("/tmp/subscription_report.pdf")
+
+        fs = FileSystemStorage("/tmp")
+        with fs.open("subscription_report.pdf") as pdf:
+            response = HttpResponse(pdf, content_type="application/pdf")
+            response[
+                "Content-Disposition"
+            ] = 'attachment; filename="subscription_report.pdf"'
+            return response
+
+
+class YearlyReportsPDFView(APIView):
+    """
+    This is the ReportsView Pdf API Endpoint.
+
+    This handles the API a Get request for download a pdf document
+    """
+
+    @swagger_auto_schema(
+        responses={"200": ReportsGetSerializer, "400": "Bad Request",},
+        security=[],
+        operation_id="Get Subscription Report PDF",
+        operation_description="This downloads a subscription report PDF by subscription uuid",
+    )
+    def get(self, request, subscription_uuid):
+        html = HTML(f"http://localhost:8000/reports/{subscription_uuid}/yearly/")
         html.write_pdf("/tmp/subscription_report.pdf")
 
         fs = FileSystemStorage("/tmp")
