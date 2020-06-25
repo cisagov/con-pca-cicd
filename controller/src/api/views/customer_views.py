@@ -177,7 +177,7 @@ class SectorIndustryView(APIView):
     )
     def get(self, request):
         """Get method."""
-        logger.debug(f"get industry/sector list")
+        logger.debug("get industry/sector list")
 
         # If added to database, pull data through
         # sectors_industries = get_list(

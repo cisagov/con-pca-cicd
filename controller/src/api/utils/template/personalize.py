@@ -1,11 +1,13 @@
 """Template Utils file for api."""
+from datetime import datetime
+
+from api.utils.generic import current_season, generate_random_name
+from api.utils.customer.customers import get_full_customer_address
+
 # Standard Python Libraries
-from datetime import datetime, timedelta
 import logging
-import re
 
 # Third-Party Libraries
-import names
 from simpleeval import simple_eval
 
 logger = logging.getLogger(__name__)
@@ -103,92 +105,8 @@ def personalize_template(customer_info, template_data, sub_data, tag_list):
                 "template_uuid": template["template_uuid"],
                 "data": cleantext,
                 "name": template_unique_name,
-                "subject": template["subject"]
+                "subject": template["subject"],
             }
         )
 
     return personalized_template_data
-
-
-def current_season():
-    """
-    Current Season.
-
-    This returns the current season of given Date.
-    """
-    today = datetime.today()
-    Y = today.year
-    seasons = [
-        ("winter", (datetime(Y, 1, 1), datetime(Y, 3, 20))),
-        ("spring", (datetime(Y, 3, 21), datetime(Y, 6, 20))),
-        ("summer", (datetime(Y, 6, 21), datetime(Y, 9, 22))),
-        ("autumn", (datetime(Y, 9, 23), datetime(Y, 12, 20))),
-        ("winter", (datetime(Y, 12, 21), datetime(Y, 12, 31))),
-    ]
-    return next(season for season, (start, end) in seasons if start <= today <= end)
-
-
-def format_ztime(datetime_string):
-    """
-    Format Datetime.
-
-    Coming from gophish, we get a datetime in a non-iso format,
-    thus we need reformat to iso.
-    """
-    t = datetime.strptime(datetime_string.split(".")[0], "%Y-%m-%dT%H:%M:%S")
-    t = t + timedelta(microseconds=int(datetime_string.split(".")[1][:-1]) / 1000)
-    return t
-
-
-def get_full_customer_address(customer_info):
-    """
-    Get_full_customer_address.
-
-    When passed customer info, it will return an assemebed full address.
-    """
-    customer_full_address = "{} \n {} \n {}, {}, {}".format(
-        customer_info["address_1"],
-        customer_info["address_2"],
-        customer_info["city"],
-        customer_info["state"],
-        customer_info["zip_code"],
-    )
-    return customer_full_address
-
-
-def check_tag_format(tag):
-    """Check_tag_format.
-
-    Checks if the given string is in the format required for a tag.
-    Correct: <%TEST_TAG%>
-    Args:
-        tag (string): Tag string from tag object
-
-    Returns:
-        bool: True if in correct format, false otherwise.
-    """
-    r = re.compile("<%.*%>")
-    if r.match(tag) is not None and tag.isupper():
-        return True
-    return False
-
-
-def generate_random_name(name_type, gender=None):
-    """Generate random name.
-
-    This uses Python package `names`
-    to genrate names.
-    See https://pypi.org/project/names/ for more info.
-    Args:
-        name_type (string): name type: 'Full', 'First', 'Last'
-        gender (string, optional): can be either either 'male', 'female'. Defaults to None.
-
-    Returns:
-        string: returns randomly genrated name string.
-    """
-    if name_type == "Full":
-        return names.get_full_name(gender=gender)
-    elif name_type == "First":
-        return names.get_first_name(gender=gender)
-    elif name_type == "Last":
-        return names.get_last_name()

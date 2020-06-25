@@ -15,10 +15,10 @@
                   <mat-error *ngIf="customerFormGroup.controls.customerName.hasError('required')">
                   Customer/Organization name is <strong>required</strong>
                   </mat-error>
-              </mat-form-field>
-          </div>
-          <div class="d-flex flex-row" style="padding-bottom:10px">
-              <mat-form-field appearance="outline" class="flex-grow-1" [formGroup]="customerFormGroup">
+              </mat-form-field>                        
+              <mat-form-field appearance="outline" class="flex-grow-4" 
+                style="padding-bottom:10px"
+                [formGroup]="customerFormGroup">
                   <mat-label>Customer Identifier*</mat-label>
                   <input type="text" matInput placeholder="Customer/Organization Identifier" formControlName="customerIdentifier"
                   [errorStateMatcher]="matchCustomerIdentifier">
@@ -71,20 +71,16 @@
                   <mat-error *ngIf="customerFormGroup.controls.city.hasError('required')">
                       City is <strong>required</strong>
                   </mat-error>
-              </mat-form-field>
-          </div>
-          <div class="d-flex flex-row">
-              <mat-form-field appearance="outline" class="flex-grow-1" [formGroup]="customerFormGroup">
+              </mat-form-field>          
+              <mat-form-field appearance="outline" class="flex-grow-2" [formGroup]="customerFormGroup">
                   <mat-label>State*</mat-label>
                   <input type="text" matInput placeholder="State" formControlName="state"
                   [errorStateMatcher]="matchState">
                   <mat-error *ngIf="customerFormGroup.controls.state.hasError('required')">
                       State is <strong>required</strong>
                   </mat-error>
-              </mat-form-field>
-          </div>
-          <div class="d-flex flex-row">
-              <mat-form-field appearance="outline" class="flex-grow-1" [formGroup]="customerFormGroup">
+              </mat-form-field>          
+              <mat-form-field appearance="outline" class="flex-shrink-5" [formGroup]="customerFormGroup" [style.width.px]=80>
                   <mat-label>Zip*</mat-label>
                   <input type="text" matInput placeholder="Zip" formControlName="zip"
                   [errorStateMatcher]="matchZip">
