@@ -100,7 +100,7 @@ export class SubscriptionService {
    */
   changePrimaryContact(subscriptUuid: string, contact: Contact) {
     const c = { primary_contact: contact };
-    return this.http.patch(`${this.settingsService.settings.apiUrl}/api/v1/subscription/${subscriptUuid}/`, this.changePrimaryContact);
+    return this.http.patch(`${this.settingsService.settings.apiUrl}/api/v1/subscription/${subscriptUuid}/`, c);
   }
 
   /**
