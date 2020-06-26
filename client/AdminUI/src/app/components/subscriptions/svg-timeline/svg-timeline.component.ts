@@ -87,10 +87,6 @@ export class SvgTimelineComponent implements OnInit {
           item.icon = this.iconLaunch;
           break;
         }
-        case 'today': {
-          item.icon = this.iconToday;
-          break;
-        }
         default: {
           item.icon = this.iconCalendar;
         }
