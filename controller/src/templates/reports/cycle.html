@@ -166,16 +166,20 @@
             <div class="col-4">
                 <div id="preparationDetails">
                     Prepared for:<br>
-                    [COMPANY NAME]<br>
-                    [COMPANY ADDRESS]
+                    {{ customer_name }}<br>
+                    {{ customer_address }}
                 </div>
             </div>
             <div class="col-4">
                 <div id="dhsContactDetails">
-                    Subscription Primary Contact Sarah Ferth<br>
-                    (455) 554-4545 conpac@dhs.gov<br>
+                    Subscription Primary Contact:<br>
+                    {{ dhs_contact_name }}<br>
+                    Office: {{ dhs_contact_office_phone }}<br>
+                    Mobile: {{ dhs_contact_mobile_phone }}<br>
+                    Email: {{ dhs_contact_email }}<br>
                     DHS Contact<br>
-                    Phishing Assessment Team vulnerability@cisa.dhs.gov
+                    Phishing Assessment Team<br>
+                    vulnerability@cisa.dhs.gov
                 </div>
             </div>
             <div class="col-4">
@@ -229,7 +233,7 @@
                         </tr>
                         <tr>
                             <td>Scope:</td>
-                            <td>1000 users at [ COMPANY SHORTNAME ]'s domain</td>
+                            <td>1000 users at {{ customer_identifier }}'s domain</td>
                         </tr>
                     </table>
                 </div>
@@ -307,7 +311,8 @@
                         attack by targeted user click rates, click times, response rates, and response times, as shown
                         in Table 1.</p>
 
-                    <p>This report aims to enhance [ COMPANY NAME ]’s understanding of their information system users’
+                    <p>This report aims to enhance {{ customer_name }}’s understanding of their information system
+                        users’
                         cybersecurity behavior and to promote a more secure and resilient workforce.</p><br>
                 </div>
             </div>
@@ -370,13 +375,16 @@
         </div>
         <div class="row">
             <div class="col-12">
-                <p class="executiveReportDetails">Vulnerability Management has provided this report to [COMPANY
-                    SHORTNAME] at no cost and coordinated all activities—including planning and testing–with [COMPANY
-                    SHORTNAME]’s point of contact. [COMPANY SHORTNAME] maintained control over the testing, including
+                <p class="executiveReportDetails">Vulnerability Management has provided this report to
+                    {{ customer_identifier }}
+                    at no cost and coordinated all activities—including planning and testing–with
+                    {{ customer_identifier }}’s
+                    point of contact. {{ customer_identifier }} maintained control over the testing, including
                     providing target email addresses, approving phishing email templates, approving testing timeframes,
                     and adjusting mail security setting to ensure inbox access. This CON-PCA was not intended to, and
                     did not, test technical controls or electronic protections designed to block phishing attempts. This
-                    CON-PCA spanned a six-week period and aimed to capture behavior-based metrics of [COMPANY SHORTNAME]
+                    CON-PCA spanned a six-week period and aimed to capture behavior-based metrics of
+                    {{ customer_identifier }}
                     information system users’ reaction to phishing emails of multiple complexity levels.
 
                     Vulnerability Management has established this voluntary service to help your organization support
@@ -435,7 +443,7 @@
         <div class="row">
             <div class="col-4">
                 <div id="companyAverageText">
-                    <b>[COMPANY NAME] Average</b>
+                    <b>{{ customer_name }} Average</b>
                     <div id="companyAverageBox">18%</div>
                 </div>
             </div>
