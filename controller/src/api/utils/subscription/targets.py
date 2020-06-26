@@ -1,5 +1,10 @@
 from lcgit import lcg
 import random
+from api.utils import db_utils as db
+from api.models.template_models import (
+    TargetHistoryModel,
+    validate_history,
+)
 
 
 def batch_targets(subscription, sub_levels: dict):
@@ -35,13 +40,33 @@ def lcgit_list_randomizer(object_list):
 
 
 def get_target_available_templates(email, templates):
-    # TODO: get templates that a target has not been sent
-    # if a target has been sent all templates, return all
-    return templates
+    """
+    Returns a list of avaiable template uuids.
+    """
+    # Check history of target
+    history = db.get_list(
+        {"email": email}, "target", TargetHistoryModel, validate_history
+    )
+
+    # If no history, return all templates
+    if not history:
+        return templates
+
+    # Compile list of sent uuids
+    sent_uuids = [x["template_uuid"] for x in history.get("history_list", [])]
+
+    # Find available templates
+    available_templates = list(set(templates) - set(sent_uuids))
+
+    # If no available templates, return all back
+    if not available_templates:
+        return templates
+
+    # Return available templates
+    return available_templates
 
 
 def assign_targets(sub_level):
-
     for target in sub_level["targets"]:
         available_templates = get_target_available_templates(
             target["email"], sub_level["template_uuids"]
