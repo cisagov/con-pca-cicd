@@ -23,7 +23,7 @@ controller/src/staticfiles
 controller/src/celerybeat-schedule
 controller/src/celerybeat.pid
 controller/src/scripts/data/created_dummy_data_*.json
-controller/src/scripts/data/db_dumps
+controller/src/scripts/data/db_dumps/*.dumps
 controller/.coverage
 controller/htmlcov/
 controller/node_modules

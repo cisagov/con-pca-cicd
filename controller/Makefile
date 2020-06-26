@@ -1,6 +1,7 @@
 .PHONY: all help build logs loc up stop down
 include .env
 export
+ts := $(shell /bin/date "+%Y-%m-%d--%H-%M-%S")
 
 # make all - Default Target. Does nothing.
 all:
@@ -101,8 +102,9 @@ debug_ptvsd:
 
 # target: mongo_dump - dumps latest mongodb into scripts/data/db_dumps/db_latest.dump
 mongo_dump:
-	docker exec pca-mongodb sh -c 'mongodump --host mongodb --port 27017 -u ${DB_USER} -p ${DB_PW} --authenticationDatabase admin -d pca_data_dev --archive' > src/scripts/data/db_dumps/db.dump
+	docker exec pca-mongodb sh -c 'mongodump --host mongodb --port 27017 -u ${DB_USER} -p ${DB_PW} --authenticationDatabase admin -d pca_data_dev --archive' > src/scripts/data/db_dumps/$(ts).dump
+	cp src/scripts/data/db_dumps/$(ts).dump src/scripts/data/db_dumps/latest.dump
 
-# target: mongo_dump - dumps latest mongodb into scripts/data/db_dumps/db_latest.dump
+# target: mongo_restore - loads latest dump file from scripts/data/db_dumps/latest.dump
 mongo_restore:
-	docker exec pca-mongodb sh -c 'mongorestore --host mongodb --port 27017 -u ${DB_USER} -p ${DB_PW} --authenticationDatabase admin -d pca_data_dev --archive' > src/scripts/data/db_dumps/db.dump
+	docker exec -i pca-mongodb sh -c 'mongorestore --host mongodb --port 27017 -u ${DB_USER} -p ${DB_PW} --authenticationDatabase admin -d pca_data_dev --archive' < src/scripts/data/db_dumps/latest.dump
