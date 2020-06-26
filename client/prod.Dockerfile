@@ -15,5 +15,6 @@ FROM nginx:alpine
 
 COPY --from=build /dist /usr/share/nginx/html
 COPY ./etc/default.conf /etc/nginx/conf.d/default.conf
+COPY ./etc/mime.types /etc/nginx/mime.types
 
 CMD ["/bin/sh",  "-c",  "envsubst < /usr/share/nginx/html/assets/settings.template.json > /usr/share/nginx/html/assets/settings.json && exec nginx -g 'daemon off;'"]
