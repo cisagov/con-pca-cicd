@@ -36,16 +36,17 @@ DB_CONFIG = {
     "DB_PORT": os.getenv("DB_PORT"),
 }
 
-#Cognito 
-COGNITO_DEPLOYMENT_MODE = os.getenv("COGNITO_DEPLOYMENT_MODE") # Determine deployment mode, default ot prod
+# Cognito
+# Determine deployment mode, default ot prod
+COGNITO_DEPLOYMENT_MODE = os.getenv("COGNITO_DEPLOYMENT_MODE")
 print(COGNITO_DEPLOYMENT_MODE)
 if COGNITO_DEPLOYMENT_MODE != "Development":
-    COGNITO_DEPLOYMENT_MODE="Production"
-COGNITO_AWS_REGION = os.getenv("COGNITO_AWS_REGION") 
-COGNITO_USER_POOL = os.getenv('COGNITO_USER_POOL')   
-COGNITO_AUDIENCE = os.getenv('COGNITO_AUDIENCE')
+    COGNITO_DEPLOYMENT_MODE = "Production"
+COGNITO_AWS_REGION = os.getenv("COGNITO_AWS_REGION")
+COGNITO_USER_POOL = os.getenv("COGNITO_USER_POOL")
+COGNITO_AUDIENCE = os.getenv("COGNITO_AUDIENCE")
 COGNITO_PUBLIC_KEYS_CACHING_ENABLED = True
-COGNITO_PUBLIC_KEYS_CACHING_TIMEOUT = 60*60  #  One hour caching, default is 300s
+COGNITO_PUBLIC_KEYS_CACHING_TIMEOUT = 60 * 60  # One hour caching, default is 300s
 
 # Application definition
 
@@ -160,10 +161,9 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 
 # Django Rest Framework
-
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'authentication.backend.JSONWebTokenAuthentication',
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "authentication.backend.JSONWebTokenAuthentication",
     ],
     "DEFAULT_PERMISSION_CLASSES": [],
     "UNAUTHENTICATED_USER": None,

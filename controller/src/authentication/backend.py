@@ -1,4 +1,4 @@
-#Based on https://github.com/labd/django-cognito-jwt under MIT license
+# Based on https://github.com/labd/django-cognito-jwt under MIT license
 import logging
 import time
 
@@ -9,7 +9,7 @@ from django.utils.translation import ugettext as _
 from rest_framework import exceptions
 from rest_framework.authentication import BaseAuthentication, get_authorization_header
 
-from authentication.validator import (TokenError, TokenValidator)
+from authentication.validator import TokenError, TokenValidator
 
 logger = logging.getLogger(__name__)
 
@@ -22,12 +22,12 @@ class JSONWebTokenAuthentication(BaseAuthentication):
         print(settings.COGNITO_DEPLOYMENT_MODE)
         if settings.COGNITO_DEPLOYMENT_MODE == "Development":
             print("Using develop authorization")
-            user = {"username": "developer user", "groups" : {"develop"}}
+            user = {"username": "developer user", "groups": {"develop"}}
             token = "Empty token"
             return (user, token)
 
         jwt_token = self.get_jwt_token(request)
-        if jwt_token is None:           
+        if jwt_token is None:
             raise exceptions.AuthenticationFailed()
 
         # Authenticate token
@@ -37,7 +37,7 @@ class JSONWebTokenAuthentication(BaseAuthentication):
         except TokenError:
             raise exceptions.AuthenticationFailed()
 
-        #Ensure jwt is not expired
+        # Ensure jwt is not expired
         if (jwt_payload["exp"] - int(time.time())) < 0:
             msg = "Token has expired, please log back in"
             print(msg)
@@ -53,7 +53,10 @@ class JSONWebTokenAuthentication(BaseAuthentication):
         # USER_MODEL = self.get_user_model()
         # user = USER_MODEL.objects.get_or_create_for_cognito(jwt_payload)
         if "cognito:groups" in jwt_payload:
-            user = {"username": jwt_payload["username"], "groups": jwt_payload["cognito:groups"]}
+            user = {
+                "username": jwt_payload["username"],
+                "groups": jwt_payload["cognito:groups"],
+            }
         else:
             user = {"username": jwt_payload["username"], "groups": "None"}
         return (user, jwt_token)
