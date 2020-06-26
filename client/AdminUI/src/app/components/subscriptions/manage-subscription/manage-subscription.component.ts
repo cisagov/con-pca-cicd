@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MatDialogConfig, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormControl, FormBuilder, Validators, ValidationErrors } from '@angular/forms';
 import { SubscriptionService } from 'src/app/services/subscription.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Customer, Contact } from 'src/app/models/customer.model';
@@ -54,8 +54,11 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
 
   // The raw CSV content of the textarea
   csvText: string;
+  badCSV = false;
 
   timelineItems: any[] = [];
+
+
 
 
   /**
@@ -100,12 +103,14 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
         validators: Validators.required
       }),
       csvText: new FormControl('', {
-        validators: Validators.required
+        validators: [Validators.required, this.targetCsvValidator],
+        updateOn: 'blur'
       }),
-      removeDuplicateTargets: new FormControl(true)
+      removeDuplicateTargets: new FormControl(true, {
+        updateOn: 'change'
+      })
     }, {
       updateOn: 'blur'
-
     });
 
     this.onChanges();
@@ -143,12 +148,13 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
       this.subscription.sending_profile_name = val;
     });
     this.f.csvText.valueChanges.subscribe(val => {
-      this.subscription.target_email_list = this.buildTargetsFromCSV(val);
-      this.f.csvText.setValue(this.formatTargetsToCSV(this.subscription.target_email_list), { emitEvent: false });
+      this.evaluateTargetList();
       this.persistChanges();
     });
     this.f.removeDuplicateTargets.valueChanges.subscribe(val => {
       this.subscriptionSvc.removeDupeTargets = val;
+      this.evaluateTargetList();
+      this.persistChanges();
     });
   }
 
@@ -156,8 +162,9 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
    * Sends the model to the API if the subscription is in edit mode.
    */
   persistChanges() {
+    console.log(this.subscribeForm.errors);
     // patch the subscription in real time if in edit mode
-    if (this.pageMode.toLowerCase() === 'edit') {
+    if (!this.subscribeForm.errors && this.pageMode.toLowerCase() === 'edit') {
       this.subscriptionSvc.patchSubscription(this.subscription).subscribe();
     }
   }
@@ -578,6 +585,15 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
   }
 
   /**
+   * Parses the text into a list of targets.  Removes dupes if desired, and
+   * formats the targets back into CSV text and refreshes the field.
+   */
+  evaluateTargetList() {
+    this.subscription.target_email_list = this.buildTargetsFromCSV(this.f.csvText.value);
+    this.f.csvText.setValue(this.formatTargetsToCSV(this.subscription.target_email_list), { emitEvent: false });
+  }
+
+  /**
    * Converts a string with CSV lines into Targets.
    * Format: email, firstname, lastname, position
    * @param csv A comma-separated string with linefeed delimiters
@@ -587,17 +603,20 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
     if (!csv) {
       return;
     }
+
     const lines = csv.split('\n');
     lines.forEach((line: string) => {
       const parts = line.split(',');
-      if (parts.length === 4) {
-        const t = new Target();
-        t.email = parts[0].trim();
-        t.first_name = parts[1].trim();
-        t.last_name = parts[2].trim();
-        t.position = parts[3].trim();
-        targetList.push(t);
+      while (parts.length < 4) {
+        parts.push('');
       }
+
+      const t = new Target();
+      t.email = parts[0].trim();
+      t.first_name = parts[1].trim();
+      t.last_name = parts[2].trim();
+      t.position = parts[3].trim();
+      targetList.push(t);
     });
 
     // remove duplicate emails if desired
@@ -632,10 +651,44 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
     return output;
   }
 
+
+
   /**
    *
    */
   ngOnDestroy() {
     this.routeSub.unsubscribe();
   }
+
+  /**
+   * Custom validator for the CSV field.
+   */
+  targetCsvValidator(control: FormControl) {
+    console.log(control);
+    const lines = control.value.split('\n');
+    lines.forEach((line: string) => {
+      const parts = line.split(',');
+      if (parts.length !== 4) {
+        console.log('returning invalid csv');
+        // return { 'invalidTargetCsv': true };
+        control.markAsTouched();
+        return { invalidTargetCsv: true };
+      }
+
+      // if (!me(parts[0])) {
+      //   console.log('returning invalid email');
+      //   return { 'invalidEmailFormat': true };
+      // }
+    });
+
+    return null;
+  }
+
+
+
+  isEmailValid(email: string): boolean {
+    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email).toLowerCase());
+  }
+
 }

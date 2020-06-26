@@ -75,7 +75,7 @@
                     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                     <mat-datepicker #picker [startAt]="startAt"></mat-datepicker>
                 </mat-form-field>
-            </div>
+            </div> 
 
 
             <mat-label class="h6">Customer Website</mat-label>
@@ -147,6 +147,8 @@
                     </textarea>
                 <div *ngIf="submitted && f.csvText.errors" class="invalid-feedback">
                     <div *ngIf="f.csvText.errors.required">Targets must be defined</div>
+                    <div *ngIf="f.csvText.hasError('invalidTargetCsv')">All target must have all parts</div>
+                    <div *ngIf="f.csvText.hasError('invalidEmailFormat')">One or more email addresses are invalid</div>
                 </div>
             </mat-form-field>
 
