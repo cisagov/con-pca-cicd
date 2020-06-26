@@ -36,7 +36,6 @@ export class CustomersComponent implements OnInit {
     public customerSvc: CustomerService,
     public dialog: MatDialog
   ) {
-    layout_service.setTitle('Customers');
     this.customerSvc.setCustomerInfo(false);
   }
 
@@ -44,13 +43,17 @@ export class CustomersComponent implements OnInit {
    * 
    */
   ngOnInit(): void {
+    if (!this.insideDialog) {
+      this.layout_service.setTitle('Customers');
+    }
+
     this.customersData = new MatTableDataSource();
     this.customerSvc.getCustomerInfoStatus().subscribe(status => {
       if (status === false) {
         this.refresh();
       }
-    })
-  };
+    });
+  }
 
   /**
    *
