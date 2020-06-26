@@ -304,6 +304,11 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
       date: moment()
     });
 
+    items.push({
+      title: 'Cycle End',
+      date: moment(s.end_date)
+    });
+
     this.timelineItems = items;
   }
 

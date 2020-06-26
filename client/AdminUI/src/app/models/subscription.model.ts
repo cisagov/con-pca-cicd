@@ -44,6 +44,7 @@ export class Subscription {
     primary_contact: Contact;
     dhs_contact_uuid: string;
     start_date: Date;
+    end_date: Date;
     status: string;
     subscription_uuid: string;
     url: string;

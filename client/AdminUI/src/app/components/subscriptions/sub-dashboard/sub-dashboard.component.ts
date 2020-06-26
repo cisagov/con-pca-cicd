@@ -13,6 +13,8 @@ export class SubDashboardComponent implements OnInit {
   chart: any = {};
   chartSent: any = {};
 
+  numberTemplatesInUse = 0;
+
   // average time to first click
   avgTTFC: string;
 
@@ -78,6 +80,12 @@ export class SubDashboardComponent implements OnInit {
       .subscribe((stats: any) => {
         this.chart.chartResults = this.chartsSvc.formatStatistics(stats);
         this.chartSent.chartResults = this.chartsSvc.getSentEmailNumbers(stats);
+
+        for (const k in stats.templates) {
+          if (stats.templates.hasOwnProperty(k)) {
+            ++this.numberTemplatesInUse;
+          }
+        }
 
         this.avgTTFC = stats.metrics.avg_time_to_first_click;
         if (!this.avgTTFC) {

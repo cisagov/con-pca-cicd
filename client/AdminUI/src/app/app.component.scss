@@ -235,7 +235,7 @@ $altTheme: mat-dark-theme($theme-primary, $theme-accent, $theme-warn);
 
   .timeline-circle {
     stroke: map-get($foreground, 'text') !important;
-    fill: map-get($background, 'background') !important;
+    fill: map-get($foreground, 'text') !important;
   }
 
   .timeline-text {
