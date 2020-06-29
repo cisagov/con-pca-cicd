@@ -93,7 +93,7 @@
     "name": "Password Complexity Check", 
     "template_type": "Email", 
     "complexity": 3, 
-    "html": "<br>IMPORTANT SECURITY NOTICE<br><br>Due to a recent rise in security breaches in our industry, our policies now mandate higher security standards. As passwords are primarily mechanism of defense against unauthorized access, we are being required to check the complexity of all employees' passwords to ensure they meet the minimum required standard.<br><br>Please assist us in being complaint and visit <%URL%> to test the strength of your passwords.<br><br>Thank you for your cooperation,<br>IT Administration and Security Teams<br>", 
+    "html": "<br>IMPORTANT SECURITY NOTICE<br><br>Due to a recent rise in security breaches in our industry, our policies now mandate higher security standards. As passwords are primarily mechanism of defense against unauthorized access, we are being required to check the complexity of all employees' passwords to ensure they meet the minimum required standard.<br><br>Please assist us in being complaint and visit <a href=\"<%URL%>\">https://passwordmeter.com</a> to test the strength of your passwords.<br><br>Thank you for your cooperation,<br>IT Administration and Security Teams<br>", 
     "behavior": {
       "duty_obligation": 1, 
       "fear": 1, 
@@ -345,7 +345,7 @@
     "name": "Irregular Account Activity", 
     "template_type": "Email", 
     "complexity": 3, 
-    "html": "<br>Our system has detected irregular activity on your account. Taking<br>precautions, certain limitations an measures have been placed on your<br>account in accordance of the User Agreement and Privacy Policy.<br><br>To regain access without any interruption to you account, please visit our<br>Security Customer Support Center (<a \"<%URL%>\">https://portal-customerservice.com</a>) to help you re-validate your account activity and keep your account safe from potential risk.<br><br>Please read the entire page and follow all directions to validate your<br>account.<br><br>Thanks for your cooperation.<br><br>IT Helpdesk<br>", 
+    "html": "<br>Our system has detected irregular activity on your account. Taking<br>precautions, certain limitations an measures have been placed on your<br>account in accordance of the User Agreement and Privacy Policy.<br><br>To regain access without any interruption to you account, please visit our<br>Security Customer Support Center (<a href=\"<%URL%>\">https://portal-customerservice.com</a>) to help you re-validate your account activity and keep your account safe from potential risk.<br><br>Please read the entire page and follow all directions to validate your<br>account.<br><br>Thanks for your cooperation.<br><br>IT Helpdesk<br>", 
     "behavior": {
       "duty_obligation": 0, 
       "fear": 1, 
@@ -597,7 +597,7 @@
     "name": "Nigerian Prince", 
     "template_type": "Email", 
     "complexity": 1, 
-    "html": "I write to you to ask for indulgence in re-profiling funds up to the tune<br>of Eight Million Five Hundred Thousand United States Dollar (US$8.5<br>MILLION) which I will want to keep safetly overseas under your supervision.<br>In other words, I would like you to receive the said funds by our behalf.<br>The Funds were derived over time from a project awarded to a foreign film<br>contracted under my orders. The project was paid in full and profits of the<br>said balance were obtained.<br><br>Kindly pardon the use of a medium informal as this for reaching out to you<br>to make a request of such a great importance. Currently, I oversea the<br>Department of Foreign Affairs here in Nigeria as acting chair and heir to<br>the thorn.<br><br>This endeavor has minimal risk factor on your part provided you treat it<br>with the utmost discretion. You are advised to reach me directly through<br>email for further clarifications.<br><br>Click here to email <%URL%><br><br>I kindly wait to hear from you.<br><br>Yours sincerely,<br>Prince Samuel Adiyah<br>", 
+    "html": "I write to you to ask for indulgence in re-profiling funds up to the tune<br>of Eight Million Five Hundred Thousand United States Dollar (US$8.5<br>MILLION) which I will want to keep safetly overseas under your supervision.<br>In other words, I would like you to receive the said funds by our behalf.<br>The Funds were derived over time from a project awarded to a foreign film<br>contracted under my orders. The project was paid in full and profits of the<br>said balance were obtained.<br><br>Kindly pardon the use of a medium informal as this for reaching out to you<br>to make a request of such a great importance. Currently, I oversea the<br>Department of Foreign Affairs here in Nigeria as acting chair and heir to<br>the thorn.<br><br>This endeavor has minimal risk factor on your part provided you treat it<br>with the utmost discretion. You are advised to reach me directly through<br>email for further clarifications.<br><br>Click here to email <a href=\"<%URL%>\">hrh-psa@royalfamily.org.ng</a><br><br>I kindly wait to hear from you.<br><br>Yours sincerely,<br>Prince Samuel Adiyah<br>", 
     "behavior": {
       "duty_obligation": 0, 
       "fear": 0, 
@@ -633,7 +633,7 @@
     "name": "Password Expiration", 
     "template_type": "Email", 
     "complexity": 3, 
-    "html": "Your domain password will expirre in 3 days! To ensure your account is not<br>locked out, please click here <%URL%> to set a new password.<br><br>IT Help Desk Service<br><br>***** Email confidentiality notice *****<br>This message is private and confidential. If you have received this message<br>in error, please notify us and remove it from your system.<br>", 
+    "html": "Your domain password will expirre in 3 days! To ensure your account is not<br>locked out, please click <a href=\"<%URL%>\">here</a> to set a new password.<br><br>IT Help Desk Service<br><br>***** Email confidentiality notice *****<br>This message is private and confidential. If you have received this message<br>in error, please notify us and remove it from your system.<br>", 
     "behavior": {
       "duty_obligation": 0, 
       "fear": 0, 
@@ -957,7 +957,7 @@
     "name": "New Equipment", 
     "template_type": "Email", 
     "complexity": 3, 
-    "html": "We have decided that it is time to replace some of our equipment. The order will be placed on December 4th. If you would like to  request new equipment please submit it here <%URL%>. All requests must be submitted by COB Wednesday at the latest.<br><br>Thank you for your cooperation,<br><%SPOOF_NAME%><br>Supply Cordinator<br>", 
+    "html": "We have decided that it is time to replace some of our equipment. The order will be placed on December 4th. If you would like to  request new equipment please submit it <a href=\"<%URL%>\">here</a>. All requests must be submitted by COB Wednesday at the latest.<br><br>Thank you for your cooperation,<br><%SPOOF_NAME%><br>Supply Cordinator<br>", 
     "behavior": {
       "duty_obligation": 0, 
       "fear": 0, 
@@ -1245,7 +1245,7 @@
     "name": "New Equipment [Grammar, Internal, Duty]", 
     "template_type": "Email", 
     "complexity": 3, 
-    "html": "<br>All,<br><br>We have decided that it is time to replace some of our eupioment. The order<br>will be placed next week. If you would like to request new equipment,<br>please submit it here <%URL%>. All<br>requests must be submitted COB Friday.<br><br>Thanks,<br><br>Office Supplies Team<br>", 
+    "html": "<br>All,<br><br>We have decided that it is time to replace some of our eupioment. The order<br>will be placed next week. If you would like to request new equipment,<br>please submit it <a href=\"<%URL%>\">here</a>. All<br>requests must be submitted COB Friday.<br><br>Thanks,<br><br>Office Supplies Team<br>", 
     "behavior": {
       "duty_obligation": 1, 
       "fear": 0, 
@@ -1317,7 +1317,7 @@
     "name": "New Parking Program", 
     "template_type": "Email", 
     "complexity": 6, 
-    "html": "<br>The <%CUSTOMER_NAME%> would like to encourage employees to reduce<br>their drive alone commuting by offering several different incentives under<br>the <%PROGRAM%>.<br><br>Starting <%CURRENT_DATE_LONG%>, we are expanding our Free Parking for Ridesharing<br>option to include Reserved Parking. If you commute to work by van pool or<br>carpool with other employees, the pool vehicle is eligible to<br>reserve their parking spot for one month at a time.<br><br>To learn more about the program or to sign up, please visit<br><%URL%><br><br>Regards,<br><br><%PROGRAM%><br><%CUSTOMER_NAME%><br><%CUSTOMER_NAME%><br>", 
+    "html": "<br>The <%CUSTOMER_NAME%> would like to encourage employees to reduce<br>their drive alone commuting by offering several different incentives under<br>the <%PROGRAM%>.<br><br>Starting <%CURRENT_DATE_LONG%>, we are expanding our Free Parking for Ridesharing<br>option to include Reserved Parking. If you commute to work by van pool or<br>carpool with other employees, the pool vehicle is eligible to<br>reserve their parking spot for one month at a time.<br><br>To learn more about the program or to sign up, please visit<br><a href=\"<%URL%>\">https://parking.<%DOMAIN%>/enroll</a><br><br>Regards,<br><br><%PROGRAM%><br><%CUSTOMER_NAME%><br>", 
     "behavior": {
       "duty_obligation": 0, 
       "fear": 0, 
@@ -1453,7 +1453,7 @@
     }, 
     "descriptive_words": "decided time replace equipment order placed end week would like request new equipment please submit http ncats domain supply coordination id fhg requests submitted cob wednesday latest thank generic first name proper title office supply manager known customer office customer name", 
     "appearance": {
-      "link_domain": 0, 
+      "link_domain": 0,
       "logo_graphics": 0, 
       "grammar": 2
     }, 
@@ -1461,7 +1461,7 @@
     "name": "New Equipment [known internal]", 
     "template_type": "Email", 
     "complexity": 4, 
-    "html": "To All,<br><br>We have decided that it is time to replace some of our equipment. The order<br>will be placed at the end of this week. If you would like to request new<br>equipment, please submit it to<br>http://<%DOMAIN%>/supply_coordination?id=10393fhg8383. All requests<br>should be submitted by COB Wednesday at the latest.<br><br>Thank you,<br><br><%SPOOF_NAME%><br><br><%JOB_ROLE%><br><%CUSTOMER_NAME%><br><%CUSTOMER_NAME%><br>", 
+    "html": "To All,<br><br>We have decided that it is time to replace some of our equipment. The order<br>will be placed at the end of this week. If you would like to request new<br>equipment, please submit it to<br><a href=\"<%URL%>\">http://<%DOMAIN%>/supply_coordination?id=10393fhg8383</a>. All requests<br>should be submitted by COB Wednesday at the latest.<br><br>Thank you,<br><br><%SPOOF_NAME%><br><br><%JOB_ROLE%><br><%CUSTOMER_NAME%><br>", 
     "behavior": {
       "duty_obligation": 0, 
       "fear": 0, 
@@ -1533,7 +1533,7 @@
     "name": "March Madness", 
     "template_type": "Email", 
     "complexity": 4, 
-    "html": "<br>While some of our basketball brackets are hurting over the latest round of<br>games, there is still time to join the office pool for this year's March<br>Madness! If you get your brackets submitted before the Sweet 16 (March<br>22-23) or the Elite Eight (March 24-25) you'll still be eligible for the<br>top prize worth over $100 (see the line up here <%URL%>).<br><br>Come join your fellow basketball fans in a friendly office competition. Not<br>a basketball fan? We'll have a special prize for the \"Most Random\" brackets<br>because who doesn't love a little chaos?<br><br>Sign up here <%URL%>!<br><br>-Rachel \"Bracket Buster\" Wallis<br>", 
+    "html": "<br>While some of our basketball brackets are hurting over the latest round of<br>games, there is still time to join the office pool for this year's March<br>Madness! If you get your brackets submitted before the Sweet 16 (March<br>22-23) or the Elite Eight (March 24-25) you'll still be eligible for the<br>top prize worth over $100 (see the line up here <a href=\"<%URL%>\">https://bracketmadness.com/standings</a>).<br><br>Come join your fellow basketball fans in a friendly office competition. Not<br>a basketball fan? We'll have a special prize for the \"Most Random\" brackets<br>because who doesn't love a little chaos?<br><br>Sign up here <a href=\"<%URL%>\">https://bracketmadness.com/siginup</a>!<br><br>-Rachel \"Bracket Buster\" Wallis<br>", 
     "behavior": {
       "duty_obligation": 0, 
       "fear": 0, 
@@ -1821,7 +1821,7 @@
     "name": "Intern Resume [Duty]", 
     "template_type": "Email", 
     "complexity": 1, 
-    "html": "<br>Hi, sorry, I don't know exactly who this would go to. I read on the site<br>that your accepting student resumes for a summe rintership. I'ev loaded<br>mine to our school's website. Please rview and let me know if we're good<br>to go https://resources.endermannpoly.edu/student_resume?id=3Dfswi1239428<br><br>thx, Miranda<br>", 
+    "html": "<br>Hi, sorry, I don't know exactly who this would go to. I read on the site<br>that your accepting student resumes for a summe rintership. I'ev loaded<br>mine to our school's website. Please rview and let me know if we're good<br>to go <a href=\"<%URL%>\">https://resources.endermannpoly.edu/student_resume?id=3Dfswi1239428</a><br><br>thx, Miranda<br>", 
     "behavior": {
       "duty_obligation": 1, 
       "fear": 0, 
@@ -2001,7 +2001,7 @@
     "name": "Job Applicant Website", 
     "template_type": "Email", 
     "complexity": 5, 
-    "html": "<br>  **This is an automated message**<br><br>You have have been assigned as the lead reviewer for the following<br>externally submitted resume:<br><br>POSITION: <%JOB_ROLE%>, <%JOB_ROLE%> experience required<br>CLOSING DATE: <%CURRENT_DATE_LONG%>, <%CURRENT_YEAR_LONG%><br>APPLICANT NAME: April Zenler<br>DATE OF APPLICATION: <%CURRENT_DATE_LONG%>, <%CURRENT_YEAR_LONG%><br>RESUME: Zenler, <%CURRENT_MONTH_LONG%> - <%CURRENT_SEASON%> <%CURRENT_YEAR_LONG%> Resume.pdf<br><https://securesite.doc-uploader-mdsupport.net><br><br>To decline or reassign the reviewer position, please contact the<br>administrator <https://securesite.doc-uploader-<%CUSTOMER_STATE%>support.net>.<br>", 
+    "html": "<br>  **This is an automated message**<br><br>You have have been assigned as the lead reviewer for the following<br>externally submitted resume:<br><br>POSITION: <%JOB_ROLE%>, <%JOB_ROLE%> experience required<br>CLOSING DATE: <%CURRENT_DATE_LONG%>, <%CURRENT_YEAR_LONG%><br>APPLICANT NAME: April Zenler<br>DATE OF APPLICATION: <%CURRENT_DATE_LONG%>, <%CURRENT_YEAR_LONG%><br>RESUME: Zenler, <%CURRENT_MONTH_LONG%> - <%CURRENT_SEASON%> <%CURRENT_YEAR_LONG%> Resume.pdf<br><https://securesite.doc-uploader-mdsupport.net><br><br>To decline or reassign the reviewer position, please contact the<br>administrator <a href=\"<%URL%>\">https://securesite.doc-uploader-<%CUSTOMER_STATE%>support.net</a>.<br>", 
     "behavior": {
       "duty_obligation": 1, 
       "fear": 0, 
@@ -2109,7 +2109,7 @@
     "name": "News Service Subscription [External]", 
     "template_type": "Email", 
     "complexity": 4, 
-    "html": "<br>Hello there,<br><br>Thank you for subscribing to <%CUSTOMER_CITY%> Community News Updates.<br>You will be receiving weekly updates every Friday morning on the biggest news<br>that week, as well as emails throughout the week detailing breaking news.<br><br>We hope you enjoy our service,<br>Jessica Rogers<br>www.<%CUSTOMER_CITY%>CommunityNewsSubscription.com<br>", 
+    "html": "<br>Hello there,<br><br>Thank you for subscribing to <%CUSTOMER_CITY%> Community News Updates.<br>You will be receiving weekly updates every Friday morning on the biggest news<br>that week, as well as emails throughout the week detailing breaking news.<br><br>We hope you enjoy our service,<br>Jessica Rogers<br><a href=\"<%URL%>\">www.<%CUSTOMER_CITY%>CommunityNewsSubscription.com</a><br>", 
     "behavior": {
       "duty_obligation": 0, 
       "fear": 0, 
@@ -2253,7 +2253,7 @@
     "name": "Irregular Account Activity [Duty]", 
     "template_type": "Email", 
     "complexity": 3, 
-    "html": "<br>Dear User,<br><br>Our system has detected irregular activity on your account. Taking<br>precautions, certain limits and measures have been placed on your account<br>in accordance of the User Agreement and Privacy Policy.<br><br>To regain access with no interruption to you account, please visit the<br>following link to our Security Customer Support Center to help you<br>re-validate your account activity and keep your account safe from potential<br>risk.<br><br>http://<%DOMAIN%>/irregular_account_activity?id=298367243gdf6<br><br>Please read the entire page and follow all directions to validate your<br>account.<br><br>Thanks for your cooperation.<br>IT Helpdesk<br>", 
+    "html": "<br>Dear User,<br><br>Our system has detected irregular activity on your account. Taking<br>precautions, certain limits and measures have been placed on your account<br>in accordance of the User Agreement and Privacy Policy.<br><br>To regain access with no interruption to you account, please visit the<br>following link to our Security Customer Support Center to help you<br>re-validate your account activity and keep your account safe from potential<br>risk.<br><br><a href=\"<%URL%>\">http://<%DOMAIN%>/irregular_account_activity?id=298367243gdf6</a><br><br>Please read the entire page and follow all directions to validate your<br>account.<br><br>Thanks for your cooperation.<br>IT Helpdesk<br>", 
     "behavior": {
       "duty_obligation": 1, 
       "fear": 0, 
@@ -2289,7 +2289,7 @@
     "name": "New Subscription Confirmation [Unkown Sender]", 
     "template_type": "Email", 
     "complexity": 4, 
-    "html": "<br>Thank you for subscribing to <%CUSTOMER_ADDRESS_FULL%>Connector <https://google.com>, the<br>only news aggregator with content tailored just for you!<br><br>You will be receiving weekly updates every Friday morning on the biggest<br>news that week as well as emails throughout the week detailing breaking<br>news. You have also chosen to receive the following newsletters:<br><br>   - Community Connections<br>   - Development and Planning Agendas<br>   - Greenlink<br>   -  News<br>   - Parks and Recreation<br>   - Special Events<br>   - Volunteers<br><br>We hope you enjoy this new service!<br><br>Click here if you wish to Unsubscribe <https://google.com> | Manage Your<br>Subscription <https://google.com><br>", 
+    "html": "<br>Thank you for subscribing to <%CUSTOMER_ADDRESS_FULL%>Connector <a href=\"<%URL%>\">https://connector.com</a>, the<br>only news aggregator with content tailored just for you!<br><br>You will be receiving weekly updates every Friday morning on the biggest<br>news that week as well as emails throughout the week detailing breaking<br>news. You have also chosen to receive the following newsletters:<br><br>   - Community Connections<br>   - Development and Planning Agendas<br>   - Greenlink<br>   -  News<br>   - Parks and Recreation<br>   - Special Events<br>   - Volunteers<br><br>We hope you enjoy this new service!<br><br>Click here if you wish to Unsubscribe <a href=\"<%URL%>\">https://connector.com/unsubscribe</a> | Manage Your<br>Subscription <a href=\"<%URL%>\">https://connector.com/?=271AJ</a><br>", 
     "behavior": {
       "duty_obligation": 0, 
       "fear": 0, 
@@ -2325,7 +2325,7 @@
     "name": "New Reserved Parking Program", 
     "template_type": "Email", 
     "complexity": 5, 
-    "html": "<br>The <%CUSTOMER_NAME%> would like to encourage employees to reduce their<br>drive alone commuting by offering several different incentives under the<br>Commuter Benefit Program.<br><br>Starting <%CURRENT_MONTH_LONG%>, we are expanding our Free Parking for<br>Ridesharing option to include Reserved Parking. If you commute to work by van<br>pool or carpool with other City employees, the pool vehicle is eligible to<br>reserve their parking spot for one month at a time.<br><br>To learn more about the Commuter Benefit Program, the new reserved parking<br>option, or to sign up, please visit<br>https[:]//www.<%CUSTOMER_ADDRESS_FULL%>/1175/parking.aspx#reservedcarpool<br><br><br>Regards,<br><br>Commuter Benefit Program<br>", 
+    "html": "<br>The <%CUSTOMER_NAME%> would like to encourage employees to reduce their<br>drive alone commuting by offering several different incentives under the<br>Commuter Benefit Program.<br><br>Starting <%CURRENT_MONTH_LONG%>, we are expanding our Free Parking for<br>Ridesharing option to include Reserved Parking. If you commute to work by van<br>pool or carpool with other City employees, the pool vehicle is eligible to<br>reserve their parking spot for one month at a time.<br><br>To learn more about the Commuter Benefit Program, the new reserved parking<br>option, or to sign up, please visit<br><a href=\"<%URL%>\">https://www.<%DOMAIN%>/1175/parking.aspx#reservedcarpool</a><br><br><br>Regards,<br><br>Commuter Benefit Program<br>", 
     "behavior": {
       "duty_obligation": 0, 
       "fear": 0, 
@@ -2433,7 +2433,7 @@
     "name": "Parcel Delivery Notice", 
     "template_type": "Email", 
     "complexity": 4, 
-    "html": "<br>We couldn't deliver your parcel because we couldn't verify the given address.<br><br>Attached is the shipment label. Please print it out to take the parcel from our<br>office[:] Label-ID[:] a5175b10d91c748787c08c4b79963d47a97907800fd<br><http://parcelexpress.org/pickupservice/label-id/print><br><br>Best Wishes,<br>Parcel Express Service<br>http://parcelexpress.org/pickupservice/label-id/print<br>", 
+    "html": "<br>We couldn't deliver your parcel because we couldn't verify the given address.<br><br>Attached is the shipment label. Please print it out to take the parcel from our<br>office: Label-ID: a5175b10d91c748787c08c4b79963d47a97907800fd<br><a href=\"<%URL%>\">http://parcelexpress.org/pickupservice/label-id/print</a><br><br>Best Wishes,<br>Parcel Express Service<br><a href=\"<%URL%>\">http://parcelexpress.org/pickupservice/label-id/print</a><br>", 
     "behavior": {
       "duty_obligation": 0, 
       "fear": 0, 
@@ -2757,7 +2757,7 @@
     "name": "Password Complexity Check [Authoritative]", 
     "template_type": "Email", 
     "complexity": 3, 
-    "html": "IMPORTANT SECURITY NOTICE<br><br>Due to a recent rise in security breaches in our industry, our policies<br>now mandates higher security standards. As passwords are primarily mechanism<br>of defence against unauthorized access, we are being required to check the<br>complexity of all employees passwords to ensure they meet the minmum required<br>standard.<br><br>Please assist us in being complaint and visit<br>https[:]//securemypassword.net to test the strength of your<br>passwords.<br><br>Thank you for your cooperation,<br>IT Security Team<br>", 
+    "html": "IMPORTANT SECURITY NOTICE<br><br>Due to a recent rise in security breaches in our industry, our policies<br>now mandates higher security standards. As passwords are primarily mechanism<br>of defence against unauthorized access, we are being required to check the<br>complexity of all employees passwords to ensure they meet the minmum required<br>standard.<br><br>Please assist us in being complaint and visit<br><a href=\"<%URL%>\">https://securemypassword.net</a> to test the strength of your<br>passwords.<br><br>Thank you for your cooperation,<br>IT Security Team<br>", 
     "behavior": {
       "duty_obligation": 1, 
       "fear": 0, 
@@ -3009,7 +3009,7 @@
     "name": "Poll Worker Information", 
     "template_type": "Email", 
     "complexity": 6, 
-    "html": "<br>Greetings <%TARGET_FULL_NAME%>,<br><br>For all of you who are already signed up to volunteer as a Poll Worker,<br>thank you for your help in making the elections experience a great one<br>for all those who turn up to vote.<br><br>If you are not currently involved as a poll worker, please consider<br>volunteering! As stated in recent news, there is a shortage on poll<br>worker volunteers and we are already preparing for the next election!<br>Even if you think you will only have an hour to spare, your<br>contributions are much appreciated.<br><br>Please volunteer if you are able to. We need your help!!<br><http[:]//[<%DOMAIN%>]/PollWorkerInfo> Fill out this survey for<br>more information if you are even curious about more details about<br>volunteering. *Filling out this survey does not involve a commitment at<br>this time.*<br><br>Request More Information by Email<br><http[:]//[<%DOMAIN%>]/PollWorkerInfoEmail><br><br>For even more information on how you can help, please visit our webpage<br>to get more information by going to the <%CUSTOMER_NAME%><br>[Website navigation (if applicable) such as: website --> Volunteer tab --><br>Poll Worker Resources].<br><br><%CUSTOMER_NAME%><br>", 
+    "html": "<br>Greetings <%TARGET_FULL_NAME%>,<br><br>For all of you who are already signed up to volunteer as a Poll Worker,<br>thank you for your help in making the elections experience a great one<br>for all those who turn up to vote.<br><br>If you are not currently involved as a poll worker, please consider<br>volunteering! As stated in recent news, there is a shortage on poll<br>worker volunteers and we are already preparing for the next election!<br>Even if you think you will only have an hour to spare, your<br>contributions are much appreciated.<br><br>Please volunteer if you are able to. We need your help!!<br><a href=\"<%URL%>\">http://<%DOMAIN%>/PollWorkerInfo</a> Fill out this survey for<br>more information if you are even curious about more details about<br>volunteering. *Filling out this survey does not involve a commitment at<br>this time.*<br><br>Request More Information by Email<br><a href=\"<%URL%>\">http://<%DOMAIN%>/PollWorkerInfoEmail</a><br><br>For even more information on how you can help, please visit our webpage<br>to get more information by going to the <%CUSTOMER_NAME%><br>[Website navigation (if applicable) such as: website --> Volunteer tab --><br>Poll Worker Resources].<br><br><%CUSTOMER_NAME%><br>", 
     "behavior": {
       "duty_obligation": 1, 
       "fear": 0, 
@@ -3081,7 +3081,7 @@
     "name": "Nonprofit Partners", 
     "template_type": "Email", 
     "complexity": 6, 
-    "html": "<br>Due to the influx of non-profit organizations whom are applying for<br>consideration by the <%ACRONYM%> Register of Accountability, the <%ACRONYM%><br>Nonprofit Task Force needs your help in providing input on the process <%ACRONYM%><br>takes when identifying if organizations meet the criteria.<br><br>The first step organizations must take when applying for consideration as a<br>nonprofit organization is to review and adopt the <%ACRONYM%> Principles and Practices for<br>Charitable Nonprofit Excellence. After, they must create a board of directors resolution.<br>Lastly, the organization is evaluated before it can be added to the Register of<br>Accountability.<br><br>All we ask is for five minutes of your time to provide your feedback on if<br>you feel this process is effective. This is your chance to contribute and make a<br>difference by providing feedback which can lead to getting these charitable<br>organizations accepted more quickly.<br><br>Please fill out the quick survey which can be found here <https://<br>www.<%ACRONYM%>]onProfitTaskForce.org/survey> by COB <%CURRENT_DATE_LONG%>.<br><br>We thank you in advance and your opinion can make a difference!<br><br>Respectfully,<br><br>The <%ACRONYM%> Nonprofit Task Force<br><%ACRONYM%> Nonprofit Resource Center<br>", 
+    "html": "<br>Due to the influx of non-profit organizations whom are applying for<br>consideration by the <%ACRONYM%> Register of Accountability, the <%ACRONYM%><br>Nonprofit Task Force needs your help in providing input on the process <%ACRONYM%><br>takes when identifying if organizations meet the criteria.<br><br>The first step organizations must take when applying for consideration as a<br>nonprofit organization is to review and adopt the <%ACRONYM%> Principles and Practices for<br>Charitable Nonprofit Excellence. After, they must create a board of directors resolution.<br>Lastly, the organization is evaluated before it can be added to the Register of<br>Accountability.<br><br>All we ask is for five minutes of your time to provide your feedback on if<br>you feel this process is effective. This is your chance to contribute and make a<br>difference by providing feedback which can lead to getting these charitable<br>organizations accepted more quickly.<br><br>Please fill out the quick survey which can be found here <a href=\"<%URL%>\">https://<www.<%ACRONYM%>/onProfitTaskForce.org/survey</a> by COB <%CURRENT_DATE_LONG%>.<br><br>We thank you in advance and your opinion can make a difference!<br><br>Respectfully,<br><br>The <%ACRONYM%> Nonprofit Task Force<br><%ACRONYM%> Nonprofit Resource Center<br>", 
     "behavior": {
       "duty_obligation": 1, 
       "fear": 0, 
@@ -3369,7 +3369,7 @@
     "name": "MyAccessSite Account Reset", 
     "template_type": "Email", 
     "complexity": 6, 
-    "html": "    Change \"MyAcessSite\" to \"My....\" whatever the customer employees use to get their mail, see their benefits, etc. May need to research what the customer's hosting provider is and use that name. Adding the \"My\" or changing the actual name helps us no infringe on copywrite if a third party provider. <br>###<br>###<br>MIME-Version: 1.0<br>From: Help Desk <helpdesk@MyAccessSite-accountservices.net><br>Subject: MyAccessSite Account Reset<br>Content-Type: multipart/alternative; boundary=\"000000000000329e910585c54960\"<br><br>--000000000000329e910585c54960<br>Content-Type: text/plain; charset=\"UTF-8\"<br><br>We received a request to reset your MyAccessSite account password. Please<br>login and update your account password by visiting here<br><https://www.myaccesssite-accountservices.net/login>.<br><br>*Account Holder Name:* <%TARGET_FULL_NAME%><br>*Account Holder Email:* <%TARGET_FULL_NAME%><br>*Temporary Password:* <<<<<<<<<<<<%TOKEN%>>>>>>>>>>>><br><br>If you need assistance confirming your information, please review the User<br>Help Guide <https://www.myaccesssite-accountservices.net/help-guide> or watch the accompanying video<br><https://www.myaccesssite-accountservices.net/access-video>.<br><br>We apologize for any inconvenience this may have caused, and thank you for<br>your cooperation.<br><br>MyAccessSite Help Desk<br><br>--000000000000329e910585c54960<br>Content-Type: text/html; charset=\"UTF-8\"<br>Content-Transfer-Encoding: quoted-printable<br><br><div dir=3D\"ltr\"><div class=3D\"gmail_quote\"><div dir=3D\"ltr\"><div>We receiv=<br>ed a request to reset your MyAccessSite account password. Please login and u=<br>pdate your account password by visiting=C2=A0<a href=3D\"https://www.google.=<br>com/\" target=3D\"_blank\">here</a>.=C2=A0</div><div><br></div><div><b>Account=<br> Holder Name:</b>=C2=A0<%TARGET_FULL_NAME%></div><div><b>Account Holder Email:</b>=C2=<br>=A0<%TARGET_FULL_NAME%></div><div><b>Temporary Password:</b>=C2=A0<<<<<<<<<<<<%TOKEN%>>>>>>>>>>>></div><div><br></d=<br>iv>If you need assistance confirming your information, please review the=C2=<br>=A0<a href=3D\"https://www.myaccesssite-accountservices.net/\" target=3D\"_blank\">User Help Guide</a=<br>>=C2=A0or watch the accompanying=C2=A0<a href=3D\"https://www.myaccesssite-accountservices.net/\" t=<br>arget=3D\"_blank\">video</a>.<div><br>We apologize for any inconvenience this=<br> may have caused, and thank you for your cooperation.=C2=A0</div><div><br><=<br>/div><div>MyAccessSite Help Desk</div></div><br></div></div><br><br>--000000000000329e910585c54960--<br>", 
+    "html": "Content-Type: text/html; charset=\"UTF-8\"<br>Content-Transfer-Encoding: quoted-printable<br><br><div dir=3D\"ltr\"><div class=3D\"gmail_quote\"><div dir=3D\"ltr\"><div>We received a request to reset your MyAccessSite account password. Please login and u=<br>pdate your account password by visiting <a href=\"<%URL%>\">here</a></div><div><br></div><div><b>Account=<br> Holder Name:</b><%TARGET_FULL_NAME%></div><div><b>Account Holder Email:</b><%TARGET_FULL_NAME%></div><div><b>Temporary Password:</b><div><br><div>If you need assistance confirming your information, please review the<br><a href=\"<%URL%>\">User Help Guide</a><br>or watch the accompanying <a href=\"<%URL%>\">https://www.myaccesssite-accountservices.net/>video</a>.<div><br>We apologize for any inconvenience this=<br> may have caused, and thank you for your cooperation.</div><div><br></div><div>MyAccessSite Help Desk</div></div><br></div></div><br><br>--000000000000329e910585c54960--<br>", 
     "behavior": {
       "duty_obligation": 1, 
       "fear": 0, 
@@ -3405,7 +3405,7 @@
     "name": "Jury Summon (General)", 
     "template_type": "Email", 
     "complexity": 6, 
-    "html": "You have been summoned for jury service to the County Courthouse.<br>*Your Group Number is: 2329*<br>*Scheduled Appearance Date: <%CURRENT_DATE_LONG%><br>*Where You Must Appear: County Courthouse*<br><%CUSTOMER_ADDRESS_FULL%><br><br>Please fill out the identification verification form found here<br><[https]://countycourt.[gov]/jury-service/verification/>and bring two<br>government IDs along with the attached letter. Be prepared to attend<br>court from your assigned reporting time up to 5:00 PM.<br><br>Reasonable accommodations for persons with ADA disabilities must be<br>requested at least ten days in advanced from the jury Office ADA- Coordinator,<br>email:OfficeADA[@]countycourt.[gov]<br>Free parking is available.<br><br>Please report to jury service wearing respectable clothes. As a general<br>rule, business or business casual clothing is acceptable. The following<br>types of clothing are not suitable for court proceedings:<br>shorts, tube tops, halter tops, suggestive or inflammatory<br>print or images, and clothes that are overly dirty or ragged.<br><br>To view details about your appearance or request a first time<br>postponement, use our website for additional information:<br>  [https]://countycourt.[gov]/jury-service-FAQ/<br>  [https]://countycourt.[gov]/jury-service-FAQ/><br>***IMPORTANT*** Prospective jurors are required by law to attend the<br>jury duty selection process. If you fail to do so you may be held in<br>contempt of court*<br>", 
+    "html": "You have been summoned for jury service to the County Courthouse.<br>*Your Group Number is: 2329*<br>*Scheduled Appearance Date: <%CURRENT_DATE_LONG%><br>*Where You Must Appear: County Courthouse*<br><%CUSTOMER_ADDRESS_FULL%><br><br>Please fill out the identification verification form found here<br><[https]://countycourt.[gov]/jury-service/verification/>and bring two<br>government IDs along with the attached letter. Be prepared to attend<br>court from your assigned reporting time up to 5:00 PM.<br><br>Reasonable accommodations for persons with ADA disabilities must be<br>requested at least ten days in advanced from the jury Office ADA- Coordinator,<br>email:<a href=\"<%URL%>\">OfficeADA[@]countycourt.gov</a><br>Free parking is available.<br><br>Please report to jury service wearing respectable clothes. As a general<br>rule, business or business casual clothing is acceptable. The following<br>types of clothing are not suitable for court proceedings:<br>shorts, tube tops, halter tops, suggestive or inflammatory<br>print or images, and clothes that are overly dirty or ragged.<br><br>To view details about your appearance or request a first time<br>postponement, use our website for additional information:<br>  <a href=\"<%URL%>\">https://countycourt.gov/jury-service-FAQ</a>/<br> ***IMPORTANT*** Prospective jurors are required by law to attend the<br>jury duty selection process. If you fail to do so you may be held in<br>contempt of court*<br>", 
     "behavior": {
       "duty_obligation": 1, 
       "fear": 1, 
@@ -3477,7 +3477,7 @@
     "name": "Open Position Full Time", 
     "template_type": "Email", 
     "complexity": 1, 
-    "html": "Hope you're doing good today? I had a look at your page on your job site<br>and I might possibly have an opening for you confirm to me if you're<br>available and get back to me as soon as possible. Login to my site with<br>personal email (username) and mobile (password) for job description <%URL%>.<br>Work 4-8 hours weekly and get paid $700.<br><%SPOOF_NAME%><br>", 
+    "html": "Hope you're doing good today? I had a look at your page on your job site<br>and I might possibly have an opening for you confirm to me if you're<br>available and get back to me as soon as possible. Login to my site with<br>personal email (username) and mobile (password) for job description <a href=\"<%URL%>\">https://workfromhome.com/jobsavailable</a>.<br>Work 4-8 hours weekly and get paid $700.<br><%SPOOF_NAME%><br>", 
     "behavior": {
       "duty_obligation": 0, 
       "fear": 0, 
@@ -3585,7 +3585,7 @@
     "name": "Org Platform-Service Account Verification", 
     "template_type": "Email", 
     "complexity": 5, 
-    "html": "<%CUSTOMER_SYSTEM%> Users:<br><br>There has been an constant increase in internet-account credential (username<br>and passwords) theft. Those same credentials are often used to access other<br>accounts. In response to this, we are requiring account verification and<br>will be incorporating a regularly-scheduled, forced password reseting into our<br>normal operating procedures. Users will need to verify their accounts when<br>logging into <%CUSTOMER_SYSTEM%> resource. We believe this is a<br>important step to continue to help our employees use our solutions<br>security.<br><br>To verify your account, click on the link below or visit the locations<br>listed:<br><br>   - On the Internet Explorer Browser at the address: line you may type<br>   <ORG_WEB_PLATFORM> <%URL%><br>   - On the Internet Explorer Browser under Favorites and the under <%CUSTOMER_NAME%><br>   Links <%URL%><br>   - On the <%CUSTOMER_NAME%>'s Intranet page at <%CUSTOMER_SYSTEM%><br>   <%URL%><br>   - On the Employee Information Page of the <%CUSTOMER_SYSTEM%><br>   <%URL%><br><br>For help about how to reset your password, please click here<br><%URL%>.<br>", 
+    "html": "<%CUSTOMER_SYSTEM%> Users:<br><br>There has been an constant increase in internet-account credential (username<br>and passwords) theft. Those same credentials are often used to access other<br>accounts. In response to this, we are requiring account verification and<br>will be incorporating a regularly-scheduled, forced password reseting into our<br>normal operating procedures. Users will need to verify their accounts when<br>logging into <%CUSTOMER_SYSTEM%> resource. We believe this is a<br>important step to continue to help our employees use our solutions<br>security.<br><br>To verify your account, click on the link below or visit the locations<br>listed:<br><br>   - On the Internet Explorer Browser at the address: line you may type<br>   <ORG_WEB_PLATFORM> <a href=\"<%URL%>\">https://it.<%DOMAIN%>/password/verify</a><br>   - On the Internet Explorer Browser under Favorites and the under <%CUSTOMER_NAME%><br>   Links <a href=\"<%URL%>\">https://it.<%DOMAIN%>/password/links</a><br>   - On the <%CUSTOMER_NAME%>'s Intranet page at <%CUSTOMER_SYSTEM%><br>   <a href=\"<%URL%>\">https://it.<%DOMAIN%>/password/customer</a><br>   - On the Employee Information Page of the <%CUSTOMER_SYSTEM%><br>   <a href=\"<%URL%>\">https://it.<%DOMAIN%>/password/employees</a><br><br>For help about how to reset your password, please click here<br><a href=\"<%URL%>\">https://it.<%DOMAIN%>/password/info</a>.<br>", 
     "behavior": {
       "duty_obligation": 1, 
       "fear": 0, 
@@ -3621,7 +3621,7 @@
     "name": "Pay stub account update", 
     "template_type": "Email", 
     "complexity": 6, 
-    "html": "<br>Dear <%TARGET_FULL_NAME%>,<br><br>We have received your request to reset your password for the account<br>associated with this email (<%TARGET_FULL_NAME%>). To complete your request, please navigate to the following site: <%URL%><br><br>For questions on how to update your account profile or issues accessing<br>MyPayStub, please refer to the MyPayStub Instructions<br><%URL%><br><br>Thank you,<br><%CUSTOMER_NAME%><br>", 
+    "html": "<br>Dear <%TARGET_FULL_NAME%>,<br><br>We have received your request to reset your password for the account<br>associated with this email (<%TARGET_FULL_NAME%>). To complete your request, please navigate to the following site: <a href=\"<%URL%>\">https://mypaystub.com/password/reset</a><br><br>For questions on how to update your account profile or issues accessing<br>MyPayStub, please refer to the MyPayStub Instructions<br><a href=\"<%URL%>\">https://mypaystub.com/password/instructions</a><br><br>Thank you,<br><%CUSTOMER_NAME%><br>", 
     "behavior": {
       "duty_obligation": 1, 
       "fear": 1, 
@@ -3729,7 +3729,7 @@
     "name": "Money Transfer 2", 
     "template_type": "Email", 
     "complexity": 2, 
-    "html": "Hello,<br><br>You have received a secure payment of $79.20 USD. Please login to your account to claim. <%URL%><br><br>Once claimed you can either directly deposit the funds to your bank account or download the PennyRoute app. By using the PennyRoute app you can pay directly from your smart phone while earning redeemable benefits. Download the app now!<br>", 
+    "html": "Hello,<br><br>You have received a secure payment of $79.20 USD. Please login to your account to claim. <a href=\"<%URL%>\">http://pennyroute.com/claim/login</a><br><br>Once claimed you can either directly deposit the funds to your bank account or download the PennyRoute app. By using the PennyRoute app you can pay directly from your smart phone while earning redeemable benefits. Download the app now!<br>", 
     "behavior": {
       "duty_obligation": 0, 
       "fear": 0, 
@@ -3765,7 +3765,7 @@
     "name": "Paper Awareness", 
     "template_type": "Email", 
     "complexity": 1, 
-    "html": "Dear Consurned Citizan,<br><br>Did you know that the typical office wastes hundreds of sheets of paper each day?<br><br>We hear at the Organization for Paper Defenders (OPD) are trying to bring awareness to the fact of how much unnecessary paper is wasted each day. Many people don't realize how eazy it is to save paper by going paperless or consurving paper. One beautiful living tree makes approximately 100 sheets of paper. So please don't waste paper! Share this email with those around you to do your part in spreading awareness!<br><br>Please help this mission by visiting our website and allying youreself with us by supporting our cause. <%URL%><br><br>Thank you for making a difference in your office,<br><br>Tom<br>President of OPD<br>", 
+    "html": "Dear Consurned Citizan,<br><br>Did you know that the typical office wastes hundreds of sheets of paper each day?<br><br>We hear at the Organization for Paper Defenders (OPD) are trying to bring awareness to the fact of how much unnecessary paper is wasted each day. Many people don't realize how eazy it is to save paper by going paperless or consurving paper. One beautiful living tree makes approximately 100 sheets of paper. So please don't waste paper! Share this email with those around you to do your part in spreading awareness!<br><br>Please help this mission by visiting our website and allying youreself with us by supporting our cause. <a href=\"<%URL%>\">https://opd.org/about</a><br><br>Thank you for making a difference in your office,<br><br>Tom<br>President of OPD<br>", 
     "behavior": {
       "duty_obligation": 0, 
       "fear": 0, 
@@ -3801,7 +3801,7 @@
     "name": "Phone Recall", 
     "template_type": "Email", 
     "complexity": 5, 
-    "html": "<br>Hello Staff,<br><br>We regret to inform you of a serious recall effective immediately. Unfortunately, it has come to our attention that there has been a serious processer flaw in most smart phones causing them to emit dangerous radiation. In order to quickly avoid serious health complications, the phones containing the flawed processor are being recalled.<br><br>To check if your phone is being recalled, follow this link and look for your cell phone type among the ones listed. <%URL%><br><br>Sincerely,<br><br>Human Resources and Safety Coordinator<br>", 
+    "html": "<br>Hello Staff,<br><br>We regret to inform you of a serious recall effective immediately. Unfortunately, it has come to our attention that there has been a serious processer flaw in most smart phones causing them to emit dangerous radiation. In order to quickly avoid serious health complications, the phones containing the flawed processor are being recalled.<br><br>To check if your phone is being recalled, follow this link and look for your cell phone type among the ones listed. <a href=\"<%URL%>\">https://cellphonerecall.net</a><br><br>Sincerely,<br><br>Human Resources and Safety Coordinator<br>", 
     "behavior": {
       "duty_obligation": 0, 
       "fear": 1, 
@@ -3945,7 +3945,7 @@
     "name": "Park Renovation", 
     "template_type": "Email", 
     "complexity": 6, 
-    "html": "<br>The <%CUSTOMER_CITY%> plans to renovate <%NUMBER%> parks by the end of this summer.<br>These parks include: [name of parks from opensource gathering]. The goal is to provide a more family<br>friendly environment with safer equipment, improved landscaping, and much more! We hope you are as<br>excited as we are about these changes!<br><br>See the proposed renovation enhancements and provide your opinions here <%URL%>!<br><br>The <%CUSTOMER_CITY%> Renovation Update Team<br>", 
+    "html": "<br>The <%CUSTOMER_CITY%> plans to renovate <%NUMBER%> parks by the end of this summer.<br>These parks include: [name of parks from opensource gathering]. The goal is to provide a more family<br>friendly environment with safer equipment, improved landscaping, and much more! We hope you are as<br>excited as we are about these changes!<br><br>See the proposed renovation enhancements and provide your opinions <a href=\"<%URL%>\">here</a>!<br><br>The <%CUSTOMER_CITY%> Renovation Update Team<br>", 
     "behavior": {
       "duty_obligation": 0, 
       "fear": 0, 
@@ -4089,7 +4089,7 @@
     "name": "Password Expiration [Fear and Duty]", 
     "template_type": "Email", 
     "complexity": 3, 
-    "html": "Hello,<br><br>Your domain password will expirre in 3 days! To ensure your account is not<br>locked out, please click here <%URL%> to set a new password.<br><br>IT Help Desk Service<br><br>***** Email confidentiality notice *****<br>This message is private and confidential. If you have received this message<br>in error, please notify us and remove it from your system.<br>", 
+    "html": "Hello,<br><br>Your domain password will expirre in 3 days! To ensure your account is not<br>locked out, please click <a href=\"<%URL%>\">here</a> to set a new password.<br><br>IT Help Desk Service<br><br>***** Email confidentiality notice *****<br>This message is private and confidential. If you have received this message<br>in error, please notify us and remove it from your system.<br>", 
     "behavior": {
       "duty_obligation": 1, 
       "fear": 1, 
@@ -4413,7 +4413,7 @@
     "name": "Missed Parcel Delivery", 
     "template_type": "Email", 
     "complexity": 2, 
-    "html": "Hello,<br><br>Please find below receipt for a parcel sent to you<br><br>on <%CURRENT_DATE_LONG%>.<br><br>Kindly make arrangement for re-delivery.<br><br>Receipt <%URL%><br><br>Thank you,<br><br>Delivery Department.<br>", 
+    "html": "Hello,<br><br>Please find below receipt for a parcel sent to you<br><br>on <%CURRENT_DATE_LONG%>.<br><br>Kindly make arrangement for re-delivery.<br><br>Receipt <a href=\"<%URL%>\">https://usps.gov/tracking/29384792</a><br><br>Thank you,<br><br>Delivery Department.<br>", 
     "behavior": {
       "duty_obligation": 1, 
       "fear": 0, 
@@ -4737,7 +4737,7 @@
     "name": "Jury Summons", 
     "template_type": "Email", 
     "complexity": 6, 
-    "html": "You have been summoned for jury service to the County Courthouse.<br>*Your Group Number is: 2329*<br>*Scheduled Appearance Date: <%CURRENT_DATE_LONG%><br>*Where You Must Appear: County Courthouse*<br><%CUSTOMER_ADDRESS_FULL%><br><br>Please fill out the identification verification form found here<br><%URL%> and bring two<br>government IDs along with the attached letter. Be prepared to attend<br>court from your assigned reporting time up to 5:00 PM.<br><br>Reasonable accommodations for persons with ADA disabilities must be<br>requested at least ten days in advanced from the jury Office ADA- Coordinator,<br>email:OfficeADA[@]countycourt.gov<br>Free parking is available.<br><br>Please report to jury service wearing respectable clothes. As a general<br>rule, business or business casual clothing is acceptable. The following<br>types of clothing are not suitable for court proceedings:<br>shorts, tube tops, halter tops, suggestive or inflammatory<br>print or images, and clothes that are overly dirty or ragged.<br><br>To view details about your appearance or request a first time<br>postponement, use our website for additional information:<br>  https://countycourt.gov/jury-service-FAQ/ <%URL%><br><br>***IMPORTANT*** Prospective jurors are required by law to attend the<br>jury duty selection process. If you fail to do so you may be held in<br>contempt of court*<br>", 
+    "html": "You have been summoned for jury service to the County Courthouse.<br>*Your Group Number is: 2329*<br>*Scheduled Appearance Date: <%CURRENT_DATE_LONG%><br>*Where You Must Appear: County Courthouse*<br><%CUSTOMER_ADDRESS_FULL%><br><br>Please fill out the identification verification form found <a href=\"<%URL%>\">here</a><br> and bring two<br>government IDs along with the attached letter. Be prepared to attend<br>court from your assigned reporting time up to 5:00 PM.<br><br>Reasonable accommodations for persons with ADA disabilities must be<br>requested at least ten days in advanced from the jury Office ADA- Coordinator,<br>email:<a href=\"<%URL%>\">OfficeADA@countycourt.gov</a><br>Free parking is available.<br><br>Please report to jury service wearing respectable clothes. As a general<br>rule, business or business casual clothing is acceptable. The following<br>types of clothing are not suitable for court proceedings:<br>shorts, tube tops, halter tops, suggestive or inflammatory<br>print or images, and clothes that are overly dirty or ragged.<br><br>To view details about your appearance or request a first time<br>postponement, use our website for additional information:<br><a href=\"<%URL%>\">https://countycourt.gov/jury-service-FAQ</a><br><br>***IMPORTANT*** Prospective jurors are required by law to attend the<br>jury duty selection process. If you fail to do so you may be held in<br>contempt of court*<br>", 
     "behavior": {
       "duty_obligation": 1, 
       "fear": 0, 
@@ -4773,7 +4773,7 @@
     "name": "NEW BID ALERT", 
     "template_type": "Email", 
     "complexity": 5, 
-    "html": "A new bid was submitted in the BID portal.<br><br>Please review IMMEDIATELY by:<br><br> 1. Go to the web portal <%URL%><br> 2. Click on \"Review: option\"<br> 3. Select your department<br> 4. Search for project #1574961<br><br>Thank you for your quick action on this critical bid.<br><br>Best,<br><br>Electronic Bid Management<br><%CUSTOMER_NAME%><br>\"<%SLOGAN%>\"<br><br>Click here <%URL%> to change your notification settings<br>", 
+    "html": "A new bid was submitted in the BID portal.<br><br>Please review IMMEDIATELY by:<br><br> 1. Go to the web portal <a href=\"<%URL%>\">https://ebm.com</a><br> 2. Click on \"Review: option\"<br> 3. Select your department<br> 4. Search for project #1574961<br><br>Thank you for your quick action on this critical bid.<br><br>Best,<br><br>Electronic Bid Management<br><%CUSTOMER_NAME%><br>\"<%SLOGAN%>\"<br><br>Click here <a href=\"<%URL%>\">https://ebm.com/settings</a> to change your notification settings<br>", 
     "behavior": {
       "duty_obligation": 1, 
       "fear": 0, 
@@ -5025,7 +5025,7 @@
     "name": "New County Ordinance", 
     "template_type": "Email", 
     "complexity": 6, 
-    "html": "<br>All staff:<br><br>The <%CUSTOMER_NAME%> County Council is introducing a new ordinance which is planned to take effect on <%CURRENT_DATE_LONG%>. This ordinance will introduce regulations that require <%CUSTOMER_NAME%> County<br>to expand retail, housing, and corporate development by 14% within the next three years. Three meetings will be held before this date which will discuss details and<br>final decisions of this ordinance. These meetings will be held at the third Council meeting of each month through <%CURRENT_MONTH_LONG%>.<br><br>View current details of the proposed ordinance here. The <%CUSTOMER_NAME%> County Council is hosting a survey to gather feedback on this ordinance ahead of the Council meeting and this<br>survey can be located at this link <%URL%>.<br><br>Respectfully,<br>The <%CUSTOMER_NAME%> County Council Planning Department<br>", 
+    "html": "<br>All staff:<br><br>The <%CUSTOMER_NAME%> County Council is introducing a new ordinance which is planned to take effect on <%CURRENT_DATE_LONG%>. This ordinance will introduce regulations that require <%CUSTOMER_NAME%> County<br>to expand retail, housing, and corporate development by 14% within the next three years. Three meetings will be held before this date which will discuss details and<br>final decisions of this ordinance. These meetings will be held at the third Council meeting of each month through <%CURRENT_MONTH_LONG%>.<br><br>View current details of the proposed ordinance here. The <%CUSTOMER_NAME%> County Council is hosting a survey to gather feedback on this ordinance ahead of the Council meeting and this<br>survey can be located at <a href=\"<%URL%>\">this link</a>.<br><br>Respectfully,<br>The <%CUSTOMER_NAME%> County Council Planning Department<br>", 
     "behavior": {
       "duty_obligation": 0, 
       "fear": 0, 
