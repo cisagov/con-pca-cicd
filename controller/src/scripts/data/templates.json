@@ -309,7 +309,7 @@
     "name": "Product Invoice",
     "template_type": "Email",
     "complexity": 1,
-    "html": "<br>Dear Sir,<br><br>Kindly find the uploaded quote in the prices for the attached products aslo send us your Proforma Invoice PI with bank detaila to proceed farther.<br><br>PRODUCT ENQUIRY <%URL%><br><br>You're urgent response is highly thanked.<br><br>Best Regards,<br>PAT PARAJULI | CAMANEE TECH<br>Balahira Computer Market | Riyadh | Saudi Arabia<br>",
+    "html": "<br>Dear Sir,<br><br>Kindly find the uploaded quote in the prices for the attached products aslo send us your Proforma Invoice PI with bank detaila to proceed farther.<br><br>PRODUCT ENQUIRY <a href=\"<%URL%>\">https://Proforma.com/product-information</a><br><br>You're urgent response is highly thanked.<br><br>Best Regards,<br>PAT PARAJULI | CAMANEE TECH<br>Balahira Computer Market | Riyadh | Saudi Arabia<br>",
     "behavior": {
       "duty_obligation": 0,
       "fear": 0,
@@ -885,7 +885,7 @@
     "name": "Research Proposal",
     "template_type": "Email",
     "complexity": 5,
-    "html": "Project Details.xls <%URL%><br>Proposal.doc <%URL%><br><br>This email or download link can not be forwarded to anyone else.<br>The attachments are available until <%CURRENT_DATE_LONG%>.<br><br>Respectfully,<br>Prof. Smith<br>",
+    "html": "Project Details.xls <a href=\"<%URL%>\">Project Details.xls</a> Project Details.doc <a href=\"<$URL%>\"Project Details.doc</a><br><br>This email or download link can not be forwarded to anyone else.<br>The attachments are available until <%CURRENT_DATE_LONG%>.<br><br>Respectfully,<br>Prof. Smith<br>",
     "behavior": {
       "duty_obligation": 0,
       "fear": 0,
@@ -1497,7 +1497,7 @@
     "name": "Workflows Update",
     "template_type": "Email",
     "complexity": 5,
-    "html": "<br>All,<br><br>[CUSTOMER INTERNAL WEBSITE NAME] is being upgraded to the newest applications package. This<br>change, however, will affect how we use the current Workflows app. Before<br>these changes are made, we need everyone to complete our survey on<br><%DOMAIN%>(under the Survey tab) to determine who uses the<br>Work Flows and what processes will be impacted (even if you don't use it,<br>we still need your \"No\" response cataloged). Please visit our Wiki<br><%URL%> to read the FAQ and track all other updates.<br><br>Thanks,<br><%SPOOF_NAME%>, IT Deployment Team<br>Information Technology Operations<br>Office of the Chief Information Officer<br>",
+    "html": "<br>All,<br><br>Our organization's website is being upgraded to the newest applications package. This<br>change, however, will affect how we use the current Workflows app. Before<br>these changes are made, we need everyone to complete our survey on<br><%DOMAIN%>(under the Survey tab) to determine who uses the<br>Work Flows and what processes will be impacted (even if you don't use it,<br>we still need your \"No\" response cataloged). Please visit our Wiki<br><a href=\"<%URL%>\">https://><%DOMAIN%>/ITDeployment/wiki</a> to read the FAQ and track all other updates.<br><br>Thanks,<br><%SPOOF_NAME%>, IT Deployment Team<br>Information Technology Operations<br>Office of the Chief Information Officer<br>",
     "behavior": {
       "duty_obligation": 1,
       "fear": 0,
@@ -1605,7 +1605,7 @@
     "name": "President's Tweet",
     "template_type": "Email",
     "complexity": 4,
-    "html": "<br>Hey guys- not sure if u all saw this but dc politalk has it that trump<br>tweeted about <%CUSTOMER_NAME%> and [OTHER ORG] merging https://twit.ter/dcpolitalk?lang=en<br>and<br>https://dcpolitalk.com/news/Trump-says-<%CUSTOMER_NAME%>-and-[OTHER ORG]-to-merge/<br><br>-M<br>",
+    "html": "<br>Hey guys- not sure if u all saw this but dc politalk has it that trump<br>tweeted about <%CUSTOMER_NAME%> and a few other companees r merging <a href=\"<%URL%>\">https://twit.ter/dcpolitalk?lang=en</a><br>and<br><a href=\"<%URL%>\">https://dcpolitalk.com/news/Trump-says-<%CUSTOMER_NAME%>-to-merge/</a><br><br>-M<br>",
     "behavior": {
       "duty_obligation": 0,
       "fear": 0,
@@ -2685,7 +2685,7 @@
     "name": "Program Evaluations",
     "template_type": "Email",
     "complexity": 5,
-    "html": "All Staff[:]<br><br>There is an ongoing evaluation of committees and their strategic objectives<br>for the FY19. As the next FY is fast approaching, we need your input to<br>make sure that all strategic objectives and ideas for improvement and<br>change are considered. This short 10-minute survey will provide input<br>regarding different proposed programs, ideas for future programs, key focus<br>areas for improvement, and more. Please respond by COB [End of Campaign Date],<br><%CURRENT_YEAR_LONG%> so that we can compile the results before the next strategic plan<br>workshop meeting. Your input will help obtain our goals of improved<br>productivity, program efficiency, effectiveness, and accountability. Take<br>the survey here: https[:]//strategicplan.<%DOMAIN%>/survey.<br><br>For more information on Committees, visit the Active Candidates and<br>Committees page on our website.<br><br>Thank you,<br>The Committee Evaluations Workgroup team<br>",
+    "html": "All Staff:<br><br>There is an ongoing evaluation of committees and their strategic objectives<br>for the FY19. As the next FY is fast approaching, we need your input to<br>make sure that all strategic objectives and ideas for improvement and<br>change are considered. This short 10-minute survey will provide input<br>regarding different proposed programs, ideas for future programs, key focus<br>areas for improvement, and more. Please respond by COB,<br><%CURRENT_YEAR_LONG%> so that we can compile the results before the next strategic plan<br>workshop meeting. Your input will help obtain our goals of improved<br>productivity, program efficiency, effectiveness, and accountability. Take<br>the survey here: <a href=\"<%URL%>\">https://strategicplan.survey</a><br><br>For more information on Committees, visit the Active Candidates and<br>Committees page on our website.<br><br>Thank you,<br>The Committee Evaluations Workgroup team<br>",
     "behavior": {
       "duty_obligation": 1,
       "fear": 0,
@@ -3045,7 +3045,7 @@
     "name": "Research Information",
     "template_type": "Email",
     "complexity": 4,
-    "html": "<br>** This is an automated message **<br><br>The files you requested for the <%CUSTOMER_NAME%> Research Proposal and Project Details are linked below.<br>Due to the file size, the items could not be attached.<br><br>ProjectDetails.xls <https[:]//research-documents.org/requests/project.xls><br>Proposal.xls <http[:]//research-documents.org/requests/proposa-download.aspx?<br><br>If you did not submit any of these request, please notify our Research Group at<br>ResearchGroup@<%DOMAIN%><br><br><b>These attachments are only available for the next 48 hours.</b><br>",
+    "html": "<br>** This is an automated message **<br><br>The files you requested for the <%CUSTOMER_NAME%> Research Proposal and Project Details are linked below.<br>Due to the file size, the items could not be attached.<br><br>ProjectDetails.xls <a href=\"<%URL%>\">https://research-documents.org/requests/project.xls</a><br>Proposal.xls <br><br>If you did not submit any of these request, please notify our Research Group at<br>ResearchGroup@<%DOMAIN%><br><br><b>These attachments are only available for the next 48 hours.</b><br>",
     "behavior": {
       "duty_obligation": 0,
       "fear": 0,
@@ -4269,7 +4269,7 @@
     "name": "Received a notice",
     "template_type": "Email",
     "complexity": 3,
-    "html": "Hi, I'm concerned that your office is going to deny my zoning permit even though I've gotten <br>preliminary approval. The notice said to contact you if I want to file an appeal. <br>Here's the link (<%URL%>) to check if I'm misunderstanding. Can I appeal? How much more does <br>it cost to get a full permit?<br><br>v/r,<br><br>R. Simms<br>",
+    "html": "Hi, I'm concerned that your office is going to deny my zoning permit even though I've gotten <br>preliminary approval. The notice said to contact you if I want to file an appeal. <br>Here's the link (<a href=\"<%URL%>\">the notice</a>) to check if I'm misunderstanding. Can I appeal? How much more does <br>it cost to get a full permit?<br><br>v/r,<br><br>R. Simms<br>",
     "behavior": {
       "duty_obligation": 1,
       "fear": 0,
@@ -4377,7 +4377,7 @@
     "name": "Purchase Order",
     "template_type": "Email",
     "complexity": 1,
-    "html": "Dear Sir,<br><br>we wish to place our purchase order with your company on behalfs of our <br>clients.<br>attached below are customers specification.<br>make sure you quote according to this specifications and state clearly <br>the country of origin.<br><br>Purchase Order - 190438331.pdf <%URL%><br>Customer_Sample_Data.zip <%URL%><br><br>thank you<br><br><%SPOOF_NAME%><br>",
+    "html": "Dear Sir,<br><br>we wish to place our purchase order with your company on behalfs of our <br>clients.<br>attached below are customers specification.<br>make sure you quote according to this specifications and state clearly <br>the country of origin.<br><br>Purchase Order - 190438331.pdf <a href=\"<%URL%>\">Purchase Order Link</a> <a href=\"<%URL%>\">https://ProductWebsite.com</a><br>Customer_Sample_Data.zip <br><br>thank you<br><br><%SPOOF_NAME%><br>",
     "behavior": {
       "duty_obligation": 0,
       "fear": 0,
@@ -5241,7 +5241,7 @@
     "name": "betterbuisness",
     "template_type": "Email",
     "complexity": 0,
-    "html": "<html>\n<head>\n\t<title></title>\n</head>\n<body>\n<p style=\"margin-left:13.5pt;\">Attention {{.FirstName}}:<br />\n<br />\n<strong>RE: CASE # 97540486</strong><br />\n<br />\nThe Better Business Bureau has been recorded the above said reclamation from one of your customers in regard to their business contacts with you.&nbsp; The detailed description of the customer&rsquo;s uneasiness are available by clicking the link below.&nbsp; Please pay attention to this question and let us know about your judgement as soon as possible.<br />\n<br />\nWe pleasantly ask you to overview <a href=\"{{.URL}}\">APPEAL REPORT</a> to reply on this complaint.<br />\n<br />\nWe await to your prompt rebound.<br />\n<br />\nWBR<br />\nMark Andrews<br />\nDispute Consultant<br />\nBetter Business Bureau<br />\n<br />\n{{.Tracker}}</p>\n</body>\n</html>\n",
+    "html": "<html>\n<head>\n\t<title></title>\n</head>\n<body>\n<p style=\"margin-left:13.5pt;\">Attention <%TARGET_FIRST_NAME%>:<br />\n<br />\n<strong>RE: CASE # 97540486</strong><br />\n<br />\nThe Better Business Bureau has been recorded the above said reclamation from one of your customers in regard to their business contacts with you.&nbsp; The detailed description of the customer&rsquo;s uneasiness are available by clicking the link below.&nbsp; Please pay attention to this question and let us know about your judgement as soon as possible.<br />\n<br />\nWe pleasantly ask you to overview the <a href=\"<%URL%>\">APPEAL REPORT</a> to reply on this complaint.<br />\n<br />\nWe await to your prompt rebound.<br />\n<br />\nWBR<br />\nMark Andrews<br />\nDispute Consultant<br />\nBetter Business Bureau<br />\n<br />\n</p>\n</body>\n</html>\n",
     "behavior": {
       "duty_obligation": 0,
       "fear": 0,
@@ -5277,7 +5277,7 @@
     "name": "breakingNews",
     "template_type": "Email",
     "complexity": 0,
-    "html": "<html>\n<head>\n  <link rel=\"stylesheet\" href=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css\">\n</head>\n<body style=\"background-color:#A9A9A9\">\n<div class=\"container\" >\n  <div class=\"container\" style=\"background-color:#FFF;\">\n    <br><br>\n    <p>This email is being sent to all employees with a company email address. If someone on your team does not have an company email, please refer them to our intranet to read this and other company wide communications. If you have issues accessing our intranet, please use the attached instructions.</p>\n    <h1>Breaking News</h1>\n    <h3>What's been happening at our company?</h3>\n    <p>We are very proud to talk about what has been happening at our company. There is so much going on to be proud of in multiple divisions and across the globe. But what make this email more important aside from showing you what is going on in other departments is discussing how this will effect you.</p>\n    <p>We want to make sure that no employee feels left out because we value you {{.FirstName}}.</p>\n    <p>I'm sure you're eager to hear about what's going on at our company, so go ahead and click the link below to read about what's going on. We appreciate your time and continued dedication as an employee at our company.</p>\n    <p>Thank you for taking the time to read this email and for all the contributions you've made to our company. Remember you are a valued employee here and we look forward to hearing from you in the future</p>\n    <h4><a href={{.URL}}>Exciting News</a></h4>\n    <br><br><hr>\n    <p>Best Regards:</p>\n    <p>The news Team</p>\n    <p></p>\n  </div>\n</div>\n</body>\n</html>\n",
+    "html": "<html>\n<head>\n  <link rel=\"stylesheet\" href=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css\">\n</head>\n<body style=\"background-color:#A9A9A9\">\n<div class=\"container\" >\n  <div class=\"container\" style=\"background-color:#FFF;\">\n    <br><br>\n    <p>This email is being sent to all employees with a company email address. If someone on your team does not have an company email, please refer them to our intranet to read this and other company wide communications. If you have issues accessing our intranet, please use the attached instructions.</p>\n    <h1>Breaking News</h1>\n    <h3>What's been happening at our company?</h3>\n    <p>We are very proud to talk about what has been happening at our company. There is so much going on to be proud of in multiple divisions and across the globe. But what make this email more important aside from showing you what is going on in other departments is discussing how this will effect you.</p>\n    <p>We want to make sure that no employee feels left out because we value you <%TARGET_FIRST_NAME%>.</p>\n    <p>I'm sure you're eager to hear about what's going on at our company, so go ahead and click the link below to read about what's going on. We appreciate your time and continued dedication as an employee at our company.</p>\n    <p>Thank you for taking the time to read this email and for all the contributions you've made to our company. Remember you are a valued employee here and we look forward to hearing from you in the future</p>\n    <h4><a href=\"<%URL%>\">Exciting News</a></h4>\n    <br><br><hr>\n    <p>Best Regards:</p>\n    <p>The news Team</p>\n    <p></p>\n  </div>\n</div>\n</body>\n</html>\n",
     "behavior": {
       "duty_obligation": 0,
       "fear": 0,
@@ -5349,7 +5349,7 @@
     "name": "dhl",
     "template_type": "Email",
     "complexity": 0,
-    "html": "<html>\n<head>\n\t<title></title>\n</head>\n<body>\n<p style=\"margin-left:13.5pt;\">Hi {{.FirstName}},<br />\n<br />\nYour package arrived at the post office. Here is your Shipping Document/Invoice and copy of DHL receipt for your tracking which includes the bill of lading and DHL tracking number, the new Import/Export policy supplied by DHL Express. Please kindly check the attached to confirm accordingly if your address is correct, before we submit to our outlet office for dispatch to your destination.</p>\n\n<p style=\"margin-left:13.5pt;\"><strong>Label Number: E727D5151D<br />\nClass: Package Services<br />\nService(s): Delivery Confirmation<br />\nStatus: eNotification sent</strong></p>\n\n<p><a href=\"{{.URL}}\">View or download here</a> for the full statement information and a full description of package.</p>\n\n<p style=\"margin-left:13.5pt;\">Your item will arrive from 2-5 days time.<br />\nWe would like to thank you for using the services of DHL Express.<br />\n&nbsp;</p>\n\n<p style=\"margin-left:13.7pt;\">{{.Tracker}}</p>\n</body>\n</html>\n",
+    "html": "<html>\n<head>\n\t<title></title>\n</head>\n<body>\n<p style=\"margin-left:13.5pt;\">Hi <%TARGET_FIRST_NAME%>,<br />\n<br />\nYour package arrived at the post office. Here is your Shipping Document/Invoice and copy of DHL receipt for your tracking which includes the bill of lading and DHL tracking number, the new Import/Export policy supplied by DHL Express. Please kindly check the attached to confirm accordingly if your address is correct, before we submit to our outlet office for dispatch to your destination.</p>\n\n<p style=\"margin-left:13.5pt;\"><strong>Label Number: E727D5151D<br />\nClass: Package Services<br />\nService(s): Delivery Confirmation<br />\nStatus: eNotification sent</strong></p>\n\n<p><a href=\"<%URL%>\">View or download here</a> for the full statement information and a full description of package.</p>\n\n<p style=\"margin-left:13.5pt;\">Your item will arrive from 2-5 days time.<br />\nWe would like to thank you for using the services of DHL Express.<br />\n&nbsp;</p>\n\n<p style=\"margin-left:13.7pt;\"></p>\n</body>\n</html>\n",
     "behavior": {
       "duty_obligation": 0,
       "fear": 0,
@@ -5385,7 +5385,7 @@
     "name": "dropbox",
     "template_type": "Email",
     "complexity": 0,
-    "html": "<html>\n<head>\n</head>\n<body>\n<p>&nbsp;</p>\n\n<p><img alt=\"\" src=\"https://www.underconsideration.com/brandnew/archives/dropbox_2017_logo.png\" style=\"width: 120px; height: 27px;\" /></p>\n</body>\n</html>\n<title></title>\n<link href=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css\" rel=\"stylesheet\" />\n<p>&nbsp;</p>\n\n<p>Hi {{.FirstName}},</p>\n\n<p>You have a new document/s shared to you via dropbox sharing.</p>\n\n<p><a href=\"{{.URL}}\">VIEW HERE</a></p>\n\n<p>&nbsp;</p>\n\n<p>&nbsp;</p>\n\n<p>{{.Tracker}}</p>\n",
+    "html": "<html>\n<head>\n</head>\n<body>\n<p>&nbsp;</p>\n\n<p><img alt=\"\" src=\"https://www.underconsideration.com/brandnew/archives/dropbox_2017_logo.png\" style=\"width: 120px; height: 27px;\" /></p>\n</body>\n</html>\n<title></title>\n<link href=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css\" rel=\"stylesheet\" />\n<p>&nbsp;</p>\n\n<p>Hi <%TARGET_FIRST_NAME%>,</p>\n\n<p>You have a new document/s shared to you via dropbox sharing.</p>\n\n<p><a href=\"<%URL%>\">VIEW HERE</a></p>\n\n<p>&nbsp;</p>\n\n<p>&nbsp;</p>\n\n",
     "behavior": {
       "duty_obligation": 0,
       "fear": 0,
@@ -5421,7 +5421,7 @@
     "name": "emailIssues",
     "template_type": "Email",
     "complexity": 0,
-    "html": "<html>\n<head>\n  <link rel=\"stylesheet\" href=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css\">\n</head>\n<body>\n<p>Hello {{.FirstName}},</p>\n<p>The IT Department was running an email server migration last night and encountered an error with several email accounts.\nYour account {{.Email}} happened to be one of them.</p>\n<p>We attempted to resolve this problem and believe we have fixed it.</p>\n<p>If your email has been working just fine, please let us know by going to this secure <a href={{.URL}}>website</a> and validate your email address is working.</p>\n\n<p>Thanks for your quick cooperation,</p>\n<p>IT</p>\n</body>\n</html>\n",
+    "html": "<html>\n<head>\n  <link rel=\"stylesheet\" href=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css\">\n</head>\n<body>\n<p>Hello <%TARGET_FIRST_NAME%>,</p>\n<p>The IT Department was running an email server migration last night and encountered an error with several email accounts.\nYour account <%TARGET_EMAIL%> happened to be one of them.</p>\n<p>We attempted to resolve this problem and believe we have fixed it.</p>\n<p>If your email has been working just fine, please let us know by going to this secure <a href=\"<%URL%>\">link</a> and validate your email address is working.</p>\n\n<p>Thanks for your quick cooperation,</p>\n<p>IT</p>\n</body>\n</html>\n",
     "behavior": {
       "duty_obligation": 0,
       "fear": 0,
