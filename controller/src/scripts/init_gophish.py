@@ -4,7 +4,7 @@ import os
 # cisagov Libraries
 # Third Party Libraries
 from gophish import Gophish
-from gophish.models import SMTP, Page
+from gophish.models import SMTP, Page, Webhook
 
 API_KEY = os.environ.get("GP_API_KEY")
 URL = os.environ.get("GP_URL")
@@ -35,6 +35,10 @@ LANDING_PAGES = [
         </html>
         """,
     },
+]
+
+WEBHOOKS = [
+    {"name": "con-pca-webhook", "url": os.environ.get("WEBHOOK_URL"), "is_active": True}
 ]
 
 
@@ -75,11 +79,28 @@ def create_landing_page(pages):
         print(f"Landing page with id: {landing_page.id} has been created")
 
 
+def create_webhook(webhooks):
+    existing_names = {webhook.name for webhook in API.webhooks.get()}
+
+    for webhook in webhooks:
+        if webhook["name"] in existing_names:
+            print(f"Webhook, {webhook['name']}, already exists.. Skipping")
+            continue
+        response = API.webhooks.post(
+            Webhook(
+                name=webhook["name"], url=webhook["url"], is_active=webhook["is_active"]
+            )
+        )
+        print(f"Webhook with id: {response.id} has been created")
+
+
 def main():
-    print("Step 1/2: Creating Sending Profiles")
+    print("Step 1/3: Creating Sending Profiles")
     create_sending_profile(SENDING_PROFILES)
-    print("Step 2/2: Creating Landing Pages")
+    print("Step 2/3: Creating Landing Pages")
     create_landing_page(LANDING_PAGES)
+    print("Step 3/3: Create Webhooks")
+    create_webhook(WEBHOOKS)
     return 0
 
 
