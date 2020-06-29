@@ -1,11 +1,12 @@
 {% load static %}
 <!-- Monthly Report HTML-->
-
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="en-us">
 
 <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
 
     <!-- Reports Custom CSS Page -->
     <link href="{% static '/css/monthly.css' %}" rel="stylesheet">
@@ -33,7 +34,7 @@
                 ['Unopened', 11]
             ]);
 
-            var options = { 'title': 'Emails', 'width': 550, 'height': 400, 'colors': ['#194F9A', '#FDC010'] };
+            var options = { 'title': 'Emails', 'width': 350, 'height': 150, 'colors': ['#164A91', '#FDC010'] };
             var chart = new google.visualization.PieChart(document.getElementById('piechart'));
             chart.draw(data, options);
         }
@@ -46,7 +47,7 @@
                 ['Clicked', 17]
             ]);
 
-            var options = { 'title': 'Links', 'width': 550, 'height': 400, 'colors': ['#194F9A', '#FDC010'] };
+            var options = { 'title': 'Links', 'width': 350, 'height': 150, 'colors': ['#164A91', '#FDC010'] };
             var chart = new google.visualization.PieChart(document.getElementById('piechartTwo'));
             chart.draw(data, options);
         }
@@ -76,127 +77,220 @@
     <meta name="description" content="MonthlyReport">
 </head>
 
-<body>
-    <article id="report">
+<body class="offset-md-2">
 
+    <header>
         <!-- Top blue banner -->
         <div class="topBanner">
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-12">
+                        <div id="phishLogo">
+                            <img src="{% static '/img/Con-PCA_logo.svg'}" alt="Continuous Phishing Campaign Assessment Logo">
+                        </div>
                         <div id="cisaLogo">
-                            <img src="{% static '/img/cisa_logo.png' %}"></img>
+                            <img src="{% static '/img/cisa_logo.png'}" alt ="Cybersecurity &amp; Infrastructure Security Agency">
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+    </header>
 
-        <!-- Left side bar -->
-        <div class="sidebar">
-        </div>
-        <div id="phishLogo">
-            <img src="{% static '/img/Con-PCA_logo.svg' %}">
-        </div>
-        <div id="reportDate">
-            <h3>{{ start_date|date:"M d, Y" }} - {{ end_date|date:"M d, Y" }}</h3>
-        </div>
-        <div id="gonePhishingImage">
-            <img src="{% static '/img/gone_phishing.jpg' %}"></img>
-        </div>
-        <div id="primaryContact">
-            <b>Primary Contact Information</b><br>
-            {{ customer_name }}<br>
-            Director of Technology<br>
-            Neetflix Streaming Services<br>
-            {{ customer_address }}
-        </div>
-        <div id="cisaContact">
-            <b>CISA Contact Information</b>:<br>
-            {{ dhs_contact_email }}<br>
-            Office Phone:<br>
-            {{ dhs_contact_office_phone }}<br>
-            Mobile Phone:<br>
-            {{ dhs_contact_mobile_phone }}<br>
-        </div>
-        <div id="numbersTitle"><b>Overall Campaign Numbers</b></div>
-        <div id="campaignNumbers">
-            Total Emails Sent: 333<br>
-            Email Click Rate: 306 (92%)<br>
-            Successful Phish: 73 (22%)<br>
-        </div>
+    <main>
+        <div class="container-fluid">
+            <div class="row">
+              
+                <!-- Left side bar -->
+                    <aside>
+                        <div id="reportDate">
+                            <h3>4/15/20 - 5/15/20<!-- {{ start_date|date:"M d, Y" }} - {{ end_date|date:"M d, Y" }} --></h3>
+                        </div>
+                        <div id="gonePhishingImage">
+                            <img src="{% static '/img/gone_phishing.jpg'}" alt="Gone Phishing">
+                        </div>
+                        <div id="primaryContact">
+                            <span>Primary Contact Information</span><br>
+                            <h2>Sarah Ferth</h2><!-- {{ customer_name }} -->
+                            <i>Director of Technology</i><br>
+                            Neetflix Streaming Services<br>
+                            Atlanta, GA 12345<!-- {{ customer_address }} --><br>
+                            CISA Contact Information&colon;<br>
+                            conpca&commat;dhs.gov<!-- {{ dhs_contact_email }}--><br>
+                            &lpar;455&rpar; 544-4545 <!-- {{ dhs_contact_mobile_phone }}--><br>
+                        </div>
+                        <div id="numbersTitle"><h2>Overall Campaign Numbers</h2></div>
+                        <div id="campaignNumbers">
+                            Total Emails Sent: 333<br>
+                            Email Click Rate: 306 (92%)<br>
+                            Successful Phish Attempts: 73 (22%)<br>
+                            Reported Emails: 62(19%)<br>
+                        </div>
+                        <div id="preparedFor">
+                            Prepared for<br>
+                            <span>Neetflix Streaming Services</span>
+                        </div>
+                    </aside>
 
-        <!-- Right 2/3 of the screen -->
-        <div class="main">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-12">
-                        <div id="reportTitle">
-                            <img src="{% static '/img/title.svg' %}"></img>
+                <!-- Right 2/3 of the screen -->
+                <div class="main-content">
+                    <div id="reportTitle">
+                        <h1><strong>MONTHLY SUBSCRIPTION</strong></h1><br>
+                        <span>REPORT</span>
+                    </div>
+                    <div class="data-report">
+                    <div class="row">
+                        <div class="col-5 offset-sm-1">
+                            <div id="averageClickTitle">
+                                <h3>Average Time<br> to First Click</h3>
+                            </div>
+                            <div id="averageClickTime">
+                                <span>03&colon;00</span><br>
+                                minutes
+                            </div>
                         </div>
+                        <div class="col-5">
+                            <div id="averageReportTitle">
+                                <h3>Average Time<br> to Report</h3>
+                            </div>
+                            <div id="averageReportTime">
+                                <span>17&colon;00</span><br>
+                                minutes
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-5 offset-sm-1">
+                            <div class="circles">
+                                <img src="{% static '/img/dotted_circle.svg'}" alt="Yellow dotted circle outline">
+                            </div>
+                        </div>
+                        <div class="col-5">
+                            <div class="circles">
+                                <img src="{% static '/img/dotted_circle.svg'}" alt="Yellow dotted circle outline">
+                            </div>
+                        </div>
+                    </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <div id="campaignProgressText">
+                                    <ul>
+                                        <li>This Report has been generated in Q1 of your phishing subscription</li>
+                                        <li>Of the total 1000 targets in this quarter cycle, 333 targets have had emails sent.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <div id="donut-charts">
+                                    <div class="col-3">
+                                        <svg width="100%" height="100%" viewBox="0 0 42 42" class="donut">
+                                            <circle class="donut-hole" cx="21" cy="21" r="15.91549430918954" fill="#fff"></circle>
+                                            <circle class="donut-ring" cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="#cecece" stroke-width="6"></circle>
+                                            <circle class="donut-segment" cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="#164A91" stroke-width="6" stroke-dasharray="80 20" stroke-dashoffset="25"></circle>
+                                            <!-- unused 10% -->
+                                            </svg>
+                                            <p class="donut-caption">Lorem Ipsum</p>
+                                    </div>
+                                    <div class="col-3">
+                                        <svg width="100%" height="100%" viewBox="0 0 42 42" class="donut">
+                                            <circle class="donut-hole" cx="21" cy="21" r="15.91549430918954" fill="#fff"></circle>
+                                            <circle class="donut-ring" cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="#cecece" stroke-width="6"></circle>
+                                            <circle class="donut-segment" cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="#164A91" stroke-width="6" stroke-dasharray="40 60" stroke-dashoffset="25"></circle>
+                                            <!-- unused 10% -->
+                                            </svg>
+                                            <p class="donut-caption">Lorem Ipsum</p>
+                                    </div>
+                                    <div class="col-3">
+                                        <svg width="100%" height="100%" viewBox="0 0 42 42" class="donut">
+                                            <circle class="donut-hole" cx="21" cy="21" r="15.91549430918954" fill="#fff"></circle>
+                                            <circle class="donut-ring" cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="#cecece" stroke-width="6"></circle>
+                                            <circle class="donut-segment" cx="21" cy="21" r="15.91549430918954" fill="transparent" stroke="#164A91" stroke-width="6" stroke-dasharray="55 45" stroke-dashoffset="25"></circle>
+                                            <!-- unused 10% -->
+                                            </svg>
+                                            <p class="donut-caption">Lorem Ipsum</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-10 offset-sm-1">
+                                <div class="bar-chart">
+                                    <h2>STATISTIC BY LEVEL</h2>
+                                    <svg class="chart" width="500" height="340" aria-labelledby="title desc" role="img">
+                                        <title id="title">STATISTICS BY LEVEL</title>
+                                        <desc id="units-achieved">0; 50; 100; 150; 200; 250; 300; 350; 400;</desc>
+                                        <g class="measure-line">
+                                            <line x1="30" y1="5" x2="500" y2="5" style="stroke:#BAD6E4;stroke-width:2"/>
+                                            <line x1="30" y1="35" x2="500" y2="35" style="stroke:#BAD6E4;stroke-width:2"/>
+                                            <line x1="30" y1="65" x2="500" y2="65" style="stroke:#BAD6E4;stroke-width:2"/>
+                                            <line x1="30" y1="95" x2="500" y2="95" style="stroke:#BAD6E4;stroke-width:2"/>
+                                            <line x1="30" y1="125" x2="500" y2="125" style="stroke:#BAD6E4;stroke-width:2"/>
+                                            <line x1="30" y1="155" x2="500" y2="155" style="stroke:#BAD6E4;stroke-width:2"/>
+                                            <line x1="30" y1="185" x2="500" y2="185" style="stroke:#BAD6E4;stroke-width:2"/>
+                                            <line x1="30" y1="215" x2="500" y2="215" style="stroke:#BAD6E4;stroke-width:2"/>
+                                            <line x1="30" y1="245" x2="500" y2="245" style="stroke:#BAD6E4;stroke-width:2"/>
+                                            <text x="15" y="245" class="caption" dy=".35em">0</text>
+                                            <text x="8" y="215" class="caption" dy=".35em">50</text>
+                                            <text x="0" y="185" class="caption" dy=".35em">100</text>
+                                            <text x="0" y="155" class="caption" dy=".35em">150</text>
+                                            <text x="0" y="125" class="caption" dy=".35em">200</text>
+                                            <text x="0" y="95" class="caption" dy=".35em">250</text>
+                                            <text x="0" y="65" class="caption" dy=".35em">300</text>
+                                            <text x="0" y="35" class="caption" dy=".35em">350</text>
+                                            <text x="0" y="5" class="caption" dy=".35em">400</text>
+                                        </g>
+                                        <desc id="email-action">Sent; Opened; Clicked; Submitted; Reported</desc>
+                                        <g class="bar">
+                                          <rect class="dark-blue-bar" width="15" height="200" x="60" y="45"></rect>
+                                          <rect class="yellow-bar" width="15" height="200" x="80" y="45"></rect>
+                                          <rect class="blue-bar" width="15" height="200" x="100" y="45"></rect>
+                                          <text x="70" y="260" class="caption" dy=".35em">Sent</text>
+                                        </g>
+                                        <g class="bar">
+                                            <rect class="dark-blue-bar" width="15" height="180" x="150" y="65"></rect>
+                                            <rect class="yellow-bar" width="15" height="180" x="170" y="65"></rect>
+                                            <rect class="blue-bar" width="15" height="180" x="190" y="65"></rect>
+                                          <text x="150" y="260" class="caption" dy=".35em">Opened</text>
+                                        </g>
+                                        <g class="bar">
+                                            <rect class="dark-blue-bar" width="15" height="200" x="240" y="45"></rect>
+                                            <rect class="yellow-bar" width="15" height="200" x="260" y="45"></rect>
+                                            <rect class="blue-bar" width="15" height="200" x="280" y="45"></rect>
+                                          <text x="240" y="260" class="caption" dy=".35em">Clicked</text>
+                                        </g>
+                                        <g class="bar">
+                                            <rect class="dark-blue-bar" width="15" height="200" x="330" y="45"></rect>
+                                            <rect class="yellow-bar" width="15" height="200" x="350" y="45"></rect>
+                                            <rect class="blue-bar" width="15" height="200" x="370" y="45"></rect>
+                                          <text x="322" y="260" class="caption" dy=".35em">Submitted</text>
+                                        </g>
+                                        <g class="bar">
+                                            <rect class="dark-blue-bar" width="15" height="200" x="420" y="45"></rect>
+                                            <rect class="yellow-bar" width="15" height="200" x="440" y="45"></rect>
+                                            <rect class="blue-bar" width="15" height="200" x="460" y="45"></rect>
+                                          <text x="415" y="260" class="caption" dy=".35em">Reported</text>
+                                        </g>
+                                        <desc id="desc">Low; Moderate; High</desc>
+                                        <g class="bar-legend">
+                                            <text x="160" y="300" class="legend-caption" dy=".35em">
+                                                Low&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                Moderate&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                                High</text>
+                                            <rect class="dark-blue-bar" width="15" height="15" x="185" y="292"></rect>
+                                            <rect class="yellow-bar" width="15" height="15" x="266" y="292"></rect>
+                                            <rect class="blue-bar" width="15" height="15" x="321" y="292"></rect>
+                                        </g>
+                                      </svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-6">
-                        <div id="averageClickTitle">
-                            <h3>Average Time to First Click</h3>
-                        </div>
-                        <div id="averageClickTime">
-                            03 Minutes
-                        </div>
-                    </div>
-                    <div class="col-6">
-                        <div id="averageReportTitle">
-                            <h3>Average Time to Report</h3>
-                        </div>
-                        <div id="averageReportTime">
-                            17 Minutes
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-6">
-                        <div class="circles">
-                            <img src="{% static '/img/dotted_circle.svg' %}"></img>
-                        </div>
-                    </div>
-                    <div class="col-6">
-                        <div class="circles">
-                            <img src="{% static '/img/dotted_circle.svg' %}"></img>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-12">
-                        <div id="campaignProgressText">
-                            This Report has been generated in Q1 of your phishing subscription cycle.<br>
-                            Of the 1,000 targets in this quarter's cycle, 333 targets have had emails sent.<br>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-12">
-                        <div class="progress" id="campaignProgress">
-                            <div class="progress-bar bg-success" style="width:33%">333 / 1000</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-6">
-                        <div id="piechart"></div>
-                    </div>
-                    <div class="col-6">
-                        <div id="piechartTwo"></div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-12">
-                        <div id="columnchart"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </article>
+            </div>        
+    </main>
 </body>
 
 </html>
