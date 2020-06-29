@@ -98,7 +98,7 @@ class ReportsView(APIView):
             bucket = next(
                 level for level in levels if level.level_number == level_number
             )
-            bucket.sent += c.get("stats").get("sent")
+            bucket.sent = bucket.sent + c.get("stats").get("sent") or 0
 
         # aggregate statistics
         sent = sum([targets.get("stats").get("sent", 0) for targets in summary])

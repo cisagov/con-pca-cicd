@@ -45,11 +45,7 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
   dhsContacts = [];
   dhsContactUuid: string;
 
-  startDate: Date = new Date();
   startAt = new Date();
-
-  url: string;
-  keywords: string;
 
   sendingProfiles = [];
 
@@ -201,6 +197,7 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
 
         this.f.primaryContact.setValue(s.primary_contact.email);
         this.f.dhsContact.setValue(s.dhs_contact_uuid);
+        this.f.startDate.setValue(s.start_date);
         this.f.url.setValue(s.url);
         this.f.keywords.setValue(s.keywords);
         this.f.csvText.setValue(this.formatTargetsToCSV(s.target_email_list));
@@ -515,10 +512,7 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
       return;
     }
 
-    let sub = this.subscriptionSvc.subscription;
-
-    // set up the subscription and persist it in the service
-    sub = new Subscription();
+    const sub = this.subscriptionSvc.subscription;
 
     sub.customer_uuid = this.customer.customer_uuid;
     sub.primary_contact = this.primaryContact;
@@ -526,8 +520,7 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
     sub.active = true;
 
     sub.lub_timestamp = new Date();
-    sub.name = 'SC-1.' + this.customer.name + '.1.1'; // auto generated name
-    sub.start_date = this.startDate;
+    sub.start_date = this.f.startDate.value;
     sub.status = 'New Not Started';
 
     sub.url = this.f.url.value;
@@ -543,11 +536,11 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
 
     // call service with everything needed to start the subscription
     this.subscriptionSvc.submitSubscription(sub).subscribe(
-      resp => {
+      (resp: any) => {
         this.dialog.open(AlertComponent, {
           data: {
             title: '',
-            messageText: 'Your subscription was created as ' + sub.name
+            messageText: 'Your subscription was created as ' + resp.name
           }
         });
 

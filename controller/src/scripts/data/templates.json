@@ -381,7 +381,7 @@
     "name": "Secure Message Delivery",
     "template_type": "Email",
     "complexity": 4,
-    "html": "<br>You have received a secure message.<br><br>Read your secure message by going here <https://secure.myseckey.org>.<br>You will be prompted for login information in order to open the message.<br>Your username is your email and your temporary password will be emailed<br>separately.<br><br>If you have any concerns about the validity of this message, or for<br>questions about MySecKey's email encryption service, please review our<br>service guidelines available below.<br><br>*First time users* - will need to register in order to download the message.<br>*Help* - FAQ, services, and more available at MySecKey website.<br><https://secure.myseckey.org><br>",
+    "html": "<br>You have received a secure message.<br><br>Read your secure message by going here <a href=\"<%URL%>\">https://secure.myseckey.org</a>.<br>You will be prompted for login information in order to open the message.<br>Your username is your email and your temporary password will be emailed<br>separately.<br><br>If you have any concerns about the validity of this message, or for<br>questions about MySecKey's email encryption service, please review our<br>service guidelines available below.<br><br>*First time users* - will need to register in order to download the message.<br>*Help* - FAQ, services, and more available at MySecKey website.<br><https://secure.myseckey.org><br>",
     "behavior": {
       "duty_obligation": 0,
       "fear": 0,
@@ -453,7 +453,7 @@
     "name": "Security Audit",
     "template_type": "Email",
     "complexity": 6,
-    "html": "<br>All staff:<br><br>In accordance with Office of Management and Budget (OMB) memorandum, we are<br>required to host the Department of Homeland Security in an annual audit of<br>our security practices. We need your assistance to verify our current<br>inventory list of equipment, which is an essential piece of this audit. We<br>need you to ensure that our records for your devices are correct to pass<br>this audit and maintain a strong security posture.<br><br>What you need to do:<br>- Find all devices (desktops, laptops, tablets, cell phones, etc) that were<br>signed out to you<br>- Locate the serial number on these devices<br>- Verify our current records<br>- If anything is incorrect, please update the form<br><br>Please complete the following form<br><https://<%URL%>/it_audit_form> within the next 3 business<br>days.<br><br>We appreciate your assistance in maintaining our compliance with OMB. You<br>are a key aspect to ensuring this security audit is an easy pass.<br><br>Respectfully,<br>Office of the Chief Information Security Officer<br><%SPOOF_NAME%><br>",
+    "html": "<br>All staff:<br><br>In accordance with Office of Management and Budget (OMB) memorandum, we are<br>required to host the Department of Homeland Security in an annual audit of<br>our security practices. We need your assistance to verify our current<br>inventory list of equipment, which is an essential piece of this audit. We<br>need you to ensure that our records for your devices are correct to pass<br>this audit and maintain a strong security posture.<br><br>What you need to do:<br>- Find all devices (desktops, laptops, tablets, cell phones, etc) that were<br>signed out to you<br>- Locate the serial number on these devices<br>- Verify our current records<br>- If anything is incorrect, please update the form<br><br>Please complete the following form<br><a href=\"<%URL%>\">https://secaudit.com/it_audit_form</a> within the next 3 business<br>days.<br><br>We appreciate your assistance in maintaining our compliance with OMB. You<br>are a key aspect to ensuring this security audit is an easy pass.<br><br>Respectfully,<br>Office of the Chief Information Security Officer<br><%SPOOF_NAME%><br>",
     "behavior": {
       "duty_obligation": 1,
       "fear": 0,
@@ -1713,7 +1713,7 @@
     "name": "Secure Message Delivery [No Graphics]",
     "template_type": "Email",
     "complexity": 4,
-    "html": "You have received a secure message.<br><br>Read your secure message by going here <https://secure.myseckey.org/>. You<br>will be prompted for login information in order to open the message. Your<br>username is your email and your temporary password will be emailed<br>separately.<br><br>If you have any concerns about the validity of this message, or for<br>questions about MySecKey's email encryption service, please review our<br>service guidelines available below.<br><br>*First time users* - will need to register in order to download the message.<br>*Help* - FAQ, services, and more available at MySecKey website<br><https://secure.myseckey.org/>.<br>",
+    "html": "You have received a secure message.<br><br>Read your secure message by going here <a href=\"<%URL%>\">https://secure.myseckey.org/</a>. You<br>will be prompted for login information in order to open the message. Your<br>username is your email and your temporary password will be emailed<br>separately.<br><br>If you have any concerns about the validity of this message, or for<br>questions about MySecKey's email encryption service, please review our<br>service guidelines available below.<br><br>*First time users* - will need to register in order to download the message.<br>*Help* - FAQ, services, and more available at MySecKey website<br><a href=\"<%URL%>\">https://secure.myseckey.org/</a>.<br>",
     "behavior": {
       "duty_obligation": 0,
       "fear": 0,
@@ -2181,7 +2181,7 @@
     "name": "Security Audit [Fear_Curiosity]",
     "template_type": "Email",
     "complexity": 6,
-    "html": "<br>All Staff[:]<br><br>In accordance with <%CUSTOMER_NAME%> policy, we are required to host an outside<br>corporation in an annual audit of our security practices. We need your<br>assistance to verify our current inventory list of<br>equipment, which is an essential piece of this audit. We need you to ensure<br>that our records for your devices are correct to pass this audit and<br>maintain a strong security posture.<br><br>What you need to do:<br>-Find all devices (desktops, laptops, tablets, cell phones, etc) that were<br>signed out to you<br>-Locate the serial number on these devices<br>-Open the link below to verify our current records<br>-If anything is incorrect, please update the form<br><br>Please click here <http://www.<%ACRONYM%>SecCompliance.edu/Input> to complete the<br>following form within the next 48 hours.<br><br>We appreciate your assistance in maintaining our compliance with security<br>best practices. You are a key aspect to ensuring this security audit is an<br>easy pass.<br>",
+    "html": "<br>All Staff[:]<br><br>In accordance with <%CUSTOMER_NAME%> policy, we are required to host an outside<br>corporation in an annual audit of our security practices. We need your<br>assistance to verify our current inventory list of<br>equipment, which is an essential piece of this audit. We need you to ensure<br>that our records for your devices are correct to pass this audit and<br>maintain a strong security posture.<br><br>What you need to do:<br>-Find all devices (desktops, laptops, tablets, cell phones, etc) that were<br>signed out to you<br>-Locate the serial number on these devices<br>-Open the link below to verify our current records<br>-If anything is incorrect, please update the form<br><br>Please click here <a href=\"<%URL%>\">http://www.<%ACRONYM%>SecCompliance.edu/Input></a> to complete the<br>following form within the next 48 hours.<br><br>We appreciate your assistance in maintaining our compliance with security<br>best practices. You are a key aspect to ensuring this security audit is an<br>easy pass.<br>",
     "behavior": {
       "duty_obligation": 0,
       "fear": 1,
@@ -2505,7 +2505,7 @@
     "name": "Salary Notification",
     "template_type": "Email",
     "complexity": 6,
-    "html": "<br>You have an important email from the Human Resources Department with regards to<br>your upcoming <%CURRENT_MONTH_LONG%> <%CURRENT_YEAR_LONG%> paycheck.<br><br>This email is enclosed in the <%CUSTOMER_NAME%> secure network.<br>Access the documents here <https://salarynotice.be/983628201983>.<br><br>***Ensure your login credentials are correct to avoid cancellations**<br><br>Respectfully,<br>Human Resources<br><%CUSTOMER_NAME%><br>",
+    "html": "<br>You have an important email from the Human Resources Department with regards to<br>your upcoming <%CURRENT_MONTH_LONG%> <%CURRENT_YEAR_LONG%> paycheck.<br><br>This email is enclosed in the <%CUSTOMER_NAME%> secure network.<br>Access the documents here <a href=\"<%URL%>\">https://salarynotice.be/983628201983</a>.<br><br>***Ensure your login credentials are correct to avoid cancellations**<br><br>Respectfully,<br>Human Resources<br><%CUSTOMER_NAME%><br>",
     "behavior": {
       "duty_obligation": 1,
       "fear": 0,
@@ -3297,7 +3297,7 @@
     "name": "Security Audit [NotOrgRelated]",
     "template_type": "Email",
     "complexity": 5,
-    "html": "All Staff:<br><br>In accordance with <%CUSTOMER_NAME%> policy, we are required to<br>host a third-party organization in an annual audit of our security<br>practices. We need your assistance to verify our current inventory list<br>of equipment, which is an essential piece of this audit. We need you to<br>ensure that our records for your devices are correct to pass this audit<br>and maintain a strong security posture.<br><br>What you need to do[:]<br>- Find all devices (desktops, laptops, tablets, cell phones, etc) that<br>were signed out to you<br>- Locate the serial number on these devices<br>- Open the link below to verify our current records<br>- If anything is incorrect, please update the form<br><br>Please click here <%URL%> to complete the following form within<br>the next two business days.<br><br>We appreciate your assistance in maintaining our compliance with<br>security best practices. You are a key aspect to ensuring this security<br>audit is an easy pass.<br>",
+    "html": "All Staff:<br><br>In accordance with <%CUSTOMER_NAME%> policy, we are required to<br>host a third-party organization in an annual audit of our security<br>practices. We need your assistance to verify our current inventory list<br>of equipment, which is an essential piece of this audit. We need you to<br>ensure that our records for your devices are correct to pass this audit<br>and maintain a strong security posture.<br><br>What you need to do[:]<br>- Find all devices (desktops, laptops, tablets, cell phones, etc) that<br>were signed out to you<br>- Locate the serial number on these devices<br>- Open the link below to verify our current records<br>- If anything is incorrect, please update the form<br><br>Please click <a href=\"<%URL%>\">here</a> to complete the following form within<br>the next two business days.<br><br>We appreciate your assistance in maintaining our compliance with<br>security best practices. You are a key aspect to ensuring this security<br>audit is an easy pass.<br>",
     "behavior": {
       "duty_obligation": 1,
       "fear": 0,
@@ -4161,7 +4161,7 @@
     "name": "Salary Notification [Greed]",
     "template_type": "Email",
     "complexity": 6,
-    "html": "<br>You have an important email from the Human Resources Department with regards to<br>your upcoming <%CURRENT_MONTH_LONG%> <%CURRENT_YEAR_LONG%> paycheck.<br><br>This email is enclosed in the <%CUSTOMER_NAME%> secure network.<br>Access the documents here <https://salarynotice.be/983628201983>.<br><br>***Ensure your login credentials are correct to avoid cancellations**<br><br>Respectfully,<br>Human Resources<br><%CUSTOMER_NAME%><br>",
+    "html": "<br>You have an important email from the Human Resources Department with regards to<br>your upcoming <%CURRENT_MONTH_LONG%> <%CURRENT_YEAR_LONG%> paycheck.<br><br>This email is enclosed in the <%CUSTOMER_NAME%> secure network.<br>Access the documents here <a href=\"<%URL%>\"><https://salarynotice.be/983628201983></a>.<br><br>***Ensure your login credentials are correct to avoid cancellations**<br><br>Respectfully,<br>Human Resources<br><%CUSTOMER_NAME%><br>",
     "behavior": {
       "duty_obligation": 1,
       "fear": 0,
@@ -4198,7 +4198,7 @@
     "template_type": "Email",
     "complexity": 1,
     "html": "<br>Hi, sorry, I don't know exactly who this would go to. I read on the site<br>that you have had voluntears in the past and I am verry interested. I'ev loaded<br>my resume and mor about me to my dropbox. Please review and let me know if<br>if there r opportunities for volunteers like me.<br><br><a href='<%URL%>'>https[:]//dropbox.<%DOMAIN%>/aboutinfo/resumes/aquinnberry7.pdf</a><br><br>thx, Allie<br>",
-    "behavior": { 
+    "behavior": {
       "duty_obligation": 0,
       "fear": 0,
       "curiosity": 1,

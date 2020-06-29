@@ -31,7 +31,6 @@ from api.serializers.template_serializers import (
     TemplateQuerySerializer,
     TemplateStopResponseSerializer,
 )
-from api.utils.subscription.actions import stop_subscription
 from api.utils.db_utils import (
     delete_single,
     exists,
@@ -40,6 +39,7 @@ from api.utils.db_utils import (
     save_single,
     update_single,
 )
+from api.utils.subscription.actions import stop_subscription
 from api.utils.tag.tags import check_tag_format
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status
@@ -80,7 +80,11 @@ class TemplatesListView(APIView):
 
     @swagger_auto_schema(
         request_body=TemplatePostSerializer,
-        responses={"201": TemplatePostResponseSerializer, "400": "Bad Request"},
+        responses={
+            "201": TemplatePostResponseSerializer,
+            "400": "Bad Request",
+            "409": "CONFLICT",
+        },
         security=[],
         operation_id="Create Template",
         operation_description="This handles Creating a Templates.",
@@ -95,7 +99,7 @@ class TemplatesListView(APIView):
         ):
             return Response(
                 {"error": "Template with name already exists"},
-                status=status.HTTP_400_BAD_REQUEST,
+                status=status.HTTP_409_CONFLICT,
             )
 
         created_response = save_single(
@@ -252,7 +256,11 @@ class TagsView(APIView):
 
     @swagger_auto_schema(
         request_body=TagPostSerializer,
-        responses={"201": TagResponseSerializer, "400": "Bad Request"},
+        responses={
+            "201": TagResponseSerializer,
+            "400": "Bad Request",
+            "409": "CONFLICT",
+        },
         security=[],
         operation_id="Create Tag",
         operation_description="This handles Creating a Tags.",
@@ -276,7 +284,7 @@ class TagsView(APIView):
 
         if exists({"tag": post_data["tag"]}, "tag_definition", TagModel, validate_tag):
             return Response(
-                {"error": "Tag already exists"}, status=status.HTTP_400_BAD_REQUEST,
+                {"error": "Tag already exists"}, status=status.HTTP_409_CONFLICT,
             )
 
         created_response = save_single(
