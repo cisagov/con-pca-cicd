@@ -46,33 +46,6 @@ def main():
     print("loading dummy json data")
     json_data = load_file("data/dummy_data.json")
     print("done loading data")
-    print("Step 1/3: create templates...")
-
-    email_templates = load_file("data/reformatted_template_data.json")
-    landing_page_template = load_file("data/landing_pages.json")
-    templates = email_templates + landing_page_template
-    created_template_uuids = []
-
-    existing_templates = requests.get("http://localhost:8000/api/v1/templates")
-
-    if not existing_templates.json():
-        for template in templates:
-            try:
-                template["deception_score"] = template["complexity"]
-                resp = requests.post(
-                    "http://localhost:8000/api/v1/templates/", json=template
-                )
-                resp.raise_for_status()
-
-            except requests.exceptions.HTTPError as err:
-                raise err
-            rep_json = resp.json()
-            if "error" in rep_json:
-                print("Template Creation error: {}".format(rep_json))
-            else:
-                created_template_uuids.append(rep_json["template_uuid"])
-
-    print("created templates_list: {}".format(created_template_uuids))
 
     print("Step 2/3: create customers...")
 
@@ -185,7 +158,6 @@ def main():
         data = {
             "created_customers": created_customer_uuids,
             "created_subcription_uuids": created_subcription_uuids,
-            "created_template_uuids": created_template_uuids,
         }
         json.dump(data, outfile, indent=2)
     print("Finished.....")
