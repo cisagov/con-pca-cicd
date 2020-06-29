@@ -95,7 +95,6 @@ class ReportsView(APIView):
             if level_number not in [1, 2, 3]:
                 continue
 
-            import ipdb; ipdb.set_trace()
             bucket = next(
                 level for level in levels if level.level_number == level_number
             )
