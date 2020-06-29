@@ -21,5 +21,6 @@ RUN openssl req -x509 -nodes -days 365 -subj "/C=CA/ST=ID/O=INL/CN=localhost" -n
 
 COPY --from=build /dist /usr/share/nginx/html
 COPY ./etc/default.conf /etc/nginx/conf.d/default.conf
+COPY ./etc/mime.types /etc/nginx/mime.types
 
 CMD ["/bin/sh",  "-c",  "envsubst < /usr/share/nginx/html/assets/settings.template.json > /usr/share/nginx/html/assets/settings.json && exec nginx -g 'daemon off;'"]

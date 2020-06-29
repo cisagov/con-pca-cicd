@@ -3,6 +3,7 @@
 
 <!doctype html>
 <html>
+
 <head>
     <meta charset="utf-8">
 
@@ -10,7 +11,8 @@
     <link href="{% static '/css/monthly.css' %}" rel="stylesheet">
 
     <!-- Bootstrap CSS Link -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
 
     <!-- Graphs Javascript Source -->
     <script type="text/javascript" src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
@@ -18,58 +20,58 @@
     <!-- Functions to Draw Graphs -->
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
     <script type="text/javascript">
-        google.charts.load('current', {'packages':['corechart']});
+        google.charts.load('current', { 'packages': ['corechart'] });
         google.charts.setOnLoadCallback(drawChart);
         google.charts.setOnLoadCallback(drawChartTwo);
         google.charts.setOnLoadCallback(drawChartThree);
-        
+
         // Pie Chart One
         function drawChart() {
-          var data = google.visualization.arrayToDataTable([
-          ['Emails', 'Number'],
-          ['Opened', 289],
-          ['Unopened', 11]
-        ]);
-        
-          var options = {'title':'Emails', 'width':550, 'height':400, 'colors': ['#194F9A', '#FDC010']};
-          var chart = new google.visualization.PieChart(document.getElementById('piechart'));
-          chart.draw(data, options);
+            var data = google.visualization.arrayToDataTable([
+                ['Emails', 'Number'],
+                ['Opened', 289],
+                ['Unopened', 11]
+            ]);
+
+            var options = { 'title': 'Emails', 'width': 550, 'height': 400, 'colors': ['#194F9A', '#FDC010'] };
+            var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+            chart.draw(data, options);
         }
-        
+
         // Pie Chart Two
         function drawChartTwo() {
             var data = google.visualization.arrayToDataTable([
-            ['Links', 'Number'],
-            ['Viewed', 83],
-            ['Clicked', 17]
-        ]);
-        
-          var options = {'title':'Links', 'width':550, 'height':400, 'colors': ['#194F9A', '#FDC010']};
-          var chart = new google.visualization.PieChart(document.getElementById('piechartTwo'));
-          chart.draw(data, options);
+                ['Links', 'Number'],
+                ['Viewed', 83],
+                ['Clicked', 17]
+            ]);
+
+            var options = { 'title': 'Links', 'width': 550, 'height': 400, 'colors': ['#194F9A', '#FDC010'] };
+            var chart = new google.visualization.PieChart(document.getElementById('piechartTwo'));
+            chart.draw(data, options);
         }
 
         // Combined Bar Graph for Statistics By Level
         function drawChartThree() {
             var data = google.visualization.arrayToDataTable([
-               ['Category', 'Low', 'Med', 'High'],
-               ['Sent',  333, 333, 333],
-               ['Opened',  300, 300, 300],
-               ['Clicked',  50, 100, 150],
-               ['Submitted',  21, 37, 44],
+                ['Category', 'Low', 'Med', 'High'],
+                ['Sent', 333, 333, 333],
+                ['Opened', 300, 300, 300],
+                ['Clicked', 50, 100, 150],
+                ['Submitted', 21, 37, 44],
             ]);
 
             var options = {
                 title: 'Statistics By Level',
-                vAxis: {title: 'Amount'},
-                hAxis: {title: 'Category'},
+                vAxis: { title: 'Amount' },
+                hAxis: { title: 'Category' },
                 seriesType: 'bars',
-                series: {4: {type: 'bar'}}
-            }; 
+                series: { 4: { type: 'bar' } }
+            };
             var chart = new google.visualization.ComboChart(document.getElementById('columnchart'));
             chart.draw(data, options);
-         }
-        </script>
+        }
+    </script>
     <title>Monthly Report</title>
     <meta name="description" content="MonthlyReport">
 </head>
@@ -87,13 +89,9 @@
                         </div>
                     </div>
                 </div>
-                <div class="row"></div>
-                    <div class="col-12">
-                    </div>
-                </div>
             </div>
         </div>
-        
+
         <!-- Left side bar -->
         <div class="sidebar">
         </div>
@@ -101,23 +99,25 @@
             <img src="{% static '/img/Con-PCA_logo.svg' %}">
         </div>
         <div id="reportDate">
-            <h3>4/15/20 - 5/15/20</h3>
+            <h3>{{ start_date|date:"M d, Y" }} - {{ end_date|date:"M d, Y" }}</h3>
         </div>
         <div id="gonePhishingImage">
-            <img src="{% static '/img/test192.jpg' %}"></img>
+            <img src="{% static '/img/gone_phishing.jpg' %}"></img>
         </div>
         <div id="primaryContact">
             <b>Primary Contact Information</b><br>
-            Sarah Ferth<br>
+            {{ customer_name }}<br>
             Director of Technology<br>
             Neetflix Streaming Services<br>
-            (877) 522-2222<br>
-            Atlanta, GA 12345
+            {{ customer_address }}
         </div>
         <div id="cisaContact">
             <b>CISA Contact Information</b>:<br>
-            conpca@dhs.gov<br>
-            (455) 554-4545<br><br>
+            {{ dhs_contact_email }}<br>
+            Office Phone:<br>
+            {{ dhs_contact_office_phone }}<br>
+            Mobile Phone:<br>
+            {{ dhs_contact_mobile_phone }}<br>
         </div>
         <div id="numbersTitle"><b>Overall Campaign Numbers</b></div>
         <div id="campaignNumbers">
@@ -198,4 +198,5 @@
         </div>
     </article>
 </body>
+
 </html>

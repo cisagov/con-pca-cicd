@@ -12,16 +12,21 @@ def get_notification(message_type):
     if message_type == "monthly_report":
         subject = "DHS CISA Phishing Subscription Monthly Report"
         path = "monthly_report"
+        link = "monthly"
     elif message_type == "cycle_report":
         subject = "DHS CISA Phishing Subscription Cycle Report"
         path = "cycle_report"
+        link = "cycle"
     elif message_type == "yearly_report":
         subject = "DHS CISA Phishing Subscription Yearly Report"
         path = "yearly_report"
+        link = "yearly"
     elif message_type == "subscription_started":
         subject = "DHS CISA Phishing Subscription Started"
         path = "subscription_started"
+        link = None
     else:
         subject = ""
         path = ""
-    return subject, path
+        link = ""
+    return subject, path, link

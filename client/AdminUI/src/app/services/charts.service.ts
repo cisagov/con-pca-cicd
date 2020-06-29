@@ -38,7 +38,7 @@ export class ChartsService {
               value: reportResponse.levels.find(x => x.level_number === 1).sent
             },
             {
-              name: 'Medium',
+              name: 'Moderate',
               value: reportResponse.levels.find(x => x.level_number === 2).sent
             },
             {
@@ -55,7 +55,7 @@ export class ChartsService {
               value: reportResponse.levels.find(x => x.level_number === 1).opened
             },
             {
-              name: 'Medium',
+              name: 'Moderate',
               value: reportResponse.levels.find(x => x.level_number === 2).opened
             },
             {
@@ -72,7 +72,7 @@ export class ChartsService {
               value: reportResponse.levels.find(x => x.level_number === 1).clicked
             },
             {
-              name: 'Medium',
+              name: 'Moderate',
               value: reportResponse.levels.find(x => x.level_number === 2).clicked
             },
             {

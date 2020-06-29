@@ -16,6 +16,7 @@ import { AlertComponent } from '../../dialogs/alert/alert.component';
 import { isSameDate } from 'src/app/helper/utilities';
 import { ConfirmComponent } from '../../dialogs/confirm/confirm.component';
 import { SendingProfileService } from 'src/app/services/sending-profile.service';
+import { SettingsService } from 'src/app/services/settings.service';
 
 
 @Component({
@@ -70,7 +71,8 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
     private userSvc: UserService,
     public dialog: MatDialog,
     public formBuilder: FormBuilder,
-    public layoutSvc: LayoutMainService
+    public layoutSvc: LayoutMainService,
+    public settingsService: SettingsService
   ) {
     layoutSvc.setTitle('Subscription');
     this.loadDhsContacts();
@@ -190,7 +192,13 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
       .subscribe((s: Subscription) => {
         this.subscription = s as Subscription;
         this.subscriptionSvc.subscription = this.subscription;
-        this.layoutSvc.setTitle(`Subscription - ${this.subscription.name}`);
+
+        let title = `Subscription - ${this.subscription.name}`;
+        if (s.status.toLowerCase() === 'stopped') {
+          title += ' (stopped)';
+        }
+        this.layoutSvc.setTitle(title);
+
         this.f.primaryContact.setValue(s.primary_contact.email);
         this.f.dhsContact.setValue(s.dhs_contact_uuid);
         this.f.url.setValue(s.url);
@@ -255,7 +263,6 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
   loadSendingProfiles() {
     // get the customer and contacts from the API
     this.sendingProfileSvc.getAllProfiles().subscribe((data: any) => {
-      console.log(data);
       this.sendingProfiles = data;
     });
   }
@@ -301,6 +308,11 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
     items.push({
       title: 'Today',
       date: moment()
+    });
+
+    items.push({
+      title: 'Cycle End',
+      date: moment(s.end_date)
     });
 
     this.timelineItems = items;
@@ -632,6 +644,39 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
 
     return output;
   }
+
+  viewMonthlyReport() {
+    let url = `${this.settingsService.settings.apiUrl}/api/v1/reports/${this.subscription.subscription_uuid}/pdf/monthly/`;
+    window.open(url, "_blank");
+  }
+
+  viewCycleReport() {
+    let url = `${this.settingsService.settings.apiUrl}/api/v1/reports/${this.subscription.subscription_uuid}/pdf/cycle/`;
+    window.open(url, "_blank");
+  }
+
+  sendMonthlyReport() {
+    let url = `${this.settingsService.settings.apiUrl}/api/v1/reports/$${this.subscription.subscription_uuid}/email/monthly/`;
+    window.open(url, "_blank");
+  }
+
+  sendCycleReport() {
+    let url = `${this.settingsService.settings.apiUrl}/api/v1/reports/${this.subscription.subscription_uuid}/email/cycle/`;
+    window.open(url, "_blank");
+  }
+
+  /* Not in use yet
+
+  viewYearlyReport() {
+    let url = `${this.settingsService.settings.apiUrl}/api/v1/reports/${this.subscription.subscription_uuid}/pdf/yearly/`;
+    window.open(url, "_blank");
+  }
+
+  sendYearlyReport() {
+    let url = `${this.settingsService.settings.apiUrl}/api/v1/reports/${this.subscription.subscription_uuid}/email/yearly/`;
+    window.open(url, "_blank");
+  }
+  */
 
   /**
    *
