@@ -21,23 +21,6 @@ services:
     networks:
       - backend
 
-  celery-beat:
-    build:
-      context: .
-      dockerfile: ./etc/Dockerfile
-    container_name: pca-beat
-    hostname: celery-beat
-    restart: on-failure
-    entrypoint: celery -A config beat -l info
-    volumes:
-      - ./src:/app
-    depends_on:
-      - rabbitmq
-    env_file:
-      - .env
-    networks:
-      - backend
-
   celery-worker:
     build:
       context: .
