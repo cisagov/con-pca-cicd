@@ -280,8 +280,18 @@ export class TemplateManagerComponent implements OnInit {
     return saveTemplate;
   }
 
+  /**
+   *
+   */
+  onCancelClick() {
+    this.router.navigate(['/templates']);
+  }
+
+  /**
+   *
+   */
   saveTemplate() {
-    //mark all as touched to ensure formgroup validation checks all fields on new entry
+    // mark all as touched to ensure formgroup validation checks all fields on new entry
     this.currentTemplateFormGroup.markAllAsTouched();
     if (this.currentTemplateFormGroup.valid) {
       let templateToSave = this.getTemplateFromForm(
