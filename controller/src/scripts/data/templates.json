@@ -309,7 +309,7 @@
     "name": "Product Invoice",
     "template_type": "Email",
     "complexity": 1,
-    "html": "<br>Dear Sir,<br><br>Kindly find the uploaded quote in the prices for the attached products aslo send us your Proforma Invoice PI with bank detaila to proceed farther.<br><br>PRODUCT ENQUIRY <%URL%><br><br>You're urgent response is highly thanked.<br><br>Best Regards,<br>PAT PARAJULI | CAMANEE TECH<br>Balahira Computer Market | Riyadh | Saudi Arabia<br>",
+    "html": "<br>Dear Sir,<br><br>Kindly find the uploaded quote in the prices for the attached products aslo send us your Proforma Invoice PI with bank detaila to proceed farther.<br><br>PRODUCT ENQUIRY <a href=\"<%URL%>\">https://Proforma.com/product-information</a><br><br>You're urgent response is highly thanked.<br><br>Best Regards,<br>PAT PARAJULI | CAMANEE TECH<br>Balahira Computer Market | Riyadh | Saudi Arabia<br>",
     "behavior": {
       "duty_obligation": 0,
       "fear": 0,
@@ -885,7 +885,7 @@
     "name": "Research Proposal",
     "template_type": "Email",
     "complexity": 5,
-    "html": "Project Details.xls <%URL%><br>Proposal.doc <%URL%><br><br>This email or download link can not be forwarded to anyone else.<br>The attachments are available until <%CURRENT_DATE_LONG%>.<br><br>Respectfully,<br>Prof. Smith<br>",
+    "html": "Project Details.xls <a href=\"<%URL%>\">Project Details.xls</a> Project Details.doc <a href=\"<$URL%>\"Project Details.doc</a><br><br>This email or download link can not be forwarded to anyone else.<br>The attachments are available until <%CURRENT_DATE_LONG%>.<br><br>Respectfully,<br>Prof. Smith<br>",
     "behavior": {
       "duty_obligation": 0,
       "fear": 0,
@@ -1605,7 +1605,7 @@
     "name": "President's Tweet",
     "template_type": "Email",
     "complexity": 4,
-    "html": "<br>Hey guys- not sure if u all saw this but dc politalk has it that trump<br>tweeted about <%CUSTOMER_NAME%> and [OTHER ORG] merging https://twit.ter/dcpolitalk?lang=en<br>and<br>https://dcpolitalk.com/news/Trump-says-<%CUSTOMER_NAME%>-and-[OTHER ORG]-to-merge/<br><br>-M<br>",
+    "html": "<br>Hey guys- not sure if u all saw this but dc politalk has it that trump<br>tweeted about <%CUSTOMER_NAME%> and a few other companees r merging <a href=\"<%URL%>\">https://twit.ter/dcpolitalk?lang=en</a><br>and<br><a href=\"<%URL%>\">https://dcpolitalk.com/news/Trump-says-<%CUSTOMER_NAME%>-to-merge/</a><br><br>-M<br>",
     "behavior": {
       "duty_obligation": 0,
       "fear": 0,
@@ -2685,7 +2685,7 @@
     "name": "Program Evaluations",
     "template_type": "Email",
     "complexity": 5,
-    "html": "All Staff[:]<br><br>There is an ongoing evaluation of committees and their strategic objectives<br>for the FY19. As the next FY is fast approaching, we need your input to<br>make sure that all strategic objectives and ideas for improvement and<br>change are considered. This short 10-minute survey will provide input<br>regarding different proposed programs, ideas for future programs, key focus<br>areas for improvement, and more. Please respond by COB [End of Campaign Date],<br><%CURRENT_YEAR_LONG%> so that we can compile the results before the next strategic plan<br>workshop meeting. Your input will help obtain our goals of improved<br>productivity, program efficiency, effectiveness, and accountability. Take<br>the survey here: https[:]//strategicplan.<%DOMAIN%>/survey.<br><br>For more information on Committees, visit the Active Candidates and<br>Committees page on our website.<br><br>Thank you,<br>The Committee Evaluations Workgroup team<br>",
+    "html": "All Staff:<br><br>There is an ongoing evaluation of committees and their strategic objectives<br>for the FY19. As the next FY is fast approaching, we need your input to<br>make sure that all strategic objectives and ideas for improvement and<br>change are considered. This short 10-minute survey will provide input<br>regarding different proposed programs, ideas for future programs, key focus<br>areas for improvement, and more. Please respond by COB,<br><%CURRENT_YEAR_LONG%> so that we can compile the results before the next strategic plan<br>workshop meeting. Your input will help obtain our goals of improved<br>productivity, program efficiency, effectiveness, and accountability. Take<br>the survey here: <a href=\"<%URL%>\">https://strategicplan.survey</a><br><br>For more information on Committees, visit the Active Candidates and<br>Committees page on our website.<br><br>Thank you,<br>The Committee Evaluations Workgroup team<br>",
     "behavior": {
       "duty_obligation": 1,
       "fear": 0,
@@ -3045,7 +3045,7 @@
     "name": "Research Information",
     "template_type": "Email",
     "complexity": 4,
-    "html": "<br>** This is an automated message **<br><br>The files you requested for the <%CUSTOMER_NAME%> Research Proposal and Project Details are linked below.<br>Due to the file size, the items could not be attached.<br><br>ProjectDetails.xls <https[:]//research-documents.org/requests/project.xls><br>Proposal.xls <http[:]//research-documents.org/requests/proposa-download.aspx?<br><br>If you did not submit any of these request, please notify our Research Group at<br>ResearchGroup@<%DOMAIN%><br><br><b>These attachments are only available for the next 48 hours.</b><br>",
+    "html": "<br>** This is an automated message **<br><br>The files you requested for the <%CUSTOMER_NAME%> Research Proposal and Project Details are linked below.<br>Due to the file size, the items could not be attached.<br><br>ProjectDetails.xls <a href=\"<%URL%>\">https://research-documents.org/requests/project.xls</a><br>Proposal.xls <br><br>If you did not submit any of these request, please notify our Research Group at<br>ResearchGroup@<%DOMAIN%><br><br><b>These attachments are only available for the next 48 hours.</b><br>",
     "behavior": {
       "duty_obligation": 0,
       "fear": 0,
@@ -4269,7 +4269,7 @@
     "name": "Received a notice",
     "template_type": "Email",
     "complexity": 3,
-    "html": "Hi, I'm concerned that your office is going to deny my zoning permit even though I've gotten <br>preliminary approval. The notice said to contact you if I want to file an appeal. <br>Here's the link (<%URL%>) to check if I'm misunderstanding. Can I appeal? How much more does <br>it cost to get a full permit?<br><br>v/r,<br><br>R. Simms<br>",
+    "html": "Hi, I'm concerned that your office is going to deny my zoning permit even though I've gotten <br>preliminary approval. The notice said to contact you if I want to file an appeal. <br>Here's the link (<a href=\"<%URL%>\">the notice</a>) to check if I'm misunderstanding. Can I appeal? How much more does <br>it cost to get a full permit?<br><br>v/r,<br><br>R. Simms<br>",
     "behavior": {
       "duty_obligation": 1,
       "fear": 0,
@@ -4377,7 +4377,7 @@
     "name": "Purchase Order",
     "template_type": "Email",
     "complexity": 1,
-    "html": "Dear Sir,<br><br>we wish to place our purchase order with your company on behalfs of our <br>clients.<br>attached below are customers specification.<br>make sure you quote according to this specifications and state clearly <br>the country of origin.<br><br>Purchase Order - 190438331.pdf <%URL%><br>Customer_Sample_Data.zip <%URL%><br><br>thank you<br><br><%SPOOF_NAME%><br>",
+    "html": "Dear Sir,<br><br>we wish to place our purchase order with your company on behalfs of our <br>clients.<br>attached below are customers specification.<br>make sure you quote according to this specifications and state clearly <br>the country of origin.<br><br>Purchase Order - 190438331.pdf <a href=\"<%URL%>\">Purchase Order Link</a> <a href=\"<%URL%>\">https://ProductWebsite.com</a><br>Customer_Sample_Data.zip <br><br>thank you<br><br><%SPOOF_NAME%><br>",
     "behavior": {
       "duty_obligation": 0,
       "fear": 0,
