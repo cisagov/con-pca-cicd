@@ -165,7 +165,7 @@
     "name": "Social Media Policy",
     "template_type": "Email",
     "complexity": 5,
-    "html": "<br>All Staff:<br><br>In the coming weeks, new social media policies will be implemented that will affect all staff. Due to recent events in the news we are going to start blocking many of the popular social media sites for employees who do not need them for justified, business purposes.<br><br>We need your help to determine if you utilize social media and how you feel about this policy change. We have created a portal page on our internal network to get each employees usage of social media so we can determine which policy should be applied to your workstation. Please visit the Portal Page <%URL%> and complete this survey.<br><br>Your participation is mandatory and this survey must be completed in the next five business days so we can compile results before the default block policy is applied.<br><br>Thank you,<br>Social Media Compliance Team<br><%LOGO%><br>",
+    "html": "<br>All Staff:<br><br>In the coming weeks, new social media policies will be implemented that will affect all staff. Due to recent events in the news we are going to start blocking many of the popular social media sites for employees who do not need them for justified, business purposes.<br><br>We need your help to determine if you utilize social media and how you feel about this policy change. We have created a portal page on our internal network to get each employees usage of social media so we can determine which policy should be applied to your workstation. Please visit the Portal Page <a href=\"<%URL%>\">https://SocialMedia.<%%>.com</a> and complete this survey.<br><br>Your participation is mandatory and this survey must be completed in the next five business days so we can compile results before the default block policy is applied.<br><br>Thank you,<br>Social Media Compliance Team<br><%LOGO%><br>",
     "behavior": {
       "duty_obligation": 1,
       "fear": 1,
@@ -669,7 +669,7 @@
     "name": "Severe Weather",
     "template_type": "Email",
     "complexity": 4,
-    "html": "topic for both personal and professional life.<br><br>I would like to encourage everyone, no matter what you do or where you<br>live, to take a few simple actions make an emergency plan, build an<br>emergency kit, and be informed about what protective measures to take<br>before, during and after an emergency.<br><br>Please click the link for an OPM checklist to be prepared to respond at<br>home or at work in an emergency weather circumstance.<br>www.opmemergencychecklist.org<br><br>If you would like more information, or the current status of closures in<br>your area. Visit<br>https//www.opm.gov/policy-data-oversight/snow-dismissal-procedures/current-status/<br><br><%ACRONYM%> Communications<br>",
+    "html": "topic for both personal and professional life.<br><br>I would like to encourage everyone, no matter what you do or where you<br>live, to take a few simple actions make an emergency plan, build an<br>emergency kit, and be informed about what protective measures to take<br>before, during and after an emergency.<br><br>Please click the link for an OPM checklist to be prepared to respond at<br>home or at work in an emergency weather circumstance.<br>www.opmemergencychecklist.org<br><br>If you would like more information, or the current status of closures in<br>your area. Visit <br><a href=\"<%URL%>\">https//www.opm.gov/policy-data-oversight/snow-dismissal-procedures/current-status/</a><br><%ACRONYM%> Communications<br>",
     "behavior": {
       "duty_obligation": 0,
       "fear": 0,
@@ -1281,7 +1281,7 @@
     "name": "Severe Weather [Known Internal]",
     "template_type": "Email",
     "complexity": 5,
-    "html": "<br>All staff,<br><br>We are launching a new awareness campaign regarding emergency preparedness<br>in terms of natural disasters and inclement weather conditions. This is an<br>important topic for both personal and professional life. I would like to encourage <br>everyone, no matter what you do or where you live, to take a few simple actions <br>make an emergency plan, build an emergency kit, and be informed about what <br>protective measures to take before, during and after an emergency.<br><br>Please follow the link for our new checklist on how to be prepared to<br>respond at home or at work in an emergency weather circumstance.<br><br>Emergency Weather Checklist <%URL%><br><br>If you would like more information, or the current status of closures in<br>your area, please visit our Resource Page <%URL%>.<br><br>Office of Communications<br><%CUSTOMER_NAME%><br>",
+    "html": "<br>All staff,<br><br>We are launching a new awareness campaign regarding emergency preparedness<br>in terms of natural disasters and inclement weather conditions. This is an<br>important topic for both personal and professional life. I would like to encourage <br>everyone, no matter what you do or where you live, to take a few simple actions <br>make an emergency plan, build an emergency kit, and be informed about what <br>protective measures to take before, during and after an emergency.<br><br>Please follow the link for our new checklist on how to be prepared to<br>respond at home or at work in an emergency weather circumstance.<br><br>Emergency Weather Checklist <a href=\"<%URL%>\">https://emergency-prep.<%ACRONYM%>.com</a><br><br>If you would like more information, or the current status of closures in<br>your area, please visit our Resource Page <a href=\"<%URL%>\">https://emergency-prep.<%ACRONYM%>.com</a>.<br><br>Office of Communications<br><%CUSTOMER_NAME%><br>",
     "behavior": {
       "duty_obligation": 0,
       "fear": 0,
@@ -2649,7 +2649,7 @@
     "name": "Severe Weather [Duty]",
     "template_type": "Email",
     "complexity": 4,
-    "html": "conditions.<br><br>I would like to encourage everyone, no matter what you do or where you<br>live, to take a few simple actions make an emergency plan, build an<br>emergency kit, and be informed about what protective measures to take<br>before, during and after an emergency.<br><br>Please click the link for an OPM checklist to be prepared to respond at<br>home or at work in an emergency weather circumstance.<br>www.<%ACRONYM%>emergencychecklist.org<br><br><br><%ACRONYM%> Communications<br>",
+    "html": "conditions.<br><br>I would like to encourage everyone, no matter what you do or where you<br>live, to take a few simple actions make an emergency plan, build an<br>emergency kit, and be informed about what protective measures to take<br>before, during and after an emergency.<br><br>Please click the link for an OPM checklist to be prepared to respond at<br>home or at work in an emergency weather circumstance.<br> <a href=\"<%URL%>\">https://www.<%ACRONYM%>emergencychecklist.org</a> <br><br><%ACRONYM%> Communications<br>",
     "behavior": {
       "duty_obligation": 1,
       "fear": 0,
@@ -3837,7 +3837,7 @@
     "name": "Shopping Referral",
     "template_type": "Email",
     "complexity": 2,
-    "html": "Hello Shopper!<br><br>Congratulations! Thanks to a friend you have received a referral credit for use at MEGA Super Mart Online! This upcoming shopping center is becoming more and more popular. It provides highly competitive prices on name brand products, usually much cheaper than the big brand name stores!<br><br>Since you got a referral, we will give you a $25 credit to get you started! You can also earn more store credit by referring your friends! For each friend who makes a purchase using your referral code you will get an extra $10 credit!<br><br>To redeem your credit, after shopping here <%URL%> enter the promo code: REF25! during checkout.<br><br>Enjoy your savings!<br><br>MEGA Super Mart Online<br>",
+    "html": "Hello Shopper!<br><br>Congratulations! Thanks to a friend you have received a referral credit for use at MEGA Super Mart Online! This upcoming shopping center is becoming more and more popular. It provides highly competitive prices on name brand products, usually much cheaper than the big brand name stores!<br><br>Since you got a referral, we will give you a $25 credit to get you started! You can also earn more store credit by referring your friends! For each friend who makes a purchase using your referral code you will get an extra $10 credit!<br><br>To redeem your credit, after shopping here <a href=\"<%URL%>\">https://SuperMart.com</a> enter the promo code: REF25! during checkout.<br><br>Enjoy your savings!<br><br>MEGA Super Mart Online<br>",
     "behavior": {
       "duty_obligation": 0,
       "fear": 0,
@@ -4125,7 +4125,7 @@
     "name": "Severe Weather [Unknown Internal]",
     "template_type": "Email",
     "complexity": 5,
-    "html": "<br>All staff,<br><br>We are launching a new awareness campaign regarding emergency preparedness<br>in terms of natural disasters and inclement weather conditions. This is an<br>important topic for both personal and professional life. I would like to encourage<br>everyone, no matter what you do or where you live, to take a few simple actions<br>make an emergency plan, build an emergency kit, and be informed about what<br>protective measures to take before, during and after an emergency.<br><br>Please follow the link for our new checklist on how to be prepared to<br>respond at home or at work in an emergency weather circumstance.<br><br>Emergency Weather Checklist <%URL%><br><br>If you would like more information, or the current status of closures in<br>your area, please visit our Resource Page <%URL%>.<br><br>Office of Communications<br><%CUSTOMER_NAME%><br>",
+    "html": "<br>All staff,<br><br>We are launching a new awareness campaign regarding emergency preparedness<br>in terms of natural disasters and inclement weather conditions. This is an<br>important topic for both personal and professional life. I would like to encourage<br>everyone, no matter what you do or where you live, to take a few simple actions<br>make an emergency plan, build an emergency kit, and be informed about what<br>protective measures to take before, during and after an emergency.<br><br>Please follow the link for our new checklist on how to be prepared to<br>respond at home or at work in an emergency weather circumstance.<br><br>Emergency Weather Checklist <a href=\"<%URL%>\">https://emergancy<%CUSTOMER_NAME%>.com</a> <br><br>If you would like more information, or the current status of closures in<br>your area, please visit our Resource Page <a href=\"<%URL%>\">https://emergancy<%CUSTOMER_NAME%>.com</a> .<br><br>Office of Communications<br><%CUSTOMER_NAME%><br>",
     "behavior": {
       "duty_obligation": 0,
       "fear": 0,
@@ -4629,7 +4629,7 @@
     "name": "Shipping Confirmation 2 [Fake Link]",
     "template_type": "Email",
     "complexity": 3,
-    "html": "<br>Dear Customer,<br><br>Thank you for your purchase! We are notifying you that your order<br>#381720947279 has been shipped!<br><br>Order Details<br>Item: Home Audio System & Automation Kit<br>Estimated delivery time: 3-5 business days Order<br>total: $219.99<br><br>You can view the status of your order here <%URL%><br><br><br>Thank you for shopping with Warehouse Electronics!<br>",
+    "html": "<br>Dear Customer,<br><br>Thank you for your purchase! We are notifying you that your order<br>#381720947279 has been shipped!<br><br>Order Details<br>Item: Home Audio System & Automation Kit<br>Estimated delivery time: 3-5 business days Order<br>total: $219.99<br><br>You can view the status of your order here <a href=\"<%URL%>\">https://WarehouseElectronics.com/order/381720947279/</a><br><br><br>Thank you for shopping with Warehouse Electronics!<br>",
     "behavior": {
       "duty_obligation": 0,
       "fear": 0,
@@ -5061,7 +5061,7 @@
     "name": "Severe Weather [Internal Duty]",
     "template_type": "Email",
     "complexity": 4,
-    "html": "<br>In preparation of the upcoming <%CURRENT_SEASON%> season, and<br>anticipation of <%EVENT%>, <%CUSTOMER_NAME%> is<br>launching a new awareness campaign regarding emergency preparedness in terms<br>of natural disasters and inclement weather conditions.<br><br>I would like to encourage everyone, no matter what you do or where you<br>live, to take a few simple actions make an emergency plan, build an<br>emergency kit, and be informed about what protective measures to take<br>before, during and after an emergency.<br><br>Please click the link for an updated checklist to be prepared to respond<br>at home or at work in an emergency weather circumstance.<br><br>www.<%CUSTOMER_NAME%>emergencychecklist.org<br><br><br><%CUSTOMER_NAME%> Communications<br>",
+    "html": "<br>In preparation of the upcoming <%CURRENT_SEASON%> season, and<br>anticipation of <%EVENT%>, <%CUSTOMER_NAME%> is<br>launching a new awareness campaign regarding emergency preparedness in terms<br>of natural disasters and inclement weather conditions.<br><br>I would like to encourage everyone, no matter what you do or where you<br>live, to take a few simple actions make an emergency plan, build an<br>emergency kit, and be informed about what protective measures to take<br>before, during and after an emergency.<br><br>Please click the link for an updated checklist to be prepared to respond<br>at home or at work in an emergency weather circumstance.<br><br> <a href=\"<%URL%>\">https://www.<%CUSTOMER_NAME%>emergencychecklist.org</a> <br><br> <%CUSTOMER_NAME%> Communications <br>",
     "behavior": {
       "duty_obligation": 1,
       "fear": 0,
