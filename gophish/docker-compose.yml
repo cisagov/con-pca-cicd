@@ -14,16 +14,6 @@ services:
       - mysql
     networks:
       - backend
-  nginx:
-    build:
-      context: ./etc/nginx/
-    container_name: pca-gophish-proxy
-    restart: unless-stopped
-    ports:
-      - "80:80"
-      - "443:443"
-    networks:
-      - backend
   mysql:
     image: mysql:latest
     container_name: pca-gophish-db

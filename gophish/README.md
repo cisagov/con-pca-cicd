@@ -3,10 +3,7 @@
 ## Features
 
 - [Docker](https://www.docker.com/)
-- [Nginx](https://www.nginx.com/)
-- [Let's Encrypt](https://letsencrypt.org/)
 - [MySQL Database](https://www.mysql.com/)
-- [Adminer database management UI](https://www.adminer.org/)
 - Tested to launch on an Ubuntu 18.04 LTS Server
 
 ## Requirements
@@ -35,7 +32,7 @@ A registered domain name
 - Return GoPhish app logs
   - `make logs`
 
-- GoPhish admin UI is running on `localhost` & `localhost:3333`
+- GoPhish admin UI is running on `localhost:3333`
 - Phishing server is running on `localhost:8080`
 
 ## Set up webhooks
