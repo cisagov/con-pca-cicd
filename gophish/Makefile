@@ -28,3 +28,7 @@ stop:
 # target: down - Remove all docker containers
 down:
 	docker-compose down
+
+# target: app logs - Runs gophish logs in the terminal
+logs:
+	 docker attach --sig-proxy=false pca-gophish
