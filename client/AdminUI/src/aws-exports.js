@@ -20,7 +20,4 @@ const awsmobile = {
     "federationTarget": "COGNITO_USER_POOLS"
 };
 
-
-
-
 export default awsmobile;

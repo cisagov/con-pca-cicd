@@ -197,3 +197,6 @@ EMAIL_PORT = os.environ.get("SMTP_PORT", 587)
 EMAIL_HOST_USER = os.environ.get("SMTP_USER")
 EMAIL_HOST_PASSWORD = os.environ.get("SMTP_PASS")
 EMAIL_USE_TLS = True
+
+# API Key for running local scripts
+LOCAL_API_KEY = os.environ["LOCAL_API_KEY"]

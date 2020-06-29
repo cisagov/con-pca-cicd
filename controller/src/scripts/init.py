@@ -4,7 +4,6 @@ import requests
 import json
 import time
 
-# cisagov Libraries
 # Third Party Libraries
 from gophish import Gophish
 from gophish.models import SMTP, Page, Webhook
@@ -99,7 +98,10 @@ def create_webhook(webhooks):
 
 def create_templates():
     existing_names = [
-        t["name"] for t in requests.get("http://localhost:8000/api/v1/templates").json()
+        t["name"]
+        for t in requests.get(
+            "http://localhost:8000/api/v1/templates", headers=get_headers()
+        ).json()
     ]
 
     templates = load_file("data/templates.json") + load_file("data/landing_pages.json")
@@ -108,7 +110,9 @@ def create_templates():
         if not template["name"] in existing_names:
             template["deception_score"] = template["complexity"]
             resp = requests.post(
-                "http://localhost:8000/api/v1/templates/", json=template
+                "http://localhost:8000/api/v1/templates/",
+                json=template,
+                headers=get_headers(),
             )
             resp.raise_for_status()
             resp_json = resp.json()
@@ -125,14 +129,18 @@ def create_templates():
 
 def create_tags():
     tags = load_file("data/tags.json")
-
     existing_tags = [
-        t["tag"] for t in requests.get("http://localhost:8000/api/v1/tags/").json()
+        t["tag"]
+        for t in requests.get(
+            "http://localhost:8000/api/v1/tags/", headers=get_headers()
+        ).json()
     ]
 
     for tag in tags:
         if tag["tag"] not in existing_tags:
-            resp = requests.post("http://localhost:8000/api/v1/tags/", json=tag)
+            resp = requests.post(
+                "http://localhost:8000/api/v1/tags/", json=tag, headers=get_headers(),
+            )
             resp.raise_for_status()
             resp_json = resp.json()
             if resp_json.get("error"):
@@ -143,6 +151,10 @@ def create_tags():
                 )
         else:
             print(f"Tag, {tag['tag']}, already exists.. Skipping")
+
+
+def get_headers():
+    return {"Authorization": os.environ.get("LOCAL_API_KEY")}
 
 
 def wait_connection():

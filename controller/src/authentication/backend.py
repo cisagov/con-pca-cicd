@@ -4,6 +4,7 @@ import time
 
 from django.apps import apps as django_apps
 from django.conf import settings
+from config.settings import LOCAL_API_KEY
 from django.utils.encoding import smart_text
 from django.utils.translation import ugettext as _
 from rest_framework import exceptions
@@ -20,9 +21,16 @@ class JSONWebTokenAuthentication(BaseAuthentication):
     def authenticate(self, request):
         """Entrypoint for Django Rest Framework"""
         print(settings.COGNITO_DEPLOYMENT_MODE)
+
         if settings.COGNITO_DEPLOYMENT_MODE == "Development":
             print("Using develop authorization")
             user = {"username": "developer user", "groups": {"develop"}}
+            token = "Empty token"
+            return (user, token)
+
+        if get_authorization_header(request).decode() == LOCAL_API_KEY:
+            print("Local api authorization")
+            user = {"username": "api", "groups": {"develop"}}
             token = "Empty token"
             return (user, token)
 

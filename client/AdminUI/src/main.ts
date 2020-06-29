@@ -7,7 +7,7 @@ import { environment } from './environments/environment';
 import awsmobile from './aws-exports';
 import Amplify from 'aws-amplify';
 
-Amplify.configure(awsmobile)
+Amplify.configure(awsmobile);
 
 if (environment.production) {
   enableProdMode();
