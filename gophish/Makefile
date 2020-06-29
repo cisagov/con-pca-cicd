@@ -9,10 +9,6 @@ all:
 help:
 	@egrep "^# target:" [Mm]akefile
 
-init:
-	sudo chmod u+x init.sh
-	./init.sh
-
 # target: build = build all containers
 build:
 	docker-compose build
