@@ -45,6 +45,8 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
   dhsContacts = [];
   dhsContactUuid: string;
 
+  startAt = new Date();
+
   sendingProfiles = [];
 
   // The raw CSV content of the textarea
