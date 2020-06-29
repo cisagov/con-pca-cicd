@@ -192,7 +192,13 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
       .subscribe((s: Subscription) => {
         this.subscription = s as Subscription;
         this.subscriptionSvc.subscription = this.subscription;
-        this.layoutSvc.setTitle(`Subscription - ${this.subscription.name}`);
+
+        let title = `Subscription - ${this.subscription.name}`;
+        if (s.status.toLowerCase() === 'stopped') {
+          title += ' (stopped)';
+        }
+        this.layoutSvc.setTitle(title);
+
         this.f.primaryContact.setValue(s.primary_contact.email);
         this.f.dhsContact.setValue(s.dhs_contact_uuid);
         this.f.url.setValue(s.url);
