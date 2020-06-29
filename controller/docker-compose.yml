@@ -46,7 +46,7 @@ services:
       context: .
       dockerfile: ./etc/Dockerfile
     container_name: pca-flower
-    entrypoint: flower --port=5555 --broker=amqp://rabbitmq:5672
+    entrypoint: flower -A config --port=5555 --broker=amqp://rabbitmq:5672
     ports:
       - "5555:5555"
     depends_on:
