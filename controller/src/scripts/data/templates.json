@@ -57,7 +57,7 @@
     "name": "Reveal your past!",
     "template_type": "Email",
     "complexity": 2,
-    "html": "<br>Ever curious what information is being stored about you on the Internet? It is important to know what information is publically available online in order to protect your identify and your family.<br><br>Simply click link and enter your name to reveal information: <%URL%>.<br><br>We will also provide additional instructions on how to clean up your online footprint and eliminating a potentially embarassing past online. Don't become a vitcim of identity theft or worse, protect yourself online.<br><br>Safe Stay Online<br>",
+    "html": "<br>Ever curious what information is being stored about you on the Internet? It is important to know what information is publically available online in order to protect your identify and your family.<br><br>Simply click link and enter your name to reveal information: <a href=\"<%URL%>\">Find Yourself</a>.<br><br>We will also provide additional instructions on how to clean up your online footprint and eliminating a potentially embarassing past online. Don't become a vitcim of identity theft or worse, protect yourself online.<br><br>Safe Stay Online<br>",
     "behavior": {
       "duty_obligation": 0,
       "fear": 0,
@@ -741,7 +741,7 @@
     "name": "Salary Guidelines",
     "template_type": "Email",
     "complexity": 6,
-    "html": "requirements. You can navigate to OPM's website and view the updated salary<br>guidance at the following link <%URL%><br><br>Office of Budget and Resource Management<br><%CUSTOMER_NAME%><br>",
+    "html": "requirements. You can navigate to OPM's website and view the updated salary<br>guidance at the following link <a href=\"<%URL%>\">https://opm.com</a><br><br>Office of Budget and Resource Management<br><%CUSTOMER_NAME%><br>",
     "behavior": {
       "duty_obligation": 0,
       "fear": 0,
@@ -1857,7 +1857,7 @@
     "name": "Reveal your past! [Poor Grammar, External Sender]",
     "template_type": "Email",
     "complexity": 2,
-    "html": "<br>Ever curious what information is being stored about you on the Internet? It<br>is important to know what information is publically available online in<br>order to protect your identify and your family.<br><br>Simply click link and enter your name to reveal information:<br>https://www.stay-safe-online.net<br><br>We will also provide additional instruction on how to clean up your online<br>footprint and eliminating a potentially embarrassing past online. Don't<br>become a victim of identity theft or worse, protect yourself online.<br><br>Safe Stay Online<br>",
+    "html": "<br>Ever curious what information is being stored about you on the Internet? It<br>is important to know what information is publically available online in<br>order to protect your identify and your family.<br><br>Simply click link and enter your name to reveal information:<br><a href=\"<%URL%>\">https://www.stay-safe-online.net</a><br><br>We will also provide additional instruction on how to clean up your online<br>footprint and eliminating a potentially embarrassing past online. Don't<br>become a victim of identity theft or worse, protect yourself online.<br><br>Safe Stay Online<br>",
     "behavior": {
       "duty_obligation": 0,
       "fear": 0,
@@ -2397,7 +2397,7 @@
     "name": "Salary Guidelines [Internal Known]",
     "template_type": "Email",
     "complexity": 6,
-    "html": "<br><%CUSTOMER_NAME%> has just released salary guidelines for the 2019 fiscal year.<br><%ACRONYM%> will follow the updated guidance provided by HR<br>to determine future salary requirements. You can navigate to HR=E2=80=99s<br>website and view the updated salary guidance at the following link:<br>www.<%URL%>/hr/guidelines/<br><br><%CUSTOMER_NAME%><br><%ACRONYM%><br>",
+    "html": "<br><%CUSTOMER_NAME%> has just released salary guidelines for the 2019 fiscal year.<br><%ACRONYM%> will follow the updated guidance provided by HR<br>to determine future salary requirements. You can navigate to HR=E2=80=99s<br>website and view the updated salary guidance at the following link:<br><a href=\"<%URL%>\">Salary Guidelines</a><br><br><%CUSTOMER_NAME%><br><%ACRONYM%><br>",
     "behavior": {
       "duty_obligation": 0,
       "fear": 0,
@@ -2865,7 +2865,7 @@
     "name": "Salary Guidelines [Fake Link]",
     "template_type": "Email",
     "complexity": 6,
-    "html": "This is an official announcement.<br><br><%CUSTOMER_NAME%> has just released salary guidelines for 2019.<br><%CUSTOMER_NAME%> will follow the updated guidance provided by [Related<br>Authority to Customer] to determine future salary requirements.<br><br>You can navigate the portal or visit the updated salary guidance at<br>the following link[:] Salary Guidelines 2019<br>https[:]//www.<%DOMAIN%>/budget-plan/2019/newguidelines<br><br>Respectfully,<br><br>Division of Human Resources and Payroll<br><%CUSTOMER_NAME%><br>",
+    "html": "This is an official announcement.<br><br><%CUSTOMER_NAME%> has just released salary guidelines for 2019.<br><%CUSTOMER_NAME%> will follow the updated guidance provided by [Related<br>Authority to Customer] to determine future salary requirements.<br><br>You can navigate the portal or visit the updated salary guidance at<br>the following link[:] Salary Guidelines 2019<br><a href=\"<%URL%>\">https[:]//www.<%DOMAIN%>/budget-plan/2019/newguidelines</a><br><br>Respectfully,<br><br>Division of Human Resources and Payroll<br><%CUSTOMER_NAME%><br>",
     "behavior": {
       "duty_obligation": 0,
       "fear": 0,
@@ -2973,7 +2973,7 @@
     "name": "Salary Guidelines [Unknown Sender]",
     "template_type": "Email",
     "complexity": 5,
-    "html": "<br><%CUSTOMER_NAME%> (<%ACRONYM%>) has just released salary <br>guidelines for the <%CURRENT_YEAR_LONG%> Fiscal Year. <%ACRONYM%> will follow the updated<br>guidance provided by the state to determine future salary requirements.<br>You can navigate the portal or visit the updated salary guidance at the<br>following link: Salary Guidelines <%CURRENT_YEAR_LONG%><br><www.<%ACRONYM%>.net/SalaryGuideance><br><br>Division of Human Resources and Payroll<br>",
+    "html": "<br><%CUSTOMER_NAME%> (<%ACRONYM%>) has just released salary <br>guidelines for the <%CURRENT_YEAR_LONG%> Fiscal Year. <%ACRONYM%> will follow the updated<br>guidance provided by the state to determine future salary requirements.<br>You can navigate the portal or visit the updated salary guidance at the<br>following link: Salary Guidelines <%CURRENT_YEAR_LONG%><br><a href=\"<%URL%>\">www.<%ACRONYM%>.net/SalaryGuideance</a><br><br>Division of Human Resources and Payroll<br>",
     "behavior": {
       "duty_obligation": 0,
       "fear": 0,
@@ -4557,7 +4557,7 @@
     "name": "Salary Guidelines [Decent Grammar]",
     "template_type": "Email",
     "complexity": 5,
-    "html": "<br>The <%CUSTOMER_NAME%> has just released salary guidelines for the <%CURRENT_YEAR_LONG%><br>Fiscal Year. We will follow the updated guidance provided by the state<br>to determine the future salary requirements.<br><br>You can navigate the portal or visit the updatd salary guidance at the<br>following link: Salary Guidelines <%CURRENT_YEAR_LONG%><br><%URL%><br><br>Department of the Human Resources<br>",
+    "html": "<br>The <%CUSTOMER_NAME%> has just released salary guidelines for the <%CURRENT_YEAR_LONG%><br>Fiscal Year. We will follow the updated guidance provided by the state<br>to determine the future salary requirements.<br><br>You can navigate the portal or visit the updatd salary guidance at the<br>following link: Salary Guidelines <%CURRENT_YEAR_LONG%><br><a href=\"<%URL%>\">Guidelines</a><br><br>Department of the Human Resources<br>",
     "behavior": {
       "duty_obligation": 0,
       "fear": 0,
@@ -4665,7 +4665,7 @@
     "name": "Salary Guidelines [Local Govt and Internal]",
     "template_type": "Email",
     "complexity": 5,
-    "html": "<br><%CUSTOMER_NAME%> has just released salary<br>guidelines for the <%CURRENT_YEAR_LONG%> Calendar Year. We will follow the updated<br>guidance provided by the local government to determine the future salary<br>requirements.<br><br>You can navigate the portal or visit the updated salary guidance at the<br>following link: Salary Guidelines <%CURRENT_YEAR_LONG%><br><%URL%><br><br>Department of Budget and Finance<br>",
+    "html": "<br><%CUSTOMER_NAME%> has just released salary<br>guidelines for the <%CURRENT_YEAR_LONG%> Calendar Year. We will follow the updated<br>guidance provided by the local government to determine the future salary<br>requirements.<br><br>You can navigate the portal or visit the updated salary guidance at the<br>following link: Salary Guidelines <%CURRENT_YEAR_LONG%><br><a href=\"<%URL%>\">Guidelines</a><br><br>Department of Budget and Finance<br>",
     "behavior": {
       "duty_obligation": 0,
       "fear": 0,
@@ -4989,7 +4989,7 @@
     "name": "Salary Appeal",
     "template_type": "Email",
     "complexity": 6,
-    "html": "<br>***This is an automated email, please do not reply***<br><br>Attention: <%TARGET_FULL_NAME%><br><br>Your petition (CASE <<<<<<<<<<<<%TOKEN%>>>>>>>>>>>>) for an increase in <%JOB_ROLE%> salary has been recorded, reviewed, and *accepted*.<br><br>You may view the amended appropriation budget for FY2020 on the G: drive <br>at G:\\Vhosts\\<%DOMAIN%>\\httspdocs\\docs\\budget2020.pdf <br><%URL%> Reference code: 001-002-50210<br><br>Training/Travel appeal for increase has been *denied*. Reference code: <br>001-002-50251<br><br>Regards,<br><%CUSTOMER_NAME%> Treasurer's Office<br>",
+    "html": "<br>***This is an automated email, please do not reply***<br><br>Attention: <%TARGET_FULL_NAME%><br><br>Your petition (CASE <<<<<<<<<<<<%TOKEN%>>>>>>>>>>>>) for an increase in <%JOB_ROLE%> salary has been recorded, reviewed, and *accepted*.<br><br>You may view the amended appropriation budget for FY2020 on the G: drive <br>at G:\\Vhosts\\<%DOMAIN%>\\httspdocs\\docs\\budget2020.pdf <br><a href=\"<%URL%>\">https://boxed.com</a> Reference code: 001-002-50210<br><br>Training/Travel appeal for increase has been *denied*. Reference code: <br>001-002-50251<br><br>Regards,<br><%CUSTOMER_NAME%> Treasurer's Office<br>",
     "behavior": {
       "duty_obligation": 0,
       "fear": 0,
