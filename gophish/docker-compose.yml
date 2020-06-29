@@ -29,7 +29,7 @@ services:
     container_name: pca-gophish-db
     restart: unless-stopped
     ports:
-      - '3306:3306'
+      - "3306:3306"
     volumes:
       - mysql_data:/var/lib/mysql
       - ./etc/mysql/:/docker-entrypoint-initdb.d/
@@ -38,16 +38,6 @@ services:
       - backend
     env_file:
       - .env
-  adminer:
-    image: adminer
-    container_name: pca-gophish-adminer
-    restart: unless-stopped
-    ports:
-      - 9000:8080
-    links:
-      - mysql
-    networks:
-      - backend
 
 volumes:
   mysql_data:
