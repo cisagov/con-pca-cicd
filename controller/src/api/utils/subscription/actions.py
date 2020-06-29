@@ -128,6 +128,7 @@ def start_subscription(data=None, subscription_uuid=None):
         response = db.save_single(
             subscription, "subscription", SubscriptionModel, validate_subscription
         )
+        response["name"] = subscription["name"]
 
     # Schedule client side reports emails
     if not settings.DEBUG:
