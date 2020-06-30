@@ -8,14 +8,14 @@ import { LayoutMainService } from 'src/app/services/layout-main.service';
   styleUrls: ['./user-admin.component.scss']
 })
 export class UserAdminComponent implements OnInit {
-  constructor(public layoutSvc: LayoutMainService) {
+  constructor(public layoutSvc: LayoutMainService, public settingsSvc: SettingsService) {
     layoutSvc.setTitle('User Admin');
   }
 
   ngOnInit() { }
 
   launchFlower() {
-    const url = "localhost:5555/";
+    const url = this.settingsSvc.settings.flowerUrl;
     window.open(url, '_blank');
   }
 }
