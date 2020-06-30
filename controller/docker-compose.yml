@@ -55,6 +55,8 @@ services:
       - celery-worker
     env_file:
       - .env
+    networks:
+      - backend
 
   rabbitmq:
     image: rabbitmq:3.8
