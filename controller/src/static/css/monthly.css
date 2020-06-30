@@ -1,21 +1,30 @@
 @import url('https://fonts.googleapis.com/css2?family=Orbitron&display=swap');
 @page {
-  margin: 2.5cm;
+  margin: 0;
   size: Letter;
 }
 
 html {
-  background-color: #cecece;
+  background-color: #1B2352;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.topBannerRow {  
+  margin-right: 0;  
 }
 
 body {
-  -webkit-print-color-adjust: exact !important;
+  -webkit-print-color-adjust: exact !important;  
   font-size: 16px;
-  max-width: 1024px;
+  max-width: 1076px;
 }
 
-body, html,aside {
+body, html, aside {
   height: 100%;
+  background-color: #1B2352;
 }
 
 main .container-fluid {
@@ -27,6 +36,7 @@ main .container-fluid {
 .topBanner {
   background-color: #1B2352;
   height: 170px;
+  width: 1076px;
 }
 
 .topBanner .col-12 {
@@ -35,7 +45,7 @@ main .container-fluid {
   flex-flow: row nowrap;
   height: 170px;
   justify-content: space-between;
-  padding: 0 60px 10px 60px;
+  padding: 0 0 10px 20px;
 }
 
 #cisaLogo img {
@@ -47,30 +57,31 @@ main .container-fluid {
 aside {
   background-color: #1B2352;
   color: white;
+  display: flex;
+  flex-direction: column;
   line-height: 2em;
   margin: 0;
   overflow-x: hidden;
-  padding: 0 0 30px 0;
+  padding: 0 0 40px 0;
   width: 35%;
 }
-
 
 #reportDate {
   background: #fff;
   color: #000;
-  height: 45px;
-  margin-top: -1px;
+  height: 50px;
+  margin-top: 0px;
 }
 
 #reportDate h3 {
   font-size: 1.25em;
   font-weight: 400;
-  padding: 10px 0 0 60px;
+  padding: 10px 0 0 40px;
 }
 
 #gonePhishingImage {
-  margin: 55px 0 0 62px;
-  transform: scale(1.3,1.4);
+  margin: 55px 0 0 82px;
+  transform: scale(1.5,1.4);
 }
 
 #gonePhishingImage img {
@@ -78,7 +89,7 @@ aside {
 }
 
 #primaryContact, #cisaContact, #numbersTitle, #campaignNumbers {
-  padding-left: 60px;
+  padding-left: 40px;
 }
 
 #primaryContact {
@@ -107,7 +118,7 @@ aside {
   color: white;
   font-size: 0.925em;
   line-height: 2em;
-  margin-left: 60px;
+  margin-left: 40px;
   padding: 10px 10px 20px 15px;
   text-align: left;
   width: 70%;
@@ -115,8 +126,10 @@ aside {
 
 #preparedFor {
   color: lightblue;
-  left: 75px;
-  margin: 110px 0 5px 60px;
+  flex: 1 1 auto;
+  margin: 200px 0 5px 40px;
+  position: relative;
+  bottom: 0;
 }
 
 #preparedFor span {
@@ -126,25 +139,34 @@ aside {
 
 /* Main Content */
 
+main > .row:first-of-type {
+  background-color: #1B2352;
+}
+
 .main-content {
-  background-color: #fff;
   border-left: 15px solid #1B2352;
-  border-top: 2px solid #1B2352;
-  border-top-left-radius: 30%80px;
-  margin: -2px -20px 0 -20px;
+  border-top: 3px solid #1B2352;
+  border-top-left-radius:25%100px;
+  margin: -2px -20px 0 -23px;
   width: 67%;
 }
 
+.main-content  .row:nth-of-type(-n+3) {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-start;
+}
 #reportTitle img {
-  margin: -140px 0 0 -60px;
+  margin: 35px 0 0 0;
   position: relative;
-  transform: scale(0.7);
+  transform: scale(0.8);
 }
 
 h1 strong {
   color: #164A91;
   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-  font-size: 1.3em;
+  font-size: 1em;
   font-stretch: extra-condensed;
   left: 75px;
   letter-spacing: 0px;
@@ -252,3 +274,29 @@ h1 strong {
   margin: 10px;
 }
 
+.legend {
+  color: #000;
+  list-style-type: square;
+}
+
+.legend li {
+  display: inline-block;
+  padding: 0 10px;
+}
+.legend li:nth-of-type(1)::after {
+  content: "\25A0";
+  color: #164A91;  
+  margin-left: 5px;
+}
+
+.legend li:nth-of-type(2)::after {
+  content: "\25A0";
+  color: #FDC010;  
+  margin-left: 5px;
+}
+
+.legend li:nth-of-type(3)::after {
+  content: "\25A0";
+  color: #1979a7;
+  margin-left: 5px;
+}
