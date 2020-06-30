@@ -535,6 +535,7 @@ export class TemplateManagerComponent implements OnInit {
     this.dialogRefTagSelection.afterClosed().subscribe(result => {
       if (result) {
         this.insertTag(selection, result);
+        $('.angular-editor-wrapper').removeClass('show-placeholder');
       }
       this.dialogRefTagSelection = null;
     });
