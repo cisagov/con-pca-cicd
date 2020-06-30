@@ -1,3 +1,4 @@
+import { SettingsService } from 'src/app/services/settings.service';
 import { Component, OnInit, Input } from '@angular/core';
 import { LayoutMainService } from 'src/app/services/layout-main.service';
 
@@ -11,5 +12,10 @@ export class UserAdminComponent implements OnInit {
     layoutSvc.setTitle('User Admin');
   }
 
-  ngOnInit() {}
+  ngOnInit() { }
+
+  launchFlower() {
+    const url = "localhost:5555/";
+    window.open(url, '_blank');
+  }
 }
