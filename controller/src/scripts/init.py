@@ -11,7 +11,11 @@ from gophish.models import SMTP, Page, Webhook
 API_KEY = os.environ.get("GP_API_KEY")
 URL = os.environ.get("GP_URL")
 API = Gophish(API_KEY, host=URL, verify=False)
-LOCAL_URL = "http://localhost:8000"
+LOCAL_URL = (
+    "http://localhost:8000"
+    if os.environ.get("DEBUG") == "1"
+    else "https://localhost:8000"
+)
 
 SENDING_PROFILES = [
     {
