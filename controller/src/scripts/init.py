@@ -138,7 +138,7 @@ def create_tags():
     existing_tags = [
         t["tag"]
         for t in requests.get(
-            f"{LOCAL_URL}:8000/api/v1/tags/", headers=get_headers(), verify=False
+            f"{LOCAL_URL}/api/v1/tags/", headers=get_headers(), verify=False
         ).json()
     ]
 
