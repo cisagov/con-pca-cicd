@@ -206,6 +206,7 @@ class SubscriptionPostResponseSerializer(serializers.Serializer):
     """
 
     subscription_uuid = serializers.UUIDField()
+    name = serializers.CharField()
 
 
 class SubscriptionPatchSerializer(serializers.Serializer):

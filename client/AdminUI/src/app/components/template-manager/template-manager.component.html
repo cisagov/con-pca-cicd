@@ -194,9 +194,14 @@
           <button id="stop-button" class="d-flex" mat-raised-button color="warn" (click)="openStopTemplateDialog()" *ngIf=templateId>
             Stop Template
           </button>
-          <button id="save-button" class="d-flex ml-auto" mat-raised-button color="primary" (click)="saveTemplate()">
-            Save Template
-          </button>
+          <div class="ml-auto d-flex flex-row">
+            <button id="save-button" class="d-flex" mat-flat-button color="basic" (click)="onCancelClick()">
+              Cancel
+            </button>
+            <button id="save-button" class="d-flex" mat-raised-button color="primary" (click)="saveTemplate()">
+              Save Template
+            </button>
+          </div>
         </div>
         <div class="flex-container flex-row pb-3" *ngIf="templateId && retired">
           <p class="text-danger">Reason for Retiring - {{retiredReason}}</p>

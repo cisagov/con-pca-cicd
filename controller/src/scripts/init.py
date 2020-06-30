@@ -1,5 +1,8 @@
 # Standard Python Libraries
 import os
+import requests
+import json
+import time
 
 # cisagov Libraries
 # Third Party Libraries
@@ -94,13 +97,87 @@ def create_webhook(webhooks):
         print(f"Webhook with id: {response.id} has been created")
 
 
+def create_templates():
+    existing_names = [
+        t["name"] for t in requests.get("http://localhost:8000/api/v1/templates").json()
+    ]
+
+    templates = load_file("data/templates.json") + load_file("data/landing_pages.json")
+
+    for template in templates:
+        if not template["name"] in existing_names:
+            template["deception_score"] = template["complexity"]
+            resp = requests.post(
+                "http://localhost:8000/api/v1/templates/", json=template
+            )
+            resp.raise_for_status()
+            resp_json = resp.json()
+            if resp_json.get("error"):
+                print(f"Template Creation error: {resp_json}")
+            else:
+                print(
+                    f"Template with uuid: {resp_json['template_uuid']} has been created"
+                )
+
+        else:
+            print(f"Template, {template['name']}, already exists.. Skipping")
+
+
+def create_tags():
+    tags = load_file("data/tags.json")
+
+    existing_tags = [
+        t["tag"] for t in requests.get("http://localhost:8000/api/v1/tags/").json()
+    ]
+
+    for tag in tags:
+        if tag["tag"] not in existing_tags:
+            resp = requests.post("http://localhost:8000/api/v1/tags/", json=tag)
+            resp.raise_for_status()
+            resp_json = resp.json()
+            if resp_json.get("error"):
+                print(f"Tag Creation error: {resp_json}")
+            else:
+                print(
+                    f"Tag with uuid {resp_json['tag_definition_uuid']} has been created"
+                )
+        else:
+            print(f"Tag, {tag['tag']}, already exists.. Skipping")
+
+
+def wait_connection():
+    for i in range(1, 15):
+        try:
+            requests.get("http://localhost:8000/api/v1/templates/")
+            break
+        except BaseException:
+            print("Django API not yet running. Waiting...")
+            time.sleep(5)
+
+
+def load_file(data_file):
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    data_file = os.path.join(current_dir, data_file)
+    with open(data_file, "r") as f:
+        data = json.load(f)
+    return data
+
+
 def main():
-    print("Step 1/3: Creating Sending Profiles")
+    print("Waiting for api to initialize")
+    wait_connection()
+
+    print("Step 1/5: Creating Sending Profiles")
     create_sending_profile(SENDING_PROFILES)
-    print("Step 2/3: Creating Landing Pages")
+    print("Step 2/5: Creating Landing Pages")
     create_landing_page(LANDING_PAGES)
-    print("Step 3/3: Create Webhooks")
+    print("Step 3/5: Create Webhooks")
     create_webhook(WEBHOOKS)
+    print("Step 4/5: Create Templates")
+    create_templates()
+    print("Step 5/5: Create Tags")
+    create_tags()
+    print("...Con-PCA Initialized...")
     return 0
 
 

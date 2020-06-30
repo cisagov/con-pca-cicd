@@ -147,24 +147,23 @@ export class TemplateManagerComponent implements OnInit {
   //Select a template based on template_uuid, returns the full template
   selectTemplate(template_uuid: string) {
     //Get template and call setTemplateForm to initialize a form group using the selected template
-    this.templateManagerSvc
-      .getTemplate(template_uuid).then(
-        (success) => {
-          let t = <Template>success;
+    this.templateManagerSvc.getTemplate(template_uuid).then(
+      success => {
+        let t = <Template>success;
 
-          this.setTemplateForm(t)
-          this.templateId = t.template_uuid;
-          this.retired = t.retired;
-          this.retiredReason = t.retired_description;
+        this.setTemplateForm(t);
+        this.templateId = t.template_uuid;
+        this.retired = t.retired;
+        this.retiredReason = t.retired_description;
 
-          this.subscriptionSvc.getSubscriptionsByTemplate(t)
-            .subscribe((x: PcaSubscription[]) => {
-              this.pcaSubscriptions.data = x;
-            });
-        },
-        (error) => {
-        }
-      )
+        this.subscriptionSvc
+          .getSubscriptionsByTemplate(t)
+          .subscribe((x: PcaSubscription[]) => {
+            this.pcaSubscriptions.data = x;
+          });
+      },
+      error => {}
+    );
   }
 
   //Create a formgroup using a Template as initial data
@@ -280,8 +279,18 @@ export class TemplateManagerComponent implements OnInit {
     return saveTemplate;
   }
 
+  /**
+   *
+   */
+  onCancelClick() {
+    this.router.navigate(['/templates']);
+  }
+
+  /**
+   *
+   */
   saveTemplate() {
-    //mark all as touched to ensure formgroup validation checks all fields on new entry
+    // mark all as touched to ensure formgroup validation checks all fields on new entry
     this.currentTemplateFormGroup.markAllAsTouched();
     if (this.currentTemplateFormGroup.valid) {
       let templateToSave = this.getTemplateFromForm(
@@ -314,6 +323,13 @@ export class TemplateManagerComponent implements OnInit {
           },
           error => {
             console.log(error);
+            this.dialog.open(AlertComponent, {
+              // Parse error here
+              data: {
+                title: 'Error',
+                messageText: 'Error: ' + error.error.error
+              }
+            });
           }
         );
       }
@@ -354,7 +370,7 @@ export class TemplateManagerComponent implements OnInit {
             // this.setEmptyTemplateForm()
             this.router.navigate(['/templates']);
           },
-          error => { }
+          error => {}
         );
       }
       this.dialogRefConfirm = null;
@@ -362,7 +378,9 @@ export class TemplateManagerComponent implements OnInit {
   }
 
   openRetireTemplateDialog() {
-    const templateToRetire = this.getTemplateFromForm(this.currentTemplateFormGroup);
+    const templateToRetire = this.getTemplateFromForm(
+      this.currentTemplateFormGroup
+    );
     this.dialogRefRetire = this.dialog.open(RetireTemplateDialogComponent, {
       disableClose: false,
       data: templateToRetire
@@ -376,10 +394,13 @@ export class TemplateManagerComponent implements OnInit {
   }
 
   openRestoreTemplateDialog() {
-    const templateToRestore = this.getTemplateFromForm(this.currentTemplateFormGroup);
-    this.dialogRefConfirm = this.dialog.open(ConfirmComponent, { disableClose: false });
-    this.dialogRefConfirm.componentInstance.confirmMessage =
-      `Are you sure you want to restore ${templateToRestore.name}? Initial Reason for Retiring - ${templateToRestore.retired_description}`;
+    const templateToRestore = this.getTemplateFromForm(
+      this.currentTemplateFormGroup
+    );
+    this.dialogRefConfirm = this.dialog.open(ConfirmComponent, {
+      disableClose: false
+    });
+    this.dialogRefConfirm.componentInstance.confirmMessage = `Are you sure you want to restore ${templateToRestore.name}? Initial Reason for Retiring - ${templateToRestore.retired_description}`;
     this.dialogRefConfirm.componentInstance.title = 'Confirm Restore';
 
     this.dialogRefConfirm.afterClosed().subscribe(result => {
@@ -391,7 +412,6 @@ export class TemplateManagerComponent implements OnInit {
       }
     });
   }
-
 
   openStopTemplateDialog() {
     let template_to_stop = this.getTemplateFromForm(
