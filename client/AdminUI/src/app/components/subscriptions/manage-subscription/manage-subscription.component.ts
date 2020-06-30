@@ -154,10 +154,6 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
       this.subscription.sending_profile_name = val;
     });
     this.f.csvText.valueChanges.subscribe(val => {
-      if (this.f.csvText.hasError('')) {
-        console.log('a HA!');
-        return;
-      }
       this.evaluateTargetList();
       this.persistChanges();
     });
@@ -172,7 +168,10 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
    * Sends the model to the API if the subscription is in edit mode.
    */
   persistChanges() {
-    console.log(this.subscribeForm.errors);
+    if (this.subscribeForm.invalid) {
+      return;
+    }
+
     // patch the subscription in real time if in edit mode
     if (!this.subscribeForm.errors && this.pageMode.toLowerCase() === 'edit') {
       this.subscriptionSvc.patchSubscription(this.subscription).subscribe();
@@ -434,6 +433,9 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
     });
   }
 
+  /**
+   * 
+   */
   subValid() {
     this.submitted = true;
 
@@ -447,7 +449,6 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
 
   startSubscription() {
     if (!this.subValid()) {
-      console.log(this.subscribeForm);
       return;
     }
 
@@ -697,9 +698,8 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
    * A validator that requires the csv field to contain certain elements on each row
    */
   invalidCsv(control: FormControl) {
-    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    const exprEmail = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
-    console.log(control);
     const lines = control.value.split('\n');
     for (const line of lines) {
       const parts = line.split(',');
@@ -713,7 +713,7 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
         }
       }
 
-      if (!!parts[0] && !re.test(String(parts[0]).toLowerCase())) {
+      if (!!parts[0] && !exprEmail.test(String(parts[0]).toLowerCase())) {
         return { invalidEmailFormat: true };
       }
     }
