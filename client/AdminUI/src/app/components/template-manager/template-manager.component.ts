@@ -184,7 +184,7 @@ export class TemplateManagerComponent implements OnInit {
 
     this.currentTemplateFormGroup = new FormGroup({
       templateUUID: new FormControl(template.template_uuid),
-      templateName: new FormControl(template.name, [Validators.required]),
+      templateName: new FormControl(template.name, [Validators.required, this.notJustSpaces]),
       templateDeceptionScore: new FormControl(template.deception_score),
       templateDescriptiveWords: new FormControl(template.descriptive_words),
       templateDescription: new FormControl(template.description),
@@ -551,5 +551,18 @@ export class TemplateManagerComponent implements OnInit {
     //newNode.insertAdjacentHTML("beforebegin", " ");
     //newNode.insertAdjacentHTML("afterend", " ");
     //add space after and before node to bring cursor outof the node
+  }
+
+  /**
+   * 
+   */
+  notJustSpaces(control: FormControl) {
+    // allow an empty field
+    if (control.value === '') {
+      return null;
+    }
+    const isWhitespace = (control.value || '').trim().length === 0;
+    const isValid = !isWhitespace;
+    return isValid ? null : { whitespace: true };
   }
 }

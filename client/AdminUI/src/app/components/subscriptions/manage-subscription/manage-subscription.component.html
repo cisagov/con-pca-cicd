@@ -75,7 +75,11 @@
                     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                     <mat-datepicker #picker [startAt]="startAt"></mat-datepicker>
                 </mat-form-field>
-            </div> 
+                <div *ngIf="submitted && f.startDate.errors" class="invalid-feedback">
+                    <div *ngIf="f.startDate.errors.required">Start Date is required</div>
+                </div>
+            </div>
+
 
 
             <mat-label class="h6">Customer Website</mat-label>
@@ -83,9 +87,12 @@
                 to prioritize phishing emails relevant to their industry.
             </div>
             <mat-form-field class="w-100" appearance="outline">
-                <input matInput formControlName="url" type="text">
+                <input matInput formControlName="url" type="text" 
+                    [ngClass]="{ 'is-invalid': submitted && f.url.errors }">
+                    <mat-error *ngIf="f.url.errors?.whitespace" class="invalid-feedback">
+                        Customer Website may not contain only spaces
+                    </mat-error>                
             </mat-form-field>
-
 
             <mat-label class="h6">Keywords</mat-label>
             <div class="text-muted">Optionally enter words that describe the
@@ -94,6 +101,9 @@
             <mat-form-field class="w-100" appearance="outline">
                 <mat-label>Applicability Word Tags</mat-label>
                 <textarea matInput autosize formControlName="keywords"></textarea>
+                <mat-error *ngIf="f.keywords.errors?.whitespace" class="invalid-feedback">
+                    Keywords may not contain only spaces
+                </mat-error>  
             </mat-form-field>
 
             <mat-label class="h6">Sending Profile</mat-label>
@@ -145,11 +155,12 @@
                 <textarea matInput autosize formControlName="csvText"
                     [ngClass]="{ 'is-invalid': submitted && f.csvText.errors }">
                     </textarea>
-                <div *ngIf="submitted && f.csvText.errors" class="invalid-feedback">
+                <mat-error *ngIf="submitted && f.csvText.errors" class="invalid-feedback">
+                    Yo
                     <div *ngIf="f.csvText.errors.required">Targets must be defined</div>
                     <div *ngIf="f.csvText.hasError('invalidTargetCsv')">All target must have all parts</div>
                     <div *ngIf="f.csvText.hasError('invalidEmailFormat')">One or more email addresses are invalid</div>
-                </div>
+                </mat-error>
             </mat-form-field>
 
             <div class="text-right mt-3">

@@ -96,14 +96,20 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
       dhsContact: new FormControl(null, {
         validators: Validators.required
       }),
-      startDate: new FormControl(new Date()),
-      url: new FormControl(''),
-      keywords: new FormControl(''),
+      startDate: new FormControl(new Date(), {
+        validators: Validators.required
+      }),
+      url: new FormControl('', {
+        validators: this.notJustSpaces
+      }),
+      keywords: new FormControl('', {
+        validators: this.notJustSpaces
+      }),
       sendingProfile: new FormControl('', {
         validators: Validators.required
       }),
       csvText: new FormControl('', {
-        validators: [Validators.required, this.targetCsvValidator],
+        validators: [Validators.required, this.invalidCsv],
         updateOn: 'blur'
       }),
       removeDuplicateTargets: new FormControl(true, {
@@ -137,17 +143,21 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
       this.persistChanges();
     });
     this.f.url.valueChanges.subscribe(val => {
-      this.subscription.url = val;
+      this.subscription.url = val.trim();
       this.persistChanges();
     });
     this.f.keywords.valueChanges.subscribe(val => {
-      this.subscription.keywords = val;
+      this.subscription.keywords = val.trim();
       this.persistChanges();
     });
     this.f.sendingProfile.valueChanges.subscribe(val => {
       this.subscription.sending_profile_name = val;
     });
     this.f.csvText.valueChanges.subscribe(val => {
+      if (this.f.csvText.hasError('')) {
+        console.log('a HA!');
+        return;
+      }
       this.evaluateTargetList();
       this.persistChanges();
     });
@@ -197,7 +207,7 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
       .subscribe((s: Subscription) => {
         this.subscription = s as Subscription;
         this.subscriptionSvc.subscription = this.subscription;
-        this.layoutSvc.setTitle(`Subscription - ${this.subscription.name}`);
+        this.setPageTitle();
         this.f.primaryContact.setValue(s.primary_contact.email);
         this.f.dhsContact.setValue(s.dhs_contact_uuid);
         this.f.url.setValue(s.url);
@@ -436,6 +446,11 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
   }
 
   startSubscription() {
+    if (!this.subValid()) {
+      console.log(this.subscribeForm);
+      return;
+    }
+
     this.dialogRefConfirm = this.dialog.open(ConfirmComponent, { disableClose: false });
     this.dialogRefConfirm.componentInstance.confirmMessage =
       `Are you sure you want to restart ${this.subscription.name}?`;
@@ -483,6 +498,7 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
           (resp: Subscription) => {
             this.subscription = resp;
             this.enableDisableFields();
+            this.setPageTitle();
             this.dialog.open(AlertComponent, {
               data: {
                 title: '',
@@ -501,6 +517,18 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
       }
     });
   }
+
+  /**
+   * 
+   */
+  setPageTitle() {
+    let title = `Subscription - ${this.subscription.name}`;
+    if (this.subscription.status.toLowerCase() === 'stopped') {
+      title += ' (stopped)';
+    }
+    this.layoutSvc.setTitle(title);
+  }
+
   /**
    * Submits the form to create a new Subscription.
    */
@@ -527,10 +555,10 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
     sub.url = this.f.url.value;
 
     // keywords
-    sub.keywords = this.f.keywords.value;
+    sub.keywords = this.f.keywords.value.trim();
 
     // set the target list
-    const csv = this.f.csvText.value;
+    const csv = this.f.csvText.value.trim();
     sub.target_email_list = this.buildTargetsFromCSV(csv);
 
     sub.sending_profile_name = this.f.sendingProfile.value;
@@ -651,7 +679,55 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
     return output;
   }
 
+  /**
+   * A validator that allows an empty control, but does not allow
+   * only spaces.
+   */
+  notJustSpaces(control: FormControl) {
+    // allow an empty field
+    if (control.value === '') {
+      return null;
+    }
+    const isWhitespace = (control.value || '').trim().length === 0;
+    const isValid = !isWhitespace;
+    return isValid ? null : { whitespace: true };
+  }
 
+  /**
+   * A validator that requires the csv field to contain certain elements on each row
+   */
+  invalidCsv(control: FormControl) {
+    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+    console.log(control);
+    const lines = control.value.split('\n');
+    for (const line of lines) {
+      const parts = line.split(',');
+      if (parts.length !== 4) {
+        return { invalidTargetCsv: true };
+      }
+
+      for (const part of parts) {
+        if (part.trim() === '') {
+          return { invalidTargetCsv: true };
+        }
+      }
+
+      if (!!parts[0] && !re.test(String(parts[0]).toLowerCase())) {
+        return { invalidEmailFormat: true };
+      }
+    }
+
+    return null;
+  }
+
+  /**
+   *
+   */
+  isEmailValid(email: string): boolean {
+    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email).toLowerCase());
+  }
 
   /**
    *
@@ -659,36 +735,4 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.routeSub.unsubscribe();
   }
-
-  /**
-   * Custom validator for the CSV field.
-   */
-  targetCsvValidator(control: FormControl) {
-    console.log(control);
-    const lines = control.value.split('\n');
-    lines.forEach((line: string) => {
-      const parts = line.split(',');
-      if (parts.length !== 4) {
-        console.log('returning invalid csv');
-        // return { 'invalidTargetCsv': true };
-        control.markAsTouched();
-        return { invalidTargetCsv: true };
-      }
-
-      // if (!me(parts[0])) {
-      //   console.log('returning invalid email');
-      //   return { 'invalidEmailFormat': true };
-      // }
-    });
-
-    return null;
-  }
-
-
-
-  isEmailValid(email: string): boolean {
-    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return re.test(String(email).toLowerCase());
-  }
-
 }

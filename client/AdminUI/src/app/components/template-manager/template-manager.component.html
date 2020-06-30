@@ -37,6 +37,13 @@
             ">
             Template name <strong>required</strong>
           </mat-error>
+          <mat-error *ngIf="
+              currentTemplateFormGroup.controls.templateName.hasError(
+                'whitespace'
+              )
+            ">
+            Template name may not contain only spaces
+          </mat-error>
         </mat-form-field>
         <!-- <button
           [disabled]="
