@@ -5205,7 +5205,7 @@
     "name": "Tutor needed",
     "template_type": "Email",
     "complexity": 2,
-    "html": "<br>Hello,<br><br>How are you doing today? This is Casey Rhomble. I saw you're contact the <br><%CUSTOMER_NAME%>, under Directorys <br>portal <%URL%>. I seek for a private high school algebra tutor for my <br>Daughter. I would like to know if you have a STUDENT/TUTOR available for <br>the job. I have posted the details on the job sight <a href=\"<%URL%>\">here</a>.<br><br>The lessons could hold at the campus/library or tutor home, if he/she <br>stays close to campus.<br><br>If you would not be able to teach her owing to your BUSY <br>SCHEDULE/STATUS, you can RECOMMEND one of your STUDENT(s) who is capable <br>of teaching.<br><br>Looking forward to reading from you.<br>",
+    "html": "<br>Hello,<br><br>How are you doing today? This is Casey Rhomble. I saw you're contact the <br><%CUSTOMER_NAME%>, under Directorys <br><a href=\"<%URL%>\">portal</a>. I seek for a private high school algebra tutor for my <br>Daughter. I would like to know if you have a STUDENT/TUTOR available for <br>the job. I have posted the details on the job sight <a href=\"<%URL%>\">here</a>.<br><br>The lessons could hold at the campus/library or tutor home, if he/she <br>stays close to campus.<br><br>If you would not be able to teach her owing to your BUSY <br>SCHEDULE/STATUS, you can RECOMMEND one of your STUDENT(s) who is capable <br>of teaching.<br><br>Looking forward to reading from you.<br>",
     "behavior": {
       "duty_obligation": 0,
       "fear": 0,
