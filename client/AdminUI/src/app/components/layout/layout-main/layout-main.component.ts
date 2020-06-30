@@ -9,7 +9,7 @@ import { MatSidenav } from '@angular/material/sidenav';
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { ThemeService } from '../../../services/theme.service';
 import { LayoutMainService } from 'src/app/services/layout-main.service';
-import { UserService } from 'src/app/services/user.service';
+import { UserAuthService } from '../../../services/user-auth.service'
 
 @Component({
   selector: 'app-layout-main',
@@ -19,19 +19,21 @@ import { UserService } from 'src/app/services/user.service';
 })
 export class LayoutMainComponent implements OnInit {
   isDark: boolean = false;
-  username: string = '';
+  currentUserName: string = '';
 
   constructor(
     private themeSvc: ThemeService,
     public layoutSvc: LayoutMainService, 
-    public userSvc: UserService, 
+    private userAuthSvc: UserAuthService, 
     public overlayContainer: OverlayContainer
   ) {
     this.isDark = themeSvc.getStoredTheme();
-    this.username = userSvc.getCurrentUser();
     if(this.isDark){
       overlayContainer.getContainerElement().classList.add('theme-alternate');
     } 
+    this.userAuthSvc.getUserNameBehaviorSubject().subscribe(value => {      
+      this.currentUserName = value      
+    })
   }
 
   @ViewChild('drawer', { static: false })
@@ -49,7 +51,12 @@ export class LayoutMainComponent implements OnInit {
     }
   }
 
-  ngOnInit(): void {}
+  logOut(){
+    this.userAuthSvc.signOut()
+  }
+
+  ngOnInit(): void {
+  }
 
   ngAfterViewInit() {
     setTimeout(() => {

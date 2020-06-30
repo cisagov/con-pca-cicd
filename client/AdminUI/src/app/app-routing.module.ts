@@ -13,13 +13,16 @@ import { UserAdminComponent } from './components/user-admin/user-admin.component
 import { CustomersComponent } from './components/customers/customers.component';
 import { AddCustomerComponent } from './components/customer/add-customer/add-customer.component'
 import { SendingProfilesComponent } from './components/sending-profiles/sending-profiles.component';
+import { AuthGuard } from './guards/auth.guard';
 import { DhsPocComponent } from './components/user-admin/dhs-poc/dhs-poc.component';
+
 
 
 const routes: Routes = [
   {
     path: 'subscriptions',
     component: LayoutMainComponent,
+    canActivate: [AuthGuard],
     children: [
       { path: '', component: SubscriptionsComponent },
       { path: '', component: SearchPanelComponent, outlet: 'sidebar' }
@@ -28,83 +31,106 @@ const routes: Routes = [
   {
     path: 'create-subscription',
     component: LayoutMainComponent,
+    canActivate: [AuthGuard],
     children: [{ path: '', component: ManageSubscriptionComponent }]
   },
   {
     path: 'view-subscription',
     component: LayoutMainComponent,
+    canActivate: [AuthGuard],
     children: [{ path: ':id', component: ManageSubscriptionComponent }]
   },
   {
     path: 'deceptioncalculator',
     component: LayoutMainComponent,
+    canActivate: [AuthGuard],
     children: [{ path: '', component: DeceptionCalculatorComponent }]
   },
   {
     path: 'deceptioncalculator/:templateId',
     component: LayoutMainComponent,
+    canActivate: [AuthGuard],
     children: [{ path: '', component: DeceptionCalculatorComponent }]
   },
   {
     path: 'templatemanager',
     component: LayoutMainComponent,
+    canActivate: [AuthGuard],
     children: [{ path: '', component: TemplateManagerComponent }]
   },
   {
     path: 'templatemanager/:templateId',
     component: LayoutMainComponent,
+    canActivate: [AuthGuard],
     children: [{ path: '', component: TemplateManagerComponent }]
   },
   {
-    path: 'templates', component: LayoutMainComponent,
+    path: 'templates', 
+    component: LayoutMainComponent,
+    canActivate: [AuthGuard],
     children: [
       { path: '', component: TemplatesPageComponent }
     ]
   },
   {
-    path: 'contacts', component: LayoutMainComponent,
+    path: 'contacts', 
+    component: LayoutMainComponent,
+    canActivate: [AuthGuard],
     children: [
       { path: '', component: ContactsComponent }
     ]
   },
   {
-    path: 'customers', component: LayoutMainComponent,
+    path: 'customers', 
+    component: LayoutMainComponent,
+    canActivate: [AuthGuard],
     children: [
       { path: '', component: CustomersComponent }
     ]
   },
   {
-    path: 'customer/:customerId', component: LayoutMainComponent,
+    path: 'customer/:customerId', 
+    component: LayoutMainComponent,
+    canActivate: [AuthGuard],
     children: [
       { path: '', component: AddCustomerComponent }
     ]
   },
   {
-    path: 'domains', component: LayoutMainComponent,
+    path: 'domains', 
+    component: LayoutMainComponent,
+    canActivate: [AuthGuard],
     children: [
       { path: '', component: DomainsComponent }
     ]
   },
   {
-    path: 'useradmin', component: LayoutMainComponent,
+    path: 'useradmin', 
+    component: LayoutMainComponent,
+    canActivate: [AuthGuard],
     children: [
       { path: '', component: UserAdminComponent }
     ]
   },
   {
     path: 'dhspoc', component: LayoutMainComponent,
+    canActivate: [AuthGuard],
     children: [
       { path: '', component: DhsPocComponent }
     ]
   },
   {
-    path: 'sending-profiles', component: LayoutMainComponent,
+    path: 'sending-profiles', 
+    component: LayoutMainComponent,
+    canActivate: [AuthGuard],
     children: [
       { path: '', component: SendingProfilesComponent }
     ]
   },
   {
-    path: '', component: LayoutMainComponent,
+    path: '', 
+    component: LayoutMainComponent,
+    canActivate: [AuthGuard],
     children: [
       { path: '', component: SubscriptionsComponent }
     ]

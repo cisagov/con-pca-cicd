@@ -227,42 +227,6 @@ class YearlyReportsView(TemplateView):
 
 
 class CycleReports(TemplateView):
-    # DATA NEEDED
-    # Compnay
-    #     - name
-    #     - address
-    # SubscriptionPrimaryContact
-    #     - name
-    #     - phone
-    #     - email
-    # DHS Contact
-    #     - Organization/teamname/group
-    #     - email
-    # Customer
-    #     - full_name
-    #     - short_name
-    #     - poc_name
-    #     - poc_email
-    #     - Vulnerability Managment Team Lead
-    # Dates
-    #     - start_date
-    #     - end_date
-    # Quarters[] (previous)
-    #     - quarter
-    #         - quarter (2020-Q1)
-    #         - start_date (January 1, 2020 - March 30, 2020)
-    #         - end_date (April 1, 2020 - June 30, 2020)
-    #         - note (UNKNOWN)
-    # Metrics
-    #     - total_users_targeted
-    #     - number_of_email_sent_overall
-    #     - number_of_clicked emails
-    #     - number_of_phished_users_overall
-    #     - number_of_reports_to_helpdesk
-    #     - repots_to_clicks_ratio
-    #     - avg_time_to_first_click
-    #     - avg_time_to_first_report
-    #     - most_successful_template
     template_name = "reports/cycle.html"
 
     def get_context_data(self, **kwargs):
