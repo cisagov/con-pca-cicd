@@ -1389,7 +1389,7 @@
     "name": "Updated Telework Agreement",
     "template_type": "Email",
     "complexity": 6,
-    "html": "<br>In light of the recent <%EVENT%>, we are<br>asking employees to consider applying for or updating their telework<br>agreements. To ensure each employee has the most recent information on<br>file, there is a new version of the agreement available. To update your<br>telework agreement, go to www.teleworkbenefits.net. Please submit an<br>updated agreement NLT <%CURRENT_DATE_LONG%>.<br><br>Thank you,<br><br><%SPOOF_NAME%><br>Human Resources, <%CUSTOMER_NAME%><br>",
+    "html": "<br>In light of the recent <%EVENT%>, we are<br>asking employees to consider applying for or updating their telework<br>agreements. To ensure each employee has the most recent information on<br>file, there is a new version of the agreement available. To update your<br>telework agreement, go to <a href=\"<%URL%>\">www.teleworkbenefits.net</a>. Please submit an<br>updated agreement NLT <%CURRENT_DATE_LONG%>.<br><br>Thank you,<br><br><%SPOOF_NAME%><br>Human Resources, <%CUSTOMER_NAME%><br>",
     "behavior": {
       "duty_obligation": 1,
       "fear": 0,
@@ -1425,7 +1425,7 @@
     "name": "Updated Approved Forms",
     "template_type": "Email",
     "complexity": 4,
-    "html": "As of <%CURRENT_DATE_LONG%> the following forms have been updated on<br><%URL%>:<br><br>[FORM NAME] <%URL%><br>[FORM NAME] <%URL%><br>[FORM NAME] <%URL%><br><br>Please navigate to Approved forms > Updated forms<br><%URL%> to download these and all other forms available<br>at your soonest availability. Previous versions will no longer be accepted<br>as of this notice.<br>",
+    "html": "As of <%CURRENT_DATE_LONG%> the following forms have been updated on<br><a href=\"<%URL%>\">https://forms-library.<%DOMAIN%></a>:<br><br>Payroll Adjustments <a href=\"<%URL%>\">https://forms-library.<%DOMAIN%></a><br>Legal Hurdles <a href=\"<%URL%>\">https://forms-library.<%DOMAIN%></a><br>Property Allocation <a href=\"<%URL%>\">https://forms-library.<%DOMAIN%></a><br><br>Please navigate to Approved forms > Updated forms<br><a href=\"<%URL%>\">https://forms-library.<%DOMAIN%>/download</a> to download these and all other forms available<br>at your soonest availability. Previous versions will no longer be accepted<br>as of this notice.<br>",
     "behavior": {
       "duty_obligation": 0,
       "fear": 0,
@@ -2073,7 +2073,7 @@
     "name": "URGENT Software Update [Unknown Impersonated]",
     "template_type": "Email",
     "complexity": 3,
-    "html": "<br>URGENT! Due to the recent increase in ransomware threats, our security team<br>asks you install a patch update to help protect from critical<br>vulnerabilities. It is imperitive to to click the following link to ensure<br>your machine has been updated and is secure. There is no time for your IT<br>administrator to update all the machines themselves and they need your help!<br><br>Update now at www.securitypatchinstl172.us<br><br>IT Helpdesk<br>",
+    "html": "<br>URGENT! Due to the recent increase in ransomware threats, our security team<br>asks you install a patch update to help protect from critical<br>vulnerabilities. It is imperitive to to click the following link to ensure<br>your machine has been updated and is secure. There is no time for your IT<br>administrator to update all the machines themselves and they need your help!<br><br>Update now at <a href=\"<%URL%>\">www.securitypatchinstl172.us</a><br><br>IT Helpdesk<br>",
     "behavior": {
       "duty_obligation": 1,
       "fear": 0,
@@ -3153,7 +3153,7 @@
     "name": "Travel Tips",
     "template_type": "Email",
     "complexity": 4,
-    "html": "Greetings,<br><br>With the holiday season fast approaching, vacations and travel maybe in<br>your near future.<br><br>Preparing for travel may be stressful, but it doesn't need to be. You<br>are encouraged to keep these screening and travel tips in mind to help<br>facilitate the packing and screening process on your next trip to the<br>airport. To ensure a stress-free trip, please visit our website website here<br><<%URL%>>.<br>",
+    "html": "Greetings,<br><br>With the holiday season fast approaching, vacations and travel maybe in<br>your near future.<br><br>Preparing for travel may be stressful, but it doesn't need to be. You<br>are encouraged to keep these screening and travel tips in mind to help<br>facilitate the packing and screening process on your next trip to the<br>airport. To ensure a stress-free trip, please visit our website website <a href=\"<%URL%>\">here</a><br>.<br>",
     "behavior": {
       "duty_obligation": 0,
       "fear": 0,
@@ -3225,7 +3225,7 @@
     "name": "Travel Voucher",
     "template_type": "Email",
     "complexity": 4,
-    "html": "<br><br>I am pleased to announce that we have partnered with local <%CUSTOMER_STATE%> travel<br>agencies to provide a steeply discounted travel package for all <%CUSTOMER_NAME%><br>University Faculty and Staff Employees for a limited time only.<br><br>Travel vouchers for the 2019 vacation period are available for review.<br>There are 8 vacation packages available to choose from which you can<br>view now. There is no need to register a new account as you can login<br>with your work email address and a temporary password will be sent to<br>you.<br><br>Portal Login:<br><%URL%><br>Destinations and travel times are subject to availability and confirmed<br>on a first come, first served bases. Vouchers include travel costs and<br>excludes expenses that incurred after reservations are confirmed. For<br>additional terms and conditions, visit:<br><%URL%><br><br>Thank you.<br>Will Bentley<br><%CUSTOMER_NAME%> Travel Coordinator<br><br>Text or HTML text of this<br>phishing message goes here.<br>Line breaks are preserved.<br>",
+    "html": "<br><br>I am pleased to announce that we have partnered with local <%CUSTOMER_STATE%> travel<br>agencies to provide a steeply discounted travel package for all <%CUSTOMER_NAME%><br>University Faculty and Staff Employees for a limited time only.<br><br>Travel vouchers for the 2019 vacation period are available for review.<br>There are 8 vacation packages available to choose from which you can<br>view now. There is no need to register a new account as you can login<br>with your work email address and a temporary password will be sent to<br>you.<br><br>Portal Login:<br><a href=\"<%URL%>\">https://<%CUSTOMER_STATE%>Travel.com/portal</a><br>Destinations and travel times are subject to availability and confirmed<br>on a first come, first served bases. Vouchers include travel costs and<br>excludes expenses that incurred after reservations are confirmed. For<br>additional terms and conditions, visit:<br><a href=\"<%URL%>\">https://<%CUSTOMER_STATE%>Travel.com/info</a><br><br>Thank you.<br>Will Bentley<br><%CUSTOMER_NAME%> Travel Coordinator<br><br>Text or HTML text of this<br>phishing message goes here.<br>Line breaks are preserved.<br>",
     "behavior": {
       "duty_obligation": 0,
       "fear": 0,
@@ -4305,7 +4305,7 @@
     "name": "Unplanned outage - <%CUSTOMER_SYSTEM%> system update",
     "template_type": "Email",
     "complexity": 5,
-    "html": "All,<br><br>This past weekend, <%CUSTOMER_SYSTEM%> was upgraded to ensure all <%CUSTOMER_NAME%> services <br>within <%CUSTOMER_CITY%> meets the highest standards. As a result of this upgrade, <br>you may be experiencing some issues with your browser. Older browser versions may not be compatible.<br><br>Listed below is troubleshooting guidance based on your primary browser.<br><br>If you are successfully able to log into your account, your browser is compatible.<br><br>Select from one of the following to confirm browser compatibility:<br><br>Mozilla Firefox <%URL%> <br>Google Chrome <%URL%> <br>Microsoft Edge <%URL%> <br>Apple Safari <%URL%> <br>Microsoft Internet Explorer  <%URL%> <br>",
+    "html": "All,<br><br>This past weekend, <%CUSTOMER_SYSTEM%> was upgraded to ensure all <%CUSTOMER_NAME%> services <br>within <%CUSTOMER_CITY%> meets the highest standards. As a result of this upgrade, <br>you may be experiencing some issues with your browser. Older browser versions may not be compatible.<br><br>Listed below is troubleshooting guidance based on your primary browser.<br><br>If you are successfully able to log into your account, your browser is compatible.<br><br>Select from one of the following to confirm browser compatibility:<br><br><a href=\"<%URL%>\">Mozilla Firefox</a> <br><a href=\"<%URL%>\">Google Chrome </a><br><a href=\"<%URL%>\">Microsoft Edge</a> <br><a href=\"<%URL%>\">Apple Safari </a> <br><a href=\"<%URL%>\">Microsoft Internet Explorer</a> <br>",
     "behavior": {
       "duty_obligation": 1,
       "fear": 0,
@@ -5169,7 +5169,7 @@
     "name": "University Sponsored Sleep Study",
     "template_type": "Email",
     "complexity": 5,
-    "html": "<br>Do you find your self fighting the *2PM desire to sleep*?<br><br>Is it *difficult to stay awake* after lunch time?<br><br>The fight no more, come *take a nap in our lab*!<br><br>We are seeking participants for a research study on electroencephalogram <br>(EEG brainwaves), sleep, and cognition through the <%CUSTOMER_NAME%> Department of Psychology.<br><br>  * The study will consist of at least one session scheduled for 2-4 hours<br>  * You will receive $22 per hour as compensation for your time<br>  * Participants must be between the ages of 18 and 65 who can nap in<br>    the afternoon<br><br>*Interested?*<br>If you are interested in participating or for more information, please <br>see https://<%DOMAIN%>.edu/cs-cas/people/kap/apply <%URL%> or email <br>Breena Herrin at eegsleepstudy@<%DOMAIN%>.edu <%URL%><br><br>This program is being conducted by Dr. Kelly Janaxth in the Department of Psychology.<br><br>IRB Study Code: STU00009142280<br><br>Kelly Janaxth, Ph.D.<br>Associate Professor<br>Department of Psychology<br><%CUSTOMER_ADDRESS_FULL%><br>",
+    "html": "<br>Do you find your self fighting the *2PM desire to sleep*?<br><br>Is it *difficult to stay awake* after lunch time?<br><br>The fight no more, come *take a nap in our lab*!<br><br>We are seeking participants for a research study on electroencephalogram <br>(EEG brainwaves), sleep, and cognition through the <%CUSTOMER_NAME%> Department of Psychology.<br><br>  * The study will consist of at least one session scheduled for 2-4 hours<br>  * You will receive $22 per hour as compensation for your time<br>  * Participants must be between the ages of 18 and 65 who can nap in<br>    the afternoon<br><br>*Interested?*<br>If you are interested in participating or for more information, please <br>see <a href=\"<%URL%>\">https://<%DOMAIN%>.edu/cs-cas/people/kap/apply</a> or email <br>Breena Herrin at <a href=\"<%URL%>\">eegsleepstudy@<%DOMAIN%>.edu</a><br><br>This program is being conducted by Dr. Kelly Janaxth in the Department of Psychology.<br><br>IRB Study Code: STU00009142280<br><br>Kelly Janaxth, Ph.D.<br>Associate Professor<br>Department of Psychology<br><%CUSTOMER_ADDRESS_FULL%><br>",
     "behavior": {
       "duty_obligation": 0,
       "fear": 0,
@@ -5205,7 +5205,7 @@
     "name": "Tutor needed",
     "template_type": "Email",
     "complexity": 2,
-    "html": "<br>Hello,<br><br>How are you doing today? This is Casey Rhomble. I saw you're contact the <br><%CUSTOMER_NAME%>, under Directorys <br>portal <%URL%>. I seek for a private high school algebra tutor for my <br>Daughter. I would like to know if you have a STUDENT/TUTOR available for <br>the job. I have posted the details on the job sight here <%URL%>.<br><br>The lessons could hold at the campus/library or tutor home, if he/she <br>stays close to campus.<br><br>If you would not be able to teach her owing to your BUSY <br>SCHEDULE/STATUS, you can RECOMMEND one of your STUDENT(s) who is capable <br>of teaching.<br><br>Looking forward to reading from you.<br>",
+    "html": "<br>Hello,<br><br>How are you doing today? This is Casey Rhomble. I saw you're contact the <br><%CUSTOMER_NAME%>, under Directorys <br><a href=\"<%URL%>\">portal</a>. I seek for a private high school algebra tutor for my <br>Daughter. I would like to know if you have a STUDENT/TUTOR available for <br>the job. I have posted the details on the job sight <a href=\"<%URL%>\">here</a>.<br><br>The lessons could hold at the campus/library or tutor home, if he/she <br>stays close to campus.<br><br>If you would not be able to teach her owing to your BUSY <br>SCHEDULE/STATUS, you can RECOMMEND one of your STUDENT(s) who is capable <br>of teaching.<br><br>Looking forward to reading from you.<br>",
     "behavior": {
       "duty_obligation": 0,
       "fear": 0,

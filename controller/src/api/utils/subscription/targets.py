@@ -1,13 +1,20 @@
-from lcgit import lcg
-import random
+"""Target Util."""
+# Third-Party Libraries
+from api.models.template_models import TargetHistoryModel, validate_history
 from api.utils import db_utils as db
-from api.models.template_models import (
-    TargetHistoryModel,
-    validate_history,
-)
+from lcgit import lcg
 
 
 def batch_targets(subscription, sub_levels: dict):
+    """Batch targets.
+
+    Args:
+        subscription (dict): subscription dict
+        sub_levels (dict): sub_levels dict
+
+    Returns:
+        dict: updated sub_levels
+    """
     targets = lcgit_list_randomizer(subscription["target_email_list"])
     avg = len(targets) / float(3)
 
@@ -40,9 +47,7 @@ def lcgit_list_randomizer(object_list):
 
 
 def get_target_available_templates(email, templates):
-    """
-    Returns a list of avaiable template uuids.
-    """
+    """Returns a list of avaiable template uuids."""
     # Check history of target
     history = db.get_list(
         {"email": email}, "target", TargetHistoryModel, validate_history
@@ -53,7 +58,7 @@ def get_target_available_templates(email, templates):
         return templates
 
     # Compile list of sent uuids
-    sent_uuids = [x["template_uuid"] for x in history.get("history_list", [])]
+    sent_uuids = [x["template_uuid"] for x in history[0].get("history_list", [])]
 
     # Find available templates
     available_templates = list(set(templates) - set(sent_uuids))
@@ -67,11 +72,20 @@ def get_target_available_templates(email, templates):
 
 
 def assign_targets(sub_level):
+    """Assign Targets.
+
+    Args:
+        sub_level (dict): sub_level
+
+    Returns:
+        dict: updated sub_level
+    """
     for target in sub_level["targets"]:
         available_templates = get_target_available_templates(
             target["email"], sub_level["template_uuids"]
         )
-        selected_template = random.choice(available_templates)
+        randomized_templates = lcgit_list_randomizer(available_templates)
+        selected_template = randomized_templates[0]
         if not sub_level["template_targets"].get(selected_template):
             sub_level["template_targets"][selected_template] = []
 

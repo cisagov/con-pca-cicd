@@ -1,3 +1,4 @@
 {
-  "apiUrl": "${API_URL}"
+  "apiUrl": "${API_URL}",
+  "flowerUrl": "${FLOWER_URL}"
 }

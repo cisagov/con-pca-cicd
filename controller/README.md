@@ -135,10 +135,6 @@ checked into github and will remain on a devs system.
 
 Django base app located at [localhost:8000](http://localhost:8000)
 
-### To access the RabbitMQ dashboard
-
-RabbitMQ management dashboard located at [localhost:15672](http://localhost:15672)
-
 ### To access the Celery Flower dashboard
 
 - visit:
@@ -159,7 +155,7 @@ Creating network "controller_default" with the default driver
 Creating pca-rabbitmq ... done
 Creating pca-mongodb  ... done
 Creating pca-worker   ... done
-Creating pca-beat     ... done
+Creating pca-flower     ... done
 Creating pca-api      ... done
 ```
 
