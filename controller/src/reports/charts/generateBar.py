@@ -27,12 +27,15 @@ class ChartGenerator():
         # step tick range and write lines
         # then write bars
         # return string
+
+        #
+
         topRange = round(maxv+tickRange,)
-        self.createList(0,  )
+        #self.createList(0,  )
 
         svg_strg = """"<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="chart" width="450" height="300" aria-labelledby="title desc" role="img">
             <title id="title">STATISTICS BY LEVEL</title>
-            <desc id="units-achieved">0; 50; 100; 150; 200; 250; 300; 350; 400;</desc>
+            <!--this needs to be dynamic--><desc id="units-achieved">0; 50; 100; 150; 200; 250; 300; 350; 400;</desc>
             <g class="measure-line">
             <line x1="30" y1="5" x2="500" y2="5" style="stroke:#BAD6E4;stroke-width:2"/>
             <line x1="30" y1="35" x2="500" y2="35" style="stroke:#BAD6E4;stroke-width:2"/>
@@ -43,6 +46,8 @@ class ChartGenerator():
             <line x1="30" y1="185" x2="500" y2="185" style="stroke:#BAD6E4;stroke-width:2"/>
             <line x1="30" y1="215" x2="500" y2="215" style="stroke:#BAD6E4;stroke-width:2"/>
             <line x1="30" y1="245" x2="500" y2="245" style="stroke:#BAD6E4;stroke-width:2"/>
+            
+            <!--this needs to be dynamic-->
             <text x="15" y="245" class="caption" dy=".35em">0</text>
             <text x="8" y="215" class="caption" dy=".35em">50</text>
             <text x="0" y="185" class="caption" dy=".35em">100</text>
@@ -53,6 +58,7 @@ class ChartGenerator():
             <text x="0" y="35" class="caption" dy=".35em">350</text>
             <text x="0" y="5" class="caption" dy=".35em">400</text>
             </g>
+             <!--this needs to be dynamic-->
             <desc id="email-action">Sent; Opened; Clicked; Submitted; Reported</desc>
             <g>
             <rect style="fill:#164A91;" width="15" height="200" x="60" y="45"></rect>
