@@ -191,9 +191,9 @@ export class TemplateManagerComponent implements OnInit {
       templateFromAddress: new FormControl(template.from_address, [
         Validators.required
       ]),
-      templateSubject: new FormControl(template.subject, [Validators.required]),
+      templateSubject: new FormControl(template.subject, [Validators.required, this.notJustSpaces]),
       templateText: new FormControl(template.text),
-      templateHTML: new FormControl(template.html, [Validators.required]),
+      templateHTML: new FormControl(template.html, [Validators.required, this.notJustSpaces]),
       authoritative: new FormControl(template.sender?.authoritative ?? 0),
       external: new FormControl(template.sender?.external ?? 0),
       internal: new FormControl(template.sender?.internal ?? 0),
@@ -454,7 +454,7 @@ export class TemplateManagerComponent implements OnInit {
     text_area.css('margin-bottom', '22px');
   }
 
-  //Config setting for the angular-editor
+  // Config setting for the angular-editor
   editorConfig: AngularEditorConfig = {
     editable: true,
     spellcheck: true,
@@ -528,7 +528,7 @@ export class TemplateManagerComponent implements OnInit {
    */
   openTagChoice() {
     this.angularEditorEle.textArea.nativeElement.focus();
-    let selection = window.getSelection().getRangeAt(0);
+    const selection = window.getSelection().getRangeAt(0);
     this.dialogRefTagSelection = this.dialog.open(TagSelectionComponent, {
       disableClose: false
     });
@@ -546,11 +546,8 @@ export class TemplateManagerComponent implements OnInit {
    * @param tag
    */
   insertTag(selection, tagText: string) {
-    let newNode = document.createTextNode(tagText);
+    const newNode = document.createTextNode(tagText);
     selection.insertNode(newNode);
-    //newNode.insertAdjacentHTML("beforebegin", " ");
-    //newNode.insertAdjacentHTML("afterend", " ");
-    //add space after and before node to bring cursor outof the node
   }
 
   /**

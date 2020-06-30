@@ -37,11 +37,7 @@
             ">
             Template name <strong>required</strong>
           </mat-error>
-          <mat-error *ngIf="
-              currentTemplateFormGroup.controls.templateName.hasError(
-                'whitespace'
-              )
-            ">
+          <mat-error *ngIf="currentTemplateFormGroup.controls.templateName.hasError('whitespace')">
             Template name may not contain only spaces
           </mat-error>
         </mat-form-field>
@@ -66,9 +62,10 @@
             <ng-template mat-tab-label>
               <span [ngClass]="{
                   'tab-form-error':
-                    currentTemplateFormGroup.controls.templateHTML.hasError(
-                      'required'
-                    ) && currentTemplateFormGroup.controls.templateHTML.touched
+                    currentTemplateFormGroup.controls.templateHTML.touched
+                    &&
+                    (currentTemplateFormGroup.controls.templateHTML.hasError('required') 
+                    || currentTemplateFormGroup.controls.templateHTML.hasError('whitespace'))
                 }">HTML View
               </span>
             </ng-template>
@@ -110,6 +107,9 @@
                       )
                     ">
                     Template subject <strong>required</strong>
+                  </mat-error>
+                  <mat-error *ngIf="currentTemplateFormGroup.controls.templateSubject.hasError('whitespace')">
+                    Subject may not contain only spaces
                   </mat-error>
                 </mat-form-field>
               </div>
