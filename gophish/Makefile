@@ -9,10 +9,6 @@ all:
 help:
 	@egrep "^# target:" [Mm]akefile
 
-init:
-	sudo chmod u+x init.sh
-	./init.sh
-
 # target: build = build all containers
 build:
 	docker-compose build
@@ -28,3 +24,7 @@ stop:
 # target: down - Remove all docker containers
 down:
 	docker-compose down
+
+# target: app logs - Runs gophish logs in the terminal
+logs:
+	 docker attach --sig-proxy=false pca-gophish

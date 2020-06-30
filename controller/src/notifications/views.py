@@ -41,16 +41,16 @@ class ReportsEmailSender:
         self.subscription = subscription
         self.message_type = message_type
 
-    def get_attachment(self, subscription_uuid):
+    def get_attachment(self, subscription_uuid, link):
         """Get_attachment method."""
-        html = HTML(f"http://localhost:8000/reports/{subscription_uuid}/")
+        html = HTML(f"http://localhost:8000/reports/{subscription_uuid}/{link}/")
         html.write_pdf("/tmp/subscription_report.pdf")
         fs = FileSystemStorage("/tmp")
         return fs.open("subscription_report.pdf")
 
     def send(self):
         """Send method."""
-        subject, path = get_notification(self.message_type)
+        subject, path, link = get_notification(self.message_type)
 
         # pull subscription data
         subscription_uuid = self.subscription.get("subscription_uuid")
@@ -93,15 +93,14 @@ class ReportsEmailSender:
         message.attach_alternative(html_content, "text/html")
 
         # add pdf attachment
-        attachment = self.get_attachment(subscription_uuid)
+        attachment = self.get_attachment(subscription_uuid, link)
         message.attach("subscription_report.pdf", attachment.read(), "application/pdf")
         try:
             message.send(fail_silently=False)
-        except ConnectionRefusedError:            
+        except ConnectionRefusedError:
             print("failed to send email")
         except ConnectionError:
             print("failed to send email for some other reason")
-        
 
 
 class SubscriptionNotificationEmailSender:
@@ -143,7 +142,7 @@ class SubscriptionNotificationEmailSender:
 
     def send(self):
         """Send method."""
-        subject, path = get_notification(self.notification_type)
+        subject, path, _ = get_notification(self.notification_type)
 
         # pull subscription data
         recipient = self.subscription.get("primary_contact").get("email")
@@ -183,7 +182,7 @@ class SubscriptionNotificationEmailSender:
         message.attach_alternative(html_content, "text/html")
         try:
             message.send(fail_silently=False)
-        except ConnectionRefusedError:            
+        except ConnectionRefusedError:
             print("failed to send email")
         except ConnectionError:
             print("failed to send email for some other reason")

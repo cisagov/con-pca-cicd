@@ -5,7 +5,21 @@ from django.urls import include, path
 from . import views
 
 urlpatterns = [
-    path("<subscription_uuid>/", views.ReportsView.as_view(), name="reports-page"),
+    path(
+        "<subscription_uuid>/monthly/",
+        views.MonthlyReportsView.as_view(),
+        name="monthly-reports-page",
+    ),
+    path(
+        "<subscription_uuid>/cycle/",
+        views.CycleReportsView.as_view(),
+        name="cycle-reports-page",
+    ),
+    path(
+        "<subscription_uuid>/yearly/",
+        views.YearlyReportsView.as_view(),
+        name="yearly-reports-page",
+    ),
     path(
         "quarter/<subscription_uuid>/",
         views.CycleReports.as_view(),

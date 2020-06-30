@@ -1,201 +1,171 @@
 {% load static %}
 <!-- Monthly Report HTML-->
-
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="en-us">
 <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
 
     <!-- Reports Custom CSS Page -->
-    <link href="{% static '/css/monthly.css' %}" rel="stylesheet">
+    <link href="{% static 'css/monthly.css'%}" rel="stylesheet">
 
     <!-- Bootstrap CSS Link -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
 
     <!-- Graphs Javascript Source -->
-    <script type="text/javascript" src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 
-    <!-- Functions to Draw Graphs -->
-    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-    <script type="text/javascript">
-        google.charts.load('current', {'packages':['corechart']});
-        google.charts.setOnLoadCallback(drawChart);
-        google.charts.setOnLoadCallback(drawChartTwo);
-        google.charts.setOnLoadCallback(drawChartThree);
-        
-        // Pie Chart One
-        function drawChart() {
-          var data = google.visualization.arrayToDataTable([
-          ['Emails', 'Number'],
-          ['Opened', 289],
-          ['Unopened', 11]
-        ]);
-        
-          var options = {'title':'Emails', 'width':550, 'height':400, 'colors': ['#194F9A', '#FDC010']};
-          var chart = new google.visualization.PieChart(document.getElementById('piechart'));
-          chart.draw(data, options);
-        }
-        
-        // Pie Chart Two
-        function drawChartTwo() {
-            var data = google.visualization.arrayToDataTable([
-            ['Links', 'Number'],
-            ['Viewed', 83],
-            ['Clicked', 17]
-        ]);
-        
-          var options = {'title':'Links', 'width':550, 'height':400, 'colors': ['#194F9A', '#FDC010']};
-          var chart = new google.visualization.PieChart(document.getElementById('piechartTwo'));
-          chart.draw(data, options);
-        }
-
-        // Combined Bar Graph for Statistics By Level
-        function drawChartThree() {
-            var data = google.visualization.arrayToDataTable([
-               ['Category', 'Low', 'Med', 'High'],
-               ['Sent',  333, 333, 333],
-               ['Opened',  300, 300, 300],
-               ['Clicked',  50, 100, 150],
-               ['Submitted',  21, 37, 44],
-            ]);
-
-            var options = {
-                title: 'Statistics By Level',
-                vAxis: {title: 'Amount'},
-                hAxis: {title: 'Category'},
-                seriesType: 'bars',
-                series: {4: {type: 'bar'}}
-            }; 
-            var chart = new google.visualization.ComboChart(document.getElementById('columnchart'));
-            chart.draw(data, options);
-         }
-        </script>
     <title>Monthly Report</title>
     <meta name="description" content="MonthlyReport">
 </head>
 
 <body>
-    <article id="report">
-
+<article>    
+    
         <!-- Top blue banner -->
+    <header>
         <div class="topBanner">
             <div class="container-fluid">
-                <div class="row">
+                <div class="topBannerRow">
                     <div class="col-12">
+                        <div id="phishLogo">
+                            <img src="{% static 'img/Con-PCA_logo.svg' %}" alt="Continuous Phishing Campaign Assessment Logo">
+                        </div>
                         <div id="cisaLogo">
-                            <img src="{% static '/img/cisa_logo.png' %}"></img>
+                            <img src="{% static 'img/cisa_logo.png' %}" alt ="Cybersecurity &amp; Infrastructure Security Agency">
                         </div>
-                    </div>
-                </div>
-                <div class="row"></div>
-                    <div class="col-12">
                     </div>
                 </div>
             </div>
         </div>
-        
-        <!-- Left side bar -->
-        <div class="sidebar">
-        </div>
-        <div id="phishLogo">
-            <img src="{% static '/img/Con-PCA_logo.svg' %}">
-        </div>
-        <div id="reportDate">
-            <h3>4/15/20 - 5/15/20</h3>
-        </div>
-        <div id="gonePhishingImage">
-            <img src="{% static '/img/test192.jpg' %}"></img>
-        </div>
-        <div id="primaryContact">
-            <b>Primary Contact Information</b><br>
-            Sarah Ferth<br>
-            Director of Technology<br>
-            Neetflix Streaming Services<br>
-            (877) 522-2222<br>
-            Atlanta, GA 12345
-        </div>
-        <div id="cisaContact">
-            <b>CISA Contact Information</b>:<br>
-            conpca@dhs.gov<br>
-            (455) 554-4545<br><br>
-        </div>
-        <div id="numbersTitle"><b>Overall Campaign Numbers</b></div>
-        <div id="campaignNumbers">
-            Total Emails Sent: 333<br>
-            Email Click Rate: 306 (92%)<br>
-            Successful Phish: 73 (22%)<br>
-        </div>
+    </header>
+    <main>
+        <div class="container-fluid">
+            <div class="row">
 
-        <!-- Right 2/3 of the screen -->
-        <div class="main">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-12">
-                        <div id="reportTitle">
-                            <img src="{% static '/img/title.svg' %}"></img>
+                <!-- Left side bar -->
+                <aside>
+                    <div id="reportDate">
+                        <h3>{{ start_date|date:"M d, Y" }} - {{ end_date|date:"M d, Y" }}</h3>
+                    </div>
+                    <div id="gonePhishingImage">
+                        <img src="{% static 'img/gone_phishing.jpg' %}" alt="Gone Phishing">
+                    </div>
+                    <div id="primaryContact">
+                        <span>Primary Contact Information</span><br>
+                        <h2>{{ primary_contact_name }}</h2>                                                
+                        {{ customer_address }}<br>
+                        {{ customer_address_2 }}<br>
+                        {{ primary_contact_email }}<br>
+                        <br>
+                        CISA Contact Information&colon;<br>
+                        {{ dhs_contact_email }}<br>
+                        {{ dhs_contact_mobile_phone }}<br>
+                    </div>
+                    <div id="numbersTitle"><h2>Overall Campaign Numbers</h2></div>
+                    <div id="campaignNumbers">
+                        Total Emails Sent: {{metrics.number_of_email_sent_overall}}<br>
+                        Email Click Rate: {{meterics.number_of_email_clicked}} ({{metrics.percent_of_clicked_emails}}%)<br>
+                        Reported Emails: 0 (0%)<br>
+                    </div>
+                    <div id="preparedFor">
+                        Prepared for<br>
+                        <span>{{customer_name}}</span>
+                    </div>
+                </aside>
+
+                <!-- Right 2/3 of the screen -->
+                <div class="main-content">
+                    <div id="reportTitle">
+                    <img src="{% static 'img/title.svg' %}" alt="Monthly Subscription Report">
+                    </div>
+                    <div class="data-report">
+                        <!-- Averages -->
+                    <div class="row">                        
+                        <div class="col-5">
+                            <div id="averageClickTitle">
+                                <h3>Average Time<br> to First Click</h3>
+                            </div>
+                            <div id="averageClickTime">
+                                <span>03&colon;00</span><br>
+                                minutes
+                            </div>
+                        </div>
+                        <div class="col-5">
+                            <div id="averageReportTitle">
+                                <h3>Average Time<br> to Report</h3>
+                            </div>
+                            <div id="averageReportTime">
+                                <span>17&colon;00</span><br>
+                                minutes
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Yellow Circles -->
+                    <div class="row">
+                        <div class="col-5">
+                            <div class="circles">
+                                <img src="{% static 'img/dotted_circle.svg' %}" alt="Yellow dotted circle outline">
+                            </div>
+                        </div>
+                        <div class="col-5">
+                            <div class="circles">
+                                <img src="{% static 'img/dotted_circle.svg' %}" alt="Yellow dotted circle outline">
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Campaign Progress -->
+                    <div class="row">
+                        <div class="col-10">
+                            <div id="campaignProgressText">
+                                <ul>
+                                    <li>This Report has been generated in Q1 of your phishing subscription</li>
+                                    <li>Of the total {{metrics.total_users_targeted}} targets in this quarter cycle, {{metrics.number_of_email_sent_overall}} targets have had emails sent.</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Donut Charts -->
+                    <div class="row">
+                        <div class="col-12">
+                            <div id="donut-charts">
+                                <div class="col-3">
+                                    <img src="data:image/svg+xml;charset=utf-8;base64, {{sent_circle_svg}}">
+                                        <p class="donut-caption">Emails Sent of Total Targets</p>
+                                </div>
+                                <div class="col-3">
+                                    <img src="data:image/svg+xml;charset=utf-8;base64, {{opened_circle_svg}}">
+                                        <p class="donut-caption">Emails Opened of Sent</p>
+                                </div>
+                                <div class="col-3">
+                                    <img src="data:image/svg+xml;charset=utf-8;base64, {{clicked_circle_svg}}">
+                                        <p class="donut-caption">Emails Clicked of Total</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Bar Chart -->
+                    <div class="row">
+                        <div class="col-10 container-fluid">
+                            <div class="bar-chart">
+                                <h2>STATISTIC BY LEVEL</h2>
+                                <img src="data:image/svg+xml;charset=utf-8;base64, ICAgPHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiBjbGFzcz0iY2hhcnQiIHdpZHRoPSI0NTAiIGhlaWdodD0iMzAwIiBhcmlhLWxhYmVsbGVkYnk9InRpdGxlIGRlc2MiIHJvbGU9ImltZyI+CiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA8dGl0bGUgaWQ9InRpdGxlIj5TVEFUSVNUSUNTIEJZIExFVkVMPC90aXRsZT4KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDxkZXNjIGlkPSJ1bml0cy1hY2hpZXZlZCI+MDsgNTA7IDEwMDsgMTUwOyAyMDA7IDI1MDsgMzAwOyAzNTA7IDQwMDs8L2Rlc2M+CiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA8ZyBjbGFzcz0ibWVhc3VyZS1saW5lIj4KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA8bGluZSB4MT0iMzAiIHkxPSI1IiB4Mj0iNTAwIiB5Mj0iNSIgc3R5bGU9InN0cm9rZTojQkFENkU0O3N0cm9rZS13aWR0aDoyIi8+CiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgPGxpbmUgeDE9IjMwIiB5MT0iMzUiIHgyPSI1MDAiIHkyPSIzNSIgc3R5bGU9InN0cm9rZTojQkFENkU0O3N0cm9rZS13aWR0aDoyIi8+CiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgPGxpbmUgeDE9IjMwIiB5MT0iNjUiIHgyPSI1MDAiIHkyPSI2NSIgc3R5bGU9InN0cm9rZTojQkFENkU0O3N0cm9rZS13aWR0aDoyIi8+CiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgPGxpbmUgeDE9IjMwIiB5MT0iOTUiIHgyPSI1MDAiIHkyPSI5NSIgc3R5bGU9InN0cm9rZTojQkFENkU0O3N0cm9rZS13aWR0aDoyIi8+CiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgPGxpbmUgeDE9IjMwIiB5MT0iMTI1IiB4Mj0iNTAwIiB5Mj0iMTI1IiBzdHlsZT0ic3Ryb2tlOiNCQUQ2RTQ7c3Ryb2tlLXdpZHRoOjIiLz4KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA8bGluZSB4MT0iMzAiIHkxPSIxNTUiIHgyPSI1MDAiIHkyPSIxNTUiIHN0eWxlPSJzdHJva2U6I0JBRDZFNDtzdHJva2Utd2lkdGg6MiIvPgogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDxsaW5lIHgxPSIzMCIgeTE9IjE4NSIgeDI9IjUwMCIgeTI9IjE4NSIgc3R5bGU9InN0cm9rZTojQkFENkU0O3N0cm9rZS13aWR0aDoyIi8+CiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgPGxpbmUgeDE9IjMwIiB5MT0iMjE1IiB4Mj0iNTAwIiB5Mj0iMjE1IiBzdHlsZT0ic3Ryb2tlOiNCQUQ2RTQ7c3Ryb2tlLXdpZHRoOjIiLz4KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA8bGluZSB4MT0iMzAiIHkxPSIyNDUiIHgyPSI1MDAiIHkyPSIyNDUiIHN0eWxlPSJzdHJva2U6I0JBRDZFNDtzdHJva2Utd2lkdGg6MiIvPgogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDx0ZXh0IHg9IjE1IiB5PSIyNDUiIGNsYXNzPSJjYXB0aW9uIiBkeT0iLjM1ZW0iPjA8L3RleHQ+CiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgPHRleHQgeD0iOCIgeT0iMjE1IiBjbGFzcz0iY2FwdGlvbiIgZHk9Ii4zNWVtIj41MDwvdGV4dD4KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA8dGV4dCB4PSIwIiB5PSIxODUiIGNsYXNzPSJjYXB0aW9uIiBkeT0iLjM1ZW0iPjEwMDwvdGV4dD4KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA8dGV4dCB4PSIwIiB5PSIxNTUiIGNsYXNzPSJjYXB0aW9uIiBkeT0iLjM1ZW0iPjE1MDwvdGV4dD4KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA8dGV4dCB4PSIwIiB5PSIxMjUiIGNsYXNzPSJjYXB0aW9uIiBkeT0iLjM1ZW0iPjIwMDwvdGV4dD4KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA8dGV4dCB4PSIwIiB5PSI5NSIgY2xhc3M9ImNhcHRpb24iIGR5PSIuMzVlbSI+MjUwPC90ZXh0PgogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDx0ZXh0IHg9IjAiIHk9IjY1IiBjbGFzcz0iY2FwdGlvbiIgZHk9Ii4zNWVtIj4zMDA8L3RleHQ+CiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgPHRleHQgeD0iMCIgeT0iMzUiIGNsYXNzPSJjYXB0aW9uIiBkeT0iLjM1ZW0iPjM1MDwvdGV4dD4KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA8dGV4dCB4PSIwIiB5PSI1IiBjbGFzcz0iY2FwdGlvbiIgZHk9Ii4zNWVtIj40MDA8L3RleHQ+CiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA8L2c+CiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA8ZGVzYyBpZD0iZW1haWwtYWN0aW9uIj5TZW50OyBPcGVuZWQ7IENsaWNrZWQ7IFN1Ym1pdHRlZDsgUmVwb3J0ZWQ8L2Rlc2M+CiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA8Zz4KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgPHJlY3Qgc3R5bGU9ImZpbGw6IzE2NEE5MTsiIHdpZHRoPSIxNSIgaGVpZ2h0PSIyMDAiIHg9IjYwIiB5PSI0NSI+PC9yZWN0PgogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA8cmVjdCBzdHlsZT0iZmlsbDojRkRDMDEwOyIgd2lkdGg9IjE1IiBoZWlnaHQ9IjIwMCIgeD0iODAiIHk9IjQ1Ij48L3JlY3Q+CiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDxyZWN0IHN0eWxlPSJmaWxsOiMxOTc5YTciIHdpZHRoPSIxNSIgaGVpZ2h0PSIyMDAiIHg9IjEwMCIgeT0iNDUiPjwvcmVjdD4KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgPHRleHQgeD0iNzAiIHk9IjI2MCIgY2xhc3M9ImNhcHRpb24iIGR5PSIuMzVlbSI+U2VudDwvdGV4dD4KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDwvZz4KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDxnPgogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDxyZWN0IHN0eWxlPSJmaWxsOiMxNjRBOTE7IiB3aWR0aD0iMTUiIGhlaWdodD0iMTgwIiB4PSIxNTAiIHk9IjY1Ij48L3JlY3Q+CiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgPHJlY3Qgc3R5bGU9ImZpbGw6I0ZEQzAxMDsiIHdpZHRoPSIxNSIgaGVpZ2h0PSIxODAiIHg9IjE3MCIgeT0iNjUiPjwvcmVjdD4KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA8cmVjdCBzdHlsZT0iZmlsbDojMTk3OWE3IiB3aWR0aD0iMTUiIGhlaWdodD0iMTgwIiB4PSIxOTAiIHk9IjY1Ij48L3JlY3Q+CiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDx0ZXh0IHg9IjE1MCIgeT0iMjYwIiBjbGFzcz0iY2FwdGlvbiIgZHk9Ii4zNWVtIj5PcGVuZWQ8L3RleHQ+CiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA8L2c+CiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA8Zz4KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA8cmVjdCBzdHlsZT0iZmlsbDojMTY0QTkxOyIgd2lkdGg9IjE1IiBoZWlnaHQ9IjIwMCIgeD0iMjQwIiB5PSI0NSI+PC9yZWN0PgogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDxyZWN0IHN0eWxlPSJmaWxsOiNGREMwMTA7IiB3aWR0aD0iMTUiIGhlaWdodD0iMjAwIiB4PSIyNjAiIHk9IjQ1Ij48L3JlY3Q+CiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgPHJlY3Qgc3R5bGU9ImZpbGw6IzE5NzlhNyIgd2lkdGg9IjE1IiBoZWlnaHQ9IjIwMCIgeD0iMjgwIiB5PSI0NSI+PC9yZWN0PgogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA8dGV4dCB4PSIyNDAiIHk9IjI2MCIgY2xhc3M9ImNhcHRpb24iIGR5PSIuMzVlbSI+Q2xpY2tlZDwvdGV4dD4KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDwvZz4KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDxnPgogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDxyZWN0IHN0eWxlPSJmaWxsOiMxNjRBOTE7IiB3aWR0aD0iMTUiIGhlaWdodD0iMjAwIiB4PSIzMzAiIHk9IjQ1Ij48L3JlY3Q+CiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgPHJlY3Qgc3R5bGU9ImZpbGw6I0ZEQzAxMDsiIHdpZHRoPSIxNSIgaGVpZ2h0PSIyMDAiIHg9IjM1MCIgeT0iNDUiPjwvcmVjdD4KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA8cmVjdCBzdHlsZT0iZmlsbDojMTk3OWE3IiB3aWR0aD0iMTUiIGhlaWdodD0iMjAwIiB4PSIzNzAiIHk9IjQ1Ij48L3JlY3Q+CiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDx0ZXh0IHg9IjMyMiIgeT0iMjYwIiBjbGFzcz0iY2FwdGlvbiIgZHk9Ii4zNWVtIj5TdWJtaXR0ZWQ8L3RleHQ+CiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA8L2c+CiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA8Zz4KICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA8cmVjdCBzdHlsZT0iZmlsbDojMTY0QTkxOyIgd2lkdGg9IjE1IiBoZWlnaHQ9IjIwMCIgeD0iNDIwIiB5PSI0NSI+PC9yZWN0PgogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIDxyZWN0IHN0eWxlPSJmaWxsOiNGREMwMTA7IiB3aWR0aD0iMTUiIGhlaWdodD0iMjAwIiB4PSI0NDAiIHk9IjQ1Ij48L3JlY3Q+CiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgPHJlY3Qgc3R5bGU9ImZpbGw6IzE5NzlhNyIgd2lkdGg9IjE1IiBoZWlnaHQ9IjIwMCIgeD0iNDYwIiB5PSI0NSI+PC9yZWN0PgogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA8dGV4dCB4PSI0MTUiIHk9IjI2MCIgY2xhc3M9ImNhcHRpb24iIGR5PSIuMzVlbSI+UmVwb3J0ZWQ8L3RleHQ+CiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICA8L2c+CiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgPC9zdmc+">
+                                <ul class="legend">
+                                    <li>Low</li>
+                                    <li>Moderate</li>
+                                    <li>High</li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-6">
-                        <div id="averageClickTitle">
-                            <h3>Average Time to First Click</h3>
-                        </div>
-                        <div id="averageClickTime">
-                            03 Minutes
-                        </div>
-                    </div>
-                    <div class="col-6">
-                        <div id="averageReportTitle">
-                            <h3>Average Time to Report</h3>
-                        </div>
-                        <div id="averageReportTime">
-                            17 Minutes
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-6">
-                        <div class="circles">
-                            <img src="{% static '/img/dotted_circle.svg' %}"></img>
-                        </div>
-                    </div>
-                    <div class="col-6">
-                        <div class="circles">
-                            <img src="{% static '/img/dotted_circle.svg' %}"></img>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-12">
-                        <div id="campaignProgressText">
-                            This Report has been generated in Q1 of your phishing subscription cycle.<br>
-                            Of the 1,000 targets in this quarter's cycle, 333 targets have had emails sent.<br>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-12">
-                        <div class="progress" id="campaignProgress">
-                            <div class="progress-bar bg-success" style="width:33%">333 / 1000</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-6">
-                        <div id="piechart"></div>
-                    </div>
-                    <div class="col-6">
-                        <div id="piechartTwo"></div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-12">
-                        <div id="columnchart"></div>
-                    </div>
                 </div>
             </div>
-        </div>
+        </div>        
+    </main>
     </article>
 </body>
+
 </html>

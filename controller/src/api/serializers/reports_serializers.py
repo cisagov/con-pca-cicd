@@ -33,3 +33,13 @@ class ReportsGetSerializer(serializers.Serializer):
     target_count = serializers.IntegerField()
     metrics = serializers.DictField()
 
+
+class EmailReportsGetSerializer(serializers.Serializer):
+    """
+    This is an Emailed Reports Serializer.
+
+    Thsi formats the data returned
+    from the reports api call
+    """
+
+    subscription_uuid = serializers.CharField()

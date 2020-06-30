@@ -1,160 +1,302 @@
-@charset "UTF-8";
+@import url('https://fonts.googleapis.com/css2?family=Orbitron&display=swap');
 @page {
+  margin: 0;
   size: Letter;
-  margin: 2.5cm;
 }
 
-.container-fluid {
-  padding: 0 !important;
+html {
+  background-color: #1B2352;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-start;
 }
+
+.topBannerRow {  
+  margin-right: 0;  
+}
+
+body {
+  -webkit-print-color-adjust: exact !important;  
+  font-size: 16px;
+  max-width: 1076px;
+}
+
+body, html, aside {
+  height: 100%;
+  background-color: #1B2352;
+}
+
+main .container-fluid {
+  background-color: #fff;
+}
+
+/* Header */
 
 .topBanner {
   background-color: #1B2352;
-  height: 225px;
-  width: 100%;
+  height: 170px;
+  width: 1076px;
 }
 
-.sidebar {
-  height: 100%;
-  width: 15%;
-  position: fixed;
-  top: 0;
-  left: 0;
+.topBanner .col-12 {
+  align-items: center;
+  display: flex;
+  flex-flow: row nowrap;
+  height: 170px;
+  justify-content: space-between;
+  padding: 0 0 10px 20px;
+}
+
+#cisaLogo img {
+  transform: scale(.7);
+}
+
+/* Sidebar */
+
+aside {
   background-color: #1B2352;
-  overflow-x: hidden;
   color: white;
-}
-
-.main {
-  margin-left: 20%;
-}
-
-#phishLogo {
-  text-align: center;
-  margin-top: -15%;
-  margin-left: -70%;
-  position: relative;
-  z-index: 1;
-}
-
-#cisaLogo {
-  text-align: right;
-  margin-top: 0.5%;
-  margin-right: 0.5%;
-
+  display: flex;
+  flex-direction: column;
+  line-height: 2em;
+  margin: 0;
+  overflow-x: hidden;
+  padding: 0 0 40px 0;
+  width: 35%;
 }
 
 #reportDate {
-  position: relative;
-  z-index: 1;
-  text-align: left;
-  color: black;
-  background-color: white;
-  margin-top: 0%;
-  padding-top: 5px;
-  padding-left: 25px;
+  background: #fff;
+  color: #000;
   height: 50px;
+  margin-top: 0px;
 }
 
-#reportTitle {
-  text-align: center;
-  margin-top: -500px;
-  padding-top: -100px;
+#reportDate h3 {
+  font-size: 1.25em;
+  font-weight: 400;
+  padding: 10px 0 0 40px;
+}
+
+#gonePhishingImage {
+  margin: 55px 0 0 82px;
+  transform: scale(1.5,1.4);
+}
+
+#gonePhishingImage img {
+  margin-left: -20px;
+}
+
+#primaryContact, #cisaContact, #numbersTitle, #campaignNumbers {
+  padding-left: 40px;
+}
+
+#primaryContact {
+  font-size: 1.125em;
+  line-height: 2.5em;
   position: relative;
+  top: 5px;
   z-index: 10;
 }
 
-#averageClickTitle, #averageReportTitle {
-  margin-top: 100px;
+#primaryContact h2, #numbersTitle h2 {
+  font-size: 1.25em;
+  margin-bottom: 5px;
+}
+
+#primaryContact span {
+  line-height: 3em;
+}
+
+#numbersTitle {
+  margin-top: 70px;
+}
+
+#campaignNumbers {
+  border: 1px solid #FDC010;
+  color: white;
+  font-size: 0.925em;
+  line-height: 2em;
+  margin-left: 40px;
+  padding: 10px 10px 20px 15px;
+  text-align: left;
+  width: 70%;
+}
+
+#preparedFor {
+  color: lightblue;
+  flex: 1 1 auto;
+  margin: 200px 0 5px 40px;
+  position: relative;
+  bottom: 0;
+}
+
+#preparedFor span {
+  font-size: 1.375em;
+  line-height: 1em;
+}
+
+/* Main Content */
+
+main > .row:first-of-type {
+  background-color: #1B2352;
+}
+
+.main-content {
+  border-left: 15px solid #1B2352;
+  border-top: 3px solid #1B2352;
+  border-top-left-radius:25%100px;
+  margin: -2px -20px 0 -23px;
+  width: 67%;
+}
+
+.main-content  .row:nth-of-type(-n+3) {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-start;
+}
+#reportTitle img {
+  margin: 35px 0 0 0;
+  position: relative;
+  transform: scale(0.8);
+}
+
+h1 strong {
+  color: #164A91;
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-size: 1em;
+  font-stretch: extra-condensed;
+  left: 75px;
+  letter-spacing: 0px;
+  line-height: 1em;
+  position: relative;
+  top: 35px;
+}
+
+#reportTitle span {
+  color: #164A91;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  font-size: 3em;
+  letter-spacing: 65px; 
+  line-height: 1em;
+  margin-left: 75px;
+}
+
+/* Charts */
+
+.data-report {
+  position: relative;
+}
+
+#averageClickTitle h3, #averageReportTitle h3 {
   color: #174A91;
+  font-size: 1.65em;
+  font-weight: 400;
+  margin-top: 40px;
   text-align: center;
 }
 
 #averageClickTime, #averageReportTime {
+  color: #174A91;
+  font-size: 1.95em;
+  line-height: 0.9em;
+  margin-top: 100px;
   text-align: center;
-  font-size: 30px;
-  margin-top: 10%;
-  transform: translate(0%, 125%);
-  color: #174A91
+}
+
+#averageClickTime span, #averageReportTime span {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1.125em;
+  font-weight: 700;
+  line-height: 1em;
 }
 
 .circles {
+  margin-top: -160px;
   text-align: center;
-  transform: translate(0%, -35%);
+  transform: scale(0.8);
 }
 
-#campaignProgressText {
-  margin-top: 5%;
+.circles img {
+  filter: drop-shadow( 3px 3px 2px rgba(0, 0, 0, .3));
+}
+
+/* SVG donut */
+
+#donut-charts {
+  align-items: flex-start;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+}
+
+.donut-caption {
+  color: #164A91;
   text-align: center;
 }
 
-#campaignProgress {
-  height: 30px;
-  width: 40%;
-  margin: auto;
-  margin-top: 1%;
-  border: 1px solid black;
+/* SVG Bar Chart */
+.caption, .legend-caption {
+  fill: #164A91;
 }
 
-#piechart {
-  margin-top: 15%;
-  margin-left: 20%;
+.legend-caption {
+  font-size: 0.75em;
 }
 
-#piechartTwo {
-  margin-top: 15%;
-  margin-left: 6vw;
+.blue-bar {
+  fill:#1979a7
 }
 
-#columnchart {
-  margin-top: 7.5%;
-  margin-bottom: 50px;
-  width: 100%;
-  padding-left: 10%;
-  padding-right: 10%;
+.dark-blue-bar {
+  fill:#164A91;
 }
 
-#gonePhishingImage {
-  position: relative;
-  z-index: 1;
+.yellow-bar {
+  fill:#FDC010;
 }
 
-#primaryContact {
-  padding-top: 25px;
-  color: white;
-  position: relative;
-  z-index: 1;
-  text-align: left;
-  width: 15%;
-  margin-left: 0.5%;
-}
-
-#cisaContact {
-  padding-top: 25px;
-  color: white;
-  position: relative;
-  z-index: 1;
-  text-align: left;
-  width: 15%;
-  margin-left: 0.5%;
-}
-
-#numbersTitle {
-  color: white;
-  position: relative;
-  z-index: 1;
-  text-align: left;
-  width: 15%;
-  margin-left: 0.5%;
-}
-
-#campaignNumbers {
-  color: white;
-  position: relative;
-  z-index: 1;
-  text-align: left;
-  width: 12%;
+.bar-chart{
   border: 1px solid #FDC010;
-  margin-left: 0.5%;
-  padding-left: 0.2%;
+  border-radius: 10px;
+  color: #164A91;
+  height: auto;
+  margin: 20px auto 0 auto;
+  text-align: center;
+  width: 100%;
+}
+
+.bar-chart h2 {
+  font-size: 1.25em;
+  font-weight: 400;
+  margin: 10px;
+}
+
+.legend {
+  color: #000;
+  list-style-type: square;
+}
+
+.legend li {
+  display: inline-block;
+  padding: 0 10px;
+}
+.legend li:nth-of-type(1)::after {
+  content: "\25A0";
+  color: #164A91;  
+  margin-left: 5px;
+}
+
+.legend li:nth-of-type(2)::after {
+  content: "\25A0";
+  color: #FDC010;  
+  margin-left: 5px;
+}
+
+.legend li:nth-of-type(3)::after {
+  content: "\25A0";
+  color: #1979a7;
+  margin-left: 5px;
 }

@@ -52,7 +52,8 @@ These files are used as configuration in deployment.
 Create your .env file
 
 - `cp etc/env.dist .env`
-- **Note:** visit `localhost:3333/settings` to get your API key. Save it into your `.env` file
+- **Note:** visit `localhost:3333/settings` to get your
+API key. Save it into your `.env` file
 
 Build containers
 
@@ -67,6 +68,7 @@ Run Django logs in the terminal
 - `make logs`
 
 Initialize GoPhish & generate random data into mongo
+
 - `make init`
 
 Stop containers
@@ -86,18 +88,22 @@ Drop DB of all data
 - `make db_drop_mongo`
 
 Collect static files
+
 - `make collectstatic`
 
 Compile mjml files to html for emails
+
 - `make build_emails`
 
 Send sample reports emails
+
 - `make send_emails`
 
 ### Creating and loading random data
 
 Using the makefile command: `make init` you can create data in
-the db and get an output file containing all the id's of the created data. This will also create initial data for gophish.
+the db and get an output file containing all the id's of the created data.
+This will also create initial data for gophish.
 
 Incase you want to clear out all data in the DB, use: `make db_drop_mongo`
 
@@ -129,11 +135,7 @@ checked into github and will remain on a devs system.
 
 Django base app located at [localhost:8000](http://localhost:8000)
 
-### To access the RabbitMQ dashboard
-
-RabbitMQ management dashboard located at [localhost:15672](http://localhost:15672)
-
-### To access the Celery Flower dashboard:
+### To access the Celery Flower dashboard
 
 - visit:
   - `localhost:5555/dashboard`
@@ -153,7 +155,7 @@ Creating network "controller_default" with the default driver
 Creating pca-rabbitmq ... done
 Creating pca-mongodb  ... done
 Creating pca-worker   ... done
-Creating pca-beat     ... done
+Creating pca-flower     ... done
 Creating pca-api      ... done
 ```
 
@@ -187,6 +189,69 @@ To download the api docs as yaml or json, use the following enpoints:
 Here you can see how the calls are defined. These objects are defined under `api.serializers.*`
 When created, it is genrated from those files and is validated when sending.
 
+## Database Dump and Restore
+
+### Dump
+
+To Dump latest DB run the make command. This creates a timestamped `.dump` and
+overwrites `latest.dump` to `src/scripts/data/db_dumps/..`
+
+- `make mongo_dump`
+
+```shell
+$ make mongo_dump
+docker exec pca-mongodb sh -c 'mongodump --host mongodb --port 27017 -u <USER> -p <PASS> --authenticationDatabase admin -d pca_data_dev --archive' > src/scripts/data/db_dumps/2020-06-26--16-02-50.dump
+2020-06-26T20:02:50.611+0000  writing pca_data_dev.template to archive on stdout
+2020-06-26T20:02:50.611+0000  writing pca_data_dev.tag_definition to archive on stdout
+2020-06-26T20:02:50.612+0000  writing pca_data_dev.subscription to archive on stdout
+2020-06-26T20:02:50.612+0000  writing pca_data_dev.customer to archive on stdout
+2020-06-26T20:02:50.623+0000  done dumping pca_data_dev.template (163 documents)
+2020-06-26T20:02:50.623+0000  writing pca_data_dev.dhs_contact to archive on stdout
+2020-06-26T20:02:50.626+0000  done dumping pca_data_dev.customer (2 documents)
+2020-06-26T20:02:50.626+0000  writing pca_data_dev.target to archive on stdout
+2020-06-26T20:02:50.638+0000  done dumping pca_data_dev.tag_definition (44 documents)
+2020-06-26T20:02:50.639+0000  done dumping pca_data_dev.dhs_contact (2 documents)
+2020-06-26T20:02:50.640+0000  done dumping pca_data_dev.subscription (4 documents)
+2020-06-26T20:02:50.645+0000  done dumping pca_data_dev.target (1 document)
+cp src/scripts/data/db_dumps/2020-06-26--16-02-50.dump src/scripts/data/db_dumps/latest.dump
+```
+
+### Restore
+
+To load latest `latest.dump` file into the db use `make mongo_restore`
+
+```shell
+$ make mongo_restore
+docker exec -i pca-mongodb sh -c 'mongorestore --host mongodb --port 27017 -u root -p rootpassword --authenticationDatabase admin -d pca_data_dev --archive' < src/scripts/data/db_dumps/db.dump
+2020-06-26T19:51:02.108+0000  the --db and --collection args should only be used when restoring from a BSON file. Other uses are deprecated and will not exist in the future; use --nsInclude instead
+2020-06-26T19:51:02.118+0000  preparing collections to restore from
+2020-06-26T19:51:02.127+0000  reading metadata for pca_data_dev.template from archive on stdin
+2020-06-26T19:51:02.127+0000  restoring pca_data_dev.template from archive on stdin
+2020-06-26T19:51:02.133+0000  reading metadata for pca_data_dev.dhs_contact from archive on stdin
+2020-06-26T19:51:02.133+0000  restoring pca_data_dev.dhs_contact from archive on stdin
+2020-06-26T19:51:02.138+0000  reading metadata for pca_data_dev.subscription from archive on stdin
+2020-06-26T19:51:02.138+0000  restoring pca_data_dev.subscription from archive on stdin
+2020-06-26T19:51:02.141+0000  reading metadata for pca_data_dev.tag_definition from archive on stdin
+2020-06-26T19:51:02.141+0000  restoring pca_data_dev.tag_definition from archive on stdin
+2020-06-26T19:51:02.157+0000  error: multiple errors in bulk operation:
+  - E11000 duplicate key error collection: pca_data_dev.dhs_contact index: _id_ dup key: { : ObjectId('5ef4db29c29997a6ef020303') }
+  - E11000 duplicate key error collection: pca_data_dev.dhs_contact index: _id_ dup key: { : ObjectId('5ef4db29c29997a6ef020305') }
+
+2020-06-26T19:51:02.157+0000  no indexes to restore
+2020-06-26T19:51:02.157+0000  finished restoring pca_data_dev.dhs_contact (2 documents)
+2020-06-26T19:51:02.157+0000  reading metadata for pca_data_dev.customer from archive on stdin
+2020-06-26T19:51:02.157+0000  error: multiple errors in bulk operation:
+  - E11000 duplicate key error collection: pca_data_dev.subscription index: _id_ dup key: { : ObjectId('5ef4db2bc29997a6ef02030b') }
+  - E11000 duplicate key error collection: pca_data_dev.subscription index: _id_ dup key: { : ObjectId('5ef4db32c29997a6ef020312') }
+  - E11000 duplicate key error collection: pca_data_dev.subscription index: _id_ dup key: { : ObjectId('5ef4dcd1c29997a6ef02033f') }
+  - E11000 duplicate key error collection: pca_data_dev.subscription index: _id_ dup key: { : ObjectId('5ef4e84926a59d295ea4e11f') }
+
+.....
+
+2020-06-26T19:51:02.173+0000  finished restoring pca_data_dev.template (163 documents)
+2020-06-26T19:51:02.173+0000  done
+```
+
 ## Troubleshooting
 
 ### Know Issues
@@ -215,14 +280,14 @@ MONGO_INITDB_DATABASE=pca_data_dev
 ```
 
 ### AWS
-AWS_ENDPOINT_URL=http://host.docker.internal:4566
+
+AWS_ENDPOINT_URL= `http://host.docker.internal:4566`
 AWS_ACCESS_KEY_ID=mock_access_key
 AWS_SECRET_ACCESS_KEY=mock_secret_key
 AWS_STORAGE_BUCKET_NAME=con-pca-local-bucket
 AWS_STORAGE_BUCKET_IMAGES_NAME=con-pca-local-image-bucket
 AWS_S3_REGION_NAME=us-east-1
 DEFAULT_FILE_STORAGE=storages.backends.s3boto3.S3Boto3Storage
-
 
 `DB_PW` and `DB_USER` should match `MONGO_INITDB_ROOT_PASSWORD` and `MONGO_INITDB_ROOT_USERNAME`
 
@@ -265,12 +330,16 @@ for trouble shooting Docker
 
 ### Celery Flower Dashboard
 
-If you can't get Flower dashbaord to run, make sure to delete `celerybeat.pid` file found in `controller/src/`
+If you can't get Flower dashbaord to run,
+make sure to delete `celerybeat.pid` file found in `controller/src/`
+
 ## Testing
 
 ### Requirements
 
-Make sure when running any tests, from the CLI or VS Code, that a virtual environment is being used with the application requirements and testing requirements installed.
+Make sure when running any tests, from the CLI or VS Code, that a
+virtual environment is being used with the application requirements and
+testing requirements installed.
 
 ```bash
 python -m venv .venv
@@ -282,19 +351,26 @@ pip install -r test_requirements.txt
 
 - [black](https://pypi.org/project/black/) - Uniform styling.
 
-- [coverage](https://coverage.readthedocs.io/en/coverage-5.1/) - Calculates code coverage from tests.
+- [coverage](https://coverage.readthedocs.io/en/coverage-5.1/) -
+Calculates code coverage from tests.
 
-- [pytest](https://docs.pytest.org/en/latest/) - Easier to use testing framework.
+- [pytest](https://docs.pytest.org/en/latest/) - Easier to use
+testing framework.
 
-- [pytest-django](https://pytest-django.readthedocs.io/en/latest/) - Library to better integrate pytest with Django
+- [pytest-django](https://pytest-django.readthedocs.io/en/latest/) -
+Library to better integrate pytest with Django
 
-- [pytest-env](https://github.com/MobileDynasty/pytest-env) - Allows environment variables to be put in pytest.ini for loading.
+- [pytest-env](https://github.com/MobileDynasty/pytest-env) - Allows
+environment variables to be put in pytest.ini for loading.
 
-- [pytest-mock](https://github.com/pytest-dev/pytest-mock/) - Mock integration with pytest.
+- [pytest-mock](https://github.com/pytest-dev/pytest-mock/) - Mock
+integration with pytest.
 
-- [pytest-pythonpath](https://pypi.org/project/pytest-pythonpath/) - Allows additional python paths to be defined in pytest.ini.
+- [pytest-pythonpath](https://pypi.org/project/pytest-pythonpath/) -
+Allows additional python paths to be defined in pytest.ini.
 
-- [radon](https://radon.readthedocs.io/en/latest/) - Calculates code complexity.
+- [radon](https://radon.readthedocs.io/en/latest/) - Calculates
+code complexity.
 
 ### Setting up VS Code
 
@@ -308,11 +384,16 @@ pip install -r test_requirements.txt
 
 ### Windows Issue
 
-One of the libraries, `WeasyPrint` is being used to convert html to pdf. For Windows development, additional configuration is needed, otherwise some of the tests will fail. The setup for installing on Windows can be found at [https://weasyprint.readthedocs.io/en/latest/install.html#windows](https://weasyprint.readthedocs.io/en/latest/install.html#windows)
+One of the libraries, `WeasyPrint` is being used to convert html to pdf. For
+Windows development, additional configuration is needed, otherwise some of
+the tests will fail. The setup for installing on Windows can be found at
+[https://weasyprint.readthedocs.io/en/latest/install.html#windows](https://weasyprint.readthedocs.io/en/latest/install.html#windows)
 
 ### Pytest / Coverage
 
-To get code coverage, it needs to be done from the command line. After running the below steps, open `htmlcov/index.html` with a browser to view code coverage and further details.
+To get code coverage, it needs to be done from the command line.
+After running the below steps, open `htmlcov/index.html` with a browser
+to view code coverage and further details.
 
 ```bash
 coverage run --omit *.venv* -m pytest ./src/ --disable-warnings

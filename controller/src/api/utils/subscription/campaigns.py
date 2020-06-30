@@ -61,6 +61,23 @@ def create_campaign(subscription, sub_level, landing_page):
             target_list=sub_level["template_targets"][k],
         )
 
+        if not target_group:
+            # target_group exists, so delete and remake
+            # first get all group
+            gp_user_groups = campaign_manager.get_user_group()
+            # filter out group
+            pg_user_group = list(
+                filter(lambda x: x.name == group_name, gp_user_groups)
+            )[0]
+            # delete pre-exisiting group
+            campaign_manager.delete_email_template(template_id=pg_user_group.id)
+            # create new group
+            target_group = campaign_manager.create(
+                "user_group",
+                group_name=group_name,
+                target_list=sub_level["template_targets"][k],
+            )
+
         template = list(
             filter(
                 lambda x: x["template_uuid"] == k, sub_level["personalized_templates"]
@@ -105,6 +122,23 @@ def __create_campaign(
         template=template["data"],
         subject=template["subject"],
     )
+    if not created_template:
+        # template exists, so delete and remake
+        # first get all teampletes
+        gp_templates = campaign_manager.get_email_template()
+        # filter out template
+        gp_template = list(
+            filter(lambda x: x.name == f"{base_name}.{template['name']}", gp_templates)
+        )[0]
+        # delete pre-exisiting template
+        campaign_manager.delete_email_template(template_id=gp_template.id)
+        # create new template
+        created_template = campaign_manager.generate_email_template(
+            name=f"{base_name}.{template['name']}",
+            template=template["data"],
+            subject=template["subject"],
+        )
+
     campaign_start = start_date
     campaign_end = start_date + timedelta(days=60)
 
