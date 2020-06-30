@@ -25,6 +25,13 @@ SENDING_PROFILES = [
         "username": os.environ.get("GP_SMTP_USER"),
         "password": os.environ.get("GP_SMTP_PASS"),
     },
+    {
+        "name": "REPORTING",
+        "host": "TEST",
+        "from_address": "TEST@TEST.TEST",
+        "username": "TESTUSER",
+        "password": "TESTPASSWORD"
+    }
 ]
 
 LANDING_PAGES = [

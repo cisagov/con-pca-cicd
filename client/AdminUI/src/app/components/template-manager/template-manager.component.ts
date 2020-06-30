@@ -487,7 +487,7 @@ export class TemplateManagerComponent implements OnInit {
     enableToolbar: true,
     showToolbar: true,
     placeholder:
-      'Select a template on the left to edit or start typing to create a new template...',
+      'Please enter template text here...',
     defaultParagraphSeparator: '',
     defaultFontName: '',
     defaultFontSize: '',

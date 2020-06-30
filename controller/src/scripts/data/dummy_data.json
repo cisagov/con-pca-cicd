@@ -20,7 +20,32 @@
       "industry": "Basic Chemicals",
       "name": "Bobs Burgers",
       "sector": "Chemical",
+      "customer_type": "Private",
       "state": "California",
+      "zip_code": "12345"
+    },
+    {
+      "address_1": "456 Test Blvd",
+      "address_2": "Suite 3",
+      "city": "Boise",
+      "contact_list": [
+        {
+          "active": true,
+          "email": "ChemBasic@example.com",
+          "first_name": "Chem",
+          "last_name": "Basic",
+          "mobile_phone": "555-555-5555",
+          "notes": "Chem-Basic",
+          "office_phone": "555-555-5555",
+          "title": "chem-basic"
+        }
+      ],
+      "identifier": "Priv-Chem-Basic-Customer",
+      "industry": "Basic Chemicals",
+      "customer_type": "Private",
+      "name": "Priv-Chem-Basic-Cust-TEST",
+      "sector": "Chemical",
+      "state": "Idaho",
       "zip_code": "12345"
     },
     {
@@ -41,8 +66,55 @@
       ],
       "identifier": "NHL",
       "industry": "Other",
+      "customer_type": "Private",
       "name": "The Ice Rink",
       "sector": "Energy",
+      "state": "Idaho",
+      "zip_code": "12345"
+    },
+    {
+      "address_1": "123 Test Street",
+      "address_2": "Suite 2",
+      "city": "Twin Falls",
+      "contact_list": [
+        {
+          "active": true,
+          "email": "ChemSpecialtyProd@example.com",
+          "first_name": "Chem",
+          "last_name": "Specialist",
+          "mobile_phone": "555-555-5555",
+          "notes": "Chem-Spec",
+          "office_phone": "555-555-5555",
+          "title": "chem-spec"
+        }
+      ],
+      "identifier": "Priv-Chem-Spec-Customer",
+      "industry": "Specialty Products",
+      "customer_type": "Private",
+      "name": "Priv-Chem-Spec-Cust-TEST",
+      "sector": "Chemical",
+      "state": "Idaho",
+      "zip_code": "12345"
+    },
+    {
+      "address_1": "789 Test Lane",
+      "address_2": "Suite 5",
+      "city": "Moscow",
+      "contact_list": [
+        {
+          "active": true,
+          "email": "GovFed@example.com",
+          "first_name": "Gov",
+          "last_name": "FED",
+          "mobile_phone": "555-555-5555",
+          "notes": "Gov-Fed",
+          "office_phone": "555-555-5555",
+          "title": "Gov-fed"
+        }
+      ],
+      "identifier": "GOV-FED-Customer",
+      "customer_type": "FED",
+      "name": "GOV-FED-Cust-TEST",
       "state": "Idaho",
       "zip_code": "12345"
     }
