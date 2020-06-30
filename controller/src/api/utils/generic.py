@@ -1,4 +1,8 @@
+"""Util Generic."""
+# Standard Python Libraries
 from datetime import datetime, timedelta
+
+# Third-Party Libraries
 import names
 
 
@@ -51,3 +55,21 @@ def generate_random_name(name_type, gender=None):
         return names.get_first_name(gender=gender)
     elif name_type == "Last":
         return names.get_last_name()
+
+
+def customer_spoof_email(customer_info):
+    """Customer Spoof Email.
+
+    Grabs email domain from customer list and
+    creates random spoofed email.
+    Args:
+        customer_info (dict): customer info dict
+
+    Returns:
+        string: returns spoofed email with customer email domain.
+    """
+    spoof_first_name = names.get_first_name()
+    spoof_last_name = names.get_last_name()
+    _, customer_domain = customer_info["contact_list"][0].split("@")
+    spoof_email = "{}.{}@{}".format(spoof_first_name, spoof_last_name, customer_domain)
+    return spoof_email
