@@ -2,8 +2,9 @@
 
 echo "Collecting static files"
 python manage.py collectstatic --no-input
-python scripts/init.py &
 
+echo "Initialize application"
+python scripts/init.py &
 
 if [[ $DEBUG -eq 1 ]]
 then

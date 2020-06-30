@@ -27,6 +27,7 @@ djangorestframework==3.11.0
 drf-yasg==1.17.1
 Faker==4.0.3
 flower==0.9.4
+gevent==20.6.2
 gophish==0.4.0
 gunicorn==20.0.4
 html5lib==1.0.1
