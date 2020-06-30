@@ -385,8 +385,9 @@ Nm54/BNgAKu8j5lw6E+GAAAAAElFTkSuQmCC" transform="matrix(0.2176 0 0 0.2084 59.162
         class="mat-menu-custom-header"
       >
         <!--<button mat-menu-item>Profile</button>-->
+        <mat-slide-toggle [checked]="isDark" (change)="setTheme($event)"><mat-label [ngStyle]="{'color': isDark ? '#fff' : '#000'}">Dark</mat-label></mat-slide-toggle>
+        <button mat-menu-item (click)="help()">Help</button>
         <button mat-menu-item (click)="logOut()">Logout</button>
-        <mat-slide-toggle [checked]="isDark" (change)="setTheme($event)"><mat-label [ngStyle]="{'color': isDark ? '#fff' : '#000'}">dark</mat-label></mat-slide-toggle>
       </mat-menu>
     </span>
   </mat-toolbar>

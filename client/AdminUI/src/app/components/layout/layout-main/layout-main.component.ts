@@ -41,6 +41,7 @@ export class LayoutMainComponent implements OnInit {
   @ViewChild('mainContent', { static: false })
   mainContent;
 
+
   setTheme(event) {
     this.themeSvc.storeTheme(event.checked);
     this.isDark = event.checked;
@@ -49,6 +50,10 @@ export class LayoutMainComponent implements OnInit {
     } else {
       this.overlayContainer.getContainerElement().classList.remove('theme-alternate');
     }
+  }
+
+  help() {
+    console.log("Navigate to the help screen.");
   }
 
   logOut(){
