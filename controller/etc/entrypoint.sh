@@ -12,5 +12,5 @@ then
     python manage.py runserver 0.0.0.0:8000
 else
     echo "Serve using WSGI"
-    gunicorn --bind 0.0.0.0:8000 --keyfile /certs/server.key --certfile /certs/server.crt config.wsgi
+    gunicorn --bind 0.0.0.0:8000 config.wsgi #--keyfile /certs/server.key --certfile /certs/server.crt
 fi
