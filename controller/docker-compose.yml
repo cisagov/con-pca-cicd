@@ -21,23 +21,6 @@ services:
     networks:
       - backend
 
-  celery-beat:
-    build:
-      context: .
-      dockerfile: ./etc/Dockerfile
-    container_name: pca-beat
-    hostname: celery-beat
-    restart: on-failure
-    entrypoint: celery -A config beat -l info
-    volumes:
-      - ./src:/app
-    depends_on:
-      - rabbitmq
-    env_file:
-      - .env
-    networks:
-      - backend
-
   celery-worker:
     build:
       context: .
@@ -63,7 +46,7 @@ services:
       context: .
       dockerfile: ./etc/Dockerfile
     container_name: pca-flower
-    entrypoint: flower -A config --port=5555 --broker=amqp://rabbitmq:5672
+    entrypoint: flower -A config --address=0.0.0.0 --port=5555 --broker=amqp://rabbitmq:5672 --pool gevent
     ports:
       - "5555:5555"
     depends_on:
@@ -72,13 +55,11 @@ services:
       - celery-worker
     env_file:
       - .env
+    networks:
+      - backend
 
   rabbitmq:
-    image: rabbitmq:3.6-management-alpine
-    # There is a prebuilt RabbitMQ image; see
-    # https://hub.docker.com/_/rabbitmq/ for details.
-    # This variant is built on Alpine Linux (it's smaller) and includes
-    # the management UI.
+    image: rabbitmq:3.8
     container_name: pca-rabbitmq
     hostname: rabbitmq
     restart: on-failure
@@ -89,8 +70,6 @@ services:
     ports:
       # The standard AMQP protocol port
       - "5672:5672"
-      # HTTP management UI
-      - "15672:15672"
 
     env_file:
       - .env
