@@ -11,6 +11,11 @@ from gophish.models import SMTP, Page, Webhook
 API_KEY = os.environ.get("GP_API_KEY")
 URL = os.environ.get("GP_URL")
 API = Gophish(API_KEY, host=URL, verify=False)
+LOCAL_URL = (
+    "http://localhost:8000"
+    if os.environ.get("DEBUG") == 1
+    else "https://localhost:8000"
+)
 
 SENDING_PROFILES = [
     {
@@ -100,7 +105,7 @@ def create_templates():
     existing_names = [
         t["name"]
         for t in requests.get(
-            "http://localhost:8000/api/v1/templates", headers=get_headers()
+            f"{LOCAL_URL}/api/v1/templates", headers=get_headers(), verify=False
         ).json()
     ]
 
@@ -110,9 +115,10 @@ def create_templates():
         if not template["name"] in existing_names:
             template["deception_score"] = template["complexity"]
             resp = requests.post(
-                "http://localhost:8000/api/v1/templates/",
+                f"{LOCAL_URL}/api/v1/templates/",
                 json=template,
                 headers=get_headers(),
+                verify=False,
             )
             resp.raise_for_status()
             resp_json = resp.json()
@@ -132,14 +138,17 @@ def create_tags():
     existing_tags = [
         t["tag"]
         for t in requests.get(
-            "http://localhost:8000/api/v1/tags/", headers=get_headers()
+            f"{LOCAL_URL}:8000/api/v1/tags/", headers=get_headers(), verify=False
         ).json()
     ]
 
     for tag in tags:
         if tag["tag"] not in existing_tags:
             resp = requests.post(
-                "http://localhost:8000/api/v1/tags/", json=tag, headers=get_headers(),
+                f"{LOCAL_URL}/api/v1/tags/",
+                json=tag,
+                headers=get_headers(),
+                verify=False,
             )
             resp.raise_for_status()
             resp_json = resp.json()
@@ -160,7 +169,7 @@ def get_headers():
 def wait_connection():
     for i in range(1, 15):
         try:
-            requests.get("http://localhost:8000/api/v1/templates/")
+            requests.get(f"{LOCAL_URL}/", headers=get_headers(), verify=False)
             break
         except BaseException:
             print("Django API not yet running. Waiting...")
