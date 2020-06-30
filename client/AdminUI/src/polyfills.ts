@@ -49,7 +49,6 @@
  *  with the following flag, it will bypass `zone.js` patch for IE/Edge
  *
  *  (window as any).__Zone_enable_cross_context_check = true;
- *
  */
 
 /***************************************************************************************************
@@ -60,3 +59,8 @@ import 'zone.js/dist/zone'; // Included with Angular CLI.
 /***************************************************************************************************
  * APPLICATION IMPORTS
  */
+//AWS AMPLIFY 
+(window as any).global = window;
+(window as any).process = {
+  env: { DEBUG: undefined },
+};
