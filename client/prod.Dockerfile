@@ -5,13 +5,19 @@ COPY ./AdminUI/package.json ./
 
 RUN npm install
 
-COPY ./AdminUI .
-
 RUN npm install -g @angular/cli
+
+COPY ./AdminUI .
 
 RUN ng build --configuration production --output-path=/dist
 
 FROM nginx:alpine
+
+RUN apk add openssl
+
+RUN mkdir /certs
+
+RUN openssl req -x509 -nodes -days 365 -subj "/C=CA/ST=ID/O=INL/CN=localhost" -newkey rsa:2048 -keyout /certs/server.key -out /certs/server.crt
 
 COPY --from=build /dist /usr/share/nginx/html
 COPY ./etc/default.conf /etc/nginx/conf.d/default.conf

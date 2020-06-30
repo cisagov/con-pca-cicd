@@ -1,6 +1,7 @@
 # Standard Python Libraries
 from datetime import datetime
 import logging
+import base64
 
 # Third-Party Libraries
 # Local Libraries
@@ -38,6 +39,48 @@ class MonthlyReportsView(TemplateView):
 
     template_name = "reports/monthly.html"
 
+    def calculateSvgCircles(self, numerator, denominator):
+        #given the numerator and total calculate and 
+        #return the svg circle
+        percentage = round(float(numerator or 0)/float(1 if denominator is None else denominator),2)
+        remaining_percentage = 100 - percentage
+        svgstring = """<svg width="100%" height="100%" viewBox="0 0 42 42" class="donut" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                    <circle class="donut-hole" cx="21" cy="21" r="14" fill="#fff"></circle>
+                    <circle class="donut-ring" cx="21" cy="21" r="14" fill="transparent" stroke="#cecece" stroke-width="6"></circle><circle class="donut-segment" cx="21" cy="21" r="14" fill="transparent" stroke="#164A91" stroke-width="6" stroke-dasharray="{} {}" stroke-dashoffset="25"></circle>
+                    </svg>""".format(percentage, remaining_percentage)
+        return svgstring
+
+    
+    def getMonthlyStats(self, subscription):
+        start_date = subscription["start_date"]
+        # Get statistics for the specified subscription during the specified cycle
+        subscription_stats = get_subscription_stats_for_cycle(subscription, start_date)
+        clicked = get_statistic_from_group(subscription_stats, "stats_all", "clicked", "count")
+        sent  = get_statistic_from_group(subscription_stats, "stats_all", "sent", "count")
+        metrics = {
+            "total_users_targeted": len(subscription["target_email_list"]),
+            "number_of_email_sent_overall": sent,
+            "number_of_clicked_emails": clicked,
+            "percent_of_clicked_emails": round(float(clicked or 0)/float(1 if sent is None else sent),2),
+            "number_of_opened_emails": get_statistic_from_group(
+                subscription_stats, "stats_all", "opened", "count"
+            ),
+            "number_of_phished_users_overall": get_statistic_from_group(
+                subscription_stats, "stats_all", "submitted", "count"
+            ),
+            "number_of_reports_to_helpdesk": get_statistic_from_group(
+                subscription_stats, "stats_all", "reported", "count"
+            ),
+            "reports_to_clicks_ratio": get_reports_to_click(subscription_stats),
+            "avg_time_to_first_click": get_statistic_from_group(
+                subscription_stats, "stats_all", "clicked", "average"
+            ),
+            "avg_time_to_first_report": get_statistic_from_group(
+                subscription_stats, "stats_all", "reported", "average"
+            ),            
+        }
+        return metrics
+
     def get_context_data(self, **kwargs):
         subscription_uuid = self.kwargs["subscription_uuid"]
         subscription = get_single(
@@ -56,19 +99,24 @@ class MonthlyReportsView(TemplateView):
             DHSContactModel,
             validate_dhs_contact,
         )
+
         campaigns = subscription.get("gophish_campaign_list")
         summary = [
             campaign_manager.get("summary", campaign_id=campaign.get("campaign_id"))
             for campaign in campaigns
         ]
-        target_count = sum([targets.get("stats").get("total") for targets in summary])
 
-        customer_address = """
-        {} {},
-        {} USA {}
-        """.format(
+        target_count = sum([targets.get("stats").get("total") for targets in summary])
+        
+        metrics = self.getMonthlyStats(subscription)        
+
+        customer_address = """{},\n{}""".format(
             customer.get("address_1"),
-            customer.get("address_2"),
+            customer.get("address_2")            
+        )
+
+        customer_address_2 = """{}, {} {} USA""".format(
+            customer.get("city"),
             customer.get("state"),
             customer.get("zip_code"),
         )
@@ -76,12 +124,29 @@ class MonthlyReportsView(TemplateView):
         dhs_contact_name = "{} {}".format(
             dhs_contact.get("first_name"), dhs_contact.get("last_name")
         )
+        
+        primary_contact = subscription.get("primary_contact")
+        primary_contact_name = "{} {}".format(primary_contact.get("first_name"),
+            primary_contact.get("last_name"))
+        
+        total_users_targeted = len(subscription["target_email_list"])        
+        svg_circle_sent = self.calculateSvgCircles(metrics["number_of_email_sent_overall"],
+            total_users_targeted)
+        svg_circle_opened = self.calculateSvgCircles(metrics["number_of_opened_emails"],
+            total_users_targeted)
+        svg_circle_clicked = self.calculateSvgCircles(metrics["number_of_clicked_emails"],
+            total_users_targeted)
+        
 
         context = {
             # Customer info
             "customer_name": customer.get("name"),
             "customer_identifier": customer.get("identifier"),
             "customer_address": customer_address,
+            "customer_address_2": customer_address_2,
+            # primary contact info
+            "primary_contact_name": primary_contact_name,
+            "primary_contact_email": primary_contact.get("email"),
             # DHS contact info
             "dhs_contact_name": dhs_contact_name,
             "dhs_contact_email": dhs_contact.get("email"),
@@ -91,10 +156,12 @@ class MonthlyReportsView(TemplateView):
             "start_date": subscription.get("start_date"),
             "end_date": subscription.get("end_date"),
             "target_count": target_count,
+            "metrics": metrics,
+            "sent_circle_svg": base64.b64encode(svg_circle_sent.encode('ascii')).decode('ascii'),
+            "opened_circle_svg": base64.b64encode(svg_circle_opened.encode('ascii')).decode('ascii'),
+            "clicked_circle_svg": base64.b64encode(svg_circle_clicked.encode('ascii')).decode('ascii')
         }
-
         return context
-
 
 class CycleReportsView(TemplateView):
     """
@@ -165,7 +232,7 @@ class YearlyReportsView(TemplateView):
     """
     Yearly Reports
     """
-
+    
     template_name = "reports/yearly.html"
 
     def get_context_data(self, **kwargs):
@@ -227,42 +294,6 @@ class YearlyReportsView(TemplateView):
 
 
 class CycleReports(TemplateView):
-    # DATA NEEDED
-    # Compnay
-    #     - name
-    #     - address
-    # SubscriptionPrimaryContact
-    #     - name
-    #     - phone
-    #     - email
-    # DHS Contact
-    #     - Organization/teamname/group
-    #     - email
-    # Customer
-    #     - full_name
-    #     - short_name
-    #     - poc_name
-    #     - poc_email
-    #     - Vulnerability Managment Team Lead
-    # Dates
-    #     - start_date
-    #     - end_date
-    # Quarters[] (previous)
-    #     - quarter
-    #         - quarter (2020-Q1)
-    #         - start_date (January 1, 2020 - March 30, 2020)
-    #         - end_date (April 1, 2020 - June 30, 2020)
-    #         - note (UNKNOWN)
-    # Metrics
-    #     - total_users_targeted
-    #     - number_of_email_sent_overall
-    #     - number_of_clicked emails
-    #     - number_of_phished_users_overall
-    #     - number_of_reports_to_helpdesk
-    #     - repots_to_clicks_ratio
-    #     - avg_time_to_first_click
-    #     - avg_time_to_first_report
-    #     - most_successful_template
     template_name = "reports/cycle.html"
 
     def get_context_data(self, **kwargs):

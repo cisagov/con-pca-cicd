@@ -1,13 +1,11 @@
 """Template Utils file for api."""
-from datetime import datetime
-
-from api.utils.generic import current_season, generate_random_name
-from api.utils.customer.customers import get_full_customer_address
-
 # Standard Python Libraries
+from datetime import datetime
 import logging
 
 # Third-Party Libraries
+from api.utils.customer.customers import get_full_customer_address
+from api.utils.generic import current_season, customer_spoof_email, generate_random_name
 from simpleeval import simple_eval
 
 logger = logging.getLogger(__name__)
@@ -59,6 +57,7 @@ def personalize_template(customer_info, template_data, sub_data, tag_list):
             "current_season": current_season,
             "get_full_customer_address": get_full_customer_address,
             "generate_random_name": generate_random_name,
+            "customer_spoof_email": customer_spoof_email,
         },
     }
 
