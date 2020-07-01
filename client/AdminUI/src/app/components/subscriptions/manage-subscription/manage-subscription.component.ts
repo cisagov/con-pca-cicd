@@ -1,15 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import {
-  MatDialogConfig,
-  MatDialog,
-  MatDialogRef
-} from '@angular/material/dialog';
-import {
-  FormGroup,
-  FormControl,
-  FormBuilder,
-  Validators
-} from '@angular/forms';
+import { MatDialogConfig, MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { FormGroup, FormControl, FormBuilder, Validators, ValidationErrors } from '@angular/forms';
 import { SubscriptionService } from 'src/app/services/subscription.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Customer, Contact } from 'src/app/models/customer.model';
@@ -63,8 +54,10 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
 
   // The raw CSV content of the textarea
   csvText: string;
+  badCSV = false;
 
   timelineItems: any[] = [];
+
 
   /**
    *
@@ -91,32 +84,38 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
    */
   ngOnInit(): void {
     // build form
-    this.subscribeForm = new FormGroup(
-      {
-        selectedCustomerUuid: new FormControl('', {
-          validators: Validators.required
-        }),
-        primaryContact: new FormControl(null, {
-          validators: Validators.required
-        }),
-        dhsContact: new FormControl(null, {
-          validators: Validators.required
-        }),
-        startDate: new FormControl(new Date()),
-        url: new FormControl(''),
-        keywords: new FormControl(''),
-        sendingProfile: new FormControl('', {
-          validators: Validators.required
-        }),
-        csvText: new FormControl('', {
-          validators: Validators.required
-        }),
-        removeDuplicateTargets: new FormControl(true)
-      },
-      {
+    this.subscribeForm = new FormGroup({
+      selectedCustomerUuid: new FormControl('', {
+        validators: Validators.required
+      }),
+      primaryContact: new FormControl(null, {
+        validators: Validators.required
+      }),
+      dhsContact: new FormControl(null, {
+        validators: Validators.required
+      }),
+      startDate: new FormControl(new Date(), {
+        validators: Validators.required
+      }),
+      url: new FormControl('', {
+        validators: this.notJustSpaces
+      }),
+      keywords: new FormControl('', {
+        validators: this.notJustSpaces
+      }),
+      sendingProfile: new FormControl('', {
+        validators: Validators.required
+      }),
+      csvText: new FormControl('', {
+        validators: [Validators.required, this.invalidCsv],
         updateOn: 'blur'
-      }
-    );
+      }),
+      removeDuplicateTargets: new FormControl(true, {
+        updateOn: 'change'
+      })
+    }, {
+      updateOn: 'blur'
+    });
 
     this.onChanges();
 
@@ -142,26 +141,24 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
       this.persistChanges();
     });
     this.f.url.valueChanges.subscribe(val => {
-      this.subscription.url = val;
+      this.subscription.url = val.trim();
       this.persistChanges();
     });
     this.f.keywords.valueChanges.subscribe(val => {
-      this.subscription.keywords = val;
+      this.subscription.keywords = val.trim();
       this.persistChanges();
     });
     this.f.sendingProfile.valueChanges.subscribe(val => {
       this.subscription.sending_profile_name = val;
     });
     this.f.csvText.valueChanges.subscribe(val => {
-      this.subscription.target_email_list = this.buildTargetsFromCSV(val);
-      this.f.csvText.setValue(
-        this.formatTargetsToCSV(this.subscription.target_email_list),
-        { emitEvent: false }
-      );
+      this.evaluateTargetList();
       this.persistChanges();
     });
     this.f.removeDuplicateTargets.valueChanges.subscribe(val => {
       this.subscriptionSvc.removeDupeTargets = val;
+      this.evaluateTargetList();
+      this.persistChanges();
     });
   }
 
@@ -169,8 +166,12 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
    * Sends the model to the API if the subscription is in edit mode.
    */
   persistChanges() {
+    if (this.subscribeForm.invalid) {
+      return;
+    }
+
     // patch the subscription in real time if in edit mode
-    if (this.pageMode.toLowerCase() === 'edit') {
+    if (!this.subscribeForm.errors && this.pageMode.toLowerCase() === 'edit') {
       this.subscriptionSvc.patchSubscription(this.subscription).subscribe();
     }
   }
@@ -205,13 +206,8 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
       .subscribe((s: Subscription) => {
         this.subscription = s as Subscription;
         this.subscriptionSvc.subscription = this.subscription;
-
-        let title = `Subscription - ${this.subscription.name}`;
-        if (s.status.toLowerCase() === 'stopped') {
-          title += ' (stopped)';
-        }
-        this.layoutSvc.setTitle(title);
-
+        this.f.selectedCustomerUuid.setValue(s.subscription_uuid);
+        this.setPageTitle();
         this.f.primaryContact.setValue(s.primary_contact.email);
         this.f.dhsContact.setValue(s.dhs_contact_uuid);
         this.f.startDate.setValue(s.start_date);
@@ -371,7 +367,7 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
         this.subscription.archived = true;
         this.subscriptionSvc
           .patchSubscription(this.subscription)
-          .subscribe(() => {});
+          .subscribe(() => { });
         this.enableDisableFields();
       }
     });
@@ -391,7 +387,7 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
         this.subscription.archived = false;
         this.subscriptionSvc
           .patchSubscription(this.subscription)
-          .subscribe(() => {});
+          .subscribe(() => { });
         this.enableDisableFields();
       }
     });
@@ -467,6 +463,9 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
     });
   }
 
+  /**
+   * Tests the form for validity.
+   */
   subValid() {
     this.submitted = true;
 
@@ -478,11 +477,17 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
     return true;
   }
 
+  /**
+   * Restart a stopped subscription.
+   */
   startSubscription() {
-    this.dialogRefConfirm = this.dialog.open(ConfirmComponent, {
-      disableClose: false
-    });
-    this.dialogRefConfirm.componentInstance.confirmMessage = `Are you sure you want to restart ${this.subscription.name}?`;
+    if (!this.subValid()) {
+      return;
+    }
+
+    this.dialogRefConfirm = this.dialog.open(ConfirmComponent, { disableClose: false });
+    this.dialogRefConfirm.componentInstance.confirmMessage =
+      `Are you sure you want to restart ${this.subscription.name}?`;
     this.dialogRefConfirm.componentInstance.title = 'Confirm Restart';
 
     this.dialogRefConfirm.afterClosed().subscribe(result => {
@@ -521,6 +526,9 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
     });
   }
 
+  /**
+   * Stop a running subscription.
+   */
   stopSubscription() {
     this.dialogRefConfirm = this.dialog.open(ConfirmComponent, {
       disableClose: false
@@ -552,11 +560,22 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
                     error.error
                 }
               });
-            }
-          );
+            });
       }
     });
   }
+
+  /**
+   * Set page title
+   */
+  setPageTitle() {
+    let title = `Subscription - ${this.subscription.name}`;
+    if (this.subscription.status.toLowerCase() === 'stopped') {
+      title += ' (stopped)';
+    }
+    this.layoutSvc.setTitle(title);
+  }
+
   /**
    * Submits the form to create a new Subscription.
    */
@@ -579,10 +598,10 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
     sub.url = this.f.url.value;
 
     // keywords
-    sub.keywords = this.f.keywords.value;
+    sub.keywords = this.f.keywords.value.trim();
 
     // set the target list
-    const csv = this.f.csvText.value;
+    const csv = this.f.csvText.value.trim();
     sub.target_email_list = this.buildTargetsFromCSV(csv);
 
     sub.sending_profile_name = this.f.sendingProfile.value;
@@ -639,6 +658,15 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
   }
 
   /**
+   * Parses the text into a list of targets.  Removes dupes if desired, and
+   * formats the targets back into CSV text and refreshes the field.
+   */
+  evaluateTargetList() {
+    this.subscription.target_email_list = this.buildTargetsFromCSV(this.f.csvText.value);
+    this.f.csvText.setValue(this.formatTargetsToCSV(this.subscription.target_email_list), { emitEvent: false });
+  }
+
+  /**
    * Converts a string with CSV lines into Targets.
    * Format: email, firstname, lastname, position
    * @param csv A comma-separated string with linefeed delimiters
@@ -648,17 +676,20 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
     if (!csv) {
       return;
     }
+
     const lines = csv.split('\n');
     lines.forEach((line: string) => {
       const parts = line.split(',');
-      if (parts.length === 4) {
-        const t = new Target();
-        t.email = parts[0].trim();
-        t.first_name = parts[1].trim();
-        t.last_name = parts[2].trim();
-        t.position = parts[3].trim();
-        targetList.push(t);
+      while (parts.length < 4) {
+        parts.push('');
       }
+
+      const t = new Target();
+      t.email = parts[0].trim();
+      t.first_name = parts[1].trim();
+      t.last_name = parts[2].trim();
+      t.position = parts[3].trim();
+      targetList.push(t);
     });
 
     // remove duplicate emails if desired
@@ -717,17 +748,58 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
   }
 
   /* Not in use yet
-
+  
   viewYearlyReport() {
     let url = `${this.settingsService.settings.apiUrl}/api/v1/reports/${this.subscription.subscription_uuid}/pdf/yearly/`;
     window.open(url, "_blank");
   }
-
+  
   sendYearlyReport() {
     let url = `${this.settingsService.settings.apiUrl}/api/v1/reports/${this.subscription.subscription_uuid}/email/yearly/`;
     window.open(url, "_blank");
   }
   */
+
+  /**
+   * A validator that allows an empty control, but does not allow
+   * only spaces.
+   */
+  notJustSpaces(control: FormControl) {
+    // allow an empty field
+    if (control.value === '') {
+      return null;
+    }
+    const isWhitespace = (control.value || '').trim().length === 0;
+    const isValid = !isWhitespace;
+    return isValid ? null : { whitespace: true };
+  }
+
+  /**
+   * A validator that requires the csv field to contain certain elements on each row
+   */
+  invalidCsv(control: FormControl) {
+    const exprEmail = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+    const lines = control.value.split('\n');
+    for (const line of lines) {
+      const parts = line.split(',');
+      if (parts.length !== 4) {
+        return { invalidTargetCsv: true };
+      }
+
+      for (const part of parts) {
+        if (part.trim() === '') {
+          return { invalidTargetCsv: true };
+        }
+      }
+
+      if (!!parts[0] && !exprEmail.test(String(parts[0]).toLowerCase())) {
+        return { invalidEmailFormat: true };
+      }
+    }
+
+    return null;
+  }
 
   /**
    *
