@@ -13,13 +13,18 @@ from notifications.views import ReportsEmailSender
 from api.manager import CampaignManager
 from api.utils.db_utils import get_single
 
+from api.utils.subscription import actions
+
 
 campaign_manager = CampaignManager()
 
 
 @shared_task
-def new_subscription_cycle(subscription):
-    subscription
+def start_subscription_cycle(subscription_uuid):
+    """
+    Create the next subscription cycle
+    """
+    actions.new_subscription_cycle(subscription_uuid)
     context = {
         "subscription_uuid": subscription.get("subscription_uuid"),
     }
@@ -46,13 +51,6 @@ def email_subscription_report(subscription_uuid, message_type, send_date):
             args=[subscription], eta=next_send_date
         )
     elif message_type == "cycle_report":
-        # Set GoPhish Campaign to Complete for Cycle Reports
-        campaigns = subscription.get("gophish_campaign_list")
-        [
-            campaign_manager.complete_campaign(campaign_id=campaign.get("campaign_id"))
-            for campaign in campaigns
-        ]
-
         # Schedule next task
         next_send_date = send_date + timedelta(days=90)
         task = email_subscription_cycle.apply_async(
