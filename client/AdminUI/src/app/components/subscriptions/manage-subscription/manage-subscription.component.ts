@@ -273,7 +273,6 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
       this.customer = c;
 
       this.customer.contact_list = this.customerSvc.getContactsForCustomer(c);
-      //this.customer.contact_list = this.customer.contact_list.filter(contact => (contact.active) === true);
       this.primaryContact = this.customer.contact_list[0];
     });
   }
