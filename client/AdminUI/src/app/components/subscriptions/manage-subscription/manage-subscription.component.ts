@@ -485,16 +485,12 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
       return;
     }
 
-    console.log('1');
     this.dialogRefConfirm = this.dialog.open(ConfirmComponent, { disableClose: false });
     this.dialogRefConfirm.componentInstance.confirmMessage =
       `Are you sure you want to restart ${this.subscription.name}?`;
     this.dialogRefConfirm.componentInstance.title = 'Confirm Restart';
 
-    console.log('2');
-
     this.dialogRefConfirm.afterClosed().subscribe(result => {
-      console.log('3');
       if (result) {
         // persist any changes before restart
         this.subscriptionSvc

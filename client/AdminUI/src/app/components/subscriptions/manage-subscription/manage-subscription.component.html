@@ -1,5 +1,5 @@
 <div>
-    <form [formGroup]="subscribeForm" (ngSubmit)="onSubmit()">
+    <form [formGroup]="subscribeForm">
         <div class="d-flex flex-column mb-5">
 
             <div class="w-100" *ngIf="pageMode!='CREATE'">
@@ -181,7 +181,8 @@
             </mat-form-field>
 
             <div class="text-right mt-3">
-                <button type="submit" mat-raised-button color="primary" *ngIf="pageMode == 'CREATE'">
+                <button type="submit" mat-raised-button color="primary" 
+                    (click)="onSubmit()" *ngIf="pageMode == 'CREATE'">
                     Create and Launch Subscription
                 </button>
             </div>
