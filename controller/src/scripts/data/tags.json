@@ -204,10 +204,10 @@
     "tag_type": "con-pca"
   },
   {
-    "data_source": "",
-    "description": "The name of a website to be used in a URL or email address.",
+    "data_source": "spoof_domain()",
+    "description": "Creates spoof name of a website to be used in a URL or email address.",
     "tag": "<%DOMAIN%>",
-    "tag_type": "con-pca"
+    "tag_type": "con-pca-eval"
   },
   {
     "data_source": "customer_info['identifier']",
