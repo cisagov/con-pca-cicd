@@ -19,10 +19,5 @@ urlpatterns = [
         "<subscription_uuid>/yearly/",
         views.YearlyReportsView.as_view(),
         name="yearly-reports-page",
-    ),
-    path(
-        "quarter/<subscription_uuid>/",
-        views.CycleReports.as_view(),
-        name="quarterly-reports-page",
-    ),
+    )  
 ]
