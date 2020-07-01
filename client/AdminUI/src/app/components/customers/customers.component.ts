@@ -57,11 +57,6 @@ export class CustomersComponent implements OnInit {
     });
   }
 
-  emitHideParentButtons() {
-    this.hideParentButtons.emit();
-  }
-
-
   /**
    *
    */

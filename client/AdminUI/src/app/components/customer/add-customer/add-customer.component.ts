@@ -20,8 +20,6 @@ export class AddCustomerComponent implements OnInit, OnDestroy {
 
   @Input() inDialog: boolean;
 
-  @Output() hideParentButtons = new EventEmitter();
-
   model: any;
   addContact = false;
   contactDataSource: any = [];
@@ -117,9 +115,6 @@ export class AddCustomerComponent implements OnInit, OnDestroy {
         }
       })
     );
-
-    // tell parent components to hide their buttons
-    this.hideParentButtons.emit();
   }
 
   getCustomer() {
