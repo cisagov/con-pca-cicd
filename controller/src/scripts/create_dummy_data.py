@@ -152,6 +152,11 @@ def main():
             datetime.now().strftime("%Y_%m_%d_%H%M%S")
         ),
     )
+    print("Add previous data for reporting")
+    for sub_id in created_customer_uuids:
+        print(sub_id)
+
+
     print("writing values to file: {}...".format(output_file))
 
     with open(output_file, "w") as outfile:

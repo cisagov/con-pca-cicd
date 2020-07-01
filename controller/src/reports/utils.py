@@ -313,7 +313,7 @@ def get_subscription_stats_for_cycle(subscription, start_date=None):
     low_decp_stats = consolidate_campaign_group_stats(
         list(filter(lambda x: x["deception_level"] == 1, campaign_results))
     )
-    medium_decp_stats = consolidate_campaign_group_stats(
+    moderate_decp_stats = consolidate_campaign_group_stats(
         list(filter(lambda x: x["deception_level"] == 2, campaign_results))
     )
     high_decp_stats = consolidate_campaign_group_stats(
@@ -325,7 +325,7 @@ def get_subscription_stats_for_cycle(subscription, start_date=None):
         "campaign_results": campaign_results,
         "stats_all": consolidated_stats,
         "stats_low_deception": low_decp_stats,
-        "stats_mid_deception": medium_decp_stats,
+        "stats_mid_deception": moderate_decp_stats,
         "stats_high_deception": high_decp_stats,
         "clicks_over_time": clicks_over_time,
     }

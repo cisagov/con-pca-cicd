@@ -115,19 +115,16 @@
                 </div>
             </div>
 
-            <mat-label class="h6">Reports</mat-label>
-            <div class="mb-4">
-                <div class="text-muted">View or send this subscription's reports</div>
-                <button mat-raised-button color="primary" class="mb-3" (click)="viewMonthlyReport()">View Monthly
-                    Report</button>
-                <button mat-raised-button color="primary" class="mb-3" (click)="viewCycleReport()">View Cycle
-                    Report</button><br><br>
-                <button mat-raised-button color="accent" class="mb-3" (click)="sendMonthlyReport()">Send Monthly
-                    Report</button>
-                <button mat-raised-button color="accent" class="mb-3" (click)="sendCycleReport()">Send Cycle
-                    Report</button><br>
+            <div *ngIf="pageMode!='CREATE'">
+                <mat-label class="h6">Reports</mat-label>
+                <div class="mb-4">
+                    <div class="text-muted">View or send this subscription's reports</div>
+                    <button mat-raised-button color="primary" class="mb-3" (click)="viewMonthlyReport()">View Monthly Report</button>
+                    <button mat-raised-button color="primary" class="mb-3" (click)="viewCycleReport()">View Cycle Report</button><br><br>
+                    <button mat-raised-button color="accent" class="mb-3" (click)="sendMonthlyReport()">Send Monthly Report</button>
+                    <button mat-raised-button color="accent" class="mb-3" (click)="sendCycleReport()">Send Cycle Report</button><br>
+                </div>
             </div>
-
 
             <div class="mb-3">
                 <div>
@@ -138,7 +135,7 @@
                     file containing the list of target individuals or enter them
                     directly in the field below.
                 </div>
-                <div class="text-muted"><em>Format: email, firstname, lastname, position</em></div>
+                <div class="text-muted"><em>Format: email, first name, last name, position</em></div>
             </div>
 
             <button mat-raised-button color="primary" class="mb-3" *ngIf="f.csvText?.enabled"

@@ -11,11 +11,8 @@ from gophish.models import SMTP, Page, Webhook
 API_KEY = os.environ.get("GP_API_KEY")
 URL = os.environ.get("GP_URL")
 API = Gophish(API_KEY, host=URL, verify=False)
-LOCAL_URL = (
-    "http://localhost:8000"
-    if os.environ.get("DEBUG") == "1"
-    else "https://localhost:8000"
-)
+LOCAL_URL = "http://localhost:8000"
+
 
 SENDING_PROFILES = [
     {
@@ -25,6 +22,13 @@ SENDING_PROFILES = [
         "username": os.environ.get("GP_SMTP_USER"),
         "password": os.environ.get("GP_SMTP_PASS"),
     },
+    {
+        "name": "REPORTING",
+        "host": "TEST",
+        "from_address": "TEST@TEST.TEST",
+        "username": "TESTUSER",
+        "password": "TESTPASSWORD"
+    }
 ]
 
 LANDING_PAGES = [
@@ -45,7 +49,12 @@ LANDING_PAGES = [
 ]
 
 WEBHOOKS = [
-    {"name": "con-pca-webhook", "url": os.environ.get("WEBHOOK_URL"), "is_active": True}
+    {
+        "name": "con-pca-webhook",
+        "url": os.environ.get("WEBHOOK_URL"),
+        "is_active": True,
+        "secret": os.environ.get("LOCAL_API_KEY"),
+    }
 ]
 
 
