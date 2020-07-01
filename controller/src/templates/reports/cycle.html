@@ -178,12 +178,12 @@
             <div id="coverFooter" class="row">
                 <div id="preparationDetails">
                     Prepared for:<br>
-                    {{ customer_name }}<br>
-                    {{ customer_address }}
+                    {{ customer.full_name }}<br>
+                    {{ customer.address_1 }} {{ customer.address_2 }}
                 </div>
                 <div id="dhsContactDetails">
                     Subscription Primary Contact<br>
-                    {{primary_contact_name}}<br>
+                    {{primary_contact.first_name}} {{primary_contact.last_name}}<br>
                     {{primary_contact_email}}<br>
                     DHS Contact<br>
                     {{ dhs_contact_name }}<br>                    
@@ -215,19 +215,19 @@
                         <table id="subscriptionDetailsTable">
                             <tr>
                                 <td>Customer Name&colon;</td>
-                                <td>{{ customer_name }}</td>
+                                <td>{{ customer.full_name }}</td>
                             </tr>
                             <tr>
                                 <td>Customer POC&colon;</td>
-                                <td>{{ customer_name }} </td>
+                                <td>{{primary_contact.first_name}} {{primary_contact.last_name}} </td>
                             </tr>
                             <tr>
                                 <td>Vulnerability Management<br>Team Lead&colon;</td>
-                                <td>Federal Lead, {{ dhs_contact_email }}</td>
+                                <td>Federal Lead, {{ DHS_contact.first_name }} {{ DHS_contact.last_name }}</td>
                             </tr>
                             <tr>
                                 <td>Dates&colon;</td>
-                                <td>{{ start_date|date:"M d, Y" }} - {{ end_date|date:"M d, Y" }}</td>
+                                <td>{{ target_cycle.start_date|date:"M d, Y" }} - {{ target_cycle.end_date|date:"M d, Y" }}</td>
                             </tr>
                             <tr>
                                 <td>Test Location&colon;</td>
@@ -243,7 +243,7 @@
                             </tr>
                             <tr>
                                 <td>Scope&colon;</td>
-                                <td>{{total_users_targeted}} users within the following domain&colon; {{ customer_identifier }}</td>
+                                <td>{{metrics.total_users_targeted}} users within the following domain&colon; {{ customer.identifier }}</td>
                             </tr>
                         </table>
                     </div>
@@ -258,7 +258,7 @@
                             </tr>
                             {%for cycle in cycles%}
                             <tr>
-                                <td>{{cycle.year}} {{cycle.qnumber}}</td>
+                                <td>{{cycle.count}} {{cycle.qnumber}}</td>
                                 <td>{{ start_date|date:"M d, Y" }} - {{ end_date|date:"M d, Y" }}</td>
                                 <td>{{cycle.notes}}</td>
                             </tr>
