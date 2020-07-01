@@ -8,7 +8,6 @@ import logging
 
 # Third-Party Libraries
 # Local Libraries
-# Third Party Libraries
 from api.manager import CampaignManager, TemplateManager
 from api.models.subscription_models import SubscriptionModel, validate_subscription
 from api.serializers.subscriptions_serializers import (
