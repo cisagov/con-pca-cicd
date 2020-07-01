@@ -321,7 +321,10 @@ class CycleReportsView(TemplateView):
             ),
         }
 
-        context = {}
+        context = {
+            "start_date": subscription.get("start_date"),
+            "end_date": subscription.get("end_date")
+        }
         context["subscription_uuid"] = subscription_uuid
         context["company"] = company
         context["subscription_primary_contact"] = subscription_primary_contact
@@ -334,5 +337,6 @@ class CycleReportsView(TemplateView):
         context["previous_cycles"] = previous_cycle_stats
         context["region_stats"] = region_stats
         context["subscription_stats"] = subscription_stats
+            
 
         return context
