@@ -19,6 +19,7 @@ from api.utils.subscription.subscriptions import (
     get_subscription_cycles,
     get_subscription_status,
     send_start_notification,
+    create_scheduled_cycle_tasks,
 )
 from api.utils.subscription.targets import batch_targets
 from api.utils.subscription.template_selector import personalize_template_batch
@@ -136,8 +137,9 @@ def start_subscription(data=None, subscription_uuid=None):
 
     # Schedule client side reports emails
     if not settings.DEBUG:
-        tasks = create_scheduled_email_tasks(response)
-        subscription["tasks"] = tasks
+        email_tasks = create_scheduled_email_tasks(response)
+        cycle_task = create_scheduled_cycle_tasks(response)
+        subscription["tasks"] = email_tasks
     else:
         subscription["tasks"] = []
 

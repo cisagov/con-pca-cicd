@@ -133,3 +133,19 @@ def create_scheduled_email_tasks(created_response):
             logger.exception("Subscription task raised: %r", exc)
 
     return context
+
+
+def create_scheduled_cycle_tasks(created_response):
+    subscription_uuid = created_response.get("subscription_uuid")
+    send_date = datetime.utcnow() + timedelta(days=90)
+
+    context = []
+    try:
+        task = start_subscription_cycle.apply_async(
+            args=[subscription_uuid], eta=send_date, retry=True,
+        )
+        context.append({"task_uuid": task.id, "message_type": message_type})
+    except task.OperationalError as exc:
+        logger.exception("Subscription task raised: %r", exc)
+
+    return context
