@@ -20,4 +20,6 @@ ADD ./src /app
 COPY ./etc/entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod a+x /usr/local/bin/entrypoint.sh
 
+EXPOSE 8000
+
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
