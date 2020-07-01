@@ -164,6 +164,8 @@ def stop_subscription(subscription):
 
         Delete Campaign
 
+        Delete Template
+
         Returns updated Campaign
         """
         campaign_manager.complete_campaign(campaign_id=campaign["campaign_id"])
