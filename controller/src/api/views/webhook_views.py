@@ -77,6 +77,16 @@ class IncomingWebhookView(APIView):
                 return True
         return False
 
+    def has_corresponding_opened_event(self, timeline,webhook_data):
+        """Check if webhook click response has corresponding opened timeline entry"""
+        for moment in timeline:
+            if (
+                moment["message"] == "Email Opened"
+                and moment["email"] == webhook_data["email"]
+            ):
+                return True
+        return False
+
     def __handle_webhook_data(self, data):
         """
         Handle Webhook Data.
@@ -118,6 +128,7 @@ class IncomingWebhookView(APIView):
                     gophish_campaign
                 )
                 is_duplicate = True
+                
                 gophish_campaign_data = gophish_campaign_serialized.data
                 if (
                     subscription["status"] == "Queued"
@@ -157,7 +168,13 @@ class IncomingWebhookView(APIView):
                                     "submitted": 0,
                                     "reported": 0,
                                 }
-
+                            if not self.has_corresponding_opened_event(campaign["timeline"],seralized_data) and seralized_data["message"] != "Email Sent":
+                                #Event found without corresponding opened event, creating opened record
+                                temp_opened_event = {"message": "Email Opened"}
+                                self.__update_phishing_results(
+                                    temp_opened_event, campaign["phish_results"]
+                                )    
+                                self.__update_cycle(temp_opened_event, subscription)
                             self.__update_phishing_results(
                                 data, campaign["phish_results"]
                             )
