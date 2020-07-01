@@ -1,9 +1,8 @@
-import { Component, OnInit, Input, OnDestroy, Inject, ChangeDetectionStrategy } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy, Inject, ChangeDetectionStrategy, EventEmitter, Output } from '@angular/core';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { MyErrorStateMatcher } from '../../../helper/ErrorStateMatcher';
 import { SubscriptionService } from 'src/app/services/subscription.service';
 import { Contact, Customer } from 'src/app/models/customer.model';
-import { Guid } from 'guid-typescript';
 import { Router, ActivatedRoute } from '@angular/router';
 import { CustomerService } from 'src/app/services/customer.service';
 import { MatDialog, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
@@ -14,12 +13,14 @@ import { Subscription } from 'rxjs';
 @Component({
   selector: 'app-add-customer',
   templateUrl: './add-customer.component.html',
-  styleUrls: ['./add-customer.component.scss'], 
+  styleUrls: ['./add-customer.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AddCustomerComponent implements OnInit, OnDestroy {
 
   @Input() inDialog: boolean;
+
+  @Output() hideParentButtons = new EventEmitter();
 
   model: any;
   addContact = false;
@@ -84,22 +85,21 @@ export class AddCustomerComponent implements OnInit, OnDestroy {
     public layoutSvc: LayoutMainService
   ) {
     layoutSvc.setTitle('Customers');
-    
+
   }
 
   ngOnInit(): void {
-
     if (this.dialog.openDialogs.length > 0) {
       this.inDialog = true;
     } else {
       this.inDialog = false;
     }
-    
-    this.customerFormGroup.get('customerType').valueChanges.subscribe( value => {
-      if(value == "Private") {
+
+    this.customerFormGroup.get('customerType').valueChanges.subscribe(value => {
+      if (value === "Private") {
         this.customerFormGroup.controls['sector'].setValidators(Validators.required);
         this.customerFormGroup.controls['industry'].setValidators(Validators.required);
-        
+
       } else {
         this.customerFormGroup.controls['sector'].clearValidators();
         this.customerFormGroup.controls['industry'].clearValidators();
@@ -117,6 +117,9 @@ export class AddCustomerComponent implements OnInit, OnDestroy {
         }
       })
     );
+
+    // tell parent components to hide their buttons
+    this.hideParentButtons.emit();
   }
 
   getCustomer() {
@@ -203,21 +206,20 @@ export class AddCustomerComponent implements OnInit, OnDestroy {
     this.clearCustomer();
   }
 
-  checkCustomerType(){
+  checkCustomerType() {
     let customerType = this.customerFormGroup.controls['customerType'].value;
-    if(customerType == "Private")
-    {
+    if (customerType === "Private") {
       return true;
     }
-    
+
     return false;
   }
 
   pushCustomer() {
     if (this.customerFormGroup.valid && this.contacts.data.length > 0) {
       let sector = '';
-      let industry ='';
-      if(this.checkCustomerType()){
+      let industry = '';
+      if (this.checkCustomerType()) {
         sector = this.customerFormGroup.controls['sector'].value;
         industry = this.customerFormGroup.controls['industry'].value;
       }

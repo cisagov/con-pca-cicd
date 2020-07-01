@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, EventEmitter, Output } from '@angular/core';
 import { MatTableDataSource } from '@angular/material/table';
 import { LayoutMainService } from 'src/app/services/layout-main.service';
 import { CustomerService } from 'src/app/services/customer.service';
@@ -14,6 +14,8 @@ import { Customer } from 'src/app/models/customer.model';
 export class CustomersComponent implements OnInit {
 
   @Input() insideDialog: boolean;
+
+  @Output() hideParentButtons = new EventEmitter();
 
   displayed_columns = [
     'name',
@@ -54,6 +56,11 @@ export class CustomersComponent implements OnInit {
       }
     });
   }
+
+  emitHideParentButtons() {
+    this.hideParentButtons.emit();
+  }
+
 
   /**
    *
