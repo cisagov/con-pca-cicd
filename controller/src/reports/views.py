@@ -393,6 +393,7 @@ class CycleReportsView(TemplateView):
         context["previous_cycles"] = previous_cycle_stats
         context["region_stats"] = region_stats
         context["subscription_stats"] = subscription_stats
+            
 
         print(context)
 

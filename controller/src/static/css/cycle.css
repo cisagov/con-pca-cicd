@@ -1,11 +1,10 @@
 @charset "UTF-8";
 @page {
   size: Letter;
-  margin: 2.5cm;
+  margin: 0;
 }
 
-html {
-  background-color: #cecece;
+html {  
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -17,7 +16,7 @@ body {
   max-width: 1024px;
   margin-left: auto;
   margin-right: auto;
-  padding: 0 50px;
+  padding: 0 20px;
 }
 
 * {
@@ -32,13 +31,17 @@ body {
   page-break-after: always;
 }
 
+article:nth-of-type(n+2) {
+  padding-top: 100px;
+}
+
 /* Cover */
 
 #blueDateBox {
   background-color: #164A91;
   color: #fff;
-  margin: 0 0 0 -35px;
-  padding: 100px 30px 300px 100px;
+  margin: 0 0 0 -110px;
+  padding: 160px 30px 400px 100px;
   text-align: right;
 }
 
@@ -46,6 +49,7 @@ body {
   font-size: 4.7em;
   letter-spacing: 5px;
   line-height: 1em;
+  padding-top: 150px;
 }
 
 .dateRange {
@@ -54,38 +58,37 @@ body {
   padding-right: 10px;
 }
 
-#bluePhishLogo {
-  left: 450px;
-  position: relative;
-  top: -430px;
+#bluePhishLogo {  
+  margin: -535px -100px 0 0;
+  text-align: right;
 }
 
 #whiteBox {
   background-color: #fff;
   height: 400px;
-  margin: -395px 0 0 30px;
+  margin: -385px 0 0 -15px;
 }
 
 #blueHacker {
-  margin-top: -605px;
-  margin-left: -85px;
-  transform: scale(0.75);
+  margin-top: -720px;
+  margin-left: -105px;
+  transform: scale(0.8);
 }
 
 #leftYellowBox {
-  border-left: 1px solid #FDC010;
-  border-top: 1px solid #FDC010;
+  border-left: 2px solid #FDC010;
+  border-top: 2px solid #FDC010;
   height: 150px;
-  margin: -505px 0 0 390px;
+  margin: -525px 0 0 400px;
   width: 45px;
 }
 
 #rightYellowBox {
-  border: 1px solid #FDC010;
+  border: 2px solid #FDC010;
   border-left: none;
-  height: 260px;
-  margin: -115px 0 0 50px;
-  width: 725px;
+  height: 290px;
+  margin: -25px 0 0 50px;
+  width: 745px;
 }
 
 .smallerTitle {
@@ -107,7 +110,7 @@ body {
   display: flex;
   flex-flow: row nowrap;
   justify-content: space-evenly;
-  margin-bottom: 100px;
+  margin: 100px 0;
 }
 
 /* Page One */
