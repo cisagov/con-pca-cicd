@@ -6,6 +6,7 @@ import base64
 # Third-Party Libraries
 # Local Libraries
 # Django Libraries
+from scipy.stats.mstats import gmean  
 from api.manager import CampaignManager
 from api.models.customer_models import CustomerModel, validate_customer
 from api.models.subscription_models import SubscriptionModel, validate_subscription
@@ -55,29 +56,27 @@ class MonthlyReportsView(TemplateView):
         start_date = subscription["start_date"]
         # Get statistics for the specified subscription during the specified cycle
         subscription_stats = get_subscription_stats_for_cycle(subscription, start_date)
+        opened = get_statistic_from_group(subscription_stats, "stats_all", "opened", "count")
         clicked = get_statistic_from_group(subscription_stats, "stats_all", "clicked", "count")
         sent  = get_statistic_from_group(subscription_stats, "stats_all", "sent", "count")
+        submitted = get_statistic_from_group(subscription_stats, "stats_all", "submitted", "count")
+        reported = get_statistic_from_group(subscription_stats, "stats_all", "reported", "count")
+
+        total = len(subscription["target_email_list"])
         metrics = {
-            "total_users_targeted": len(subscription["target_email_list"]),
+            "total_users_targeted": total,
             "number_of_email_sent_overall": sent,
             "number_of_clicked_emails": clicked,
             "percent_of_clicked_emails": round(float(clicked or 0)/float(1 if sent is None else sent),2),
-            "number_of_opened_emails": get_statistic_from_group(
-                subscription_stats, "stats_all", "opened", "count"
-            ),
-            "number_of_phished_users_overall": get_statistic_from_group(
-                subscription_stats, "stats_all", "submitted", "count"
-            ),
-            "number_of_reports_to_helpdesk": get_statistic_from_group(
-                subscription_stats, "stats_all", "reported", "count"
-            ),
+            "number_of_opened_emails": opened,
+            "number_of_phished_users_overall": total,
+            "percent_of_phished_users_overall": round(float(clicked or 0)/float(1 if total is None else total),2),
+            "number_of_reports_to_helpdesk": reported,
+            "percent_report_rate": round(float(reported or 0)/float(1 if opened is None else opened),2),
             "reports_to_clicks_ratio": get_reports_to_click(subscription_stats),
-            "avg_time_to_first_click": get_statistic_from_group(
-                subscription_stats, "stats_all", "clicked", "average"
-            ),
-            "avg_time_to_first_report": get_statistic_from_group(
-                subscription_stats, "stats_all", "reported", "average"
-            ),            
+            "avg_time_to_first_click": get_statistic_from_group(subscription_stats, "stats_all", "clicked", "average"),
+            "avg_time_to_first_report": get_statistic_from_group(subscription_stats, "stats_all", "reported", "average"),            
+            "ratio_reports_to_clicks": round(float(reported or 0)/float(1 if clicked is None else clicked),2),
         }
         return metrics
 
@@ -162,71 +161,6 @@ class MonthlyReportsView(TemplateView):
             "clicked_circle_svg": base64.b64encode(svg_circle_clicked.encode('ascii')).decode('ascii')
         }
         return context
-
-class CycleReportsView(TemplateView):
-    """
-    Cycle Reports
-    """
-
-    template_name = "reports/cycle.html"
-
-    def get_context_data(self, **kwargs):
-        subscription_uuid = self.kwargs["subscription_uuid"]
-        subscription = get_single(
-            subscription_uuid, "subscription", SubscriptionModel, validate_subscription
-        )
-        customer = get_single(
-            subscription.get("customer_uuid"),
-            "customer",
-            CustomerModel,
-            validate_customer,
-        )
-
-        dhs_contact = get_single(
-            subscription.get("dhs_contact_uuid"),
-            "dhs_contact",
-            DHSContactModel,
-            validate_dhs_contact,
-        )
-        campaigns = subscription.get("gophish_campaign_list")
-        summary = [
-            campaign_manager.get("summary", campaign_id=campaign.get("campaign_id"))
-            for campaign in campaigns
-        ]
-        target_count = sum([targets.get("stats").get("total") for targets in summary])
-
-        customer_address = """
-        {} {},
-        {} USA {}
-        """.format(
-            customer.get("address_1"),
-            customer.get("address_2"),
-            customer.get("state"),
-            customer.get("zip_code"),
-        )
-
-        dhs_contact_name = "{} {}".format(
-            dhs_contact.get("first_name"), dhs_contact.get("last_name")
-        )
-
-        context = {
-            # Customer info
-            "customer_name": customer.get("name"),
-            "customer_identifier": customer.get("identifier"),
-            "customer_address": customer_address,
-            # DHS contact info
-            "dhs_contact_name": dhs_contact_name,
-            "dhs_contact_email": dhs_contact.get("email"),
-            "dhs_contact_mobile_phone": dhs_contact.get("office_phone"),
-            "dhs_contact_office_phone": dhs_contact.get("mobile_phone"),
-            # Subscription info
-            "start_date": subscription.get("start_date"),
-            "end_date": subscription.get("end_date"),
-            "target_count": target_count,
-        }
-
-        return context
-
 
 class YearlyReportsView(TemplateView):
     """

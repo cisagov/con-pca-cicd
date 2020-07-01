@@ -4,6 +4,22 @@
   margin: 2.5cm;
 }
 
+html {
+  background-color: #cecece;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+body {
+  -webkit-print-color-adjust: exact !important;
+  font-size: 16px;
+  max-width: 1024px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0 50px;
+}
+
 * {
     font-family: Arial, sans-serif;
 }
@@ -16,86 +32,294 @@
   page-break-after: always;
 }
 
-#bluePhishLogo {
-  margin-right: -2.5%;
+/* Cover */
+
+#blueDateBox {
+  background-color: #164A91;
+  color: #fff;
+  margin: 0 0 0 -35px;
+  padding: 100px 30px 300px 100px;
   text-align: right;
 }
 
+.year {
+  font-size: 4.7em;
+  letter-spacing: 5px;
+  line-height: 1em;
+}
+
+.dateRange {
+  font-size: 1em;
+  letter-spacing: 1px;
+  padding-right: 10px;
+}
+
+#bluePhishLogo {
+  left: 450px;
+  position: relative;
+  top: -430px;
+}
+
+#whiteBox {
+  background-color: #fff;
+  height: 400px;
+  margin: -395px 0 0 30px;
+}
+
 #blueHacker {
-  margin-top: 8%;
-  margin-left: 10%;
+  margin-top: -605px;
+  margin-left: -85px;
+  transform: scale(0.75);
+}
+
+#leftYellowBox {
+  border-left: 1px solid #FDC010;
+  border-top: 1px solid #FDC010;
+  height: 150px;
+  margin: -505px 0 0 390px;
+  width: 45px;
+}
+
+#rightYellowBox {
+  border: 1px solid #FDC010;
+  border-left: none;
+  height: 260px;
+  margin: -115px 0 0 50px;
+  width: 725px;
+}
+
+.smallerTitle {
+  font-size: 0.5em;
+  letter-spacing: 1px;
+  padding-left: 5px;
 }
 
 #reportTitle {
-  font-size: 125px;
-  color: #015596;
-  margin-top: 7.5%;
-  text-align: center;
+  font-size: 4em;
+  color: #015596; 
+  letter-spacing: 2px;
+  margin: -75px 0 100px 100px;
+  text-transform: uppercase;
 }
 
-#preparationDetails {
-  margin-top: 20%;
-  margin-left: 33%;
-  text-align: center;
+#coverFooter {
+  align-items: flex-start;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-evenly;
+  margin-bottom: 100px;
 }
 
-#dhsContactDetails {
-  margin-top: 15%;
-  margin-left: 20%;
-  width: 60%;
-  text-align: center;
-}
-
-#cisa_logo {
-  margin-top: 12%;
-  margin-left: 15%;
-}
+/* Page One */
 
 #centerCisaLogo {
+  margin: 30px 0;
   text-align: center;
 }
 
 #assessmentTitle {
+  font-size: 2em;
+  margin: 30px 0;
   text-align: center;
-  margin-top: 3%;
-  margin-bottom: 5%;
 }
 
-#subscriptionDetailsTable {
-  margin-top: 5%;
-  margin-bottom: 5%;
-  margin-right: auto;
-  margin-left: 25%;
-  width: 60%;
+table {
+  margin-bottom: 20px;
+}
+
+#subscriptionDetailsTable, #datesTable {
+  margin: 0 0 40px 0;
 }
 
 #datesTable {
-  margin-top: 5%;
-  margin-right: auto;
-  margin-left: 25%;
-  width: 60%;
+  margin-bottom: 300px;
 }
+
+#subscriptionDetailsTable td, #subscriptionDetailsTable th, #datesTable td, #datesTable th  {
+  padding: 8px 0;
+  vertical-align: bottom;
+}
+
+#subscriptionDetailsTable tr td:first-of-type {
+  padding-right: 20px;
+  width: 280px;
+}
+
+#datesTable tr td:first-of-type {
+  padding-right: 20px;
+  width: 160px;
+}
+
+#datesTable tr td:nth-of-type(2) {
+  padding-right: 20px;
+  width: 350px;
+}
+
+/* Page Two */
 
 #reportInstructions {
-  margin-top: 10%;
-  margin-left: auto;
-  margin-right: auto;
+  margin-bottom: 500px;
 }
+
+ol {
+  padding-left: 20px;
+}
+
+h3 {
+  font-weight: bold;
+}
+
+/* Page Three */
 
 #executiveReportTitle {
-  width: 60%;
+  font-size: 3.2em;
+  color: #015596; 
+  letter-spacing: 2px;
+  line-height: 0.8em;
+  margin-bottom: 30px;
+  text-transform: uppercase;
+}
+
+#executiveReportDetails:last-child {
+  margin-bottom: 0;
+}
+
+.tableOneTitle {
   color: #015596;
+  font-size: 0.8em;
+  text-align: center;
 }
-
-.executiveReportDetails {
-  margin-top: 2.5%;
-}
-
 #userMetrics {
-  margin-left: 10%;
-  border: 1px solid black;
+  border: 2px solid #cecece;
+  margin: 10px auto 40px auto;
+  width: 100%;
 }
 
+#userMetrics th, #userMetrics td {
+  padding: 5px 5px 0 5px;
+}
+
+#userMetrics thead {
+  border-bottom: solid 2px #000;
+}
+
+#userMetrics tbody {
+  font-size: 0.9em;
+}
+
+#userMetrics tbody tr:nth-of-type(odd) {
+  background-color: #e8f4f8;
+}
+
+ul {
+  padding-left: 20px;
+}
+
+/* Page Five */
+
+#summaryTitle {
+  font-size: 3.2em;
+  color: #015596; 
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+#companyAverageText {
+  margin: 40px 150px 40px 80px;
+  text-align: center;
+}
+
+#nationalAverageText, #industryAverageText, #sectorAverageText {
+  text-align: center;
+}
+
+#nationalAverageText {
+  margin: 0 0 40px 120px;
+}
+
+#sectorAverageText {
+  margin: 140px 60px 40px -230px;
+}
+
+#industryAverageText {
+  margin: 140px 0 40px 0px;
+}
+
+#companyAverageBox {
+  background-image: linear-gradient(to right, #164A91, #1979a7);
+  color: #fff;
+  font-family: 'Times New Roman', Times, serif;
+  font-size: 3.5em;
+  padding: 20px 35px;
+}
+
+#nationalAverageBox, #industryAverageBox, #sectorAverageBox {
+  background-image: linear-gradient(to right, #164A91, #1979a7);
+  color: #fff;
+  font-family: 'Times New Roman', Times, serif;
+  font-size: 2.5em;
+  padding: 20px 30px;
+}
+
+#yearTrendGraph, #levelGraphTitle {
+  border: 1px solid #FDC010;
+  border-radius: 10px;
+  color: #015596;
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+#yearTrendGraph p {
+  padding-top: 20px;
+}
+
+#trendLineGraph, numbersByLevelGraph {
+  margin-bottom: 10px;
+}
+
+#trendStatistics {
+  font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
+}
+
+/* Page Six */
+
+/* SVG Bar Chart */
+.caption, .legend-caption {
+  fill: #164A91;
+}
+
+.legend-caption {
+  font-size: 0.75em;
+}
+
+.blue-bar {
+  fill:#1979a7;
+}
+
+.dark-blue-bar {
+  fill:#164A91;
+}
+
+.yellow-bar {
+  fill:#FDC010;
+}
+
+.bar-chart, #successOverview {
+  border: 1px solid #FDC010;
+  border-radius: 10px;
+  color: #164A91;
+  height: auto;
+  margin: 20px auto 0 auto;
+  text-align: center;
+  width: 100%;
+}
+
+.bar-chart h4 {
+  margin-top: 10px;
+}
+
+
+/*
 #subNotesOne {
   margin-top: 1%;
   margin-left: 10%;
@@ -371,3 +595,4 @@
 #hardEmailBody {
   margin-left: 5%;
 }
+*/
