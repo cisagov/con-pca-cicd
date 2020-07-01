@@ -1,6 +1,8 @@
 # Based on https://github.com/labd/django-cognito-jwt under MIT license
 import logging
 import time
+import hmac
+import hashlib
 
 from django.apps import apps as django_apps
 from django.conf import settings
@@ -22,13 +24,25 @@ class JSONWebTokenAuthentication(BaseAuthentication):
         """Entrypoint for Django Rest Framework"""
         print(settings.COGNITO_DEPLOYMENT_MODE)
 
+        gp_sign = request.headers.get("X-Gophish-Signature")
+        if gp_sign:
+            gp_sign = gp_sign.split("=")[-1]
+            h = hmac.new(LOCAL_API_KEY.encode(), request.body, hashlib.sha256)
+            if h.hexdigest() == gp_sign:
+                user = {"username": "gophish", "groups": {"develop"}}
+                token = "Empty token"
+                return (user, token)
+
         if settings.COGNITO_DEPLOYMENT_MODE == "Development":
             print("Using develop authorization")
             user = {"username": "developer user", "groups": {"develop"}}
             token = "Empty token"
             return (user, token)
 
-        if get_authorization_header(request).decode() == LOCAL_API_KEY:
+        if (
+            LOCAL_API_KEY
+            and get_authorization_header(request).decode() == LOCAL_API_KEY
+        ):
             print("Local api authorization")
             user = {"username": "api", "groups": {"develop"}}
             token = "Empty token"

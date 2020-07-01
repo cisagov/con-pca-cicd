@@ -11,9 +11,9 @@ from api.utils.template.templates import get_email_templates
 logger = logging.getLogger()
 
 
-def get_num_templates_per_batch(diversity_level="medium"):
+def get_num_templates_per_batch(diversity_level="moderate"):
     """Get_num_templates_per_batch."""
-    numbers = {"high": 8, "medium": 5, "low": 3}
+    numbers = {"high": 8, "moderate": 5, "low": 3}
     return numbers.get(diversity_level, 5)
 
 

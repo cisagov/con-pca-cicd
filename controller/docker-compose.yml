@@ -12,8 +12,8 @@ services:
     restart: on-failure
     links:
       - mongodb
-    ports:
-      - "8000:8000"
+    expose:
+      - "8000"
     volumes:
       - ./src:/app
     env_file:
@@ -92,6 +92,21 @@ services:
       - .env
     networks:
       - backend
+
+  nginx:
+    container_name: pca-api-nginx
+    build:
+      context: ./etc/nginx/
+    depends_on:
+      - api
+    ports:
+      - 8000:80
+      - 8043:443
+    networks:
+      - backend
+    volumes:
+      - ./src/staticfiles:/code/static
+
 
 # Host volumes used to store code.
 volumes:
