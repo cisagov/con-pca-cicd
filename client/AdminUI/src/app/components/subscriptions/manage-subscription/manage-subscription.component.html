@@ -48,7 +48,7 @@
                             <mat-option *ngFor="let c of customer?.contact_list" [value]="c.email">
                                 {{ c.first_name }} {{ c.last_name }}</mat-option>
                         </mat-select>
-                        <mat-error *ngIf="f.primaryContact.errors?.required" class="invalid-feedback">
+                        <mat-error *ngIf="submitted && f.primaryContact.errors?.required" class="invalid-feedback">
                             A primary contact must be selected
                         </mat-error>
                     </mat-form-field>
@@ -62,7 +62,7 @@
                             <mat-option *ngFor="let c of dhsContacts" [value]="c.dhs_contact_uuid">
                                 {{ c.first_name }} {{ c.last_name }}</mat-option>
                         </mat-select>
-                        <mat-error *ngIf="f.dhsContact.errors?.required" class="invalid-feedback">
+                        <mat-error *ngIf="submitted && f.dhsContact.errors?.required" class="invalid-feedback">
                             DHS contact must be selected
                         </mat-error>
                     </mat-form-field>
@@ -76,8 +76,11 @@
                     <input matInput [matDatepicker]="picker" [min]="startAt" formControlName="startDate">
                     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                     <mat-datepicker #picker [startAt]="startAt"></mat-datepicker>
-                    <mat-error *ngIf="f.startDate.errors?.required" class="invalid-feedback">
+                    <mat-error *ngIf="submitted && f.startDate.errors?.required" class="invalid-feedback">
                         Start Date is required
+                    </mat-error>
+                    <mat-error *ngIf="submitted && f.startDate.errors?.matDatepickerMin" class="invalid-feedback">
+                        Start Date cannot be in the past
                     </mat-error>
                 </mat-form-field>
             </div>
@@ -90,7 +93,7 @@
             <mat-form-field class="w-100" appearance="outline">
                 <input matInput formControlName="url" type="text"
                     [ngClass]="{ 'is-invalid': submitted && f.url.errors }">
-                <mat-error *ngIf="f.url.errors?.whitespace" class="invalid-feedback">
+                <mat-error *ngIf="submitted && f.url.errors?.whitespace" class="invalid-feedback">
                     Customer Website may not contain only spaces
                 </mat-error>
             </mat-form-field>
@@ -102,7 +105,7 @@
             <mat-form-field class="w-100" appearance="outline">
                 <mat-label>Applicability Word Tags</mat-label>
                 <textarea matInput autosize formControlName="keywords"></textarea>
-                <mat-error *ngIf="f.keywords.errors?.whitespace" class="invalid-feedback">
+                <mat-error *ngIf="submitted && f.keywords.errors?.whitespace" class="invalid-feedback">
                     Keywords may not contain only spaces
                 </mat-error>
             </mat-form-field>
@@ -118,7 +121,7 @@
                         <mat-option *ngFor="let sp of sendingProfiles" [value]="sp.name">
                             {{ sp.name }}</mat-option>
                     </mat-select>
-                    <mat-error *ngIf="f.sendingProfile.errors?.required" class="invalid-feedback">
+                    <mat-error *ngIf="submitted && f.sendingProfile.errors?.required" class="invalid-feedback">
                         Sending Profile required
                     </mat-error>
                 </mat-form-field>
@@ -166,13 +169,13 @@
                 <textarea matInput autosize formControlName="csvText"
                     [ngClass]="{ 'is-invalid': submitted && f.csvText.errors }">
                     </textarea>
-                <mat-error *ngIf="f.csvText.hasError('invalidEmailFormat')" class="invalid-feedback">
+                <mat-error *ngIf="submitted && f.csvText.hasError('invalidEmailFormat')" class="invalid-feedback">
                     One or more email addresses are invalid
                 </mat-error>
-                <mat-error *ngIf="f.csvText.errors?.required" class="invalid-feedback">
+                <mat-error *ngIf="submitted && f.csvText.errors?.required" class="invalid-feedback">
                     At least 1 target must be defined
                 </mat-error>
-                <mat-error *ngIf="f.csvText.hasError('invalidTargetCsv')" class="invalid-feedback">
+                <mat-error *ngIf="submitted && f.csvText.hasError('invalidTargetCsv')" class="invalid-feedback">
                     All target lines must have all parts
                 </mat-error>
             </mat-form-field>
