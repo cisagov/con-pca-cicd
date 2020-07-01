@@ -19,7 +19,10 @@ from api.serializers.subscriptions_serializers import (
     SubscriptionPostSerializer,
 )
 from api.utils.db_utils import delete_single, get_list, get_single, update_single
-from api.utils.subscription.actions import start_subscription, stop_subscription
+from api.utils.subscription.actions import (
+    start_subscription,
+    stop_subscription,
+)
 from celery.task.control import revoke
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema

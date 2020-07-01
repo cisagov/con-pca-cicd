@@ -18,6 +18,15 @@ campaign_manager = CampaignManager()
 
 
 @shared_task
+def new_subscription_cycle(subscription):
+    subscription
+    context = {
+        "subscription_uuid": subscription.get("subscription_uuid"),
+    }
+    return context
+
+
+@shared_task
 def email_subscription_report(subscription_uuid, message_type, send_date):
     """
     Schedule periodic subscription report emails
