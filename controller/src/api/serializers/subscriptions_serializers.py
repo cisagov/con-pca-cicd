@@ -118,6 +118,14 @@ class GoPhishCampaignsSerializer(serializers.Serializer):
     timeline = GoPhishTimelineSerializer(many=True)
     target_email_list = SubscriptionTargetSerializer(many=True, required=False)
 
+class CycleSerializer(serializers.Serializer):
+    "this is the Cycle serializer used for general reporting"
+
+    start_date = serializers.DateTimeField()
+    end_date = serializers.DateTimeField()
+    active = serializers.BooleanField()
+    campaigns_in_cycle = serializers.ListField()
+    phish_results = PhishingResultsSerializer()
 
 class SubscriptionTasksSerializer(serializers.Serializer):
     """
@@ -166,6 +174,7 @@ class SubscriptionGetSerializer(serializers.Serializer):
     archived = serializers.BooleanField(default=False)
     manually_stopped = serializers.BooleanField(default=False)
     tasks = SubscriptionTasksSerializer(many=True, required=False)
+    cycles = CycleSerializer(many=True)
     # db data tracking added below
     created_by = serializers.CharField(max_length=100)
     cb_timestamp = serializers.DateTimeField()

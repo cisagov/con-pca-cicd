@@ -86,7 +86,7 @@ class ReportsView(APIView):
         # distribute statistics into deception levels
         levels = []
         levels.append(DeceptionLevelStatsModel("low", 1))
-        levels.append(DeceptionLevelStatsModel("medium", 2))
+        levels.append(DeceptionLevelStatsModel("moderate", 2))
         levels.append(DeceptionLevelStatsModel("high", 3))
 
         for c in summary:
@@ -98,7 +98,9 @@ class ReportsView(APIView):
             bucket = next(
                 level for level in levels if level.level_number == level_number
             )
-            bucket.sent = bucket.sent + c.get("stats").get("sent") or 0
+            bucket.sent = bucket.sent + c.get("stats", {}).get("sent", 0)
+            bucket.clicked = bucket.clicked + c.get("stats", {}).get("clicked", 0)
+            bucket.opened = bucket.opened + c.get("stats", {}).get("clicked", 0)
 
         # aggregate statistics
         sent = sum([targets.get("stats").get("sent", 0) for targets in summary])
