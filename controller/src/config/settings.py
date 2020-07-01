@@ -199,4 +199,4 @@ EMAIL_HOST_PASSWORD = os.environ.get("SMTP_PASS")
 EMAIL_USE_TLS = True
 
 # API Key for running local scripts
-LOCAL_API_KEY = os.environ["LOCAL_API_KEY"]
+LOCAL_API_KEY = os.environ.get("LOCAL_API_KEY")
