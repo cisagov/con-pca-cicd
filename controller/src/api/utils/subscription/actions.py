@@ -162,11 +162,20 @@ def stop_subscription(subscription):
         """
         Stops a given campaign.
 
+        Delete Campaign
+
         Returns updated Campaign
         """
         campaign_manager.complete_campaign(campaign_id=campaign["campaign_id"])
         campaign["status"] = "stopped"
         campaign["completed_date"] = datetime.now()
+        # Delete Campaign
+        campaign_manager.delete_campaign(campaign_id=campaign["campaign_id"])
+        # Delete Templates
+        campaign_manager.delete(
+            "email_template", template_id=campaign["email_template_id"]
+        )
+
         return campaign
 
     # Stop Campaigns
