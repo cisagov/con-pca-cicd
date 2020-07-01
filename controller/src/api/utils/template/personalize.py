@@ -5,7 +5,12 @@ import logging
 
 # Third-Party Libraries
 from api.utils.customer.customers import get_full_customer_address
-from api.utils.generic import current_season, customer_spoof_email, generate_random_name
+from api.utils.generic import (
+    current_season,
+    customer_spoof_email,
+    generate_random_name,
+    spoof_domain,
+)
 from simpleeval import simple_eval
 
 logger = logging.getLogger(__name__)
@@ -58,6 +63,7 @@ def personalize_template(customer_info, template_data, sub_data, tag_list):
             "get_full_customer_address": get_full_customer_address,
             "generate_random_name": generate_random_name,
             "customer_spoof_email": customer_spoof_email,
+            "spoof_domain": spoof_domain,
         },
     }
 

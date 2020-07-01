@@ -10,7 +10,6 @@ import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { MyErrorStateMatcher } from '../../../helper/ErrorStateMatcher';
 import { SubscriptionService } from 'src/app/services/subscription.service';
 import { Contact, Customer } from 'src/app/models/customer.model';
-import { Guid } from 'guid-typescript';
 import { Router, ActivatedRoute } from '@angular/router';
 import { CustomerService } from 'src/app/services/customer.service';
 import {
@@ -111,13 +110,14 @@ export class AddCustomerComponent implements OnInit, OnDestroy {
     }
 
     this.customerFormGroup.get('customerType').valueChanges.subscribe(value => {
-      if (value == 'Private') {
+      if (value === 'Private') {
         this.customerFormGroup.controls['sector'].setValidators(
           Validators.required
         );
         this.customerFormGroup.controls['industry'].setValidators(
           Validators.required
         );
+
       } else {
         this.customerFormGroup.controls['sector'].clearValidators();
         this.customerFormGroup.controls['industry'].clearValidators();
@@ -227,7 +227,7 @@ export class AddCustomerComponent implements OnInit, OnDestroy {
 
   checkCustomerType() {
     let customerType = this.customerFormGroup.controls['customerType'].value;
-    if (customerType == 'Private') {
+    if (customerType === "Private") {
       return true;
     }
 
