@@ -41,6 +41,8 @@ export class SubscriptionsComponent implements OnInit {
   dateFormat = AppSettings.DATE_FORMAT;
   spinnerMap = new Map<string, boolean>();
 
+  loading = false;
+
 
   constructor(
     private subscription_service: SubscriptionService,
@@ -59,10 +61,12 @@ export class SubscriptionsComponent implements OnInit {
   }
 
   refresh() {
+    this.loading = true;
     this.subscription_service
       .getSubscriptions(this.showArchived)
       .subscribe((subscriptions: Subscription[]) => {
         this.customer_service.getCustomers().subscribe((customers: Customer[]) => {
+          this.loading = false;
           const customerSubscriptions: ICustomerSubscription[] = [];
           subscriptions.map((s: Subscription) => {
             const customerSubscription: ICustomerSubscription = {
@@ -129,27 +133,27 @@ export class SubscriptionsComponent implements OnInit {
       `This will start subscription '${row.subscription.name}'.  Do you want to continue?`;
     this.dialogRefConfirm.componentInstance.title = 'Confirm Start';
 
-    
+
     this.dialogRefConfirm.afterClosed().subscribe(result => {
       if (result) {
         this.setSpinner(row.subscription.subscription_uuid, true);
-        this.subscription_service.startSubscription(row.subscription.subscription_uuid).subscribe((data: any) => {          
-          this.setSpinner(row.subscription.subscription_uuid,false);
+        this.subscription_service.startSubscription(row.subscription.subscription_uuid).subscribe((data: any) => {
+          this.setSpinner(row.subscription.subscription_uuid, false);
           this.refresh();
         });
       }
-      
+
       this.dialogRefConfirm = null;
     });
   }
 
-  public setSpinner(uuid: string, show: boolean){
+  public setSpinner(uuid: string, show: boolean) {
     this.spinnerMap.set(uuid, show);
   }
 
 
-  public checkSpinner(uuid: string){
-      return this.spinnerMap.get(uuid);
+  public checkSpinner(uuid: string) {
+    return this.spinnerMap.get(uuid);
   }
 
   public checkStopped(status: string) {

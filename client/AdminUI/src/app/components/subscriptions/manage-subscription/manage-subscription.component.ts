@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
 import { MatDialogConfig, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { FormGroup, FormControl, FormBuilder, Validators, ValidationErrors } from '@angular/forms';
 import { SubscriptionService } from 'src/app/services/subscription.service';
@@ -57,6 +57,8 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
   badCSV = false;
 
   timelineItems: any[] = [];
+
+  launchSubmitted = false;
 
 
   /**
@@ -120,6 +122,8 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
     this.onChanges();
 
     this.pageMode = 'EDIT';
+
+    this.launchSubmitted = false;
 
     this.subscriptionSvc.subscription = new Subscription();
 
@@ -583,6 +587,8 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
     if (!this.subValid()) {
       return;
     }
+
+    this.launchSubmitted = true;
 
     const sub = this.subscriptionSvc.subscription;
 

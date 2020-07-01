@@ -4,17 +4,22 @@
             <!-- SEARCH BAR -->
             <mat-form-field class="d-flex flex-column w-100" appearance="outline">
                 <mat-label>Search</mat-label>
-                <input [(ngModel)]="search_input" (keyup)="filterCustomers($event.target.value)" matInput placeholder="Search" />
+                <input [(ngModel)]="search_input" (keyup)="filterCustomers($event.target.value)" matInput
+                    placeholder="Search" />
                 <mat-icon matSuffix>search</mat-icon>
             </mat-form-field>
 
             <div class="d-inline-flex flex-column ml-2">
-                <button mat-raised-button color="primary" 
-                (click)="this.customerSvc.setCustomerInfo(true)">New Customer</button>
+                <button mat-raised-button color="primary" (click)="this.customerSvc.setCustomerInfo(true)">New
+                    Customer</button>
             </div>
         </div>
 
-        <mat-table [dataSource]="customersData">
+        <div *ngIf="loading" style="text-align: center; padding-top: 2rem; padding-bottom: 2rem;">
+            <mat-spinner class="spinner" style="margin-left: auto; margin-right: auto;" diameter="50"></mat-spinner>
+        </div>
+
+        <mat-table [dataSource]="customersData" *ngIf="!loading">
             <ng-container matColumnDef="name">
                 <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>
                 <mat-cell *matCellDef="let row"> {{row.name}} </mat-cell>

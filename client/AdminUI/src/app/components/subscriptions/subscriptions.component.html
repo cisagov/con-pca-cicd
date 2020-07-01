@@ -18,10 +18,12 @@
       </div>
   </div>
   
-  
+  <div *ngIf="loading" style="text-align: center; padding-top: 2rem; padding-bottom: 2rem;">
+    <mat-spinner class="spinner" style="margin-left: auto; margin-right: auto;" diameter="50" ></mat-spinner>
+  </div>
 
   <!-- TABLE -->
-  <mat-table [dataSource]="data_source">
+  <mat-table [dataSource]="data_source" *ngIf="!loading">
       <!-- SUBSCRIPTION NAME -->
       <ng-container matColumnDef="name">
           <mat-header-cell *matHeaderCellDef>Subscription Name</mat-header-cell>

@@ -19,6 +19,8 @@ export class TemplatesPageComponent implements OnInit, AfterViewInit {
 
   showRetired: boolean = false;
 
+  loading = true;
+
   constructor(
     private templateSvc: TemplateManagerService,
     private router: Router,
@@ -32,10 +34,12 @@ export class TemplatesPageComponent implements OnInit, AfterViewInit {
   }
 
   refresh() {
+    this.loading = true;
     this.templateSvc
       .getAllTemplates(this.showRetired)
       .subscribe((data: any) => {
         this.templatesData.data = data as Template[];
+        this.loading = false;
       });
   }
 
