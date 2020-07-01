@@ -8,8 +8,6 @@ import { CustomerService } from 'src/app/services/customer.service';
 })
 export class CustomerDialogComponent implements OnInit {
 
-  showButtons = true;
-
   constructor(
     public dialogRef: MatDialogRef<CustomerDialogComponent>,
     public customerSvc: CustomerService
