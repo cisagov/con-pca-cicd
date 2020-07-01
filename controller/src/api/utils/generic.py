@@ -3,6 +3,7 @@
 from datetime import datetime, timedelta
 
 # Third-Party Libraries
+from faker import Faker
 import names
 
 
@@ -73,3 +74,13 @@ def customer_spoof_email(customer_info):
     _, customer_domain = customer_info["contact_list"][0].split("@")
     spoof_email = "{}.{}@{}".format(spoof_first_name, spoof_last_name, customer_domain)
     return spoof_email
+
+
+def spoof_domain():
+    """Spoof Domain.
+
+    Returns:
+        string: returns fake domain string.
+    """
+    fake = Faker()
+    return fake.domain_name()
