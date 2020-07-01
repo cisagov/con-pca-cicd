@@ -14,8 +14,8 @@ target_count = 6
 max_deception_level = 3  # Between 1-3, need to modify decp_key and decp_list if larger numbers are required
 
 
-decp_key = {"1": "low", "2": "medium", "3": "high"}
-decp_list = ["low", "medium", "high"]
+decp_key = {"1": "low", "2": "moderate", "3": "high"}
+decp_list = ["low", "moderate", "high"]
 
 faker = Faker()
 
@@ -33,7 +33,7 @@ def generate_target_array():
         new_target[
             "email"
         ] = f"{new_target['last_name']}.{new_target['first_name']}@testing.com"
-        new_target.update(level={"low": False, "medium": False, "high": False})
+        new_target.update(level={"low": False, "moderate": False, "high": False})
         target_list.append(new_target)
     return target_list
 
@@ -53,7 +53,7 @@ def seperate_targets_to_campaigns(target_list: list, max_deception: int = 3):
         decep_lvl = index % max_deception
         # If all all levels have been received, set all to false for the following year and assign the current random decep level for the final cycle
         if allLevelsTrue(target["level"]):
-            target["level"] = {"low": False, "medium": False, "high": False}
+            target["level"] = {"low": False, "moderate": False, "high": False}
         # Assign current deception level if the target has not previously had it assigned
         elif not target["level"][num_to_decep_lvl(decep_lvl)]:
             target["level"][num_to_decep_lvl(decep_lvl)] = True
@@ -73,7 +73,7 @@ def seperate_targets_to_campaigns(target_list: list, max_deception: int = 3):
 
 # Helper Methods
 def num_to_decep_lvl(num):
-    """Convert index to decpeption value (low, medium, high)."""
+    """Convert index to decpeption value (low, moderate, high)."""
     return decp_list[num]
 
 
