@@ -19,6 +19,7 @@ from api.utils.subscription.subscriptions import (
     get_subscription_cycles,
     get_subscription_status,
     send_start_notification,
+    send_stop_notification,
 )
 from api.utils.subscription.targets import batch_targets
 from api.utils.subscription.template_selector import personalize_template_batch
@@ -206,6 +207,8 @@ def stop_subscription(subscription):
         model=SubscriptionModel,
         validation_model=validate_subscription,
     )
+
+    send_stop_notification(subscription)
 
     return resp
 
