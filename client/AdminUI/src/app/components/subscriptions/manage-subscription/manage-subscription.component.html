@@ -92,7 +92,7 @@
                 to prioritize phishing emails relevant to their industry.
             </div>
             <mat-form-field class="w-100" appearance="outline">
-                <input matInput formControlName="url" type="text"
+                <input matInput formControlName="url" type="text" trim="blur"
                     [ngClass]="{ 'is-invalid': submitted && f.url.errors }">
                 <mat-error *ngIf="submitted && f.url.errors?.whitespace" class="invalid-feedback">
                     Customer Website may not contain only spaces
@@ -105,7 +105,7 @@
                 They will be used to select applicable templates.</div>
             <mat-form-field class="w-100" appearance="outline">
                 <mat-label>Applicability Word Tags</mat-label>
-                <textarea matInput autosize formControlName="keywords"></textarea>
+                <textarea matInput trim="blur" autosize formControlName="keywords"></textarea>
                 <mat-error *ngIf="submitted && f.keywords.errors?.whitespace" class="invalid-feedback">
                     Keywords may not contain only spaces
                 </mat-error>

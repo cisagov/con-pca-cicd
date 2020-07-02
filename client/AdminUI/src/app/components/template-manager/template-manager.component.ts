@@ -183,16 +183,15 @@ export class TemplateManagerComponent implements OnInit {
 
     this.currentTemplateFormGroup = new FormGroup({
       templateUUID: new FormControl(template.template_uuid),
-      templateName: new FormControl(template.name, [Validators.required, this.notJustSpaces]),
+      templateName: new FormControl(template.name, [Validators.required]),
       templateDeceptionScore: new FormControl(template.deception_score),
       templateDescriptiveWords: new FormControl(template.descriptive_words),
       templateDescription: new FormControl(template.description),
       templateFromAddress: new FormControl(template.from_address, [
-        Validators.required, this.notJustSpaces
-      ]),
-      templateSubject: new FormControl(template.subject, [Validators.required, this.notJustSpaces]),
+        Validators.required]),
+      templateSubject: new FormControl(template.subject, [Validators.required]),
       templateText: new FormControl(template.text),
-      templateHTML: new FormControl(template.html, [Validators.required, this.notJustSpaces]),
+      templateHTML: new FormControl(template.html, [Validators.required]),
       authoritative: new FormControl(template.sender?.authoritative ?? 0),
       external: new FormControl(template.sender?.external ?? 0),
       internal: new FormControl(template.sender?.internal ?? 0),
@@ -569,18 +568,5 @@ export class TemplateManagerComponent implements OnInit {
   insertTag(selection, tagText: string) {
     const newNode = document.createTextNode(tagText);
     selection.insertNode(newNode);
-  }
-
-  /**
-   * 
-   */
-  notJustSpaces(control: FormControl) {
-    // allow an empty field
-    if (control.value === '' || control.value === null) {
-      return null;
-    }
-    const isWhitespace = (control.value || '').trim().length === 0;
-    const isValid = !isWhitespace;
-    return isValid ? null : { whitespace: true };
   }
 }

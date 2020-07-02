@@ -29,7 +29,7 @@
       <div #selectedTemplateTitle class="flex-container flex-row selected-template">
         <mat-form-field class="w-100 selected_template_title" appearance="outline">
           <mat-label>Template Name</mat-label>
-          <input formControlName="templateName" matInput placeholder="Enter a template name" [errorStateMatcher]="matchTemplateName" />
+          <input formControlName="templateName" trim="blur" matInput placeholder="Enter a template name" [errorStateMatcher]="matchTemplateName" />
           <mat-error *ngIf=" 
               currentTemplateFormGroup.controls.templateName.hasError(
                 'required'
@@ -100,7 +100,7 @@
               <div class="d-flex flex-column pb-3">
                 <mat-form-field appearance="outline">
                   <mat-label>Subject*</mat-label>
-                  <input type="text" matInput placeholder="Template Subject" formControlName="templateSubject" [errorStateMatcher]="matchSubject" />
+                  <input type="text" trim="blur" matInput placeholder="Template Subject" formControlName="templateSubject" [errorStateMatcher]="matchSubject" />
                   <mat-error *ngIf="
                       currentTemplateFormGroup.controls.templateSubject.hasError(
                         'required'
@@ -116,7 +116,7 @@
               <div class="d-flex flex-column pb-3">
                 <mat-form-field appearance="outline">
                   <mat-label>From Address*</mat-label>
-                  <input type="text" matInput placeholder="Example@user.com" formControlName="templateFromAddress" [errorStateMatcher]="matchFromAddress" />
+                  <input type="text" trim="blur" matInput placeholder="Example@user.com" formControlName="templateFromAddress" [errorStateMatcher]="matchFromAddress" />
                   <mat-error *ngIf="
                       currentTemplateFormGroup.controls.templateFromAddress.hasError(
                         'required'
@@ -132,13 +132,13 @@
               <div class="d-flex flex-column pb-3">
                 <mat-form-field appearance="outline">
                   <mat-label>Description</mat-label>
-                  <input type="text" matInput placeholder="Template Description..." formControlName="templateDescription" />
+                  <input type="text" trim="blur" matInput placeholder="Template Description..." formControlName="templateDescription" />
                 </mat-form-field>
               </div>
               <div class="d-flex flex-column pb-3">
                 <mat-form-field appearance="outline" class="flex-grow-1">
                   <mat-label>Descriptive Words (CSV)</mat-label>
-                  <textarea matInput cdkTextareaAutosize cdkAutosizeMinRows="5" cdkAutosizeMaxRows="10" placeholder="Template Descriptive Words Seperated By A Comma" formControlName="templateDescriptiveWords"></textarea>
+                  <textarea trim="blur" matInput cdkTextareaAutosize cdkAutosizeMinRows="5" cdkAutosizeMaxRows="10" placeholder="Template Descriptive Words Seperated By A Comma" formControlName="templateDescriptiveWords"></textarea>
                 </mat-form-field>
               </div>
 
@@ -293,7 +293,7 @@
         <div class="d-flex flex-row">
           <mat-form-field appearance="outline" class="flex-grow-1">
             <mat-label>Final Deception Score</mat-label>
-            <input type="text" matInput placeholder="DeceptionScore" formControlName="final_deception_score">
+            <input type="text" trim="blur" matInput placeholder="DeceptionScore" formControlName="final_deception_score">
           </mat-form-field>
         </div>
 
