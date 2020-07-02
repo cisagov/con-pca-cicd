@@ -96,11 +96,11 @@ def personalize_template(customer_info, template_data, sub_data, tag_list):
                             err, tag["tag"], tag["data_source"]
                         )
                     )
-                    # Upon error, replaces tag with tag
-                    cleantext = cleantext.replace(tag["tag"], tag["tag"])
+                    # Upon error, replaces tag with empty string to avoid sending tags in email
+                    cleantext = cleantext.replace(tag["tag"], "")
             else:
-                # Default literal replace
-                cleantext = cleantext.replace(tag["tag"], tag["tag"])
+                # Default literal replace with empty string
+                cleantext = cleantext.replace(tag["tag"], "")
 
         template_unique_name = "".join(template["name"].split(" "))
         cleantext += "\n {{.Tracker}} "
