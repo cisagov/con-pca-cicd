@@ -156,6 +156,12 @@
     "tag_type": "con-pca-eval"
   },
   {
+    "data_source": "generate_random_name('Full')",
+    "description": "A made up a name to imitate an employee from the customer organization.",
+    "tag": "<%SPOOF_NAME%>",
+    "tag_type": "con-pca-eval"
+  },
+  {
     "data_source": "generate_random_name('First')",
     "description": "A made up first name to imitate an employee from the customer organization.",
     "tag": "<%SPOOF_NAME_FIRST%>",
