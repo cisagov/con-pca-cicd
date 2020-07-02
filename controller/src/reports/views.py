@@ -26,6 +26,9 @@ from .utils import (
     campaign_templates_to_string,
     get_most_successful_campaigns,
     get_closest_cycle_within_day_range,
+    ratio_to_percent,
+    format_timedelta,
+    get_statistic_from_region_group
 )
 
 logger = logging.getLogger(__name__)
@@ -305,7 +308,15 @@ class CycleReportsView(TemplateView):
         }
         cycles = subscription["cycles"]
         cycles = sorted(cycles,key=lambda cycle: cycle["start_date"]) 
-                    
+        working_cycle_year = cycles[0]["start_date"].year
+        current_quarter = 1  
+        # Count the cycle order from the year or try to match up to standard 'quarters'?
+        for cycle in cycles:
+            if cycle["start_date"].year > working_cycle_year:
+                current_quarter = 1
+            cycle["quarter"] = f"{cycle['start_date'].year} - {current_quarter}"
+
+
         # for i, cycle in enumerate(cycles,1):
         #     if
         #     cycle["quarter"] = quarter
@@ -341,28 +352,61 @@ class CycleReportsView(TemplateView):
             "number_of_clicked_emails": get_statistic_from_group(
                 subscription_stats, "stats_all", "clicked", "count"
             ),
+            "percent_of_clicked_emails": ratio_to_percent(get_statistic_from_group(
+                subscription_stats, "stats_all", "ratios", "clicked_ratio"
+            )),
+            "percent_of_submits": ratio_to_percent(get_statistic_from_group(
+                subscription_stats, "stats_all", "ratios", "submitted_ratio"
+            )),
             "number_of_opened_emails": get_statistic_from_group(
                 subscription_stats, "stats_all", "opened", "count"
             ),
             "number_of_phished_users_overall": get_statistic_from_group(
                 subscription_stats, "stats_all", "submitted", "count"
             ),
+            "percent_report_rate": ratio_to_percent(get_statistic_from_group(
+                subscription_stats, "stats_all", "ratios", "reported_ratio"
+            )),
             "number_of_reports_to_helpdesk": get_statistic_from_group(
                 subscription_stats, "stats_all", "reported", "count"
             ),
-            "repots_to_clicks_ratio": get_reports_to_click(subscription_stats),
-            "avg_time_to_first_click": get_statistic_from_group(
+            "repots_to_clicks_ratio": round(get_reports_to_click(subscription_stats),2),
+            "avg_time_to_first_click": format_timedelta(get_statistic_from_group(
                 subscription_stats, "stats_all", "clicked", "average"
-            ),
-            "avg_time_to_first_report": get_statistic_from_group(
+            )),
+            "avg_time_to_first_report": format_timedelta(get_statistic_from_group(
                 subscription_stats, "stats_all", "reported", "average"
-            ),
+            )),
             "most_successful_template": campaign_templates_to_string(
                 get_most_successful_campaigns(subscription_stats, "reported")
             ),
-            # "most_successful_template": campaign_templates_to_string(
-            #     get_most_successful_campaigns(subscription_stats, "reported")
-            # ),
+            "emails_sent_over_target_count": round(get_statistic_from_group(
+                subscription_stats, "stats_all", "sent", "count"
+            ) / len(subscription["target_email_list"]),0),
+            "customer_clicked_avg": ratio_to_percent(get_statistic_from_region_group(
+                region_stats,"customer","clicked_ratio"
+            ),0),
+            "national_clicked_avg": ratio_to_percent(get_statistic_from_region_group(
+                region_stats,"national","clicked_ratio"
+            ),0),
+            "industry_clicked_avg": ratio_to_percent(get_statistic_from_region_group(
+                region_stats,"industry","clicked_ratio"
+            ),0),
+            "sector_clicked_avg": ratio_to_percent(get_statistic_from_region_group(
+                region_stats,"sector","clicked_ratio"
+            ),0),
+            "shortest_time_to_open": format_timedelta(get_statistic_from_group(
+                subscription_stats, "stats_all", "opened", "minimum"
+            )),
+            "shortest_time_to_report": format_timedelta(get_statistic_from_group(
+                subscription_stats, "stats_all", "reported", "minimum"
+            )),
+            "median_time_to_report": format_timedelta(get_statistic_from_group(
+                subscription_stats, "stats_all", "reported", "median"
+            )),
+            "longest_time_to_open": format_timedelta(get_statistic_from_group(
+                subscription_stats, "stats_all", "opened", "maximum"
+            )),
         }
 
         # ------
@@ -376,6 +420,8 @@ class CycleReportsView(TemplateView):
             f"{dhs_contact.get('first_name')} {dhs_contact.get('last_name')}"
         )
         primary_contact = subscription.get("primary_contact")
+
+
 
         context = {}
         context["dhs_contact_name"] = dhs_contact_name
@@ -393,8 +439,5 @@ class CycleReportsView(TemplateView):
         context["previous_cycles"] = previous_cycle_stats
         context["region_stats"] = region_stats
         context["subscription_stats"] = subscription_stats
-            
-
-        print(context)
 
         return context

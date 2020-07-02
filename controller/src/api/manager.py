@@ -84,6 +84,8 @@ class TemplateManager:
                 dict(zip(cosine_similarities, template_uuids)).items(), reverse=True
             )
         ]
+        print("=======================")
+        logger.info(f"{context} {len(context)}")
 
         return context
 

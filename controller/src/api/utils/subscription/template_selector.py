@@ -21,35 +21,77 @@ def get_relevant_templates(templates, subscription, template_count: int):
     """Get_relevant_templates."""
     template_manager = TemplateManager()
 
+    #Values as a minimum
+    template_score_to_level = {
+        "high": 5,
+        "medium": 2,
+        "low": 0
+    }
+    template_groups = {
+        "low": [],
+        "medium": [],
+        "high": []
+    }
+    for template in templates:
+        if template["deception_score"] < template_score_to_level["medium"]:
+            template_groups["low"].append(template)
+        elif template["deception_score"] < template_score_to_level["high"]:
+            template_groups["medium"].append(template)
+        else:
+            template_groups["high"].append(template)
+    logger.info(f"{template_groups}")
+
     # formats templates for alogrithm
-    template_data = {
-        t.get("template_uuid"): t.get("descriptive_words") for t in templates
+
+    template_data_low = {
+        t.get("template_uuid"): t.get("descriptive_words") for t in template_groups["low"]
+    }    
+    template_data_medium = {
+        t.get("template_uuid"): t.get("descriptive_words") for t in template_groups["medium"]
+    }
+    template_data_high = {
+        t.get("template_uuid"): t.get("descriptive_words") for t in template_groups["high"]
     }
 
-    logger.info(f"Template Data: length - {len(template_data)}")
+    # logger.info(f"Template Data: length - {len(template_data)}")
 
     # gets order of templates ranked from best to worst
-    relevant_templates = template_manager.get_templates(
+    relevant_templates_low = template_manager.get_templates(
         url=subscription.get("url"),
         keywords=subscription.get("keywords"),
-        template_data=template_data,
+        template_data=template_data_low,
     )
-    logger.info(f"{relevant_templates} {len(relevant_templates)}")
-    return relevant_templates[:template_count]
+    relevant_templates_medium = template_manager.get_templates(
+        url=subscription.get("url"),
+        keywords=subscription.get("keywords"),
+        template_data=template_data_medium,
+    )
+    relevant_templates_high = template_manager.get_templates(
+        url=subscription.get("url"),
+        keywords=subscription.get("keywords"),
+        template_data=template_data_high,
+    )
+    relevant_templates = {
+        "low": relevant_templates_low,
+        "medium": relevant_templates_medium,
+        "high": relevant_templates_high
+    }
+
+
+    return relevant_templates
 
 
 def batch_templates(templates, num_per_batch, sub_levels: dict):
     """Batch_templates."""
-    batches = [
-        templates[x : x + num_per_batch]
-        for x in range(0, len(templates), num_per_batch)
-    ]
+    # batches = [
+    #     templates[x : x + num_per_batch]
+    #     for x in range(0, len(templates), num_per_batch)
+    # ]
 
-    logger.info(f"template_batches={len(batches)}")
+    sub_levels["high"]["template_uuids"] = templates["high"][:num_per_batch]
+    sub_levels["moderate"]["template_uuids"] = templates["medium"][:num_per_batch]
+    sub_levels["low"]["template_uuids"] = templates["low"][:num_per_batch]
 
-    sub_levels["high"]["template_uuids"] = batches[0]
-    sub_levels["moderate"]["template_uuids"] = batches[1]
-    sub_levels["low"]["template_uuids"] = batches[2]
 
     return sub_levels
 
@@ -87,24 +129,24 @@ def personalize_template_batch(customer, subscription, sub_levels: dict):
     # Gets list of available email templates
     templates = get_email_templates()
 
-    logger.info(f"Template Count = {len(templates)}")
+    # logger.info(f"Template Count = {len(templates)}")
 
     # Determines how many templates are available in each batch
     templates_per_batch = get_num_templates_per_batch()
-    logger.info(f"{templates_per_batch}")
+    # logger.info(f"{templates_per_batch}")
 
     # Gets needed amount of relevant templates
     relevant_templates = get_relevant_templates(
         templates, subscription, 3 * templates_per_batch
     )
-    logger.info(f"{relevant_templates}")
+    # logger.info(f"{relevant_templates}")
 
     # Batches templates
     sub_levels = batch_templates(relevant_templates, templates_per_batch, sub_levels)
-    logger.info(f"{sub_levels}")
+    # logger.info(f"{sub_levels}")
 
     # Personalize Templates
     sub_levels = personalize_templates(customer, subscription, templates, sub_levels)
-    logger.info(f"{sub_levels}")
+    # logger.info(f"{sub_levels}")
 
     return sub_levels
