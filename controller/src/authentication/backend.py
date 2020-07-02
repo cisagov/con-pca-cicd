@@ -27,8 +27,10 @@ class JSONWebTokenAuthentication(BaseAuthentication):
         gp_sign = request.headers.get("X-Gophish-Signature")
         if gp_sign:
             gp_sign = gp_sign.split("=")[-1]
-            h = hmac.new(LOCAL_API_KEY.encode(), request.body, hashlib.sha256)
-            if h.hexdigest() == gp_sign:
+            digest = hmac.new(
+                LOCAL_API_KEY.encode(), request.body, hashlib.sha256
+            ).hexdigest()
+            if digest == gp_sign:
                 user = {"username": "gophish", "groups": {"develop"}}
                 token = "Empty token"
                 return (user, token)
