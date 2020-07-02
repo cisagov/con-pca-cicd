@@ -733,28 +733,41 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
     return output;
   }
 
+  downloadObject(filename, blob) {
+    const a = document.createElement('a');
+    const objectUrl = URL.createObjectURL(blob);
+    a.href = objectUrl;
+    a.download = filename;
+    a.click();
+    URL.revokeObjectURL(objectUrl);
+  }
+
   viewMonthlyReport() {
-    let url = `${this.settingsService.settings.apiUrl}/api/v1/reports/${this.subscription.subscription_uuid}/pdf/monthly/`;
-    window.open(url, '_blank');
+    this.subscriptionSvc.getMonthlyReport(this.subscription).subscribe(blob => {
+      this.downloadObject('monthly_subscription_report.pdf', blob);
+    });
   }
 
   viewCycleReport() {
-    let url = `${this.settingsService.settings.apiUrl}/api/v1/reports/${this.subscription.subscription_uuid}/pdf/cycle/`;
-    window.open(url, '_blank');
+    this.subscriptionSvc.getCycleReport(this.subscription).subscribe(blob => {
+      this.downloadObject('cycle_subscription_report.pdf', blob);
+    });
   }
 
   sendMonthlyReport() {
-    let url = `${this.settingsService.settings.apiUrl}/api/v1/reports/$${this.subscription.subscription_uuid}/email/monthly/`;
-    window.open(url, '_blank');
+    this.subscriptionSvc.sendMonthlyReport(this.subscription).subscribe(() => {
+      console.log('Sending monthly report.');
+    });
   }
 
   sendCycleReport() {
-    let url = `${this.settingsService.settings.apiUrl}/api/v1/reports/${this.subscription.subscription_uuid}/email/cycle/`;
-    window.open(url, '_blank');
+    this.subscriptionSvc.sendMonthlyReport(this.subscription).subscribe(() => {
+      console.log('Sending cycle report.');
+    });
   }
 
   /* Not in use yet
-  
+
   viewYearlyReport() {
     let url = `${this.settingsService.settings.apiUrl}/api/v1/reports/${this.subscription.subscription_uuid}/pdf/yearly/`;
     window.open(url, "_blank");

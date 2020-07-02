@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Customer, Contact } from '../models/customer.model';
 import { Subscription } from '../models/subscription.model';
 import { CustomerService } from './customer.service';
 import { Template } from '../models/template.model';
 import { SettingsService } from './settings.service';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -172,5 +173,29 @@ export class SubscriptionService {
   public deleteDhsContact(c: Contact) {
     const url = `${this.settingsService.settings.apiUrl}/api/v1/dhscontact/${c.dhs_contact_uuid}/`;
     return this.http.delete(url);
+  }
+
+  public getMonthlyReport(s: Subscription): Observable<Blob> {
+    const headers = new HttpHeaders()
+      .set('Accept', 'application/pdf');
+    const url = `${this.settingsService.settings.apiUrl}/api/v1/reports/${s.subscription_uuid}/pdf/monthly/`;
+    return this.http.get(url, { 'headers': headers, 'responseType': 'blob' });
+  }
+
+  public getCycleReport(s: Subscription) {
+    const headers = new HttpHeaders()
+      .set('content-type', 'application/pdf');
+    const url = `${this.settingsService.settings.apiUrl}/api/v1/reports/${s.subscription_uuid}/pdf/cycle/`;
+    return this.http.get(url, { 'headers': headers, 'responseType': 'blob' });
+  }
+
+  public sendMonthlyReport(s: Subscription) {
+    const url = `${this.settingsService.settings.apiUrl}/api/v1/reports/$${s.subscription_uuid}/email/monthly/`;
+    return this.http.get(url);
+  }
+
+  public sendCycleReport(s: Subscription) {
+    const url = `${this.settingsService.settings.apiUrl}/api/v1/reports/${s.subscription_uuid}/email/cycle/`;
+    return this.http.get(url);
   }
 }
