@@ -1,31 +1,33 @@
+"""Subscription Utils."""
+# Standard Python Libraries
+from datetime import datetime, timedelta
+import logging
+
+# Third-Party Libraries
 from api.models.subscription_models import SubscriptionModel, validate_subscription
 from api.utils import db_utils as db
 from notifications.views import SubscriptionNotificationEmailSender
-from tasks.tasks import email_subscription_report
-
-
-from datetime import datetime, timedelta
-import logging
+from tasks.tasks import email_subscription_report, start_subscription_cycle
 
 logger = logging.getLogger()
 
 
 def get_subscription(subscription_uuid: str):
-    """returns a subscription from database"""
+    """Returns a subscription from database."""
     return db.get_single(
         subscription_uuid, "subscription", SubscriptionModel, validate_subscription
     )
 
 
 def get_subscriptions(sub_filter=None):
-    """returns list of subscriptions from database"""
+    """Returns list of subscriptions from database."""
     return db.get_list(
         sub_filter, "subscription", SubscriptionModel, validate_subscription
     )
 
 
 def create_subscription_name(customer: dict):
-    """Returns a subscription name"""
+    """Returns a subscription name."""
     subscription_list = get_subscriptions({"customer_uuid": customer["customer_uuid"]})
 
     if not subscription_list:
@@ -56,7 +58,7 @@ def create_subscription_name(customer: dict):
 
 
 def calculate_subscription_start_end_date(start_date):
-    """Calculates the start and end date for subscription from given start date"""
+    """Calculates the start and end date for subscription from given start date."""
     date = start_date
     now = datetime.now()
 
@@ -77,7 +79,7 @@ def calculate_subscription_start_end_date(start_date):
 
 
 def get_subscription_status(start_date):
-    """Returns status for subscription based upon start date"""
+    """Returns status for subscription based upon start date."""
     if start_date <= datetime.now():
         return "In Progress"
     else:
@@ -85,7 +87,7 @@ def get_subscription_status(start_date):
 
 
 def get_subscription_cycles(campaigns, start_date, end_date):
-    """returns cycle data for a subscription"""
+    """Returns cycle data for a subscription."""
     campaigns_in_cycle = [c["campaign_id"] for c in campaigns]
     return [
         {
@@ -105,6 +107,12 @@ def get_subscription_cycles(campaigns, start_date, end_date):
 
 
 def send_start_notification(subscription, start_date):
+    """Send Start Notification.
+
+    Args:
+        subscription (dict): subscription data
+        start_date (datetime): start_date of subscription
+    """
     if start_date <= datetime.now():
         sender = SubscriptionNotificationEmailSender(
             subscription, "subscription_started"
@@ -112,7 +120,25 @@ def send_start_notification(subscription, start_date):
         sender.send()
 
 
+def send_stop_notification(subscription):
+    """Send Stop Notification.
+
+    Args:
+        subscription (dict): subscription data
+    """
+    sender = SubscriptionNotificationEmailSender(subscription, "subscription_stopped")
+    sender.send()
+
+
 def create_scheduled_email_tasks(created_response):
+    """Create Scheduled Email Tasks.
+
+    Args:
+        created_response (dict): created_response data
+
+    Returns:
+        list: list of tasks and message types
+    """
     subscription_uuid = created_response.get("subscription_uuid")
     message_types = {
         "monthly_report": datetime.utcnow() + timedelta(days=30),
@@ -131,5 +157,22 @@ def create_scheduled_email_tasks(created_response):
             context.append({"task_uuid": task.id, "message_type": message_type})
         except task.OperationalError as exc:
             logger.exception("Subscription task raised: %r", exc)
+
+    return context
+
+
+def create_scheduled_cycle_tasks(created_response):
+    subscription_uuid = created_response.get("subscription_uuid")
+    send_date = datetime.utcnow() + timedelta(days=90)
+
+    try:
+        task = start_subscription_cycle.apply_async(
+            args=[subscription_uuid], eta=send_date, retry=True,
+        )
+        context = {"task_uuid": task.id, "message_type": "start_new_cycle"}
+
+    except task.OperationalError as exc:
+        logger.exception("Subscription task raised: %r", exc)
+        return
 
     return context

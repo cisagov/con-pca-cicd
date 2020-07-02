@@ -24,8 +24,12 @@
   </div>
 
   <div class="col p-0 w-100">
+    <div *ngIf="loading" style="text-align: center; padding-top: 2rem; padding-bottom: 2rem;">
+      <mat-spinner class="spinner" style="margin-left: auto; margin-right: auto;" diameter="50" ></mat-spinner>
+    </div>
+
     <!-- TEMPLATES TABLE -->
-    <mat-table [dataSource]="templatesData" matSort>
+    <mat-table *ngIf="!loading" [dataSource]="templatesData" matSort>
       <!-- NAME -->
       <ng-container matColumnDef="name">
         <mat-header-cell *matHeaderCellDef mat-sort-header

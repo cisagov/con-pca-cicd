@@ -15,6 +15,8 @@ export class CustomersComponent implements OnInit {
 
   @Input() insideDialog: boolean;
 
+  loading = false;
+
   displayed_columns = [
     'name',
     'identifier',
@@ -66,8 +68,10 @@ export class CustomersComponent implements OnInit {
    *
    */
   private refresh(): void {
+    this.loading = true;
     this.customerSvc.getCustomers().subscribe((data: any) => {
       this.customersData.data = data as Customer[];
+      this.loading = false;
     });
   }
 

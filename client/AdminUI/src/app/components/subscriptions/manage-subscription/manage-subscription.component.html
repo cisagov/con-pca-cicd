@@ -1,5 +1,5 @@
 <div>
-    <form [formGroup]="subscribeForm" (ngSubmit)="onSubmit()">
+    <form [formGroup]="subscribeForm">
         <div class="d-flex flex-column mb-5">
 
             <div class="w-100" *ngIf="pageMode!='CREATE'">
@@ -16,23 +16,27 @@
             <h2>Customer/Organization</h2>
             <div class="d-flex flex-row mb-4">
                 <div>
-                    <mat-card *ngIf="!!customer.customer_uuid" class="mt-0 mr-3 mb-1 ml-0 customer-card" appearance="outline">
+                    <mat-card *ngIf="!!customer.customer_uuid" class="mt-0 mr-3 mb-1 ml-0 customer-card"
+                        appearance="outline">
                         <input type="hidden" formControlName="selectedCustomerUuid">
-                        <div >
+                        <div>
                             <div>{{customer?.name}}</div>
                             <div>{{customer?.identifier}}</div>
                             <div>{{customer?.address_1}}</div>
                             <div>{{customer?.address_2}}</div>
-                            <div>{{customer?.city}}, {{customer?.state}} {{customer?.zip_code}}</div>                            
-                        </div>                        
+                            <div>{{customer?.city}}, {{customer?.state}} {{customer?.zip_code}}</div>
+                        </div>
                     </mat-card>
 
                     <div class="mb-3" [class.mt-2]="!customer.customer_uuid">
-                        <button mat-raised-button color="primary" 
-                            *ngIf="pageMode == 'CREATE'"
+                        <button mat-raised-button color="primary" *ngIf="pageMode == 'CREATE'"
                             (click)="showCustomerDialog()">Assign Customer
                             <i class="fa fa-search" style="font-size: 1rem;"></i>
                         </button>
+                        <mat-error *ngIf="submitted && f.selectedCustomerUuid.errors?.required"
+                            class="invalid-feedback">
+                            A Customer must be selected
+                        </mat-error>
                     </div>
                 </div>
 
@@ -45,10 +49,11 @@
                             <mat-option *ngFor="let c of customer?.contact_list" [value]="c.email">
                                 {{ c.first_name }} {{ c.last_name }}</mat-option>
                         </mat-select>
+                        <mat-error *ngIf="submitted && f.primaryContact.errors?.required" class="invalid-feedback">
+                            A primary contact must be selected
+                        </mat-error>
                     </mat-form-field>
-                    <div *ngIf="submitted && f.primaryContact.errors" class="invalid-feedback">
-                        <div *ngIf="f.primaryContact.errors.required">A primary contact must be selected</div>
-                    </div>
+
                 </div>
                 <div>
                     <mat-form-field appearance="outline">
@@ -58,10 +63,10 @@
                             <mat-option *ngFor="let c of dhsContacts" [value]="c.dhs_contact_uuid">
                                 {{ c.first_name }} {{ c.last_name }}</mat-option>
                         </mat-select>
+                        <mat-error *ngIf="submitted && f.dhsContact.errors?.required" class="invalid-feedback">
+                            DHS contact must be selected
+                        </mat-error>
                     </mat-form-field>
-                    <div *ngIf="submitted && f.dhsContact.errors" class="invalid-feedback">
-                        <div *ngIf="f.dhsContact.errors.required">DHS contact must be selected</div>
-                    </div>
                 </div>
             </div>
 
@@ -72,6 +77,12 @@
                     <input matInput [matDatepicker]="picker" [min]="startAt" formControlName="startDate">
                     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                     <mat-datepicker #picker [startAt]="startAt"></mat-datepicker>
+                    <mat-error *ngIf="submitted && f.startDate.errors?.required" class="invalid-feedback">
+                        Start Date is required
+                    </mat-error>
+                    <mat-error *ngIf="submitted && f.startDate.errors?.matDatepickerMin" class="invalid-feedback">
+                        Start Date cannot be in the past
+                    </mat-error>
                 </mat-form-field>
             </div>
 
@@ -81,9 +92,12 @@
                 to prioritize phishing emails relevant to their industry.
             </div>
             <mat-form-field class="w-100" appearance="outline">
-                <input matInput formControlName="url" type="text">
+                <input matInput formControlName="url" type="text"
+                    [ngClass]="{ 'is-invalid': submitted && f.url.errors }">
+                <mat-error *ngIf="submitted && f.url.errors?.whitespace" class="invalid-feedback">
+                    Customer Website may not contain only spaces
+                </mat-error>
             </mat-form-field>
-
 
             <mat-label class="h6">Keywords</mat-label>
             <div class="text-muted">Optionally enter words that describe the
@@ -92,6 +106,9 @@
             <mat-form-field class="w-100" appearance="outline">
                 <mat-label>Applicability Word Tags</mat-label>
                 <textarea matInput autosize formControlName="keywords"></textarea>
+                <mat-error *ngIf="submitted && f.keywords.errors?.whitespace" class="invalid-feedback">
+                    Keywords may not contain only spaces
+                </mat-error>
             </mat-form-field>
 
             <mat-label class="h6">Sending Profile</mat-label>
@@ -105,9 +122,9 @@
                         <mat-option *ngFor="let sp of sendingProfiles" [value]="sp.name">
                             {{ sp.name }}</mat-option>
                     </mat-select>
-                    <div *ngIf="submitted && f.sendingProfile.errors" class="invalid-feedback">
-                        <div *ngIf="f.sendingProfile.errors.required">Sending Profile required</div>
-                    </div>
+                    <mat-error *ngIf="submitted && f.sendingProfile.errors?.required" class="invalid-feedback">
+                        Sending Profile required
+                    </mat-error>
                 </mat-form-field>
                 <div class="error-color" *ngIf="sendingProfiles.length === 0">
                     A Sending Profile is required, but none are currently configured.
@@ -119,10 +136,14 @@
                 <mat-label class="h6">Reports</mat-label>
                 <div class="mb-4">
                     <div class="text-muted">View or send this subscription's reports</div>
-                    <button mat-raised-button color="primary" class="mb-3" (click)="viewMonthlyReport()">View Monthly Report</button>
-                    <button mat-raised-button color="primary" class="mb-3" (click)="viewCycleReport()">View Cycle Report</button><br><br>
-                    <button mat-raised-button color="accent" class="mb-3" (click)="sendMonthlyReport()">Send Monthly Report</button>
-                    <button mat-raised-button color="accent" class="mb-3" (click)="sendCycleReport()">Send Cycle Report</button><br>
+                    <button mat-raised-button color="primary" class="mb-3" (click)="viewMonthlyReport()">View Monthly
+                        Report</button>
+                    <button mat-raised-button color="primary" class="mb-3" (click)="viewCycleReport()">View Cycle
+                        Report</button><br><br>
+                    <button mat-raised-button color="accent" class="mb-3" (click)="sendMonthlyReport()">Send Monthly
+                        Report</button>
+                    <button mat-raised-button color="accent" class="mb-3" (click)="sendCycleReport()">Send Cycle
+                        Report</button><br>
                 </div>
             </div>
 
@@ -153,13 +174,20 @@
                 <textarea matInput autosize formControlName="csvText"
                     [ngClass]="{ 'is-invalid': submitted && f.csvText.errors }">
                     </textarea>
-                <div *ngIf="submitted && f.csvText.errors" class="invalid-feedback">
-                    <div *ngIf="f.csvText.errors.required">Targets must be defined</div>
-                </div>
+                <mat-error *ngIf="submitted && f.csvText.hasError('invalidEmailFormat')" class="invalid-feedback">
+                    One or more email addresses are invalid
+                </mat-error>
+                <mat-error *ngIf="submitted && f.csvText.errors?.required" class="invalid-feedback">
+                    At least 1 target must be defined
+                </mat-error>
+                <mat-error *ngIf="submitted && f.csvText.hasError('invalidTargetCsv')" class="invalid-feedback">
+                    All target lines must have all parts
+                </mat-error>
             </mat-form-field>
 
             <div class="text-right mt-3">
-                <button type="submit" mat-raised-button color="primary" *ngIf="pageMode == 'CREATE'">
+                <button type="submit" mat-raised-button color="primary" [disabled]="launchSubmitted"
+                    (click)="onSubmit()" *ngIf="pageMode == 'CREATE'">
                     Create and Launch Subscription
                 </button>
             </div>

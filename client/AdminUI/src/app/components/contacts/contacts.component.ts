@@ -26,6 +26,8 @@ import { ViewContactDialogComponent } from './view-contact-dialog/view-contact-d
 export class ContactsComponent implements OnInit {
   dataSource: MatTableDataSource<ICustomerContact>;
 
+  loading = true;
+
   displayedColumns = [    
     "first_name",
     "last_name",
@@ -68,11 +70,13 @@ export class ContactsComponent implements OnInit {
   }
 
   private refresh(): void {
+    this.loading = true;
     this.customerService.getCustomers().subscribe((data: any[]) => {
       let customerContacts = this.customerService.getAllContacts(
         data as Customer[]
       );
       this.dataSource.data = customerContacts;
+      this.loading = false;
     });
   }
 

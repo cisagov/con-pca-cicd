@@ -30,12 +30,15 @@
         <mat-form-field class="w-100 selected_template_title" appearance="outline">
           <mat-label>Template Name</mat-label>
           <input formControlName="templateName" matInput placeholder="Enter a template name" [errorStateMatcher]="matchTemplateName" />
-          <mat-error *ngIf="
+          <mat-error *ngIf=" 
               currentTemplateFormGroup.controls.templateName.hasError(
                 'required'
               )
             ">
             Template name <strong>required</strong>
+          </mat-error>
+          <mat-error *ngIf="currentTemplateFormGroup.controls.templateName.hasError('whitespace')">
+            Template name may not contain only spaces
           </mat-error>
         </mat-form-field>
         <!-- <button
@@ -59,9 +62,10 @@
             <ng-template mat-tab-label>
               <span [ngClass]="{
                   'tab-form-error':
-                    currentTemplateFormGroup.controls.templateHTML.hasError(
-                      'required'
-                    ) && currentTemplateFormGroup.controls.templateHTML.touched
+                    currentTemplateFormGroup.controls.templateHTML.touched
+                    &&
+                    (currentTemplateFormGroup.controls.templateHTML.hasError('required') 
+                    || currentTemplateFormGroup.controls.templateHTML.hasError('whitespace'))
                 }">HTML View
               </span>
             </ng-template>
@@ -104,6 +108,9 @@
                     ">
                     Template subject <strong>required</strong>
                   </mat-error>
+                  <mat-error *ngIf="currentTemplateFormGroup.controls.templateSubject.hasError('whitespace')">
+                    Subject may not contain only spaces
+                  </mat-error>
                 </mat-form-field>
               </div>
               <div class="d-flex flex-column pb-3">
@@ -116,6 +123,9 @@
                       )
                     ">
                     From address <strong>required</strong>
+                  </mat-error>
+                  <mat-error *ngIf="currentTemplateFormGroup.controls.templateFromAddress.hasError('whitespace')">
+                    From address may not contain only spaces
                   </mat-error>
                 </mat-form-field>
               </div>

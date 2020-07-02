@@ -27,8 +27,8 @@ SENDING_PROFILES = [
         "host": "TEST",
         "from_address": "TEST@TEST.TEST",
         "username": "TESTUSER",
-        "password": "TESTPASSWORD"
-    }
+        "password": "TESTPASSWORD",
+    },
 ]
 
 LANDING_PAGES = [
@@ -129,6 +129,11 @@ def create_templates():
                 headers=get_headers(),
                 verify=False,
             )
+
+            if resp.status_code == 409:
+                print(f"Template, {template['name']}, already exists.. Skipping")
+                continue
+
             resp.raise_for_status()
             resp_json = resp.json()
             if resp_json.get("error"):

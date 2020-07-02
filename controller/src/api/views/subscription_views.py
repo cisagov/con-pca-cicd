@@ -6,6 +6,7 @@ This handles the api for all the Subscription urls.
 # Standard Python Libraries
 import logging
 
+# Third-Party Libraries
 # Local Libraries
 from api.manager import CampaignManager, TemplateManager
 from api.models.subscription_models import SubscriptionModel, validate_subscription
@@ -17,19 +18,14 @@ from api.serializers.subscriptions_serializers import (
     SubscriptionPostResponseSerializer,
     SubscriptionPostSerializer,
 )
-from api.utils.db_utils import (
-    delete_single,
-    get_list,
-    get_single,
-    update_single,
+from api.utils.db_utils import delete_single, get_list, get_single, update_single
+from api.utils.subscription.actions import (
+    start_subscription,
+    stop_subscription,
 )
-
-from api.utils.subscription.actions import stop_subscription, start_subscription
-
-# Third Party Libraries
+from celery.task.control import revoke
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
-from celery.task.control import revoke
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -187,7 +183,8 @@ class SubscriptionView(APIView):
                 "email_template", template_id=campaign["email_template_id"]
             )
             # Delete Campaigns
-            campaign_manager.delete("campaign", campaign_id=campaign["campaign_id"])
+            if subscription["status"] != "stopped":
+                campaign_manager.delete("campaign", campaign_id=campaign["campaign_id"])
         # Delete Groups
         for group_id in groups_to_delete:
             campaign_manager.delete("user_group", group_id=group_id)
@@ -296,6 +293,7 @@ class SubscriptionStopView(APIView):
 class SubscriptionRestartView(APIView):
     """
     This is the SubscriptionRestartView APIView.
+
     This handles the API to restart a Subscription
     """
 
@@ -306,6 +304,15 @@ class SubscriptionRestartView(APIView):
         operation_description="Endpoint for manually restart a subscription",
     )
     def get(self, request, subscription_uuid):
+        """Get Method for Restart Subscription.
+
+        Args:
+            request (object): http request object
+            subscription_uuid (string): subscription_uuid string
+
+        Returns:
+            object: http Response object.
+        """
         created_response = start_subscription(subscription_uuid=subscription_uuid)
         # Return updated subscription
         serializer = SubscriptionPatchResponseSerializer(created_response)

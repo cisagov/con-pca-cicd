@@ -100,7 +100,7 @@ class ReportsView(APIView):
             )
             bucket.sent = bucket.sent + c.get("stats", {}).get("sent", 0)
             bucket.clicked = bucket.clicked + c.get("stats", {}).get("clicked", 0)
-            bucket.opened = bucket.opened + c.get("stats", {}).get("clicked", 0)
+            bucket.opened = bucket.opened + c.get("stats", {}).get("opened", 0)
 
         # aggregate statistics
         sent = sum([targets.get("stats").get("sent", 0) for targets in summary])
