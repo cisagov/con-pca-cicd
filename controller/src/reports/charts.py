@@ -44,7 +44,8 @@ class ChartGenerator():
     def myround(self, x, base):
         return base * round(x/base)
 
-    def generateSvg(self, legendStrings, values):
+    def generateSvg(self, values):
+        legendStrings = ["Sent","Opened","Clicked","Submitted","Reported"]
         maxv = max(values)        
         tick_range = self.determineTicks(maxv)
         # from min to max

@@ -594,3 +594,22 @@ def get_template_details(campaign_results):
                 campaign["template_details"] = {}
                 for key in template:
                     campaign["template_details"][key] = template[key]
+
+def get_stats_low_med_high_by_level(subscription_stats):
+    data = []
+    data.append(get_statistic_from_group(subscription_stats, 'stats_low_deception', 'opened', 'count'))
+    data.append(get_statistic_from_group(subscription_stats, 'stats_low_deception', 'clicked', 'count'))
+    data.append(get_statistic_from_group(subscription_stats, 'stats_low_deception', 'sent', 'count'))
+    data.append(get_statistic_from_group(subscription_stats, 'stats_low_deception', 'submitted', 'count'))
+    data.append(get_statistic_from_group(subscription_stats, 'stats_low_deception', 'reported', 'count'))
+    data.append(get_statistic_from_group(subscription_stats, 'stats_mid_deception', 'opened', 'count'))
+    data.append(get_statistic_from_group(subscription_stats, 'stats_mid_deception', 'clicked', 'count'))
+    data.append(get_statistic_from_group(subscription_stats, 'stats_mid_deception', 'sent', 'count'))
+    data.append(get_statistic_from_group(subscription_stats, 'stats_mid_deception', 'submitted', 'count'))
+    data.append(get_statistic_from_group(subscription_stats, 'stats_mid_deception', 'reported', 'count'))
+    data.append(get_statistic_from_group(subscription_stats, 'stats_high_deception', 'opened', 'count'))
+    data.append(get_statistic_from_group(subscription_stats, 'stats_high_deception', 'clicked', 'count'))
+    data.append(get_statistic_from_group(subscription_stats, 'stats_high_deception', 'sent', 'count'))
+    data.append(get_statistic_from_group(subscription_stats, 'stats_high_deception', 'submitted', 'count'))
+    data.append(get_statistic_from_group(subscription_stats, 'stats_high_deception', 'reported', 'count'))
+    return data

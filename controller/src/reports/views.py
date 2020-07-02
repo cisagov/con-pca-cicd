@@ -15,7 +15,9 @@ from api.models.dhs_models import DHSContactModel, validate_dhs_contact
 from api.utils.db_utils import get_list, get_single
 from django.views.generic import TemplateView
 
+
 from . import views
+from .charts import ChartGenerator
 from .utils import (
     get_subscription_stats_for_cycle,
     get_related_subscription_stats,
@@ -28,7 +30,8 @@ from .utils import (
     get_closest_cycle_within_day_range,
     ratio_to_percent,
     format_timedelta,
-    get_statistic_from_region_group
+    get_statistic_from_region_group,
+    get_stats_low_med_high_by_level
 )
 
 logger = logging.getLogger(__name__)
@@ -81,6 +84,14 @@ class MonthlyReportsView(TemplateView):
         )
 
         total = len(subscription["target_email_list"])
+        low_mid_high_bar_data = get_stats_low_med_high_by_level(subscription_stats)        
+        chart_instance = ChartGenerator()
+        zerodefault = [0]*15
+        low_mid_high_bar_data = low_mid_high_bar_data if low_mid_high_bar_data is not None else zerodefault
+        import ipdb; ipdb.set_trace()
+        svg_string =  chart_instance.generateSvg(low_mid_high_bar_data)
+           
+
         metrics = {
             "total_users_targeted": total,
             "number_of_email_sent_overall": sent,
@@ -107,6 +118,9 @@ class MonthlyReportsView(TemplateView):
             "ratio_reports_to_clicks": round(
                 float(reported or 0) / float(1 if clicked is None else clicked), 2
             ),
+            "levels_bar_chart": base64.b64encode(
+                svg_string.encode("ascii")                
+            ).decode("ascii")
         }
         return metrics
 
@@ -185,16 +199,16 @@ class MonthlyReportsView(TemplateView):
             "start_date": subscription.get("start_date"),
             "end_date": subscription.get("end_date"),
             "target_count": target_count,
-            "metrics": metrics,
+            "metrics": metrics,            
             "sent_circle_svg": base64.b64encode(svg_circle_sent.encode("ascii")).decode(
                 "ascii"
-            ),
+            ),               
             "opened_circle_svg": base64.b64encode(
                 svg_circle_opened.encode("ascii")
             ).decode("ascii"),
             "clicked_circle_svg": base64.b64encode(
                 svg_circle_clicked.encode("ascii")
-            ).decode("ascii"),
+            ).decode("ascii"),            
         }
         return context
 

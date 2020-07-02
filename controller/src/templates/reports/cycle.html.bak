@@ -473,12 +473,11 @@
                     <div class="col-12">
                         <h2 id="summaryTitle">Summary</h2>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-12">
-                        <div id="summary">
-                            <p>Percentage of targets who clicked a malicious link in phishing emails this quarter.</p>
-                        </div>
+                </div>            
+            <div class="row">
+                <div class="col-12">
+                    <div id="summary">
+                        <p>Percentage of targets who clicked a malicious link in phishing emails this quarter.</p>
                     </div>
                 </div>
             </div>
