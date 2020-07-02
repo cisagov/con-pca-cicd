@@ -1,11 +1,22 @@
-import { Component, OnInit, Input, OnDestroy, Inject, ChangeDetectionStrategy } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Input,
+  OnDestroy,
+  Inject,
+  ChangeDetectionStrategy
+} from '@angular/core';
 import { FormControl, Validators, FormGroup } from '@angular/forms';
 import { MyErrorStateMatcher } from '../../../helper/ErrorStateMatcher';
 import { SubscriptionService } from 'src/app/services/subscription.service';
 import { Contact, Customer } from 'src/app/models/customer.model';
 import { Router, ActivatedRoute } from '@angular/router';
 import { CustomerService } from 'src/app/services/customer.service';
-import { MatDialog, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import {
+  MatDialog,
+  MAT_DIALOG_DATA,
+  MatDialogRef
+} from '@angular/material/dialog';
 import { MatTableDataSource } from '@angular/material/table';
 import { LayoutMainService } from 'src/app/services/layout-main.service';
 import { Subscription } from 'rxjs';
@@ -17,13 +28,19 @@ import { Subscription } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class AddCustomerComponent implements OnInit, OnDestroy {
-
   @Input() inDialog: boolean;
 
   model: any;
   addContact = false;
   contactDataSource: any = [];
-  displayedColumns: string[] = ['name', 'title', 'email', 'mobile_phone', 'office_phone', 'action'];
+  displayedColumns: string[] = [
+    'name',
+    'title',
+    'email',
+    'mobile_phone',
+    'office_phone',
+    'action'
+  ];
   contactError = '';
   orgError = '';
   contacts = new MatTableDataSource<Contact>();
@@ -62,7 +79,7 @@ export class AddCustomerComponent implements OnInit, OnDestroy {
     email: new FormControl('', [Validators.required, Validators.email]),
     office_phone: new FormControl(''),
     mobile_phone: new FormControl(''),
-    contactNotes: new FormControl(''),
+    contactNotes: new FormControl('')
   });
 
   // List of angular subscriptions, unsubscribed to on delete
@@ -83,7 +100,6 @@ export class AddCustomerComponent implements OnInit, OnDestroy {
     public layoutSvc: LayoutMainService
   ) {
     layoutSvc.setTitle('Customers');
-
   }
 
   ngOnInit(): void {
@@ -94,13 +110,19 @@ export class AddCustomerComponent implements OnInit, OnDestroy {
     }
 
     this.customerFormGroup.get('customerType').valueChanges.subscribe(value => {
-      if (value === "Private") {
-        this.customerFormGroup.controls['sector'].setValidators(Validators.required);
-        this.customerFormGroup.controls['industry'].setValidators(Validators.required);
+      if (value === 'Private') {
+        this.customerFormGroup.controls['sector'].setValidators(
+          Validators.required
+        );
+        this.customerFormGroup.controls['industry'].setValidators(
+          Validators.required
+        );
 
       } else {
         this.customerFormGroup.controls['sector'].clearValidators();
         this.customerFormGroup.controls['industry'].clearValidators();
+        this.customerFormGroup.controls['sector'].reset();
+        this.customerFormGroup.controls['industry'].reset();
       }
     });
 
@@ -122,16 +144,17 @@ export class AddCustomerComponent implements OnInit, OnDestroy {
       (data: any) => {
         if (data.customer_uuid != null) {
           this.customer = data as Customer;
-          this.setCustomerForm(this.customer)
+          this.setCustomerForm(this.customer);
           this.setContacts(this.customer.contact_list as Contact[]);
           this.getSectorList();
         } else {
           this.orgError = 'Specified customer UUID not found';
         }
       },
-      (error) => {
+      error => {
         this.orgError = 'Failed To load customer';
-      });
+      }
+    );
   }
 
   getSectorList() {
@@ -144,9 +167,10 @@ export class AddCustomerComponent implements OnInit, OnDestroy {
           this.orgError = 'Error retreiving sector/industry list';
         }
       },
-      (error) => {
+      error => {
         this.orgError = 'Error retreiving sector/industry list';
-      });
+      }
+    );
   }
 
   setCustomerForm(customer: Customer) {
@@ -160,7 +184,7 @@ export class AddCustomerComponent implements OnInit, OnDestroy {
       state: customer.state,
       zip: customer.zip_code,
       sector: customer.sector,
-      industry: customer.industry,
+      industry: customer.industry
     });
   }
 
@@ -236,9 +260,11 @@ export class AddCustomerComponent implements OnInit, OnDestroy {
       if (this.customer_uuid != null) {
         // If editing existing customer
         customer.customer_uuid = this.customer_uuid;
-        this.angularSubscriptions.push(this.customerSvc.patchCustomer(customer).subscribe((data: any) => {
-          this.router.navigate(['/customers']);
-        }));
+        this.angularSubscriptions.push(
+          this.customerSvc.patchCustomer(customer).subscribe((data: any) => {
+            this.router.navigate(['/customers']);
+          })
+        );
       } else {
         // else creating a new customer
         this.customerSvc.addCustomer(customer).subscribe(
@@ -251,9 +277,11 @@ export class AddCustomerComponent implements OnInit, OnDestroy {
               this.cancelCustomer();
             }
             this.dialog.closeAll();
-          }, (error) => {
+          },
+          error => {
             this.orgError = 'Error creating customer';
-          });
+          }
+        );
       }
     } else if (!this.customerFormGroup.valid) {
       this.orgError = 'Fix required fields';
@@ -283,8 +311,7 @@ export class AddCustomerComponent implements OnInit, OnDestroy {
       previousContacts.push(contact);
       this.contacts.data = previousContacts;
       this.clearContact();
-    }
-    else {
+    } else {
       this.contactError = 'Fix required fields.';
     }
   }
@@ -353,7 +380,7 @@ export class AddCustomerComponent implements OnInit, OnDestroy {
   }
 
   sectorChange(event) {
-    this.setIndustryList()
+    this.setIndustryList();
     this.customerFormGroup.patchValue({
       industry: null
     });
@@ -361,13 +388,17 @@ export class AddCustomerComponent implements OnInit, OnDestroy {
 
   setIndustryList() {
     if (this.sectorSelected()) {
-      const sector = this.sectorList.filter(x => x.name === this.customerFormGroup.controls['sector'].value)
+      const sector = this.sectorList.filter(
+        x => x.name === this.customerFormGroup.controls['sector'].value
+      );
       this.industryList = sector[0].industries;
     }
   }
 
   sectorSelected() {
-    if (this.customerFormGroup.controls['sector'].value != null) { return true; }
+    if (this.customerFormGroup.controls['sector'].value != null) {
+      return true;
+    }
     return false;
   }
 
