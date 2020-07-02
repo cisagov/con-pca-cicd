@@ -443,6 +443,12 @@ class CycleReportsView(TemplateView):
                 "difference": difference
             })
 
+        templates_by_group = []
+        
+
+        templates_by_group.append([x for x in subscription_stats["campaign_results"] if x["deception_level"] == 1])
+        templates_by_group.append([x for x in subscription_stats["campaign_results"] if x["deception_level"] == 2])
+        templates_by_group.append([x for x in subscription_stats["campaign_results"] if x["deception_level"] == 3])
 
         context = {}
         context["dhs_contact_name"] = dhs_contact_name
@@ -461,6 +467,8 @@ class CycleReportsView(TemplateView):
         context["region_stats"] = region_stats
         context["subscription_stats"] = subscription_stats
         context["click_time_vs_report_time"] = click_time_vs_report_time
+        context["templates_by_group"] = templates_by_group
+
 
 
         return context
