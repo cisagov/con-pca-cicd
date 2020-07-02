@@ -1,7 +1,7 @@
 """Subscription Campaigns."""
 
 # Standard Python Libraries
-from datetime import timedelta
+from datetime import datetime, timedelta
 import logging
 
 # Third-Party Libraries
@@ -98,6 +98,27 @@ def create_campaign(subscription, sub_level, landing_page):
         )
 
     return gophish_campaigns
+
+
+def stop_campaign(campaign):
+    """
+    Stops a given campaign.
+
+    Delete Campaign
+
+    Delete Template
+
+    Returns updated Campaign
+    """
+    campaign_manager.complete_campaign(campaign_id=campaign["campaign_id"])
+    campaign["status"] = "stopped"
+    campaign["completed_date"] = datetime.now()
+    # Delete Campaign
+    campaign_manager.delete_campaign(campaign_id=campaign["campaign_id"])
+    # Delete Templates
+    campaign_manager.delete("email_template", template_id=campaign["email_template_id"])
+
+    return campaign
 
 
 def __create_campaign(

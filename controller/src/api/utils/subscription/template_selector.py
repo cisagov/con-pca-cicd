@@ -77,10 +77,23 @@ def personalize_templates(customer, subscription, templates, sub_levels: dict):
     return sub_levels
 
 
-def personalize_template_batch(customer, subscription, sub_levels: dict):
+def personalize_template_batch(
+    customer, subscription, sub_levels: dict, new_cycle=False
+):
     """Personalize_template_batch."""
     # Gets list of available email templates
     templates = get_email_templates()
+
+    # if new subscription cycle, exclude previously used templates
+    if new_cycle:
+        existing_templates = subscription.get("templates_selected_uuid_list")
+        templates = [
+            template
+            for template in templates
+            if template["template_uuid"] not in existing_templates
+        ]
+
+    logger.info(f"Template Count = {len(templates)}")
 
     # Determines how many templates are available in each batch
     templates_per_batch = get_num_templates_per_batch()

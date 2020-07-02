@@ -7,7 +7,7 @@ import logging
 from api.models.subscription_models import SubscriptionModel, validate_subscription
 from api.utils import db_utils as db
 from notifications.views import SubscriptionNotificationEmailSender
-from tasks.tasks import email_subscription_report
+from tasks.tasks import email_subscription_report, start_subscription_cycle
 
 logger = logging.getLogger()
 
@@ -157,5 +157,22 @@ def create_scheduled_email_tasks(created_response):
             context.append({"task_uuid": task.id, "message_type": message_type})
         except task.OperationalError as exc:
             logger.exception("Subscription task raised: %r", exc)
+
+    return context
+
+
+def create_scheduled_cycle_tasks(created_response):
+    subscription_uuid = created_response.get("subscription_uuid")
+    send_date = datetime.utcnow() + timedelta(days=90)
+
+    try:
+        task = start_subscription_cycle.apply_async(
+            args=[subscription_uuid], eta=send_date, retry=True,
+        )
+        context = {"task_uuid": task.id, "message_type": "start_new_cycle"}
+
+    except task.OperationalError as exc:
+        logger.exception("Subscription task raised: %r", exc)
+        return
 
     return context
