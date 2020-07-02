@@ -309,16 +309,28 @@ def get_subscription_stats_for_cycle(subscription, start_date=None):
         campaign_timeline_summary = []
 
     # generate campaign_group stats based off deception level and oconsolidation of all campaigns
+    #All
     consolidated_stats = consolidate_campaign_group_stats(campaign_results)
+    consolidated_stats["ratios"] = calc_ratios(consolidated_stats)
+
+    #Low
     low_decp_stats = consolidate_campaign_group_stats(
         list(filter(lambda x: x["deception_level"] == 1, campaign_results))
     )
+    low_decp_stats["ratios"] = calc_ratios(low_decp_stats)
+
+    #Moderate
     moderate_decp_stats = consolidate_campaign_group_stats(
         list(filter(lambda x: x["deception_level"] == 2, campaign_results))
     )
+    moderate_decp_stats["ratios"] = calc_ratios(moderate_decp_stats)
+
+    #High
     high_decp_stats = consolidate_campaign_group_stats(
         list(filter(lambda x: x["deception_level"] == 3, campaign_results))
     )
+    high_decp_stats["ratios"] = calc_ratios(high_decp_stats)
+
     clicks_over_time = get_clicked_time_period_breakdown(campaign_results)
 
     return {
@@ -464,11 +476,38 @@ def get_statistic_from_group(subscription_stats, deception_level, category, stat
     Get a specific stat if it exists off of the subscription stats consolidation.
 
     Stats : Average, Count, Maximum, Median, Minimum
-    """
+    """ 
     try:
         return subscription_stats[deception_level][category][stat]
     except Exception:
         return None
+
+def get_statistic_from_region_group(region_stats, group, stat):
+    """
+    Get a specific stat if it exists off of the region stats consolidation.
+    """ 
+    if stat in ( 'sent', 'opened', 'clicked', 'submitted', 'reported'):
+        try:
+            return region_stats[group]["consolidated_values"][stat]
+        except:
+            print("Get stats from group failure")
+    try:
+        return region_stats[group][stat]
+    except Exception:
+        return None
+
+def ratio_to_percent(ratio,round_val=2):      
+    return "{:.{prec}f}".format(ratio*100,prec=round_val)
+
+def format_timedelta(timedelta):
+    ret_val = ""
+    if timedelta.days:
+        ret_val += f"{timedelta.days} Days "
+    if timedelta.seconds/3600 > 1:
+        ret_val += f"{int(round(timedelta.seconds/3600,0))} Hours "
+    if int(timedelta.seconds % 60) != 0:
+        ret_val += f"{int(timedelta.seconds % 60)} Minutes"
+    return ret_val
 
 
 def get_reports_to_click(subscription_stats):
@@ -529,11 +568,22 @@ def get_template_details(campaign_results):
         "sender": 1,
         "relevancy": 1,
         "behavior": 1,
+        "subject":1,
+        "from_address":1,
+        "html":1,
     }
     template_list = get_list(
         parameters, "template", TemplateModel, validate_template, fields
     )
-
+    total_sent = 0
+    for camp in campaign_results:
+        total_sent += camp["campaign_stats"]["sent"]["count"]
+    
+    percent_of_camps = 0
+    for camp in campaign_results:
+        percent_of_camps = ratio_to_percent(camp["campaign_stats"]["sent"]["count"] / total_sent)
+        camp["campaign_stats"]["percent_of_campaigns"] = percent_of_camps
+    
     # Possible large performance hit here. Break out repository to use built in mongo $in functionallity to fix
     for template in template_list:
         for campaign in campaign_results:

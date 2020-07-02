@@ -215,11 +215,11 @@
                         <table id="subscriptionDetailsTable">
                             <tr>
                                 <td>Customer Name&colon;</td>
-                                   <td>{{ customer.full_name }}</td>
+                                <td>{{ customer.full_name }}</td>
                             </tr>
                             <tr>
                                 <td>Customer POC&colon;</td>
-                                 <td>{{primary_contact.first_name}} {{primary_contact.last_name}} </td>
+                                <td>{{primary_contact.first_name}} {{primary_contact.last_name}} </td>
                             </tr>
                             <tr>
                                 <td>Vulnerability Management<br>Team Lead&colon;</td>
@@ -243,7 +243,7 @@
                             </tr>
                             <tr>
                                 <td>Scope&colon;</td>
-                                  <td>{{metrics.total_users_targeted}} users within the following domain&colon; {{ customer.identifier }}</td>
+                                <td>{{metrics.total_users_targeted}} users within the following domain&colon; {{ customer.identifier }}</td>
                             </tr>
                         </table>
                     </div>
@@ -258,9 +258,9 @@
                             </tr>
                             {%for cycle in cycles%}
                             <tr>
-                                <td>{{cycle.year}} {{ cycle.quarter}}</td>
-                                <td>{{cycle.start_date|date:"M d, Y" }} - {{ cycle.end_date|date:"M d, Y" }}</td>
-                                <td>{{cycle.notes}}</td>
+                                <td>{{ cycle.quarter}}</td>
+                                <td>{{ cycle.start_date|date:"M d, Y" }} - {{ cycle.end_date|date:"M d, Y" }}</td>
+                                <td>{{ cycle.notes }}</td>
                             </tr>
                             {% endfor %}                            
                         </table>
@@ -316,7 +316,7 @@
                                 Assessments and Technical Services- (Vulnerability Management) led Continuous Phishing Campaign 
                                 Assessment (CON-PCA) for {{ customer.full_name }}. The CON-PCA is a practical exercise 
                                 intended to support and measure the effectiveness of security awareness training for information 
-                                system users. The results of this CON-PCA show the susceptibility of {{customer.identifier}} personnel to social engineering attacks—specifically email phishing attacks—in which an 
+                                system users. The results of this CON-PCA show the susceptibility of {{customer.identifier}}personnel to social engineering attacks—specifically email phishing attacks—in which an 
                                 adversary tricks an email user into clicking a malicious link to gain unauthorized network access. In 
                                 the scenario that this CON-PCA tested, the phishing attack bypassed technical controls that would 
                                 normally detect and/or block malicious emails and links. The CON-PCA, therefore, measured 
@@ -365,7 +365,7 @@
                                 </tr>
                                 <tr>
                                     <td>Ratio of reports-to-clicks</td>
-                                    <td>{{metrics.reports_to_clicks_ratio}}</td>
+                                    <td>{{metrics.repots_to_clicks_ratio}}</td>
                                 </tr>
                                 <tr>
                                     <td>Average time to first click</td>
@@ -387,11 +387,11 @@
                     <div class="col-12">
                         <p>Vulnerability Management has provided this CON-PCA to {{customer.full_name}} at no cost and coordinated 
                             all activities—including planning and testing–with {{customer.full_name}}'s point of contact. 
-                            {{customer.full_name}} maintained control over the testing, including providing target email addresses, 
+                            {{customer.full_name}}maintained control over the testing, including providing target email addresses, 
                             approving phishing email templates, approving testing timeframes, and adjusting mail security setting to 
                             ensure inbox access. This CON-PCA was not intended to, and did not, test technical controls or electronic 
                             protections designed to block phishing attempts. This CON-PCA spanned a six-week period and aimed to 
-                            capture behavior-based metrics of {{customer.full_name}} information system users’ reaction to phishing 
+                            capture behavior-based metrics of {{customer.full_name}}information system users’ reaction to phishing 
                             emails of multiple complexity levels. </p>
                     </div>
                 </div>
@@ -667,24 +667,24 @@
         <article id="PageSeven">
             <div class="row">
                 <div class="col-12">
-                    <p>The remainder of this report provides findings and metrics of the VM phishing service for EXAMPLE.</p>
-                    <h2 id="methodologyTitle">EXAMPLE Methodology Specifics</h2>
+                    <p>The remainder of this report provides findings and metrics of the VM phishing service for {{ customer.full_name }}.</p>
+                    <h2 id="methodologyTitle">{{ customer.full_name }} Methodology Specifics</h2>
                     <div id="methodologyText">
                         <p>VM used the methodology documented in <u><b>Appendix A&colon; Methodology</b></u> to perform testing 
-                            EXAMPLE. Specific phishing templates can be reviewed in <u><b>Appendix C&colon; Templates</b></u> 
-                            with corresponding complexity calculations. VM divided the 1000 email addresses that EXAMPLE provided 
+                            {{ customer.full_name }}. Specific phishing templates can be reviewed in <u><b>Appendix C&colon; Templates</b></u> 
+                            with corresponding complexity calculations. VM divided the 1000 email addresses that {{ customer.full_name }} provided 
                             into three groups. Group 1 had 333 addresses and received levels 1 and 4. Group 2 had 333 addresses and
                             received levels 2 and 5. Group 3 had 334 addresses and received levels 3 and 6. See Table 3 for
                             descriptions of email levels 1 – 6.</p>
-                        <p>The assessment’s goal was to capture the behavior-based responses of EXAMPLE to email phishing
+                        <p>The assessment’s goal was to capture the behavior-based responses of {{ customer.full_name }} to email phishing
                             attempts; and the assessment operated under the scenario that no technical controls were able to
                             detect, report, or stop the email phishing attempts. VM, as an external body conducting this
                             PCA, did not have direct knowledge whether or not emails successfully arrived in targeted
-                            EXAMPLE user inboxes. To allow for a clear determination of click rates (email links clicked
-                            divided by emails sent), EXAMPLE or VM performed the following&colon;</p>
+                            {{ customer.full_name }} user inboxes. To allow for a clear determination of click rates (email links clicked
+                            divided by emails sent), {{ customer.full_name }} or VM performed the following&colon;</p>
                         <ul>
-                            <li>EXAMPLE whitelisted the VM domain and IP address during the planning stage</li>
-                            <li>EXAMPLE created specific mail receiving rules to permit the VM emails to land in user 
+                            <li>{{ customer.full_name }} whitelisted the VM domain and IP address during the planning stage</li>
+                            <li>{{ customer.full_name }} created specific mail receiving rules to permit the VM emails to land in user 
                                 inboxes</li>
                         </ul>
                     </div>
@@ -694,14 +694,14 @@
                 <div class="col-12">
                     <h2 id="testingSummaryTitle">Summary of Testing Activities and Results</h2>
                     <div id="testingSummaryText">
-                        <p>This PCA concentrated on how phishing email complexity affected EXAMPLE user click behavior and
+                        <p>This PCA concentrated on how phishing email complexity affected {{ customer.full_name }} user click behavior and
                             response behavior. VM expects that a more complex and deceptive phishing email has a higher
                             likelihood of being clicked and a lower likelihood of being reported. This assessment also
                             gathered organizational emails through open-source intelligence techniques to determine
-                            EXAMPLE’s potentially attackable online presence. See <u><b>Appendix B&colon; Detailed Results</b></u>
+                            {{ customer.full_name }}’s potentially attackable online presence. See <u><b>Appendix B&colon; Detailed Results</b></u>
                             for detailed phishing and customer email data and <u><b>Appendix C&colon; Templates</b></u> for a 
                             detailed explanation on complexity levels.</p>
-                        <p>Over six weeks, EXAMPLE’s targeted users received at least two phishing emails of increasing
+                        <p>Over six weeks, {{ customer.full_name }}’s targeted users received at least two phishing emails of increasing
                             complexity. Levels 1 – 3 were &quot;easier to detect&quot; and levels 4 – 6 were &quot;more difficult
                             to detect,&quot; based on the number and type of indicators used. The table below summarizes the
                             phishing templates used in this PCA.</p>
@@ -721,40 +721,16 @@
                             <th style="padding: 0 225px 0 0;">Description</th>
                             <th>Displayed Link</th>
                         </tr>
-                        <tr>
-                            <td>1</td>
-                            <td class="text-lg-left">Store Error - Poorly worded email coming from a fake company describing purchase error</td>
-                            <td>www.purchaseerror22992.com</td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>Software Update - Reasonably worded email from “IT Solutions Co” stating computer software
-                                is out of date</td>
-                            <td>www.immediateupdates.net</td>
-                        </tr>
-                        <tr>
-                            <td>3</td>
-                            <td>Important - Reasonably worded email from “HR Services”Requesting feedback on a new program.
-                            </td>
-                            <td>www.requestedfeedbackprogram.com</td>
-                        </tr>
-                        <tr>
-                            <td>4</td>
-                            <td>News - News source asking individuals to view news articles or requesting users unsubscribe
-                                if they wish</td>
-                            <td>www.localbreakingnews.biz</td>
-                        </tr>
-                        <tr>
-                            <td>5</td>
-                            <td>Upcoming Parking Program - “Human Resourses” about a mandatory survey</td>
-                            <td>www.examplelink.net/SurveyID=182</td>
-                        </tr>
-                        <tr>
-                            <td>6</td>
-                            <td>Survey Updated Accounting System Well worded, informational email from an internal financial
-                                office describing relevant accounting system updates</td>
-                            <td>www.sharepoint.EXAMPLE.com/acco</td>
-                        </tr>
+                        
+                        {%for campaign in subscription_stats.campaign_results%}
+                            <tr>
+                                <td>{{campaign.deception_level}}</td>
+                                <td>{{campaign.template_details.deception_score}}</td>
+                                <td>{{campaign.template_details.description}}</td>
+                                <td> TEMPLATE DOMAIN NOT TRACKED</td>
+                            </tr>
+                        {% endfor %}
+                        
                     </table>
                 </div>
             </div>
@@ -771,7 +747,7 @@
                             decrease over time and to a level deemed acceptable based on the organization’s risk management
                             posture.</p>
                         <p>The counterpart to user click rates is the user-reporting rate, determined by the number of
-                            emails sent or calls to alert EXAMPLE’s helpdesk during each campaign. Based on previous
+                            emails sent or calls to alert {{ customer.full_name }}’s helpdesk during each campaign. Based on previous
                             testing, VM recommends that organizations aim to have two people reporting the phishing attempts
                             for every person that clicks. This ratio ensures that there is not only reporting coverage for
                             the person clicking, but also redundant coverage in case the person who clicks the link does not
@@ -790,7 +766,7 @@
                         the percentage of targeted people (determined by a unique email address) who have clicked at least once 
                         on a “malicious” link and those who reported a suspicious email. The number of unique clicks correlates 
                         to the number of end user devices potentially compromised in each campaign. The number of user reports 
-                        correlates to the number of opportunities the EXAMPLE security team had to identify a potential breach and 
+                        correlates to the number of opportunities the {{ customer.full_name }} security team had to identify a potential breach and 
                         reduce its impact. Table 4 and Figure 1 summarize click and report rates.</small></p>
                 </div>
             </div>
@@ -811,60 +787,44 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                {%for campaign in subscription_stats.campaign_results %}
                                 <tr>
-                                    <td>1</td>
-                                    <td>Store Error</td>
-                                    <td>3.60&percnt;</td>
-                                    <td>12</td>
-                                    <td>13.84&percnt;</td>
-                                    <td>46</td>
-                                    <td>3.83</td>
+                                    <td>{{campaign.deception_level}}</td>
+                                    <td>{{campaign.template_details.name}}</td>
+                                    
+                                    {% if campaign.ratios.clicked_ratio %}
+                                    <td>{% widthratio campaign.ratios.clicked_ratio 1 100%}&percnt;</td>
+                                    {% else %}
+                                    <td>0&percnt;</td>
+                                    {% endif %}
+                                    
+                                    {% if campaign.campaign_stats.clicked.count %}
+                                    <td>{{campaign.campaign_stats.clicked.count}}</td>
+                                    {% else %}
+                                    <td>0</td>
+                                    {% endif %}
+                                    
+                                    {% if campaign.ratios.reported_ratio %}
+                                    <td>{% widthratio campaign.ratios.reported_ratio 1 100%}&percnt;</td>
+                                    {% else %}
+                                    <td>0&percnt;</td>
+                                    {% endif %}
+
+                                    {% if campaign.campaign_stats.reported.count %}
+                                    <td>{{campaign.campaign_stats.reported.count}}</td>
+                                    {% else %}
+                                    <td>0</td>
+                                    {% endif %}
+
+
+                                    {% if campaign.ratios.reported_ratio %}
+                                    <td>{{campaign.ratios.reported_ratio|stringformat:".2f"}}</td>
+                                    {% else %}
+                                    <td>0</td>
+                                    {% endif %}
                                 </tr>
-                                <tr>
-                                    <td>2</td>
-                                    <td>Urgent Software Update</td>
-                                    <td>1.20&percnt;</td>
-                                    <td>4</td>
-                                    <td>4.21&percnt;</td>
-                                    <td>14</td>
-                                    <td>3.50</td>
-                                </tr>
-                                <tr>
-                                    <td>3</td>
-                                    <td>Important Feedback Requested</td>
-                                    <td>11.08&percnt;</td>
-                                    <td>37</td>
-                                    <td>9.58&percnt;</td>
-                                    <td>32</td>
-                                    <td>0.86</td>
-                                </tr>
-                                <tr>
-                                    <td>4</td>
-                                    <td>News Subscription Alert</td>
-                                    <td>12.01&percnt;</td>
-                                    <td>40</td>
-                                    <td>11.41&percnt;</td>
-                                    <td>38</td>
-                                    <td>0.95</td>
-                                </tr>
-                                <tr>
-                                    <td>5</td>
-                                    <td>Upcoming Parking Program Survey</td>
-                                    <td>11.11&percnt;</td>
-                                    <td>37</td>
-                                    <td>3.60&percnt;</td>
-                                    <td>12</td>
-                                    <td>0.32</td>
-                                </tr>
-                                <tr>
-                                    <td>6</td>
-                                    <td>Updated Accounting System Policy</td>
-                                    <td>26.65&percnt;</td>
-                                    <td>89</td>
-                                    <td>1.80&percnt;</td>
-                                    <td>6</td>
-                                    <td>0.07</td>
-                                </tr>
+                                {% endfor %}
+                                
                             </tbody>
                         </table>
                     </div>
@@ -963,6 +923,15 @@
                             </tr>
                         </thead>
                         <tbody>
+                            {%for campaign in click_time_vs_report_time %}
+                                <tr>
+                                    <td>{{campaign.level}}</td>                                    
+                                    <td>{{campaign.time_to_first_click}}</td>                                    
+                                    <td>{{campaign.time_to_first_report}}</td>                                    
+                                    <td>{{campaign.difference}}</td>
+                                    
+                                </tr>
+                                {% endfor %}
                             <tr>
                                 <td>1</td>
                                 <td>3&colon;25&colon;00</td>
@@ -1058,8 +1027,8 @@
                             aliquet eget sit. Massa ultricies mi quis hendrerit dolor magna eget. Facilisis volutpat est
                             velit egestas dui id.</p>
 
-                        <p>PCA is a young service with limited but meaningful data made available to EXAMPLE. VM hopes this
-                            data will be actionable and allow EXAMPLE to reduce some level of risk within their
+                        <p>PCA is a young service with limited but meaningful data made available to {{ customer.full_name }}. VM hopes this
+                            data will be actionable and allow {{ customer.full_name }} to reduce some level of risk within their
                             organization. As more PCAs are completed over time, statistical reporting will be enhanced and a
                             non-attributable overview of phishing results will be collected as part of the VM annual service
                             review.</p>
@@ -1127,190 +1096,241 @@
         <article id="pageFifteen">
             <div class="row">
                 <div class="col-12">
-                    <h3 id="dumbPhishTitle"><small class="font-weight-bold">Low Templates/Dub Phish</small></h3>
+                    <h3 id="dumbPhishTitle"><small class="font-weight-bold">Low Templates/Dumb Phish</small></h3>
+                    {% for campaign in subscription_stats.campaign_results %}
+                        {% if campaign.deception_level == 1 %}
                     <table id="dumbPhishTable">
                         <tr>
                             <td>Template Name&colon;</td>
-                            <td>Job Offer</td>
+                            <td>{{campaign.template_details.name}}</td>
                         </tr>
                         <tr>
                             <td>Deception Level&colon;</td>
-                            <td>Low</td>
+                            <td>{{campaign.deception_level}}</td>
                         </tr>
                         <tr>
                             <td>Percent of Campaigns&colon;</td>
-                            <td>5%</td>
+                            <td>{{campaign.campaign_stats.percent_of_campaigns}}&percnt;</td>
                         </tr>
                         <tr>
                             <td>Total Sent&colon;</td>
-                            <td>50</td>
+                            {% if campaign.campaign_stats.sent.count %}
+                                <td>{{campaign.campaign_stats.sent.count}} </td>
+                            {% else %}
+                                <td> 0 </td>
+                            {% endif %}
                         </tr>
                         <tr>
                             <td>Clicked&colon;</td>
-                            <td>5</td>
+                            {% if campaign.campaign_stats.clicked.count %}
+                                <td>{{campaign.campaign_stats.clicked.count}} </td>
+                            {% else %}
+                                <td> 0 </td>
+                            {% endif %}
                         </tr>
                         <tr>
                             <td>Submitted Data&colon;</td>
-                            <td>1</td>
+                            {% if campaign.campaign_stats.submitted.count %}
+                                <td>{{campaign.campaign_stats.submitted.count}} </td>
+                            {% else %}
+                                <td> 0 </td>
+                            {% endif %}
                         </tr>
                         <tr>
                             <td>Reported&colon;</td>
-                            <td>2</td>
+                            {% if campaign.campaign_stats.reported.count %}
+                                <td>{{campaign.campaign_stats.reported.count}} </td>
+                            {% else %}
+                                <td> 0 </td>
+                            {% endif %}
                         </tr>
                     </table>
-                </div>
-            </div>
             <div class="row">
                 <div class="col-12">
                     <div id="dumbPhishDetails">
-                        <b>Subject&colon;</b> Dream Job<br>
-                        <b>From&colon;</b> fake.email@fakesite.com<br>
+                        {% if campaign.template_details.subject %}
+                            <b>Subject&colon;</b> {{campaign.template_details.subject}}<br>
+                        {% else %}
+                            <b>Subject&colon;</b> N/A <br>
+                        {% endif %}
+
+                        {% if campaign.template_details.from_address %}
+                            <b>From&colon;</b> {{campaign.template_details.from_address}}<br>
+                        {% else %}
+                            <b>From&colon;</b> N/A <br>
+                        {% endif %}
+                        
                         <b>Email Body&colon;</b>
                         <div id="dumbEmailBody">
-                            <p>Congratulations!</p>
-                            <p>I’m happy to inform you that you’ve been selected for a vacancy in our company called Vintage
-                                Cars of USA, Inc. My company helps citizens sell their vintage car for a small fee. What’s
-                                in it for ME?</p>
-
-                            <p>* You do not have to pay any fees or attract other poeple</p>
-                            <p>* No special eduation or skills or anything is required</p>
-                            <p>* You can plan your own work schedule and work from home anytime * You immediately get
-                                money/salary for your precious time</p>
-
-                            <p>Vintage Car of USA, Inc. is offering you the position of District Sales Approver. This
-                                position will require you to approve the sales of cars in your District. Should you choose
-                                to accept, the position will pay a salary of $45,000 dollars. While considering your
-                                application, we will request a credit check and criminal background history. If any negative
-                                reactions are derived from your checks, the application will be denied.
-                                We look forward to working with you. To apply, visit here&colon; [link]</p>
+                            {{campaign.template_details.html|safe}}
                         </div>
                     </div>
                 </div>
             </div>
+            {% endif %}
+        {% endfor %}
+        </div>
+    </div>
         </article>
 
         <article id="pageSixteen">
             <div class="row">
                 <div class="col-12">
                     <h3 id="mediumPhishTitle"><small class="font-weight-bold">Medium Templates/Moderate Phish</small></h3>
-                    <table id="mediumPhishTable">
+                    {% for campaign in subscription_stats.campaign_results %}
+                        {% if campaign.deception_level == 2 %}
+                    <table id="dumbPhishTable">
                         <tr>
-                            <th>Template Name&colon;</th>
-                            <td>System Update</td>
+                            <td>Template Name&colon;</td>
+                            <td>{{campaign.template_details.name}}</td>
                         </tr>
                         <tr>
-                            <th>Deception Level&colon;</th>
-                            <td>Moderate</td>
+                            <td>Deception Level&colon;</td>
+                            <td>{{campaign.deception_level}}</td>
                         </tr>
                         <tr>
-                            <th>Percent of Campaigns&colon;</th>
-                            <td>5%</td>
+                            <td>Percent of Campaigns&colon;</td>
+                            <td>{{campaign.campaign_stats.percent_of_campaigns}}&percnt;</td>
                         </tr>
                         <tr>
-                            <th>Total Sent&colon;</th>
-                            <td>50</td>
+                            <td>Total Sent&colon;</td>
+                            {% if campaign.campaign_stats.sent.count %}
+                                <td>{{campaign.campaign_stats.sent.count}} </td>
+                            {% else %}
+                                <td> 0 </td>
+                            {% endif %}
                         </tr>
                         <tr>
-                            <th>Clicked&colon;</th>
-                            <td>5</td>
+                            <td>Clicked&colon;</td>
+                            {% if campaign.campaign_stats.clicked.count %}
+                                <td>{{campaign.campaign_stats.clicked.count}} </td>
+                            {% else %}
+                                <td> 0 </td>
+                            {% endif %}
                         </tr>
                         <tr>
-                            <th>Submitted Data&colon;</th>
-                            <td>1</td>
+                            <td>Submitted Data&colon;</td>
+                            {% if campaign.campaign_stats.submitted.count %}
+                                <td>{{campaign.campaign_stats.submitted.count}} </td>
+                            {% else %}
+                                <td> 0 </td>
+                            {% endif %}
                         </tr>
                         <tr>
-                            <th>Reported&colon;</th>
-                            <td>2</td>
+                            <td>Reported&colon;</td>
+                            {% if campaign.campaign_stats.reported.count %}
+                                <td>{{campaign.campaign_stats.reported.count}} </td>
+                            {% else %}
+                                <td> 0 </td>
+                            {% endif %}
                         </tr>
                     </table>
-                </div>
-            </div>
             <div class="row">
                 <div class="col-12">
-                    <div id="mediumPhishDetails">
-                        <b>Subject&colon;</b> Beware<br>
-                        <b>From&colon;</b> update@thehelpdesk.com<br>
+                    <div id="dumbPhishDetails">
+                        {% if campaign.template_details.subject %}
+                            <b>Subject&colon;</b> {{campaign.template_details.subject}}<br>
+                        {% else %}
+                            <b>Subject&colon;</b> N/A <br>
+                        {% endif %}
+
+                        {% if campaign.template_details.from_address %}
+                            <b>From&colon;</b> {{campaign.template_details.from_address}}<br>
+                        {% else %}
+                            <b>From&colon;</b> N/A <br>
+                        {% endif %}
+                        
                         <b>Email Body&colon;</b>
-                        <div id="mediumEmailBody">
-                            <p>Due to the recent WannaCry ransomware outbreak, our security team is pushing a high-priority,
-                                out-of-band patch. It is imperative to visit the following site to ensure your machine has
-                                been updated and is secure. There is no time for your IT administrator to update all
-                                machines themselves. You’re help is required! Update now at [link]</p>
+                        <div id="dumbEmailBody">
+                            {{campaign.template_details.html|safe}}
                         </div>
                     </div>
                 </div>
             </div>
+            {% endif %}
+        {% endfor %}
+        </div>
+    </div>
         </article>
 
         <article id="pageSeventeen">
             <div class="row">
                 <div class="col-12">
                     <h3 id="hardPhishTitle"><small class="font-weight-bold">Difficult Templates/Spear Phish</small></h3>
-                    <table id="hardPhishTable">
+                    {% for campaign in subscription_stats.campaign_results %}
+                        {% if campaign.deception_level == 3 %}
+                    <table id="dumbPhishTable">
                         <tr>
-                            <th>Template Name&colon;</th>
-                            <td>Security Audit</td>
+                            <td>Template Name&colon;</td>
+                            <td>{{campaign.template_details.name}}</td>
                         </tr>
                         <tr>
-                            <th>Deception Level&colon;</th>
-                            <td>High</td>
+                            <td>Deception Level&colon;</td>
+                            <td>{{campaign.deception_level}}</td>
                         </tr>
                         <tr>
-                            <th>Percent of Campaigns&colon;</th>
-                            <td>5%</td>
+                            <td>Percent of Campaigns&colon;</td>
+                            <td>{{campaign.campaign_stats.percent_of_campaigns}}&percnt;</td>
                         </tr>
                         <tr>
-                            <th>Total Sent&colon;</th>
-                            <td>50</td>
+                            <td>Total Sent&colon;</td>
+                            {% if campaign.campaign_stats.sent.count %}
+                                <td>{{campaign.campaign_stats.sent.count}} </td>
+                            {% else %}
+                                <td> 0 </td>
+                            {% endif %}
                         </tr>
                         <tr>
-                            <th>Clicked&colon;</th>
-                            <td>5</td>
+                            <td>Clicked&colon;</td>
+                            {% if campaign.campaign_stats.clicked.count %}
+                                <td>{{campaign.campaign_stats.clicked.count}} </td>
+                            {% else %}
+                                <td> 0 </td>
+                            {% endif %}
                         </tr>
                         <tr>
-                            <th>Submitted Data&colon;</th>
-                            <td>1</td>
+                            <td>Submitted Data&colon;</td>
+                            {% if campaign.campaign_stats.submitted.count %}
+                                <td>{{campaign.campaign_stats.submitted.count}} </td>
+                            {% else %}
+                                <td> 0 </td>
+                            {% endif %}
                         </tr>
                         <tr>
-                            <th>Reported&colon;</th>
-                            <td>2</td>
+                            <td>Reported&colon;</td>
+                            {% if campaign.campaign_stats.reported.count %}
+                                <td>{{campaign.campaign_stats.reported.count}} </td>
+                            {% else %}
+                                <td> 0 </td>
+                            {% endif %}
                         </tr>
                     </table>
-                </div>
-            </div>
             <div class="row">
                 <div class="col-12">
-                    <div id="hardPhishDetails">
-                        <b>Subject&colon;</b> Annual Audit<br>
-                        <b>From&colon;</b> management@companydomain.com<br>
+                    <div id="dumbPhishDetails">
+                        {% if campaign.template_details.subject %}
+                            <b>Subject&colon;</b> {{campaign.template_details.subject}}<br>
+                        {% else %}
+                            <b>Subject&colon;</b> N/A <br>
+                        {% endif %}
+
+                        {% if campaign.template_details.from_address %}
+                            <b>From&colon;</b> {{campaign.template_details.from_address}}<br>
+                        {% else %}
+                            <b>From&colon;</b> N/A <br>
+                        {% endif %}
+                        
                         <b>Email Body&colon;</b>
-                        <div id="hardEmailBody">
-                            <p>All staff&colon;</p>
-                            <p>In accordance with Office of Management and Budget (OMB) memorandum, we are required to host
-                                the Department of Homeland Security in an annual audit of our security practices. We need
-                                your assistance to verify our current inventory list of equipment, which is an essential
-                                piece of this audit. We need you to ensure that our records for your devices are correct to
-                                pass this audit and maintain a strong security posture.</p>
-
-                            <p>What you need to do&colon;</p>
-                            <ul>
-                                <li>Find all devices (desktops, laptops, tablets, cell phones, etc) that were signed out to
-                                    you • Locate the serial number on these devices</li>
-                                <li>Verify our current records</li>
-                                <li>If anything is incorrect, please update the form</li>
-                            </ul>
-
-                            <p>Please complete the following form within the next 3 business days.</p>
-
-                            <p>We appreciate your assistance in maintaining our compliance with OMB. You are a key aspect to
-                                ensuring this security audit is an easy pass.</p><br>
-
-                            <p>Respectfully,</p>
-                            <p>Office of the Chief Information Security Officer</p>
+                        <div id="dumbEmailBody">
+                            {{campaign.template_details.html|safe}}
                         </div>
                     </div>
                 </div>
             </div>
+            {% endif %}
+        {% endfor %}
+        </div>
+    </div>
         </article>
 
     </body>
