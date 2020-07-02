@@ -7,31 +7,33 @@ This handles the api for all the Reports urls.
 import logging
 import io
 
+# Third-Party Libraries
 from api.manager import CampaignManager
 from api.models.subscription_models import SubscriptionModel, validate_subscription
 from api.models.template_models import (
+    DeceptionLevelStatsModel,
     TemplateModel,
     validate_template,
-    DeceptionLevelStatsModel,
 )
 from api.serializers.reports_serializers import (
-    ReportsGetSerializer,
     EmailReportsGetSerializer,
+    ReportsGetSerializer,
 )
 from api.utils.db_utils import get_list, get_single
-from reports.utils import (
-    get_subscription_stats_for_cycle,
-    get_related_subscription_stats,
-    get_cycles_breakdown,
-    get_template_details,
-    get_statistic_from_group,
-    get_reports_to_click,
-    campaign_templates_to_string,
-    get_most_successful_campaigns,
-)
-from notifications.views import ReportsEmailSender
-from django.http import FileResponse
+from django.core.files.storage import FileSystemStorage
+from django.http import HttpResponse, FileResponse
 from drf_yasg.utils import swagger_auto_schema
+from notifications.views import ReportsEmailSender
+from reports.utils import (
+    campaign_templates_to_string,
+    get_cycles_breakdown,
+    get_most_successful_campaigns,
+    get_related_subscription_stats,
+    get_reports_to_click,
+    get_statistic_from_group,
+    get_subscription_stats_for_cycle,
+    get_template_details,
+)
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from weasyprint import HTML
@@ -56,6 +58,7 @@ class ReportsView(APIView):
         operation_description="This fetches a subscription's report data by subscription uuid",
     )
     def get(self, request, subscription_uuid):
+        """Get Method."""
         subscription_uuid = self.kwargs["subscription_uuid"]
         subscription = get_single(
             subscription_uuid, "subscription", SubscriptionModel, validate_subscription
@@ -180,6 +183,7 @@ class MonthlyReportsEmailView(APIView):
         operation_description="This sends a subscription report email by subscription uuid",
     )
     def get(self, request, subscription_uuid):
+        """Get Method."""
         subscription = get_single(
             subscription_uuid, "subscription", SubscriptionModel, validate_subscription
         )
@@ -207,6 +211,7 @@ class CycleReportsEmailView(APIView):
         operation_description="This sends a subscription report email by subscription uuid",
     )
     def get(self, request, subscription_uuid):
+        """Get Method."""
         subscription = get_single(
             subscription_uuid, "subscription", SubscriptionModel, validate_subscription
         )
@@ -234,6 +239,7 @@ class YearlyReportsEmailView(APIView):
         operation_description="This sends a subscription report email by subscription uuid",
     )
     def get(self, request, subscription_uuid):
+        """Get Method."""
         # subscription = get_single(
         #     subscription_uuid, "subscription", SubscriptionModel, validate_subscription
         # )
@@ -249,7 +255,8 @@ class YearlyReportsEmailView(APIView):
 # These are as functions rather than classes, because extending the APIView class
 # causes some issues when sending accept headers other than application/json
 def monthly_reports_pdf_view(request, subscription_uuid):
-    html = HTML(f"http://localhost:8000/reports/{subscription_uuid}/monthly/")
+    api_host = request.get_host()
+    html = HTML(f"http://{api_host}/reports/{subscription_uuid}/monthly/")
     buffer = io.BytesIO()
     html.write_pdf(target=buffer)
     buffer.seek(0)
@@ -261,7 +268,8 @@ def monthly_reports_pdf_view(request, subscription_uuid):
 # These are as functions rather than classes, because extending the APIView class
 # causes some issues when sending accept headers other than application/json
 def cycle_reports_pdf_view(request, subscription_uuid):
-    html = HTML(f"http://localhost:8000/reports/{subscription_uuid}/cycle/")
+    api_host = request.get_host()
+    html = HTML(f"http://{api_host}/reports/{subscription_uuid}/cycle/")
     buffer = io.BytesIO()
     html.write_pdf(target=buffer)
     buffer.seek(0)
@@ -274,7 +282,8 @@ def cycle_reports_pdf_view(request, subscription_uuid):
 # causes some issues when sending accept headers other than application/json
 # which for this application/pdf is needed
 def yearly_reports_pdf_view(request, subscription_uuid):
-    html = HTML(f"http://localhost:8000/reports/{subscription_uuid}/yearly/")
+    api_host = request.get_host()
+    html = HTML(f"http://{api_host}/reports/{subscription_uuid}/yearly/")
     buffer = io.BytesIO()
     html.write_pdf(target=buffer)
     buffer.seek(0)
