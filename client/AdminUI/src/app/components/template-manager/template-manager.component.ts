@@ -187,8 +187,7 @@ export class TemplateManagerComponent implements OnInit {
       templateDeceptionScore: new FormControl(template.deception_score),
       templateDescriptiveWords: new FormControl(template.descriptive_words),
       templateDescription: new FormControl(template.description),
-      templateFromAddress: new FormControl(template.from_address, [
-        Validators.required]),
+      templateFromAddress: new FormControl(template.from_address, [Validators.required]),
       templateSubject: new FormControl(template.subject, [Validators.required]),
       templateText: new FormControl(template.text),
       templateHTML: new FormControl(template.html, [Validators.required]),
@@ -322,13 +321,15 @@ export class TemplateManagerComponent implements OnInit {
           },
           error => {
             console.log(error);
-            this.dialog.open(AlertComponent, {
-              // Parse error here
-              data: {
-                title: 'Error',
-                messageText: 'Error: ' + error.error.error
-              }
-            });
+            if (error.status === 409) {
+              this.dialog.open(AlertComponent, {
+                // Parse error here
+                data: {
+                  title: 'Template Name Error',
+                  messageText: 'Template Name alreay exists.'
+                }
+              });
+            }
           }
         );
       }
@@ -485,8 +486,7 @@ export class TemplateManagerComponent implements OnInit {
     translate: 'yes',
     enableToolbar: true,
     showToolbar: true,
-    placeholder:
-      'Please enter template text here...',
+    placeholder: 'Please enter template text here...',
     defaultParagraphSeparator: '',
     defaultFontName: '',
     defaultFontSize: '',

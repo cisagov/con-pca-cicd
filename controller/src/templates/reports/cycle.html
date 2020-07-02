@@ -1093,12 +1093,22 @@
 
         <article id="pagefourteen"></article>
 
-        <article id="pageFifteen">
+        {% for group in templates_by_group %}
+        {% for campaign in group %}
+        <article class="template_pages">
             <div class="row">
                 <div class="col-12">
+                    {% if forloop.first %}   
+                    {% if forloop.parentloop.counter == 1 %}                 
                     <h3 id="dumbPhishTitle"><small class="font-weight-bold">Low Templates/Dumb Phish</small></h3>
-                    {% for campaign in subscription_stats.campaign_results %}
-                        {% if campaign.deception_level == 1 %}
+                    {% endif %}   
+                    {% if forloop.parentloop.counter == 2 %}                 
+                    <h3 id="dumbPhishTitle"><small class="font-weight-bold">Medium Templates/Moderate Phish</small></h3>
+                    {% endif %}   
+                    {% if forloop.parentloop.counter == 3 %}                 
+                    <h3 id="dumbPhishTitle"><small class="font-weight-bold">Difficult Templates/Spear Phish</small></h3>
+                    {% endif %}
+                    {% endif %}
                     <table id="dumbPhishTable">
                         <tr>
                             <td>Template Name&colon;</td>
@@ -1145,193 +1155,34 @@
                             {% endif %}
                         </tr>
                     </table>
-            <div class="row">
-                <div class="col-12">
-                    <div id="dumbPhishDetails">
-                        {% if campaign.template_details.subject %}
-                            <b>Subject&colon;</b> {{campaign.template_details.subject}}<br>
-                        {% else %}
-                            <b>Subject&colon;</b> N/A <br>
-                        {% endif %}
+                    <div class="row">
+                        <div class="col-12">
+                            <div>
+                                {% if campaign.template_details.subject %}
+                                    <b>Subject&colon;</b> {{campaign.template_details.subject}}<br>
+                                {% else %}
+                                    <b>Subject&colon;</b> N/A <br>
+                                {% endif %}
 
-                        {% if campaign.template_details.from_address %}
-                            <b>From&colon;</b> {{campaign.template_details.from_address}}<br>
-                        {% else %}
-                            <b>From&colon;</b> N/A <br>
-                        {% endif %}
-                        
-                        <b>Email Body&colon;</b>
-                        <div id="dumbEmailBody">
-                            {{campaign.template_details.html|safe}}
+                                {% if campaign.template_details.from_address %}
+                                    <b>From&colon;</b> {{campaign.template_details.from_address}}<br>
+                                {% else %}
+                                    <b>From&colon;</b> N/A <br>
+                                {% endif %}
+                                
+                                <b>Email Body&colon;</b>
+                                <div>
+                                    {{campaign.template_details.html|safe}}
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-            {% endif %}
-        {% endfor %}
-        </div>
-    </div>
         </article>
-
-        <article id="pageSixteen">
-            <div class="row">
-                <div class="col-12">
-                    <h3 id="mediumPhishTitle"><small class="font-weight-bold">Medium Templates/Moderate Phish</small></h3>
-                    {% for campaign in subscription_stats.campaign_results %}
-                        {% if campaign.deception_level == 2 %}
-                    <table id="dumbPhishTable">
-                        <tr>
-                            <td>Template Name&colon;</td>
-                            <td>{{campaign.template_details.name}}</td>
-                        </tr>
-                        <tr>
-                            <td>Deception Level&colon;</td>
-                            <td>{{campaign.deception_level}}</td>
-                        </tr>
-                        <tr>
-                            <td>Percent of Campaigns&colon;</td>
-                            <td>{{campaign.campaign_stats.percent_of_campaigns}}&percnt;</td>
-                        </tr>
-                        <tr>
-                            <td>Total Sent&colon;</td>
-                            {% if campaign.campaign_stats.sent.count %}
-                                <td>{{campaign.campaign_stats.sent.count}} </td>
-                            {% else %}
-                                <td> 0 </td>
-                            {% endif %}
-                        </tr>
-                        <tr>
-                            <td>Clicked&colon;</td>
-                            {% if campaign.campaign_stats.clicked.count %}
-                                <td>{{campaign.campaign_stats.clicked.count}} </td>
-                            {% else %}
-                                <td> 0 </td>
-                            {% endif %}
-                        </tr>
-                        <tr>
-                            <td>Submitted Data&colon;</td>
-                            {% if campaign.campaign_stats.submitted.count %}
-                                <td>{{campaign.campaign_stats.submitted.count}} </td>
-                            {% else %}
-                                <td> 0 </td>
-                            {% endif %}
-                        </tr>
-                        <tr>
-                            <td>Reported&colon;</td>
-                            {% if campaign.campaign_stats.reported.count %}
-                                <td>{{campaign.campaign_stats.reported.count}} </td>
-                            {% else %}
-                                <td> 0 </td>
-                            {% endif %}
-                        </tr>
-                    </table>
-            <div class="row">
-                <div class="col-12">
-                    <div id="dumbPhishDetails">
-                        {% if campaign.template_details.subject %}
-                            <b>Subject&colon;</b> {{campaign.template_details.subject}}<br>
-                        {% else %}
-                            <b>Subject&colon;</b> N/A <br>
-                        {% endif %}
-
-                        {% if campaign.template_details.from_address %}
-                            <b>From&colon;</b> {{campaign.template_details.from_address}}<br>
-                        {% else %}
-                            <b>From&colon;</b> N/A <br>
-                        {% endif %}
-                        
-                        <b>Email Body&colon;</b>
-                        <div id="dumbEmailBody">
-                            {{campaign.template_details.html|safe}}
-                        </div>
-                    </div>
-                </div>
-            </div>
-            {% endif %}
         {% endfor %}
-        </div>
-    </div>
-        </article>
-
-        <article id="pageSeventeen">
-            <div class="row">
-                <div class="col-12">
-                    <h3 id="hardPhishTitle"><small class="font-weight-bold">Difficult Templates/Spear Phish</small></h3>
-                    {% for campaign in subscription_stats.campaign_results %}
-                        {% if campaign.deception_level == 3 %}
-                    <table id="dumbPhishTable">
-                        <tr>
-                            <td>Template Name&colon;</td>
-                            <td>{{campaign.template_details.name}}</td>
-                        </tr>
-                        <tr>
-                            <td>Deception Level&colon;</td>
-                            <td>{{campaign.deception_level}}</td>
-                        </tr>
-                        <tr>
-                            <td>Percent of Campaigns&colon;</td>
-                            <td>{{campaign.campaign_stats.percent_of_campaigns}}&percnt;</td>
-                        </tr>
-                        <tr>
-                            <td>Total Sent&colon;</td>
-                            {% if campaign.campaign_stats.sent.count %}
-                                <td>{{campaign.campaign_stats.sent.count}} </td>
-                            {% else %}
-                                <td> 0 </td>
-                            {% endif %}
-                        </tr>
-                        <tr>
-                            <td>Clicked&colon;</td>
-                            {% if campaign.campaign_stats.clicked.count %}
-                                <td>{{campaign.campaign_stats.clicked.count}} </td>
-                            {% else %}
-                                <td> 0 </td>
-                            {% endif %}
-                        </tr>
-                        <tr>
-                            <td>Submitted Data&colon;</td>
-                            {% if campaign.campaign_stats.submitted.count %}
-                                <td>{{campaign.campaign_stats.submitted.count}} </td>
-                            {% else %}
-                                <td> 0 </td>
-                            {% endif %}
-                        </tr>
-                        <tr>
-                            <td>Reported&colon;</td>
-                            {% if campaign.campaign_stats.reported.count %}
-                                <td>{{campaign.campaign_stats.reported.count}} </td>
-                            {% else %}
-                                <td> 0 </td>
-                            {% endif %}
-                        </tr>
-                    </table>
-            <div class="row">
-                <div class="col-12">
-                    <div id="dumbPhishDetails">
-                        {% if campaign.template_details.subject %}
-                            <b>Subject&colon;</b> {{campaign.template_details.subject}}<br>
-                        {% else %}
-                            <b>Subject&colon;</b> N/A <br>
-                        {% endif %}
-
-                        {% if campaign.template_details.from_address %}
-                            <b>From&colon;</b> {{campaign.template_details.from_address}}<br>
-                        {% else %}
-                            <b>From&colon;</b> N/A <br>
-                        {% endif %}
-                        
-                        <b>Email Body&colon;</b>
-                        <div id="dumbEmailBody">
-                            {{campaign.template_details.html|safe}}
-                        </div>
-                    </div>
-                </div>
-            </div>
-            {% endif %}
         {% endfor %}
-        </div>
-    </div>
-        </article>
+
 
     </body>
 
