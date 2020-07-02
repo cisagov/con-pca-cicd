@@ -19,6 +19,7 @@ from api.utils.subscription.subscriptions import (
     get_subscription_cycles,
     get_subscription_status,
     send_start_notification,
+    send_stop_notification,
 )
 from api.utils.subscription.targets import batch_targets
 from api.utils.subscription.template_selector import personalize_template_batch
@@ -162,11 +163,22 @@ def stop_subscription(subscription):
         """
         Stops a given campaign.
 
+        Delete Campaign
+
+        Delete Template
+
         Returns updated Campaign
         """
         campaign_manager.complete_campaign(campaign_id=campaign["campaign_id"])
         campaign["status"] = "stopped"
         campaign["completed_date"] = datetime.now()
+        # Delete Campaign
+        campaign_manager.delete_campaign(campaign_id=campaign["campaign_id"])
+        # Delete Templates
+        campaign_manager.delete(
+            "email_template", template_id=campaign["email_template_id"]
+        )
+
         return campaign
 
     # Stop Campaigns
@@ -195,6 +207,8 @@ def stop_subscription(subscription):
         model=SubscriptionModel,
         validation_model=validate_subscription,
     )
+
+    send_stop_notification(subscription)
 
     return resp
 

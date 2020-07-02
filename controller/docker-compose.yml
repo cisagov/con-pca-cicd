@@ -12,8 +12,6 @@ services:
     restart: on-failure
     links:
       - mongodb
-    expose:
-      - "8000"
     volumes:
       - ./src:/app
     env_file:
