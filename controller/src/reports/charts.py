@@ -8,11 +8,11 @@ class ChartGenerator:
         self.legend = ["Sent", "Opened", "Clicked", "Submitted", "Reported"]
         self.chart_height = 275
 
-    def translate_bar(self, barHeight, maxvalue):
+    def translate_bar(self, barHeight, maxvalue, first_offset):
         # moves bar to align it at the bottom axis
         # determine chart height
         # subtract bar height from 100 to get starting point
-        factor = self.chart_height / maxvalue
+        factor = (self.chart_height - first_offset) / maxvalue
         return int(factor * barHeight)
 
     def translate_get_y(self, barHeight):
@@ -67,34 +67,36 @@ class ChartGenerator:
             <g class="measure-line">"""
 
         y_start = 5
-
+        dist_between_bars = self.chart_height / len(y_axis)
         svg_strg_axis_2 = "".join(
             map(
                 str,
                 [
-                    f"""<line x1="30" y1="{y_start+index*30}" x2="500" y2="{y_start+index*30}" style="stroke:#BAD6E4;stroke-width:2"/>"""
+                    f"""<line x1="30" y1="{int((index+1)*dist_between_bars)}" x2="500" y2="{int((index+1)*dist_between_bars)}" style="stroke:#BAD6E4;stroke-width:2"/>"""
                     for index in range(0, len(y_axis))
                 ],
             )
         )
-        dist_between_bars = self.chart_height / len(y_axis)
+
         svg_strg_axis_3 = "".join(
             map(
                 str,
                 [
-                    f"""<text x="8" y="{int(i * dist_between_bars)}" class="caption" dy=".35em">{x}</text>"""
+                    f"""<text x="8" y="{int((i+1) * dist_between_bars)}" class="caption" dy=".35em">{x}</text>"""
                     for i, x in enumerate(y_axis)
                 ],
             )
         )
 
         svg_string_4 = f"""<desc id="email-action">{self.legend}</desc>"""
-        normalized_values = [self.translate_bar(x, topRange) for x in values]
+        normalized_values = [
+            self.translate_bar(x, topRange, dist_between_bars) for x in values
+        ]
         yvalues = [self.translate_get_y(x) for x in normalized_values]
 
         svg_string_5 = f"""</g><g>
             <rect style="fill:#164A91;" width="15" height="{normalized_values[0]}" x="60" y="{yvalues[0]}"></rect>
-         <rect style="fill:#FDC010;" width="15" height="{normalized_values[1]}" x="80" y="{yvalues[1]}"></rect>
+            <rect style="fill:#FDC010;" width="15" height="{normalized_values[1]}" x="80" y="{yvalues[1]}"></rect>
             <rect style="fill:#1979a7" width="15" height="{normalized_values[2]}" x="100" y="{yvalues[2]}"></rect>
             <text x="70" y="290" class="caption" dy=".35em">Sent</text>
             </g>

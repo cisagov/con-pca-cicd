@@ -171,7 +171,7 @@ class MonthlyReportsView(TemplateView):
         )
 
         stats_chart = generate_chart.get_svg(
-            [50, 50, 50, 100, 100, 100, 200, 200, 200, 150, 150, 150, 75, 75, 75]
+            [50, 70, 50, 100, 100, 100, 200, 200, 200, 150, 150, 150, 75, 75, 75]
         )
 
         context = {
