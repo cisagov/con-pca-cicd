@@ -6,32 +6,33 @@ This handles the api for all the Reports urls.
 # Standard Python Libraries
 import logging
 
+# Third-Party Libraries
 from api.manager import CampaignManager
 from api.models.subscription_models import SubscriptionModel, validate_subscription
 from api.models.template_models import (
+    DeceptionLevelStatsModel,
     TemplateModel,
     validate_template,
-    DeceptionLevelStatsModel,
 )
 from api.serializers.reports_serializers import (
-    ReportsGetSerializer,
     EmailReportsGetSerializer,
+    ReportsGetSerializer,
 )
 from api.utils.db_utils import get_list, get_single
-from reports.utils import (
-    get_subscription_stats_for_cycle,
-    get_related_subscription_stats,
-    get_cycles_breakdown,
-    get_template_details,
-    get_statistic_from_group,
-    get_reports_to_click,
-    campaign_templates_to_string,
-    get_most_successful_campaigns,
-)
-from notifications.views import ReportsEmailSender
 from django.core.files.storage import FileSystemStorage
 from django.http import HttpResponse
 from drf_yasg.utils import swagger_auto_schema
+from notifications.views import ReportsEmailSender
+from reports.utils import (
+    campaign_templates_to_string,
+    get_cycles_breakdown,
+    get_most_successful_campaigns,
+    get_related_subscription_stats,
+    get_reports_to_click,
+    get_statistic_from_group,
+    get_subscription_stats_for_cycle,
+    get_template_details,
+)
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from weasyprint import HTML
@@ -56,6 +57,7 @@ class ReportsView(APIView):
         operation_description="This fetches a subscription's report data by subscription uuid",
     )
     def get(self, request, subscription_uuid):
+        """Get Method."""
         subscription_uuid = self.kwargs["subscription_uuid"]
         subscription = get_single(
             subscription_uuid, "subscription", SubscriptionModel, validate_subscription
@@ -180,7 +182,9 @@ class MonthlyReportsPDFView(APIView):
         operation_description="This downloads a subscription report PDF by subscription uuid",
     )
     def get(self, request, subscription_uuid):
-        html = HTML(f"http://localhost:8000/reports/{subscription_uuid}/monthly/")
+        """Get Method."""
+        api_host = request.get_host()
+        html = HTML(f"http://{api_host}/reports/{subscription_uuid}/monthly/")
         html.write_pdf("/tmp/monthly_subscription_report.pdf")
 
         fs = FileSystemStorage("/tmp")
@@ -206,7 +210,9 @@ class CycleReportsPDFView(APIView):
         operation_description="This downloads a subscription report PDF by subscription uuid",
     )
     def get(self, request, subscription_uuid):
-        html = HTML(f"http://localhost:8000/reports/{subscription_uuid}/cycle/")
+        """Get Method."""
+        api_host = request.get_host()
+        html = HTML(f"http://{api_host}/reports/{subscription_uuid}/cycle/")
         html.write_pdf("/tmp/subscription_cycle_report.pdf")
 
         fs = FileSystemStorage("/tmp")
@@ -232,7 +238,9 @@ class YearlyReportsPDFView(APIView):
         operation_description="This downloads a subscription report PDF by subscription uuid",
     )
     def get(self, request, subscription_uuid):
-        html = HTML(f"http://localhost:8000/reports/{subscription_uuid}/yearly/")
+        """Get Method."""
+        api_host = request.get_host()
+        html = HTML(f"http://{api_host}/reports/{subscription_uuid}/yearly/")
         html.write_pdf("/tmp/yearly_subscription_report.pdf")
 
         fs = FileSystemStorage("/tmp")
@@ -258,6 +266,7 @@ class MonthlyReportsEmailView(APIView):
         operation_description="This sends a subscription report email by subscription uuid",
     )
     def get(self, request, subscription_uuid):
+        """Get Method."""
         subscription = get_single(
             subscription_uuid, "subscription", SubscriptionModel, validate_subscription
         )
@@ -285,6 +294,7 @@ class CycleReportsEmailView(APIView):
         operation_description="This sends a subscription report email by subscription uuid",
     )
     def get(self, request, subscription_uuid):
+        """Get Method."""
         subscription = get_single(
             subscription_uuid, "subscription", SubscriptionModel, validate_subscription
         )
@@ -312,6 +322,7 @@ class YearlyReportsEmailView(APIView):
         operation_description="This sends a subscription report email by subscription uuid",
     )
     def get(self, request, subscription_uuid):
+        """Get Method."""
         # subscription = get_single(
         #     subscription_uuid, "subscription", SubscriptionModel, validate_subscription
         # )
