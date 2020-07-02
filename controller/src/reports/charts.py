@@ -8,23 +8,23 @@ class ChartGenerator:
         self.legend = ["Sent", "Opened", "Clicked", "Submitted", "Reported"]
         self.chart_height = 275
 
-    def translateBar(self, barHeight, maxvalue):
+    def translate_bar(self, barHeight, maxvalue):
         # moves bar to align it at the bottom axis
         # determine chart height
         # subtract bar height from 100 to get starting point
         factor = self.chart_height / maxvalue
         return int(factor * barHeight)
 
-    def translateGetY(self, barHeight):
+    def translate_get_y(self, barHeight):
         # moves bar to align it at the bottom axis
         # determine chart height
         # subtract bar height from 100 to get starting point
         return int(self.chart_height - barHeight)
 
-    def createList(self, r1, r2, step):
+    def get_ylist(self, r1, r2, step):
         return np.arange(r1, r2 + 1, step)
 
-    def determineTicks(self, range):
+    def get_ticks(self, range):
         # determines the appropriate scale
         # default number of lines/ticks is 8
         if range < 10:
@@ -49,7 +49,7 @@ class ChartGenerator:
 
     def get_svg(self, values):
         maxv = max(values)
-        tick_range = self.determineTicks(maxv)
+        tick_range = self.get_ticks(maxv)
         # from min to max
         # step tick range and write lines
         # then write bars
@@ -57,26 +57,26 @@ class ChartGenerator:
 
         topRange = self.myround(maxv, tick_range)
         topRange = topRange if topRange > maxv else topRange + tick_range
-        y_axis = self.createList(0, topRange, tick_range)[::-1]
+        y_axis = self.get_ylist(0, topRange, tick_range)[::-1]
 
-        y_axisList = " ".join([f"{i};" for i in y_axis])
+        y_axis_str = " ".join([f"{i};" for i in y_axis])
 
         svg_strg_header_1 = f"""<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" class="chart" width="450" height="300" aria-labelledby="title desc" role="img">
             <title id="title">STATISTICS BY LEVEL</title>
-            <!--this needs to be dynamic--><desc id="units-achieved">{y_axisList}</desc>
+            <!--this needs to be dynamic--><desc id="units-achieved">{y_axis_str}</desc>
             <g class="measure-line">"""
 
-        svg_strg_axis_2 = f"""<line x1="30" y1="5" x2="500" y2="5" style="stroke:#BAD6E4;stroke-width:2"/>
-            <line x1="30" y1="35" x2="500" y2="35" style="stroke:#BAD6E4;stroke-width:2"/>
-            <line x1="30" y1="65" x2="500" y2="65" style="stroke:#BAD6E4;stroke-width:2"/>
-            <line x1="30" y1="95" x2="500" y2="95" style="stroke:#BAD6E4;stroke-width:2"/>
-            <line x1="30" y1="125" x2="500" y2="125" style="stroke:#BAD6E4;stroke-width:2"/>
-            <line x1="30" y1="155" x2="500" y2="155" style="stroke:#BAD6E4;stroke-width:2"/>
-            <line x1="30" y1="185" x2="500" y2="185" style="stroke:#BAD6E4;stroke-width:2"/>
-            <line x1="30" y1="215" x2="500" y2="215" style="stroke:#BAD6E4;stroke-width:2"/>
-            <line x1="30" y1="245" x2="500" y2="245" style="stroke:#BAD6E4;stroke-width:2"/>
-            <line x1="30" y1="275" x2="500" y2="275" style="stroke:#BAD6E4;stroke-width:2"/>"""
+        y_start = 5
 
+        svg_strg_axis_2 = "".join(
+            map(
+                str,
+                [
+                    f"""<line x1="30" y1="{y_start+index*30}" x2="500" y2="{y_start+index*30}" style="stroke:#BAD6E4;stroke-width:2"/>"""
+                    for index in range(0, len(y_axis))
+                ],
+            )
+        )
         dist_between_bars = self.chart_height / len(y_axis)
         svg_strg_axis_3 = "".join(
             map(
@@ -89,8 +89,8 @@ class ChartGenerator:
         )
 
         svg_string_4 = f"""<desc id="email-action">{self.legend}</desc>"""
-        normalized_values = [self.translateBar(x, topRange) for x in values]
-        yvalues = [self.translateGetY(x) for x in normalized_values]
+        normalized_values = [self.translate_bar(x, topRange) for x in values]
+        yvalues = [self.translate_get_y(x) for x in normalized_values]
 
         svg_string_5 = f"""</g><g>
             <rect style="fill:#164A91;" width="15" height="{normalized_values[0]}" x="60" y="{yvalues[0]}"></rect>
