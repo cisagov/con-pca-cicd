@@ -89,9 +89,8 @@ class MonthlyReportsView(TemplateView):
         low_mid_high_bar_data = get_stats_low_med_high_by_level(subscription_stats)        
         chart_instance = ChartGenerator()
         zerodefault = [0]*15
-        low_mid_high_bar_data = low_mid_high_bar_data if low_mid_high_bar_data is not None else zerodefault
-        import ipdb; ipdb.set_trace()
-        svg_string =  chart_instance.generateSvg(low_mid_high_bar_data)
+        low_mid_high_bar_data = low_mid_high_bar_data if low_mid_high_bar_data is not None else zerodefault        
+        svg_string =  chart_instance.get_svg(low_mid_high_bar_data)
            
 
         metrics = {
