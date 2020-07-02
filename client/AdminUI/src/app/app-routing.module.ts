@@ -15,6 +15,7 @@ import { AddCustomerComponent } from './components/customer/add-customer/add-cus
 import { SendingProfilesComponent } from './components/sending-profiles/sending-profiles.component';
 import { AuthGuard } from './guards/auth.guard';
 import { DhsPocComponent } from './components/user-admin/dhs-poc/dhs-poc.component';
+import { HelpFilesComponent } from './components/help-files/help-files.component';
 
 
 
@@ -110,6 +111,14 @@ const routes: Routes = [
     canActivate: [AuthGuard],
     children: [
       { path: '', component: UserAdminComponent }
+    ]
+  },
+  {
+    path: 'help',
+    component: LayoutMainComponent,
+    canActivate: [AuthGuard],
+    children: [
+      { path: '', component: HelpFilesComponent}
     ]
   },
   {

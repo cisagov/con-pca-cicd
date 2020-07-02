@@ -52,10 +52,6 @@ export class LayoutMainComponent implements OnInit {
     }
   }
 
-  help() {
-    console.log("Navigate to the help screen.");
-  }
-
   logOut(){
     this.userAuthSvc.signOut()
   }

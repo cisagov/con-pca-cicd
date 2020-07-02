@@ -34,6 +34,7 @@ import { ContactsComponent } from './components/contacts/contacts.component';
 import { DomainsComponent } from './components/domains/domains.component';
 import { TemplatesPageComponent } from './components/templates-page/templates-page.component';
 import { UserAdminComponent } from './components/user-admin/user-admin.component';
+import { HelpFilesComponent } from './components/help-files/help-files.component';
 import { CustomerService } from './services/customer.service';
 import { CustomersComponent } from './components/customers/customers.component';
 import { AddCustomerDialogComponent } from './components/customers/add-customer-dialog/add-customer-dialog.component';
@@ -82,6 +83,7 @@ export function app_Init(settingsHttpService: SettingsHttpService) {
     DomainsComponent,
     TemplatesPageComponent,
     UserAdminComponent,
+    HelpFilesComponent,
     CustomersComponent,
     AddCustomerDialogComponent,
     AddContactDialogComponent,
