@@ -1,5 +1,5 @@
 # Standard Python Libraries
-from datetime import datetime
+from datetime import datetime, timedelta
 import logging
 import base64
 
@@ -421,6 +421,27 @@ class CycleReportsView(TemplateView):
         )
         primary_contact = subscription.get("primary_contact")
 
+        click_time_vs_report_time = []
+        for campaign in subscription_stats["campaign_results"]:
+            try:
+                first_click = campaign["campaign_stats"]["clicked"]["minimum"] 
+            except:
+                first_click = timedelta()
+            try:
+                first_report = campaign["campaign_stats"]["reported"]["minimum"]
+            except:
+                first_report =  timedelta()
+
+
+            difference = "N/A"
+            if first_click > timedelta() and first_report > timedelta():
+                difference = format_timedelta(first_click - first_report)
+            click_time_vs_report_time.append({
+                "level": campaign["deception_level"],
+                "time_to_first_click": format_timedelta(first_click),
+                "time_to_first_report": format_timedelta(first_report),
+                "difference": difference
+            })
 
 
         context = {}
@@ -439,5 +460,7 @@ class CycleReportsView(TemplateView):
         context["previous_cycles"] = previous_cycle_stats
         context["region_stats"] = region_stats
         context["subscription_stats"] = subscription_stats
+        context["click_time_vs_report_time"] = click_time_vs_report_time
+
 
         return context
