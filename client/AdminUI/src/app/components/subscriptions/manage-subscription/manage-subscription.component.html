@@ -16,24 +16,25 @@
             <h2>Customer/Organization</h2>
             <div class="d-flex flex-row mb-4">
                 <div>
-                    <mat-card *ngIf="!!customer.customer_uuid" class="mt-0 mr-3 mb-1 ml-0 customer-card" appearance="outline">
+                    <mat-card *ngIf="!!customer.customer_uuid" class="mt-0 mr-3 mb-1 ml-0 customer-card"
+                        appearance="outline">
                         <input type="hidden" formControlName="selectedCustomerUuid">
-                        <div >
+                        <div>
                             <div>{{customer?.name}}</div>
                             <div>{{customer?.identifier}}</div>
                             <div>{{customer?.address_1}}</div>
                             <div>{{customer?.address_2}}</div>
-                            <div>{{customer?.city}}, {{customer?.state}} {{customer?.zip_code}}</div>                            
-                        </div>                        
+                            <div>{{customer?.city}}, {{customer?.state}} {{customer?.zip_code}}</div>
+                        </div>
                     </mat-card>
 
                     <div class="mb-3" [class.mt-2]="!customer.customer_uuid">
-                        <button mat-raised-button color="primary" 
-                            *ngIf="pageMode == 'CREATE'"
+                        <button mat-raised-button color="primary" *ngIf="pageMode == 'CREATE'"
                             (click)="showCustomerDialog()">Assign Customer
                             <i class="fa fa-search" style="font-size: 1rem;"></i>
                         </button>
-                        <mat-error *ngIf="submitted && f.selectedCustomerUuid.errors?.required" class="invalid-feedback">
+                        <mat-error *ngIf="submitted && f.selectedCustomerUuid.errors?.required"
+                            class="invalid-feedback">
                             A Customer must be selected
                         </mat-error>
                     </div>
@@ -135,10 +136,14 @@
                 <mat-label class="h6">Reports</mat-label>
                 <div class="mb-4">
                     <div class="text-muted">View or send this subscription's reports</div>
-                    <button mat-raised-button color="primary" class="mb-3" (click)="viewMonthlyReport()">View Monthly Report</button>
-                    <button mat-raised-button color="primary" class="mb-3" (click)="viewCycleReport()">View Cycle Report</button><br><br>
-                    <button mat-raised-button color="accent" class="mb-3" (click)="sendMonthlyReport()">Send Monthly Report</button>
-                    <button mat-raised-button color="accent" class="mb-3" (click)="sendCycleReport()">Send Cycle Report</button><br>
+                    <button mat-raised-button color="primary" class="mb-3" (click)="viewMonthlyReport()">View Monthly
+                        Report</button>
+                    <button mat-raised-button color="primary" class="mb-3" (click)="viewCycleReport()">View Cycle
+                        Report</button><br><br>
+                    <button mat-raised-button color="accent" class="mb-3" (click)="sendMonthlyReport()">Send Monthly
+                        Report</button>
+                    <button mat-raised-button color="accent" class="mb-3" (click)="sendCycleReport()">Send Cycle
+                        Report</button><br>
                 </div>
             </div>
 
@@ -181,7 +186,7 @@
             </mat-form-field>
 
             <div class="text-right mt-3">
-                <button type="submit" mat-raised-button color="primary" 
+                <button type="submit" mat-raised-button color="primary" [disabled]="launchSubmitted"
                     (click)="onSubmit()" *ngIf="pageMode == 'CREATE'">
                     Create and Launch Subscription
                 </button>

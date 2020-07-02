@@ -21,6 +21,8 @@ export class SendingProfilesComponent implements OnInit {
 
   dialogRefConfirm: MatDialogRef<ConfirmComponent>;
 
+  loading = false;
+
   constructor(
     private sendingProfileSvc: SendingProfileService,
     public dialog: MatDialog,
@@ -40,8 +42,10 @@ export class SendingProfilesComponent implements OnInit {
    * Refreshes the page display.
    */
   refresh() {
+    this.loading = true;
     this.sendingProfileSvc.getAllProfiles().subscribe((data: any) => {
       this.sendingProfilesData.data = data as SendingProfile[];
+      this.loading = false;
     });
   }
 
