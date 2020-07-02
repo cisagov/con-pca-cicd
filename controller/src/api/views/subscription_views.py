@@ -19,10 +19,7 @@ from api.serializers.subscriptions_serializers import (
     SubscriptionPostSerializer,
 )
 from api.utils.db_utils import delete_single, get_list, get_single, update_single
-from api.utils.subscription.actions import (
-    start_subscription,
-    stop_subscription,
-)
+from api.utils.subscription.actions import start_subscription, stop_subscription
 from celery.task.control import revoke
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
@@ -166,28 +163,12 @@ class SubscriptionView(APIView):
             model=SubscriptionModel,
             validation_model=validate_subscription,
         )
-
-        # Delete campaigns
-        groups_to_delete = set()
-        for campaign in subscription["gophish_campaign_list"]:
-            for group in campaign["groups"]:
-                if group["id"] not in groups_to_delete:
-                    groups_to_delete.add(group["id"])
-            for id in groups_to_delete:
-                try:
-                    campaign_manager.delete("user_group", group_id=id)
-                except Exception as error:
-                    print("failed to delete group: {}".format(error))
-            # Delete Templates
-            campaign_manager.delete(
-                "email_template", template_id=campaign["email_template_id"]
-            )
-            # Delete Campaigns
-            if subscription["status"] != "stopped":
-                campaign_manager.delete("campaign", campaign_id=campaign["campaign_id"])
-        # Delete Groups
-        for group_id in groups_to_delete:
-            campaign_manager.delete("user_group", group_id=group_id)
+        if subscription["status"] != "stopped":
+            try:
+                # Stop subscription
+                stop_subscription(subscription)
+            except Exception as error:
+                logger.debug("error stopping subscription: {}".format(error))
 
         # Remove subscription tasks from the scheduler
         if "tasks" in subscription:
@@ -196,6 +177,7 @@ class SubscriptionView(APIView):
                 for task in subscription["tasks"]
             ]
 
+        # Delete Subscription
         delete_response = delete_single(
             uuid=subscription_uuid,
             collection="subscription",
