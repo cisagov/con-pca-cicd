@@ -496,8 +496,11 @@ def get_statistic_from_region_group(region_stats, group, stat):
     except Exception:
         return None
 
-def ratio_to_percent(ratio,round_val=2):      
-    return "{:.{prec}f}".format(ratio*100,prec=round_val)
+def ratio_to_percent(ratio,round_val=2):    
+    if ratio:  
+        return "{:.{prec}f}".format(ratio*100,prec=round_val)
+    else:
+        return "N/A"
 
 def format_timedelta(timedelta):
     ret_val = ""

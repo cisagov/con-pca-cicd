@@ -104,7 +104,7 @@ def create_webhook(webhooks):
             continue
         response = API.webhooks.post(
             Webhook(
-                name=webhook["name"], url=webhook["url"], is_active=webhook["is_active"]
+                name=webhook["name"], url=webhook["url"], is_active=webhook["is_active"], secret=webhook["secret"]
             )
         )
         print(f"Webhook with id: {response.id} has been created")
