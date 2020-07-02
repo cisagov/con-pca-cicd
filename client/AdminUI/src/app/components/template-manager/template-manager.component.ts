@@ -188,7 +188,7 @@ export class TemplateManagerComponent implements OnInit {
       templateDescriptiveWords: new FormControl(template.descriptive_words),
       templateDescription: new FormControl(template.description),
       templateFromAddress: new FormControl(template.from_address, [
-        Validators.required
+        Validators.required, this.notJustSpaces
       ]),
       templateSubject: new FormControl(template.subject, [Validators.required, this.notJustSpaces]),
       templateText: new FormControl(template.text),
@@ -576,7 +576,7 @@ export class TemplateManagerComponent implements OnInit {
    */
   notJustSpaces(control: FormControl) {
     // allow an empty field
-    if (control.value === '') {
+    if (control.value === '' || control.value === null) {
       return null;
     }
     const isWhitespace = (control.value || '').trim().length === 0;
