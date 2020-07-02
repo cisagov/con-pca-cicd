@@ -25,6 +25,10 @@ def get_notification(message_type):
         subject = "DHS CISA Phishing Subscription Started"
         path = "subscription_started"
         link = None
+    elif message_type == "subscription_stopped":
+        subject = "DHS CISA Phishing Subscription Stopped"
+        path = "subscription_stopped"
+        link = None
     else:
         subject = ""
         path = ""

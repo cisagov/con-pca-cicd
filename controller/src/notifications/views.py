@@ -10,25 +10,20 @@ contacts about reports and subscription updates.
 from datetime import datetime
 from email.mime.image import MIMEImage
 import logging
-from typing import Any, List
 
 # Third-Party Libraries
+# Local Libraries
 # Django Libraries
 # Local Libraries
-from api.models.subscription_models import SubscriptionModel, validate_subscription
-from api.utils.db_utils import get_list
+from api.models.dhs_models import DHSContactModel, validate_dhs_contact
+from api.utils.db_utils import get_single
 from django.conf import settings
 from django.contrib.staticfiles.storage import staticfiles_storage
 from django.core.files.storage import FileSystemStorage
 from django.core.mail.message import EmailMultiAlternatives
-from django.http import HttpResponse
 from django.template.loader import render_to_string
-
-# Local Libraries
-from api.models.dhs_models import DHSContactModel, validate_dhs_contact
 from notifications.utils import get_notification
 from weasyprint import HTML
-from api.utils.db_utils import get_single
 
 logger = logging.getLogger()
 
@@ -125,7 +120,10 @@ class SubscriptionNotificationEmailSender:
         else:
             start_date = self.subscription.get("start_date")
 
-        end_date = self.subscription.get("end_date")
+        if self.notification_type == "subscription_stopped":
+            end_date = datetime.today().strftime("%Y-%m-%dT%H:%M:%S")
+        else:
+            end_date = self.subscription.get("end_date")
 
         if end_date is not None:
             if not isinstance(end_date, datetime):
