@@ -10,6 +10,7 @@ import { OverlayContainer } from '@angular/cdk/overlay';
 import { ThemeService } from '../../../services/theme.service';
 import { LayoutMainService } from 'src/app/services/layout-main.service';
 import { UserAuthService } from '../../../services/user-auth.service'
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-layout-main',
@@ -25,7 +26,8 @@ export class LayoutMainComponent implements OnInit {
     private themeSvc: ThemeService,
     public layoutSvc: LayoutMainService, 
     private userAuthSvc: UserAuthService, 
-    public overlayContainer: OverlayContainer
+    public overlayContainer: OverlayContainer,
+    public location: Location
   ) {
     this.isDark = themeSvc.getStoredTheme();
     if(this.isDark){
@@ -50,6 +52,15 @@ export class LayoutMainComponent implements OnInit {
     } else {
       this.overlayContainer.getContainerElement().classList.remove('theme-alternate');
     }
+  }
+
+  help() {
+    const angularRoute = this.location.path();
+    const url = window.location.href;
+    const appDomain = url.replace(angularRoute, '');
+
+    let helpUrl = appDomain + 'assets/htmlhelp/templates.htm';
+    window.open(helpUrl, "_blank");
   }
 
   logOut(){
