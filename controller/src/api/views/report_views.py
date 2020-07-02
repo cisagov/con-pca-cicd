@@ -5,6 +5,7 @@ This handles the api for all the Reports urls.
 """
 # Standard Python Libraries
 import logging
+import io
 
 from api.manager import CampaignManager
 from api.models.subscription_models import SubscriptionModel, validate_subscription
@@ -29,8 +30,7 @@ from reports.utils import (
     get_most_successful_campaigns,
 )
 from notifications.views import ReportsEmailSender
-from django.core.files.storage import FileSystemStorage
-from django.http import HttpResponse
+from django.http import FileResponse
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -166,84 +166,6 @@ class ReportsView(APIView):
         return Response(serializer.data)
 
 
-class MonthlyReportsPDFView(APIView):
-    """
-    This is the MonthlyReportsView Pdf API Endpoint.
-
-    This handles the API a Get request for download a pdf document
-    """
-
-    @swagger_auto_schema(
-        responses={"200": ReportsGetSerializer, "400": "Bad Request",},
-        security=[],
-        operation_id="Get Monthly Subscription Report PDF",
-        operation_description="This downloads a subscription report PDF by subscription uuid",
-    )
-    def get(self, request, subscription_uuid):
-        html = HTML(f"http://localhost:8000/reports/{subscription_uuid}/monthly/")
-        html.write_pdf("/tmp/monthly_subscription_report.pdf")
-
-        fs = FileSystemStorage("/tmp")
-        with fs.open("monthly_subscription_report.pdf") as pdf:
-            response = HttpResponse(pdf, content_type="application/pdf")
-            response[
-                "Content-Disposition"
-            ] = 'attachment; filename="monthly_subscription_report.pdf"'
-            return response
-
-
-class CycleReportsPDFView(APIView):
-    """
-    This is the CycleReportsView Pdf API Endpoint.
-
-    This handles the API a Get request for download a pdf document
-    """
-
-    @swagger_auto_schema(
-        responses={"200": ReportsGetSerializer, "400": "Bad Request",},
-        security=[],
-        operation_id="Get Subscription Cycle Report PDF",
-        operation_description="This downloads a subscription report PDF by subscription uuid",
-    )
-    def get(self, request, subscription_uuid):
-        html = HTML(f"http://localhost:8000/reports/{subscription_uuid}/cycle/")
-        html.write_pdf("/tmp/subscription_cycle_report.pdf")
-
-        fs = FileSystemStorage("/tmp")
-        with fs.open("subscription_cycle_report.pdf") as pdf:
-            response = HttpResponse(pdf, content_type="application/pdf")
-            response[
-                "Content-Disposition"
-            ] = 'attachment; filename="subscription_cycle_report.pdf"'
-            return response
-
-
-class YearlyReportsPDFView(APIView):
-    """
-    This is the YearlyReportsView Pdf API Endpoint.
-
-    This handles the API a Get request for download a pdf document
-    """
-
-    @swagger_auto_schema(
-        responses={"200": ReportsGetSerializer, "400": "Bad Request",},
-        security=[],
-        operation_id="Get Yearly Subscription Report PDF",
-        operation_description="This downloads a subscription report PDF by subscription uuid",
-    )
-    def get(self, request, subscription_uuid):
-        html = HTML(f"http://localhost:8000/reports/{subscription_uuid}/yearly/")
-        html.write_pdf("/tmp/yearly_subscription_report.pdf")
-
-        fs = FileSystemStorage("/tmp")
-        with fs.open("yearly_subscription_report.pdf") as pdf:
-            response = HttpResponse(pdf, content_type="application/pdf")
-            response[
-                "Content-Disposition"
-            ] = 'attachment; filename="yearly_subscription_report.pdf"'
-            return response
-
-
 class MonthlyReportsEmailView(APIView):
     """
     This is the ReportsView Email API Endpoint.
@@ -322,3 +244,40 @@ class YearlyReportsEmailView(APIView):
 
         serializer = EmailReportsGetSerializer({"subscription_uuid": subscription_uuid})
         return Response(serializer.data)
+
+
+# These are as functions rather than classes, because extending the APIView class
+# causes some issues when sending accept headers other than application/json
+def monthly_reports_pdf_view(request, subscription_uuid):
+    html = HTML(f"http://localhost:8000/reports/{subscription_uuid}/monthly/")
+    buffer = io.BytesIO()
+    html.write_pdf(target=buffer)
+    buffer.seek(0)
+    return FileResponse(
+        buffer, as_attachment=True, filename="monthly_subscription_report.pdf"
+    )
+
+
+# These are as functions rather than classes, because extending the APIView class
+# causes some issues when sending accept headers other than application/json
+def cycle_reports_pdf_view(request, subscription_uuid):
+    html = HTML(f"http://localhost:8000/reports/{subscription_uuid}/cycle/")
+    buffer = io.BytesIO()
+    html.write_pdf(target=buffer)
+    buffer.seek(0)
+    return FileResponse(
+        buffer, as_attachment=True, filename="monthly_subscription_report.pdf"
+    )
+
+
+# These are as functions rather than classes, because extending the APIView class
+# causes some issues when sending accept headers other than application/json
+# which for this application/pdf is needed
+def yearly_reports_pdf_view(request, subscription_uuid):
+    html = HTML(f"http://localhost:8000/reports/{subscription_uuid}/yearly/")
+    buffer = io.BytesIO()
+    html.write_pdf(target=buffer)
+    buffer.seek(0)
+    return FileResponse(
+        buffer, as_attachment=True, filename="monthly_subscription_report.pdf"
+    )

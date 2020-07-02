@@ -86,17 +86,17 @@ urlpatterns = [
     ),
     path(
         "v1/reports/<subscription_uuid>/pdf/monthly/",
-        report_views.MonthlyReportsPDFView.as_view(),
+        report_views.monthly_reports_pdf_view,
         name="reports_get_pdf_monthly_api",
     ),
     path(
         "v1/reports/<subscription_uuid>/pdf/cycle/",
-        report_views.CycleReportsPDFView.as_view(),
+        report_views.cycle_reports_pdf_view,
         name="reports_get_pdf_cycle_api",
     ),
     path(
         "v1/reports/<subscription_uuid>/pdf/yearly/",
-        report_views.YearlyReportsPDFView.as_view(),
+        report_views.yearly_reports_pdf_view,
         name="reports_get_pdf_yearly_api",
     ),
     path(
