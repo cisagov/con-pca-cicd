@@ -183,16 +183,26 @@ export class TemplateManagerComponent implements OnInit {
 
     this.currentTemplateFormGroup = new FormGroup({
       templateUUID: new FormControl(template.template_uuid),
-      templateName: new FormControl(template.name, [Validators.required, this.notJustSpaces]),
+      templateName: new FormControl(template.name, [
+        Validators.required,
+        this.notJustSpaces
+      ]),
       templateDeceptionScore: new FormControl(template.deception_score),
       templateDescriptiveWords: new FormControl(template.descriptive_words),
       templateDescription: new FormControl(template.description),
       templateFromAddress: new FormControl(template.from_address, [
-        Validators.required, this.notJustSpaces
+        Validators.required,
+        this.notJustSpaces
       ]),
-      templateSubject: new FormControl(template.subject, [Validators.required, this.notJustSpaces]),
+      templateSubject: new FormControl(template.subject, [
+        Validators.required,
+        this.notJustSpaces
+      ]),
       templateText: new FormControl(template.text),
-      templateHTML: new FormControl(template.html, [Validators.required, this.notJustSpaces]),
+      templateHTML: new FormControl(template.html, [
+        Validators.required,
+        this.notJustSpaces
+      ]),
       authoritative: new FormControl(template.sender?.authoritative ?? 0),
       external: new FormControl(template.sender?.external ?? 0),
       internal: new FormControl(template.sender?.internal ?? 0),
@@ -323,13 +333,15 @@ export class TemplateManagerComponent implements OnInit {
           },
           error => {
             console.log(error);
-            this.dialog.open(AlertComponent, {
-              // Parse error here
-              data: {
-                title: 'Error',
-                messageText: 'Error: ' + error.error.error
-              }
-            });
+            if (error.status === 409) {
+              this.dialog.open(AlertComponent, {
+                // Parse error here
+                data: {
+                  title: 'Template Name Error',
+                  messageText: 'Template Name alreay exists.'
+                }
+              });
+            }
           }
         );
       }
@@ -486,8 +498,7 @@ export class TemplateManagerComponent implements OnInit {
     translate: 'yes',
     enableToolbar: true,
     showToolbar: true,
-    placeholder:
-      'Please enter template text here...',
+    placeholder: 'Please enter template text here...',
     defaultParagraphSeparator: '',
     defaultFontName: '',
     defaultFontSize: '',
@@ -572,7 +583,7 @@ export class TemplateManagerComponent implements OnInit {
   }
 
   /**
-   * 
+   *
    */
   notJustSpaces(control: FormControl) {
     // allow an empty field
