@@ -30,9 +30,8 @@ from reports.utils import (
 )
 from notifications.views import ReportsEmailSender
 from django.core.files.storage import FileSystemStorage
-from django.http import FileResponse, HttpResponse
+from django.http import HttpResponse
 from drf_yasg.utils import swagger_auto_schema
-from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from weasyprint import HTML
@@ -78,46 +77,48 @@ class ReportsView(APIView):
             for template in template_list
         }
 
-        summary = [
-            campaign_manager.get("summary", campaign_id=campaign.get("campaign_id"))
-            for campaign in campaigns
-        ]
-
         # distribute statistics into deception levels
         levels = []
         levels.append(DeceptionLevelStatsModel("low", 1))
         levels.append(DeceptionLevelStatsModel("moderate", 2))
         levels.append(DeceptionLevelStatsModel("high", 3))
 
-        for c in summary:
-            cmpgn = next(cc for cc in campaigns if cc.get("campaign_id") == c.get("id"))
-            level_number = cmpgn.get("deception_level")
+        for campaign in campaigns:
+            level_number = campaign.get("deception_level")
             if level_number not in [1, 2, 3]:
                 continue
 
             bucket = next(
                 level for level in levels if level.level_number == level_number
             )
-            bucket.sent = bucket.sent + c.get("stats", {}).get("sent", 0)
-            bucket.clicked = bucket.clicked + c.get("stats", {}).get("clicked", 0)
-            bucket.opened = bucket.opened + c.get("stats", {}).get("opened", 0)
+            bucket.sent = bucket.sent + campaign.get("phish_results", {}).get("sent", 0)
+            bucket.clicked = bucket.clicked + campaign.get("phish_results", {}).get(
+                "clicked", 0
+            )
+            bucket.opened = bucket.opened + campaign.get("phish_results", {}).get(
+                "opened", 0
+            )
 
         # aggregate statistics
-        sent = sum([targets.get("stats").get("sent", 0) for targets in summary])
-        target_count = sum([targets.get("stats").get("total") for targets in summary])
+        sent = sum(
+            [campaign.get("phish_results", {}).get("sent", 0) for campaign in campaigns]
+        )
+        target_count = sum(
+            [len(campaign.get("target_email_list")) for campaign in campaigns]
+        )
 
         created_date = ""
         end_date = ""
-        if len(summary):
-            created_date = summary[0].get("created_date")
-            end_date = summary[0].get("end_date")
+        if campaigns:
+            created_date = campaigns[0].get("created_date")
+            end_date = campaigns[0].get("completed_date")
 
         start_date = subscription["start_date"]
 
         # Get statistics for the specified subscription during the specified cycle
         subscription_stats = get_subscription_stats_for_cycle(subscription, start_date)
-        region_stats = get_related_subscription_stats(subscription, start_date)
-        previous_cycle_stats = get_cycles_breakdown(subscription["cycles"])
+        get_related_subscription_stats(subscription, start_date)
+        get_cycles_breakdown(subscription["cycles"])
 
         # Get template details for each campaign template
         get_template_details(subscription_stats["campaign_results"])
@@ -311,11 +312,10 @@ class YearlyReportsEmailView(APIView):
         operation_description="This sends a subscription report email by subscription uuid",
     )
     def get(self, request, subscription_uuid):
-        subscription = get_single(
-            subscription_uuid, "subscription", SubscriptionModel, validate_subscription
-        )
-        message_type = "yearly_report"
-
+        # subscription = get_single(
+        #     subscription_uuid, "subscription", SubscriptionModel, validate_subscription
+        # )
+        # message_type = "yearly_report"
         # Send email
         # sender = ReportsEmailSender(subscription, message_type)
         # sender.send()
