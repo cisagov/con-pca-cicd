@@ -137,9 +137,11 @@ def start_subscription(data=None, subscription_uuid=None):
 
     # Schedule client side reports emails
     if not settings.DEBUG:
-        email_tasks = create_scheduled_email_tasks(response)
+        tasks = create_scheduled_email_tasks(response)
         cycle_task = create_scheduled_cycle_tasks(response)
-        subscription["tasks"] = email_tasks
+
+        tasks.append(cycle_task)
+        subscription["tasks"] = tasks
     else:
         subscription["tasks"] = []
 
