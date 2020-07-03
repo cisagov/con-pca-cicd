@@ -55,12 +55,14 @@ article:nth-of-type(n+2) {
   letter-spacing: 5px;
   line-height: 1em;
   padding-top: 150px;
+  color: #fff !important;
 }
 
 .dateRange {
   font-size: 1em;
   letter-spacing: 1px;
   padding-right: 10px;
+  color: #fff !important;
 }
 
 #bluePhishLogo {  
@@ -98,13 +100,14 @@ article:nth-of-type(n+2) {
 
 .smallerTitle {
   font-size: 0.5em;
+  color: #015596 !important;
   letter-spacing: 1px;
   padding-left: 5px;
 }
 
 #reportTitle {
   font-size: 4em;
-  color: #015596; 
+  color: #015596 !important;
   letter-spacing: 2px;
   margin: -62px 0 100px 100px;
   text-transform: uppercase;
@@ -181,7 +184,7 @@ h3 {
 
 #executiveReportTitle {
   font-size: 3em;
-  color: #015596; 
+  color: #015596 !important;
   letter-spacing: 2px;
   line-height: 0.8em;
   margin-bottom: 30px;
@@ -227,7 +230,7 @@ ul {
 
 #summaryTitle {
   font-size: 3em;
-  color: #015596; 
+  color: #015596 !important;
   letter-spacing: 2px;
   text-transform: uppercase;
 }
@@ -344,7 +347,7 @@ ul {
 
 #methodologyTitle, #testingSummaryTitle {
   font-size: 3em;
-  color: #015596; 
+  color: #015596 !important;
   letter-spacing: 2px;
 }
 
