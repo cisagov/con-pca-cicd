@@ -484,14 +484,14 @@
             </div>
              <div class="row" id="statFlexContainer">
                     <div id="companyAverageText">
-                        <div id="companyAverageBox">18&percnt;<!-- {{ metrics.customer_clicked_avg }}% --></div>
-                        <b><!--{{ customer.short_name }}--> BBBI Average</b>
+                        <div id="companyAverageBox">{{ metrics.customer_clicked_avg }}&percnt;</div>
+                        <b>{{ customer.short_name }}</b>
                     </div>
                     <table>
                         <tr>
                             <td colspan="2">
                                 <div id="nationalAverageText" style="margin: auto;">
-                                    <div id="nationalAverageBox">{{metrics.shortest_time_to_report}}&percnt;<!-- {{ metrics.national_clicked_avg }}%--></div>
+                                    <div id="nationalAverageBox">{{ metrics.national_clicked_avg }}&percnt;</div>
                                     <b>National Average</b>
                                 </div>
                             </td>
@@ -499,13 +499,13 @@
                         <tr>
                             <td>
                                 <div id="sectorAverageText">
-                                    <div id="sectorAverageBox">21&percnt;<!--{{ metrics.sector_clicked_avg }}%--></div>
+                                    <div id="sectorAverageBox">{{ metrics.sector_clicked_avg }}&percnt;</div>
                                     <b>Sector Average</b>
                                 </div>
                             </td>
                             <td>
                                 <div id="industryAverageText">
-                                    <div id="industryAverageBox">20&percnt;<!--{{ metrics.industry_clicked_avg }}--></div>
+                                    <div id="industryAverageBox">{{ metrics.industry_clicked_avg }}&percnt;</div>
                                     <b>Industry Average</b>
                                 </div>
                             </td>
@@ -962,46 +962,9 @@
                                     <td>{{campaign.level}}</td>                                    
                                     <td>{{campaign.time_to_first_click}}</td>                                    
                                     <td>{{campaign.time_to_first_report}}</td>                                    
-                                    <td>{{campaign.difference}}</td>
-                                    
+                                    <td>{{campaign.difference}}</td>                                    
                                 </tr>
-                                {% endfor %}
-                            <tr>
-                                <td>1</td>
-                                <td>3&colon;25&colon;00</td>
-                                <td>0&colon;01&colon;00</td>
-                                <td>3&colon;24&colon;00 (Lead)</td>
-                            </tr>
-                            <tr>
-                                <td>2</td>
-                                <td>1&colon;19&colon;00</td>
-                                <td>5&colon;03&colon;00</td>
-                                <td>20&colon;16&colon;00 (Lead)</td>
-                            </tr>
-                            <tr>
-                                <td>3</td>
-                                <td>0&colon;21&colon;00</td>
-                                <td>3&colon;42&colon;00</td>
-                                <td>3&colon;21&colon;00 (Lag)</td>
-                            </tr>
-                            <tr>
-                                <td>4</td>
-                                <td>0&colon;09&colon;00</td>
-                                <td>0&colon;23&colon;00</td>
-                                <td>0&colon;14&colon;00 (Lag)</td>
-                            </tr>
-                            <tr>
-                                <td>5</td>
-                                <td>6&colon;03&colon;00</td>
-                                <td>2&colon;08&colon;00</td>
-                                <td>3&colon;55&colon;00 (Lead)</td>
-                            </tr>
-                            <tr>
-                                <td>6</td>
-                                <td>0&colon;01&colon;00</td>
-                                <td>0&colon;04&colon;00</td>
-                                <td>0&colon;03&colon;00 (Lag)</td>
-                            </tr>
+                            {% endfor %}                           
                         </tbody>
                     </table>
                 </div>

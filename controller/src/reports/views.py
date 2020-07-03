@@ -85,8 +85,7 @@ class MonthlyReportsView(TemplateView):
             subscription_stats, "stats_all", "reported", "count"
         )
 
-        total = len(subscription["target_email_list"])
-        import ipdb; ipdb.set_trace()
+        total = len(subscription["target_email_list"])        
         low_mid_high_bar_data = get_stats_low_med_high_by_level(subscription_stats)        
         chart_instance = ChartGenerator()
         zerodefault = [0]*15
@@ -391,7 +390,7 @@ class CycleReportsView(TemplateView):
             "number_of_reports_to_helpdesk": get_statistic_from_group(
                 subscription_stats, "stats_all", "reported", "count"
             ),
-            "repots_to_clicks_ratio": round(
+            "reports_to_clicks_ratio": round(
                 get_reports_to_click(subscription_stats), 2
             ),
             "avg_time_to_first_click": format_timedelta(
