@@ -4,6 +4,7 @@
   margin: 0;
 }
 
+
 html {  
   display: flex;
   flex-direction: row;
@@ -14,10 +15,9 @@ body {
   -webkit-print-color-adjust: exact !important;
   font-size: 16px;
   max-width: 1024px;
-  margin-left: auto;
-  margin-right: auto;
   padding: 0 20px;
 }
+
 
 * {
     font-family: Arial, sans-serif;
@@ -42,24 +42,27 @@ article:nth-of-type(n+2) {
 /* Cover */
 
 #blueDateBox {
-  background-color: #164A91;
-  color: #fff;
+  background-color: #164A91 !important;
+  color: #fff !important;
   margin: 0 0 0 -110px;
   padding: 160px 30px 400px 100px;
   text-align: right;
 }
+
 
 .year {
   font-size: 4.7em;
   letter-spacing: 5px;
   line-height: 1em;
   padding-top: 150px;
+  color: #fff !important;
 }
 
 .dateRange {
   font-size: 1em;
   letter-spacing: 1px;
   padding-right: 10px;
+  color: #fff !important;
 }
 
 #bluePhishLogo {  
@@ -68,7 +71,7 @@ article:nth-of-type(n+2) {
 }
 
 #whiteBox {
-  background-color: #fff;
+  background-color: #fff !important;
   height: 400px;
   margin: -385px 0 0 -15px;
 }
@@ -97,15 +100,16 @@ article:nth-of-type(n+2) {
 
 .smallerTitle {
   font-size: 0.5em;
+  color: #015596 !important;
   letter-spacing: 1px;
   padding-left: 5px;
 }
 
 #reportTitle {
   font-size: 4em;
-  color: #015596; 
+  color: #015596 !important;
   letter-spacing: 2px;
-  margin: -75px 0 100px 100px;
+  margin: -62px 0 100px 100px;
   text-transform: uppercase;
 }
 
@@ -180,7 +184,7 @@ h3 {
 
 #executiveReportTitle {
   font-size: 3em;
-  color: #015596; 
+  color: #015596 !important;
   letter-spacing: 2px;
   line-height: 0.8em;
   margin-bottom: 30px;
@@ -197,7 +201,7 @@ h3 {
   text-align: center;
 }
 #userMetrics {
-  border: 2px solid #cecece;
+  border: 2px solid #cecece !important;
   margin: 10px auto 40px auto;
   width: 100%;
 }
@@ -215,7 +219,7 @@ h3 {
 }
 
 #userMetrics tbody tr:nth-of-type(odd) {
-  background-color: #e8f4f8;
+  background-color: #e8f4f8 !important;
 }
 
 ul {
@@ -226,7 +230,7 @@ ul {
 
 #summaryTitle {
   font-size: 3em;
-  color: #015596; 
+  color: #015596 !important;
   letter-spacing: 2px;
   text-transform: uppercase;
 }
@@ -259,8 +263,8 @@ ul {
 }
 
 #companyAverageBox {
-  background-image: linear-gradient(to right, #164A91, #1979a7);
-  color: #fff;
+  background-image: linear-gradient(to right, #164A91, #1979a7) !important;
+  color: #fff !important;
   font-family: 'Times New Roman', Times, serif;
   font-size: 3.5em;
   padding: 20px 35px;
@@ -268,8 +272,8 @@ ul {
 }
 
 #nationalAverageBox, #industryAverageBox, #sectorAverageBox {
-  background-image: linear-gradient(to right, #164A91, #1979a7);
-  color: #fff;
+  background-image: linear-gradient(to right, #164A91, #1979a7) !important;
+  color: #fff !important;
   font-family: 'Times New Roman', Times, serif;
   font-size: 2.5em;
   padding: 20px 30px;
@@ -343,7 +347,7 @@ ul {
 
 #methodologyTitle, #testingSummaryTitle {
   font-size: 3em;
-  color: #015596; 
+  color: #015596 !important;
   letter-spacing: 2px;
 }
 

@@ -4,148 +4,26 @@
 
     <head>
         <meta charset="utf-8">
-
-        <!-- Reports CSS Page -->
-        <link href="{% static 'css/cycle.css'%}" rel="stylesheet">
-
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <!-- Reports CSS Page  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet"     integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">-->        
+        <link href="{% static 'css/cycle.css'%}" rel="stylesheet">  
+        <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet">
+        
+              
         <!-- Bootstrap CSS Link -->
-        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" rel="stylesheet"
-            integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
-
-        <!-- Javascript Graphs Source -->
-        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-
-        <script type="text/javascript">
-            google.charts.load('current', { packages: ['corechart', 'line'] });
-            google.charts.setOnLoadCallback(drawYearTrends);
-            google.charts.setOnLoadCallback(drawNumbersByLevel);
-            google.charts.setOnLoadCallback(drawTimeIntervalGraph);
-            google.charts.setOnLoadCallback(drawTimeComplexityGraph);
-
-            // Yearly Trend Graph
-            function drawYearTrends() {
-                var data = new google.visualization.DataTable();
-                data.addColumn('number', 'X');
-                data.addColumn('number', 'Clicked');
-                data.addColumn('number', 'Submitted')
-
-                data.addRows([
-                    [1, 50, 25], [2, 41, 21], [3, 21, 10], [4, 19, 11]
-                ]);
-
-                var options = {
-                    hAxis: { title: 'Quarter' },
-                    vAxis: { title: 'Percent' }
-                };
-
-                var chart_div = document.getElementById('trendLineGraph');
-                var chart = new google.visualization.LineChart(chart_div);
-
-                google.visualization.events.addListener(chart, 'ready', function () {
-                    chart_div.innerHTML = '<img src="' + chart.getImageURI() + '">';
-                });
-                chart.draw(data, options);
-            }
-
-            // Graph of numbers by phishing difficulty
-            function drawNumbersByLevel() {
-                var data = google.visualization.arrayToDataTable([
-                    ['Category', 'Low', 'Med', 'High'],
-                    ['Sent', 333, 333, 333],
-                    ['Opened', 300, 300, 300],
-                    ['Clicked', 50, 100, 150],
-                    ['Submitted', 21, 37, 44],
-                ]);
-
-                var options = {
-                    vAxis: { title: 'Amount' },
-                    hAxis: { title: 'Category' },
-                    seriesType: 'bars',
-                    series: { 4: { type: 'bar' } }
-                };
-
-                var chart_div = document.getElementById('numbersByLevelGraph');
-                var chart = new google.visualization.ComboChart(chart_div);
-
-                google.visualization.events.addListener(chart, 'ready', function () {
-                    chart_div.innerHTML = '<img src="' + chart.getImageURI() + '">';
-                    console.log(chart_div.innerHTML);
-                });
-                chart.draw(data, options);
-            }
-
-            // Time to first click within 24h graph
-            function drawTimeIntervalGraph() {
-                var data = new google.visualization.arrayToDataTable([
-                    ['Time', 'Percent', { role: 'style' }],
-                    ['1 Minute', 5, ''],
-                    ['3 Minutes', 14, ''],
-                    ['5 Minutes', 19, ''],
-                    ['15 Minutes', 43, ''],
-                    ['30 Minute', 60, ''],
-                    ['60 Minutes', 67, ''],
-                    ['2 Hours', 72, ''],
-                    ['4 Hours', 80, ''],
-                    ['24 Hours', 93, '']
-                ]);
-
-                var options = {
-                    hAxis: { title: 'Time' },
-                    vAxis: { title: '% of Unique User Clicks' }
-                };
-
-                var chart_div = document.getElementById('timeIntervalGraph');
-                var chart = new google.visualization.ColumnChart(chart_div);
-
-                google.visualization.events.addListener(chart, 'ready', function () {
-                    chart_div.innerHTML = '<img src="' + chart.getImageURI() + '">';
-                    console.log(chart_div.innerHTML);
-                });
-
-                chart.draw(data, options);
-            }
-
-            // Time to first click by complexity level
-            function drawTimeComplexityGraph() {
-                var data = new google.visualization.arrayToDataTable([
-                    ['Complexity', 'Elapsed Time (minutes)', { role: 'style' }],
-                    ['1', 185, ''],
-                    ['2', 80, ''],
-                    ['3', 21, ''],
-                    ['4', 9, ''],
-                    ['5', 34, ''],
-                    ['6', 1, '']
-                ]);
-
-                var options = {
-                    hAxis: { title: 'Complexity Level' },
-                    vAxis: { title: 'Elapsed Time' }
-                };
-
-                var chart_div = document.getElementById('timeComplexityGraph');
-                var chart = new google.visualization.ColumnChart(chart_div);
-
-                google.visualization.events.addListener(chart, 'ready', function () {
-                    chart_div.innerHTML = '<img src="' + chart.getImageURI() + '">';
-                    console.log(chart_div.innerHTML);
-                });
-
-                chart.draw(data, options);
-            }
-
-        </script>
-
-
+        
+        
         <title>90 Day Cycle Report</title>
-        <meta name="description" content="Report example">
+        <meta name="description" content="Cycle Report">        
     </head>
 
     <body>
         <article id="cover">
             <div class="row">
                 <div id="blueDateBox">
-                    <span class="year">2020</span><!-- Insert Year --><br>
-                    <span class="dateRange">{{ start_date|date:"M d, Y" }} - {{ end_date|date:"M d, Y" }}</span><!-- Insert 90 day span-->
+                    <span class="year">2020</span><br>                    
+                    <span class="dateRange">{{ target_cycle.start_date|date:"M d, Y" }} - {{ target_cycle.end_date|date:"M d, Y" }}</span><!-- Insert 90 day span-->
                 </div>
             </div>
             <div class="row">
