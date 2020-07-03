@@ -60,6 +60,7 @@ import { AuthAppendInterceptor } from './helper/AuthAppendInterceptor'
 import { UnauthorizedInterceptor } from './helper/UnauthorizedInterceptor'
 import { DhsPocComponent } from './components/user-admin/dhs-poc/dhs-poc.component';
 import { DhsPocDetailComponent } from './components/user-admin/dhs-poc/dhs-poc-detail.component';
+import { InputTrimDirective } from './helper/input-trim.directive';
 
 export function app_Init(settingsHttpService: SettingsHttpService) {
   return () => settingsHttpService.initializeApp()
@@ -104,6 +105,7 @@ export function app_Init(settingsHttpService: SettingsHttpService) {
     SvgTimelineComponent,
     DhsPocComponent,
     DhsPocDetailComponent,
+    InputTrimDirective,
   ],
   imports: [
     BrowserModule,
