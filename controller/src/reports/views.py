@@ -86,6 +86,7 @@ class MonthlyReportsView(TemplateView):
         )
 
         total = len(subscription["target_email_list"])
+        import ipdb; ipdb.set_trace()
         low_mid_high_bar_data = get_stats_low_med_high_by_level(subscription_stats)        
         chart_instance = ChartGenerator()
         zerodefault = [0]*15
@@ -181,11 +182,6 @@ class MonthlyReportsView(TemplateView):
         svg_circle_clicked = self.calculateSvgCircles(
             metrics["number_of_clicked_emails"], total_users_targeted
         )
-
-        stats_chart = generate_chart.get_svg(
-            [50, 70, 50, 100, 100, 100, 200, 200, 200, 150, 150, 150, 75, 75, 75]
-        )
-
         context = {
             # Customer info
             "customer_name": customer.get("name"),
@@ -213,11 +209,8 @@ class MonthlyReportsView(TemplateView):
             ).decode("ascii"),
             "clicked_circle_svg": base64.b64encode(
                 svg_circle_clicked.encode("ascii")
-            ).decode("ascii"),
-            "stats_chart": base64.b64encode(stats_chart.encode("ascii")).decode(
-                "ascii"
-            ),
-            "chart": stats_chart,
+            ).decode("ascii")
+            
         }
         return context
 
