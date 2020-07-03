@@ -2,7 +2,6 @@
 import math
 import numpy as np
 
-
 class ChartGenerator:
     def __init__(self):
         self.legend = ["Sent", "Opened", "Clicked", "Submitted", "Reported"]

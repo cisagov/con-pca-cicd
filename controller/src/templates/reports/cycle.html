@@ -258,9 +258,9 @@
                             </tr>
                             {%for cycle in cycles%}
                             <tr>
-                                <td>{{ cycle.quarter}}</td>
-                                <td>{{ cycle.start_date|date:"M d, Y" }} - {{ cycle.end_date|date:"M d, Y" }}</td>
-                                <td>{{ cycle.notes }}</td>
+                                <td>{{cycle.year}} {{ cycle.quarter}}</td>
+                                <td>{{cycle.start_date|date:"M d, Y" }} - {{ cycle.end_date|date:"M d, Y" }}</td>
+                                <td>{{cycle.notes}}</td>
                             </tr>
                             {% endfor %}                            
                         </table>
@@ -316,7 +316,7 @@
                                 Assessments and Technical Services- (Vulnerability Management) led Continuous Phishing Campaign 
                                 Assessment (CON-PCA) for {{ customer.full_name }}. The CON-PCA is a practical exercise 
                                 intended to support and measure the effectiveness of security awareness training for information 
-                                system users. The results of this CON-PCA show the susceptibility of {{customer.identifier}}personnel to social engineering attacks—specifically email phishing attacks—in which an 
+                                system users. The results of this CON-PCA show the susceptibility of {{customer.identifier}} personnel to social engineering attacks—specifically email phishing attacks—in which an 
                                 adversary tricks an email user into clicking a malicious link to gain unauthorized network access. In 
                                 the scenario that this CON-PCA tested, the phishing attack bypassed technical controls that would 
                                 normally detect and/or block malicious emails and links. The CON-PCA, therefore, measured 
@@ -365,7 +365,7 @@
                                 </tr>
                                 <tr>
                                     <td>Ratio of reports-to-clicks</td>
-                                    <td>{{metrics.repots_to_clicks_ratio}}</td>
+                                    <td>{{metrics.reports_to_clicks_ratio}}</td>
                                 </tr>
                                 <tr>
                                     <td>Average time to first click</td>
@@ -468,36 +468,53 @@
         </article>
 
         <article id="pageFive">
-            <div class="row">
-                <div class="col-12">
-                    <h2 id="summaryTitle">Summary</h2>
+            <div class="container-fluid"> 
+                <div class="row">
+                    <div class="col-12">
+                        <h2 id="summaryTitle">Summary</h2>
+                    </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-12">
-                    <div id="summary">
-                        <p>Percentage of targets who clicked a malicious link in phishing emails this quarter.</p>
+                <div class="row">
+                    <div class="col-12">
+                        <div id="summary">
+                            <p>Percentage of targets who clicked a malicious link in phishing emails this quarter.</p>
+                        </div>
                     </div>
                 </div>
             </div>
-             <div class="row">
-                <div id="companyAverageText">
-                    <div id="companyAverageBox">{{ metrics.customer_clicked_avg }}%</div>
-                    <b>{{ customer.short_name }} Average</b>
+             <div class="row" id="statFlexContainer">
+                    <div id="companyAverageText">
+                        <div id="companyAverageBox">{{ metrics.customer_clicked_avg }}&percnt;</div>
+                        <b>{{ customer.short_name }}</b>
+                    </div>
+                    <table>
+                        <tr>
+                            <td colspan="2">
+                                <div id="nationalAverageText" style="margin: auto;">
+                                    <div id="nationalAverageBox">{{ metrics.national_clicked_avg }}&percnt;</div>
+                                    <b>National Average</b>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div id="sectorAverageText">
+                                    <div id="sectorAverageBox">{{ metrics.sector_clicked_avg }}&percnt;</div>
+                                    <b>Sector Average</b>
+                                </div>
+                            </td>
+                            <td>
+                                <div id="industryAverageText">
+                                    <div id="industryAverageBox">{{ metrics.industry_clicked_avg }}&percnt;</div>
+                                    <b>Industry Average</b>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                    
+                    
+                    
                 </div>
-                <div id="sectorAverageText">
-                    <div id="sectorAverageBox">{{ metrics.national_clicked_avg }}%</div>
-                    <b>National Average</b>
-                </div>
-                <div id="sectorAverageText">
-                    <div id="sectorAverageBox">{{ metrics.sector_clicked_avg }}%</div>
-                    <b>Sector Average</b>
-                </div>
-                <div id="industryAverageText">
-                    <div id="industryAverageBox">{{ metrics.industry_clicked_avg }}%</div>
-                    <b>Industry Average</b>
-                </div>
-            </div>
             <div class="row">
                 <div class="col-12">
                     <div id="yearTrendsTitle">
@@ -533,6 +550,21 @@
                             <td>{{metrics.longest_time_to_open}}</td>
                         </tr>
                     </table>
+                    
+                    
+                    
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <div id="yearTrendsTitle">
+                            <h3><small class="font-weight-bold">Year Trends</small></h3>
+                            <p>These trends show the effect of phishing training and email filtering investments.</p><br>
+                        </div>
+                        <div id="yearTrendGraph">
+                            <p class="pt-20">PERCENTAGE TRENDS</p>
+                            <div id="trendLineGraph"></div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="row">
@@ -665,48 +697,50 @@
         </article>
 
         <article id="PageSeven">
-            <div class="row">
-                <div class="col-12">
-                    <p>The remainder of this report provides findings and metrics of the VM phishing service for {{ customer.full_name }}.</p>
-                    <h2 id="methodologyTitle">{{ customer.full_name }} Methodology Specifics</h2>
-                    <div id="methodologyText">
-                        <p>VM used the methodology documented in <u><b>Appendix A&colon; Methodology</b></u> to perform testing 
-                            {{ customer.full_name }}. Specific phishing templates can be reviewed in <u><b>Appendix C&colon; Templates</b></u> 
-                            with corresponding complexity calculations. VM divided the 1000 email addresses that {{ customer.full_name }} provided 
-                            into three groups. Group 1 had 333 addresses and received levels 1 and 4. Group 2 had 333 addresses and
-                            received levels 2 and 5. Group 3 had 334 addresses and received levels 3 and 6. See Table 3 for
-                            descriptions of email levels 1 – 6.</p>
-                        <p>The assessment’s goal was to capture the behavior-based responses of {{ customer.full_name }} to email phishing
-                            attempts; and the assessment operated under the scenario that no technical controls were able to
-                            detect, report, or stop the email phishing attempts. VM, as an external body conducting this
-                            PCA, did not have direct knowledge whether or not emails successfully arrived in targeted
-                            {{ customer.full_name }} user inboxes. To allow for a clear determination of click rates (email links clicked
-                            divided by emails sent), {{ customer.full_name }} or VM performed the following&colon;</p>
-                        <ul>
-                            <li>{{ customer.full_name }} whitelisted the VM domain and IP address during the planning stage</li>
-                            <li>{{ customer.full_name }} created specific mail receiving rules to permit the VM emails to land in user 
-                                inboxes</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-12">
-                    <h2 id="testingSummaryTitle">Summary of Testing Activities and Results</h2>
-                    <div id="testingSummaryText">
-                        <p>This PCA concentrated on how phishing email complexity affected {{ customer.full_name }} user click behavior and
-                            response behavior. VM expects that a more complex and deceptive phishing email has a higher
-                            likelihood of being clicked and a lower likelihood of being reported. This assessment also
-                            gathered organizational emails through open-source intelligence techniques to determine
-                            {{ customer.full_name }}’s potentially attackable online presence. See <u><b>Appendix B&colon; Detailed Results</b></u>
-                            for detailed phishing and customer email data and <u><b>Appendix C&colon; Templates</b></u> for a 
-                            detailed explanation on complexity levels.</p>
-                        <p>Over six weeks, {{ customer.full_name }}’s targeted users received at least two phishing emails of increasing
-                            complexity. Levels 1 – 3 were &quot;easier to detect&quot; and levels 4 – 6 were &quot;more difficult
-                            to detect,&quot; based on the number and type of indicators used. The table below summarizes the
-                            phishing templates used in this PCA.</p>
-                    </div>
-                </div>
+        	<div class="container-fluid">
+	            <div class="row">
+	                <div class="col-12">
+	                    <p>The remainder of this report provides findings and metrics of the VM phishing service for {{ customer.full_name }}.</p>
+	                    <h2 id="methodologyTitle">{{ customer.full_name }} Methodology Specifics</h2>
+	                    <div id="methodologyText">
+	                        <p>VM used the methodology documented in <u><b>Appendix A&colon; Methodology</b></u> to perform testing 
+	                            {{ customer.full_name }}. Specific phishing templates can be reviewed in <u><b>Appendix C&colon; Templates</b></u> 
+	                            with corresponding complexity calculations. VM divided the 1000 email addresses that {{ customer.full_name }} provided 
+	                            into three groups. Group 1 had 333 addresses and received levels 1 and 4. Group 2 had 333 addresses and
+	                            received levels 2 and 5. Group 3 had 334 addresses and received levels 3 and 6. See Table 3 for
+	                            descriptions of email levels 1 – 6.</p>
+	                        <p>The assessment’s goal was to capture the behavior-based responses of {{ customer.full_name }} to email phishing
+	                            attempts; and the assessment operated under the scenario that no technical controls were able to
+	                            detect, report, or stop the email phishing attempts. VM, as an external body conducting this
+	                            PCA, did not have direct knowledge whether or not emails successfully arrived in targeted
+	                            {{ customer.full_name }} user inboxes. To allow for a clear determination of click rates (email links clicked
+	                            divided by emails sent), {{ customer.full_name }} or VM performed the following&colon;</p>
+	                        <ul>
+	                            <li>{{ customer.full_name }} whitelisted the VM domain and IP address during the planning stage</li>
+	                            <li>{{ customer.full_name }} created specific mail receiving rules to permit the VM emails to land in user 
+	                                inboxes</li>
+	                        </ul>
+						</div>
+                    </div>                
+            	</div>
+	            <div class="row">
+	                <div class="col-12">
+	                    <h2 id="testingSummaryTitle">Summary of Testing Activities and Results</h2>
+	                    <div id="testingSummaryText">
+	                        <p>This PCA concentrated on how phishing email complexity affected {{ customer.full_name }} user click behavior and
+	                            response behavior. VM expects that a more complex and deceptive phishing email has a higher
+	                            likelihood of being clicked and a lower likelihood of being reported. This assessment also
+	                            gathered organizational emails through open-source intelligence techniques to determine
+	                            {{ customer.full_name }}’s potentially attackable online presence. See <u><b>Appendix B&colon; Detailed Results</b></u>
+	                            for detailed phishing and customer email data and <u><b>Appendix C&colon; Templates</b></u> for a 
+	                            detailed explanation on complexity levels.</p>
+	                        <p>Over six weeks, {{ customer.full_name }}’s targeted users received at least two phishing emails of increasing
+	                            complexity. Levels 1 – 3 were &quot;easier to detect&quot; and levels 4 – 6 were &quot;more difficult
+	                            to detect,&quot; based on the number and type of indicators used. The table below summarizes the
+	                            phishing templates used in this PCA.</p>
+	                    </div>
+	                </div>
+	            </div>
             </div>
         </article>
 
@@ -928,46 +962,9 @@
                                     <td>{{campaign.level}}</td>                                    
                                     <td>{{campaign.time_to_first_click}}</td>                                    
                                     <td>{{campaign.time_to_first_report}}</td>                                    
-                                    <td>{{campaign.difference}}</td>
-                                    
+                                    <td>{{campaign.difference}}</td>                                    
                                 </tr>
-                                {% endfor %}
-                            <tr>
-                                <td>1</td>
-                                <td>3&colon;25&colon;00</td>
-                                <td>0&colon;01&colon;00</td>
-                                <td>3&colon;24&colon;00 (Lead)</td>
-                            </tr>
-                            <tr>
-                                <td>2</td>
-                                <td>1&colon;19&colon;00</td>
-                                <td>5&colon;03&colon;00</td>
-                                <td>20&colon;16&colon;00 (Lead)</td>
-                            </tr>
-                            <tr>
-                                <td>3</td>
-                                <td>0&colon;21&colon;00</td>
-                                <td>3&colon;42&colon;00</td>
-                                <td>3&colon;21&colon;00 (Lag)</td>
-                            </tr>
-                            <tr>
-                                <td>4</td>
-                                <td>0&colon;09&colon;00</td>
-                                <td>0&colon;23&colon;00</td>
-                                <td>0&colon;14&colon;00 (Lag)</td>
-                            </tr>
-                            <tr>
-                                <td>5</td>
-                                <td>6&colon;03&colon;00</td>
-                                <td>2&colon;08&colon;00</td>
-                                <td>3&colon;55&colon;00 (Lead)</td>
-                            </tr>
-                            <tr>
-                                <td>6</td>
-                                <td>0&colon;01&colon;00</td>
-                                <td>0&colon;04&colon;00</td>
-                                <td>0&colon;03&colon;00 (Lag)</td>
-                            </tr>
+                            {% endfor %}                           
                         </tbody>
                     </table>
                 </div>
@@ -1002,30 +999,31 @@
         </article>
 
         <article id="pageTwelve">
-            <div class="row">
-                <div class="col-12">
-                    <h3 id="levelTitle"><small class="font-weight-bold">Closing</small></h3>
-                    <div id="closingText">
-                        <b>Detailed Conclusion 1</b> - Assessment Summary<br />
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-                            labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                            laboris nisi ut aliquip ex ea commodo consequat.</p>
+            <div class="container-fluid"> 
+                <div class="row">
+                    <div class="col-12">
+                        <h3 id="levelTitle"><small class="font-weight-bold">Closing</small></h3>
+                        <div id="closingText">
+                            <b>Detailed Conclusion 1</b> - Assessment Summary<br />
+                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
+                                labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
+                                laboris nisi ut aliquip ex ea commodo consequat.</p>
 
-                        <b>Detailed Conclusion 2</b> - Click Rates and Click Times<br />
-                        <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-                            pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
-                            mollit an aborum Ornare massa eget egestas purus viverra accumsan in nisl nisi. Id interdum
-                            velit laoreet id donec ultrices tincidunt.</p>
+                            <b>Detailed Conclusion 2</b> - Click Rates and Click Times<br />
+                            <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+                                pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
+                                mollit an aborum Ornare massa eget egestas purus viverra accumsan in nisl nisi. Id interdum
+                                velit laoreet id donec ultrices tincidunt.</p>
 
-                        <b>Detailed Conclusion 3</b> - Reporting Rates and Reporting Times<br />
-                        <p>Egestas diam in arcu cursus. Facilisis leo vel fringilla est ullamcorper eget nulla. Gravida quis
-                            blandi turpis cursus in hac habitasse platea dictumst. Sit amet risus nullam eget felis eget.
-                        </p>
+                            <b>Detailed Conclusion 3</b> - Reporting Rates and Reporting Times<br />
+                            <p>Egestas diam in arcu cursus. Facilisis leo vel fringilla est ullamcorper eget nulla. Gravida quis
+                                blandi turpis cursus in hac habitasse platea dictumst. Sit amet risus nullam eget felis eget.
+                            </p>
 
-                        <b>Detailed Conclusion 4</b> - Open Source Intelligence<br />
-                        <p>Elit eget gravida cum sociis natoque penatibus et magnis. Diam maecenas sed enim ut sem viverra
-                            aliquet eget sit. Massa ultricies mi quis hendrerit dolor magna eget. Facilisis volutpat est
-                            velit egestas dui id.</p>
+                            <b>Detailed Conclusion 4</b> - Open Source Intelligence<br />
+                            <p>Elit eget gravida cum sociis natoque penatibus et magnis. Diam maecenas sed enim ut sem viverra
+                                aliquet eget sit. Massa ultricies mi quis hendrerit dolor magna eget. Facilisis volutpat est
+                                velit egestas dui id.</p>
 
                         <p>PCA is a young service with limited but meaningful data made available to {{ customer.full_name }}. VM hopes this
                             data will be actionable and allow {{ customer.full_name }} to reduce some level of risk within their
@@ -1033,25 +1031,28 @@
                             non-attributable overview of phishing results will be collected as part of the VM annual service
                             review.</p>
 
-                        <p>As this new service continues to mature, VM looks forward to enhancing the PCA and building new
-                            test capabilities that include technical control checks. VM appreciates any comments to improve
-                            this report or service as a whole. For questions about this report or for future engagements
-                            with VM, please send an email to VM_info@hq.dhs.gov.</p>
+                            <p>As this new service continues to mature, VM looks forward to enhancing the PCA and building new
+                                test capabilities that include technical control checks. VM appreciates any comments to improve
+                                this report or service as a whole. For questions about this report or for future engagements
+                                with VM, please send an email to VM_info@hq.dhs.gov.</p>
+                        </div>
                     </div>
                 </div>
             </div>
         </article>
 
         <article id="pageThirteen">
-            <div class="row">
-                <div class="col-12">
-                    <h3 id="levelTitle"><small class="font-weight-bold">Appendix C&colon; Templates</small></h3>
-                    <div id="appendixOneText">
-                        <p>The phishing tempaltes used throughtout this service include six levels of variying complexity.
-                            Each level is based on a calculation of the factors designed to entice users to click on a
-                            malicious link. An emplanation of four factors used when determining an email’s level of
-                            complexity can be found in C1&colon; Complexity. The following defines key differences between each
-                            level&colon;</p>
+            <div class="container-fluid"> 
+                <div class="row">
+                    <div class="col-12">
+                        <h3 id="levelTitle"><small class="font-weight-bold">Appendix C&colon; Templates</small></h3>
+                        <div id="appendixOneText">
+                            <p>The phishing tempaltes used throughtout this service include six levels of variying complexity.
+                                Each level is based on a calculation of the factors designed to entice users to click on a
+                                malicious link. An emplanation of four factors used when determining an email’s level of
+                                complexity can be found in C1&colon; Complexity. The following defines key differences between each
+                                level&colon;</p>
+                        </div>
                     </div>
                 </div>
             </div>

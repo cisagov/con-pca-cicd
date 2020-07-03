@@ -478,7 +478,7 @@ def get_statistic_from_group(subscription_stats, deception_level, category, stat
     Stats : Average, Count, Maximum, Median, Minimum
     """ 
     try:
-        return subscription_stats[deception_level][category][stat]
+        return subscription_stats[deception_level][category][stat] 
     except Exception:
         return None
 
@@ -579,7 +579,7 @@ def get_template_details(campaign_results):
         parameters, "template", TemplateModel, validate_template, fields
     )
     total_sent = 0
-    for camp in campaign_results:
+    for camp in campaign_results:        
         total_sent += camp["campaign_stats"]["sent"]["count"]
     
     percent_of_camps = 0
@@ -594,3 +594,37 @@ def get_template_details(campaign_results):
                 campaign["template_details"] = {}
                 for key in template:
                     campaign["template_details"][key] = template[key]
+
+def get_stats_low_med_high_by_level(subscription_stats):
+    data = []
+    v = get_statistic_from_group(subscription_stats, 'stats_low_deception', 'sent', 'count')
+    data.append(0 if v is None else v)
+    v = get_statistic_from_group(subscription_stats, 'stats_mid_deception', 'sent', 'count')
+    data.append(0 if v is None else v)
+    v = get_statistic_from_group(subscription_stats, 'stats_high_deception', 'sent', 'count')
+    data.append(0 if v is None else v)
+    v = get_statistic_from_group(subscription_stats, 'stats_low_deception', 'opened', 'count')
+    data.append(0 if v is None else v)
+    v = get_statistic_from_group(subscription_stats, 'stats_mid_deception', 'opened', 'count')
+    data.append(0 if v is None else v)
+    v = get_statistic_from_group(subscription_stats, 'stats_high_deception', 'opened', 'count')
+    data.append(0 if v is None else v)
+    v = get_statistic_from_group(subscription_stats, 'stats_low_deception', 'clicked', 'count')
+    data.append(0 if v is None else v)
+    v = get_statistic_from_group(subscription_stats, 'stats_mid_deception', 'clicked', 'count')
+    data.append(0 if v is None else v)
+    v = get_statistic_from_group(subscription_stats, 'stats_high_deception', 'clicked', 'count')
+    data.append(0 if v is None else v)    
+    v = get_statistic_from_group(subscription_stats, 'stats_low_deception', 'submitted', 'count')
+    data.append(0 if v is None else v)    
+    v = get_statistic_from_group(subscription_stats, 'stats_mid_deception', 'submitted', 'count')
+    data.append(0 if v is None else v)
+    v = get_statistic_from_group(subscription_stats, 'stats_high_deception', 'submitted', 'count')
+    data.append(0 if v is None else v)
+    v = get_statistic_from_group(subscription_stats, 'stats_low_deception', 'reported', 'count')
+    data.append(0 if v is None else v)
+    v = get_statistic_from_group(subscription_stats, 'stats_mid_deception', 'reported', 'count')
+    data.append(0 if v is None else v)    
+    v = get_statistic_from_group(subscription_stats, 'stats_high_deception', 'reported', 'count')
+    data.append(0 if v is None else v)
+    return data

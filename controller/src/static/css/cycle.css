@@ -231,8 +231,13 @@ ul {
   text-transform: uppercase;
 }
 
-#companyAverageText {
-  margin: 40px 150px 40px 80px;
+#statFlexContainer{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  margin-top: 20px;
+}
+#companyAverageText {  
   text-align: center;
 }
 
@@ -241,15 +246,16 @@ ul {
 }
 
 #nationalAverageText {
-  margin: 0 0 40px 120px;
+  margin: 20px;
+  max-width: 140px;
 }
 
 #sectorAverageText {
-  margin: 140px 60px 40px -230px;
+  margin: 20px;
 }
 
 #industryAverageText {
-  margin: 140px 0 40px 0px;
+  margin: 20px;
 }
 
 #companyAverageBox {
@@ -258,6 +264,7 @@ ul {
   font-family: 'Times New Roman', Times, serif;
   font-size: 3.5em;
   padding: 20px 35px;
+  max-width: 180px;
 }
 
 #nationalAverageBox, #industryAverageBox, #sectorAverageBox {
@@ -321,7 +328,14 @@ ul {
   width: 100%;
 }
 
-.bar-chart h4 {
+#successOverview {
+  margin-bottom: 100px;
+}
+
+#successOverview h4, 
+  .bar-chart h4, 
+  .timeIntervalGraph h4, 
+  .timeComplexityGraph h4 {
   margin-top: 10px;
 }
 
@@ -408,11 +422,38 @@ ul {
 
 /* Page Thirteen */
 
-#levelDescriptions {
-  margin: 0 25px;
-  padding: 25px;
-  background: pink;
+/* fix level descriptions */
+
+
+/* Page Fourteen */
+
+#dumbPhishList, #mediumPhishList, #hardPhishList {
+  margin-bottom: 70px;
 }
 
+.congrats {
+  font-size: 1.3em;
+  margin: 20px 0;
+}
 
+.blue-font {
+  color: #1979a7;
+}
 
+#dumbPhishBenefits li {
+  margin-left: 10px;
+}
+
+.vintageCars {
+  font-size: 1.325em;
+  font-weight: 600;
+  margin-top: 40px;
+  text-align: center;
+}
+
+/* Page Fifteen */
+
+.md-font {
+  font-size: 1.325em;
+  font-weight: 600;
+}
