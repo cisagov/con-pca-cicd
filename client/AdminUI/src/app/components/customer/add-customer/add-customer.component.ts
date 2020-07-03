@@ -60,13 +60,13 @@ export class AddCustomerComponent implements OnInit, OnDestroy {
   matchEmail = new MyErrorStateMatcher();
 
   customerFormGroup = new FormGroup({
-    customerName: new FormControl('', [Validators.required, this.notJustSpaces]),
-    customerIdentifier: new FormControl('', [Validators.required, this.notJustSpaces]),
-    address1: new FormControl('', [Validators.required, this.notJustSpaces]),
+    customerName: new FormControl('', [Validators.required]),
+    customerIdentifier: new FormControl('', [Validators.required]),
+    address1: new FormControl('', [Validators.required]),
     address2: new FormControl(''),
-    city: new FormControl('', [Validators.required, this.notJustSpaces]),
-    state: new FormControl('', [Validators.required, this.notJustSpaces]),
-    zip: new FormControl('', [Validators.required, this.notJustSpaces]),
+    city: new FormControl('', [Validators.required]),
+    state: new FormControl('', [Validators.required]),
+    zip: new FormControl('', [Validators.required]),
     sector: new FormControl(null),
     industry: new FormControl(null),
     customerType: new FormControl('', [Validators.required])
@@ -404,19 +404,5 @@ export class AddCustomerComponent implements OnInit, OnDestroy {
 
   customerValid() {
     return this.customerFormGroup.valid && this.contacts.data.length > 0;
-  }
-
-  /**
-   * A validator that allows an empty control, but does not allow
-   * only spaces.
-   */
-  notJustSpaces(control: FormControl) {
-    // allow an empty field
-    if (control.value === '') {
-      return null;
-    }
-    const isWhitespace = (control.value || '').trim().length === 0;
-    const isValid = !isWhitespace;
-    return isValid ? null : { whitespace: true };
   }
 }

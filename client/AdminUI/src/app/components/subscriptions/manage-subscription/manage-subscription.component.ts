@@ -99,12 +99,8 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
       startDate: new FormControl(new Date(), {
         validators: Validators.required
       }),
-      url: new FormControl('', {
-        validators: this.notJustSpaces
-      }),
-      keywords: new FormControl('', {
-        validators: this.notJustSpaces
-      }),
+      url: new FormControl('', {}),
+      keywords: new FormControl('', {}),
       sendingProfile: new FormControl('', {
         validators: Validators.required
       }),
@@ -145,11 +141,11 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
       this.persistChanges();
     });
     this.f.url.valueChanges.subscribe(val => {
-      this.subscription.url = val.trim();
+      this.subscription.url = val; // val.trim();
       this.persistChanges();
     });
     this.f.keywords.valueChanges.subscribe(val => {
-      this.subscription.keywords = val.trim();
+      this.subscription.keywords = val; // val.trim();
       this.persistChanges();
     });
     this.f.sendingProfile.valueChanges.subscribe(val => {
@@ -604,10 +600,10 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
     sub.url = this.f.url.value;
 
     // keywords
-    sub.keywords = this.f.keywords.value.trim();
+    sub.keywords = this.f.keywords.value;
 
     // set the target list
-    const csv = this.f.csvText.value.trim();
+    const csv = this.f.csvText.value;
     sub.target_email_list = this.buildTargetsFromCSV(csv);
 
     sub.sending_profile_name = this.f.sendingProfile.value;
@@ -683,7 +679,7 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
       return;
     }
 
-    const lines = csv.split('\n');
+    const lines = csv.trim().split('\n');
     lines.forEach((line: string) => {
       const parts = line.split(',');
       while (parts.length < 4) {
@@ -778,20 +774,6 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
     window.open(url, "_blank");
   }
   */
-
-  /**
-   * A validator that allows an empty control, but does not allow
-   * only spaces.
-   */
-  notJustSpaces(control: FormControl) {
-    // allow an empty field
-    if (control.value === '') {
-      return null;
-    }
-    const isWhitespace = (control.value || '').trim().length === 0;
-    const isValid = !isWhitespace;
-    return isValid ? null : { whitespace: true };
-  }
 
   /**
    * A validator that requires the csv field to contain certain elements on each row
