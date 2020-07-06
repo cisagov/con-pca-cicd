@@ -750,6 +750,12 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
     });
   }
 
+  viewYearlyReport() {
+    this.subscriptionSvc.getYearlyReport(this.subscription).subscribe(blob => {
+      this.downloadObject('yearly_subscription_report.pdf', blob);
+    });
+  }
+
   sendMonthlyReport() {
     this.subscriptionSvc.sendMonthlyReport(this.subscription).subscribe(() => {
       console.log('Sending monthly report.');
@@ -762,18 +768,11 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
     });
   }
 
-  /* Not in use yet
-
-  viewYearlyReport() {
-    let url = `${this.settingsService.settings.apiUrl}/api/v1/reports/${this.subscription.subscription_uuid}/pdf/yearly/`;
-    window.open(url, "_blank");
-  }
-  
   sendYearlyReport() {
-    let url = `${this.settingsService.settings.apiUrl}/api/v1/reports/${this.subscription.subscription_uuid}/email/yearly/`;
-    window.open(url, "_blank");
+    this.subscriptionSvc.sendYearlyReport(this.subscription).subscribe(() => {
+      console.log('Sending yearly report.');
+    });
   }
-  */
 
   /**
    * A validator that requires the csv field to contain certain elements on each row
