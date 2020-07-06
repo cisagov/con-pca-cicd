@@ -61,6 +61,7 @@ def find_send_timeline_moment(email, timeline_items):
     for moment in timeline_items:
         if moment["email"] == email:
             return moment
+    return {}
 
 
 def add_moment_no_duplicates(moment, result, message_type):
