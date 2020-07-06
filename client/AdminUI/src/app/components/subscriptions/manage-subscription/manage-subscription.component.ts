@@ -750,6 +750,12 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
     });
   }
 
+  viewYearlyReport() {
+    this.subscriptionSvc.getYearlyReport(this.subscription).subscribe(blob => {
+      this.downloadObject('yearly_subscription_report.pdf', blob);
+    });
+  }
+
   sendMonthlyReport() {
     this.subscriptionSvc.sendMonthlyReport(this.subscription).subscribe(() => {
       console.log('Sending monthly report.');
@@ -759,6 +765,12 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
   sendCycleReport() {
     this.subscriptionSvc.sendMonthlyReport(this.subscription).subscribe(() => {
       console.log('Sending cycle report.');
+    });
+  }
+
+  sendYearlyReport() {
+    this.subscriptionSvc.sendYearlyReport(this.subscription).subscribe(() => {
+      console.log('Sending yearly report.');
     });
   }
 

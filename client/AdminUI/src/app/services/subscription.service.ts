@@ -189,6 +189,13 @@ export class SubscriptionService {
     return this.http.get(url, { 'headers': headers, 'responseType': 'blob' });
   }
 
+  public getYearlyReport(s: Subscription) {
+    const headers = new HttpHeaders()
+      .set('content-type', 'application/pdf');
+    const url = `${this.settingsService.settings.apiUrl}/api/v1/reports/${s.subscription_uuid}/pdf/yearly/`;
+    return this.http.get(url, { 'headers': headers, 'responseType': 'blob' });
+  }
+
   public sendMonthlyReport(s: Subscription) {
     const url = `${this.settingsService.settings.apiUrl}/api/v1/reports/$${s.subscription_uuid}/email/monthly/`;
     return this.http.get(url);
@@ -196,6 +203,11 @@ export class SubscriptionService {
 
   public sendCycleReport(s: Subscription) {
     const url = `${this.settingsService.settings.apiUrl}/api/v1/reports/${s.subscription_uuid}/email/cycle/`;
+    return this.http.get(url);
+  }
+
+  public sendYearlyReport(s: Subscription) {
+    const url = `${this.settingsService.settings.apiUrl}/api/v1/reports/${s.subscription_uuid}/email/yearly/`;
     return this.http.get(url);
   }
 }
