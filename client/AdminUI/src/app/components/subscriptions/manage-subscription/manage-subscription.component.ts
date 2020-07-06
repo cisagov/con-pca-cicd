@@ -774,19 +774,6 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
     });
   }
 
-  /* Not in use yet
-
-  viewYearlyReport() {
-    let url = `${this.settingsService.settings.apiUrl}/api/v1/reports/${this.subscription.subscription_uuid}/pdf/yearly/`;
-    window.open(url, "_blank");
-  }
-  
-  sendYearlyReport() {
-    let url = `${this.settingsService.settings.apiUrl}/api/v1/reports/${this.subscription.subscription_uuid}/email/yearly/`;
-    window.open(url, "_blank");
-  }
-  */
-
   /**
    * A validator that requires the csv field to contain certain elements on each row
    */
