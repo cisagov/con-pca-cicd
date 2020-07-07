@@ -5,6 +5,7 @@ import { CustomerService } from 'src/app/services/customer.service';
 import { MatDialogConfig, MatDialog } from '@angular/material/dialog';
 import { AddCustomerDialogComponent } from './add-customer-dialog/add-customer-dialog.component';
 import { Customer } from 'src/app/models/customer.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-customers',
@@ -36,7 +37,8 @@ export class CustomersComponent implements OnInit {
   constructor(
     private layout_service: LayoutMainService,
     public customerSvc: CustomerService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private router: Router,
   ) {
     this.customerSvc.setCustomerInfo(false);
   }
@@ -92,5 +94,8 @@ export class CustomersComponent implements OnInit {
   public setCustomer(uuid) {
     this.customerSvc.selectedCustomer = uuid;
     this.dialog.closeAll();
+  }
+  public editCustomer(customer_uuid) {
+    this.router.navigate(['/customer', customer_uuid]);
   }
 }

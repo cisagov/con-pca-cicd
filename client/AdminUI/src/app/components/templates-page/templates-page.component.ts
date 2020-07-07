@@ -39,6 +39,7 @@ export class TemplatesPageComponent implements OnInit, AfterViewInit {
       .getAllTemplates(this.showRetired)
       .subscribe((data: any) => {
         this.templatesData.data = data as Template[];
+        this.templatesData.sort = this.sort;
         this.loading = false;
       });
   }

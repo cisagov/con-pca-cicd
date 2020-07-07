@@ -76,8 +76,8 @@
             <button class="table-btn-icon" *ngIf="checkStopped(row.subscription.status)" mat-flat-button color="primary" (click)="startSubscription(row)">
               <mat-icon class="table-btn-icon-size">play_arrow</mat-icon>
             </button>
-            <button class="table-btn-icon" *ngIf="!checkStopped(row.subscription.status)" mat-flat-button color="warn" (click)="stopSubscription(row)">
-              <mat-icon class="table-btn-icon-size">stop</mat-icon>
+            <button class="table-btn-icon " *ngIf="!checkStopped(row.subscription.status)" mat-flat-button color="warn" (click)="stopSubscription(row)">
+              <mat-icon class="table-btn-icon-size stop-button">stop</mat-icon>
             </button>
             <mat-spinner class="spinner" *ngIf="checkSpinner(row.subscription.subscription_uuid)" diameter="25" ></mat-spinner>
           </mat-cell>
