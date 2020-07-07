@@ -720,7 +720,9 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
     });
 
     // remove duplicate emails if desired
-    if (this.subscriptionSvc.removeDupeTargets) {
+    const status = this.subscription?.status?.toLowerCase();
+    console.log(status)
+    if (this.subscriptionSvc.removeDupeTargets && status != "in progress") {
       const uniqueArray: Target[] = targetList.filter((t1, index) => {
         return (
           index ===
