@@ -88,24 +88,24 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
     // build form
     this.subscribeForm = new FormGroup({
       selectedCustomerUuid: new FormControl('', {
-        validators: Validators.required
+        validators: this.submittedAndRequired
       }),
       primaryContact: new FormControl(null, {
-        validators: Validators.required
+        validators: this.submittedAndRequired
       }),
       dhsContact: new FormControl(null, {
-        validators: Validators.required
+        validators: this.submittedAndRequired
       }),
       startDate: new FormControl(new Date(), {
-        validators: Validators.required
+        validators: this.submittedAndRequired
       }),
       url: new FormControl('', {}),
       keywords: new FormControl('', {}),
       sendingProfile: new FormControl('', {
-        validators: Validators.required
+        validators: this.submittedAndRequired
       }),
       csvText: new FormControl('', {
-        validators: [Validators.required, this.invalidCsv],
+        validators: [this.submittedAndRequired, this.invalidCsv],
         updateOn: 'blur'
       }),
       removeDuplicateTargets: new FormControl(true, {
@@ -141,11 +141,11 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
       this.persistChanges();
     });
     this.f.url.valueChanges.subscribe(val => {
-      this.subscription.url = val; // val.trim();
+      this.subscription.url = val;
       this.persistChanges();
     });
     this.f.keywords.valueChanges.subscribe(val => {
-      this.subscription.keywords = val; // val.trim();
+      this.subscription.keywords = val;
       this.persistChanges();
     });
     this.f.sendingProfile.valueChanges.subscribe(val => {
@@ -467,6 +467,7 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
    * Tests the form for validity.
    */
   subValid() {
+    console.log('subValid');
     this.submitted = true;
 
     // stop here if form is invalid
@@ -584,6 +585,7 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
       return;
     }
 
+    console.log('onSubmit');
     this.launchSubmitted = true;
 
     const sub = this.subscriptionSvc.subscription;
@@ -802,9 +804,20 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
   }
 
   /**
-   *
+   * Requires input but only if component submitted flag is true
    */
-  ngOnDestroy() {
-    this.routeSub.unsubscribe();
+  submittedAndRequired(c: FormControl) {
+    if (this.submitted) {
+      return c.value.length > 0 ? null : { required: true };
+    } else {
+      return null;
+    }
   }
-}
+
+    /**
+     *
+     */
+    ngOnDestroy() {
+      this.routeSub.unsubscribe();
+    }
+  }
