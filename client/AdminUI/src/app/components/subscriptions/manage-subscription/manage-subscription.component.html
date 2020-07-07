@@ -74,7 +74,7 @@
             <mat-label class="h6">Start Date</mat-label>
             <div class="mb-4">
                 <mat-form-field appearance="outline">
-                    <input matInput [matDatepicker]="picker" formControlName="startDate">
+                    <input matInput [matDatepicker]="picker" [min]="startAt" formControlName="startDate">
                     <mat-datepicker-toggle matSuffix [for]="picker" 
                         *ngIf="subscription?.status?.toLowerCase() !== 'in progress'"></mat-datepicker-toggle>
                     <mat-datepicker #picker [startAt]="startAt" 
