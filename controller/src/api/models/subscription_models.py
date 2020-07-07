@@ -177,6 +177,7 @@ class CycleModel(Model):
     active = BooleanType()
     campaigns_in_cycle = ListType(IntType())
     phish_results = ModelType(PhishingResultsModel)
+    override_total_reported = IntType()
 
 
 class ScheduledTaskModel(Model):
