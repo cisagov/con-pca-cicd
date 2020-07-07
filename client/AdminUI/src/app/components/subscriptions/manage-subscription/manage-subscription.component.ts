@@ -101,61 +101,33 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
    */
   ngOnInit(): void {
     // build form
-<<<<<<< Updated upstream
-    this.subscribeForm = new FormGroup(
-      {
-        selectedCustomerUuid: new FormControl('', {
-          validators: Validators.required
-        }),
-        primaryContact: new FormControl(null, {
-          validators: Validators.required
-        }),
-        dhsContact: new FormControl(null, {
-          validators: Validators.required
-        }),
-        startDate: new FormControl(new Date(), {
-          validators: Validators.required
-        }),
-        url: new FormControl('', {}),
-        keywords: new FormControl('', {}),
-        sendingProfile: new FormControl('', {
-          validators: Validators.required
-        }),
-        csvText: new FormControl('', {
-          validators: [Validators.required, this.invalidCsv],
-          updateOn: 'blur'
-        }),
-        removeDuplicateTargets: new FormControl(true, {
-          updateOn: 'change'
-        })
-      },
-      {
->>>>>>> develop
-=======
     this.subscribeForm = new FormGroup({
       selectedCustomerUuid: new FormControl('', {
-        validators: this.requiredIfSubmitted
+        validators: Validators.required
       }),
       primaryContact: new FormControl(null, {
-        validators: this.requiredIfSubmitted
+        validators: Validators.required
       }),
       dhsContact: new FormControl(null, {
-        validators: this.requiredIfSubmitted
+        validators: Validators.required
       }),
       startDate: new FormControl(new Date(), {
-        validators: [this.requiredIfSubmitted, this.minDateIfEnabled]
+        validators: Validators.required
       }),
       url: new FormControl('', {}),
       keywords: new FormControl('', {}),
       sendingProfile: new FormControl('', {
-        validators: this.requiredIfSubmitted
+        validators: Validators.required
       }),
       csvText: new FormControl('', {
-        validators: [this.requiredIfSubmitted, this.invalidCsv],
->>>>>>> Stashed changes
+        validators: [Validators.required, this.invalidCsv],
         updateOn: 'blur'
-      }
-    );
+      }),
+      removeDuplicateTargets: new FormControl(true, {
+        updateOn: 'change'
+      })
+    },
+      { updateOn: 'blur' });
 
     this.onChanges();
 
@@ -509,7 +481,6 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
    * Tests the form for validity.
    */
   subValid() {
-    console.log('subValid');
     this.submitted = true;
 
     // stop here if form is invalid
@@ -629,7 +600,6 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
       return;
     }
 
-    console.log('onSubmit');
     this.launchSubmitted = true;
 
     const sub = this.subscriptionSvc.subscription;
@@ -750,8 +720,7 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
 
     // remove duplicate emails if desired
     const status = this.subscription?.status?.toLowerCase();
-    console.log(status)
-    if (this.subscriptionSvc.removeDupeTargets && status != "in progress") {
+    if (this.subscriptionSvc.removeDupeTargets && status !== 'in progress') {
       const uniqueArray: Target[] = targetList.filter((t1, index) => {
         return (
           index ===
@@ -795,7 +764,6 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
   }
 
   viewMonthlyReport() {
-    console.log(this.f.startDate.errors);
     this.subscriptionSvc.getMonthlyReport(this.subscription).subscribe(blob => {
       this.downloadObject('monthly_subscription_report.pdf', blob);
     });
