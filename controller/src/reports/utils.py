@@ -579,14 +579,21 @@ def get_template_details(campaign_results):
         parameters, "template", TemplateModel, validate_template, fields
     )
     total_sent = 0
-    for camp in campaign_results:        
-        total_sent += camp["campaign_stats"]["sent"]["count"]
+    for camp in campaign_results:
+        try:
+            total_sent += camp["campaign_stats"]["sent"]["count"]
+        except:
+            pass
     
     percent_of_camps = 0
     for camp in campaign_results:
-        percent_of_camps = ratio_to_percent(camp["campaign_stats"]["sent"]["count"] / total_sent)
-        camp["campaign_stats"]["percent_of_campaigns"] = percent_of_camps
-    
+        try:
+            percent_of_camps = ratio_to_percent(camp["campaign_stats"]["sent"]["count"] / total_sent)
+            camp["campaign_stats"]["percent_of_campaigns"] = percent_of_camps
+        except:
+            camp["campaign_stats"]["percent_of_campaigns"] = 0
+            
+
     # Possible large performance hit here. Break out repository to use built in mongo $in functionallity to fix
     for template in template_list:
         for campaign in campaign_results:
