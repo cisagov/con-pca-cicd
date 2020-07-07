@@ -74,9 +74,9 @@
             <mat-label class="h6">Start Date</mat-label>
             <div class="mb-4">
                 <mat-form-field appearance="outline">
-                    <input matInput [matDatepicker]="picker" [min]="startAt" formControlName="startDate">
-                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                    <mat-datepicker #picker [startAt]="startAt"></mat-datepicker>
+                    <input matInput [matDatepicker]="picker" formControlName="startDate">
+                    <mat-datepicker-toggle matSuffix [for]="picker" *ngIf="false"></mat-datepicker-toggle>
+                    <mat-datepicker #picker [startAt]="startAt" *ngIf="false"></mat-datepicker>
                     <mat-error *ngIf="submitted && f.startDate.errors?.required" class="invalid-feedback">
                         Start Date is required
                     </mat-error>

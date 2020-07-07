@@ -101,6 +101,7 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
    */
   ngOnInit(): void {
     // build form
+<<<<<<< Updated upstream
     this.subscribeForm = new FormGroup(
       {
         selectedCustomerUuid: new FormControl('', {
@@ -130,6 +131,28 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
       },
       {
 >>>>>>> develop
+=======
+    this.subscribeForm = new FormGroup({
+      selectedCustomerUuid: new FormControl('', {
+        validators: this.requiredIfSubmitted
+      }),
+      primaryContact: new FormControl(null, {
+        validators: this.requiredIfSubmitted
+      }),
+      dhsContact: new FormControl(null, {
+        validators: this.requiredIfSubmitted
+      }),
+      startDate: new FormControl(new Date(), {
+        validators: [this.requiredIfSubmitted, this.minDateIfEnabled]
+      }),
+      url: new FormControl('', {}),
+      keywords: new FormControl('', {}),
+      sendingProfile: new FormControl('', {
+        validators: this.requiredIfSubmitted
+      }),
+      csvText: new FormControl('', {
+        validators: [this.requiredIfSubmitted, this.invalidCsv],
+>>>>>>> Stashed changes
         updateOn: 'blur'
       }
     );
@@ -644,6 +667,7 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
         this.router.navigate(['subscriptions']);
       },
       error => {
+        this.launchSubmitted = false;
         this.dialog.open(AlertComponent, {
           data: {
             title: 'Error',
@@ -661,11 +685,13 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
   enableDisableFields() {
     const status = this.subscription?.status?.toLowerCase();
     if (status === 'in progress') {
+      this.f.startDate.disable();
       this.f.url.disable();
       this.f.keywords.disable();
       this.f.sendingProfile.disable();
       this.f.csvText.disable();
     } else {
+      this.f.startDate.enable();
       this.f.url.enable();
       this.f.keywords.enable();
       this.f.sendingProfile.enable();
@@ -769,6 +795,7 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
   }
 
   viewMonthlyReport() {
+    console.log(this.f.startDate.errors);
     this.subscriptionSvc.getMonthlyReport(this.subscription).subscribe(blob => {
       this.downloadObject('monthly_subscription_report.pdf', blob);
     });

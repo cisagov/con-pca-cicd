@@ -59,7 +59,7 @@ export class LayoutMainComponent implements OnInit {
     const url = window.location.href;
     const appDomain = url.replace(angularRoute, '');
 
-    let helpUrl = appDomain + 'assets/htmlhelp/templates.htm';
+    let helpUrl = appDomain + '/assets/htmlhelp/templates.htm';
     window.open(helpUrl, "_blank");
   }
 
