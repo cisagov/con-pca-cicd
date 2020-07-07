@@ -1,6 +1,22 @@
-import { Component, OnInit, OnDestroy, ViewChild, ElementRef } from '@angular/core';
-import { MatDialogConfig, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { FormGroup, FormControl, FormBuilder, Validators, ValidationErrors } from '@angular/forms';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  ViewChild,
+  ElementRef
+} from '@angular/core';
+import {
+  MatDialogConfig,
+  MatDialog,
+  MatDialogRef
+} from '@angular/material/dialog';
+import {
+  FormGroup,
+  FormControl,
+  FormBuilder,
+  Validators,
+  ValidationErrors
+} from '@angular/forms';
 import { SubscriptionService } from 'src/app/services/subscription.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Customer, Contact } from 'src/app/models/customer.model';
@@ -60,7 +76,6 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
 
   launchSubmitted = false;
 
-
   /**
    *
    */
@@ -86,34 +101,38 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
    */
   ngOnInit(): void {
     // build form
-    this.subscribeForm = new FormGroup({
-      selectedCustomerUuid: new FormControl('', {
-        validators: this.submittedAndRequired
-      }),
-      primaryContact: new FormControl(null, {
-        validators: this.submittedAndRequired
-      }),
-      dhsContact: new FormControl(null, {
-        validators: this.submittedAndRequired
-      }),
-      startDate: new FormControl(new Date(), {
-        validators: this.submittedAndRequired
-      }),
-      url: new FormControl('', {}),
-      keywords: new FormControl('', {}),
-      sendingProfile: new FormControl('', {
-        validators: this.submittedAndRequired
-      }),
-      csvText: new FormControl('', {
-        validators: [this.submittedAndRequired, this.invalidCsv],
+    this.subscribeForm = new FormGroup(
+      {
+        selectedCustomerUuid: new FormControl('', {
+          validators: Validators.required
+        }),
+        primaryContact: new FormControl(null, {
+          validators: Validators.required
+        }),
+        dhsContact: new FormControl(null, {
+          validators: Validators.required
+        }),
+        startDate: new FormControl(new Date(), {
+          validators: Validators.required
+        }),
+        url: new FormControl('', {}),
+        keywords: new FormControl('', {}),
+        sendingProfile: new FormControl('', {
+          validators: Validators.required
+        }),
+        csvText: new FormControl('', {
+          validators: [Validators.required, this.invalidCsv],
+          updateOn: 'blur'
+        }),
+        removeDuplicateTargets: new FormControl(true, {
+          updateOn: 'change'
+        })
+      },
+      {
+>>>>>>> develop
         updateOn: 'blur'
-      }),
-      removeDuplicateTargets: new FormControl(true, {
-        updateOn: 'change'
-      })
-    }, {
-      updateOn: 'blur'
-    });
+      }
+    );
 
     this.onChanges();
 
@@ -486,9 +505,10 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.dialogRefConfirm = this.dialog.open(ConfirmComponent, { disableClose: false });
-    this.dialogRefConfirm.componentInstance.confirmMessage =
-      `Are you sure you want to restart ${this.subscription.name}?`;
+    this.dialogRefConfirm = this.dialog.open(ConfirmComponent, {
+      disableClose: false
+    });
+    this.dialogRefConfirm.componentInstance.confirmMessage = `Are you sure you want to restart ${this.subscription.name}?`;
     this.dialogRefConfirm.componentInstance.title = 'Confirm Restart';
 
     this.dialogRefConfirm.afterClosed().subscribe(result => {
@@ -561,7 +581,8 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
                     error.error
                 }
               });
-            });
+            }
+          );
       }
     });
   }
@@ -570,7 +591,7 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
    * Set page title
    */
   setPageTitle() {
-    let title = `Subscription - ${this.subscription.name}`;
+    let title = `Manage Subscription: ${this.subscription.name}`;
     if (this.subscription.status.toLowerCase() === 'stopped') {
       title += ' (stopped)';
     }
@@ -666,8 +687,13 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
    * formats the targets back into CSV text and refreshes the field.
    */
   evaluateTargetList() {
-    this.subscription.target_email_list = this.buildTargetsFromCSV(this.f.csvText.value);
-    this.f.csvText.setValue(this.formatTargetsToCSV(this.subscription.target_email_list), { emitEvent: false });
+    this.subscription.target_email_list = this.buildTargetsFromCSV(
+      this.f.csvText.value
+    );
+    this.f.csvText.setValue(
+      this.formatTargetsToCSV(this.subscription.target_email_list),
+      { emitEvent: false }
+    );
   }
 
   /**
@@ -697,7 +723,9 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
     });
 
     // remove duplicate emails if desired
-    if (this.subscriptionSvc.removeDupeTargets) {
+    const status = this.subscription?.status?.toLowerCase();
+    console.log(status)
+    if (this.subscriptionSvc.removeDupeTargets && status != "in progress") {
       const uniqueArray: Target[] = targetList.filter((t1, index) => {
         return (
           index ===
@@ -804,20 +832,9 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
   }
 
   /**
-   * Requires input but only if component submitted flag is true
+   *
    */
-  submittedAndRequired(c: FormControl) {
-    if (this.submitted) {
-      return c.value.length > 0 ? null : { required: true };
-    } else {
-      return null;
-    }
+  ngOnDestroy() {
+    this.routeSub.unsubscribe();
   }
-
-    /**
-     *
-     */
-    ngOnDestroy() {
-      this.routeSub.unsubscribe();
-    }
-  }
+}

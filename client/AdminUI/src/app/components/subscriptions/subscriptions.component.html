@@ -86,6 +86,10 @@
       <mat-header-row *matHeaderRowDef="displayed_columns"></mat-header-row>
 
       <!-- ROW DEFINITION -->
-      <mat-row *matRowDef="let row; columns: displayed_columns" class="table-row" ></mat-row>
+      <mat-row 
+        *matRowDef="let row; columns: displayed_columns" 
+        class="table-row cursor-pointer"
+        (click)="editSubscription(row)">
+      </mat-row>
   </mat-table>
 </div>

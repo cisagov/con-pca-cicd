@@ -1497,7 +1497,7 @@
     "name": "Workflows Update",
     "template_type": "Email",
     "complexity": 5,
-    "html": "<br>All,<br><br>Our organization's website is being upgraded to the newest applications package. This<br>change, however, will affect how we use the current Workflows app. Before<br>these changes are made, we need everyone to complete our survey on<br><%DOMAIN%>(under the Survey tab) to determine who uses the<br>Work Flows and what processes will be impacted (even if you don't use it,<br>we still need your \"No\" response cataloged). Please visit our Wiki<br><a href=\"<%URL%>\">https://><%DOMAIN%>/ITDeployment/wiki</a> to read the FAQ and track all other updates.<br><br>Thanks,<br><%SPOOF_NAME_FULL%>, IT Deployment Team<br>Information Technology Operations<br>Office of the Chief Information Officer<br>",
+    "html": "<br>All,<br><br>Our organization's website is being upgraded to the newest applications package. This<br>change, however, will affect how we use the current Workflows app. Before<br>these changes are made, we need everyone to complete our survey on<br><%DOMAIN%>(under the Survey tab) to determine who uses the<br>Work Flows and what processes will be impacted (even if you don't use it,<br>we still need your \"No\" response cataloged). Please visit our Wiki<br><a href=\"<%URL%>\">https://<%DOMAIN%>/ITDeployment/wiki</a> to read the FAQ and track all other updates.<br><br>Thanks,<br><%SPOOF_NAME_FULL%>, IT Deployment Team<br>Information Technology Operations<br>Office of the Chief Information Officer<br>",
     "behavior": {
       "duty_obligation": 1,
       "fear": 0,

@@ -4,6 +4,7 @@ import { LayoutMainService } from 'src/app/services/layout-main.service';
 import { Subscription } from 'src/app/models/subscription.model';
 import { MatTableDataSource } from '@angular/material/table';
 import { Customer } from 'src/app/models/customer.model';
+import { Router } from '@angular/router';
 import { CustomerService } from 'src/app/services/customer.service';
 import { AppSettings } from 'src/app/AppSettings';
 import {
@@ -48,7 +49,8 @@ export class SubscriptionsComponent implements OnInit {
     private subscription_service: SubscriptionService,
     private customer_service: CustomerService,
     private layoutSvc: LayoutMainService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private router: Router,
   ) {
     layoutSvc.setTitle('Subscriptions');
   }
@@ -159,4 +161,9 @@ export class SubscriptionsComponent implements OnInit {
   public checkStopped(status: string) {
     return status.toUpperCase() === 'STOPPED';
   }
+  public editSubscription(row) {
+    console.log(row.subscription)
+    this.router.navigate(['/view-subscription', row.subscription.subscription_uuid]);
+  }
+  
 }
