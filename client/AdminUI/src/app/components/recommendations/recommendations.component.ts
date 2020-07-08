@@ -2,7 +2,7 @@ import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { LayoutMainService } from 'src/app/services/layout-main.service';
 import { TemplateManagerService } from 'src/app/services/template-manager.service';
-import { Template } from 'src/app/models/template.model';
+import { Recommendations } from 'src/app/models/recommendations.model';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
 
@@ -13,7 +13,7 @@ import { MatSort } from '@angular/material/sort';
 })
 export class RecommendationsComponent implements OnInit, AfterViewInit {
   displayedColumns = ['name', 'deception_score', 'created_by'];
-  templatesData = new MatTableDataSource<Template>();
+  recommendationsData = new MatTableDataSource<Recommendations>();
   search_input = '';
   @ViewChild(MatSort) sort: MatSort;
 
@@ -38,21 +38,21 @@ export class RecommendationsComponent implements OnInit, AfterViewInit {
     this.templateSvc
       .getAllTemplates(this.showRetired)
       .subscribe((data: any) => {
-        this.templatesData.data = data as Template[];
-        this.templatesData.sort = this.sort;
+        this.recommendationsData.data = data as Recommendations[];
+        this.recommendationsData.sort = this.sort;
         this.loading = false;
       });
   }
 
   ngAfterViewInit(): void {
-    this.templatesData.sort = this.sort;
+    this.recommendationsData.sort = this.sort;
   }
 
   public filterTemplates = (value: string) => {
-    this.templatesData.filter = value.trim().toLocaleLowerCase();
+    this.recommendationsData.filter = value.trim().toLocaleLowerCase();
   };
-  public editTemplate(template: Template) {
-    this.router.navigate(['/templatemanager', template.template_uuid]);
+  public editRecommendations(recommendations: Recommendations) {
+    this.router.navigate(['/recommendations', recommendations.recommendations_uuid]);
   }
 
   onRetiredToggle() {
