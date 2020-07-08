@@ -15,7 +15,7 @@ from api.serializers.template_serializers import (
 )
 
 
-class RecommendationGetSerializer(serializers.Serializer):
+class RecommendationsGetSerializer(serializers.Serializer):
     """
     This is the Recommendation GET Serializer.
 
@@ -38,7 +38,7 @@ class RecommendationGetSerializer(serializers.Serializer):
     lub_timestamp = serializers.DateTimeField()
 
 
-class RecommendationPostSerializer(serializers.Serializer):
+class RecommendationsPostSerializer(serializers.Serializer):
     """
     This is the Recommendation POST Serializer.
 
@@ -55,7 +55,7 @@ class RecommendationPostSerializer(serializers.Serializer):
     complexity = serializers.IntegerField()
 
 
-class RecommendationPostResponseSerializer(serializers.Serializer):
+class RecommendationsPostResponseSerializer(serializers.Serializer):
     """
     This is the Recommendation Post Response Serializer.
 
@@ -63,3 +63,19 @@ class RecommendationPostResponseSerializer(serializers.Serializer):
     """
 
     recommendation_uuid = serializers.UUIDField()
+
+
+class RecommendationsQuerySerializer(serializers.Serializer):
+    """
+    Serializes Recommendations Query.
+
+    This is sets queries we can run on db collection.
+    """
+
+    name = serializers.CharField(required=False)
+    description = serializers.CharField(required=False)
+    complexity = serializers.IntegerField(required=False)
+    created_by = serializers.CharField(required=False)
+    cb_timestamp = serializers.DateTimeField(required=False)
+    last_updated_by = serializers.CharField(required=False)
+    lub_timestamp = serializers.DateTimeField(required=False)
