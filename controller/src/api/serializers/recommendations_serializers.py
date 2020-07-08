@@ -25,6 +25,7 @@ class RecommendationsGetSerializer(serializers.Serializer):
     recommendations_uuid = serializers.UUIDField()
     name = serializers.CharField()
     description = serializers.CharField()
+    deception_level = serializers.IntegerField(required=False)
     # Score data
     appearance = TemplateAppearanceSerializer()
     sender = TemplateSenderSerializer()
@@ -47,6 +48,7 @@ class RecommendationsPostSerializer(serializers.Serializer):
 
     name = serializers.CharField()
     description = serializers.CharField()
+    deception_level = serializers.IntegerField(required=False)
     # Score data
     appearance = TemplateAppearanceSerializer()
     sender = TemplateSenderSerializer()
@@ -74,6 +76,7 @@ class RecommendationsPatchSerializer(serializers.Serializer):
 
     name = serializers.CharField(required=False)
     description = serializers.CharField(required=False)
+    deception_level = serializers.IntegerField(required=False)
     # Score data
     appearance = TemplateAppearanceSerializer(required=False)
     sender = TemplateSenderSerializer(required=False)
@@ -92,6 +95,7 @@ class RecommendationsPatchResponseSerializer(serializers.Serializer):
     recommendations_uuid = serializers.UUIDField()
     name = serializers.CharField()
     description = serializers.CharField()
+    deception_level = serializers.IntegerField(required=False)
     appearance = TemplateAppearanceSerializer()
     sender = TemplateSenderSerializer()
     relevancy = TemplateRelevancySerializer()
@@ -112,6 +116,7 @@ class RecommendationsQuerySerializer(serializers.Serializer):
 
     name = serializers.CharField(required=False)
     description = serializers.CharField(required=False)
+    deception_level = serializers.IntegerField(required=False)
     complexity = serializers.IntegerField(required=False)
     created_by = serializers.CharField(required=False)
     cb_timestamp = serializers.DateTimeField(required=False)
