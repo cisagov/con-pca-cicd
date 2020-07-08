@@ -9,6 +9,7 @@ from api.views import (
     customer_views,
     dhs_views,
     image_views,
+    recommendations_views,
     report_views,
     sendingprofile_views,
     subscription_views,
@@ -179,5 +180,15 @@ urlpatterns = [
         "v1/dhscontact/<dhs_contact_uuid>/",
         dhs_views.DHSContactView.as_view(),
         name="dhs_contact_get_api",
+    ),
+    path(
+        "v1/recommendations/",
+        recommendations_views.RecommendationsListView.as_view(),
+        name="recommendations_list",
+    ),
+    path(
+        "v1/recommendations/<recommendations_uuid>/",
+        recommendations_views.RecommendationsView.as_view(),
+        name="recommendations_get_api",
     ),
 ]

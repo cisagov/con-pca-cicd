@@ -103,7 +103,7 @@ class TemplateGetSerializer(serializers.Serializer):
     relevancy = TemplateRelevancySerializer()
     behavior = TemplateBehaviorSerializer()
     complexity = serializers.IntegerField()
-    # db_tracting data added below
+    # db tracking data added below
     created_by = serializers.CharField(max_length=200)
     cb_timestamp = serializers.DateTimeField()
     last_updated_by = serializers.CharField(max_length=200)
@@ -237,7 +237,7 @@ class TagGetSerializer(serializers.Serializer):
     description = serializers.CharField()
     data_source = serializers.CharField()
     tag_type = serializers.CharField()
-    # db_tracting data added below
+    # db tracking data added below
     created_by = serializers.CharField(max_length=200)
     cb_timestamp = serializers.DateTimeField()
     last_updated_by = serializers.CharField(max_length=200)
@@ -347,7 +347,7 @@ class TargetHistoryGetSerializer(serializers.Serializer):
     # User Defined
     email = serializers.EmailField(required=True)
     history_list = TemplateStatusSerializer(many=True)
-    # db_tracting data added below
+    # db tracking data added below
     created_by = serializers.CharField(required=False)
     cb_timestamp = serializers.DateTimeField(required=False)
     last_updated_by = serializers.CharField(required=False)

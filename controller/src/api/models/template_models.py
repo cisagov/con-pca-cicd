@@ -125,7 +125,7 @@ class TemplateModel(Model):
     behavior = ModelType(TemplateBehaviorModel)
     complexity = IntType()
 
-    # db_tracting data added below
+    # db tracking data added below
     created_by = StringType()
     cb_timestamp = DateTimeType()
     last_updated_by = StringType()
@@ -134,7 +134,7 @@ class TemplateModel(Model):
 
 def validate_template(data_object):
     """
-    This is an the validate_subscription.
+    This validates templates data.
 
     This shows basic validation for the model.
     """
@@ -156,7 +156,7 @@ class TagModel(Model):
     description = StringType()
     data_source = StringType()
     tag_type = StringType()
-    # db_tracting data added below
+    # db tracking data added below
     created_by = StringType()
     cb_timestamp = DateTimeType()
     last_updated_by = StringType()
@@ -224,7 +224,7 @@ class TargetHistoryModel(Model):
     # User Defined
     email = EmailType(required=True)
     history_list = ListType(ModelType(TemplateStatusModel))
-    # db_tracting data added below
+    # db tracking data added below
     created_by = StringType()
     cb_timestamp = DateTimeType()
     last_updated_by = StringType()
