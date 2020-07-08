@@ -7,6 +7,7 @@ This lists all urls under the API app.
 from api.views import (
     campaign_views,
     customer_views,
+    cycle_views,
     dhs_views,
     image_views,
     recommendations_views,
@@ -33,6 +34,7 @@ schema_view = get_schema_view(
     ),
     public=True,
     permission_classes=(permissions.AllowAny,),
+    url="http://localhost:8000",
 )
 
 urlpatterns = [
@@ -190,5 +192,10 @@ urlpatterns = [
         "v1/recommendations/<recommendations_uuid>/",
         recommendations_views.RecommendationsView.as_view(),
         name="recommendations_get_api",
+    ),
+    path(
+        "v1/cycleemailreported/<subscription_uuid>/",
+        cycle_views.CycleReportedView.as_view(),
+        name="cycle_email_report_api",
     ),
 ]
