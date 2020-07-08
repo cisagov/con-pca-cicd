@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { LayoutMainService } from 'src/app/services/layout-main.service';
-import { TemplateManagerService } from 'src/app/services/template-manager.service';
+import { RecommendationsService } from 'src/app/services/recommendations.service';
 import { Recommendations } from 'src/app/models/recommendations.model';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
@@ -22,11 +22,11 @@ export class RecommendationsComponent implements OnInit, AfterViewInit {
   loading = true;
 
   constructor(
-    private templateSvc: TemplateManagerService,
+    private recommendationsSvc: RecommendationsService,
     private router: Router,
     private layoutSvc: LayoutMainService
   ) {
-    layoutSvc.setTitle('Templates');
+    layoutSvc.setTitle('Recommendations');
   }
 
   ngOnInit() {
@@ -35,8 +35,8 @@ export class RecommendationsComponent implements OnInit, AfterViewInit {
 
   refresh() {
     this.loading = true;
-    this.templateSvc
-      .getAllTemplates(this.showRetired)
+    this.recommendationsSvc
+      .getAllRecommendations(this.showRetired)
       .subscribe((data: any) => {
         this.recommendationsData.data = data as Recommendations[];
         this.recommendationsData.sort = this.sort;
@@ -48,7 +48,7 @@ export class RecommendationsComponent implements OnInit, AfterViewInit {
     this.recommendationsData.sort = this.sort;
   }
 
-  public filterTemplates = (value: string) => {
+  public filterRecommendations = (value: string) => {
     this.recommendationsData.filter = value.trim().toLocaleLowerCase();
   };
   public editRecommendations(recommendations: Recommendations) {

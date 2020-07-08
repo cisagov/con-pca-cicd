@@ -3,21 +3,18 @@
     <!-- SEARCH BAR -->
     <mat-form-field class="d-flex flex-column w-100" appearance="outline">
       <mat-label>Search</mat-label>
-      <input [(ngModel)]="search_input" (keyup)="filterTemplates($event.target.value)" matInput placeholder="Search" />
+      <input [(ngModel)]="search_input" (keyup)="filterRecommendations($event.target.value)" matInput
+        placeholder="Search" />
       <mat-icon matSuffix>search</mat-icon>
     </mat-form-field>
 
-    <!-- CREATE TEMPLATE -->
+    <!-- CREATE RECOMMENDATIONS -->
     <div class="d-inline-flex flex-column ml-2">
-      <button mat-raised-button color="primary" routerLink="/templatemanager">
-        New Template
+      <button mat-raised-button color="primary" routerLink="/recommendations">
+        New Recommendation
       </button>
 
-      <mat-slide-toggle
-        class="mt-3 ml-1 mb-2"
-        [(ngModel)]="showRetired"
-        (change)="onRetiredToggle()"
-      >
+      <mat-slide-toggle class="mt-3 ml-1 mb-2" [(ngModel)]="showRetired" (change)="onRetiredToggle()">
         Show Retired
       </mat-slide-toggle>
     </div>
@@ -25,53 +22,35 @@
 
   <div class="col p-0 w-100">
     <div *ngIf="loading" style="text-align: center; padding-top: 2rem; padding-bottom: 2rem;">
-      <mat-spinner class="spinner" style="margin-left: auto; margin-right: auto;" diameter="50" ></mat-spinner>
+      <mat-spinner class="spinner" style="margin-left: auto; margin-right: auto;" diameter="50"></mat-spinner>
     </div>
 
-    <!-- TEMPLATES TABLE -->
-    <mat-table *ngIf="!loading" [dataSource]="templatesData" matSort>
+    <!-- RECOMMENDATIONS TABLE -->
+    <mat-table *ngIf="!loading" [dataSource]="recommendationsData" matSort>
       <!-- NAME -->
       <ng-container matColumnDef="name">
-        <mat-header-cell *matHeaderCellDef mat-sort-header
-          >Template Name</mat-header-cell
-        >
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
         <mat-cell *matCellDef="let row">{{ row.name }}</mat-cell>
       </ng-container>
       <!-- DECEPTION SCORE -->
       <ng-container matColumnDef="deception_score">
-        <mat-header-cell *matHeaderCellDef mat-sort-header
-          >Deception Score</mat-header-cell
-        >
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Deception Score</mat-header-cell>
         <mat-cell *matCellDef="let row">{{ row.deception_score }}</mat-cell>
-      </ng-container>
-      <!-- TEMPLATE TYPE -->
-      <ng-container matColumnDef="template_type">
-        <mat-header-cell *matHeaderCellDef mat-sort-header
-          >Type</mat-header-cell
-        >
-        <mat-cell *matCellDef="let row">{{ row.template_type }}</mat-cell>
       </ng-container>
       <!-- CREATED BY -->
       <ng-container matColumnDef="created_by">
-        <mat-header-cell *matHeaderCellDef mat-sort-header
-          >Created By</mat-header-cell
-        >
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Created By</mat-header-cell>
         <mat-cell *matCellDef="let row">{{ row.created_by }}</mat-cell>
       </ng-container>
       <!-- RETIRED -->
       <ng-container matColumnDef="retired">
-        <mat-header-cell *matHeaderCellDef mat-sort-header
-          >Retired</mat-header-cell
-        >
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Retired</mat-header-cell>
         <mat-cell *matCellDef="let row"><i *ngIf="row.retired" class="fa fa-check"></i></mat-cell>
       </ng-container>
 
       <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-      <mat-row
-        class="table-row cursor-pointer"
-        *matRowDef="let row; columns: displayedColumns"
-        (click)="editTemplate(row)"
-      ></mat-row>
+      <mat-row class="table-row cursor-pointer" *matRowDef="let row; columns: displayedColumns"
+        (click)="editRecommendations(row)"></mat-row>
     </mat-table>
   </div>
 </div>

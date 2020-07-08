@@ -62,6 +62,7 @@ import { UnauthorizedInterceptor } from './helper/UnauthorizedInterceptor'
 import { DhsPocComponent } from './components/user-admin/dhs-poc/dhs-poc.component';
 import { DhsPocDetailComponent } from './components/user-admin/dhs-poc/dhs-poc-detail.component';
 import { InputTrimDirective } from './helper/input-trim.directive';
+import { RecommendationsService } from './services/recommendations.service';
 
 export function app_Init(settingsHttpService: SettingsHttpService) {
   return () => settingsHttpService.initializeApp()
@@ -128,6 +129,7 @@ export function app_Init(settingsHttpService: SettingsHttpService) {
     DeceptionCalculatorService,
     CustomerService,
     TemplateManagerService,
+    RecommendationsService,
     ThemeService,
     LayoutMainService,
     HttpClient,
