@@ -126,6 +126,7 @@ class CycleSerializer(serializers.Serializer):
     active = serializers.BooleanField()
     campaigns_in_cycle = serializers.ListField()
     phish_results = PhishingResultsSerializer()
+    override_total_reported = serializers.IntegerField(default = -1)
 
 class SubscriptionTasksSerializer(serializers.Serializer):
     """
