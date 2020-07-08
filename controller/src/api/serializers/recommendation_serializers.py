@@ -1,0 +1,65 @@
+"""
+Recommendation Serializers.
+
+These are Django Rest Framework Serializers. These are used for
+serializing data coming from the db into a request response.
+"""
+# Third-Party Libraries
+from rest_framework import serializers
+
+from api.serializers.template_serializers import (
+    TemplateAppearanceSerializer,
+    TemplateSenderSerializer,
+    TemplateRelevancySerializer,
+    TemplateBehaviorSerializer,
+)
+
+
+class RecommendationGetSerializer(serializers.Serializer):
+    """
+    This is the Recommendation GET Serializer.
+
+    This is a formats the data coming out of the Db.
+    """
+
+    recommendation_uuid = serializers.UUIDField()
+    name = serializers.CharField()
+    description = serializers.CharField()
+    # Score data
+    appearance = TemplateAppearanceSerializer()
+    sender = TemplateSenderSerializer()
+    relevancy = TemplateRelevancySerializer()
+    behavior = TemplateBehaviorSerializer()
+    complexity = serializers.IntegerField()
+    # db tracking data added below
+    created_by = serializers.CharField(max_length=200)
+    cb_timestamp = serializers.DateTimeField()
+    last_updated_by = serializers.CharField(max_length=200)
+    lub_timestamp = serializers.DateTimeField()
+
+
+class RecommendationPostSerializer(serializers.Serializer):
+    """
+    This is the Recommendation POST Serializer.
+
+    This is a formats the data coming out of the Db.
+    """
+
+    name = serializers.CharField()
+    description = serializers.CharField()
+    # Score data
+    appearance = TemplateAppearanceSerializer()
+    sender = TemplateSenderSerializer()
+    relevancy = TemplateRelevancySerializer()
+    behavior = TemplateBehaviorSerializer()
+    complexity = serializers.IntegerField()
+
+
+class RecommendationPostResponseSerializer(serializers.Serializer):
+    """
+    This is the Recommendation Post Response Serializer.
+
+    This is a formats the data coming out of the Db.
+    """
+
+    recommendation_uuid = serializers.UUIDField()
