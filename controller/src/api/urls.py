@@ -186,4 +186,9 @@ urlpatterns = [
         recommendations_views.RecommendationsListView.as_view(),
         name="recommendations_list",
     ),
+    path(
+        "v1/recommendations/<recommendations_uuid>/",
+        recommendations_views.RecommendationsView.as_view(),
+        name="recommendations_get_api",
+    ),
 ]
