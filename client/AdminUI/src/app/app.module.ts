@@ -33,6 +33,7 @@ import { LayoutMainService } from './services/layout-main.service';
 import { ContactsComponent } from './components/contacts/contacts.component';
 import { DomainsComponent } from './components/domains/domains.component';
 import { TemplatesPageComponent } from './components/templates-page/templates-page.component';
+import { RecommendationsComponent } from './components/recommendations/recommendations.component';
 import { UserAdminComponent } from './components/user-admin/user-admin.component';
 import { HelpFilesComponent } from './components/help-files/help-files.component';
 import { CustomerService } from './services/customer.service';
@@ -83,6 +84,7 @@ export function app_Init(settingsHttpService: SettingsHttpService) {
     ContactsComponent,
     DomainsComponent,
     TemplatesPageComponent,
+    RecommendationsComponent,
     UserAdminComponent,
     HelpFilesComponent,
     CustomersComponent,
@@ -133,8 +135,8 @@ export function app_Init(settingsHttpService: SettingsHttpService) {
     UserAuthService,
     { provide: MAT_DIALOG_DATA, useValue: [] },
     { provide: APP_INITIALIZER, useFactory: app_Init, deps: [SettingsHttpService], multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: AuthAppendInterceptor, multi: true},
-    { provide: HTTP_INTERCEPTORS, useClass: UnauthorizedInterceptor, multi: true},
+    { provide: HTTP_INTERCEPTORS, useClass: AuthAppendInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: UnauthorizedInterceptor, multi: true },
   ],
   exports: [
     MatSortModule
