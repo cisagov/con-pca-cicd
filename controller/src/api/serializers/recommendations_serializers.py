@@ -25,6 +25,7 @@ class RecommendationsGetSerializer(serializers.Serializer):
     recommendations_uuid = serializers.UUIDField()
     name = serializers.CharField()
     description = serializers.CharField()
+    deception_level = serializers.IntegerField(required=False)
     # Score data
     appearance = TemplateAppearanceSerializer()
     sender = TemplateSenderSerializer()
