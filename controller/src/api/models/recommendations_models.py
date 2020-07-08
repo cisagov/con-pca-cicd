@@ -38,7 +38,7 @@ class RecommendationModel(Model):
     behavior = ModelType(TemplateBehaviorModel)
     complexity = IntType()
 
-    # db_tracting data added below
+    # db tracking data added below
     created_by = StringType()
     cb_timestamp = DateTimeType()
     last_updated_by = StringType()
