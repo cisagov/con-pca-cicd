@@ -134,7 +134,7 @@ class TemplateModel(Model):
 
 def validate_template(data_object):
     """
-    This is an the validate_subscription.
+    This validates templates data.
 
     This shows basic validation for the model.
     """
