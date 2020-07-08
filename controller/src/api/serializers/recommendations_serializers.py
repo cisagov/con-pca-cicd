@@ -22,7 +22,7 @@ class RecommendationsGetSerializer(serializers.Serializer):
     This is a formats the data coming out of the Db.
     """
 
-    recommendation_uuid = serializers.UUIDField()
+    recommendations_uuid = serializers.UUIDField()
     name = serializers.CharField()
     description = serializers.CharField()
     # Score data
@@ -62,7 +62,7 @@ class RecommendationsPostResponseSerializer(serializers.Serializer):
     This is a formats the data coming out of the Db.
     """
 
-    recommendation_uuid = serializers.UUIDField()
+    recommendations_uuid = serializers.UUIDField()
 
 
 class RecommendationsQuerySerializer(serializers.Serializer):

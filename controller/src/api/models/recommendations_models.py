@@ -27,7 +27,7 @@ class RecommendationsModel(Model):
     This holds the values and recommendation text.
     """
 
-    recommendation_uuid = UUIDType()
+    recommendations_uuid = UUIDType()
     name = StringType()
     description = StringType()
 
