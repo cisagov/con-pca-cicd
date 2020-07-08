@@ -165,7 +165,7 @@
     "name": "Social Media Policy",
     "template_type": "Email",
     "complexity": 5,
-    "html": "<br>All Staff:<br><br>In the coming weeks, new social media policies will be implemented that will affect all staff. Due to recent events in the news we are going to start blocking many of the popular social media sites for employees who do not need them for justified, business purposes.<br><br>We need your help to determine if you utilize social media and how you feel about this policy change. We have created a portal page on our internal network to get each employees usage of social media so we can determine which policy should be applied to your workstation. Please visit the Portal Page <a href=\"<%URL%>\">https://SocialMedia.<%%>.com</a> and complete this survey.<br><br>Your participation is mandatory and this survey must be completed in the next five business days so we can compile results before the default block policy is applied.<br><br>Thank you,<br>Social Media Compliance Team<br><%LOGO%><br>",
+    "html": "<br>All Staff:<br><br>In the coming weeks, new social media policies will be implemented that will affect all staff. Due to recent events in the news we are going to start blocking many of the popular social media sites for employees who do not need them for justified, business purposes.<br><br>We need your help to determine if you utilize social media and how you feel about this policy change. We have created a portal page on our internal network to get each employees usage of social media so we can determine which policy should be applied to your workstation. Please visit the Portal Page <a href=\"<%URL%>\">https://SocialMedia.<%DOMAIN%></a> and complete this survey.<br><br>Your participation is mandatory and this survey must be completed in the next five business days so we can compile results before the default block policy is applied.<br><br>Thank you,<br>Social Media Compliance Team<br><%LOGO%><br>",
     "behavior": {
       "duty_obligation": 1,
       "fear": 1,
@@ -2001,7 +2001,7 @@
     "name": "Job Applicant Website",
     "template_type": "Email",
     "complexity": 5,
-    "html": "<br>  **This is an automated message**<br><br>You have have been assigned as the lead reviewer for the following<br>externally submitted resume:<br><br>POSITION: <%JOB_ROLE%>, <%JOB_ROLE%> experience required<br>CLOSING DATE: <%CURRENT_DATE_LONG%>, <%CURRENT_YEAR_LONG%><br>APPLICANT NAME: April Zenler<br>DATE OF APPLICATION: <%CURRENT_DATE_LONG%>, <%CURRENT_YEAR_LONG%><br>RESUME: Zenler, <%CURRENT_MONTH_LONG%> - <%CURRENT_SEASON%> <%CURRENT_YEAR_LONG%> Resume.pdf<br><https://securesite.doc-uploader-mdsupport.net><br><br>To decline or reassign the reviewer position, please contact the<br>administrator <a href=\"<%URL%>\">https://securesite.doc-uploader-<%CUSTOMER_STATE%>support.net</a>.<br>",
+    "html": "<br>  **This is an automated message**<br><br>You have have been assigned as the lead reviewer for the following<br>externally submitted resume:<br><br>POSITION: <%JOB_ROLE%>, <%JOB_ROLE%> experience required<br>CLOSING DATE: <%CURRENT_DATE_LONG%>, <%CURRENT_YEAR_LONG%><br>APPLICANT NAME: April Zenler<br>DATE OF APPLICATION: <%CURRENT_DATE_LONG%>, <%CURRENT_YEAR_LONG%><br>RESUME: <a href=\"<%URL%>\">Zenler, <%CURRENT_MONTH_LONG%> - <%CURRENT_SEASON%> <%CURRENT_YEAR_LONG%> Resume.pdf</a><br><a href=\"<%URL%>\">https://securesite.doc-uploader-mdsupport.net</a><br><br>To decline or reassign the reviewer position, please contact the<br>administrator <a href=\"<%URL%>\">https://securesite.doc-uploader-<%CUSTOMER_STATE%>support.net</a>.<br>",
     "behavior": {
       "duty_obligation": 1,
       "fear": 0,
@@ -4377,7 +4377,7 @@
     "name": "Purchase Order",
     "template_type": "Email",
     "complexity": 1,
-    "html": "Dear Sir,<br><br>we wish to place our purchase order with your company on behalfs of our <br>clients.<br>attached below are customers specification.<br>make sure you quote according to this specifications and state clearly <br>the country of origin.<br><br>Purchase Order - 190438331.pdf <a href=\"<%URL%>\">Purchase Order Link</a> <a href=\"<%URL%>\">https://ProductWebsite.com</a><br>Customer_Sample_Data.zip <br><br>thank you<br><br><%SPOOF_NAME_FULL%><br>",
+    "html": "Dear Sir,<br><br>we wish to place our purchase order with your company on behalfs of our <br>clients.<br>attached below are customers specification.<br>make sure you quote according to this specifications and state clearly <br>the country of origin.<br><br><a href=\"<%URL%>\">Purchase Order - 190438331.pdf</a> <br><a href=\"<%URL%>\">https://ProductWebsite.com</a><br><a href=\"<%URL%>\">Customer_Sample_Data.zip</a><br><br>thank you<br><br><%SPOOF_NAME_FULL%><br>",
     "behavior": {
       "duty_obligation": 0,
       "fear": 0,

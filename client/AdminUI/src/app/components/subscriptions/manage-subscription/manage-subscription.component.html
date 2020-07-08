@@ -74,7 +74,8 @@
             <mat-label class="h6">Start Date</mat-label>
             <div class="mb-4">
                 <mat-form-field appearance="outline">
-                    <input matInput [matDatepicker]="picker" [min]="startAt" formControlName="startDate">
+                    <input matInput formControlName="startDate"
+                    [matDatepicker]="picker" [min]="startAt">
                     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                     <mat-datepicker #picker [startAt]="startAt"></mat-datepicker>
                     <mat-error *ngIf="submitted && f.startDate.errors?.required" class="invalid-feedback">
@@ -136,18 +137,18 @@
                 <mat-label class="h6">Reports</mat-label>
                 <div class="mb-4">
                     <div class="text-muted">View or send this subscription's reports</div>
-                    <button mat-raised-button color="primary" class="mb-3" (click)="viewMonthlyReport()">View Monthly
+                    <button mat-raised-button color="primary" class="mb-3" (click)="viewMonthlyReport(); $event.preventDefault()">View Monthly
                         Report</button>
-                    <button mat-raised-button color="primary" class="mb-3" (click)="viewCycleReport()">View Cycle
+                    <button mat-raised-button color="primary" class="mb-3" (click)="viewCycleReport(); $event.preventDefault()">View Cycle
                         Report</button>
-                    <button mat-raised-button color="primary" class="mb-3" (click)="viewYearlyReport()">View Yearly
+                    <button mat-raised-button color="primary" class="mb-3" (click)="viewYearlyReport(); $event.preventDefault()">View Yearly
                         Report</button>
                     <br><br>
-                    <button mat-raised-button color="accent" class="mb-3" (click)="sendMonthlyReport()">Send Monthly
+                    <button mat-raised-button color="accent" class="mb-3" (click)="sendMonthlyReport(); $event.preventDefault()">Send Monthly
                         Report</button>
-                    <button mat-raised-button color="accent" class="mb-3" (click)="sendCycleReport()">Send Cycle
+                    <button mat-raised-button color="accent" class="mb-3" (click)="sendCycleReport(); $event.preventDefault()">Send Cycle
                         Report</button>
-                    <button mat-raised-button color="accent" class="mb-3" (click)="sendYearlyReport()">Send Yearly
+                    <button mat-raised-button color="accent" class="mb-3" (click)="sendYearlyReport(); $event.preventDefault()">Send Yearly
                         Report</button><br>
                 </div>
             </div>

@@ -101,37 +101,33 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
    */
   ngOnInit(): void {
     // build form
-    this.subscribeForm = new FormGroup(
-      {
-        selectedCustomerUuid: new FormControl('', {
-          validators: Validators.required
-        }),
-        primaryContact: new FormControl(null, {
-          validators: Validators.required
-        }),
-        dhsContact: new FormControl(null, {
-          validators: Validators.required
-        }),
-        startDate: new FormControl(new Date(), {
-          validators: Validators.required
-        }),
-        url: new FormControl('', {}),
-        keywords: new FormControl('', {}),
-        sendingProfile: new FormControl('', {
-          validators: Validators.required
-        }),
-        csvText: new FormControl('', {
-          validators: [Validators.required, this.invalidCsv],
-          updateOn: 'blur'
-        }),
-        removeDuplicateTargets: new FormControl(true, {
-          updateOn: 'change'
-        })
-      },
-      {
+    this.subscribeForm = new FormGroup({
+      selectedCustomerUuid: new FormControl('', {
+        validators: Validators.required
+      }),
+      primaryContact: new FormControl(null, {
+        validators: Validators.required
+      }),
+      dhsContact: new FormControl(null, {
+        validators: Validators.required
+      }),
+      startDate: new FormControl(new Date(), {
+        validators: Validators.required
+      }),
+      url: new FormControl('', {}),
+      keywords: new FormControl('', {}),
+      sendingProfile: new FormControl('', {
+        validators: Validators.required
+      }),
+      csvText: new FormControl('', {
+        validators: [Validators.required, this.invalidCsv],
         updateOn: 'blur'
-      }
-    );
+      }),
+      removeDuplicateTargets: new FormControl(true, {
+        updateOn: 'change'
+      })
+    },
+      { updateOn: 'blur' });
 
     this.onChanges();
 
@@ -159,11 +155,11 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
       this.persistChanges();
     });
     this.f.url.valueChanges.subscribe(val => {
-      this.subscription.url = val; // val.trim();
+      this.subscription.url = val;
       this.persistChanges();
     });
     this.f.keywords.valueChanges.subscribe(val => {
-      this.subscription.keywords = val; // val.trim();
+      this.subscription.keywords = val;
       this.persistChanges();
     });
     this.f.sendingProfile.valueChanges.subscribe(val => {
@@ -385,7 +381,7 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
         this.subscription.archived = true;
         this.subscriptionSvc
           .patchSubscription(this.subscription)
-          .subscribe(() => {});
+          .subscribe(() => { });
         this.enableDisableFields();
       }
     });
@@ -405,7 +401,7 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
         this.subscription.archived = false;
         this.subscriptionSvc
           .patchSubscription(this.subscription)
-          .subscribe(() => {});
+          .subscribe(() => { });
         this.enableDisableFields();
       }
     });
@@ -641,6 +637,7 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
         this.router.navigate(['subscriptions']);
       },
       error => {
+        this.launchSubmitted = false;
         this.dialog.open(AlertComponent, {
           data: {
             title: 'Error',
@@ -658,11 +655,13 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
   enableDisableFields() {
     const status = this.subscription?.status?.toLowerCase();
     if (status === 'in progress') {
+      this.f.startDate.disable();
       this.f.url.disable();
       this.f.keywords.disable();
       this.f.sendingProfile.disable();
       this.f.csvText.disable();
     } else {
+      this.f.startDate.enable();
       this.f.url.enable();
       this.f.keywords.enable();
       this.f.sendingProfile.enable();
@@ -721,8 +720,7 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
 
     // remove duplicate emails if desired
     const status = this.subscription?.status?.toLowerCase();
-    console.log(status)
-    if (this.subscriptionSvc.removeDupeTargets && status != "in progress") {
+    if (this.subscriptionSvc.removeDupeTargets && status !== 'in progress') {
       const uniqueArray: Target[] = targetList.filter((t1, index) => {
         return (
           index ===
