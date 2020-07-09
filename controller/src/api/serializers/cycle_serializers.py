@@ -30,3 +30,16 @@ class CycleEmailReportedListSerializer(serializers.Serializer):
     start_date = serializers.DateTimeField(required=True)
     end_date = serializers.DateTimeField(required=True)
     email_list = CycleEmailReportedSerializer(many=True)
+
+
+class CycleEmailReportedListPostSerializer(serializers.Serializer):
+    """
+    This is the Cycle Email Report data Serializer.
+
+    This is a formats the list of Cycle Email Reports.
+    """
+
+    start_date = serializers.DateTimeField(required=True)
+    end_date = serializers.DateTimeField(required=True)
+    update_list = CycleEmailReportedSerializer(many=True)
+    delete_list = CycleEmailReportedSerializer(many=True)

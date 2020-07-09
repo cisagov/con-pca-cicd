@@ -4,9 +4,19 @@ import logging
 
 # Third-Party Libraries
 from api.models.subscription_models import SubscriptionModel, validate_subscription
-from api.serializers.cycle_serializers import CycleEmailReportedListSerializer
-from api.utils.db_utils import get_single
+from api.serializers.cycle_serializers import (
+    CycleEmailReportedListPostSerializer,
+    CycleEmailReportedListSerializer,
+)
+from api.serializers.subscriptions_serializers import SubscriptionPatchSerializer
+from api.utils.db_utils import get_single, update_single
+from api.utils.subscription.cycles import (
+    delete_reported_emails,
+    get_reported_emails,
+    update_reported_emails,
+)
 from drf_yasg.utils import swagger_auto_schema
+from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
@@ -39,44 +49,47 @@ class CycleReportedView(APIView):
         subscription = get_single(
             subscription_uuid, "subscription", SubscriptionModel, validate_subscription
         )
-        # first get list of id's that are in the active cycle, then filter out the emails
 
-        list_data = subscription["gophish_campaign_list"]
-        reports_per_campaign = []
-        for campaign in list_data:
-            timeline = campaign["timeline"]
-            filtered_list = [d for d in timeline if d["message"] == "Email Reported"]
-            reported_emails = []
-            for item in filtered_list:
-                reported_emails.append(
-                    {
-                        "campaign_id": campaign["campaign_id"],
-                        "email": item["email"],
-                        "datetime": item["time"],
-                    }
-                )
-            reports_per_campaign.append(
-                {
-                    "campaign_id": campaign["campaign_id"],
-                    "reported_emails": reported_emails,
-                }
-            )
+        emails_reported_list = get_reported_emails(subscription)
 
-        cycles = subscription["cycles"]
-        master_list = []
-        for c in cycles:
-            emails_reported_per_cycle = []
-            c_list = c["campaigns_in_cycle"]
-            for reports in reports_per_campaign:
-                if reports["campaign_id"] in c_list:
-                    emails_reported_per_cycle.extend(reports["reported_emails"])
+        serializer = CycleEmailReportedListSerializer(emails_reported_list, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
-            cycle_reported_emails = {
-                "start_date": c["start_date"],
-                "end_date": c["end_date"],
-                "email_list": emails_reported_per_cycle,
-            }
-            master_list.append(cycle_reported_emails)
+    @swagger_auto_schema(
+        request_body=CycleEmailReportedListPostSerializer,
+        responses={"200": CycleEmailReportedListSerializer, "400": "Bad Request",},
+        security=[],
+        operation_id="Incoming WebHook from gophish ",
+        operation_description=" This handles incoming webhooks from GoPhish Campaigns.",
+        tags=["CycleEmailReports"],
+    )
+    def post(self, request, subscription_uuid):
+        """Post method."""
+        subscription = get_single(
+            subscription_uuid, "subscription", SubscriptionModel, validate_subscription
+        )
 
-        serializer = CycleEmailReportedListSerializer(master_list, many=True)
-        return Response(serializer.data)
+        data = request.data.copy()
+
+        subscription["gophish_campaign_list"] = delete_reported_emails(
+            subscription["gophish_campaign_list"], data["delete_list"]
+        )
+        subscription["gophish_campaign_list"] = update_reported_emails(
+            subscription["gophish_campaign_list"], data["update_list"]
+        )
+
+        serialized_data = SubscriptionPatchSerializer(subscription)
+        updated_response = update_single(
+            uuid=subscription_uuid,
+            put_data=serialized_data.data,
+            collection="subscription",
+            model=SubscriptionModel,
+            validation_model=validate_subscription,
+        )
+        if "errors" in updated_response:
+            return Response(updated_response, status=status.HTTP_400_BAD_REQUEST)
+
+        emails_reported_list = get_reported_emails(subscription)
+
+        serializer = CycleEmailReportedListSerializer(emails_reported_list, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
