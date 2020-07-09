@@ -9,6 +9,7 @@ import { SubscriptionService } from 'src/app/services/subscription.service';
 export class SubDashboardComponent implements OnInit {
   @Input()
   subscriptionUuid: string;
+  dataAvailable: boolean = false
 
   chart: any = {};
   chartSent: any = {};
@@ -41,9 +42,15 @@ export class SubDashboardComponent implements OnInit {
    *
    */
   ngOnInit(): void {
-    this.subscriptionUuid = this.subscriptionSvc.subscription.subscription_uuid;
-    this.drawGraphs();
+    this.subscriptionSvc.subBehaviorSubject.subscribe(data => {
+      if("subscription_uuid" in data && !this.subscriptionUuid){
+        this.subscriptionUuid = data.subscription_uuid;
+        this.dataAvailable = true;
+        this.drawGraphs();
+      }
+    })    
   }
+
 
   /**
    * Gathers statistics and renders information for two graphs,
@@ -99,6 +106,7 @@ export class SubDashboardComponent implements OnInit {
           this.avgTTFR = '(no emails reported yet)';
         }
       });
+    
   }
 
   /**

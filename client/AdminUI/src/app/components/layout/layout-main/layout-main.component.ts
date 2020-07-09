@@ -85,10 +85,12 @@ export class LayoutMainComponent implements OnInit {
     //TODO get values of card padding
     let default_card_padding = 16;
     let default_card_margin = 10;
+    if(this.mainContent){
     this.layoutSvc.setContentHeight(
       this.mainContent.elementRef.nativeElement.offsetHeight -
         default_card_margin * 2 -
         default_card_padding * 2
     );
+    }
   }
 }

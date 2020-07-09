@@ -53,10 +53,12 @@ export class SvgTimelineComponent implements OnInit {
    *
    */
   onResize(evt: any) {
-    this.ticks.forEach(t => {
-      t.nativeElement.remove();
-    });
-    this.drawTimeline();
+    if(this.ticks){
+      this.ticks.forEach(t => {
+        t.nativeElement.remove();
+      });
+      this.drawTimeline();
+    }
   }
 
   /**

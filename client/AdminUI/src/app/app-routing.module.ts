@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { LayoutMainComponent } from './components/layout/layout-main/layout-main.component';
 import { SubscriptionsComponent } from './components/subscriptions/subscriptions.component';
 import { ManageSubscriptionComponent } from './components/subscriptions/manage-subscription/manage-subscription.component';
+import { SubscriptionConfigTab } from './components/subscriptions/manage-subscription/subscription-config-tab/subscription-config-tab.component'
 import { DeceptionCalculatorComponent } from './components/deception-calculator/deception-calculator.component';
 import { TemplateManagerComponent } from './components/template-manager/template-manager.component';
 import { SearchPanelComponent } from './components/search-panel/search-panel.component';
@@ -33,7 +34,7 @@ const routes: Routes = [
     path: 'create-subscription',
     component: LayoutMainComponent,
     canActivate: [AuthGuard],
-    children: [{ path: '', component: ManageSubscriptionComponent }]
+    children: [{ path: '', component: SubscriptionConfigTab }]
   },
   {
     path: 'view-subscription',
