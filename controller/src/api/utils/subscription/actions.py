@@ -108,8 +108,6 @@ def start_subscription(data=None, subscription_uuid=None):
     # landing_template_list = get_list({"template_type": "Landing"}, "template", TemplateModel, validate_template)
     landing_page = "Phished"
 
-    print("ASDASDASDASDASD")
-    print(sub_levels)
     subscription["gophish_campaign_list"] = generate_campaigns(
         subscription, landing_page, sub_levels
     )
@@ -156,20 +154,25 @@ def start_subscription(data=None, subscription_uuid=None):
     )
     recipient_copy = dhs_contact.get("email") if dhs_contact else None
 
-    subscription["email_report_history"] = [
-        {
-            "report_type": "Cycle Start Notification",
-            "sent": datetime.now(),
-            "email_to": subscription.get("primary_contact").get("email"),
-            "email_from": settings.SERVER_EMAIL,
-            "bbc": recipient_copy,
-            "manual": False,
-        }
-    ]
+    email_report = {
+        "report_type": "Cycle Start Notification",
+        "sent": datetime.now(),
+        "email_to": subscription.get("primary_contact").get("email"),
+        "email_from": settings.SERVER_EMAIL,
+        "bbc": recipient_copy,
+        "manual": False,
+    }
+    if subscription_uuid:
+        subscription["email_report_history"].append(email_report)
+    else:
+        subscription["email_report_history"] = [email_report]
 
     db.update_single(
         response["subscription_uuid"],
-        {"tasks": subscription["tasks"]},
+        {
+            "tasks": subscription["tasks"],
+            "email_report_history": subscription["email_report_history"],
+        },
         "subscription",
         SubscriptionModel,
         validate_subscription,
@@ -279,15 +282,35 @@ def new_subscription_cycle(subscription_uuid):
     else:
         subscription["tasks"] = []
 
+    send_start_notification(subscription, start_date)
+
+    dhs_contact_uuid = subscription.get("dhs_contact_uuid")
+    dhs_contact = db.get_single(
+        dhs_contact_uuid, "dhs_contact", DHSContactModel, validate_dhs_contact
+    )
+    recipient_copy = dhs_contact.get("email") if dhs_contact else None
+
+    subscription["email_report_history"].append(
+        {
+            "report_type": "Cycle Start Notification",
+            "sent": datetime.now(),
+            "email_to": subscription.get("primary_contact").get("email"),
+            "email_from": settings.SERVER_EMAIL,
+            "bbc": recipient_copy,
+            "manual": False,
+        }
+    )
+
     db.update_single(
         response["subscription_uuid"],
-        {"tasks": subscription["tasks"]},
+        {
+            "tasks": subscription["tasks"],
+            "email_report_history": subscription["email_report_history"],
+        },
         "subscription",
         SubscriptionModel,
         validate_subscription,
     )
-
-    send_start_notification(subscription, start_date)
 
     return response
 
@@ -326,7 +349,7 @@ def stop_subscription(subscription):
     )
     recipient_copy = dhs_contact.get("email") if dhs_contact else None
 
-    subscription["email_report_history"] = [
+    subscription["email_report_history"].append(
         {
             "report_type": "Cycle Complete",
             "sent": datetime.now(),
@@ -335,7 +358,7 @@ def stop_subscription(subscription):
             "bbc": recipient_copy,
             "manual": False,
         }
-    ]
+    )
 
     resp = db.update_single(
         uuid=subscription["subscription_uuid"],
