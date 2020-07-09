@@ -37,6 +37,7 @@ export class Subscription {
     active: boolean;
     archived: boolean;
     customer_uuid: string;
+    cycles: []
     keywords: string;
     lub_timestamp: Date;
     manually_stopped: boolean;

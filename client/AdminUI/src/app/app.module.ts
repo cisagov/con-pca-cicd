@@ -18,6 +18,9 @@ import { LayoutBlankComponent } from './components/layout/layout-blank/layout-bl
 import { LayoutMainComponent } from './components/layout/layout-main/layout-main.component';
 import { SearchPanelComponent } from './components/search-panel/search-panel.component';
 import { ManageSubscriptionComponent } from './components/subscriptions/manage-subscription/manage-subscription.component';
+import { SubscriptionConfigTab } from './components/subscriptions/manage-subscription/subscription-config-tab/subscription-config-tab.component'
+import { SubscriptionStatsTab } from './components/subscriptions/manage-subscription/subscription-stats-tab/subscription-stats-tab.component'
+import { SubscriptionReportTab } from './components/subscriptions/manage-subscription/subscription-report-tab/subscription-report-tab.component'
 import { DeceptionCalculatorComponent } from './components/deception-calculator/deception-calculator.component';
 import { UserAuthService } from './services/user-auth.service';
 import { DeceptionCalculatorService } from './services/deception-calculator.service';
@@ -57,6 +60,7 @@ import { CustomerDialogComponent } from './components/dialogs/customer-dialog/cu
 import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { AlertComponent } from './components/dialogs/alert/alert.component';
 import { SafePipe } from './helper/safe.pipe';
+import { UTCtoReadableTime } from './helper/utcTimeReadable.pipe'
 import { SvgTimelineComponent } from './components/subscriptions/svg-timeline/svg-timeline.component';
 import { AuthAppendInterceptor } from './helper/AuthAppendInterceptor'
 import { UnauthorizedInterceptor } from './helper/UnauthorizedInterceptor'
@@ -79,8 +83,10 @@ export function app_Init(settingsHttpService: SettingsHttpService) {
     SearchPanelComponent,
     AddCustomerComponent,
     ManageSubscriptionComponent,
+    SubscriptionConfigTab,
+    SubscriptionReportTab,
+    SubscriptionStatsTab,
     DeceptionCalculatorComponent,
-
     TemplateManagerComponent,
     RecommendationsManagerComponent,
     ListFilterPipe,
@@ -107,6 +113,7 @@ export function app_Init(settingsHttpService: SettingsHttpService) {
     CustomerDialogComponent,
     AlertComponent,
     SafePipe,
+    UTCtoReadableTime,
     SvgTimelineComponent,
     DhsPocComponent,
     DhsPocDetailComponent,

@@ -5,15 +5,18 @@ import { Subscription } from '../models/subscription.model';
 import { CustomerService } from './customer.service';
 import { Template } from '../models/template.model';
 import { SettingsService } from './settings.service';
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SubscriptionService {
-  subscription: Subscription;
+  subscription: Subscription
+  subBehaviorSubject = new BehaviorSubject<Subscription>(new Subscription());
   customer: Customer;
   customers: Array<Customer> = [];
+
+
 
   cameFromSubscription: boolean;
 
@@ -26,6 +29,13 @@ export class SubscriptionService {
     private http: HttpClient,
     private settingsService: SettingsService
   ) { }
+
+  public getSubBehaviorSubject(){
+    return this.subBehaviorSubject
+  }
+  public setSubBhaviorSubject(sub){
+    this.subBehaviorSubject.next(sub)
+  }
 
   /**
    *
