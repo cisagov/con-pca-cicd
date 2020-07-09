@@ -31,6 +31,7 @@ export class RecommendationsManagerComponent implements OnInit {
     retired: boolean;
     retiredReason: string;
     currentRecommendationsFormGroup: FormGroup;
+    matchRecommendationsName = new MyErrorStateMatcher();
 
     //config vars
     image_upload_url: string = `${this.settingsService.settings.apiUrl}/api/v1/imageupload/`;
