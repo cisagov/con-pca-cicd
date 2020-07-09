@@ -138,11 +138,8 @@ def generate_campaign_statistics(campaign_timeline_summary):
 
     stats = {}
     time_aggregate = {}
-    # RKW START
-    # if len(send_times):
     stats["sent"] = {"count": len(send_times)}
     time_aggregate["sent"] = send_times
-    # RKW END
     if len(opened_times):
         stats["opened"] = generate_time_difference_stats(opened_times)
         time_aggregate["opened"] = opened_times
