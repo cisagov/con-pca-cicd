@@ -317,6 +317,26 @@ def stop_subscription(subscription):
     subscription["manually_stopped"] = True
 
     subscription["status"] = "stopped"
+
+    send_stop_notification(subscription)
+
+    dhs_contact_uuid = subscription.get("dhs_contact_uuid")
+    dhs_contact = db.get_single(
+        dhs_contact_uuid, "dhs_contact", DHSContactModel, validate_dhs_contact
+    )
+    recipient_copy = dhs_contact.get("email") if dhs_contact else None
+
+    subscription["email_report_history"] = [
+        {
+            "report_type": "Cycle Complete",
+            "sent": datetime.now(),
+            "email_to": subscription.get("primary_contact").get("email"),
+            "email_from": settings.SERVER_EMAIL,
+            "bbc": recipient_copy,
+            "manual": False,
+        }
+    ]
+
     resp = db.update_single(
         uuid=subscription["subscription_uuid"],
         put_data=SubscriptionPatchSerializer(subscription).data,
@@ -324,8 +344,6 @@ def stop_subscription(subscription):
         model=SubscriptionModel,
         validation_model=validate_subscription,
     )
-
-    send_stop_notification(subscription)
 
     return resp
 
