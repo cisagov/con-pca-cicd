@@ -300,6 +300,9 @@ ul {
 }
 
 /* Page Six */
+#exampleMethodologyList {
+    margin-left: 2em;
+}
 
 /* SVG Bar Chart */
 .caption, .legend-caption {
@@ -344,7 +347,9 @@ ul {
 }
 
 /* Page Seven */
-
+.closing-header span {
+    font-weight: 600;
+}
 #methodologyTitle, #testingSummaryTitle {
   font-size: 3em;
   color: #015596 !important;
