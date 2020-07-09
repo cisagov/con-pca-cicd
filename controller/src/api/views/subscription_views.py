@@ -141,7 +141,6 @@ class SubscriptionView(APIView):
             model=SubscriptionModel,
             validation_model=validate_subscription,
         )
-        logger.info("created response {}".format(updated_response))
         if "errors" in updated_response:
             return Response(updated_response, status=status.HTTP_400_BAD_REQUEST)
         serializer = SubscriptionPatchResponseSerializer(updated_response)
