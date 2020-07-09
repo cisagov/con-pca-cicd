@@ -38,23 +38,26 @@ def get_reported_emails(subscription):
             }
         )
 
-    cycles = subscription["cycles"]
     master_list = []
-    for c in cycles:
+    for c in subscription["cycles"]:
         emails_reported_per_cycle = []
         c_list = c["campaigns_in_cycle"]
         for reports in reports_per_campaign:
             if reports["campaign_id"] in c_list:
                 emails_reported_per_cycle.extend(reports["reported_emails"])
 
+        report_count = len(emails_reported_per_cycle)
+        c["phish_results"]["reported"] = report_count
+
         cycle_reported_emails = {
             "start_date": c["start_date"],
             "end_date": c["end_date"],
             "email_list": emails_reported_per_cycle,
+            "override_total_reported": c["override_total_reported"],
         }
         master_list.append(cycle_reported_emails)
 
-    return master_list
+    return master_list, subscription
 
 
 def delete_reported_emails(gophish_campaign_list, delete_list):
@@ -147,3 +150,29 @@ def update_reported_emails(gophish_campaign_list, update_list):
                 add_email_reports.remove(new_reported_email)
 
     return gophish_campaign_list
+
+
+def override_total_reported(subscription, cycle_data_override):
+    """Override Total Reported.
+
+    Args:
+        subscription (dict): subscription object
+        cycle_data_override (dict): cycle post data
+
+    Returns:
+        subscription: subscription object
+    """
+    cycle_start = cycle_data_override["start_date"].split("T")[0]
+    cycle_end = cycle_data_override["end_date"].split("T")[0]
+    cycle = next(
+        (
+            cycle
+            for cycle in subscription["cycles"]
+            if cycle["start_date"].strftime("%Y-%m-%d") == cycle_start
+            and cycle["end_date"].strftime("%Y-%m-%d") == cycle_end
+        ),
+        None,
+    )
+    cycle["override_total_reported"] = cycle_data_override["override_total_reported"]
+
+    return subscription

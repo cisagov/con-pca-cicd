@@ -13,6 +13,7 @@ from api.utils.db_utils import get_single, update_single
 from api.utils.subscription.cycles import (
     delete_reported_emails,
     get_reported_emails,
+    override_total_reported,
     update_reported_emails,
 )
 from drf_yasg.utils import swagger_auto_schema
@@ -50,7 +51,7 @@ class CycleReportedView(APIView):
             subscription_uuid, "subscription", SubscriptionModel, validate_subscription
         )
 
-        emails_reported_list = get_reported_emails(subscription)
+        emails_reported_list, _ = get_reported_emails(subscription)
 
         serializer = CycleEmailReportedListSerializer(emails_reported_list, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
@@ -70,13 +71,17 @@ class CycleReportedView(APIView):
         )
 
         data = request.data.copy()
+        if "override_total_reported" in data and data["override_total_reported"] > 0:
+            subscription = override_total_reported(subscription, data)
+        else:
+            subscription["gophish_campaign_list"] = delete_reported_emails(
+                subscription["gophish_campaign_list"], data["delete_list"]
+            )
+            subscription["gophish_campaign_list"] = update_reported_emails(
+                subscription["gophish_campaign_list"], data["update_list"]
+            )
 
-        subscription["gophish_campaign_list"] = delete_reported_emails(
-            subscription["gophish_campaign_list"], data["delete_list"]
-        )
-        subscription["gophish_campaign_list"] = update_reported_emails(
-            subscription["gophish_campaign_list"], data["update_list"]
-        )
+        emails_reported_list, subscription = get_reported_emails(subscription)
 
         serialized_data = SubscriptionPatchSerializer(subscription)
         updated_response = update_single(
@@ -88,8 +93,6 @@ class CycleReportedView(APIView):
         )
         if "errors" in updated_response:
             return Response(updated_response, status=status.HTTP_400_BAD_REQUEST)
-
-        emails_reported_list = get_reported_emails(subscription)
 
         serializer = CycleEmailReportedListSerializer(emails_reported_list, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)

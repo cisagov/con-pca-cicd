@@ -30,6 +30,7 @@ class CycleEmailReportedListSerializer(serializers.Serializer):
     start_date = serializers.DateTimeField(required=True)
     end_date = serializers.DateTimeField(required=True)
     email_list = CycleEmailReportedSerializer(many=True)
+    override_total_reported = serializers.IntegerField(required=False)
 
 
 class CycleEmailReportedListPostSerializer(serializers.Serializer):
@@ -43,3 +44,4 @@ class CycleEmailReportedListPostSerializer(serializers.Serializer):
     end_date = serializers.DateTimeField(required=True)
     update_list = CycleEmailReportedSerializer(many=True)
     delete_list = CycleEmailReportedSerializer(many=True)
+    override_total_reported = serializers.IntegerField(required=False)
