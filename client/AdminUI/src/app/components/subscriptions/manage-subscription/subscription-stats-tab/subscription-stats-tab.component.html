@@ -47,17 +47,17 @@
 
         <mat-form-field class="w-100 flex-grow-1" appearance="outline">
             <mat-label>Individual Report Records</mat-label>
-            <textarea matInput autosize formControlName="reportedItems">
+            <textarea matInput autosize formControlName="reportedItems" (focusout)="focusOffReportList()">
                 </textarea>
-            <!-- <mat-error *ngIf="submitted && f.csvText.hasError('invalidEmailFormat')" class="invalid-feedback">
+            <mat-error *ngIf="f.reportedItems.hasError('invalidEmailFormat')" class="invalid-feedback">
                 One or more email addresses are invalid
+            </mat-error>            
+            <mat-error *ngIf="f.reportedItems.hasError('invalidDateFormat')" class="invalid-feedback">
+                Invalid Date Time
             </mat-error>
-            <mat-error *ngIf="submitted && f.csvText.errors?.required" class="invalid-feedback">
-                At least 1 target must be defined
-            </mat-error>
-            <mat-error *ngIf="submitted && f.csvText.hasError('invalidTargetCsv')" class="invalid-feedback">
+            <mat-error *ngIf=" f.reportedItems.hasError('invalidTargetCsv')" class="invalid-feedback">
                 All target lines must have all parts
-            </mat-error> -->
+            </mat-error>
         </mat-form-field>
     </mat-card>
 </div>

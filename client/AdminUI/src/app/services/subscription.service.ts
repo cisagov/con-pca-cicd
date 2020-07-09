@@ -6,20 +6,18 @@ import { CustomerService } from './customer.service';
 import { Template } from '../models/template.model';
 import { SettingsService } from './settings.service';
 import { Observable, BehaviorSubject } from 'rxjs';
+import { start } from 'repl';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SubscriptionService {
+
   subscription: Subscription
   subBehaviorSubject = new BehaviorSubject<Subscription>(new Subscription());
   customer: Customer;
   customers: Array<Customer> = [];
-
-
-
   cameFromSubscription: boolean;
-
   removeDupeTargets = true;
 
   /**
@@ -219,5 +217,41 @@ export class SubscriptionService {
   public sendYearlyReport(s: Subscription) {
     const url = `${this.settingsService.settings.apiUrl}/api/v1/reports/${s.subscription_uuid}/email/yearly/`;
     return this.http.get(url);
+  }
+
+  public reportValuesForCycle(startDate){
+    console.log("getting report values for cycle starting on " + startDate)
+    const url = `${this.settingsService.settings.apiUrl}/api/v1/subscriptions/reports/${startDate}`;
+    // return this.http.get(url)
+    let testVal = [
+      {
+        "start_date": "2020-07-11T04:00:00Z",
+        "end_date": "2020-10-09T04:00:00Z",
+        "email_list": [
+          {
+            "campaign_id": 1,
+            "email": "user1@example.com",
+            "datetime": "2020-07-08T19:26:30Z"
+          },
+          {
+            "campaign_id": 2,
+            "email": "user2@example.com",
+            "datetime": "2020-07-08T19:26:30Z"
+          },
+          {
+            "campaign_id": 2,
+            "email": "user3@example.com",
+            "datetime": "2020-07-08T19:26:30Z"
+          },
+          {
+            "campaign_id": 3,
+            "email": "user4@example.com",
+            "datetime": "2020-07-08T19:26:30Z"
+          }
+        ]
+      }
+    ]
+    return testVal
+
   }
 }

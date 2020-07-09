@@ -24,11 +24,11 @@ export class SubscriptionStatsTab implements OnInit {
 //   @Input()
 //   subscription: Subscription
 
-    subscription: Subscription
-    selectedCycle: any
+    subscription: Subscription;
+    selectedCycle: any;
+    timelineItems: any[] = [];
     reportedStatsForm: FormGroup;
-
-  timelineItems: any[] = [];
+    invalidDateTimeObject: String;
 
   constructor(
       public subscriptionSvc: SubscriptionService
@@ -47,10 +47,11 @@ export class SubscriptionStatsTab implements OnInit {
           }
         })
         this.reportedStatsForm = new FormGroup({
-            reportedItems: new FormControl('', {}),
+            reportedItems: new FormControl('', [this.invalidReportCsv]),
             overRiderNumber: new FormControl('',[Validators.pattern("^[0-9]*$")])           
           },
             { updateOn: 'blur' });
+        this.invalidDateTimeObject = ""
   }
 
   cycleChange(event){
@@ -107,6 +108,43 @@ export class SubscriptionStatsTab implements OnInit {
     this.timelineItems = items;
   }
 
+  invalidReportCsv(control: FormControl) {
+    const exprEmail = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
+    const lines = control.value.split('\n');
+    for (const line of lines) {
+      const parts = line.split(',');
+      if (parts.length !== 2) {
+        return { invalidTargetCsv: true };
+      }
+
+      if (!!parts[0] && !exprEmail.test(String(parts[0]).toLowerCase())) {
+        return { invalidEmailFormat: true };
+      }
+      if(!!parts[1]){
+        let date = new Date(parts[1])
+        console.log(date)
+        if(isNaN(date.valueOf())){
+          console.log(String(parts[1]))
+          this.test("asd")
+          // this.invalidDateTimeObject = "ASda"//new String(parts[1])
+          return { invalidDateFormat: true}     
+        }   
+      }
+    }
+
+    return null;
+  }
+  public test(input){
+    console.log(input)
+  }
+  get f() {
+    return this.reportedStatsForm.controls;
+  }
+
+  focusOffReportList(){
+    this.reportedStatsForm.updateValueAndValidity();
+    console.log("focus lost")
+  }
 
 }
