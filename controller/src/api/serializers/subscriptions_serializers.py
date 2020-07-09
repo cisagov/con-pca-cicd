@@ -118,15 +118,20 @@ class GoPhishCampaignsSerializer(serializers.Serializer):
     timeline = GoPhishTimelineSerializer(many=True)
     target_email_list = SubscriptionTargetSerializer(many=True, required=False)
 
+
 class CycleSerializer(serializers.Serializer):
-    "this is the Cycle serializer used for general reporting"
+    """Cycle Serializer.
+
+    This is the Cycle serializer used for general reporting.
+    """
 
     start_date = serializers.DateTimeField()
     end_date = serializers.DateTimeField()
     active = serializers.BooleanField()
     campaigns_in_cycle = serializers.ListField()
     phish_results = PhishingResultsSerializer()
-    override_total_reported = serializers.IntegerField(default = -1)
+    override_total_reported = serializers.IntegerField(default=-1)
+
 
 class SubscriptionTasksSerializer(serializers.Serializer):
     """
@@ -242,6 +247,7 @@ class SubscriptionPatchSerializer(serializers.Serializer):
     active = serializers.BooleanField(required=False)
     archived = serializers.BooleanField(required=False, default=False)
     manually_stopped = serializers.BooleanField(required=False, default=False)
+    cycles = CycleSerializer(many=True)
 
 
 class SubscriptionPatchResponseSerializer(serializers.Serializer):
