@@ -27,7 +27,7 @@ body {
   padding: 0;
 }
 
-#cover, #pageOne, #pageTwo, #pageThree, #pageFour, #pageFive, #pageSix, #pageSeven, #pageEight, #pageNine, #pageTen, #pageEleven, #pageTwelve {
+#cover, #pageOne, #pageTwo, #pageThree, #pageFour, #pageFive {
   page-break-after: always;
 }
 
@@ -38,6 +38,11 @@ body {
 article:nth-of-type(n+2) {
   padding-top: 100px;
 }
+
+h3 {
+  font-weight: bold;
+}
+
 
 /* Cover */
 
@@ -168,81 +173,17 @@ table {
 
 /* Page Two */
 
-#reportInstructions {
-  margin-bottom: 500px;
-}
 
-ol {
-  padding-left: 20px;
-}
-
-h3 {
-  font-weight: bold;
-}
-
-/* Page Three */
-
-#executiveReportTitle {
-  font-size: 3em;
-  color: #015596 !important;
-  letter-spacing: 2px;
-  line-height: 0.8em;
-  margin-bottom: 30px;
-  text-transform: uppercase;
-}
-
-#executiveReportDetails:last-child {
-  margin-bottom: 0;
-}
-
-.tableOneTitle {
-  color: #015596;
-  font-size: 0.8em;
+#companyAverageText {  
   text-align: center;
 }
-#userMetrics {
-  border: 2px solid #cecece !important;
-  margin: 10px auto 40px auto;
-  width: 100%;
-}
 
-#userMetrics th, #userMetrics td {
-  padding: 5px 5px 0 5px;
-}
-
-#userMetrics thead {
-  border-bottom: solid 2px #000;
-}
-
-#userMetrics tbody {
-  font-size: 0.9em;
-}
-
-#userMetrics tbody tr:nth-of-type(odd) {
-  background-color: #e8f4f8 !important;
-}
-
-ul {
-  padding-left: 20px;
-}
-
-/* Page Five */
-
-#summaryTitle {
-  font-size: 3em;
-  color: #015596 !important;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-}
 
 #statFlexContainer{
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
   margin-top: 20px;
-}
-#companyAverageText {  
-  text-align: center;
 }
 
 #nationalAverageText, #industryAverageText, #sectorAverageText {
@@ -262,6 +203,14 @@ ul {
   margin: 20px;
 }
 
+#nationalAverageBox, #industryAverageBox, #sectorAverageBox {
+  background-image: linear-gradient(to right, #164A91, #1979a7) !important;
+  color: #fff !important;
+  font-family: 'Times New Roman', Times, serif;
+  font-size: 2.5em;
+  padding: 20px 30px;
+}
+
 #companyAverageBox {
   background-image: linear-gradient(to right, #164A91, #1979a7) !important;
   color: #fff !important;
@@ -271,15 +220,9 @@ ul {
   max-width: 180px;
 }
 
-#nationalAverageBox, #industryAverageBox, #sectorAverageBox {
-  background-image: linear-gradient(to right, #164A91, #1979a7) !important;
-  color: #fff !important;
-  font-family: 'Times New Roman', Times, serif;
-  font-size: 2.5em;
-  padding: 20px 30px;
-}
+/* Page Three */
 
-#percentageTrendGraph, #clickedVsReportedGraph, #yearTrendGraph, #levelGraphTitle, .timeIntervalGraph, .timeComplexityGraph {
+#percentageTrendGraph, #clickedVsReportedGraph{
   border: 1px solid #FDC010;
   border-radius: 10px;
   color: #015596;
@@ -287,182 +230,31 @@ ul {
   text-align: center;
 }
 
-#yearTrendGraph p {
-  padding-top: 20px;
-}
-
-#trendLineGraph, numbersByLevelGraph {
-  margin-bottom: 10px;
-}
-
 #trendStatistics {
   font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
 }
 
-/* Page Six */
-#exampleMethodologyList {
-    margin-left: 2em;
+/* Page Four */
+
+#summaryTitle {
+  font-size: 3em;
+  color: #015596 !important;
+  letter-spacing: 2px;
+  text-transform: uppercase;
 }
 
-/* SVG Bar Chart */
-.caption, .legend-caption {
-  fill: #164A91;
-}
-
-.legend-caption {
-  font-size: 0.75em;
-}
-
-.blue-bar {
-  fill:#1979a7;
-}
-
-.dark-blue-bar {
-  fill:#164A91;
-}
-
-.yellow-bar {
-  fill:#FDC010;
-}
-
-.bar-chart, #successOverview {
-  border: 1px solid #FDC010;
-  border-radius: 10px;
-  color: #164A91;
-  height: auto;
-  margin: 20px auto 0 auto;
-  text-align: center;
-  width: 100%;
-}
-
-#successOverview {
-  margin-bottom: 100px;
-}
-
-#successOverview h4, 
-  .bar-chart h4, 
-  .timeIntervalGraph h4, 
-  .timeComplexityGraph h4 {
-  margin-top: 10px;
-}
-
-/* Page Seven */
-.closing-header span {
-    font-weight: 600;
-}
 #methodologyTitle, #testingSummaryTitle {
   font-size: 3em;
   color: #015596 !important;
   letter-spacing: 2px;
 }
-
-/* Tables on Page Eight, Nine and Ten */
-
-#templateOverviewTable, #rateComparisonTable, #timeComparisonTable {
-  margin-bottom: 40px;
-  text-align: center;
+#exampleMethodologyList {
+  margin-left: 2em;
 }
 
-#timeComparisonTable {
-  width: 100%;
-}
 
-#templateOverviewTable th, #rateComparisonTable th {
-  background-color: #ededed;
-  padding: 10px;
-  width: 200px;
-}
-
-#timeComparisonTable th {
-  background-color: #ededed;
-  padding: 10px;
-}
-
-#timeComparisonTable th:first-of-type {
-  width: 100px;
-}
-
-#templateOverviewTable td, #rateComparisonTable td, #timeComparisonTable td {
-  padding: 15px 5px;
-}
-
-#templateOverviewTable tr td:nth-of-type(2), 
-  #rateComparisonTable tr td:nth-of-type(2) {
-  text-align: left;
-}
-
-#rateComparisonTable td {
-  width: auto;
-}
-
-/* Page Nine */ 
-
-.complexityLegend {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  list-style-type: none;
-}
-
-.complexityLegend li:nth-of-type(1)::after {
-  content: "&#x25A0";
-  height: 20px;
-  width: 20px;
-  margin: 0 15px 0 5px;
-  background-color: #FDC010;
-}
-
-.complexityLegend li:nth-of-type(2)::after {
-  content: "&#x25A0";
-  height: 20px;
-  width: 20px;
-  margin: 0 15px 0 5px;
-  background-color: #1979a7;
-}
-
-.complexityLegend li:nth-of-type(3)::after {
-  content: "&#x25AC";
-  height: 20px;
-  width: 20px;
-  margin: 0 15px 0 5px;
-  background-color: #015596;
-}
-
-/* Page Thirteen */
-
-/* fix level descriptions */
-
-
-/* Page Fourteen */
-
-#dumbPhishList, #mediumPhishList, #hardPhishList {
-  margin-bottom: 70px;
-}
-
-.congrats {
-  font-size: 1.3em;
-  margin: 20px 0;
-}
-
-.blue-font {
-  color: #1979a7;
-}
-
-#dumbPhishBenefits li {
-  margin-left: 10px;
-}
-
-.vintageCars {
-  font-size: 1.325em;
-  font-weight: 600;
-  margin-top: 40px;
-  text-align: center;
-}
-
-/* Page Fifteen */
-
-.md-font {
-  font-size: 1.325em;
+/* Page Five */
+.closing-header span {
   font-weight: 600;
 }
+
