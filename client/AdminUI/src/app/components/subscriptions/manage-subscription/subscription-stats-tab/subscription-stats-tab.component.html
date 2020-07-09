@@ -1,0 +1,63 @@
+
+<div class="w-100">
+    <mat-card>
+        <mat-card-title >
+          Statistics
+        </mat-card-title>
+            Statistics Cycle:
+
+            <div class="cycle-select-wrapper" *ngIf="subscription">
+                <mat-form-field class="cycle-select-dropdown" *ngIf="subscription.cycles" appearance="outline">
+                    <mat-label>Cycle</mat-label>
+                    <mat-select  [(value)]="selectedCycle" (selectionChange)="cycleChange($event)">
+                        <mat-option *ngFor="let c of subscription.cycles" [value]="c">
+                            {{ c.start_date | UTCtoReadableTime }} - {{ c.end_date | UTCtoReadableTime }}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+    </mat-card>
+    <app-sub-dashboard></app-sub-dashboard>
+
+    <mat-card>
+        <div>
+            <h4>Subscription Timeline</h4>
+            <div style="margin: 0 2rem 2rem 2rem">
+                <app-svg-timeline [timelineItems]="timelineItems"></app-svg-timeline>
+            </div>
+        </div>
+    </mat-card>
+    <mat-card [formGroup]="reportedStatsForm">
+        <mat-card-header>
+            <mat-card-title style="margin-left: -16px !important">
+                Email Reporting Statistics
+            </mat-card-title>
+        </mat-card-header>
+
+        <mat-label class="h6">Override Value</mat-label>
+        <div class="text-muted">Entering this val will override the individual records below
+            and will cause the reporting to be incomplete when using reported times. Use only if 
+            individual records can not be provided.
+        </div>
+        <mat-form-field class="w-100" appearance="outline">
+            <input matInput formControlName="overRiderNumber" type="number" trim="blur">
+            <!-- <mat-error *ngIf="f.number.errors.pattern" class="invalid-feedback">
+                May only containe numbers
+            </mat-error> -->
+        </mat-form-field>
+
+        <mat-form-field class="w-100 flex-grow-1" appearance="outline">
+            <mat-label>Individual Report Records</mat-label>
+            <textarea matInput autosize formControlName="reportedItems">
+                </textarea>
+            <!-- <mat-error *ngIf="submitted && f.csvText.hasError('invalidEmailFormat')" class="invalid-feedback">
+                One or more email addresses are invalid
+            </mat-error>
+            <mat-error *ngIf="submitted && f.csvText.errors?.required" class="invalid-feedback">
+                At least 1 target must be defined
+            </mat-error>
+            <mat-error *ngIf="submitted && f.csvText.hasError('invalidTargetCsv')" class="invalid-feedback">
+                All target lines must have all parts
+            </mat-error> -->
+        </mat-form-field>
+    </mat-card>
+</div>

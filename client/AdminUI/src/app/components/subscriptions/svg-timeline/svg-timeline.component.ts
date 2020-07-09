@@ -1,6 +1,7 @@
-import { Component, OnInit, Input, ElementRef, ViewChild, ViewChildren } from '@angular/core';
+import { Component, OnInit, Input, ElementRef, ViewChildren } from '@angular/core';
 import { TimelineItem } from 'src/app/models/subscription.model';
 import * as moment from 'node_modules/moment/moment';
+import { AppSettings } from 'src/app/AppSettings';
 
 @Component({
   selector: 'app-svg-timeline',
@@ -19,6 +20,8 @@ export class SvgTimelineComponent implements OnInit {
   lifespanSeconds: number;
   firstDate: moment.Moment;
   lastDate: moment.Moment;
+
+  dateFormat = AppSettings.DATE_FORMAT;
 
   iconLaunch = '&#xf135;';
   iconCalendar = '&#xf073';
@@ -39,6 +42,10 @@ export class SvgTimelineComponent implements OnInit {
       if (!this.timelineItems) {
         return;
       }
+      if (this.timelineItems.length < 2) {
+        console.log(this.timelineItems);
+        return;
+      }
       this.sortEvents();
 
       this.lifespanSeconds = this.timelineItems[this.timelineItems.length - 1].date
@@ -53,10 +60,12 @@ export class SvgTimelineComponent implements OnInit {
    *
    */
   onResize(evt: any) {
-    this.ticks.forEach(t => {
-      t.nativeElement.remove();
-    });
-    this.drawTimeline();
+    if (this.ticks){
+      this.ticks.forEach(t => {
+        t.nativeElement.remove();
+      });
+      this.drawTimeline();
+    }
   }
 
   /**

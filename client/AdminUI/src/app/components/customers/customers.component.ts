@@ -96,6 +96,9 @@ export class CustomersComponent implements OnInit {
     this.dialog.closeAll();
   }
   public editCustomer(customer_uuid) {
-    this.router.navigate(['/customer', customer_uuid]);
+    if(!this.insideDialog)
+      this.router.navigate(['/customer', customer_uuid]);
+    else
+      this.setCustomer(customer_uuid)
   }
 }

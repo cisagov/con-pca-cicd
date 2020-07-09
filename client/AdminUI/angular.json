@@ -28,10 +28,6 @@
                 {
                   "replace": "src/environments/environment.ts",
                   "with": "src/environments/environment.prod.ts"
-                },
-                {
-                  "replace": "src/aws-exports.js",
-                  "with": "src/aws-export-production.js"
                 }
               ],
               "namedChunks": false,
