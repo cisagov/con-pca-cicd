@@ -52,7 +52,7 @@ export class RecommendationsComponent implements OnInit, AfterViewInit {
     this.recommendationsData.filter = value.trim().toLocaleLowerCase();
   };
   public editRecommendations(recommendations: Recommendations) {
-    this.router.navigate(['/recommendations', recommendations.recommendations_uuid]);
+    this.router.navigate(['/recommendationsmanager', recommendations.recommendations_uuid]);
   }
 
   onRetiredToggle() {

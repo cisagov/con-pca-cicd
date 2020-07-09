@@ -38,19 +38,7 @@ export class RecommendationsService {
      * @param uuid
      */
     getRecommendation(uuid: string) {
-        return new Promise((resolve, reject) => {
-            this.http
-                .get(`${this.settingsService.settings.apiUrl}/api/v1/recommendations/${uuid}`)
-                .subscribe(
-                    success => {
-                        resolve(success);
-                    },
-                    error => {
-                        reject(error);
-                    },
-                    () => { }
-                );
-        });
+        return this.http.get(`${this.settingsService.settings.apiUrl}/api/v1/recommendations/${uuid}`)
     }
 
     /**
