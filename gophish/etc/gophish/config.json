@@ -7,7 +7,7 @@
   },
   "contact_address": "name@example.com",
   "db_name": "mysql",
-  "db_path": "gophish:password@(mysql:3306)/gophish?charset=utf8&parseTime=True&loc=UTC",
+  "db_path": "MYSQL_USER:MYSQL_PASSWORD@(MYSQL_HOST:3306)/MYSQL_DATABASE?charset=utf8&parseTime=True&loc=UTC",
   "logging": {
     "filename": "",
     "level": ""
