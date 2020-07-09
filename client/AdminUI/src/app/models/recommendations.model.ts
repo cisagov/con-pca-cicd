@@ -33,4 +33,7 @@ export class Recommendations {
     last_updated_by?: string;
     lub_timestamp?: Date;
 
+    public constructor(init?: Partial<Recommendations>) {
+        Object.assign(this, init);
+    }
 }

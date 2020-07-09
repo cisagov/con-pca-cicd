@@ -23,6 +23,7 @@ import { UserAuthService } from './services/user-auth.service';
 import { DeceptionCalculatorService } from './services/deception-calculator.service';
 import { TemplateManagerComponent } from './components/template-manager/template-manager.component';
 import { TemplateManagerService } from './services/template-manager.service';
+import { RecommendationsManagerComponent } from './components/recommendations/recommendations-manager/recommendations-manager.component'
 import { ListFilterPipe } from './pipes/list-filter.pipe';
 import { AutosizeModule } from 'node_modules/ngx-autosize';
 import { AddCustomerComponent } from './components/customer/add-customer/add-customer.component';
@@ -81,6 +82,7 @@ export function app_Init(settingsHttpService: SettingsHttpService) {
     DeceptionCalculatorComponent,
 
     TemplateManagerComponent,
+    RecommendationsManagerComponent,
     ListFilterPipe,
     ContactsComponent,
     DomainsComponent,

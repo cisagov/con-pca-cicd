@@ -5,6 +5,7 @@ import { SubscriptionsComponent } from './components/subscriptions/subscriptions
 import { ManageSubscriptionComponent } from './components/subscriptions/manage-subscription/manage-subscription.component';
 import { DeceptionCalculatorComponent } from './components/deception-calculator/deception-calculator.component';
 import { TemplateManagerComponent } from './components/template-manager/template-manager.component';
+import { RecommendationsManagerComponent } from './components/recommendations/recommendations-manager/recommendations-manager.component';
 import { SearchPanelComponent } from './components/search-panel/search-panel.component';
 import { ContactsComponent } from './components/contacts/contacts.component';
 import { DomainsComponent } from './components/domains/domains.component';
@@ -113,6 +114,18 @@ const routes: Routes = [
     children: [
       { path: '', component: RecommendationsComponent }
     ]
+  },
+  {
+    path: 'recommendationsmanager',
+    component: LayoutMainComponent,
+    canActivate: [AuthGuard],
+    children: [{ path: '', component: RecommendationsManagerComponent }]
+  },
+  {
+    path: 'recommendationsmanager/:recommendationsId',
+    component: LayoutMainComponent,
+    canActivate: [AuthGuard],
+    children: [{ path: '', component: RecommendationsManagerComponent }]
   },
   {
     path: 'useradmin',
