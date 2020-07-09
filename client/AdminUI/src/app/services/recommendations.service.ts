@@ -58,22 +58,10 @@ export class RecommendationsService {
      * @param recommendation
      */
     saveNewRecommendation(recommendation: Recommendations) {
-        return new Promise((resolve, reject) => {
-            this.http
-                .post(
-                    `${this.settingsService.settings.apiUrl}/api/v1/recommendations/`,
-                    recommendation
-                )
-                .subscribe(
-                    success => {
-                        resolve(success);
-                    },
-                    error => {
-                        reject(error);
-                    },
-                    () => { }
-                );
-        });
+        return this.http.post(
+            `${this.settingsService.settings.apiUrl}/api/v1/recommendations/`,
+            recommendation
+        );
     }
 
     /**

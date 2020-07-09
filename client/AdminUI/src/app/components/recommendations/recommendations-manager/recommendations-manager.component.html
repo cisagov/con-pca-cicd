@@ -18,10 +18,11 @@
             </div>
         </div>
     </div>
+    <deception-calculator></deception-calculator>
     <div class="d-flex flex-row flex-grow-1 justify-content-end">
         <div matTooltip="A recommendation must have all required fields filled" matTooltipPosition="right"
             matTooltipShowDelay="500">
-            <button mat-raised-button>Save Recommendation
+            <button mat-raised-button (click)="pushRecommendations()">Save Recommendation
             </button>
         </div>
         <button mat-flat-button>Cancel</button>
