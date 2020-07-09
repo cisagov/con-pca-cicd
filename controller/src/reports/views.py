@@ -330,10 +330,7 @@ class CycleReportsView(TemplateView):
             if cycle["start_date"].year > working_cycle_year:
                 current_quarter = 1
             cycle["quarter"] = f"{cycle['start_date'].year} - {current_quarter}"
-
-        # for i, cycle in enumerate(cycles,1):
-        #     if
-        #     cycle["quarter"] = quarter
+            current_quarter += 1
 
         current_cycle = ""
         for cycle in subscription["cycles"]:
