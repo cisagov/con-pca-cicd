@@ -57,22 +57,10 @@ export class RecommendationsService {
      * @param recommendation
      */
     updateRecommendation(recommendation: Recommendations) {
-        return new Promise((resolve, reject) => {
-            this.http
-                .patch(
-                    `${this.settingsService.settings.apiUrl}/api/v1/recommendations/${recommendation.recommendations_uuid}/`,
-                    recommendation
-                )
-                .subscribe(
-                    success => {
-                        resolve(success);
-                    },
-                    error => {
-                        reject(error);
-                    },
-                    () => { }
-                );
-        });
+        return this.http.patch(
+            `${this.settingsService.settings.apiUrl}/api/v1/recommendations/${recommendation.recommendations_uuid}/`,
+            recommendation
+        )
     }
 
     /**

@@ -37,6 +37,12 @@ export class RecommendationsManagerComponent implements OnInit {
         this.setRecommendationsForm(new Recommendations())
     }
 
+    /**
+     * convenience getter for easy access to form fields
+     */
+    get f() {
+        return this.recommendationsFormGroup.controls;
+    }
 
     ngOnInit(): void {
         this.route.params.subscribe(params => {
@@ -98,66 +104,70 @@ export class RecommendationsManagerComponent implements OnInit {
         });
     }
 
-    saveRecommendations() {
-        if (this.recommendationsFormGroup.valid) {
-            let template_to_save = this.getRecommendationsModelFromForm(
-                this.recommendationsFormGroup
-            );
-            if (this.recommendationsId) {
-                this.recommendationsSvc.saveNewRecommendation(template_to_save);
-            } else {
-                this.recommendationsSvc.saveNewRecommendation(template_to_save);
-            }
-        } else {
-            this.dialog.open(AlertComponent, {
-                data: {
-                    title: 'Error',
-                    messageText: 'Errors on deception form' + this.recommendationsFormGroup.errors
-                }
-            });
-        }
-    }
-
     /**
      * Returns a Recommendation model initialized from a provided formgroup
      * @param decep_form
      */
     getRecommendationsModelFromForm(rec_form: FormGroup) {
-        let formRecommendations = new Recommendations(rec_form.value);
         let saveRecommendations = new Recommendations();
+        saveRecommendations.name = this.f.recommendationsName.value;
+        saveRecommendations.description = this.f.recommendationsDescription.value;
         saveRecommendations.appearance = {
-            grammar: formRecommendations.grammar,
-            link_domain: formRecommendations.link_domain,
-            logo_graphics: formRecommendations.logo_graphics
+            grammar: this.f.grammar.value,
+            link_domain: this.f.link_domain.value,
+            logo_graphics: this.f.logo_graphics.value
         };
         saveRecommendations.sender = {
-            authoritative: formRecommendations.authoritative,
-            external: formRecommendations.external,
-            internal: formRecommendations.internal
+            authoritative: this.f.authoritative.value,
+            external: this.f.external.value,
+            internal: this.f.internal.value
         };
         saveRecommendations.relevancy = {
-            organization: formRecommendations.organization,
-            public_news: formRecommendations.public_news
+            organization: this.f.organization.value,
+            public_news: this.f.public_news.value
         };
         saveRecommendations.behavior = {
-            curiosity: formRecommendations.curiosity,
-            duty_obligation: formRecommendations.duty_obligation,
-            fear: formRecommendations.fear,
-            greed: formRecommendations.greed
+            curiosity: this.f.curiosity.value,
+            duty_obligation: this.f.duty_obligation.value,
+            fear: this.f.fear.value,
+            greed: this.f.greed.value
         };
         saveRecommendations.recommendations_uuid = this.recommendationsId;
         return saveRecommendations;
     }
 
-    pushRecommendations() {
-        this.recommendationsSvc.saveNewRecommendation(this.recommendations).subscribe(
-            (data: any) => {
-                this.saveRecommendations();
-                this.router.navigate(['/recommendations']);
-            },
-            (error) => {
-                console.log(error)
-            }
-        )
+    saveRecommendations() {
+        // if (this.recommendationsFormGroup.valid) {
+        let template_to_save = this.getRecommendationsModelFromForm(
+            this.recommendationsFormGroup
+        );
+        if (this.recommendationsId) {
+            this.recommendationsSvc.updateRecommendation(template_to_save).subscribe(
+                (data: any) => {
+                    this.router.navigate(['/recommendations']);
+                },
+                (error) => {
+                    console.log(error)
+                }
+            );
+        } else {
+            this.recommendationsSvc.saveNewRecommendation(template_to_save).subscribe(
+                (data: any) => {
+                    this.router.navigate(['/recommendations']);
+                },
+                (error) => {
+                    console.log(error)
+                }
+            );
+        }
+        // } else {
+        //     this.dialog.open(AlertComponent, {
+        //         data: {
+        //             title: 'Error',
+        //             messageText: 'Errors on deception form' + this.recommendationsFormGroup.errors
+        //         }
+        //     });
+        // }
     }
+
 }
