@@ -9,6 +9,21 @@ from api.serializers.customer_serializers import CustomerContactSerializer
 from rest_framework import serializers
 
 
+class SubscriptionEmailHistorySerializer(serializers.Serializer):
+    """
+    This is the Target Serializer.
+
+    This formats the data coming out of the Db.
+    """
+
+    report_type = serializers.CharField(max_length=255)
+    sent = serializers.DateTimeField()
+    email_to = serializers.EmailField()
+    email_from = serializers.CharField(max_length=255)
+    bbc = serializers.EmailField()
+    manual = serializers.BooleanField(default=False)
+
+
 class SubscriptionTargetSerializer(serializers.Serializer):
     """
     This is the Target Serializer.
@@ -181,6 +196,7 @@ class SubscriptionGetSerializer(serializers.Serializer):
     manually_stopped = serializers.BooleanField(default=False)
     tasks = SubscriptionTasksSerializer(many=True, required=False)
     cycles = CycleSerializer(many=True)
+    email_report_history = SubscriptionEmailHistorySerializer(required=False, many=True)
     # db data tracking added below
     created_by = serializers.CharField(max_length=100)
     cb_timestamp = serializers.DateTimeField()
@@ -211,6 +227,7 @@ class SubscriptionPostSerializer(serializers.Serializer):
     active = serializers.BooleanField()
     archived = serializers.BooleanField(default=False)
     manually_stopped = serializers.BooleanField(default=False)
+    email_report_history = SubscriptionEmailHistorySerializer(required=False, many=True)
 
 
 class SubscriptionPostResponseSerializer(serializers.Serializer):
@@ -248,6 +265,7 @@ class SubscriptionPatchSerializer(serializers.Serializer):
     archived = serializers.BooleanField(required=False, default=False)
     manually_stopped = serializers.BooleanField(required=False, default=False)
     cycles = CycleSerializer(many=True)
+    email_report_history = SubscriptionEmailHistorySerializer(required=False, many=True)
 
 
 class SubscriptionPatchResponseSerializer(serializers.Serializer):

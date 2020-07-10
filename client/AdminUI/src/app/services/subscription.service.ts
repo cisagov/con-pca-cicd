@@ -11,12 +11,10 @@ import { Observable, BehaviorSubject } from 'rxjs';
   providedIn: 'root'
 })
 export class SubscriptionService {
-  subscription: Subscription
+  subscription: Subscription;
   subBehaviorSubject = new BehaviorSubject<Subscription>(new Subscription());
   customer: Customer;
   customers: Array<Customer> = [];
-
-
 
   cameFromSubscription: boolean;
 
@@ -28,13 +26,13 @@ export class SubscriptionService {
   constructor(
     private http: HttpClient,
     private settingsService: SettingsService
-  ) { }
+  ) {}
 
-  public getSubBehaviorSubject(){
-    return this.subBehaviorSubject
+  public getSubBehaviorSubject() {
+    return this.subBehaviorSubject;
   }
-  public setSubBhaviorSubject(sub){
-    this.subBehaviorSubject.next(sub)
+  public setSubBhaviorSubject(sub) {
+    this.subBehaviorSubject.next(sub);
   }
 
   /**
@@ -92,7 +90,9 @@ export class SubscriptionService {
    * @param uuid The uuid of the subscription to restart.
    */
   restartSubscription(uuid: string) {
-    return this.http.get(`${this.settingsService.settings.apiUrl}/api/v1/subscription/restart/${uuid}`);
+    return this.http.get(
+      `${this.settingsService.settings.apiUrl}/api/v1/subscription/restart/${uuid}`
+    );
   }
 
   /**
@@ -111,7 +111,10 @@ export class SubscriptionService {
    */
   changePrimaryContact(subscriptUuid: string, contact: Contact) {
     const c = { primary_contact: contact };
-    return this.http.patch(`${this.settingsService.settings.apiUrl}/api/v1/subscription/${subscriptUuid}/`, c);
+    return this.http.patch(
+      `${this.settingsService.settings.apiUrl}/api/v1/subscription/${subscriptUuid}/`,
+      c
+    );
   }
 
   /**
@@ -119,7 +122,10 @@ export class SubscriptionService {
    */
   changeDhsContact(subscriptUuid: string, contactUuid: string) {
     const c = { dhs_contact_uuid: contactUuid };
-    return this.http.patch(`${this.settingsService.settings.apiUrl}/api/v1/subscription/${subscriptUuid}/`, c);
+    return this.http.patch(
+      `${this.settingsService.settings.apiUrl}/api/v1/subscription/${subscriptUuid}/`,
+      c
+    );
   }
 
   /**
@@ -127,7 +133,9 @@ export class SubscriptionService {
    * @param template
    */
   public getSubscriptionsByTemplate(template: Template) {
-    return this.http.get(`${this.settingsService.settings.apiUrl}/api/v1/subscriptions/?template=${template.template_uuid}`);
+    return this.http.get(
+      `${this.settingsService.settings.apiUrl}/api/v1/subscriptions/?template=${template.template_uuid}`
+    );
   }
 
   /**
@@ -135,15 +143,21 @@ export class SubscriptionService {
    * @param template
    */
   public getSubscriptionsByCustomer(customer: Customer) {
-    return this.http.get(`${this.settingsService.settings.apiUrl}/api/v1/subscription/customer/${customer.customer_uuid}`);
+    return this.http.get(
+      `${this.settingsService.settings.apiUrl}/api/v1/subscription/customer/${customer.customer_uuid}`
+    );
   }
 
   public stopSubscription(subscription_uuid: string) {
-    return this.http.get(`${this.settingsService.settings.apiUrl}/api/v1/subscription/stop/${subscription_uuid}/`);
+    return this.http.get(
+      `${this.settingsService.settings.apiUrl}/api/v1/subscription/stop/${subscription_uuid}/`
+    );
   }
 
   public startSubscription(subscription_uuid: string) {
-    return this.http.get(`${this.settingsService.settings.apiUrl}/api/v1/subscription/restart/${subscription_uuid}/`);
+    return this.http.get(
+      `${this.settingsService.settings.apiUrl}/api/v1/subscription/restart/${subscription_uuid}/`
+    );
   }
 
   /**
@@ -186,28 +200,25 @@ export class SubscriptionService {
   }
 
   public getMonthlyReport(s: Subscription): Observable<Blob> {
-    const headers = new HttpHeaders()
-      .set('Accept', 'application/pdf');
+    const headers = new HttpHeaders().set('Accept', 'application/pdf');
     const url = `${this.settingsService.settings.apiUrl}/api/v1/reports/${s.subscription_uuid}/pdf/monthly/`;
-    return this.http.get(url, { 'headers': headers, 'responseType': 'blob' });
+    return this.http.get(url, { headers: headers, responseType: 'blob' });
   }
 
   public getCycleReport(s: Subscription) {
-    const headers = new HttpHeaders()
-      .set('content-type', 'application/pdf');
+    const headers = new HttpHeaders().set('content-type', 'application/pdf');
     const url = `${this.settingsService.settings.apiUrl}/api/v1/reports/${s.subscription_uuid}/pdf/cycle/`;
-    return this.http.get(url, { 'headers': headers, 'responseType': 'blob' });
+    return this.http.get(url, { headers: headers, responseType: 'blob' });
   }
 
   public getYearlyReport(s: Subscription) {
-    const headers = new HttpHeaders()
-      .set('content-type', 'application/pdf');
+    const headers = new HttpHeaders().set('content-type', 'application/pdf');
     const url = `${this.settingsService.settings.apiUrl}/api/v1/reports/${s.subscription_uuid}/pdf/yearly/`;
-    return this.http.get(url, { 'headers': headers, 'responseType': 'blob' });
+    return this.http.get(url, { headers: headers, responseType: 'blob' });
   }
 
   public sendMonthlyReport(s: Subscription) {
-    const url = `${this.settingsService.settings.apiUrl}/api/v1/reports/$${s.subscription_uuid}/email/monthly/`;
+    const url = `${this.settingsService.settings.apiUrl}/api/v1/reports/${s.subscription_uuid}/email/monthly/`;
     return this.http.get(url);
   }
 

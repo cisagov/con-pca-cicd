@@ -4,11 +4,13 @@ Reports Views.
 This handles the api for all the Reports urls.
 """
 # Standard Python Libraries
-import logging
+import datetime
 import io
+import logging
 
 # Third-Party Libraries
 from api.manager import CampaignManager
+from api.models.dhs_models import DHSContactModel, validate_dhs_contact
 from api.models.subscription_models import SubscriptionModel, validate_subscription
 from api.models.template_models import (
     DeceptionLevelStatsModel,
@@ -19,8 +21,8 @@ from api.serializers.reports_serializers import (
     EmailReportsGetSerializer,
     ReportsGetSerializer,
 )
+from api.utils.db_utils import get_list, get_single, update_single
 from config import settings
-from api.utils.db_utils import get_list, get_single
 from django.http import FileResponse
 from drf_yasg.utils import swagger_auto_schema
 from notifications.views import ReportsEmailSender
@@ -193,6 +195,31 @@ class MonthlyReportsEmailView(APIView):
         sender = ReportsEmailSender(subscription, message_type)
         sender.send()
 
+        dhs_contact_uuid = subscription.get("dhs_contact_uuid")
+        dhs_contact = get_single(
+            dhs_contact_uuid, "dhs_contact", DHSContactModel, validate_dhs_contact
+        )
+        recipient_copy = dhs_contact.get("email") if dhs_contact else None
+
+        subscription["email_report_history"].append(
+            {
+                "report_type": "Monthly",
+                "sent": datetime.datetime.now(),
+                "email_to": subscription.get("primary_contact").get("email"),
+                "email_from": settings.SERVER_EMAIL,
+                "bbc": recipient_copy,
+                "manual": False,
+            }
+        )
+
+        update_single(
+            subscription_uuid,
+            {"email_report_history": subscription["email_report_history"]},
+            "subscription",
+            SubscriptionModel,
+            validate_subscription,
+        )
+
         serializer = EmailReportsGetSerializer({"subscription_uuid": subscription_uuid})
         return Response(serializer.data)
 
@@ -221,6 +248,31 @@ class CycleReportsEmailView(APIView):
         sender = ReportsEmailSender(subscription, message_type)
         sender.send()
 
+        dhs_contact_uuid = subscription.get("dhs_contact_uuid")
+        dhs_contact = get_single(
+            dhs_contact_uuid, "dhs_contact", DHSContactModel, validate_dhs_contact
+        )
+        recipient_copy = dhs_contact.get("email") if dhs_contact else None
+
+        subscription["email_report_history"].append(
+            {
+                "report_type": "Cycle",
+                "sent": datetime.datetime.now(),
+                "email_to": subscription.get("primary_contact").get("email"),
+                "email_from": settings.SERVER_EMAIL,
+                "bbc": recipient_copy,
+                "manual": False,
+            }
+        )
+
+        update_single(
+            subscription_uuid,
+            {"email_report_history": subscription["email_report_history"]},
+            "subscription",
+            SubscriptionModel,
+            validate_subscription,
+        )
+
         serializer = EmailReportsGetSerializer({"subscription_uuid": subscription_uuid})
         return Response(serializer.data)
 
@@ -247,6 +299,28 @@ class YearlyReportsEmailView(APIView):
         # Send email
         # sender = ReportsEmailSender(subscription, message_type)
         # sender.send()
+        # dhs_contact_uuid = subscription.get("dhs_contact_uuid")
+        # dhs_contact = get_single(
+        #     dhs_contact_uuid, "dhs_contact", DHSContactModel, validate_dhs_contact
+        # )
+        # recipient_copy = dhs_contact.get("email") if dhs_contact else None
+
+        # subscription["email_report_history"].append({
+        #        "report_type": "Annual Report",
+        #        "sent": datetime.datetime.now(),
+        #        "email_to": subscription.get("primary_contact").get("email"),
+        #        "email_from": settings.SERVER_EMAIL,
+        #        "bbc": recipient_copy,
+        #        "manual": False,
+        #    })
+
+        # update_single(
+        #    subscription_uuid,
+        #    {"email_report_history": subscription["email_report_history"]},
+        #    "subscription",
+        #    SubscriptionModel,
+        #    validate_subscription,
+        # )
 
         serializer = EmailReportsGetSerializer({"subscription_uuid": subscription_uuid})
         return Response(serializer.data)
@@ -255,6 +329,7 @@ class YearlyReportsEmailView(APIView):
 # These are as functions rather than classes, because extending the APIView class
 # causes some issues when sending accept headers other than application/json
 def monthly_reports_pdf_view(request, subscription_uuid):
+    """Monthly_reports_pdf_view."""
     if settings.DEBUG:
         api_host = request.get_host()
     else:
@@ -271,6 +346,7 @@ def monthly_reports_pdf_view(request, subscription_uuid):
 # These are as functions rather than classes, because extending the APIView class
 # causes some issues when sending accept headers other than application/json
 def cycle_reports_pdf_view(request, subscription_uuid):
+    """Cycle_reports_pdf_view."""
     if settings.DEBUG:
         api_host = request.get_host()
     else:
@@ -288,6 +364,7 @@ def cycle_reports_pdf_view(request, subscription_uuid):
 # causes some issues when sending accept headers other than application/json
 # which for this application/pdf is needed
 def yearly_reports_pdf_view(request, subscription_uuid):
+    """Yearly_reports_pdf_view."""
     if settings.DEBUG:
         api_host = request.get_host()
     else:
