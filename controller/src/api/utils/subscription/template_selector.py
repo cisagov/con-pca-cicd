@@ -21,17 +21,9 @@ def get_relevant_templates(templates, subscription, template_count: int):
     """Get_relevant_templates."""
     template_manager = TemplateManager()
 
-    #Values as a minimum
-    template_score_to_level = {
-        "high": 5,
-        "medium": 2,
-        "low": 0
-    }
-    template_groups = {
-        "low": [],
-        "medium": [],
-        "high": []
-    }
+    # Values as a minimum
+    template_score_to_level = {"high": 5, "medium": 2, "low": 0}
+    template_groups = {"low": [], "medium": [], "high": []}
     for template in templates:
         if template["deception_score"] < template_score_to_level["medium"]:
             template_groups["low"].append(template)
@@ -39,21 +31,21 @@ def get_relevant_templates(templates, subscription, template_count: int):
             template_groups["medium"].append(template)
         else:
             template_groups["high"].append(template)
-    logger.info(f"{template_groups}")
 
     # formats templates for alogrithm
 
     template_data_low = {
-        t.get("template_uuid"): t.get("descriptive_words") for t in template_groups["low"]
-    }    
+        t.get("template_uuid"): t.get("descriptive_words")
+        for t in template_groups["low"]
+    }
     template_data_medium = {
-        t.get("template_uuid"): t.get("descriptive_words") for t in template_groups["medium"]
+        t.get("template_uuid"): t.get("descriptive_words")
+        for t in template_groups["medium"]
     }
     template_data_high = {
-        t.get("template_uuid"): t.get("descriptive_words") for t in template_groups["high"]
+        t.get("template_uuid"): t.get("descriptive_words")
+        for t in template_groups["high"]
     }
-
-    # logger.info(f"Template Data: length - {len(template_data)}")
 
     # gets order of templates ranked from best to worst
     relevant_templates_low = template_manager.get_templates(
@@ -74,9 +66,8 @@ def get_relevant_templates(templates, subscription, template_count: int):
     relevant_templates = {
         "low": relevant_templates_low,
         "medium": relevant_templates_medium,
-        "high": relevant_templates_high
+        "high": relevant_templates_high,
     }
-
 
     return relevant_templates
 
@@ -91,7 +82,6 @@ def batch_templates(templates, num_per_batch, sub_levels: dict):
     sub_levels["high"]["template_uuids"] = templates["high"][:num_per_batch]
     sub_levels["moderate"]["template_uuids"] = templates["medium"][:num_per_batch]
     sub_levels["low"]["template_uuids"] = templates["low"][:num_per_batch]
-
 
     return sub_levels
 
