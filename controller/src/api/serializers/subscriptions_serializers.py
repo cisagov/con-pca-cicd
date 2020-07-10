@@ -247,7 +247,7 @@ class SubscriptionPatchSerializer(serializers.Serializer):
     active = serializers.BooleanField(required=False)
     archived = serializers.BooleanField(required=False, default=False)
     manually_stopped = serializers.BooleanField(required=False, default=False)
-    cycles = CycleSerializer(many=True)
+    cycles = CycleSerializer(many=True, required=False)
 
 
 class SubscriptionPatchResponseSerializer(serializers.Serializer):
