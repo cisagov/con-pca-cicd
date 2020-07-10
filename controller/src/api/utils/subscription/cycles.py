@@ -172,6 +172,10 @@ def override_total_reported(subscription, cycle_data_override):
         ),
         None,
     )
+
+    if cycle is None:
+        return subscription
+
     cycle["override_total_reported"] = cycle_data_override["override_total_reported"]
 
     return subscription

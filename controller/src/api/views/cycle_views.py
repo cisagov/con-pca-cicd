@@ -71,7 +71,10 @@ class CycleReportedView(APIView):
         )
 
         data = request.data.copy()
-        if "override_total_reported" in data and data["override_total_reported"] > 0:
+        if "override_total_reported" in data and (
+            data["override_total_reported"] is not None
+            and data["override_total_reported"] > -1
+        ):
             subscription = override_total_reported(subscription, data)
         else:
             subscription["gophish_campaign_list"] = delete_reported_emails(
