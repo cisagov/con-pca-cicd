@@ -5,6 +5,8 @@ import { RecommendationsService } from 'src/app/services/recommendations.service
 import { Recommendations } from 'src/app/models/recommendations.model';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { ConfirmComponent } from '../dialogs/confirm/confirm.component';
 
 @Component({
   selector: '',
@@ -12,18 +14,19 @@ import { MatSort } from '@angular/material/sort';
   styleUrls: ['./recommendations.component.scss']
 })
 export class RecommendationsComponent implements OnInit, AfterViewInit {
-  displayedColumns = ['name', 'deception_score', 'created_by'];
+  displayedColumns = ['name', 'created_by', 'action'];
   recommendationsData = new MatTableDataSource<Recommendations>();
   search_input = '';
   @ViewChild(MatSort) sort: MatSort;
 
   showRetired: boolean = false;
-
+  dialogRefConfirm: MatDialogRef<ConfirmComponent>;
   loading = true;
 
   constructor(
     private recommendationsSvc: RecommendationsService,
     private router: Router,
+    public dialog: MatDialog,
     private layoutSvc: LayoutMainService
   ) {
     layoutSvc.setTitle('Recommendations');
@@ -62,5 +65,33 @@ export class RecommendationsComponent implements OnInit, AfterViewInit {
       this.displayedColumns.push('retired');
     }
     this.refresh();
+  }
+
+  /**
+   *
+   * @param row
+   */
+  deleteRecommendation(row: any) {
+    this.recommendationsSvc.deleteRecommendation(row).subscribe(() => {
+      this.refresh();
+    });
+  }
+  /**
+ * Confirm that they want to delete the profile.
+ * @param row
+ */
+  confirmDeleteRecommendations(row: any): void {
+    this.dialogRefConfirm = this.dialog.open(ConfirmComponent, {
+      disableClose: false
+    });
+    this.dialogRefConfirm.componentInstance.confirmMessage = `This will delete recommendation '${row.name}'.  Do you want to continue?`;
+    this.dialogRefConfirm.componentInstance.title = 'Confirm Delete';
+
+    this.dialogRefConfirm.afterClosed().subscribe(result => {
+      if (result) {
+        this.deleteRecommendation(row);
+      }
+      this.dialogRefConfirm = null;
+    });
   }
 }

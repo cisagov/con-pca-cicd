@@ -68,19 +68,9 @@ export class RecommendationsService {
      * @param recommendation
      */
     deleteRecommendation(recommendation: Recommendations) {
-        return new Promise((resolve, reject) => {
-            this.http
-                .delete(
-                    `${this.settingsService.settings.apiUrl}/api/v1/recommendations/${recommendation.recommendations_uuid}/`
-                )
-                .subscribe(
-                    success => {
-                        resolve(success);
-                    },
-                    error => {
-                        reject(error);
-                    }
-                );
-        });
+        return this.http
+            .delete(
+                `${this.settingsService.settings.apiUrl}/api/v1/recommendations/${recommendation.recommendations_uuid}/`
+            )
     }
 }
