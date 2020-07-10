@@ -28,7 +28,7 @@ def get_reported_emails(subscription):
                 {
                     "campaign_id": campaign["campaign_id"],
                     "email": item["email"],
-                    "datetime": item["time"],
+                    "date": item["time"],
                 }
             )
         reports_per_campaign.append(
@@ -124,9 +124,7 @@ def update_reported_emails(gophish_campaign_list, update_list):
                     timeline_item["email"] == item_to_update["email"]
                     and timeline_item["message"] == "Email Reported"
                 ):
-                    timeline_item.update(
-                        {"time": format_ztime(item_to_update["datetime"])}
-                    )
+                    timeline_item.update({"time": format_ztime(item_to_update["date"])})
 
         for new_reported_email in add_email_reports:
             exixting_timeline_reports = [
@@ -138,11 +136,12 @@ def update_reported_emails(gophish_campaign_list, update_list):
                 new_reported_email["email"] in campaign_targets
                 and new_reported_email["email"] not in exixting_timeline_reports
             ):
+                print(new_reported_email)
                 campaign["timeline"].append(
                     {
                         "email": new_reported_email["email"],
                         "message": "Email Reported",
-                        "time": format_ztime(new_reported_email["datetime"]),
+                        "time": format_ztime(new_reported_email["date"]),
                         "details": "",
                         "duplicate": False,
                     }
