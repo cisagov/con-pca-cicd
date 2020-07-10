@@ -133,7 +133,6 @@ class SubscriptionView(APIView):
         """Patch method."""
         logger.debug("update subscription_uuid {}".format(subscription_uuid))
         put_data = request.data.copy()
-        print(put_data)
         serialized_data = SubscriptionPatchSerializer(put_data)
         updated_response = update_single(
             uuid=subscription_uuid,
