@@ -219,39 +219,59 @@ export class SubscriptionService {
     return this.http.get(url);
   }
 
-  public reportValuesForCycle(startDate){
-    console.log("getting report values for cycle starting on " + startDate)
-    const url = `${this.settingsService.settings.apiUrl}/api/v1/subscriptions/reports/${startDate}`;
-    // return this.http.get(url)
-    let testVal = [
-      {
-        "start_date": "2020-07-11T04:00:00Z",
-        "end_date": "2020-10-09T04:00:00Z",
-        "email_list": [
-          {
-            "campaign_id": 1,
-            "email": "user1@example.com",
-            "datetime": "2020-07-08T19:26:30Z"
-          },
-          {
-            "campaign_id": 2,
-            "email": "user2@example.com",
-            "datetime": "2020-07-08T19:26:30Z"
-          },
-          {
-            "campaign_id": 2,
-            "email": "user3@example.com",
-            "datetime": "2020-07-08T19:26:30Z"
-          },
-          {
-            "campaign_id": 3,
-            "email": "user4@example.com",
-            "datetime": "2020-07-08T19:26:30Z"
-          }
-        ]
-      }
-    ]
-    return testVal
-
+  public getReportValuesForSubscription(subscription_uuid){
+    const url = `${this.settingsService.settings.apiUrl}/api/v1/cycleemailreported/${subscription_uuid}/`;
+    return this.http.get(url)
   }
+  public postReportValuesForSubscription(data,subscription_uuid){
+    const url = `${this.settingsService.settings.apiUrl}/api/v1/cycleemailreported/${subscription_uuid}/`;
+    return this.http.post(url,data)
+  }
+  public getSusbcriptionStatusEmailsSent(subscription_uuid){
+    const url = `${this.settingsService.settings.apiUrl}/api/v1/cyclereports/${subscription_uuid}/`;
+    // return this.http.get(url)
+    return [
+        {
+            "report_type": "Cycle Complete",
+            "sent": "2020-07-09T21:34:00.769Z",
+            "email_to": "bob@example.com",
+            "email_from": "fakesupport@gov.com",
+            "bcc": "steve@dhs.gov",
+            "manual": false,
+        },
+        {
+            "report_type": "Monthly Sent",
+            "sent": "2020-08-09T21:34:00.769Z",
+            "email_to": "bob@example.com",
+            "email_from": "fakesupport@gov.com",
+            "bcc": "steve@dhs.gov",
+            "manual": false,
+        },
+        {
+            "report_type": "Monthly Sent",
+            "sent": "2020-09-09T21:34:00.769Z",
+            "email_to": "bob@example.com",
+            "email_from": "fakesupport@gov.com",
+            "bcc": "steve@dhs.gov",
+            "manual": false,
+        },
+        {
+            "report_type": "Monthly Sent",
+            "sent": "2020-10-09T21:34:00.769Z",
+            "email_to": "bob@example.com",
+            "email_from": "fakesupport@gov.com",
+            "bcc": "steve@dhs.gov",
+            "manual": false,
+        },
+        {
+            "report_type": "Cycle Complete",
+            "sent": "2020-11-09T21:34:00.769Z",
+            "email_to": "bob@example.com",
+            "email_from": "fakesupport@gov.com",
+            "bcc": "steve@dhs.gov",
+            "manual": false,
+        }
+      ]
+  }
+
 }

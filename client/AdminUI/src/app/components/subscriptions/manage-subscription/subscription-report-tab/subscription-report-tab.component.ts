@@ -33,6 +33,10 @@ export class SubscriptionReportTab implements OnInit {
       this.subscriptionSvc.subBehaviorSubject.subscribe(data => {
           if("subscription_uuid" in data){
             this.subscription = data
+            // this.subscriptionSvc.getSusbcriptionStatusEmailsSent(data.subscription_uuid).subscribe((data) => console.log("do"))
+            this.emailsSent.data = this.subscriptionSvc.getSusbcriptionStatusEmailsSent(data.subscription_uuid)
+            this.emailsSent.sort = this.sort;
+            console.log(this.emailsSent.data)
             //@ts-ignore
             this.selectedCycle = this.subscription.cycles[0]
           }
@@ -42,7 +46,7 @@ export class SubscriptionReportTab implements OnInit {
   refresh() {
     // this.subscriptionSvc.getEmailsSentBySubId(this.subscription.subscription_uuid).subscribe((data: any[]) => {
     //   this.emailsSent.data = data;
-    //   this.emailsSent.data = this.sort;
+    //   this.emailsSent.sort = this.sort;
     // });
   }
 

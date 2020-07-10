@@ -50,26 +50,26 @@
             <mat-table [dataSource]="emailsSent" matSort>
               <ng-container matColumnDef="report">
                 <mat-header-cell *matHeaderCellDef mat-sort-header>Report</mat-header-cell>
-                <mat-cell *matCellDef="let row">{{ row.report }}</mat-cell>
+                <mat-cell *matCellDef="let row">{{ row.report_type }}</mat-cell>
               </ng-container>
               <ng-container matColumnDef="sent">
                 <mat-header-cell *matHeaderCellDef mat-sort-header
                   >Sent</mat-header-cell
                 >
-                <mat-cell *matCellDef="let row">{{ row.sent }}</mat-cell>
+                <mat-cell *matCellDef="let row">{{ row.sent | UTCtoReadableTime}}</mat-cell>
               </ng-container>
               <ng-container matColumnDef="to">
                 <mat-header-cell *matHeaderCellDef mat-sort-header
                   >To</mat-header-cell
                 >
-                <mat-cell *matCellDef="let row">{{ row.to }}</mat-cell>
+                <mat-cell *matCellDef="let row">{{ row.email_to }}</mat-cell>
               </ng-container>
               <ng-container matColumnDef="from" >
                   <mat-header-cell *matHeaderCellDef mat-sort-header>From</mat-header-cell>
-                  <mat-cell *matCellDef="let row"> {{row.from}}</mat-cell>
+                  <mat-cell *matCellDef="let row"> {{row.email_from}}</mat-cell>
               </ng-container>
               <ng-container matColumnDef="bcc" >
-                  <mat-header-cell *matHeaderCellDef mat-sort-header>Last Updated</mat-header-cell>
+                  <mat-header-cell *matHeaderCellDef mat-sort-header>BCC</mat-header-cell>
                   <mat-cell *matCellDef="let row">{{ row.bcc }}</mat-cell>
               </ng-container>
               <ng-container matColumnDef="manual" >
