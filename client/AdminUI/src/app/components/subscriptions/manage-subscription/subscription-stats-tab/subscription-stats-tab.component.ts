@@ -103,7 +103,7 @@ export class SubscriptionStatsTab implements OnInit {
       return;
     }
     //
-    if(cycleReports.override_total_reported != null){
+    if(cycleReports.override_total_reported != -1){
       this.reportedStatsForm.controls['overRiderNumber'].setValue(cycleReports.override_total_reported)
       this.hasOverrideValue = true
       this.reportedStatsForm.updateValueAndValidity();
@@ -157,14 +157,23 @@ export class SubscriptionStatsTab implements OnInit {
   generateReportDiffernceList(currentVal = null) {
     if (
       this.reportedStatsForm.controls['overRiderNumber'].value ||
-      currentVal == null
+      currentVal == null 
     ) {
+      let val =  parseInt(
+        this.reportedStatsForm.controls['overRiderNumber'].value,
+        10
+      )
+      if(Number.isNaN(val)){
+        val = -1
+      }
       return {
-        override_total_reported: parseInt(
-          this.reportedStatsForm.controls['overRiderNumber'].value,
-          10
-        )
+        override_total_reported: val,
+        update_list: [],
+        delete_list: []
+
       };
+    } else {
+
     }
     let removelist = [];
     let addList = [];
@@ -219,7 +228,8 @@ export class SubscriptionStatsTab implements OnInit {
 
     return {
       update_list: this.formatAddRemoveListDates(addList),
-      delete_list: this.formatAddRemoveListDates(removelist)
+      delete_list: this.formatAddRemoveListDates(removelist),
+      override_total_reported: Number(-1)
     };
   }
 
@@ -256,6 +266,8 @@ export class SubscriptionStatsTab implements OnInit {
 
   focusOffOverrideVal(){
     let val = this.reportedStatsForm.controls['overRiderNumber'].value
+    let saveVal = this.generateReportDiffernceList()
+    console.log(saveVal)
     if(val){
       if(val >= 0){
         this.hasOverrideValue = true

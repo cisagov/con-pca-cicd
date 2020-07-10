@@ -41,7 +41,7 @@
         <mat-form-field class="w-100" appearance="outline">
             <input matInput formControlName="overRiderNumber" type="number" trim="blur" (focusout)="focusOffOverrideVal()">
             <mat-error *ngIf="f.overRiderNumber.hasError('ExcedesTargetCount')" class="invalid-feedback">
-                May only containe numbers
+                Value can not excede the total numberof targets
             </mat-error>
         </mat-form-field>
 
