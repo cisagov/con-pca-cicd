@@ -40,9 +40,9 @@
         </div>
         <mat-form-field class="w-100" appearance="outline">
             <input matInput formControlName="overRiderNumber" type="number" trim="blur" (focusout)="focusOffOverrideVal()">
-            <!-- <mat-error *ngIf="f.overRiderNumber.hasError('ExcedesTargetCount')" class="invalid-feedback">
+            <mat-error *ngIf="f.overRiderNumber.hasError('ExcedesTargetCount')" class="invalid-feedback">
                 May only containe numbers
-            </mat-error> -->
+            </mat-error>
         </mat-form-field>
 
         <p *ngIf="hasOverrideValue">If a override value is provided, individual reports are disabled.</p>
@@ -55,6 +55,9 @@
             </mat-error>            
             <mat-error *ngIf="f.reportedItems.hasError('invalidDateFormat')" class="invalid-feedback">
                 Invalid Date Time {{invalidDateTimeObject}}
+            </mat-error>            
+            <mat-error *ngIf="f.reportedItems.hasError('emailNotATarget')" class="invalid-feedback">
+                Email not assigned to subscription {{getValidationMessage("emailNotATarget")}}
             </mat-error>
             <mat-error *ngIf=" f.reportedItems.hasError('invalidTargetCsv')" class="invalid-feedback">
                 All target lines must have all parts
