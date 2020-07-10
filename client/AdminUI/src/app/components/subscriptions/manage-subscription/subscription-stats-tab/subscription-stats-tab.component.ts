@@ -12,6 +12,8 @@ import {
     FormControl,
     FormBuilder,
     Validators,
+    ValidatorFn,
+    AbstractControl
   } from '@angular/forms';
   import { isSameDate } from 'src/app/helper/utilities';
 
@@ -68,7 +70,7 @@ export class SubscriptionStatsTab implements OnInit {
         })
         this.reportedStatsForm = new FormGroup({
             reportedItems: new FormControl('', [this.invalidReportCsv]),     
-            overRiderNumber: new FormControl('',[Validators.pattern("^[0-9]*$")])           
+            overRiderNumber: new FormControl('',[this.maxReports(40)])  //set to targetcount         
           },
             { updateOn: 'blur' });
         this.invalidDateTimeObject = ""     
@@ -127,7 +129,7 @@ export class SubscriptionStatsTab implements OnInit {
   //Compare the initial reports data to the current and generate a list of the differences
   generateReportDiffernceList(currentVal = null){ 
     if(this.reportedStatsForm.controls['overRiderNumber'].value || currentVal == null){
-      return { override_total_reported: this.reportedStatsForm.controls['overRiderNumber'].value }
+      return { override_total_reported: parseInt(this.reportedStatsForm.controls['overRiderNumber'].value,10 )}
     }
     let removelist = []
     let addList = []
@@ -199,6 +201,8 @@ export class SubscriptionStatsTab implements OnInit {
     console.log("focus lost")
   }
   saveReports(addRemoveList){
+    addRemoveList['start_date'] = this.selectedCycle['start_date']
+    addRemoveList['end_date'] = this.selectedCycle['end_date']
     console.log(addRemoveList)
     this.subscriptionSvc.postReportValuesForSubscription(addRemoveList,this.subscription_uuid).subscribe(
       (data) => {
@@ -242,7 +246,8 @@ export class SubscriptionStatsTab implements OnInit {
     }else {
         ret_val.push({
           email: inputList[i].email,
-          date: inputList[i].date.toISOString()
+          date: inputList[i].date.toISOString(),
+          campaign_id: null
         })
       }
     }
@@ -305,6 +310,7 @@ export class SubscriptionStatsTab implements OnInit {
     this.timelineItems = items;
   }
 
+  
   invalidReportCsv(control: FormControl) {
     const exprEmail = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
@@ -345,6 +351,16 @@ export class SubscriptionStatsTab implements OnInit {
 
     return null;
   }
+
+  maxReports(max: number): ValidatorFn {
+    return (control: AbstractControl): { [key: string]: boolean } | null => {
+        if (control.value !== undefined && (isNaN(control.value) ||control.value > max)) {
+            return { 'ExcedesTargetCount': true };
+        }
+        return null;
+    };
+}
+
   public test(input){
     console.log(input)
   }
