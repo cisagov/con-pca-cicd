@@ -29,7 +29,7 @@ class SubscriptionEmailHistoryModel(Model):
     report_type = StringType()
     sent = DateTimeType()
     email_to = EmailType(required=True)
-    email_from = EmailType(required=True)
+    email_from = StringType()
     bbc = EmailType(required=True)
     manual = BooleanType(default=False)
 

@@ -131,6 +131,7 @@ def start_subscription(data=None, subscription_uuid=None):
             validate_subscription,
         )
     else:
+        subscription["email_report_history"] = []
         response = db.save_single(
             subscription, "subscription", SubscriptionModel, validate_subscription
         )
@@ -162,21 +163,19 @@ def start_subscription(data=None, subscription_uuid=None):
         "bbc": recipient_copy,
         "manual": False,
     }
-    if subscription_uuid:
-        subscription["email_report_history"].append(email_report)
-    else:
-        subscription["email_report_history"] = [email_report]
 
-    db.update_single(
-        response["subscription_uuid"],
-        {
-            "tasks": subscription["tasks"],
-            "email_report_history": subscription["email_report_history"],
-        },
-        "subscription",
-        SubscriptionModel,
-        validate_subscription,
+    subscription["email_report_history"].append(email_report)
+
+    serialized_data = SubscriptionPatchSerializer(subscription)
+    update_rep = db.update_single(
+        uuid=response["subscription_uuid"],
+        put_data=serialized_data.data,
+        collection="subscription",
+        model=SubscriptionModel,
+        validation_model=validate_subscription,
     )
+
+    logging.info(f"udpated rep={update_rep}")
 
     return response
 
@@ -301,16 +300,15 @@ def new_subscription_cycle(subscription_uuid):
         }
     )
 
-    db.update_single(
-        response["subscription_uuid"],
-        {
-            "tasks": subscription["tasks"],
-            "email_report_history": subscription["email_report_history"],
-        },
-        "subscription",
-        SubscriptionModel,
-        validate_subscription,
+    update_rep = db.update_single(
+        uuid=subscription["subscription_uuid"],
+        put_data=SubscriptionPatchSerializer(subscription).data,
+        collection="subscription",
+        model=SubscriptionModel,
+        validation_model=validate_subscription,
     )
+
+    logger.info(update_rep)
 
     return response
 
@@ -349,16 +347,16 @@ def stop_subscription(subscription):
     )
     recipient_copy = dhs_contact.get("email") if dhs_contact else None
 
-    subscription["email_report_history"].append(
-        {
-            "report_type": "Cycle Complete",
-            "sent": datetime.now(),
-            "email_to": subscription.get("primary_contact").get("email"),
-            "email_from": settings.SERVER_EMAIL,
-            "bbc": recipient_copy,
-            "manual": False,
-        }
-    )
+    email_report = {
+        "report_type": "Cycle Complete",
+        "sent": datetime.now(),
+        "email_to": subscription.get("primary_contact").get("email"),
+        "email_from": settings.SERVER_EMAIL,
+        "bbc": recipient_copy,
+        "manual": False,
+    }
+
+    subscription["email_report_history"].append(email_report)
 
     resp = db.update_single(
         uuid=subscription["subscription_uuid"],
@@ -367,6 +365,8 @@ def stop_subscription(subscription):
         model=SubscriptionModel,
         validation_model=validate_subscription,
     )
+
+    logging.info(f"udpated rep={resp}")
 
     return resp
 
