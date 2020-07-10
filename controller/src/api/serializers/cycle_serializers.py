@@ -17,7 +17,7 @@ class CycleEmailReportedSerializer(serializers.Serializer):
 
     campaign_id = serializers.IntegerField(required=True)
     email = serializers.EmailField(required=True)
-    datetime = serializers.DateTimeField(required=True)
+    date = serializers.DateTimeField(required=True)
 
 
 class CycleEmailReportedListSerializer(serializers.Serializer):
