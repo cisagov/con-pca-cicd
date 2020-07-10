@@ -20,6 +20,7 @@ import {
 import { MatTableDataSource } from '@angular/material/table';
 import { LayoutMainService } from 'src/app/services/layout-main.service';
 import { Subscription } from 'rxjs';
+import { isString } from 'util';
 
 @Component({
   selector: 'app-add-customer',
@@ -292,28 +293,45 @@ export class AddCustomerComponent implements OnInit, OnDestroy {
 
   pushContact() {
     if (this.contactFormGroup.valid) {
-      if (this.isEdit) {
-        this.removeContact(this.tempEditContact);
-        this.tempEditContact = null;
-        this.isEdit = false;
+      let isNotDuplicateEmail = true 
+      let duplicateEmailName = ""
+      //Check for existing contact with the same email
+      this.contacts.data.forEach(element => {
+        console.log("Checking emails")
+        if(element.email.toLocaleLowerCase() == String(this.contactFormGroup.controls['email'].value).toLocaleLowerCase() ){
+          console.log("SET FORM CONTROL INVALID HERE, EMAILS DUPLICATED")
+          isNotDuplicateEmail = false
+          duplicateEmailName = element.first_name + " " + element.last_name
+        }
+      });
+      if(isNotDuplicateEmail){
+        if (this.isEdit) {
+          this.removeContact(this.tempEditContact);
+          this.tempEditContact = null;
+          this.isEdit = false;
+        }
+        const contact: Contact = {
+          office_phone: this.contactFormGroup.controls['office_phone'].value,
+          mobile_phone: this.contactFormGroup.controls['mobile_phone'].value,
+          email: this.contactFormGroup.controls['email'].value,
+          first_name: this.contactFormGroup.controls['firstName'].value,
+          last_name: this.contactFormGroup.controls['lastName'].value,
+          title: this.contactFormGroup.controls['title'].value,
+          notes: this.contactFormGroup.controls['contactNotes'].value,
+          active: true
+        };
+        const previousContacts = this.contacts.data;
+        
+        previousContacts.push(contact);
+        this.contacts.data = previousContacts;
+        this.clearContact();
+      } else {
+        this.contactError = "A contact with this email already exists : " + duplicateEmailName
       }
-      const contact: Contact = {
-        office_phone: this.contactFormGroup.controls['office_phone'].value,
-        mobile_phone: this.contactFormGroup.controls['mobile_phone'].value,
-        email: this.contactFormGroup.controls['email'].value,
-        first_name: this.contactFormGroup.controls['firstName'].value,
-        last_name: this.contactFormGroup.controls['lastName'].value,
-        title: this.contactFormGroup.controls['title'].value,
-        notes: this.contactFormGroup.controls['contactNotes'].value,
-        active: true
-      };
-      const previousContacts = this.contacts.data;
-      previousContacts.push(contact);
-      this.contacts.data = previousContacts;
-      this.clearContact();
     } else {
       this.contactError = 'Fix required fields.';
     }
+    
   }
 
   editContact(contact: Contact) {

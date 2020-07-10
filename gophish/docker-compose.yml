@@ -14,6 +14,8 @@ services:
       - mysql
     networks:
       - backend
+    env_file:
+      - .env
   mysql:
     image: mysql:latest
     container_name: pca-gophish-db

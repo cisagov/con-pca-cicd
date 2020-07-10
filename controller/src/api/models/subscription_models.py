@@ -19,6 +19,21 @@ from database.repository.types import (
 )
 
 
+class SubscriptionEmailHistoryModel(Model):
+    """
+    This is the Email History Model.
+
+    This is each entry in the email history list.
+    """
+
+    report_type = StringType()
+    sent = DateTimeType()
+    email_to = EmailType(required=True)
+    email_from = StringType()
+    bbc = EmailType(required=True)
+    manual = BooleanType(default=False)
+
+
 class SubscriptionTargetModel(Model):
     """
     This is the Target Model.
@@ -222,6 +237,7 @@ class SubscriptionModel(Model):
     archived = BooleanType(default=False)
     manually_stopped = BooleanType(default=False)
     cycles = ListType(ModelType(CycleModel))
+    email_report_history = ListType(ModelType(SubscriptionEmailHistoryModel))
     # db data tracking added below
     created_by = StringType()
     cb_timestamp = DateTimeType()

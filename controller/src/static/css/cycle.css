@@ -279,7 +279,7 @@ ul {
   padding: 20px 30px;
 }
 
-#yearTrendGraph, #levelGraphTitle, .timeIntervalGraph, .timeComplexityGraph {
+#percentageTrendGraph, #clickedVsReportedGraph, #yearTrendGraph, #levelGraphTitle, .timeIntervalGraph, .timeComplexityGraph {
   border: 1px solid #FDC010;
   border-radius: 10px;
   color: #015596;

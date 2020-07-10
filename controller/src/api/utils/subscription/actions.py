@@ -6,6 +6,7 @@ import logging
 
 # Third-Party Libraries
 from api.manager import CampaignManager
+from api.models.dhs_models import DHSContactModel, validate_dhs_contact
 from api.models.subscription_models import SubscriptionModel, validate_subscription
 from api.serializers.subscriptions_serializers import SubscriptionPatchSerializer
 from api.utils import db_utils as db
@@ -13,13 +14,13 @@ from api.utils.customer.customers import get_customer
 from api.utils.subscription.campaigns import generate_campaigns, stop_campaign
 from api.utils.subscription.subscriptions import (
     calculate_subscription_start_end_date,
+    create_scheduled_cycle_tasks,
     create_scheduled_email_tasks,
     create_subscription_name,
     get_subscription,
     get_subscription_cycles,
     get_subscription_status,
     send_start_notification,
-    create_scheduled_cycle_tasks,
     send_stop_notification,
 )
 from api.utils.subscription.targets import batch_targets
@@ -27,7 +28,6 @@ from api.utils.subscription.template_selector import personalize_template_batch
 from api.utils.template.templates import deception_level
 from celery.task.control import revoke
 from django.conf import settings
-
 
 logger = logging.getLogger(__name__)
 
@@ -108,8 +108,6 @@ def start_subscription(data=None, subscription_uuid=None):
     # landing_template_list = get_list({"template_type": "Landing"}, "template", TemplateModel, validate_template)
     landing_page = "Phished"
 
-    print("ASDASDASDASDASD")
-    print(sub_levels)
     subscription["gophish_campaign_list"] = generate_campaigns(
         subscription, landing_page, sub_levels
     )
@@ -133,6 +131,7 @@ def start_subscription(data=None, subscription_uuid=None):
             validate_subscription,
         )
     else:
+        subscription["email_report_history"] = []
         response = db.save_single(
             subscription, "subscription", SubscriptionModel, validate_subscription
         )
@@ -148,15 +147,35 @@ def start_subscription(data=None, subscription_uuid=None):
     else:
         subscription["tasks"] = []
 
-    db.update_single(
-        response["subscription_uuid"],
-        {"tasks": subscription["tasks"]},
-        "subscription",
-        SubscriptionModel,
-        validate_subscription,
+    send_start_notification(subscription, start_date)
+
+    dhs_contact_uuid = subscription.get("dhs_contact_uuid")
+    dhs_contact = db.get_single(
+        dhs_contact_uuid, "dhs_contact", DHSContactModel, validate_dhs_contact
+    )
+    recipient_copy = dhs_contact.get("email") if dhs_contact else None
+
+    email_report = {
+        "report_type": "Cycle Start Notification",
+        "sent": datetime.now(),
+        "email_to": subscription.get("primary_contact").get("email"),
+        "email_from": settings.SERVER_EMAIL,
+        "bbc": recipient_copy,
+        "manual": False,
+    }
+
+    subscription["email_report_history"].append(email_report)
+
+    serialized_data = SubscriptionPatchSerializer(subscription)
+    update_rep = db.update_single(
+        uuid=response["subscription_uuid"],
+        put_data=serialized_data.data,
+        collection="subscription",
+        model=SubscriptionModel,
+        validation_model=validate_subscription,
     )
 
-    send_start_notification(subscription, start_date)
+    logging.info(f"udpated rep={update_rep}")
 
     return response
 
@@ -175,7 +194,7 @@ def new_subscription_cycle(subscription_uuid):
     subscription = get_subscription(subscription_uuid)
 
     # Stop Campaigns
-    updated_campaigns = list(map(stop_campaign, subscription["gophish_campaign_list"]))
+    list(map(stop_campaign, subscription["gophish_campaign_list"]))
 
     # calculate start and end date to subscription
     start_date, end_date = calculate_subscription_start_end_date(
@@ -229,7 +248,7 @@ def new_subscription_cycle(subscription_uuid):
     # Get all Landing pages or default
     # This is currently selecting the default page on creation.
     # landing_template_list = get_list({"template_type": "Landing"}, "template", TemplateModel, validate_template)
-    landing_page = "Phished"
+    # landing_page = "Phished"
 
     # subscription["gophish_campaign_list"] = generate_campaigns(
     #     subscription, landing_page, sub_levels
@@ -262,15 +281,34 @@ def new_subscription_cycle(subscription_uuid):
     else:
         subscription["tasks"] = []
 
-    db.update_single(
-        response["subscription_uuid"],
-        {"tasks": subscription["tasks"]},
-        "subscription",
-        SubscriptionModel,
-        validate_subscription,
+    send_start_notification(subscription, start_date)
+
+    dhs_contact_uuid = subscription.get("dhs_contact_uuid")
+    dhs_contact = db.get_single(
+        dhs_contact_uuid, "dhs_contact", DHSContactModel, validate_dhs_contact
+    )
+    recipient_copy = dhs_contact.get("email") if dhs_contact else None
+
+    subscription["email_report_history"].append(
+        {
+            "report_type": "Cycle Start Notification",
+            "sent": datetime.now(),
+            "email_to": subscription.get("primary_contact").get("email"),
+            "email_from": settings.SERVER_EMAIL,
+            "bbc": recipient_copy,
+            "manual": False,
+        }
     )
 
-    send_start_notification(subscription, start_date)
+    update_rep = db.update_single(
+        uuid=subscription["subscription_uuid"],
+        put_data=SubscriptionPatchSerializer(subscription).data,
+        collection="subscription",
+        model=SubscriptionModel,
+        validation_model=validate_subscription,
+    )
+
+    logger.info(update_rep)
 
     return response
 
@@ -281,7 +319,6 @@ def stop_subscription(subscription):
 
     Returns updated subscription.
     """
-
     # Stop Campaigns
     updated_campaigns = list(map(stop_campaign, subscription["gophish_campaign_list"]))
 
@@ -301,6 +338,26 @@ def stop_subscription(subscription):
     subscription["manually_stopped"] = True
 
     subscription["status"] = "stopped"
+
+    send_stop_notification(subscription)
+
+    dhs_contact_uuid = subscription.get("dhs_contact_uuid")
+    dhs_contact = db.get_single(
+        dhs_contact_uuid, "dhs_contact", DHSContactModel, validate_dhs_contact
+    )
+    recipient_copy = dhs_contact.get("email") if dhs_contact else None
+
+    email_report = {
+        "report_type": "Cycle Complete",
+        "sent": datetime.now(),
+        "email_to": subscription.get("primary_contact").get("email"),
+        "email_from": settings.SERVER_EMAIL,
+        "bbc": recipient_copy,
+        "manual": False,
+    }
+
+    subscription["email_report_history"].append(email_report)
+
     resp = db.update_single(
         uuid=subscription["subscription_uuid"],
         put_data=SubscriptionPatchSerializer(subscription).data,
@@ -309,7 +366,7 @@ def stop_subscription(subscription):
         validation_model=validate_subscription,
     )
 
-    send_stop_notification(subscription)
+    logging.info(f"udpated rep={resp}")
 
     return resp
 
