@@ -122,8 +122,8 @@ export class RecommendationsManagerComponent implements OnInit {
      * Returns a Recommendation model initialized from a provided formgroup
      * @param decep_form
      */
-    getRecommendationsModelFromForm(decep_form: FormGroup) {
-        let formRecommendations = new Recommendations(decep_form.value);
+    getRecommendationsModelFromForm(rec_form: FormGroup) {
+        let formRecommendations = new Recommendations(rec_form.value);
         let saveRecommendations = new Recommendations();
         saveRecommendations.appearance = {
             grammar: formRecommendations.grammar,
