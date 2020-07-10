@@ -201,7 +201,7 @@ class MonthlyReportsEmailView(APIView):
         )
         recipient_copy = dhs_contact.get("email") if dhs_contact else None
 
-        subscription["email_report_history"].appennd(
+        subscription["email_report_history"].append(
             {
                 "report_type": "Monthly",
                 "sent": datetime.datetime.now(),
@@ -254,7 +254,7 @@ class CycleReportsEmailView(APIView):
         )
         recipient_copy = dhs_contact.get("email") if dhs_contact else None
 
-        subscription["email_report_history"].appennd(
+        subscription["email_report_history"].append(
             {
                 "report_type": "Cycle",
                 "sent": datetime.datetime.now(),
@@ -305,7 +305,7 @@ class YearlyReportsEmailView(APIView):
         # )
         # recipient_copy = dhs_contact.get("email") if dhs_contact else None
 
-        # subscription["email_report_history"].appennd({
+        # subscription["email_report_history"].append({
         #        "report_type": "Annual Report",
         #        "sent": datetime.datetime.now(),
         #        "email_to": subscription.get("primary_contact").get("email"),
