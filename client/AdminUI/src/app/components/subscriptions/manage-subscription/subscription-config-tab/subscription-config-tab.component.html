@@ -1,5 +1,4 @@
-
-<div [className]="pageMode == 'CREATE' ? 'inactive' : 'active_subscription'" > 
+<div [className]="pageMode == 'CREATE' ? 'inactive' : 'active_subscription'">
     <form [formGroup]="subscribeForm">
         <div class="d-flex flex-column mb-5">
             <h2>Customer/Organization</h2>
@@ -63,8 +62,7 @@
             <mat-label class="h6">Start Date</mat-label>
             <div class="mb-4">
                 <mat-form-field appearance="outline">
-                    <input matInput formControlName="startDate"
-                    [matDatepicker]="picker" [min]="startAt">
+                    <input matInput formControlName="startDate" [matDatepicker]="picker" [min]="startAt">
                     <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                     <mat-datepicker #picker [startAt]="startAt"></mat-datepicker>
                     <mat-error *ngIf="submitted && f.startDate.errors?.required" class="invalid-feedback">
@@ -120,7 +118,7 @@
                     A Sending Profile is required, but none are currently configured.
                     Create one or more Sending Profiles before proceeding.
                 </div>
-            </div>            
+            </div>
 
             <div class="mb-3">
                 <div>
@@ -134,15 +132,18 @@
                 <div class="text-muted"><em>Format: email, first name, last name, position</em></div>
             </div>
 
-            <button mat-raised-button color="primary" class="mb-3" *ngIf="f.csvText?.enabled"
-                (click)="openFileBrowser($event)">
-                Upload Email Targets List <i class="fa fa-upload"></i>
-            </button>
-            <input id="csvUpload" type="file" accept=".csv,.xls,.xlsx" (change)="fileSelect($event)" class="d-none">
+            <div>
+                <button mat-raised-button color="primary" class="mb-3" *ngIf="f.csvText?.enabled"
+                    (click)="openFileBrowser($event)">
+                    Upload Email Targets List <i class="fa fa-upload"></i>
+                </button>
+                <input id="csvUpload" type="file" accept=".csv,.xls,.xlsx" (change)="fileSelect($event)" class="d-none">
 
-            <mat-checkbox formControlName="removeDuplicateTargets" *ngIf="f.csvText?.enabled">
-                <mat-label>Automatically remove duplicate emails</mat-label>
-            </mat-checkbox>
+                <button mat-raised-button color="primary" class="mb-3" *ngIf="f.csvText?.enabled"
+                    (click)="evaluateTargetList(true)">
+                    Remove Duplicate Emails
+                </button>
+            </div>
 
             <mat-form-field class="w-100 flex-grow-1" appearance="outline">
                 <mat-label>Target Emails</mat-label>

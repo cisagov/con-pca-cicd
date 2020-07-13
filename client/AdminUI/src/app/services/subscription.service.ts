@@ -18,8 +18,6 @@ export class SubscriptionService {
 
   cameFromSubscription: boolean;
 
-  removeDupeTargets = true;
-
   /**
    *
    */
