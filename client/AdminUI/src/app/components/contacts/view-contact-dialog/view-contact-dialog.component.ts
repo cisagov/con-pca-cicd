@@ -2,11 +2,13 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { CustomerService } from 'src/app/services/customer.service';
+import { SubscriptionService } from 'src/app/services/subscription.service';
 import {
   ICustomerContact,
   Customer,
   Contact
 } from 'src/app/models/customer.model';
+import { Subscription } from 'src/app/models/subscription.model';
 
 @Component({
   selector: 'app-view-contact-dialog',
@@ -26,13 +28,16 @@ export class ViewContactDialogComponent implements OnInit {
     notes: new FormControl(),
     active: new FormControl()
   });
+  contactSubs: Subscription[];
   customer: Customer;
+  subscription: Subscription;
   initial: ICustomerContact;
   data: ICustomerContact;
 
   constructor(
     public dialog_ref: MatDialogRef<ViewContactDialogComponent>,
     public customer_service: CustomerService,
+    private subscription_service: SubscriptionService,
     @Inject(MAT_DIALOG_DATA) data
   ) {
     this.data = data;
@@ -73,9 +78,43 @@ export class ViewContactDialogComponent implements OnInit {
 
   removeContact(): void {
     const index = this.getContactIndex();
+    this.removeSubsContact(index);
     if (index > -1) {
       this.customer.contact_list.splice(index, 1);
     }
+  }
+
+  removeSubsContact(index: number): void {
+    // Get all subs with customer and primary contact
+    let primary_contact = this.customer.contact_list[index];
+    console.log('calling get subs');
+    console.log(this.customer.customer_uuid);
+    console.log(primary_contact);
+    this.subscription_service
+      .getPrimaryContactSubscriptions(
+        this.customer.customer_uuid,
+        primary_contact
+      )
+      .subscribe((subscriptions: Subscription[]) => {
+        console.log(subscriptions);
+        this.contactSubs = subscriptions as Subscription[];
+        console.log('set subs');
+        console.log(subscriptions);
+        console.log(this.contactSubs);
+        console.log(subscriptions.length);
+        console.log(this.contactSubs.length);
+        if (this.contactSubs.length > 0) {
+          // Check if there are any subs with contact, if so, remove them from the sub.
+          console.log(this.contactSubs);
+          for (let index in this.contactSubs) {
+            console.log(this.contactSubs[index]);
+            let contsub: Subscription = this.contactSubs[index];
+            this.subscription_service
+              .changePrimaryContact(contsub.subscription_uuid, null)
+              .subscribe();
+          }
+        }
+      });
   }
 
   onCancelExitClick(): void {

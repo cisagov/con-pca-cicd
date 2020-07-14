@@ -55,8 +55,9 @@ export class SubscriptionService {
     customer_uuid: string,
     contact: Contact
   ) {
+    const c = { primary_contact: contact };
     let url = `${this.settingsService.settings.apiUrl}/api/v1/subscription/customer/${customer_uuid}/`;
-    return this.http.post(url, contact);
+    return this.http.post(url, c);
   }
 
   /**
