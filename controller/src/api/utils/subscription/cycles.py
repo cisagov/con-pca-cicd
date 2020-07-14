@@ -60,7 +60,7 @@ def get_reported_emails(subscription):
     return master_list, subscription
 
 
-def delete_reported_emails(gophish_campaign_list, delete_list):
+def delete_reported_emails(subscription, data):
     """Delete Reported Emails.
 
     Args:
@@ -70,9 +70,20 @@ def delete_reported_emails(gophish_campaign_list, delete_list):
     Returns:
         list: updated gophish campaign list
     """
+    cycle = get_cycle(subscription, data)
+    gophish_campaign_list = subscription["gophish_campaign_list"]
+
+    if cycle is None:
+        return gophish_campaign_list
+    campaigns_in_cycle = cycle["campaigns_in_cycle"]
+    delete_list = data["delete_list"]
     delete_list_campaigns = [email["campaign_id"] for email in delete_list]
+
     for campaign in gophish_campaign_list:
-        if campaign["campaign_id"] in delete_list_campaigns:
+        if (
+            campaign["campaign_id"] in delete_list_campaigns
+            and campaign["campaign_id"] in campaigns_in_cycle
+        ):
             item_to_delete = next(
                 (
                     item
@@ -91,7 +102,7 @@ def delete_reported_emails(gophish_campaign_list, delete_list):
     return gophish_campaign_list
 
 
-def update_reported_emails(gophish_campaign_list, update_list):
+def update_reported_emails(subscription, data):
     """Update Reported Emails.
 
     Args:
@@ -101,7 +112,17 @@ def update_reported_emails(gophish_campaign_list, update_list):
     Returns:
         list: updated gophish campaign list
     """
+    cycle = get_cycle(subscription, data)
+    gophish_campaign_list = subscription["gophish_campaign_list"]
+
+    if cycle is None:
+        return gophish_campaign_list
+
+    campaigns_in_cycle = cycle["campaigns_in_cycle"]
+
+    update_list = data["update_list"]
     update_list_campaigns = add_email_reports = []
+
     for email in update_list:
         if email["campaign_id"] is not None:
             update_list_campaigns.append(email)
@@ -110,7 +131,10 @@ def update_reported_emails(gophish_campaign_list, update_list):
 
     for campaign in gophish_campaign_list:
         campaign_targets = [target["email"] for target in campaign["target_email_list"]]
-        if campaign["campaign_id"] in update_list_campaigns:
+        if (
+            campaign["campaign_id"] in update_list_campaigns
+            and campaign["campaign_id"] in campaigns_in_cycle
+        ):
             item_to_update = next(
                 (
                     item
@@ -161,6 +185,23 @@ def override_total_reported(subscription, cycle_data_override):
     Returns:
         subscription: subscription object
     """
+    cycle = get_cycle(subscription, cycle_data_override)
+
+    if cycle is None:
+        return subscription
+
+    if cycle_data_override["override_total_reported"] is None:
+        cycle["override_total_reported"] = -1
+    else:
+        cycle["override_total_reported"] = cycle_data_override[
+            "override_total_reported"
+        ]
+
+    return subscription
+
+
+def get_cycle(subscription, cycle_data_override):
+    """Get Cycle."""
     cycle_start = cycle_data_override["start_date"].split("T")[0]
     cycle_end = cycle_data_override["end_date"].split("T")[0]
     cycle = next(
@@ -173,9 +214,4 @@ def override_total_reported(subscription, cycle_data_override):
         None,
     )
 
-    if cycle is None:
-        return subscription
-
-    cycle["override_total_reported"] = cycle_data_override["override_total_reported"]
-
-    return subscription
+    return cycle
