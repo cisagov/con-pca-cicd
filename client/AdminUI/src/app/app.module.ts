@@ -68,6 +68,9 @@ import { DhsPocComponent } from './components/user-admin/dhs-poc/dhs-poc.compone
 import { DhsPocDetailComponent } from './components/user-admin/dhs-poc/dhs-poc-detail.component';
 import { InputTrimDirective } from './helper/input-trim.directive';
 import { RecommendationsService } from './services/recommendations.service';
+import { MonthlyComponent } from './components/reports/monthly/monthly.component';
+import { CycleComponent } from './components/reports/cycle/cycle.component';
+import { YearlyComponent } from './components/reports/yearly/yearly.component';
 
 export function app_Init(settingsHttpService: SettingsHttpService) {
   return () => settingsHttpService.initializeApp()
@@ -118,6 +121,9 @@ export function app_Init(settingsHttpService: SettingsHttpService) {
     DhsPocComponent,
     DhsPocDetailComponent,
     InputTrimDirective,
+    MonthlyComponent,
+    CycleComponent,
+    YearlyComponent,
   ],
   imports: [
     BrowserModule,
