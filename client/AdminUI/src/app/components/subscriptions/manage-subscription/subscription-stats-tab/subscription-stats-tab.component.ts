@@ -38,12 +38,20 @@ export class SubscriptionStatsTab implements OnInit {
   reportsData: any;
   activeCycleReports: any;
   hasOverrideValue = false;
+  validationErrors = {
+    invalidEmailFormat : "",
+    invalidDateFormat : "",
+    emailNotATarget : "",
+    duplicateEmail : ""
+  };
+  reportListErrorLineNum = 0
 
   constructor(
     public subscriptionSvc: SubscriptionService,
     public datePipe: DatePipe
   ) {
     this.subscription = new Subscription();
+    this.initValidationList()
   }
 
   ngOnInit() {
@@ -54,14 +62,12 @@ export class SubscriptionStatsTab implements OnInit {
       },
         { updateOn: 'blur' });
     this.invalidDateTimeObject = "" 
-
     this.subscriptionSvc.getSubBehaviorSubject().subscribe(data => {
         this.subscription = data
         if(data.subscription_uuid && !this.subscription_uuid){
           this.subscription_uuid = data.subscription_uuid
           this.subscriptionSvc.getReportValuesForSubscription(this.subscription_uuid)
             .subscribe((data) => {
-              console.log(data)
               this.reportsData = data
               this.setReportsForCycle()    
               this.reportedStatsForm.controls["overRiderNumber"].setValidators([this.maxReports(this.subscription.target_email_list.length)]) 
@@ -70,7 +76,6 @@ export class SubscriptionStatsTab implements OnInit {
                   [this.reportListValidator(this.targetListSimple(this.subscription.target_email_list))]
                   )
               this.reportedStatsForm.updateValueAndValidity()
-              console.log(this.subscription)       
             },
             (error) => {
               //Error retreiving reports for cycle data
@@ -82,7 +87,6 @@ export class SubscriptionStatsTab implements OnInit {
           this.subscription = data
           //@ts-ignore
           this.selectedCycle = this.subscription.cycles[0]
-          console.log
         }
       })    
   }
@@ -149,7 +153,6 @@ export class SubscriptionStatsTab implements OnInit {
         });
       }
     });
-    console.log(reportVals);
     return reportVals;
   }
 
@@ -178,15 +181,12 @@ export class SubscriptionStatsTab implements OnInit {
     let removelist = [];
     let addList = [];
     let previousVals = this.activeCycleReports;
-    console.log(previousVals.length);
-    console.log(currentVal.length);
     if (currentVal.length == 0 && previousVals.length != 0) {
       //All items deleted
       removelist = previousVals;
     }
     if (previousVals.length == 0 && currentVal.length != 0) {
       //All items new
-      console.log('New vals on empty');
       addList = currentVal;
     }
     //Generate remove list
@@ -235,29 +235,26 @@ export class SubscriptionStatsTab implements OnInit {
 
   focusOffReportList() {
     this.reportedStatsForm.updateValueAndValidity();
+    this.getValidationMessage()
     if (this.reportedStatsForm.valid) {
       let formatedReportInput = this.formatCSVtoReports();
       let addRemoveLists = this.generateReportDiffernceList(
         formatedReportInput
       );
-      console.log(addRemoveLists);
       this.saveReports(addRemoveLists);
     }
-    console.log('focus lost');
   }
   saveReports(addRemoveList){
     if(this.reportedStatsForm.valid){
       addRemoveList['start_date'] = this.selectedCycle['start_date']
       addRemoveList['end_date'] = this.selectedCycle['end_date']
-      console.log(addRemoveList)
       this.subscriptionSvc.postReportValuesForSubscription(addRemoveList,this.subscription_uuid).subscribe(
         (data) => {
-          console.log(data)
           this.reportsData = data
           //this.setReportsForCycle() 
           this.setReportsForCycle(this.selectedCycle)
         },(failed) => {
-          console.log("FAILED")
+          console.log("Failure To Save Reported Emails List")
           console.log(failed)
         }
       )
@@ -267,7 +264,6 @@ export class SubscriptionStatsTab implements OnInit {
   focusOffOverrideVal(){
     let val = this.reportedStatsForm.controls['overRiderNumber'].value
     let saveVal = this.generateReportDiffernceList()
-    console.log(saveVal)
     if(val){
       if(val >= 0){
         this.hasOverrideValue = true
@@ -282,7 +278,6 @@ export class SubscriptionStatsTab implements OnInit {
   }
 
   setManualReportDisabledStatus(){
-    console.log("Test")
     if(this.hasOverrideValue == false){
       this.reportedStatsForm.controls['reportedItems'].enable();
     } else {
@@ -312,10 +307,7 @@ export class SubscriptionStatsTab implements OnInit {
   }
 
   cycleChange(event) {
-    console.log('cycle period changed, select new values for reporting');
-    console.log(event.value);
     this.setReportsForCycle(event.value);
-    console.log(this.subscription);
   }
 
   buildSubscriptionTimeline(s: Subscription) {
@@ -393,7 +385,6 @@ export class SubscriptionStatsTab implements OnInit {
         }
       }
     }
-    console.log(emails);
     for (let i = 0; i < emails.length; i++) {
       for (let h = i; h < emails.length; h++) {
         if (emails[i] == emails[h] && i != h) {
@@ -408,7 +399,7 @@ export class SubscriptionStatsTab implements OnInit {
   maxReports(max: number): ValidatorFn {
     return (control: AbstractControl): { [key: string]: boolean } | null => {
       if (control.value !== undefined && (isNaN(control.value) ||control.value > max)) {
-            return { 'ExcedesTargetCount': true };
+            return { ExcedesTargetCount: true };
         }
         return null;
     };
@@ -423,36 +414,37 @@ export class SubscriptionStatsTab implements OnInit {
       const lines = control.value.split('\n');
       let emails = []
       let matchFound = false
+      this.reportListErrorLineNum = 1
       for (const line of lines) {
-        
-        const parts = line.split(',');
-        if (parts.length !== 2) {
-          return { invalidTargetCsv: true };
-        }
-  
-        if (!!parts[0] && !exprEmail.test(String(parts[0]).toLowerCase())) {
-          return { invalidEmailFormat: true };
-        }
-        emails.push(parts[0])
-        for(let i = 0; i < targetList.length;i++){
-          if(targetList[i] == parts[0]){
-            console.log("match")
-            matchFound = true
+        if(line){        
+          const parts = line.split(',');
+          if (parts.length !== 2) {
+            return { invalidTargetCsv: true };
+          }
+    
+          if (!!parts[0] && !exprEmail.test(String(parts[0]).toLowerCase().trim())) {
+            return { invalidEmailFormat: parts[0] };
+          }
+          emails.push(parts[0])
+          for(let i = 0; i < targetList.length;i++){
+            if(targetList[i] == parts[0].trim()){
+              matchFound = true
+            }
+          }
+          if(!matchFound){
+            return { emailNotATarget: parts[0] }
+          }
+          matchFound = false
+    
+          if(!!parts[1]){
+            let date = new Date(parts[1])
+            if(isNaN(date.valueOf())){
+              return { invalidDateFormat: parts[1] }     
+            }   
           }
         }
-        if(!matchFound){
-          return { emailNotATarget: parts[0] }
-        }
-        matchFound = false
-  
-        if(!!parts[1]){
-          let date = new Date(parts[1])
-          if(isNaN(date.valueOf())){
-            return { invalidDateFormat: parts[1] }     
-          }   
-        }
+        this.reportListErrorLineNum++
       }
-      console.log(emails)
       for(let i = 0; i < emails.length; i++){
         for(let h = i; h < emails.length; h++){
           if(emails[i] == emails[h] && i != h){
@@ -473,18 +465,15 @@ export class SubscriptionStatsTab implements OnInit {
     });
     return retVal
   }
-  getValidationMessage(keyVal){
+  getValidationMessage(){
+    this.initValidationList()
     // const errors = this.reportedStatsForm.controls[control].errors;
     Object.keys(this.reportedStatsForm.controls).forEach(key => {
       const controlErrors: ValidationErrors = this.reportedStatsForm.get(key).errors;
       if (controlErrors != null) {
-        let retVal = controlErrors[keyVal]
-        console.log(controlErrors[keyVal])
-        return String(controlErrors[keyVal])
-        if(retVal){
-          console.log(retVal)
-          return retVal
-        }
+        Object.keys(controlErrors).forEach(element => {
+          this.validationErrors[element] = controlErrors[element]
+        });
       }
     })
   }
@@ -492,8 +481,13 @@ export class SubscriptionStatsTab implements OnInit {
   
   
 
-  public test(input) {
-    console.log(input);
+  public initValidationList(){
+    this.validationErrors = {
+      invalidEmailFormat : "",
+      invalidDateFormat : "",
+      emailNotATarget : "",
+      duplicateEmail : ""
+    }
   }
   get f() {
     return this.reportedStatsForm.controls;

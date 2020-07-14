@@ -242,50 +242,50 @@ export class SubscriptionService {
     return this.http.post(url,data)
   }
   public getSusbcriptionStatusEmailsSent(subscription_uuid){
-    const url = `${this.settingsService.settings.apiUrl}/api/v1/cyclereports/${subscription_uuid}/`;
-    // return this.http.get(url)
-    return [
-        {
-            "report_type": "Cycle Complete",
-            "sent": "2020-07-09T21:34:00.769Z",
-            "email_to": "bob@example.com",
-            "email_from": "fakesupport@gov.com",
-            "bcc": "steve@dhs.gov",
-            "manual": false,
-        },
-        {
-            "report_type": "Monthly Sent",
-            "sent": "2020-08-09T21:34:00.769Z",
-            "email_to": "bob@example.com",
-            "email_from": "fakesupport@gov.com",
-            "bcc": "steve@dhs.gov",
-            "manual": false,
-        },
-        {
-            "report_type": "Monthly Sent",
-            "sent": "2020-09-09T21:34:00.769Z",
-            "email_to": "bob@example.com",
-            "email_from": "fakesupport@gov.com",
-            "bcc": "steve@dhs.gov",
-            "manual": false,
-        },
-        {
-            "report_type": "Monthly Sent",
-            "sent": "2020-10-09T21:34:00.769Z",
-            "email_to": "bob@example.com",
-            "email_from": "fakesupport@gov.com",
-            "bcc": "steve@dhs.gov",
-            "manual": false,
-        },
-        {
-            "report_type": "Cycle Complete",
-            "sent": "2020-11-09T21:34:00.769Z",
-            "email_to": "bob@example.com",
-            "email_from": "fakesupport@gov.com",
-            "bcc": "steve@dhs.gov",
-            "manual": false,
-        }
-      ]
+    const url = `${this.settingsService.settings.apiUrl}/api/v1/cycleemailreported/${subscription_uuid}/`;
+    return this.http.get(url)
+    // return [
+    //     {
+    //         "report_type": "Cycle Complete",
+    //         "sent": "2020-07-09T21:34:00.769Z",
+    //         "email_to": "bob@example.com",
+    //         "email_from": "fakesupport@gov.com",
+    //         "bcc": "steve@dhs.gov",
+    //         "manual": false,
+    //     },
+    //     {
+    //         "report_type": "Monthly Sent",
+    //         "sent": "2020-08-09T21:34:00.769Z",
+    //         "email_to": "bob@example.com",
+    //         "email_from": "fakesupport@gov.com",
+    //         "bcc": "steve@dhs.gov",
+    //         "manual": false,
+    //     },
+    //     {
+    //         "report_type": "Monthly Sent",
+    //         "sent": "2020-09-09T21:34:00.769Z",
+    //         "email_to": "bob@example.com",
+    //         "email_from": "fakesupport@gov.com",
+    //         "bcc": "steve@dhs.gov",
+    //         "manual": false,
+    //     },
+    //     {
+    //         "report_type": "Monthly Sent",
+    //         "sent": "2020-10-09T21:34:00.769Z",
+    //         "email_to": "bob@example.com",
+    //         "email_from": "fakesupport@gov.com",
+    //         "bcc": "steve@dhs.gov",
+    //         "manual": false,
+    //     },
+    //     {
+    //         "report_type": "Cycle Complete",
+    //         "sent": "2020-11-09T21:34:00.769Z",
+    //         "email_to": "bob@example.com",
+    //         "email_from": "fakesupport@gov.com",
+    //         "bcc": "steve@dhs.gov",
+    //         "manual": false,
+    //     }
+    //   ]
   }
 
 }

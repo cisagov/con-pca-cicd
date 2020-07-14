@@ -39,9 +39,10 @@
             individual records can not be provided.
         </div>
         <mat-form-field class="w-100" appearance="outline">
+            <mat-label>Report Override Value</mat-label>
             <input matInput formControlName="overRiderNumber" type="number" trim="blur" (focusout)="focusOffOverrideVal()">
             <mat-error *ngIf="f.overRiderNumber.hasError('ExcedesTargetCount')" class="invalid-feedback">
-                Value can not excede the total numberof targets
+                Value can not excede the total number of targets
             </mat-error>
         </mat-form-field>
 
@@ -51,19 +52,19 @@
             <textarea matInput autosize formControlName="reportedItems" (focusout)="focusOffReportList()">
                 </textarea>
             <mat-error *ngIf="f.reportedItems.hasError('invalidEmailFormat')" class="invalid-feedback">
-                One or more email addresses are invalid
+                Email address not in useable format : {{validationErrors.invalidEmailFormat}}
             </mat-error>            
             <mat-error *ngIf="f.reportedItems.hasError('invalidDateFormat')" class="invalid-feedback">
-                Invalid Date Time {{invalidDateTimeObject}}
+                Invalid Date Time : {{validationErrors.invalidDateFormat}}
             </mat-error>            
             <mat-error *ngIf="f.reportedItems.hasError('emailNotATarget')" class="invalid-feedback">
-                Email not assigned to subscription {{getValidationMessage("emailNotATarget")}}
+                Email not in target users list : {{validationErrors.emailNotATarget}}
             </mat-error>
             <mat-error *ngIf=" f.reportedItems.hasError('invalidTargetCsv')" class="invalid-feedback">
-                All target lines must have all parts
+                All target lines must have all parts: Line {{reportListErrorLineNum}}
             </mat-error>
             <mat-error *ngIf=" f.reportedItems.hasError('duplicateEmail')" class="invalid-feedback">
-                Cant not contain duplicate emails
+                Cant not contain duplicate emails: {{validationErrors.duplicateEmail}}
             </mat-error>
         </mat-form-field>
     </mat-card>
