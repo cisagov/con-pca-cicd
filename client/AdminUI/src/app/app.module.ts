@@ -28,6 +28,7 @@ import { TemplateManagerComponent } from './components/template-manager/template
 import { TemplateManagerService } from './services/template-manager.service';
 import { RecommendationsManagerComponent } from './components/recommendations/recommendations-manager/recommendations-manager.component'
 import { ListFilterPipe } from './pipes/list-filter.pipe';
+import { NullishCoalescePipe } from './pipes/nullish-coalesce.pipe';
 import { AutosizeModule } from 'node_modules/ngx-autosize';
 import { AddCustomerComponent } from './components/customer/add-customer/add-customer.component';
 import { SubscriptionService } from './services/subscription.service';
@@ -73,7 +74,7 @@ import { CycleComponent } from './components/reports/cycle/cycle.component';
 import { YearlyComponent } from './components/reports/yearly/yearly.component';
 
 export function app_Init(settingsHttpService: SettingsHttpService) {
-  return () => settingsHttpService.initializeApp()
+  return () => settingsHttpService.initializeApp();
 }
 
 
@@ -93,6 +94,7 @@ export function app_Init(settingsHttpService: SettingsHttpService) {
     TemplateManagerComponent,
     RecommendationsManagerComponent,
     ListFilterPipe,
+    NullishCoalescePipe,
     ContactsComponent,
     DomainsComponent,
     TemplatesPageComponent,

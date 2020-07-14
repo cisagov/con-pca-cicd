@@ -28,11 +28,11 @@ import { YearlyComponent } from './components/reports/yearly/yearly.component';
 
 const routes: Routes = [
   {
-    path:'reports',
+    path: 'reports',
     component: LayoutBlankComponent,
     children: [
       { path: 'monthly', component: MonthlyComponent },
-      { path: 'cycle', component: CycleComponent }, 
+      { path: 'cycle', component: CycleComponent },
       { path: 'yearly', component: YearlyComponent }
     ]
   },
