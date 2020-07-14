@@ -330,10 +330,7 @@ class YearlyReportsEmailView(APIView):
 # causes some issues when sending accept headers other than application/json
 def monthly_reports_pdf_view(request, subscription_uuid):
     """Monthly_reports_pdf_view."""
-    if settings.DEBUG:
-        api_host = request.get_host()
-    else:
-        api_host = "pca-api-nginx"
+    api_host = "localhost"
     html = HTML(f"http://{api_host}/reports/{subscription_uuid}/monthly/")
     buffer = io.BytesIO()
     html.write_pdf(target=buffer)
@@ -347,10 +344,7 @@ def monthly_reports_pdf_view(request, subscription_uuid):
 # causes some issues when sending accept headers other than application/json
 def cycle_reports_pdf_view(request, subscription_uuid):
     """Cycle_reports_pdf_view."""
-    if settings.DEBUG:
-        api_host = request.get_host()
-    else:
-        api_host = "pca-api-nginx"
+    api_host = "localhost"
     html = HTML(f"http://{api_host}/reports/{subscription_uuid}/cycle/")
     buffer = io.BytesIO()
     html.write_pdf(target=buffer)
@@ -365,10 +359,7 @@ def cycle_reports_pdf_view(request, subscription_uuid):
 # which for this application/pdf is needed
 def yearly_reports_pdf_view(request, subscription_uuid):
     """Yearly_reports_pdf_view."""
-    if settings.DEBUG:
-        api_host = request.get_host()
-    else:
-        api_host = "pca-api-nginx"
+    api_host = "localhost"
     html = HTML(f"http://{api_host}/reports/{subscription_uuid}/yearly/")
     buffer = io.BytesIO()
     html.write_pdf(target=buffer)
