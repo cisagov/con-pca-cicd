@@ -84,20 +84,14 @@ def delete_reported_emails(subscription, data):
             campaign["campaign_id"] in delete_list_campaigns
             and campaign["campaign_id"] in campaigns_in_cycle
         ):
-            item_to_delete = next(
-                (
-                    item
-                    for item in delete_list
-                    if item["campaign_id"] == campaign["campaign_id"]
-                ),
-                None,
-            )
-            for timeline_item in campaign["timeline"]:
-                if (
-                    timeline_item["email"] == item_to_delete["email"]
-                    and timeline_item["message"] == "Email Reported"
-                ):
-                    campaign["timeline"].remove(timeline_item)
+            for item_to_delete in delete_list:
+                if item_to_delete["campaign_id"] == campaign["campaign_id"]:
+                    for timeline_item in campaign["timeline"]:
+                        if (
+                            timeline_item["email"] == item_to_delete["email"]
+                            and timeline_item["message"] == "Email Reported"
+                        ):
+                            campaign["timeline"].remove(timeline_item)
 
     return gophish_campaign_list
 
@@ -135,20 +129,16 @@ def update_reported_emails(subscription, data):
             campaign["campaign_id"] in update_list_campaigns
             and campaign["campaign_id"] in campaigns_in_cycle
         ):
-            item_to_update = next(
-                (
-                    item
-                    for item in update_list
-                    if item["campaign_id"] == campaign["campaign_id"]
-                ),
-                None,
-            )
-            for timeline_item in campaign["timeline"]:
-                if (
-                    timeline_item["email"] == item_to_update["email"]
-                    and timeline_item["message"] == "Email Reported"
-                ):
-                    timeline_item.update({"time": format_ztime(item_to_update["date"])})
+            for item_to_update in update_list:
+                if item_to_update["campaign_id"] == campaign["campaign_id"]:
+                    for timeline_item in campaign["timeline"]:
+                        if (
+                            timeline_item["email"] == item_to_update["email"]
+                            and timeline_item["message"] == "Email Reported"
+                        ):
+                            timeline_item.update(
+                                {"time": format_ztime(item_to_update["date"])}
+                            )
 
         for new_reported_email in add_email_reports:
             exixting_timeline_reports = [
@@ -160,7 +150,6 @@ def update_reported_emails(subscription, data):
                 new_reported_email["email"] in campaign_targets
                 and new_reported_email["email"] not in exixting_timeline_reports
             ):
-                print(new_reported_email)
                 campaign["timeline"].append(
                     {
                         "email": new_reported_email["email"],
@@ -170,7 +159,6 @@ def update_reported_emails(subscription, data):
                         "duplicate": False,
                     }
                 )
-                add_email_reports.remove(new_reported_email)
 
     return gophish_campaign_list
 
@@ -187,7 +175,7 @@ def override_total_reported(subscription, cycle_data_override):
     """
     cycle = get_cycle(subscription, cycle_data_override)
 
-    if cycle is None:
+    if cycle is None or "override_total_reported" not in cycle_data_override:
         return subscription
 
     if cycle_data_override["override_total_reported"] is None:
