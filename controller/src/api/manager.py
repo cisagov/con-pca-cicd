@@ -95,7 +95,7 @@ class CampaignManager:
 
     def __init__(self):
         """Init."""
-        self.gp_api = Gophish(settings.GP_API_KEY, host=settings.GP_URL, verify=True)
+        self.gp_api = Gophish(settings.GP_API_KEY, host=settings.GP_URL, verify=False)
 
     def create(self, method, **kwargs):
         """Create Method."""
