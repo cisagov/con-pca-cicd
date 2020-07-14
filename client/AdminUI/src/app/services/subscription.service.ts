@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Customer, Contact } from '../models/customer.model';
 import { Subscription } from '../models/subscription.model';
 import { CustomerService } from './customer.service';
@@ -46,6 +46,17 @@ export class SubscriptionService {
     }
 
     return this.http.get(url);
+  }
+
+  /**
+   * Call to search subs for custumer uuid and primary contact.
+   */
+  public getPrimaryContactSubscriptions(
+    customer_uuid: string,
+    contact: Contact
+  ) {
+    let url = `${this.settingsService.settings.apiUrl}/api/v1/subscription/customer/${customer_uuid}/`;
+    return this.http.post(url, contact);
   }
 
   /**
