@@ -18,6 +18,9 @@ services:
       - .env
     networks:
       - backend
+    ports:
+      - 8000:80
+      - 8043:443
 
   celery-worker:
     build:
@@ -90,21 +93,6 @@ services:
       - .env
     networks:
       - backend
-
-  nginx:
-    container_name: pca-api-nginx
-    build:
-      context: ./etc/nginx/
-    depends_on:
-      - api
-    ports:
-      - 8000:80
-      - 8043:443
-    networks:
-      - backend
-    volumes:
-      - ./src/staticfiles:/code/static
-
 
 # Host volumes used to store code.
 volumes:

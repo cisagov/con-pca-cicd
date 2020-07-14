@@ -1,4 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import {
+  Component,
+  OnInit,
+} from '@angular/core';
 import {
   MatDialogConfig,
   MatDialog,
@@ -8,12 +11,15 @@ import {
   FormGroup,
   FormControl,
   FormBuilder,
-  Validators
+  Validators,
 } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Customer, Contact } from 'src/app/models/customer.model';
 import { SubscriptionService } from 'src/app/services/subscription.service';
-import { Subscription, Target } from 'src/app/models/subscription.model';
+import {
+  Subscription,
+  Target,
+} from 'src/app/models/subscription.model';
 import { Guid } from 'guid-typescript';
 import { CustomerService } from 'src/app/services/customer.service';
 import { XlsxToCsv } from 'src/app/helper/XlsxToCsv';
@@ -73,7 +79,7 @@ export class SubscriptionConfigTab implements OnInit {
     public formBuilder: FormBuilder,
     public layoutSvc: LayoutMainService,
     public settingsService: SettingsService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
   ) {
     this.loadDhsContacts();
     this.loadSendingProfiles();
@@ -84,35 +90,30 @@ export class SubscriptionConfigTab implements OnInit {
    */
   ngOnInit(): void {
     // build form
-    this.subscribeForm = new FormGroup(
-      {
-        selectedCustomerUuid: new FormControl('', {
-          validators: Validators.required
-        }),
-        primaryContact: new FormControl(null, {
-          validators: Validators.required
-        }),
-        dhsContact: new FormControl(null, {
-          validators: Validators.required
-        }),
-        startDate: new FormControl(new Date(), {
-          validators: Validators.required
-        }),
-        url: new FormControl('', {}),
-        keywords: new FormControl('', {}),
-        sendingProfile: new FormControl('', {
-          validators: Validators.required
-        }),
-        csvText: new FormControl('', {
-          validators: [Validators.required, this.invalidCsv],
-          updateOn: 'blur'
-        }),
-        removeDuplicateTargets: new FormControl(true, {
-          updateOn: 'change'
-        })
-      },
-      { updateOn: 'blur' }
-    );
+    this.subscribeForm = new FormGroup({
+      selectedCustomerUuid: new FormControl('', {
+        validators: Validators.required
+      }),
+      primaryContact: new FormControl(null, {
+        validators: Validators.required
+      }),
+      dhsContact: new FormControl(null, {
+        validators: Validators.required
+      }),
+      startDate: new FormControl(new Date(), {
+        validators: Validators.required
+      }),
+      url: new FormControl('', {}),
+      keywords: new FormControl('', {}),
+      sendingProfile: new FormControl('', {
+        validators: Validators.required
+      }),
+      csvText: new FormControl('', {
+        validators: [Validators.required, this.invalidCsv],
+        updateOn: 'blur'
+      })
+    },
+      { updateOn: 'blur' });
 
     this.onChanges();
 
@@ -126,12 +127,13 @@ export class SubscriptionConfigTab implements OnInit {
         this.loadPageForCreate(params);
       } else {
         this.subscriptionSvc.subBehaviorSubject.subscribe(data => {
-          if ('gophish_campaign_list' in data) {
+          if ("gophish_campaign_list" in data) {
             this.loadPageForEdit(data);
           }
-        });
+        })
       }
     });
+
   }
 
   /**
@@ -154,12 +156,7 @@ export class SubscriptionConfigTab implements OnInit {
       this.subscription.sending_profile_name = val;
     });
     this.f.csvText.valueChanges.subscribe(val => {
-      this.evaluateTargetList();
-      this.persistChanges();
-    });
-    this.f.removeDuplicateTargets.valueChanges.subscribe(val => {
-      this.subscriptionSvc.removeDupeTargets = val;
-      this.evaluateTargetList();
+      this.evaluateTargetList(false);
       this.persistChanges();
     });
   }
@@ -210,16 +207,16 @@ export class SubscriptionConfigTab implements OnInit {
     this.f.url.setValue(s.url);
     this.f.keywords.setValue(s.keywords);
     this.f.csvText.setValue(this.formatTargetsToCSV(s.target_email_list));
-    this.f.removeDuplicateTargets.setValue(
-      this.subscriptionSvc.removeDupeTargets
-    );
     this.f.sendingProfile.setValue(s.sending_profile_name);
 
     this.enableDisableFields();
 
-    this.customerSvc.getCustomer(s.customer_uuid).subscribe((c: Customer) => {
-      this.customer = c;
-    });
+
+    this.customerSvc
+      .getCustomer(s.customer_uuid)
+      .subscribe((c: Customer) => {
+        this.customer = c;
+      });
   }
 
   /**
@@ -304,7 +301,7 @@ export class SubscriptionConfigTab implements OnInit {
         this.subscription.archived = true;
         this.subscriptionSvc
           .patchSubscription(this.subscription)
-          .subscribe(() => {});
+          .subscribe(() => { });
         this.enableDisableFields();
       }
     });
@@ -324,7 +321,7 @@ export class SubscriptionConfigTab implements OnInit {
         this.subscription.archived = false;
         this.subscriptionSvc
           .patchSubscription(this.subscription)
-          .subscribe(() => {});
+          .subscribe(() => { });
         this.enableDisableFields();
       }
     });
@@ -508,6 +505,7 @@ export class SubscriptionConfigTab implements OnInit {
    * Set page title
    */
 
+
   /**
    * Submits the form to create a new Subscription.
    */
@@ -595,13 +593,27 @@ export class SubscriptionConfigTab implements OnInit {
   }
 
   /**
-   * Parses the text into a list of targets.  Removes dupes if desired, and
-   * formats the targets back into CSV text and refreshes the field.
+   * Parses the text into a list of targets.
+   * Optionally removes lines with duplicate email addresses.
+   * Formats the targets back into CSV text and refreshes the field.
    */
-  evaluateTargetList() {
+  evaluateTargetList(removeDupes: boolean) {
     this.subscription.target_email_list = this.buildTargetsFromCSV(
       this.f.csvText.value
     );
+
+    if (removeDupes) {
+      const uniqueArray: Target[] = this.subscription.target_email_list.filter((t1, index) => {
+        return (
+          index ===
+          this.subscription.target_email_list.findIndex(t2 => {
+            return t2.email.toLowerCase() === t1.email.toLowerCase();
+          })
+        );
+      });
+      this.subscription.target_email_list = uniqueArray;
+    }
+
     this.f.csvText.setValue(
       this.formatTargetsToCSV(this.subscription.target_email_list),
       { emitEvent: false }
@@ -614,7 +626,7 @@ export class SubscriptionConfigTab implements OnInit {
    * @param csv A comma-separated string with linefeed delimiters
    */
   public buildTargetsFromCSV(csv: string): Target[] {
-    let targetList: Target[] = [];
+    const targetList: Target[] = [];
     if (!csv) {
       return;
     }
@@ -633,20 +645,6 @@ export class SubscriptionConfigTab implements OnInit {
       t.position = parts[3].trim();
       targetList.push(t);
     });
-
-    // remove duplicate emails if desired
-    const status = this.subscription?.status?.toLowerCase();
-    if (this.subscriptionSvc.removeDupeTargets && status !== 'in progress') {
-      const uniqueArray: Target[] = targetList.filter((t1, index) => {
-        return (
-          index ===
-          targetList.findIndex(t2 => {
-            return t2.email.toLowerCase() === t1.email.toLowerCase();
-          })
-        );
-      });
-      targetList = uniqueArray;
-    }
 
     return targetList;
   }
@@ -700,4 +698,5 @@ export class SubscriptionConfigTab implements OnInit {
   /**
    *
    */
+
 }

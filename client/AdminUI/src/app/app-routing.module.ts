@@ -19,10 +19,23 @@ import { AuthGuard } from './guards/auth.guard';
 import { DhsPocComponent } from './components/user-admin/dhs-poc/dhs-poc.component';
 import { HelpFilesComponent } from './components/help-files/help-files.component';
 import { RecommendationsComponent } from './components/recommendations/recommendations.component';
+import { LayoutBlankComponent } from './components/layout/layout-blank/layout-blank.component';
+import { MonthlyComponent } from './components/reports/monthly/monthly.component';
+import { CycleComponent } from './components/reports/cycle/cycle.component';
+import { YearlyComponent } from './components/reports/yearly/yearly.component';
 
 
 
 const routes: Routes = [
+  {
+    path:'reports',
+    component: LayoutBlankComponent,
+    children: [
+      { path: 'monthly', component: MonthlyComponent },
+      { path: 'cycle', component: CycleComponent }, 
+      { path: 'yearly', component: YearlyComponent }
+    ]
+  },
   {
     path: 'subscriptions',
     component: LayoutMainComponent,
