@@ -1,1 +1,179 @@
-<p>monthly works!</p>
+<div class="m-0">
+    <!-- Graphs Javascript Source -->
+    <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+
+    <article>
+        <!-- Top blue banner -->
+        <header>
+            <div class="topBanner">
+                <div class="container-fluid">
+                    <div class="topBannerRow">
+                        <div class="col-12">
+                            <div id="phishLogo">
+                                <img src="/assets/Con-PCA_logo.svg" alt="Continuous Phishing Campaign Assessment Logo">
+                            </div>
+                            <div id="cisaLogo">
+                                <img src="/assets/CISA_Logo.png" style="width: 8rem;"
+                                    alt="Cybersecurity &amp; Infrastructure Security Agency">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <main>
+            <div class="container-fluid">
+                <div class="row">
+                    <!-- Left side bar -->
+                    <aside>
+                        <div id="reportDate">
+                            <h3>{{ start_date|date:"M d, Y" }} - {{ end_date|date:"M d, Y" }}</h3>
+                        </div>
+                        <div id="gonePhishingImage">
+                            <img src="/assets/gone_phishing.jpg" alt="Gone Phishing">
+                        </div>
+                        <div id="primaryContact">
+                            <span>Primary Contact Information</span><br>
+                            <h2>{{ primary_contact_name }}</h2>
+                            {{ customer_address }}<br>
+                            {{ customer_address_2 }}<br>
+                            {{ primary_contact_email }}<br>
+                            <br>
+                            CISA Contact Information:<br>
+                            {{ dhs_contact_email }}<br>
+                            {{ dhs_contact_mobile_phone }}<br>
+                        </div>
+                        <div id="numbersTitle">
+                            <h2>Overall Campaign Numbers</h2>
+                        </div>
+                        <div id="campaignNumbers">
+                            Total Emails Sent: {{metrics?.number_of_email_sent_overall}}<br>
+                            Email Click Rate: {{metrics?.number_of_email_clicked}}
+                            ({{metrics?.percent_of_clicked_emails}}%)<br>
+                            Reported Emails: 0 (0%)<br>
+                        </div>
+                        <div id="preparedFor">
+                            Prepared for<br>
+                            <span>{{customer_name}}</span>
+                        </div>
+                    </aside>
+
+                    <!-- Right 2/3 of the screen -->
+                    <div class="main-content">
+                        <div id="reportTitle">
+                            <img src="/assets/title.svg" alt="Monthly Subscription Report">
+                        </div>
+                        <div class="data-report">
+                            <!-- Averages -->
+                            <div class="row">
+                                <div class="col-5">
+                                    <div id="averageClickTitle">
+                                        <h3>Average Time<br> to First Click</h3>
+                                    </div>
+                                    <div id="averageClickTime">
+                                        <span>03:00</span><br>
+                                        minutes
+                                    </div>
+                                </div>
+                                <div class="col-5">
+                                    <div id="averageReportTitle">
+                                        <h3>Average Time<br> to Report</h3>
+                                    </div>
+                                    <div id="averageReportTime">
+                                        <span>17:00</span><br>
+                                        minutes
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Yellow Circles -->
+                            <div class="row">
+                                <div class="col-5">
+                                    <div class="circles">
+                                        <img src="/assets/dotted_circle.svg" alt="Yellow dotted circle outline">
+                                    </div>
+                                </div>
+                                <div class="col-5">
+                                    <div class="circles">
+                                        <img src="/assets/dotted_circle.svg" alt="Yellow dotted circle outline">
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Campaign Progress -->
+                            <div class="row">
+                                <div class="col-10">
+                                    <div id="campaignProgressText">
+                                        <ul>
+                                            <li>This Report has been generated in Q1 of your phishing subscription
+                                            </li>
+                                            <li>Of the total {{metrics?.total_users_targeted}} targets in this
+                                                quarter
+                                                cycle, {{metrics?.number_of_email_sent_overall}} targets have had
+                                                emails
+                                                sent.</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Donut Charts -->
+                            <div class="row">
+                                <div class="col-12">
+                                    <div id="donut-charts">
+                                        <div class="col-3">
+                                            <div [innerHTML]="sanitizer.bypassSecurityTrustHtml(sent_circle_svg)"></div>
+                                            <p class="donut-caption">Emails Sent of Total Targets</p>
+                                        </div>
+                                        <div class="col-3">
+                                            <div [innerHTML]="sanitizer.bypassSecurityTrustHtml(opened_circle_svg)">
+                                            </div>
+                                            <p class="donut-caption">Emails Opened of Sent</p>
+                                        </div>
+                                        <div class="col-3">
+                                            <div [innerHTML]="sanitizer.bypassSecurityTrustHtml(clicked_circle_svg)">
+                                            </div>
+                                            <p class="donut-caption">Emails Clicked of Total</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Bar Chart -->
+                            <div class="row">
+                                <div class="col-10 container-fluid">
+                                    <div class="bar-chart">
+                                        <h2>STATISTIC BY LEVEL</h2>
+                                        <svg width="100%">
+                                            <g *ngFor="let group of groups; let i = index"
+                                                [attr.transform]="'translate(' + ((i + 1) * groupX) + ')'">
+                                                <g x="0">
+                                                    <rect style="fill:#164A91;" width="15"
+                                                        [attr.height]="group.lowNormalized" [attr.x]="0"
+                                                        [attr.y]="graph_height - group.lowNormalized"></rect>
+                                                    <rect style="fill:#FDC010;" width="15"
+                                                        [attr.height]="group.modNormalized" [attr.x]="20"
+                                                        [attr.y]="graph_height - group.modNormalized"></rect>
+                                                    <rect style="fill:#1979a7" width="15"
+                                                        [attr.height]="group.highNormalized" [attr.x]="40"
+                                                        [attr.y]="graph_height - group.highNormalized"></rect>
+                                                </g>
+                                                <g [attr.transform]="'translate(0,' + (graph_height + 20) + ')'" width="100%">
+                                                    <text class="caption" dy=".35em" width="100%">
+                                                        <tspan text-anchor="middle">{{group.name}}</tspan>
+                                                    </text>
+                                                </g>
+                                            </g>
+                                        </svg>
+                                        <ul class="legend">
+                                            <li>Low</li>
+                                            <li>Moderate</li>
+                                            <li>High</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </article>
+
+</div>

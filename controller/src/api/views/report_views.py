@@ -239,14 +239,15 @@ class CycleReportsEmailView(APIView):
     )
     def get(self, request, subscription_uuid):
         """Get Method."""
+        import ipdb; ipdb.set_trace()
         subscription = get_single(
             subscription_uuid, "subscription", SubscriptionModel, validate_subscription
         )
         message_type = "cycle_report"
 
         # Send email
-        sender = ReportsEmailSender(subscription, message_type)
-        sender.send()
+        #sender = ReportsEmailSender(subscription, message_type)
+        #sender.send()
 
         dhs_contact_uuid = subscription.get("dhs_contact_uuid")
         dhs_contact = get_single(
