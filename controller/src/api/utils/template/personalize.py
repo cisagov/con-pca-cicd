@@ -70,19 +70,30 @@ def personalize_template(customer_info, template_data, sub_data, tag_list):
     personalized_template_data = []
     for template in template_data:
         cleantext = template["html"]
+        subject = template["subject"]
 
         for tag in tag_list:
             if tag["tag_type"] == "gophish":
                 # First check gophish tags
                 cleantext = cleantext.replace(tag["tag"], tag["data_source"])
+                subject = subject.replace(tag["tag"], tag["data_source"])
             elif tag["tag_type"] == "con-pca-literal":
                 # literal replace
                 cleantext = cleantext.replace(tag["tag"], tag["data_source"])
+                subject = subject.replace(tag["tag"], tag["data_source"])
             elif tag["tag_type"] == "con-pca-eval":
                 # eval replace
                 try:
                     # ast.literal_eval(tag["data_source"]) replaced with smarter eval
                     cleantext = cleantext.replace(
+                        tag["tag"],
+                        simple_eval(
+                            tag["data_source"],
+                            names=simple_eval_options["names"],
+                            functions=simple_eval_options["functions"],
+                        ),
+                    )
+                    subject = subject.replace(
                         tag["tag"],
                         simple_eval(
                             tag["data_source"],
@@ -98,9 +109,11 @@ def personalize_template(customer_info, template_data, sub_data, tag_list):
                     )
                     # Upon error, replaces tag with empty string to avoid sending tags in email
                     cleantext = cleantext.replace(tag["tag"], "")
+                    subject = subject.replace(tag["tag"], "")
             else:
                 # Default literal replace with empty string
                 cleantext = cleantext.replace(tag["tag"], "")
+                subject = subject.replace(tag["tag"], "")
 
         template_unique_name = "".join(template["name"].split(" "))
         cleantext += "\n {{.Tracker}} "
@@ -110,7 +123,7 @@ def personalize_template(customer_info, template_data, sub_data, tag_list):
                 "template_uuid": template["template_uuid"],
                 "data": cleantext,
                 "name": template_unique_name,
-                "subject": template["subject"],
+                "subject": subject,
             }
         )
 

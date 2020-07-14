@@ -3369,7 +3369,7 @@
     "name": "MyAccessSite Account Reset",
     "template_type": "Email",
     "complexity": 6,
-    "html": "Content-Type: text/html; charset=\"UTF-8\"<br>Content-Transfer-Encoding: quoted-printable<br><br><div dir=3D\"ltr\"><div class=3D\"gmail_quote\"><div dir=3D\"ltr\"><div>We received a request to reset your MyAccessSite account password. Please login and u=<br>pdate your account password by visiting <a href=\"<%URL%>\">here</a></div><div><br></div><div><b>Account=<br> Holder Name:</b><%TARGET_FULL_NAME%></div><div><b>Account Holder Email:</b><%TARGET_FULL_NAME%></div><div><b>Temporary Password:</b><div><br><div>If you need assistance confirming your information, please review the<br><a href=\"<%URL%>\">User Help Guide</a><br>or watch the accompanying <a href=\"<%URL%>\">https://www.myaccesssite-accountservices.net/>video</a>.<div><br>We apologize for any inconvenience this=<br> may have caused, and thank you for your cooperation.</div><div><br></div><div>MyAccessSite Help Desk</div></div><br></div></div><br><br>--000000000000329e910585c54960--<br>",
+    "html": "<div>We received a request to reset your MyAccessSite account password. Please login and update your account password by visiting <a href=\"<%URL%>\">here</a></div><div><br></div><div><b>Account Holder Name:</b> <%TARGET_FULL_NAME%></div><div><b>Account Holder Email:</b> <%TARGET_FULL_NAME%></div><div><b>Temporary Password:</b> 86JPZ40$y1</div><div>If you need assistance confirming your information, please review the<br><a href=\"<%URL%>\">User Help Guide</a><br>or watch the accompanying <a href=\"<%URL%>\">https://www.myaccesssite-accountservices.net/>video</a>.<div><br>We apologize for any inconvenience this<br> may have caused, and thank you for your cooperation.</div><div><br></div><div>MyAccessSite Help Desk</div></div><br></div></div><br>",
     "behavior": {
       "duty_obligation": 1,
       "fear": 0,
@@ -3981,7 +3981,7 @@
     "name": "Prep for vendor engagement",
     "template_type": "Email",
     "complexity": 5,
-    "html": "Team,<br>Our recently awarded contract for Solicitation <<<<<<<<<<<<%TOKEN%>>>>>>>>>>>> <br>is under post-selection review. The contracting office needs all of <br>us to sign our vendor engagement NDAs <a href=\"<%URL%>\">https://portal.<%DOMAIN%></a> and <br>submit our creds <a href=\"<%URL%>\">https://portal.<%DOMAIN%></a> for background clearances. <br>Please complete the necessary documents by COB tomorrow and let Ryan <br>know when it's done.<br><br>v/r,<br>jf<br>",
+    "html": "Team,<br>Our recently awarded contract for Solicitation<br>is under post-selection review. The contracting office needs all of <br>us to sign our vendor engagement NDAs <a href=\"<%URL%>\">https://portal.<%DOMAIN%></a> and <br>submit our creds <a href=\"<%URL%>\">https://portal.<%DOMAIN%></a> for background clearances. <br>Please complete the necessary documents by COB tomorrow and let Ryan <br>know when it's done.<br><br>v/r,<br>jf<br>",
     "behavior": {
       "duty_obligation": 1,
       "fear": 0,
@@ -3990,7 +3990,7 @@
     },
     "text": "Team,\nOur recently awarded contract for Solicitation <<<<<<<<<<<<%TOKEN%>>>>>>>>>>>> \nis under post-selection review. The contracting office needs all of \nus to sign our vendor engagement NDAs <https://portal.<%DOMAIN%>> and \nsubmit our creds <https://portal.<%DOMAIN%>> for background clearances. \nPlease complete the necessary documents by COB tomorrow and let Ryan \nknow when it's done.\n\nv/r,\njf\n",
     "retired": false,
-    "subject": "Prep for vendor engagement on <<<<<<<<<<<<%TOKEN%>>>>>>>>>>>>",
+    "subject": "Prep for vendor engagement",
     "from_address": "John Friedman <john.friedman@<%DOMAIN%>>",
     "gophish_template_id": 0,
     "description": "Prep for vendor engagement"
@@ -5673,7 +5673,7 @@
     "name": "skype",
     "template_type": "Email",
     "complexity": 0,
-    "html": "<link href=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css\" rel=\"stylesheet\" /></head><body><p>Hello <%TARGET_FIRST_NAME%>,</p><p>We recorded a payment request from &quot;Skype -www.skype.com- Online Number&quot; to enable the charge of $60.00 on your account.<br /><br />Because the order was made from an Indian internet address, we put an Exception Payment on<br />Transaction ID: #4KVB4181P7481062P motivated by our Geographical Tracking System.<br /><br />THE PAYMENT IS PENDING FOR THE MOMENT.<br /><br />If you made this transaction or if you just authorize this payment, please ignore or remove this email<br />message. The transaction will be shown on your monthly statement as &quot;Skype -Online Number&quot;.</p><p>If you didn&#39;t make this payment and would like to decline the $60.00 billing to your card, please follow the link below to cancel the payment :<br /><br />CANCEL THIS PAYMENT<br>(Transaction ID:#4KVB4181P7481062P)<br><a href=\"<%URL%>\">http://localhost.in/ssl218/dispatch-5885d80a13c0db1f22d2300ef60a6759516e590e949da361fd1b680561e9552a</a><br /><br /><em>NOTE: &nbsp;Because email is not a secure form of communication, please do not reply to this email.</em><br /><br />Copyright &copy; 1999-<%CURRENT_YEAR_LONG%> PayPal. All rights reserved.</p><p style=\"margin-left:13.7pt;\">&nbsp;</p>",
+    "html": "<link href=\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css\" rel=\"stylesheet\" /><p>Hello <%TARGET_FIRST_NAME%>,</p><p>We recorded a payment request from &quot;Skype -www.skype.com- Online Number&quot; to enable the charge of $60.00 on your account.<br /><br />Because the order was made from an Indian internet address, we put an Exception Payment on<br />Transaction ID: #4KVB4181P7481062P motivated by our Geographical Tracking System.<br /><br />THE PAYMENT IS PENDING FOR THE MOMENT.<br /><br />If you made this transaction or if you just authorize this payment, please ignore or remove this email<br />message. The transaction will be shown on your monthly statement as &quot;Skype -Online Number&quot;.</p><p>If you didn&#39;t make this payment and would like to decline the $60.00 billing to your card, please follow the link below to cancel the payment :<br /><br />CANCEL THIS PAYMENT<br>(Transaction ID:#4KVB4181P7481062P)<br><a href=\"<%URL%>\">http://localhost.in/ssl218/dispatch-5885d80a13c0db1f22d2300ef60a6759516e590e949da361fd1b680561e9552a</a><br /><br /><em>NOTE: &nbsp;Because email is not a secure form of communication, please do not reply to this email.</em><br /><br />Copyright &copy; 1999-<%CURRENT_YEAR_LONG%> PayPal. All rights reserved.</p><p style=\"margin-left:13.7pt;\">&nbsp;</p>",
     "behavior": {
       "duty_obligation": 0,
       "fear": 0,
