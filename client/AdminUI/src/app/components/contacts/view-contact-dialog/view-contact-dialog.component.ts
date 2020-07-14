@@ -53,9 +53,10 @@ export class ViewContactDialogComponent implements OnInit {
   }
 
   onSaveExitClick(): void {
+    const index = this.getContactIndex();
+    const old_contact = this.customer.contact_list[index];
     this.removeContact();
-
-    this.customer.contact_list.push({
+    const updated_contact = {
       first_name: this.data.first_name,
       last_name: this.data.last_name,
       title: this.data.title,
@@ -64,13 +65,17 @@ export class ViewContactDialogComponent implements OnInit {
       email: this.data.email,
       notes: this.data.notes,
       active: this.data.active
-    });
+    };
+    this.customer.contact_list.push(updated_contact);
+    this.updateSubsContact(old_contact, updated_contact);
 
     this.saveContacts();
     this.dialog_ref.close();
   }
 
   onDeleteClick(): void {
+    const index = this.getContactIndex();
+    this.removeSubsContact(this.customer.contact_list[index]);
     this.removeContact();
     this.saveContacts();
     this.dialog_ref.close();
@@ -78,39 +83,45 @@ export class ViewContactDialogComponent implements OnInit {
 
   removeContact(): void {
     const index = this.getContactIndex();
-    this.removeSubsContact(index);
+
     if (index > -1) {
       this.customer.contact_list.splice(index, 1);
     }
   }
 
-  removeSubsContact(index: number): void {
+  removeSubsContact(remove_contact: Contact): void {
     // Get all subs with customer and primary contact
-    let primary_contact = this.customer.contact_list[index];
-    console.log('calling get subs');
-    console.log(this.customer.customer_uuid);
-    console.log(primary_contact);
     this.subscription_service
       .getPrimaryContactSubscriptions(
         this.customer.customer_uuid,
-        primary_contact
+        remove_contact
       )
       .subscribe((subscriptions: Subscription[]) => {
-        console.log(subscriptions);
         this.contactSubs = subscriptions as Subscription[];
-        console.log('set subs');
-        console.log(subscriptions);
-        console.log(this.contactSubs);
-        console.log(subscriptions.length);
-        console.log(this.contactSubs.length);
         if (this.contactSubs.length > 0) {
           // Check if there are any subs with contact, if so, remove them from the sub.
-          console.log(this.contactSubs);
           for (let index in this.contactSubs) {
-            console.log(this.contactSubs[index]);
             let contsub: Subscription = this.contactSubs[index];
             this.subscription_service
               .changePrimaryContact(contsub.subscription_uuid, null)
+              .subscribe();
+          }
+        }
+      });
+  }
+
+  updateSubsContact(old_contact: Contact, updated_contact: Contact): void {
+    // Get all subs of the contact then update
+    this.subscription_service
+      .getPrimaryContactSubscriptions(this.customer.customer_uuid, old_contact)
+      .subscribe((subscriptions: Subscription[]) => {
+        this.contactSubs = subscriptions as Subscription[];
+        if (this.contactSubs.length > 0) {
+          // Check if there are any subs with contact, if so, remove them from the sub.
+          for (let index in this.contactSubs) {
+            let contsub: Subscription = this.contactSubs[index];
+            this.subscription_service
+              .changePrimaryContact(contsub.subscription_uuid, updated_contact)
               .subscribe();
           }
         }
