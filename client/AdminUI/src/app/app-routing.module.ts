@@ -19,10 +19,16 @@ import { AuthGuard } from './guards/auth.guard';
 import { DhsPocComponent } from './components/user-admin/dhs-poc/dhs-poc.component';
 import { HelpFilesComponent } from './components/help-files/help-files.component';
 import { RecommendationsComponent } from './components/recommendations/recommendations.component';
+import { LayoutBlankComponent } from './components/layout/layout-blank/layout-blank.component';
 
 
 
 const routes: Routes = [
+  {
+    path:'reports',
+    component: LayoutBlankComponent,
+    children: []
+  },
   {
     path: 'subscriptions',
     component: LayoutMainComponent,
