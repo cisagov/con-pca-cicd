@@ -26,6 +26,7 @@ ADD ./src /app
 
 # Copy nginx conf
 COPY etc/nginx.conf /etc/nginx/conf.d/
+RUN rm -rf /etc/nginx/sites-enabled/
 
 # Entrypoint
 COPY ./etc/entrypoint.sh /usr/local/bin/entrypoint.sh

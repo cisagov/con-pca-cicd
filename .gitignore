@@ -1,4 +1,5 @@
 .env
+.terraform
 !etc/vscode/.env
 .venv
 .mypy_cache
