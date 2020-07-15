@@ -2,11 +2,13 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { CustomerService } from 'src/app/services/customer.service';
+import { SubscriptionService } from 'src/app/services/subscription.service';
 import {
   ICustomerContact,
   Customer,
   Contact
 } from 'src/app/models/customer.model';
+import { Subscription } from 'src/app/models/subscription.model';
 
 @Component({
   selector: 'app-view-contact-dialog',
@@ -26,14 +28,16 @@ export class ViewContactDialogComponent implements OnInit {
     notes: new FormControl(),
     active: new FormControl()
   });
-
+  contactSubs: Subscription[];
   customer: Customer;
+  subscription: Subscription;
   initial: ICustomerContact;
   data: ICustomerContact;
 
   constructor(
     public dialog_ref: MatDialogRef<ViewContactDialogComponent>,
     public customer_service: CustomerService,
+    private subscription_service: SubscriptionService,
     @Inject(MAT_DIALOG_DATA) data
   ) {
     this.data = data;
@@ -49,9 +53,10 @@ export class ViewContactDialogComponent implements OnInit {
   }
 
   onSaveExitClick(): void {
+    const index = this.getContactIndex();
+    const old_contact = this.customer.contact_list[index];
     this.removeContact();
-
-    this.customer.contact_list.push({
+    const updated_contact = {
       first_name: this.data.first_name,
       last_name: this.data.last_name,
       title: this.data.title,
@@ -60,13 +65,17 @@ export class ViewContactDialogComponent implements OnInit {
       email: this.data.email,
       notes: this.data.notes,
       active: this.data.active
-    });
+    };
+    this.customer.contact_list.push(updated_contact);
+    this.updateSubsContact(old_contact, updated_contact);
 
     this.saveContacts();
     this.dialog_ref.close();
   }
 
   onDeleteClick(): void {
+    const index = this.getContactIndex();
+    this.updateSubsContact(this.customer.contact_list[index], null);
     this.removeContact();
     this.saveContacts();
     this.dialog_ref.close();
@@ -74,9 +83,28 @@ export class ViewContactDialogComponent implements OnInit {
 
   removeContact(): void {
     const index = this.getContactIndex();
+
     if (index > -1) {
       this.customer.contact_list.splice(index, 1);
     }
+  }
+
+  updateSubsContact(old_contact: Contact, updated_contact: Contact): void {
+    // Get all subs of the contact then update
+    this.subscription_service
+      .getPrimaryContactSubscriptions(this.customer.customer_uuid, old_contact)
+      .subscribe((subscriptions: Subscription[]) => {
+        this.contactSubs = subscriptions as Subscription[];
+        if (this.contactSubs.length > 0) {
+          // Check if there are any subs with contact, if so, remove them from the sub.
+          for (let index in this.contactSubs) {
+            let contsub: Subscription = this.contactSubs[index];
+            this.subscription_service
+              .changePrimaryContact(contsub.subscription_uuid, updated_contact)
+              .subscribe();
+          }
+        }
+      });
   }
 
   onCancelExitClick(): void {

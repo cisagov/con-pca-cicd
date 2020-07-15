@@ -201,7 +201,7 @@ export class SubscriptionConfigTab implements OnInit {
     this.subscription = s as Subscription;
     this.subscriptionSvc.subscription = this.subscription;
     this.f.selectedCustomerUuid.setValue(s.subscription_uuid);
-    this.f.primaryContact.setValue(s.primary_contact.email);
+    this.f.primaryContact.setValue(s.primary_contact?.email);
     this.f.dhsContact.setValue(s.dhs_contact_uuid);
     this.f.startDate.setValue(s.start_date);
     this.f.url.setValue(s.url);
