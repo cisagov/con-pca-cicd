@@ -1,22 +1,24 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Customer, Contact } from '../models/customer.model';
 import { Subscription } from '../models/subscription.model';
 import { CustomerService } from './customer.service';
 import { Template } from '../models/template.model';
 import { SettingsService } from './settings.service';
 import { Observable, BehaviorSubject } from 'rxjs';
+import { start } from 'repl';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SubscriptionService {
-  subscription: Subscription;
+
+  subscription: Subscription
   subBehaviorSubject = new BehaviorSubject<Subscription>(new Subscription());
   customer: Customer;
   customers: Array<Customer> = [];
-
   cameFromSubscription: boolean;
+  removeDupeTargets = true;
 
   /**
    *
@@ -44,6 +46,18 @@ export class SubscriptionService {
     }
 
     return this.http.get(url);
+  }
+
+  /**
+   * Call to search subs for custumer uuid and primary contact.
+   */
+  public getPrimaryContactSubscriptions(
+    customer_uuid: string,
+    contact: Contact
+  ) {
+    const c = { primary_contact: contact };
+    let url = `${this.settingsService.settings.apiUrl}/api/v1/subscription/customer/${customer_uuid}/`;
+    return this.http.post(url, c);
   }
 
   /**
@@ -229,4 +243,61 @@ export class SubscriptionService {
     const url = `${this.settingsService.settings.apiUrl}/api/v1/reports/${s.subscription_uuid}/email/yearly/`;
     return this.http.get(url);
   }
+
+  public getReportValuesForSubscription(subscription_uuid){
+    const url = `${this.settingsService.settings.apiUrl}/api/v1/cycleemailreported/${subscription_uuid}/`;
+    return this.http.get(url)
+  }
+  public postReportValuesForSubscription(data,subscription_uuid){
+    console.log(data)
+    const url = `${this.settingsService.settings.apiUrl}/api/v1/cycleemailreported/${subscription_uuid}/`;
+    return this.http.post(url,data)
+  }
+  public getSusbcriptionStatusEmailsSent(subscription_uuid){
+    const url = `${this.settingsService.settings.apiUrl}/api/v1/cycleemailreported/${subscription_uuid}/`;
+    return this.http.get(url)
+    // return [
+    //     {
+    //         "report_type": "Cycle Complete",
+    //         "sent": "2020-07-09T21:34:00.769Z",
+    //         "email_to": "bob@example.com",
+    //         "email_from": "fakesupport@gov.com",
+    //         "bcc": "steve@dhs.gov",
+    //         "manual": false,
+    //     },
+    //     {
+    //         "report_type": "Monthly Sent",
+    //         "sent": "2020-08-09T21:34:00.769Z",
+    //         "email_to": "bob@example.com",
+    //         "email_from": "fakesupport@gov.com",
+    //         "bcc": "steve@dhs.gov",
+    //         "manual": false,
+    //     },
+    //     {
+    //         "report_type": "Monthly Sent",
+    //         "sent": "2020-09-09T21:34:00.769Z",
+    //         "email_to": "bob@example.com",
+    //         "email_from": "fakesupport@gov.com",
+    //         "bcc": "steve@dhs.gov",
+    //         "manual": false,
+    //     },
+    //     {
+    //         "report_type": "Monthly Sent",
+    //         "sent": "2020-10-09T21:34:00.769Z",
+    //         "email_to": "bob@example.com",
+    //         "email_from": "fakesupport@gov.com",
+    //         "bcc": "steve@dhs.gov",
+    //         "manual": false,
+    //     },
+    //     {
+    //         "report_type": "Cycle Complete",
+    //         "sent": "2020-11-09T21:34:00.769Z",
+    //         "email_to": "bob@example.com",
+    //         "email_from": "fakesupport@gov.com",
+    //         "bcc": "steve@dhs.gov",
+    //         "manual": false,
+    //     }
+    //   ]
+  }
+
 }

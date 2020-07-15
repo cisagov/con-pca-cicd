@@ -1,4 +1,5 @@
 .env
+.terraform
 !etc/vscode/.env
 .venv
 .mypy_cache
@@ -30,6 +31,7 @@ controller/node_modules
 controller/Scripts/
 controller/Lib
 controller/pyvenv.cfg
+controller/src/rds-combined-ca-bundle.pem
 
 # Gophish
 gophish/.env
