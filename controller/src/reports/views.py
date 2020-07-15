@@ -13,6 +13,10 @@ from api.models.subscription_models import SubscriptionModel, validate_subscript
 from api.models.customer_models import CustomerModel, validate_customer
 from api.models.dhs_models import DHSContactModel, validate_dhs_contact
 from api.utils.db_utils import get_list, get_single
+
+from rest_framework import status
+from rest_framework.response import Response
+from rest_framework.views import APIView
 from django.views.generic import TemplateView
 
 
@@ -31,7 +35,8 @@ from .utils import (
     ratio_to_percent,
     format_timedelta,
     get_statistic_from_region_group,
-    get_stats_low_med_high_by_level
+    get_stats_low_med_high_by_level,
+    get_cycle_by_date_in_range
 )
 
 logger = logging.getLogger(__name__)
@@ -42,7 +47,7 @@ campaign_manager = CampaignManager()
 generate_chart = ChartGenerator()
 
 
-class MonthlyReportsView(TemplateView):
+class MonthlyReportsView(APIView):
     """
     Monthly reports
     """
@@ -125,7 +130,7 @@ class MonthlyReportsView(TemplateView):
         }
         return metrics
 
-    def get_context_data(self, **kwargs):
+    def get(self, request, **kwargs):
         subscription_uuid = self.kwargs["subscription_uuid"]
         subscription = get_single(
             subscription_uuid, "subscription", SubscriptionModel, validate_subscription
@@ -211,17 +216,18 @@ class MonthlyReportsView(TemplateView):
             ).decode("ascii")
             
         }
-        return context
+
+        return Response(context,status=status.HTTP_202_ACCEPTED)
 
 
-class YearlyReportsView(TemplateView):
+class YearlyReportsView(APIView):
     """
     Yearly Reports
     """
 
     template_name = "reports/yearly.html"
 
-    def get_context_data(self, **kwargs):
+    def get(self, request, **kwargs):
         subscription_uuid = self.kwargs["subscription_uuid"]
         subscription = get_single(
             subscription_uuid, "subscription", SubscriptionModel, validate_subscription
@@ -276,20 +282,23 @@ class YearlyReportsView(TemplateView):
             "target_count": target_count,
         }
 
-        return context
+        return Response(context,status=status.HTTP_202_ACCEPTED)
 
 
-class CycleReportsView(TemplateView):
+class CycleReportsView(APIView):
     template_name = "reports/cycle.html"
 
-    def get_context_data(self, **kwargs):
+    def get(self, request, **kwargs):
         """
         Generate the cycle report based off of the provided start date
         """
-
+        print(request)
         # Get Args from url
         subscription_uuid = self.kwargs["subscription_uuid"]
-
+        start_date_param = self.kwargs["start_date"]
+        start_date = datetime.strptime(start_date_param, '%Y-%m-%dT%H:%M:%S.%f%z')
+        print(start_date)
+        
         # Get targeted subscription and associated customer data
         subscription = get_single(
             subscription_uuid, "subscription", SubscriptionModel, validate_subscription
@@ -307,7 +316,7 @@ class CycleReportsView(TemplateView):
             "address": f"{_customer.get('address_1')} {_customer.get('address_2')}",
         }
 
-        start_date = subscription["start_date"]
+        # start_date = subscription["start_date"]
 
         subscription_primary_contact = subscription.get("primary_contact")
 
@@ -534,4 +543,4 @@ class CycleReportsView(TemplateView):
         context["click_time_vs_report_time"] = click_time_vs_report_time
         context["templates_by_group"] = templates_by_group
 
-        return context
+        return Response(context,status=status.HTTP_202_ACCEPTED)
