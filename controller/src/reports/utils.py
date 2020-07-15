@@ -480,7 +480,7 @@ def get_cycles_breakdown(cycles):
     return cycle_stats
 
 
-def get_statistic_from_group(subscription_stats, deception_level, category, stat):
+def get_statistic_from_group(subscription_stats, deception_level, category, stat, zeroIfNone=False):
     """
     Get a specific stat if it exists off of the subscription stats consolidation.
 
@@ -489,6 +489,8 @@ def get_statistic_from_group(subscription_stats, deception_level, category, stat
     try:
         return subscription_stats[deception_level][category][stat] 
     except Exception:
+        if zeroIfNone:
+            return 0
         return None
 
 def get_statistic_from_region_group(region_stats, group, stat):
@@ -513,12 +515,13 @@ def ratio_to_percent(ratio,round_val=2):
 
 def format_timedelta(timedelta):
     ret_val = ""
-    if timedelta.days:
-        ret_val += f"{timedelta.days} Days "
-    if timedelta.seconds/3600 > 1:
-        ret_val += f"{int(round(timedelta.seconds/3600,0))} Hours "
-    if int(timedelta.seconds % 60) != 0:
-        ret_val += f"{int(timedelta.seconds % 60)} Minutes"
+    if timedelta:
+        if timedelta.days:
+            ret_val += f"{timedelta.days} Days "
+        if timedelta.seconds/3600 > 1:
+            ret_val += f"{int(round(timedelta.seconds/3600,0))} Hours "
+        if int(timedelta.seconds % 60) != 0:
+            ret_val += f"{int(timedelta.seconds % 60)} Minutes"
     return ret_val
 
 

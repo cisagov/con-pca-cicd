@@ -239,7 +239,6 @@ class CycleReportsEmailView(APIView):
     )
     def get(self, request, subscription_uuid):
         """Get Method."""
-        import ipdb; ipdb.set_trace()
         subscription = get_single(
             subscription_uuid, "subscription", SubscriptionModel, validate_subscription
         )

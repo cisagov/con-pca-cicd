@@ -396,7 +396,7 @@ class CycleReportsView(APIView):
             "number_of_reports_to_helpdesk": get_statistic_from_group(
                 subscription_stats, "stats_all", "reported", "count"
             ),
-            "reports_to_clicks_ratio": round(
+            "reports_to_clicks_ratio": ratio_to_percent(
                 get_reports_to_click(subscription_stats), 2
             ),
             "avg_time_to_first_click": format_timedelta(
@@ -414,13 +414,14 @@ class CycleReportsView(APIView):
             ),
             "emails_sent_over_target_count": round(
                 get_statistic_from_group(
-                    subscription_stats, "stats_all", "sent", "count"
+                    subscription_stats, "stats_all", "sent", "count",
+                    zeroIfNone = True
                 )
                 / len(subscription["target_email_list"]),
                 0,
             ),
             "customer_clicked_avg": ratio_to_percent(
-                get_statistic_from_region_group(
+                get_statistic_from_region_group( 
                     region_stats, "customer", "clicked_ratio"
                 ),
                 0,

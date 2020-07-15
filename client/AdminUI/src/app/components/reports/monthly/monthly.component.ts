@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { drawSvgCircle } from 'src/app/helper/svgHelpers';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ReportsService } from 'src/app/services/reports.service';
-import { analyzeAndValidateNgModules } from '@angular/compiler';
 
 @Component({
   selector: 'app-monthly',
