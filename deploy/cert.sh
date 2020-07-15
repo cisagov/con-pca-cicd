@@ -1,0 +1,1 @@
+openssl req -x509 -nodes -days 365 -subj "/C=CA/ST=ID/O=INL/CN=con-pca-stage-public-1155583998.us-east-1.elb.amazonaws.com" -newkey rsa:2048 -keyout /tmp/server.key -out /tmp/server.crt
