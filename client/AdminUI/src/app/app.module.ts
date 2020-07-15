@@ -67,6 +67,7 @@ import { UnauthorizedInterceptor } from './helper/UnauthorizedInterceptor'
 import { DhsPocComponent } from './components/user-admin/dhs-poc/dhs-poc.component';
 import { DhsPocDetailComponent } from './components/user-admin/dhs-poc/dhs-poc-detail.component';
 import { InputTrimDirective } from './helper/input-trim.directive';
+import { DatePipe } from '@angular/common';
 import { RecommendationsService } from './services/recommendations.service';
 import { MonthlyComponent } from './components/reports/monthly/monthly.component';
 import { CycleComponent } from './components/reports/cycle/cycle.component';
@@ -150,6 +151,7 @@ export function app_Init(settingsHttpService: SettingsHttpService) {
     HttpClient,
     AmplifyService,
     UserAuthService,
+    [DatePipe],
     { provide: MAT_DIALOG_DATA, useValue: [] },
     { provide: APP_INITIALIZER, useFactory: app_Init, deps: [SettingsHttpService], multi: true },
     { provide: HTTP_INTERCEPTORS, useClass: AuthAppendInterceptor, multi: true },

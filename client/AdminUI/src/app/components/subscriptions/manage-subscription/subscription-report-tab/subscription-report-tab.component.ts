@@ -33,8 +33,13 @@ export class SubscriptionReportTab implements OnInit {
       this.subscriptionSvc.subBehaviorSubject.subscribe(data => {
           if("subscription_uuid" in data){
             this.subscription = data
+            this.emailsSent.sort = this.sort;
             //@ts-ignore
             this.selectedCycle = this.subscription.cycles[0]
+            if("email_report_history" in data){
+              //@ts-ignore
+              this.emailsSent.data = data.email_report_history
+            }
           }
       })
   }
@@ -42,7 +47,7 @@ export class SubscriptionReportTab implements OnInit {
   refresh() {
     // this.subscriptionSvc.getEmailsSentBySubId(this.subscription.subscription_uuid).subscribe((data: any[]) => {
     //   this.emailsSent.data = data;
-    //   this.emailsSent.data = this.sort;
+    //   this.emailsSent.sort = this.sort;
     // });
   }
 
