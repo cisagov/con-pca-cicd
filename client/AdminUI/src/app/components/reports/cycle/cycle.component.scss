@@ -36,7 +36,7 @@ body {
 }
 
 article:nth-of-type(n+2) {
-  padding-top: 100px;
+  padding-top: 50px;
 }
 
 /* Cover */
@@ -390,6 +390,34 @@ ul {
   width: auto;
 }
 
+// graph legends
+.legend {
+  color: #000;
+  list-style-type: square;
+}
+
+.legend li {
+  display: inline-block;
+  padding: 0 10px;
+}
+.legend li:nth-of-type(1)::after {
+  content: "\25A0";
+  color: #164A91;  
+  margin-left: 5px;
+}
+
+.legend li:nth-of-type(2)::after {
+  content: "\25A0";
+  color: #FDC010;  
+  margin-left: 5px;
+}
+
+.legend li:nth-of-type(3)::after {
+  content: "\25A0";
+  color: #1979a7;
+  margin-left: 5px;
+}
+
 /* Page Nine */ 
 
 .complexityLegend {
@@ -401,7 +429,7 @@ ul {
 }
 
 .complexityLegend li:nth-of-type(1)::after {
-  content: "&#x25A0";
+  content: "\25A0";
   height: 20px;
   width: 20px;
   margin: 0 15px 0 5px;
@@ -409,7 +437,7 @@ ul {
 }
 
 .complexityLegend li:nth-of-type(2)::after {
-  content: "&#x25A0";
+  content: "\25A0";
   height: 20px;
   width: 20px;
   margin: 0 15px 0 5px;
@@ -417,7 +445,7 @@ ul {
 }
 
 .complexityLegend li:nth-of-type(3)::after {
-  content: "&#x25AC";
+  content: "\25A0";
   height: 20px;
   width: 20px;
   margin: 0 15px 0 5px;
@@ -430,6 +458,10 @@ ul {
 
 
 /* Page Fourteen */
+
+.template-level-header {
+  font-weight: bold;
+}
 
 #dumbPhishList, #mediumPhishList, #hardPhishList {
   margin-bottom: 70px;
