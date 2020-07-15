@@ -50,6 +50,15 @@ def get_closest_cycle_within_day_range(subscription, start_date, day_range=90):
         )
         return None
 
+def get_cycle_by_date_in_range(subscription, date):
+    """
+    Get the cycle that contains the given date
+    """
+    for cycle in subscription["cycles"]:
+        if(cycle["start_date"] <= date and cycle["end_date"] > date):
+            return cycle
+    return subscription["cycles"][0]
+
 
 def find_send_timeline_moment(email, timeline_items):
     """
