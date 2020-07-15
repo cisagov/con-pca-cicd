@@ -240,6 +240,7 @@ h1 strong {
 /* SVG Bar Chart */
 .caption, .legend-caption {
   fill: #164A91;
+  color: #164A91;
 }
 
 .legend-caption {
@@ -283,20 +284,22 @@ h1 strong {
   display: inline-block;
   padding: 0 10px;
 }
-.legend li:nth-of-type(1)::after {
+
+.legend li::after {
   content: "\25A0";
-  color: #164A91;  
   margin-left: 5px;
+  font-size: x-large;
+  vertical-align: middle;
+}
+
+.legend li:nth-of-type(1)::after {
+  color: #164A91;  
 }
 
 .legend li:nth-of-type(2)::after {
-  content: "\25A0";
   color: #FDC010;  
-  margin-left: 5px;
 }
 
 .legend li:nth-of-type(3)::after {
-  content: "\25A0";
   color: #1979a7;
-  margin-left: 5px;
 }

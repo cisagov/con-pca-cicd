@@ -72,6 +72,7 @@ import { RecommendationsService } from './services/recommendations.service';
 import { MonthlyComponent } from './components/reports/monthly/monthly.component';
 import { CycleComponent } from './components/reports/cycle/cycle.component';
 import { YearlyComponent } from './components/reports/yearly/yearly.component';
+import { StatsByLevelComponent } from './components/reports/stats-by-level/stats-by-level.component';
 
 export function app_Init(settingsHttpService: SettingsHttpService) {
   return () => settingsHttpService.initializeApp();
@@ -126,6 +127,7 @@ export function app_Init(settingsHttpService: SettingsHttpService) {
     MonthlyComponent,
     CycleComponent,
     YearlyComponent,
+    StatsByLevelComponent,
   ],
   imports: [
     BrowserModule,

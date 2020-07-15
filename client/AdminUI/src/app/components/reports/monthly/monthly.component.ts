@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { drawSvgCircle } from 'src/app/helper/svgHelpers';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ReportsService } from 'src/app/services/reports.service';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-monthly',
@@ -10,6 +11,8 @@ import { ReportsService } from 'src/app/services/reports.service';
 })
 export class MonthlyComponent implements OnInit {
 
+  private routeSub: any;
+  subscriptionUuid: string;
   detail: any;
 
 
@@ -19,20 +22,31 @@ export class MonthlyComponent implements OnInit {
 
   groups: any[] = [];
   groupX = 90;
-  graphHeight = 100;
+  chartHeight = 100;
 
 
   constructor(
     public sanitizer: DomSanitizer,
     public reportsSvc: ReportsService,
+    private route: ActivatedRoute,
   ) { }
 
   ngOnInit(): void {
-    // this.reportsSvc.getMonthlyReport('XXXXXXXXXXX', new Date()).subscribe(resp => {
+
+    this.routeSub = this.route.params.subscribe(params => {
+      this.subscriptionUuid = params.id;
+      this.loadPage();
+    });
+  }
+
+  loadPage() {
+
+    // RKW -- When API is ready call this....
+    // this.reportsSvc.getMonthlyReport(this.subscriptionUuid, new Date()).subscribe(resp => {
     //   this.renderReport(resp);
     // });
 
-    // RKW TEMP BEGIN - create dummy response
+    // RKW TEMP BEGIN - create dummy response until API is ready
     const resp = {
       start_date: '',
       end_date: '',
@@ -99,32 +113,10 @@ export class MonthlyComponent implements OnInit {
         ]
       }
     };
-
-    // determine normalization factor based on highest count
-    let max = 0;
-    resp.metrics.stats.forEach((x) => {
-      if (x.low > max) {
-        max = x.low;
-      }
-      if (x.moderate > max) {
-        max = x.moderate;
-      }
-      if (x.high > max) {
-        max = x.high;
-      }
-    });
-    const normalizationFactor = this.graphHeight / max;
-
-    // normalize the counts
-    resp.metrics.stats.forEach((x) => {
-      x.lowN = x.low * normalizationFactor;
-      x.moderateN = x.moderate * normalizationFactor;
-      x.highN = x.high * normalizationFactor;
-    });
+    // RKW TEMP END
 
     this.detail = resp;
     this.renderReport(this.detail);
-    // RKW TEMP END
   }
 
   /**
