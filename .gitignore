@@ -31,6 +31,7 @@ controller/node_modules
 controller/Scripts/
 controller/Lib
 controller/pyvenv.cfg
+controller/src/rds-combined-ca-bundle.pem
 
 # Gophish
 gophish/.env
