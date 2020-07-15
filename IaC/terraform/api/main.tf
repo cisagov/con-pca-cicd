@@ -57,21 +57,6 @@ module "documentdb" {
   skip_final_snapshot     = true
 }
 
-# ===========================
-# COGNITO
-# ===========================
-resource "aws_cognito_user_pool_client" "api" {
-  name                                 = "${var.env}-${var.app}-api"
-  user_pool_id                         = element(tolist(data.aws_cognito_user_pools.users.ids), 0)
-  allowed_oauth_flows                  = ["code"]
-  allowed_oauth_flows_user_pool_client = true
-  allowed_oauth_scopes                 = ["aws.cognito.signin.user.admin", "email", "openid", "phone", "profile"]
-  callback_urls                        = ["https://${data.aws_lb.public.dns_name}:4200"]
-  explicit_auth_flows                  = ["ALLOW_ADMIN_USER_PASSWORD_AUTH", "ALLOW_CUSTOM_AUTH", "ALLOW_REFRESH_TOKEN_AUTH", "ALLOW_USER_PASSWORD_AUTH", "ALLOW_USER_SRP_AUTH"]
-  logout_urls                          = ["https://${data.aws_lb.public.dns_name}:4200"]
-  supported_identity_providers         = ["COGNITO"]
-}
-
 
 # ===========================
 # APP CREDENTIALS
@@ -130,8 +115,8 @@ locals {
     "COGNITO_DEPLOYMENT_MODE" : "Production",
     "COGNITO_AWS_REGION" : var.region,
     "COGNITO_USER_POOL" : element(tolist(data.aws_cognito_user_pools.users.ids), 0),
-    "COGNITO_AUDIENCE" : aws_cognito_user_pool_client.api.id,
-    "LOCAL_API_KEY" : random_string.local_api_key.result
+    "LOCAL_API_KEY" : random_string.local_api_key.result,
+    "MONGO_TYPE" : "DOCUMENTDB"
   }
 
   secrets = {
@@ -144,7 +129,8 @@ locals {
     "GP_SMTP_PASS" : data.aws_ssm_parameter.gp_smtp_pass.arn,
     "SMTP_HOST" : data.aws_ssm_parameter.smtp_host_no_port.arn,
     "SMTP_PORT" : data.aws_ssm_parameter.smtp_port.arn,
-    "SMTP_PASS" : data.aws_ssm_parameter.gp_smtp_pass.arn
+    "SMTP_PASS" : data.aws_ssm_parameter.gp_smtp_pass.arn,
+    "COGNITO_AUDIENCE" : data.aws_ssm_parameter.client_id.arn
   }
 }
 

@@ -98,8 +98,60 @@ module "alb" {
 }
 
 #=================================================
-#  COGNITO USERS
+#  COGNITO
 #=================================================
 resource "aws_cognito_user_pool" "pool" {
-  name = "${var.env}-${var.app}-users"
+  name = "${var.app}-${var.env}-users"
+}
+
+resource "aws_cognito_user_pool_client" "client" {
+  name                                 = "${var.app}-${var.env}-client"
+  user_pool_id                         = aws_cognito_user_pool.pool.id
+  allowed_oauth_flows                  = ["code"]
+  allowed_oauth_flows_user_pool_client = true
+  allowed_oauth_scopes                 = ["aws.cognito.signin.user.admin", "email", "openid", "phone", "profile"]
+  callback_urls                        = ["https://${module.alb.alb_dns_name}:4200"]
+  explicit_auth_flows                  = ["ALLOW_ADMIN_USER_PASSWORD_AUTH", "ALLOW_CUSTOM_AUTH", "ALLOW_REFRESH_TOKEN_AUTH", "ALLOW_USER_PASSWORD_AUTH", "ALLOW_USER_SRP_AUTH"]
+  logout_urls                          = ["https://${module.alb.alb_dns_name}:4200"]
+  supported_identity_providers         = ["COGNITO"]
+}
+
+# resource "aws_cognito_identity_pool" "identity" {
+#   identity_pool_name               = replace("${var.env}-${var.app}-identity-pool", "-", "_")
+#   allow_unauthenticated_identities = false
+
+#   cognito_identity_providers {
+#     client_id               = aws_cognito_user_pool_client.web.id
+#     provider_name           = "cognito-idp.${var.region}.amazonaws.com/${element(tolist(data.aws_cognito_user_pools.users.ids), 0)}"
+#     server_side_token_check = false
+#   }
+# }
+
+resource "aws_cognito_user_pool_domain" "domain" {
+  domain       = "${var.app}-${var.env}"
+  user_pool_id = aws_cognito_user_pool.pool.id
+}
+
+resource "aws_ssm_parameter" "client_id" {
+  name        = "/${var.env}/${var.app}/cognito/client/id"
+  description = "The client id for the client"
+  type        = "SecureString"
+  value       = aws_cognito_user_pool_client.client.id
+
+  tags = {
+    environment = "${var.env}"
+    app         = "${var.app}"
+  }
+}
+
+resource "aws_ssm_parameter" "domain" {
+  name        = "/${var.env}/${var.app}/cognito/domain"
+  description = "The domain for user pool"
+  type        = "SecureString"
+  value       = aws_cognito_user_pool_domain.domain.domain
+
+  tags = {
+    environment = "${var.env}"
+    app         = "${var.app}"
+  }
 }

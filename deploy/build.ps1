@@ -6,7 +6,6 @@ $version = "1.0"
 docker build "https://github.com/cisagov/con-pca.git#develop:client" -t con-pca-web:$version -f prod.Dockerfile
 docker build "https://github.com/cisagov/con-pca.git#develop:gophish/etc/gophish" -t con-pca-gophish:$version
 docker build "https://github.com/cisagov/con-pca.git#develop:controller/" -t con-pca-api:$version -f etc/Dockerfile
-docker build "https://github.com/cisagov/con-pca.git#develop:controller/etc/nginx" -t con-pca-api-nginx:$version
 
 # Tag Docker Images for ECR
 aws ecr get-login-password --region $region | docker login --username AWS --password-stdin "$account_id.dkr.ecr.$region.amazonaws.com"

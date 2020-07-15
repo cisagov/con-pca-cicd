@@ -1,33 +1,7 @@
 # ===========================
 # AUTH
 # ===========================
-resource "aws_cognito_user_pool_client" "web" {
-  name                                 = "${var.env}-${var.app}-web"
-  user_pool_id                         = element(tolist(data.aws_cognito_user_pools.users.ids), 0)
-  allowed_oauth_flows                  = ["code"]
-  allowed_oauth_flows_user_pool_client = true
-  allowed_oauth_scopes                 = ["aws.cognito.signin.user.admin", "email", "openid", "phone", "profile"]
-  callback_urls                        = ["https://${data.aws_lb.public.dns_name}:4200"]
-  explicit_auth_flows                  = ["ALLOW_ADMIN_USER_PASSWORD_AUTH", "ALLOW_CUSTOM_AUTH", "ALLOW_REFRESH_TOKEN_AUTH", "ALLOW_USER_PASSWORD_AUTH", "ALLOW_USER_SRP_AUTH"]
-  logout_urls                          = ["https://${data.aws_lb.public.dns_name}:4200"]
-  supported_identity_providers         = ["COGNITO"]
-}
 
-# resource "aws_cognito_identity_pool" "identity" {
-#   identity_pool_name               = replace("${var.env}-${var.app}-identity-pool", "-", "_")
-#   allow_unauthenticated_identities = false
-
-#   cognito_identity_providers {
-#     client_id               = aws_cognito_user_pool_client.web.id
-#     provider_name           = "cognito-idp.${var.region}.amazonaws.com/${element(tolist(data.aws_cognito_user_pools.users.ids), 0)}"
-#     server_side_token_check = false
-#   }
-# }
-
-resource "aws_cognito_user_pool_domain" "web" {
-  domain       = "${var.env}-${var.app}"
-  user_pool_id = element(tolist(data.aws_cognito_user_pools.users.ids), 0)
-}
 
 # ===========================
 # FARGATE
@@ -55,14 +29,18 @@ module "fargate" {
   container_protocol               = "HTTPS"
 
   environment = {
-    "API_URL" : "CHANGEME",
-    "FLOWER_URL" : "CHANGEME",
+    "API_URL" : "https://${data.aws_lb.public.dns_name}:8043",
+    "FLOWER_URL" : "https://${data.aws_lb.public.dns_name}:5555",
     "AWS_PROJECT_REGION" : var.region,
     "AWS_USER_POOLS_ID" : element(tolist(data.aws_cognito_user_pools.users.ids), 0),
-    "AWS_USER_POOLS_WEB_CLIENT_ID" : aws_cognito_user_pool_client.web.id,
-    "OAUTH_DOMAIN" : "${aws_cognito_user_pool_domain.web.domain}.auth.${var.region}.amazoncognito.com",
+
+    "OAUTH_DOMAIN" : "${data.aws_ssm_parameter.cognito_domain.value}.auth.${var.region}.amazoncognito.com",
     "OAUTH_REDIRECT_URL" : "https://${data.aws_lb.public.dns_name}:4200",
     # "AWS_COGNITO_IDENTITY_POOL_ID" : aws_cognito_identity_pool.identity.id
+  }
+
+  secrets = {
+    "AWS_USER_POOLS_WEB_CLIENT_ID" : data.aws_ssm_parameter.client_id.arn
   }
 
   desired_count      = 1
