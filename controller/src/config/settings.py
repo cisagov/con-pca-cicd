@@ -18,8 +18,12 @@ DEBUG = int(os.environ.get("DEBUG", default=0))
 ALLOWED_HOSTS = os.environ.get(
     "DJANGO_ALLOWED_HOSTS", "localhost 127.0.0.1 [::1]"
 ).split()
-ALLOWED_HOSTS.append(gethostname())
-ALLOWED_HOSTS.append(gethostbyname(gethostname()))
+
+try:
+    ALLOWED_HOSTS.append(gethostname())
+    ALLOWED_HOSTS.append(gethostbyname(gethostname()))
+except Exception:
+    print("Error getting hostname. Probably running in AWS.")
 
 CORS_ORIGIN_ALLOW_ALL = True
 
