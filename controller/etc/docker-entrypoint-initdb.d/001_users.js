@@ -1,11 +1,11 @@
 db.createUser(
     {
-        user: "root",
-        pwd: "rootpassword",
+        user: process.env.MONGO_INITDB_ROOT_USERNAME,
+        pwd: process.env.MONGO_INITDB_ROOT_PASSWORD,
         roles:[
             {
                 role: "readWrite",
-                db:   "pca_data_dev"
+                db:   process.env.MONGO_INITDB_DATABASE
             }
         ]
     }
