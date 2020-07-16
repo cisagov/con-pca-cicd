@@ -16,28 +16,16 @@ locals {
   private_cidr_block = cidrsubnet(module.vpc.vpc_cidr_block, 1, 1)
 }
 
-module "public_subnets" {
-  source              = "github.com/cloudposse/terraform-aws-multi-az-subnets"
-  namespace           = "${var.app}"
-  stage               = "${var.env}"
+module "subnets" {
+  source              = "github.com/cloudposse/terraform-aws-dynamic-subnets"
+  namespace           = var.app
+  stage               = var.env
   name                = "subnet"
-  availability_zones  = ["${var.region}a", "${var.region}b"]
   vpc_id              = module.vpc.vpc_id
-  cidr_block          = local.public_cidr_block
-  type                = "public"
   igw_id              = module.vpc.igw_id
-  nat_gateway_enabled = "false"
-}
-
-module "private_subnets" {
-  source             = "github.com/cloudposse/terraform-aws-multi-az-subnets"
-  namespace          = "${var.app}"
-  stage              = "${var.env}"
-  name               = "subnet"
-  availability_zones = ["${var.region}c", "${var.region}d"]
-  vpc_id             = module.vpc.vpc_id
-  cidr_block         = local.private_cidr_block
-  type               = "private"
+  cidr_block          = "10.0.0.0/16"
+  availability_zones  = ["${var.region}a", "${var.region}b"]
+  nat_gateway_enabled = true
 }
 
 
@@ -94,7 +82,20 @@ module "alb" {
   internal           = false
   vpc_id             = module.vpc.vpc_id
   security_group_ids = [aws_security_group.alb.id]
-  subnet_ids         = values(module.public_subnets.az_subnet_ids)
+  subnet_ids         = module.subnets.public_subnet_ids
+}
+
+module "private_alb" {
+  source    = "github.com/cloudposse/terraform-aws-alb"
+  namespace = "${var.app}"
+  stage     = "${var.env}"
+  name      = "private"
+
+  http_enabled       = false
+  internal           = true
+  vpc_id             = module.vpc.vpc_id
+  security_group_ids = [aws_security_group.alb.id]
+  subnet_ids         = module.subnets.private_subnet_ids
 }
 
 #=================================================
@@ -115,17 +116,6 @@ resource "aws_cognito_user_pool_client" "client" {
   logout_urls                          = ["https://${module.alb.alb_dns_name}:4200"]
   supported_identity_providers         = ["COGNITO"]
 }
-
-# resource "aws_cognito_identity_pool" "identity" {
-#   identity_pool_name               = replace("${var.env}-${var.app}-identity-pool", "-", "_")
-#   allow_unauthenticated_identities = false
-
-#   cognito_identity_providers {
-#     client_id               = aws_cognito_user_pool_client.web.id
-#     provider_name           = "cognito-idp.${var.region}.amazonaws.com/${element(tolist(data.aws_cognito_user_pools.users.ids), 0)}"
-#     server_side_token_check = false
-#   }
-# }
 
 resource "aws_cognito_user_pool_domain" "domain" {
   domain       = "${var.app}-${var.env}"

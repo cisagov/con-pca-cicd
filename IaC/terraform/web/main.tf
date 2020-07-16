@@ -1,9 +1,4 @@
 # ===========================
-# AUTH
-# ===========================
-
-
-# ===========================
 # FARGATE
 # ===========================
 module "fargate" {
@@ -44,7 +39,7 @@ module "fargate" {
   }
 
   desired_count      = 1
-  subnet_ids         = data.aws_subnet_ids.public.ids
+  subnet_ids         = data.aws_subnet_ids.private.ids
   security_group_ids = [aws_security_group.web.id]
 }
 

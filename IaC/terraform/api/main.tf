@@ -93,14 +93,16 @@ resource "random_password" "basic_auth_password" {
 # FARGATE
 # ===========================
 locals {
-  api_container_port     = 80
-  api_load_balancer_port = 8043
+  api_container_port          = 80
+  api_load_balancer_port      = 8043
+  rabbitmq_container_port     = 5672
+  rabbitmq_load_balancer_port = 5672
 
   environment = {
     "SECRET_KEY" : random_string.django_secret_key.result,
     "DEBUG" : 0,
     "DJANGO_ALLOWED_HOSTS" : "localhost 127.0.0.1 [::1] ${data.aws_lb.public.dns_name}",
-    "CELERY_BROKER" : "CHANGEME",
+    "CELERY_BROKER" : "amqp://${module.rabbitmq.lb_dns_name}:5672",
     "BASIC_AUTH_USERNAME" : random_string.basic_auth_username.result,
     "BASIC_AUTH_PASSWORD" : random_password.basic_auth_password.result,
     "DB_HOST" : module.documentdb.endpoint,
@@ -134,7 +136,7 @@ locals {
   }
 }
 
-module "fargate" {
+module "api" {
   source                = "../modules/fargate"
   namespace             = "${var.app}"
   stage                 = "${var.env}"
@@ -155,8 +157,20 @@ module "fargate" {
   environment           = local.environment
   secrets               = local.secrets
   desired_count         = 1
-  subnet_ids            = data.aws_subnet_ids.public.ids
+  subnet_ids            = data.aws_subnet_ids.private.ids
   security_group_ids    = [aws_security_group.api.id]
+}
+
+module "rabbitmq" {
+  source             = "../modules/rabbitmq"
+  namespace          = "${var.app}"
+  stage              = "${var.env}"
+  name               = "rabbitmq"
+  private_subnet_ids = data.aws_subnet_ids.private.ids
+  vpc_id             = data.aws_vpc.vpc.id
+  aws_region         = var.region
+  environment        = local.environment
+  secrets            = local.secrets
 }
 
 # ===========================
@@ -189,3 +203,4 @@ resource "aws_security_group" "api" {
   }
 
 }
+

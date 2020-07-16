@@ -9,39 +9,39 @@ module "label" {
   tags       = {}
 }
 
-# Cloudwatch Logs Group
-resource "aws_cloudwatch_log_group" "_" {
-  name              = module.label.id
-  retention_in_days = var.log_retention
+locals {
+  rabbitmq_port = 5672
 }
 
-# Load Balancer Target Group
 resource "aws_lb_target_group" "_" {
   name        = module.label.id
-  port        = var.container_port
-  protocol    = var.container_protocol
+  port        = local.rabbitmq_port
+  protocol    = "TCP"
   target_type = "ip"
   vpc_id      = var.vpc_id
 
   health_check {
-    enabled             = var.health_check_enabled
-    healthy_threshold   = var.health_check_healthy_threshold
-    interval            = var.health_check_interval
-    matcher             = var.health_check_codes
-    path                = var.health_check_path
-    port                = var.container_port
-    protocol            = var.container_protocol
-    unhealthy_threshold = var.health_check_unhealthy_threshold
+    healthy_threshold   = 2
+    unhealthy_threshold = 2
+    interval            = 30
+    port                = local.rabbitmq_port
+    protocol            = "TCP"
   }
 }
 
-# Load Balancer Listener
+resource "aws_lb" "network" {
+  name                             = module.label.id
+  enable_cross_zone_load_balancing = true
+  idle_timeout                     = 60
+  internal                         = true
+  load_balancer_type               = "network"
+  subnets                          = var.private_subnet_ids
+}
+
 resource "aws_lb_listener" "_" {
-  load_balancer_arn = var.load_balancer_arn
-  port              = var.load_balancer_port
-  protocol          = "HTTPS"
-  ssl_policy        = "ELBSecurityPolicy-2016-08"
-  certificate_arn   = var.iam_server_cert_arn
+  load_balancer_arn = aws_lb.network.arn
+  port              = local.rabbitmq_port
+  protocol          = "TCP"
 
   default_action {
     target_group_arn = aws_lb_target_group._.arn
@@ -49,16 +49,46 @@ resource "aws_lb_listener" "_" {
   }
 }
 
-# ECS Cluster
+resource "aws_security_group" "rabbitmq" {
+  name        = module.label.id
+  description = "Allow traffic for rabbitmq from nlb"
+  vpc_id      = var.vpc_id
+
+  ingress {
+    description = "Allow container port from ALB"
+    from_port   = local.rabbitmq_port
+    to_port     = local.rabbitmq_port
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+    self        = true
+  }
+
+  egress {
+    description = "Allow outbound traffic"
+    from_port   = 0
+    to_port     = 0
+    protocol    = -1
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    "Name" = module.label.id
+  }
+}
+
 resource "aws_ecs_cluster" "_" {
   name = module.label.id
+}
+
+resource "aws_cloudwatch_log_group" "_" {
+  name              = module.label.id
+  retention_in_days = var.log_retention
 }
 
 module "container" {
   source          = "github.com/cloudposse/terraform-aws-ecs-container-definition"
   container_name  = module.label.id
-  container_image = var.container_image
-  entrypoint      = var.entrypoint
+  container_image = "docker.io/rabbitmq:3.8"
   essential       = "true"
   log_configuration = {
     logDriver = "awslogs"
@@ -70,8 +100,8 @@ module "container" {
   }
   port_mappings = [
     {
-      containerPort = var.container_port
-      hostPort      = var.container_port
+      containerPort = local.rabbitmq_port
+      hostPort      = local.rabbitmq_port
       protocol      = "tcp"
     }
   ]
@@ -96,9 +126,9 @@ module "container" {
 resource "aws_ecs_task_definition" "_" {
   family                   = module.label.id
   container_definitions    = module.container.json
-  cpu                      = var.cpu
+  cpu                      = 512
   execution_role_arn       = aws_iam_role.ecs_execution.arn
-  memory                   = var.memory
+  memory                   = 1024
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
   task_role_arn            = aws_iam_role.ecs_task.arn
@@ -108,17 +138,18 @@ resource "aws_ecs_service" "_" {
   name            = module.label.id
   cluster         = aws_ecs_cluster._.id
   task_definition = aws_ecs_task_definition._.arn
-  desired_count   = var.desired_count
+  desired_count   = 1
   launch_type     = "FARGATE"
+
   load_balancer {
     target_group_arn = aws_lb_target_group._.arn
     container_name   = module.label.id
-    container_port   = var.container_port
+    container_port   = local.rabbitmq_port
   }
 
   network_configuration {
-    subnets          = var.subnet_ids
-    security_groups  = var.security_group_ids
+    subnets          = var.private_subnet_ids
+    security_groups  = [aws_security_group.rabbitmq.id]
     assign_public_ip = false
   }
 }

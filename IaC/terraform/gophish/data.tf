@@ -12,6 +12,14 @@ data "aws_subnet_ids" "public" {
   }
 }
 
+data "aws_subnet_ids" "private" {
+  vpc_id = data.aws_vpc.vpc.id
+
+  tags = {
+    Name = "${var.app}-${var.env}-subnet-private*"
+  }
+}
+
 data "aws_lb" "public" {
   name = "${var.app}-${var.env}-public"
 }

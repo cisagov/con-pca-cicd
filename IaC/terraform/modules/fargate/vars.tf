@@ -11,7 +11,8 @@ variable "name" {
 }
 
 variable "log_retention" {
-  type = number
+  type    = number
+  default = 7
 }
 
 variable "container_port" {
@@ -23,7 +24,8 @@ variable "vpc_id" {
 }
 
 variable "health_check_interval" {
-  type = number
+  type    = number
+  default = 60
 }
 
 variable "health_check_path" {
@@ -76,6 +78,11 @@ variable "security_group_ids" {
   type = list(string)
 }
 
+variable "health_check_enabled" {
+  type    = bool
+  default = true
+}
+
 variable "health_check_unhealthy_threshold" {
   type    = number
   default = 3
@@ -92,6 +99,11 @@ variable "memory" {
 
 variable "cpu" {
   type = number
+}
+
+variable "entrypoint" {
+  type    = list(string)
+  default = null
 }
 
 variable "container_protocol" {
