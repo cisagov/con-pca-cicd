@@ -76,7 +76,7 @@ export class TemplateManagerComponent implements OnInit {
     private settingsService: SettingsService,
     public dialog: MatDialog
   ) {
-    layoutSvc.setTitle('Template Manager');
+    layoutSvc.setTitle('Edit Template');
     //this.setEmptyTemplateForm();
     this.setTemplateForm(new Template());
     //this.getAllTemplates();
