@@ -195,31 +195,10 @@ h3 {
   margin-bottom: 0;
 }
 
-.tableOneTitle {
+.table-title {
   color: #015596;
   font-size: 0.8em;
   text-align: center;
-}
-#userMetrics {
-  border: 2px solid #cecece !important;
-  margin: 10px auto 40px auto;
-  width: 100%;
-}
-
-#userMetrics th, #userMetrics td {
-  padding: 5px 5px 0 5px;
-}
-
-#userMetrics thead {
-  border-bottom: solid 2px #000;
-}
-
-#userMetrics tbody {
-  font-size: 0.9em;
-}
-
-#userMetrics tbody tr:nth-of-type(odd) {
-  background-color: #e8f4f8 !important;
 }
 
 ul {
@@ -299,6 +278,10 @@ ul {
   font-family: "Lucida Sans Unicode", "Lucida Grande", sans-serif;
 }
 
+#trendStatistics td {
+  padding: 5px 8px 5px 5px;
+}
+
 /* Page Six */
 
 /* SVG Bar Chart */
@@ -346,16 +329,29 @@ ul {
 /* Page Seven */
 
 #methodologyTitle, #testingSummaryTitle {
-  font-size: 3em;
+  font-size: 2.5em;
   color: #015596 !important;
   letter-spacing: 2px;
 }
 
 /* Tables on Page Eight, Nine and Ten */
 
+table.report-table th, table.report-table td {
+  padding: 5px;
+  padding-right: 7px; 
+  vertical-align: top;
+}
+
+table.report-table th {
+  background-color: #dddddd;
+}
+
+table.report-table td {
+  border-bottom: 1px solid #dddddd;
+}
+
 #templateOverviewTable, #rateComparisonTable, #timeComparisonTable {
   margin-bottom: 40px;
-  // text-align: center;
 }
 
 #timeComparisonTable {
@@ -363,22 +359,15 @@ ul {
 }
 
 #templateOverviewTable th, #rateComparisonTable th {
-  background-color: #ededed;
-  padding: 10px;
   width: 200px;
 }
 
 #timeComparisonTable th {
-  background-color: #ededed;
   padding: 10px;
 }
 
 #timeComparisonTable th:first-of-type {
   width: 100px;
-}
-
-#templateOverviewTable td, #rateComparisonTable td, #timeComparisonTable td {
-  padding: 15px 5px;
 }
 
 #templateOverviewTable tr td:nth-of-type(2), 
@@ -487,9 +476,22 @@ ul {
   text-align: center;
 }
 
+.template-container {
+  border: 2px solid #dddddd; 
+  border-radius: 1rem; 
+  padding: 1rem; 
+  margin-bottom: 2rem;
+  display: grid;
+}
+
 /* Page Fifteen */
 
 .md-font {
   font-size: 1.325em;
   font-weight: 600;
+}
+
+// override the light/dark theme of the regular pages
+.theme-alternate .ngx-charts text, .theme-alternate .ngx-charts text {
+  fill: #000000 !important;
 }
