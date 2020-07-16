@@ -278,11 +278,11 @@ class SubscriptionStopView(APIView):
         resp = stop_subscription(subscription)
 
         # Cancel scheduled subscription emails
-        if "tasks" in subscription:
-            [
-                revoke(task["task_uuid"], terminate=True)
-                for task in subscription["tasks"]
-            ]
+        [
+            revoke(task["task_uuid"], terminate=True)
+            for task in subscription.get("tasks", [])
+            if task.get("task_uuid")
+        ]
 
         # Return updated subscriptions
         serializer = SubscriptionPatchResponseSerializer(resp)
