@@ -100,7 +100,7 @@ export class AddCustomerComponent implements OnInit, OnDestroy {
     public router: Router,
     public layoutSvc: LayoutMainService
   ) {
-    layoutSvc.setTitle('Customers');
+    layoutSvc.setTitle('Edit Customer');
   }
 
   ngOnInit(): void {

@@ -88,6 +88,7 @@ services:
     ports:
       - "27017:27017"
     volumes:
+      - ./etc/docker-entrypoint-initdb.d/001_users.js:/docker-entrypoint-initdb.d/001_users.js
       - "mongodb:/data/db"
     env_file:
       - .env
