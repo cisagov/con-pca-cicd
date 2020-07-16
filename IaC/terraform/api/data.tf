@@ -33,27 +33,39 @@ data "aws_ssm_parameter" "gp_api_key" {
 }
 
 data "aws_ssm_parameter" "gp_smtp_host" {
-  name = "/${var.env}/${var.app}/mailgun/smtp_host"
+  name = "/${var.env}/${var.app}/mailgun/gp_smtp_host"
 }
 
 data "aws_ssm_parameter" "gp_smtp_from" {
-  name = "/${var.env}/${var.app}/mailgun/smtp_from"
+  name = "/${var.env}/${var.app}/mailgun/gp_smtp_from"
 }
 
 data "aws_ssm_parameter" "gp_smtp_pass" {
-  name = "/${var.env}/${var.app}/mailgun/smtp_pass"
+  name = "/${var.env}/${var.app}/mailgun/gp_smtp_pass"
 }
 
 data "aws_ssm_parameter" "gp_smtp_user" {
-  name = "/${var.env}/${var.app}/mailgun/smtp_user"
+  name = "/${var.env}/${var.app}/mailgun/gp_smtp_user"
+}
+
+data "aws_ssm_parameter" "smtp_from" {
+  name = "/${var.env}/${var.app}/mailgun/smtp_from"
+}
+
+data "aws_ssm_parameter" "smtp_host" {
+  name = "/${var.env}/${var.app}/mailgun/smtp_host"
+}
+
+data "aws_ssm_parameter" "smtp_pass" {
+  name = "/${var.env}/${var.app}/mailgun/smtp_pass"
 }
 
 data "aws_ssm_parameter" "smtp_port" {
   name = "/${var.env}/${var.app}/mailgun/smtp_port"
 }
 
-data "aws_ssm_parameter" "smtp_host_no_port" {
-  name = "/${var.env}/${var.app}/mailgun/smtp_host_no_port"
+data "aws_ssm_parameter" "smtp_user" {
+  name = "/${var.env}/${var.app}/mailgun/smtp_user"
 }
 
 data "aws_cognito_user_pools" "users" {

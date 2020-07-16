@@ -110,7 +110,6 @@ locals {
     "GP_URL" : "https://${data.aws_lb.public.dns_name}:3333/"
     "PHISH_URL" : "http://${data.aws_lb.public.dns_name}/"
     "WEBHOOK_URL" : "http://${data.aws_lb.public.dns_name}:8000/api/v1/inboundwebhook/"
-    "SMTP_FROM" : "postmaster@mg.inltesting.xyz",
     "AWS_S3_IMAGE_BUCKET" : "${var.app}-${var.env}-images",
     "DEFAULT_FILE_STORAGE" : "storages.backends.s3boto3.S3Boto3Storage",
     "WORKERS" : 4,
@@ -129,9 +128,11 @@ locals {
     "GP_SMTP_FROM" : data.aws_ssm_parameter.gp_smtp_from.arn,
     "GP_SMTP_USER" : data.aws_ssm_parameter.gp_smtp_user.arn,
     "GP_SMTP_PASS" : data.aws_ssm_parameter.gp_smtp_pass.arn,
-    "SMTP_HOST" : data.aws_ssm_parameter.smtp_host_no_port.arn,
+    "SMTP_HOST" : data.aws_ssm_parameter.smtp_host.arn,
     "SMTP_PORT" : data.aws_ssm_parameter.smtp_port.arn,
-    "SMTP_PASS" : data.aws_ssm_parameter.gp_smtp_pass.arn,
+    "SMTP_PASS" : data.aws_ssm_parameter.smtp_pass.arn,
+    "SMTP_FROM": data.aws_ssm_parameter.smtp_from.arn,
+    "SMTP_USER": data.aws_ssm_parameter.smtp_user.arn,
     "COGNITO_AUDIENCE" : data.aws_ssm_parameter.client_id.arn
   }
 }
