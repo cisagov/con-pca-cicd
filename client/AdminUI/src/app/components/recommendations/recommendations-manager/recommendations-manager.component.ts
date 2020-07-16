@@ -33,7 +33,7 @@ export class RecommendationsManagerComponent implements OnInit {
         public layoutSvc: LayoutMainService,
         public dialog: MatDialog
     ) {
-        layoutSvc.setTitle('Recommendations Manager');
+        layoutSvc.setTitle('Edit Recommendations');
         this.setRecommendationsForm(new Recommendations())
     }
 

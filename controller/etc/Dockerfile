@@ -26,6 +26,10 @@ ADD ./src /app
 
 # Copy nginx conf
 COPY etc/nginx.conf /etc/nginx/conf.d/
+RUN rm -rf /etc/nginx/sites-enabled/
+
+# Get combined ca bundle for rds/docdb
+RUN  wget https://s3.amazonaws.com/rds-downloads/rds-combined-ca-bundle.pem
 
 # Entrypoint
 COPY ./etc/entrypoint.sh /usr/local/bin/entrypoint.sh
