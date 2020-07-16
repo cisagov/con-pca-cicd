@@ -186,6 +186,8 @@ def consolidate_campaign_group_stats(campaign_data_list):
             )
         elif len(consolidated_times[key]) > 0 and key == "sent":
             consolidated_stats[key] = {"count": len(consolidated_times[key])}
+        else:
+            consolidated_stats[key] = {"count":0}
     return consolidated_stats
 
 
