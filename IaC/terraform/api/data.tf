@@ -24,10 +24,6 @@ data "aws_lb" "public" {
   name = "${var.app}-${var.env}-public"
 }
 
-data "aws_lb" "private" {
-  name = "${var.app}-${var.env}-private"
-}
-
 data "aws_security_group" "alb" {
   name = "${var.app}-${var.env}-alb-sg"
 }

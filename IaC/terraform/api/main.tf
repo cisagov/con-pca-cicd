@@ -93,10 +93,10 @@ resource "random_password" "basic_auth_password" {
 # FARGATE
 # ===========================
 locals {
-  api_container_port          = 80
-  api_load_balancer_port      = 8043
-  rabbitmq_container_port     = 5672
-  rabbitmq_load_balancer_port = 5672
+  api_container_port        = 80
+  api_load_balancer_port    = 8043
+  flower_container_port     = 5555
+  flower_load_balancer_port = 5555
 
   environment = {
     "SECRET_KEY" : random_string.django_secret_key.result,
@@ -108,8 +108,8 @@ locals {
     "DB_HOST" : module.documentdb.endpoint,
     "DB_PORT" : 27017,
     "GP_URL" : "https://${data.aws_lb.public.dns_name}:3333/"
-    "PHISH_URL" : "https://${data.aws_lb.public.dns_name}:8080/"
-    "WEBHOOK_URL" : "https://${data.aws_lb.public.dns_name}:8043/api/v1/inboundwebhook/"
+    "PHISH_URL" : "http://${data.aws_lb.public.dns_name}/"
+    "WEBHOOK_URL" : "http://${data.aws_lb.public.dns_name}:8000/api/v1/inboundwebhook/"
     "SMTP_FROM" : "postmaster@mg.inltesting.xyz",
     "AWS_S3_IMAGE_BUCKET" : "${var.app}-${var.env}-images",
     "DEFAULT_FILE_STORAGE" : "storages.backends.s3boto3.S3Boto3Storage",
@@ -161,6 +161,108 @@ module "api" {
   security_group_ids    = [aws_security_group.api.id]
 }
 
+# Need an http listener in order to get webhooks to work from gophish
+# There is no way to specify for gophish to not verify cert.
+# Once we have good certs, can remove this.
+resource "aws_lb_listener" "api_http" {
+  load_balancer_arn = data.aws_lb.public.arn
+  port              = 8000
+  protocol          = "HTTP"
+
+  default_action {
+    target_group_arn = module.api.target_group_arn
+    type             = "forward"
+  }
+}
+
+
+# ===========================
+# FLOWER CREDENTIALS
+# ===========================
+resource "random_string" "flower_username" {
+  length  = 8
+  number  = false
+  special = false
+  upper   = false
+}
+
+resource "random_password" "flower_password" {
+  length           = 32
+  number           = true
+  special          = false
+  override_special = "!_#&"
+}
+
+resource "aws_ssm_parameter" "flower_username" {
+  name        = "/${var.env}/${var.app}/flower/username"
+  description = "The username for flower"
+  type        = "SecureString"
+  value       = random_string.flower_username.result
+}
+
+resource "aws_ssm_parameter" "flower_password" {
+  name        = "/${var.env}/${var.app}/flower/password"
+  description = "The password for flower"
+  type        = "SecureString"
+  value       = random_password.flower_password.result
+}
+
+module "flower" {
+  source                = "../modules/fargate"
+  namespace             = "${var.app}"
+  stage                 = "${var.env}"
+  name                  = "flower"
+  log_retention         = 7
+  iam_server_cert_arn   = data.aws_iam_server_certificate.self.arn
+  container_port        = local.flower_container_port
+  vpc_id                = data.aws_vpc.vpc.id
+  health_check_interval = 60
+  health_check_path     = "/"
+  health_check_codes    = "307,202,200,401,404"
+  load_balancer_arn     = data.aws_lb.public.arn
+  load_balancer_port    = local.flower_load_balancer_port
+  container_image       = "780016325729.dkr.ecr.us-east-1.amazonaws.com/con-pca-api:1.0"
+  aws_region            = var.region
+  cpu                   = 512
+  memory                = 1024
+  environment           = local.environment
+  secrets               = local.secrets
+  desired_count         = 1
+  subnet_ids            = data.aws_subnet_ids.private.ids
+  security_group_ids    = [aws_security_group.flower.id]
+  entrypoint = [
+    "flower", "-A", "config",
+    "--address=0.0.0.0",
+    "--port=${local.flower_container_port}",
+    "--broker=amqp://${module.rabbitmq.lb_dns_name}:5672",
+    "--basic_auth=${random_string.flower_username.result}:${random_password.flower_password.result}"
+  ]
+}
+
+module "celery" {
+  source             = "../modules/fargate-no-alb"
+  namespace          = "${var.app}"
+  stage              = "${var.env}"
+  name               = "celery"
+  log_retention      = 7
+  container_port     = 80
+  vpc_id             = data.aws_vpc.vpc.id
+  container_image    = "780016325729.dkr.ecr.us-east-1.amazonaws.com/con-pca-api:1.0"
+  aws_region         = var.region
+  cpu                = 2048
+  memory             = 4096
+  environment        = local.environment
+  secrets            = local.secrets
+  desired_count      = 1
+  subnet_ids         = data.aws_subnet_ids.private.ids
+  security_group_ids = [aws_security_group.flower.id]
+  entrypoint = [
+    "celery", "worker",
+    "--app=config.celery:app",
+    "--loglevel=info"
+  ]
+}
+
 module "rabbitmq" {
   source             = "../modules/rabbitmq"
   namespace          = "${var.app}"
@@ -200,6 +302,53 @@ resource "aws_security_group" "api" {
 
   tags = {
     "Name" = "${var.app}-${var.env}-api-alb"
+  }
+
+}
+
+resource "aws_security_group" "flower" {
+  name        = "${var.app}-${var.env}-flower-alb"
+  description = "Allow traffic for flower from alb"
+  vpc_id      = data.aws_vpc.vpc.id
+
+  ingress {
+    description     = "Allow container port from ALB"
+    from_port       = local.flower_container_port
+    to_port         = local.flower_container_port
+    protocol        = "tcp"
+    security_groups = [data.aws_security_group.alb.id]
+    self            = true
+  }
+
+  egress {
+    description = "Allow outbound traffic"
+    from_port   = 0
+    to_port     = 0
+    protocol    = -1
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    "Name" = "${var.app}-${var.env}-flower-alb"
+  }
+
+}
+
+resource "aws_security_group" "celery" {
+  name        = "${var.app}-${var.env}-celery"
+  description = "Celery Traffic"
+  vpc_id      = data.aws_vpc.vpc.id
+
+  egress {
+    description = "Allow outbound traffic"
+    from_port   = 0
+    to_port     = 0
+    protocol    = -1
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    "Name" = "${var.app}-${var.env}-celery"
   }
 
 }

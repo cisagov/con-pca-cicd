@@ -88,6 +88,17 @@ module "fargate" {
   security_group_ids = [aws_security_group.gophish.id]
 }
 
+resource "aws_lb_listener" "landing_page_listener" {
+  load_balancer_arn = data.aws_lb.public.arn
+  port              = 80
+  protocol          = "HTTP"
+
+  default_action {
+    target_group_arn = module.fargate.target_group_arn
+    type             = "forward"
+  }
+}
+
 # ===========================
 # SECURITY GROUP
 # ===========================

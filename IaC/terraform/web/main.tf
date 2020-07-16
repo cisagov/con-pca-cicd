@@ -16,7 +16,7 @@ module "fargate" {
   health_check_path                = "/"
   health_check_codes               = "307,202,200,404,302"
   load_balancer_arn                = data.aws_lb.public.arn
-  load_balancer_port               = 4200
+  load_balancer_port               = 443
   container_image                  = "780016325729.dkr.ecr.us-east-1.amazonaws.com/con-pca-web:1.0"
   aws_region                       = var.region
   memory                           = 4096
@@ -30,7 +30,7 @@ module "fargate" {
     "AWS_USER_POOLS_ID" : element(tolist(data.aws_cognito_user_pools.users.ids), 0),
 
     "OAUTH_DOMAIN" : "${data.aws_ssm_parameter.cognito_domain.value}.auth.${var.region}.amazoncognito.com",
-    "OAUTH_REDIRECT_URL" : "https://${data.aws_lb.public.dns_name}:4200",
+    "OAUTH_REDIRECT_URL" : "https://${data.aws_lb.public.dns_name}",
     # "AWS_COGNITO_IDENTITY_POOL_ID" : aws_cognito_identity_pool.identity.id
   }
 

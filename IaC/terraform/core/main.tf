@@ -85,19 +85,6 @@ module "alb" {
   subnet_ids         = module.subnets.public_subnet_ids
 }
 
-module "private_alb" {
-  source    = "github.com/cloudposse/terraform-aws-alb"
-  namespace = "${var.app}"
-  stage     = "${var.env}"
-  name      = "private"
-
-  http_enabled       = false
-  internal           = true
-  vpc_id             = module.vpc.vpc_id
-  security_group_ids = [aws_security_group.alb.id]
-  subnet_ids         = module.subnets.private_subnet_ids
-}
-
 #=================================================
 #  COGNITO
 #=================================================
@@ -111,9 +98,9 @@ resource "aws_cognito_user_pool_client" "client" {
   allowed_oauth_flows                  = ["code"]
   allowed_oauth_flows_user_pool_client = true
   allowed_oauth_scopes                 = ["aws.cognito.signin.user.admin", "email", "openid", "phone", "profile"]
-  callback_urls                        = ["https://${module.alb.alb_dns_name}:4200"]
+  callback_urls                        = ["https://${module.alb.alb_dns_name}"]
   explicit_auth_flows                  = ["ALLOW_ADMIN_USER_PASSWORD_AUTH", "ALLOW_CUSTOM_AUTH", "ALLOW_REFRESH_TOKEN_AUTH", "ALLOW_USER_PASSWORD_AUTH", "ALLOW_USER_SRP_AUTH"]
-  logout_urls                          = ["https://${module.alb.alb_dns_name}:4200"]
+  logout_urls                          = ["https://${module.alb.alb_dns_name}"]
   supported_identity_providers         = ["COGNITO"]
 }
 

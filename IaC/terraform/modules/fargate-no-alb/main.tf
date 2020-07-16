@@ -15,39 +15,6 @@ resource "aws_cloudwatch_log_group" "_" {
   retention_in_days = var.log_retention
 }
 
-# Load Balancer Target Group
-resource "aws_lb_target_group" "_" {
-  name        = module.label.id
-  port        = var.container_port
-  protocol    = var.container_protocol
-  target_type = "ip"
-  vpc_id      = var.vpc_id
-
-  health_check {
-    healthy_threshold   = var.health_check_healthy_threshold
-    interval            = var.health_check_interval
-    matcher             = var.health_check_codes
-    path                = var.health_check_path
-    port                = var.container_port
-    protocol            = var.container_protocol
-    unhealthy_threshold = var.health_check_unhealthy_threshold
-  }
-}
-
-# Load Balancer Listener
-resource "aws_lb_listener" "_" {
-  load_balancer_arn = var.load_balancer_arn
-  port              = var.load_balancer_port
-  protocol          = "HTTPS"
-  ssl_policy        = "ELBSecurityPolicy-2016-08"
-  certificate_arn   = var.iam_server_cert_arn
-
-  default_action {
-    target_group_arn = aws_lb_target_group._.arn
-    type             = "forward"
-  }
-}
-
 # ECS Cluster
 resource "aws_ecs_cluster" "_" {
   name = module.label.id
@@ -109,11 +76,6 @@ resource "aws_ecs_service" "_" {
   task_definition = aws_ecs_task_definition._.arn
   desired_count   = var.desired_count
   launch_type     = "FARGATE"
-  load_balancer {
-    target_group_arn = aws_lb_target_group._.arn
-    container_name   = module.label.id
-    container_port   = var.container_port
-  }
 
   network_configuration {
     subnets          = var.subnet_ids
