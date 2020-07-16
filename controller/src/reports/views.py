@@ -396,7 +396,7 @@ class CycleReportsView(APIView):
             "number_of_reports_to_helpdesk": get_statistic_from_group(
                 subscription_stats, "stats_all", "reported", "count"
             ),
-            "reports_to_clicks_ratio": round(
+            "reports_to_clicks_ratio": ratio_to_percent(
                 get_reports_to_click(subscription_stats), 2
             ),
             "avg_time_to_first_click": format_timedelta(

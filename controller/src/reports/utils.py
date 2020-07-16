@@ -185,6 +185,8 @@ def consolidate_campaign_group_stats(campaign_data_list):
             )
         elif len(consolidated_times[key]) > 0 and key == "sent":
             consolidated_stats[key] = {"count": len(consolidated_times[key])}
+        else:
+            consolidated_stats[key] = {"count":0}
     return consolidated_stats
 
 
@@ -513,14 +515,16 @@ def ratio_to_percent(ratio,round_val=2):
 
 def format_timedelta(timedelta):
     ret_val = ""
-    if timedelta.days:
-        ret_val += f"{timedelta.days} Days "
-    if timedelta.seconds/3600 > 1:
-        ret_val += f"{int(round(timedelta.seconds/3600,0))} Hours "
-    if int(timedelta.seconds % 60) != 0:
-        ret_val += f"{int(timedelta.seconds % 60)} Minutes"
-    return ret_val
-
+    try:
+        if timedelta.days:
+            ret_val += f"{timedelta.days} Days "
+        if timedelta.seconds/3600 > 1:
+            ret_val += f"{int(round(timedelta.seconds/3600,0))} Hours "
+        if int(timedelta.seconds % 60) != 0:
+            ret_val += f"{int(timedelta.seconds % 60)} Minutes"
+        return ret_val
+    except:
+        return ret_val
 
 def get_reports_to_click(subscription_stats):
     """Helper function to get reports to click ratio, ensuring division by zero does not happen."""
