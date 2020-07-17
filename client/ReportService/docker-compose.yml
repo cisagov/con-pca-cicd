@@ -1,20 +1,18 @@
 version: "3.5"
 services:
-    report:
-      build:
-        context: .
-        dockerfile: ./local.Dockerfile
-      stdin_open: true
-      tty: true
-      container_name: pca-pdf-report
-      hostname: pca-report
-      restart: unless-stopped
-      ports:
-        - "3000:3000"
-      networks:
-        - frontend
-      env_file:
-        - .env      
+  report:
+    build:
+      context: .
+      dockerfile: ./local.Dockerfile
+    stdin_open: true
+    tty: true
+    container_name: pca-pdf-report
+    hostname: pca-report
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    networks:
+      - frontend
 networks:
   frontend:
     name: pca_frontend
