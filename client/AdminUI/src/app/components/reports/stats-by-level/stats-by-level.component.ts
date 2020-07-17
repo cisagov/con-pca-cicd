@@ -63,7 +63,6 @@ export class StatsByLevelComponent implements OnInit {
     // define the Y scale
     this.yScaleLines.push({ realNumber: 0, y: this.chartHeight });
   }
-
 }
 
 /**

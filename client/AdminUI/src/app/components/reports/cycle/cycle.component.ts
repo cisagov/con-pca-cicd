@@ -3,6 +3,7 @@ import { NullishCoalescePipe } from 'src/app/pipes/nullish-coalesce.pipe';
 import { ReportsService } from 'src/app/services/reports.service';
 import { AppSettings } from 'src/app/AppSettings';
 import { ActivatedRoute } from '@angular/router';
+import { ChartsService } from 'src/app/services/charts.service';
 
 @Component({
   selector: 'app-cycle',
@@ -19,11 +20,17 @@ export class CycleComponent implements OnInit {
 
   dateFormat = AppSettings.DATE_FORMAT;
 
+  chart: any = {};
+  schemeLowMedHigh = {
+    domain: ['#064875', '#fcbf10', '#007bc1']
+  };
+
   /**
    *
    */
   constructor(
     public reportsSvc: ReportsService,
+    public chartsSvc: ChartsService,
     private route: ActivatedRoute,
   ) { }
 
@@ -36,75 +43,23 @@ export class CycleComponent implements OnInit {
       this.reportsSvc.getCycleReport(this.subscriptionUuid, new Date()).subscribe(resp => {
         this.detail = resp;
 
+        // build statistics by level chart
+        this.chart.showXAxis = true;
+        this.chart.showYAxis = true;
+        this.chart.showXAxisLabel = true;
+        this.chart.xAxisLabel = '';
+        this.chart.showYAxisLabel = true;
+        this.chart.yAxisLabel = '';
+        this.chart.showDataLabel = true;
+        this.chart.showLegend = true;
+        this.chart.legendPosition = 'right';
+        this.chart.colorScheme = this.schemeLowMedHigh;
 
-        // RKW - fake in some metrics
-        this.fake();
+        this.chart.chartResults = this.chartsSvc.formatReportStatsForChart(resp);
 
         this.renderReport();
       });
     });
-  }
-
-
-  fake() {
-
-    this.detail.metrics.number_of_clicked_emails = 1;
-    // this.detail.metrics.number_of_email_sent_overall = 100;
-
-    this.detail.metrics = {
-      number_of_email_sent_overall: 117,
-      number_of_opened_emails: 40,
-      number_of_clicked_emails: 17,
-      number_of_reported_emails: 3,
-      averate_time_to_first_click: '07:00',
-      stats: [
-        {
-          type: 'sent',
-          low: 40,
-          lowN: 0,
-          moderate: 40,
-          moderateN: 0,
-          high: 37,
-          highN: 0
-        },
-        {
-          type: 'opened',
-          low: 15,
-          lowN: 0,
-          moderate: 12,
-          moderateN: 0,
-          high: 6,
-          highN: 0
-        },
-        {
-          type: 'clicked',
-          low: 1,
-          lowN: 0,
-          moderate: 1,
-          moderateN: 0,
-          high: 1,
-          highN: 0
-        },
-        {
-          type: 'submitted',
-          low: 1,
-          lowN: 0,
-          moderate: 1,
-          moderateN: 0,
-          high: 1,
-          highN: 0
-        },
-        {
-          type: 'reported',
-          low: 1,
-          lowN: 0,
-          moderate: 1,
-          moderateN: 0,
-          high: 1,
-          highN: 0
-        },
-      ]
-    };
   }
 
   /**

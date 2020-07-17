@@ -157,7 +157,7 @@
                                 organization.</p>
                             <p>Most organizations will setup a reporting mailbox that employees can forward suspicious
                                 emails to
-                                for further investigation. Inorder to determine some statics such as time to first
+                                for further investigation. In order to determine some statics such as time to first
                                 report, the email content,
                                 the target email address, and time of first report will be required to determine those
                                 statics.</p>
@@ -208,60 +208,56 @@
             </div>
             <div class="row">
                 <div class="col-12">
-                    <p class="tableOneTitle">Table 1:Targeted User Measurements</p>
+                    <p class="table-title">Table 1: Targeted User Measurements</p>
                 </div>
             </div>
             <div class="row">
                 <div class="col-12">
-                    <table id="userMetrics">
-                        <thead>
-                            <tr>
-                                <th>User Activity Metrics</th>
-                                <th>Results</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Total users targeted for phishing</td>
-                                <td>{{detail?.metrics.total_users_targeted}}</td>
-                            </tr>
-                            <tr>
-                                <td># of emails (phishing attempts) sent overall</td>
-                                <td>{{detail?.metrics.number_of_email_sent_overall}}
-                                    ({{detail?.metrics.emails_sent_over_target_count}} per user)</td>
-                            </tr>
-                            <tr>
-                                <td># of clicked emails (successful phishing attempts) overall</td>
-                                <td>{{detail?.metrics.number_of_clicked_emails}}
-                                    ({{detail?.metrics.percent_of_clicked_emails}}% click rate)</td>
-                            </tr>
-                            <tr>
-                                <td># of phished users overall</td>
-                                <td>{{detail?.metrics.number_of_phished_users_overall}}
-                                    ({{detail?.metrics.percent_of_submits}}% of target population)</td>
-                            </tr>
-                            <tr>
-                                <td># of user reports sent to helpdesk overall</td>
-                                <td>{{detail?.metrics.number_of_reports_to_helpdesk}}
-                                    ({{detail?.metrics.percent_report_rate}}% report rate)</td>
-                            </tr>
-                            <tr>
-                                <td>Ratio of reports-to-clicks</td>
-                                <td>{{detail?.metrics.reports_to_clicks_ratio}}</td>
-                            </tr>
-                            <tr>
-                                <td>Average time to first click</td>
-                                <td>{{detail?.metrics.avg_time_to_first_click}}</td>
-                            </tr>
-                            <tr>
-                                <td>Average time to first report</td>
-                                <td>{{detail?.metrics.avg_time_to_first_report}}</td>
-                            </tr>
-                            <tr>
-                                <td>Most successful phishing template</td>
-                                <td>Level 6 &quot;Update Paycheck System Policy&quot;</td>
-                            </tr>
-                        </tbody>
+                    <table class="report-table w-100 mb-5">
+                        <tr>
+                            <th>User Activity Metrics</th>
+                            <th>Results</th>
+                        </tr>
+                        <tr>
+                            <td>Total users targeted for phishing</td>
+                            <td>{{detail?.metrics.total_users_targeted}}</td>
+                        </tr>
+                        <tr>
+                            <td># of emails (phishing attempts) sent overall</td>
+                            <td>{{detail?.metrics.number_of_email_sent_overall}}
+                                ({{detail?.metrics.emails_sent_over_target_count}} per user)</td>
+                        </tr>
+                        <tr>
+                            <td># of clicked emails (successful phishing attempts) overall</td>
+                            <td>{{detail?.metrics.number_of_clicked_emails}}
+                                ({{detail?.metrics.percent_of_clicked_emails}}% click rate)</td>
+                        </tr>
+                        <tr>
+                            <td># of phished users overall</td>
+                            <td>{{detail?.metrics.number_of_phished_users_overall}}
+                                ({{detail?.metrics.percent_of_submits}}% of target population)</td>
+                        </tr>
+                        <tr>
+                            <td># of user reports sent to helpdesk overall</td>
+                            <td>{{detail?.metrics.number_of_reports_to_helpdesk}}
+                                ({{detail?.metrics.percent_report_rate}}% report rate)</td>
+                        </tr>
+                        <tr>
+                            <td>Ratio of reports-to-clicks</td>
+                            <td>{{detail?.metrics.reports_to_clicks_ratio}}</td>
+                        </tr>
+                        <tr>
+                            <td>Average time to first click</td>
+                            <td>{{detail?.metrics.avg_time_to_first_click}}</td>
+                        </tr>
+                        <tr>
+                            <td>Average time to first report</td>
+                            <td>{{detail?.metrics.avg_time_to_first_report}}</td>
+                        </tr>
+                        <tr>
+                            <td>Most successful phishing template</td>
+                            <td>Level 6 &quot;Update Paycheck System Policy&quot;</td>
+                        </tr>
                     </table>
                 </div>
             </div>
@@ -272,7 +268,7 @@
                         coordinated
                         all activities—including planning and testing–with {{detail?.customer.full_name}}'s point of
                         contact.
-                        {{detail?.customer.full_name}}maintained control over the testing, including providing target
+                        {{detail?.customer.full_name}} maintained control over the testing, including providing target
                         email
                         addresses,
                         approving phishing email templates, approving testing timeframes, and adjusting mail security
@@ -281,7 +277,7 @@
                         electronic
                         protections designed to block phishing attempts. This CON-PCA spanned a six-week period and
                         aimed to
-                        capture behavior-based metrics of {{detail?.customer.full_name}}information system users’
+                        capture behavior-based metrics of {{detail?.customer.full_name}} information system users’
                         reaction to
                         phishing
                         emails of multiple complexity levels. </p>
@@ -361,6 +357,7 @@
                 </div>
             </div>
         </div>
+
         <div class="row" id="statFlexContainer">
             <div id="companyAverageText">
                 <div id="companyAverageBox">{{ detail?.metrics.customer_clicked_avg }}%</div>
@@ -390,10 +387,8 @@
                     </td>
                 </tr>
             </table>
-
-
-
         </div>
+
         <div class="row">
             <div class="col-12">
                 <div id="yearTrendsTitle">
@@ -429,23 +424,9 @@
                         <td>{{detail?.metrics.longest_time_to_open}}</td>
                     </tr>
                 </table>
-
-
-
-            </div>
-            <div class="row">
-                <div class="col-12">
-                    <div id="yearTrendsTitle">
-                        <h3>Year Trends</h3>
-                        <p>These trends show the effect of phishing training and email filtering investments.</p><br>
-                    </div>
-                    <div id="yearTrendGraph">
-                        <p class="pt-20">PERCENTAGE TRENDS</p>
-                        <div id="trendLineGraph"></div>
-                    </div>
-                </div>
             </div>
         </div>
+
         <div class="row">
             <div class="col-12">
                 <div id="subNotesTwo">
@@ -473,7 +454,7 @@
             <div class="col-12">
                 <div id="successOverview">
                     <h4>PHISHING SUCCESS OVERVIEW</h4>
-                    <svg class="chart" width="800" height="210" aria-labelledby="title desc" role="img">
+                    <svg class="chart" height="210" aria-labelledby="title desc" role="img">
                         <title id="title">STATISTICS BY LEVEL</title>
                         <desc id="units-achieved">0; 50; 100; 150; 200; 250; 300; 350; 400;</desc>
                         <g class="measure-line">
@@ -514,74 +495,16 @@
                 <p>See instructions for description of deception levels and how to read these statistics.</p>
                 <div class="bar-chart m-2">
                     <h4>STATISTICS BY LEVEL</h4>
-                    <app-stats-by-level [metrics]="detail.metrics" [chartHeight]="100"></app-stats-by-level>
-                    <ul class="legend">
-                        <li>Low</li>
-                        <li>Moderate</li>
-                        <li>High</li>
-                    </ul>
-                    <!-- <svg class="chart" width="800" height="340" aria-labelledby="title desc" role="img">
-                        <title id="title">STATISTICS BY LEVEL</title>
-                        <desc id="units-achieved">0; 50; 100; 150; 200; 250; 300; 350; 400;</desc>
-                        <g class="measure-line">
-                            <line x1="30" y1="15" x2="800" y2="15" style="stroke:#BAD6E4;stroke-width:2" />
-                            <line x1="30" y1="45" x2="800" y2="45" style="stroke:#BAD6E4;stroke-width:2" />
-                            <line x1="30" y1="75" x2="800" y2="75" style="stroke:#BAD6E4;stroke-width:2" />
-                            <line x1="30" y1="105" x2="800" y2="105" style="stroke:#BAD6E4;stroke-width:2" />
-                            <line x1="30" y1="135" x2="800" y2="135" style="stroke:#BAD6E4;stroke-width:2" />
-                            <line x1="30" y1="165" x2="800" y2="165" style="stroke:#BAD6E4;stroke-width:2" />
-                            <line x1="30" y1="195" x2="800" y2="195" style="stroke:#BAD6E4;stroke-width:2" />
-                            <line x1="30" y1="225" x2="800" y2="225" style="stroke:#BAD6E4;stroke-width:2" />
-                            <line x1="30" y1="255" x2="800" y2="255" style="stroke:#BAD6E4;stroke-width:2" />
-                            <text x="15" y="255" class="caption" dy=".35em">0</text>
-                            <text x="8" y="225" class="caption" dy=".35em">50</text>
-                            <text x="0" y="195" class="caption" dy=".35em">100</text>
-                            <text x="0" y="165" class="caption" dy=".35em">150</text>
-                            <text x="0" y="135" class="caption" dy=".35em">200</text>
-                            <text x="0" y="105" class="caption" dy=".35em">250</text>
-                            <text x="0" y="75" class="caption" dy=".35em">300</text>
-                            <text x="0" y="45" class="caption" dy=".35em">350</text>
-                            <text x="0" y="15" class="caption" dy=".35em">400</text>
-                        </g>
-                        <desc id="email-action">Sent; Opened; Clicked; Submitted; Reported</desc>
-                        <g class="bar">
-                            <rect class="dark-blue-bar" width="15" height="200" x="60" y="55"></rect>
-                            <rect class="yellow-bar" width="15" height="200" x="80" y="55"></rect>
-                            <rect class="blue-bar" width="15" height="200" x="100" y="55"></rect>
-                            <text x="70" y="270" class="caption" dy=".35em">Sent</text>
-                        </g>
-                        <g class="bar">
-                            <rect class="dark-blue-bar" width="15" height="180" x="220" y="75"></rect>
-                            <rect class="yellow-bar" width="15" height="180" x="240" y="75"></rect>
-                            <rect class="blue-bar" width="15" height="180" x="260" y="75"></rect>
-                            <text x="220" y="270" class="caption" dy=".35em">Opened</text>
-                        </g>
-                        <g class="bar">
-                            <rect class="dark-blue-bar" width="15" height="200" x="380" y="55"></rect>
-                            <rect class="yellow-bar" width="15" height="200" x="400" y="55"></rect>
-                            <rect class="blue-bar" width="15" height="200" x="420" y="55"></rect>
-                            <text x="380" y="270" class="caption" dy=".35em">Clicked</text>
-                        </g>
-                        <g class="bar">
-                            <rect class="dark-blue-bar" width="15" height="200" x="520" y="55"></rect>
-                            <rect class="yellow-bar" width="15" height="200" x="540" y="55"></rect>
-                            <rect class="blue-bar" width="15" height="200" x="560" y="55"></rect>
-                            <text x="510" y="270" class="caption" dy=".35em">Submitted</text>
-                        </g>
-                        <g class="bar">
-                            <rect class="dark-blue-bar" width="15" height="200" x="680" y="55"></rect>
-                            <rect class="yellow-bar" width="15" height="200" x="700" y="55"></rect>
-                            <rect class="blue-bar" width="15" height="200" x="720" y="55"></rect>
-                            <text x="675" y="270" class="caption" dy=".35em">Reported</text>
-                        </g>
-                        <desc id="desc">Low; Moderate; High</desc>
-                    </svg>
-
-                    <ul class="legend">
-                        <li>Low</li>
-                        <li>Moderate</li>
-                        <li>High</li>
-                    </ul> -->
+                    <div class="d-flex" style="height: 30rem">
+                        <ngx-charts-bar-vertical-2d *ngIf="chart.chartResults" [results]="chart.chartResults"
+                            [scheme]="chart.colorScheme" [barPadding]="5" [groupPadding]="8" [gradient]="chart.gradient"
+                            [xAxis]="chart.showXAxis" [showXAxisLabel]="chart.showXAxisLabel"
+                            [xAxisLabel]="chart.xAxisLabel" [yAxis]="chart.showYAxis"
+                            [showYAxisLabel]="chart.showYAxisLabel" [yAxisLabel]="chart.yAxisLabel"
+                            [legend]="chart.showLegend" [legendPosition]="chart.legendPosition" [legendTitle]="''"
+                            [roundEdges]="false">
+                        </ngx-charts-bar-vertical-2d>
+                    </div>
                 </div>
             </div>
         </div>
@@ -591,22 +514,21 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-12">
-                    <p>The remainder of this report provides findings and metrics of the VM phishing service for
+                    <p class="mb-5">The remainder of this report provides findings and metrics of the VM phishing
+                        service for
                         {{ detail?.customer.full_name }}.</p>
                     <h2 id="methodologyTitle">{{ detail?.customer.full_name }} Methodology Specifics</h2>
-                    <div id="methodologyText">
+                    <div id="methodologyText" class="mb-5">
                         <p>VM used the methodology documented in <u><b>Appendix A: Methodology</b></u> to perform
                             testing
                             {{ detail?.customer.full_name }}. Specific phishing templates can be reviewed in
-                            <u><b>Appendix
-                                    C: Templates</b></u>
+                            <u><b>Appendix C: Templates</b></u>
                             with corresponding complexity calculations. VM divided the 1000 email addresses that
                             {{ detail?.customer.full_name }} provided
                             into three groups. Group 1 had 333 addresses and received levels 1 and 4. Group 2 had 333
                             addresses and
                             received levels 2 and 5. Group 3 had 334 addresses and received levels 3 and 6. See Table 3
-                            for
-                            descriptions of email levels 1 – 6.</p>
+                            for descriptions of email levels 1 – 6.</p>
                         <p>The assessment’s goal was to capture the behavior-based responses of
                             {{ detail?.customer.full_name }}
                             to email phishing
@@ -633,7 +555,7 @@
             <div class="row">
                 <div class="col-12">
                     <h2 id="testingSummaryTitle">Summary of Testing Activities and Results</h2>
-                    <div id="testingSummaryText">
+                    <div id="testingSummaryText" class="mb-5">
                         <p>This PCA concentrated on how phishing email complexity affected
                             {{ detail?.customer.full_name }} user
                             click behavior and
@@ -663,18 +585,17 @@
     <article id="pageEight">
         <div class="row">
             <div class="col-12">
-                <table id="templateOverviewTable">
-                    <thead><b>Table 3:</b> Email Template Overview<br></thead><br>
+                <p class="table-title">Table 3: Email Template Overview</p>
+                <table id="templateOverviewTable" class="report-table">
                     <tr>
-                        <th style="padding:0 75px 0 0;">Level</th>
-                        <th style="padding:0 75px 0 0;">Deception Score</th>
-                        <th style="padding: 0 225px 0 0;">Description</th>
+                        <th class="text-right pr-5">Level</th>
+                        <th class="text-right pr-5">Deception Score</th>
+                        <th>Description</th>
                         <th>Displayed Link</th>
                     </tr>
-
                     <tr *ngFor="let campaign of detail?.subscription_stats.campaign_results">
-                        <td>{{campaign.deception_level}}</td>
-                        <td>{{campaign.template_details.deception_score}}</td>
+                        <td class="text-right pr-5">{{campaign.deception_level}}</td>
+                        <td class="text-right pr-5">{{campaign.template_details.deception_score}}</td>
                         <td>{{campaign.template_details.description}}</td>
                         <td> TEMPLATE DOMAIN NOT TRACKED</td>
                     </tr>
@@ -728,31 +649,27 @@
         <div class="row">
             <div class="col-12">
                 <div>
-                    <p><b>Table 4:</b> Unique User Click Rate and Report Rate Results</p>
-                    <table id="rateComparisonTable">
-                        <thead>
-                            <tr>
-                                <th>Level</th>
-                                <th>Campaign</th>
-                                <th>User<br> Click<br> Rate</th>
-                                <th>Unique<br> Clicks</th>
-                                <th>User<br> Report<br> Rate</th>
-                                <th>User<br> Reports</th>
-                                <th>Reporting<br> Ratio</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr *ngFor="let campaign of detail?.subscription_stats.campaign_results">
-                                <td>{{campaign.deception_level}}</td>
-                                <td>{{campaign.template_details.name}}</td>
-                                <td>{{campaign.ratios.clicked_ratio | nullishCoalesce: 0}}%</td>
-                                <td>{{campaign.campaign_stats.clicked?.count | nullishCoalesce: 0}}</td>
-                                <td>{{campaign.ratios.reported_ratio | nullishCoalesce: 0}}%</td>
-                                <td>{{campaign.campaign_stats.reported?.count | nullishCoalesce: 0}}</td>
-                                <td>{{campaign.ratios.reported_ratio}}</td>
-                                <!-- <td>{{campaign.ratios.reported_ratio | number:1.0-2}}</td> -->
-                            </tr>
-                        </tbody>
+                    <p class="table-title">Table 4: Unique User Click Rate and Report Rate Results</p>
+                    <table id="rateComparisonTable" class="report-table">
+                        <tr>
+                            <th class="text-right pr-5">Level</th>
+                            <th>Campaign</th>
+                            <th class="text-right">User<br> Click<br> Rate</th>
+                            <th class="text-right">Unique<br> Clicks</th>
+                            <th class="text-right">User<br> Report<br> Rate</th>
+                            <th class="text-right">User<br> Reports</th>
+                            <th class="text-right">Reporting<br> Ratio</th>
+                        </tr>
+                        <tr *ngFor="let campaign of detail?.subscription_stats.campaign_results">
+                            <td class="text-right pr-5">{{campaign.deception_level}}</td>
+                            <td>{{campaign.template_details.name}}</td>
+                            <td class="text-right">{{campaign.ratios.clicked_ratio | nullishCoalesce: 0 | percent: '0.2'}}</td>
+                            <td class="text-right">{{campaign.campaign_stats.clicked?.count | nullishCoalesce: 0}}</td>
+                            <td class="text-right">{{campaign.ratios.reported_ratio | nullishCoalesce: 0 | percent: '0.2'}}</td>
+                            <td class="text-right">{{campaign.campaign_stats.reported?.count | nullishCoalesce: 0}}</td>
+                            <td class="text-right">{{campaign.ratios.reported_ratio | number: '0.4'}}</td>
+                            <!-- <td>{{campaign.ratios.reported_ratio | number:1.0-2}}</td> -->
+                        </tr>
                     </table>
                 </div>
                 <div class="bar-chart">
@@ -832,35 +749,30 @@
                         promptly respond to phishing attempts, an organization can improve their anti-phishing defenses.
                     </p>
                     <p>The following table details the time to first click and first report throughout the assessment
-                        and the lead or lag times for incident response measures to be activated(time elapsed
-                        represented in hours:minutes:seconds).</p>
+                        and the lead or lag times for incident response measures to be activated.</p>
                 </div>
             </div>
         </div>
         <div class="row">
             <div class="col-12">
-                <p><b>Table 5:</b> Click Time vs. Report Time </p>
-                <table id="timeComparisonTable">
-                    <thead>
-                        <tr>
-                            <th>Level</th>
-                            <th>Time to First Click</th>
-                            <th>Time to First Report</th>
-                            <th>Time Gap (Lead or Lag)</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let campaign of detail?.click_time_vs_report_time">
-                            <td>{{campaign.level}}</td>
-                            <td>{{campaign.time_to_first_click}}</td>
-                            <td>{{campaign.time_to_first_report}}</td>
-                            <td>{{campaign.difference}}</td>
-                        </tr>
-                    </tbody>
+                <p class="table-title">Table 5: Click Time vs. Report Time </p>
+                <table id="timeComparisonTable" class="report-table">
+                    <tr>
+                        <th>Level</th>
+                        <th>Time to First Click</th>
+                        <th>Time to First Report</th>
+                        <th>Time Gap (Lead or Lag)</th>
+                    </tr>
+                    <tr *ngFor="let campaign of detail?.click_time_vs_report_time">
+                        <td>{{campaign.level}}</td>
+                        <td>{{campaign.time_to_first_click}}</td>
+                        <td>{{campaign.time_to_first_report}}</td>
+                        <td>{{campaign.difference}}</td>
+                    </tr>
                 </table>
             </div>
         </div>
-        <div class="row">
+        <div class="row mb-5">
             <div class="col-12">
                 <p id="intervalGraphDetails">The figures below show the percentage of users who clicked during
                     certain
@@ -869,7 +781,8 @@
                     email. The median time to click was [TIME] across all campaigns.</p>
             </div>
         </div>
-        <div class="row">
+
+        <div class="row mb-5">
             <div class="col-12">
                 <div class="timeIntervalGraph">
                     <h4>TIME INTERVALS</h4>
@@ -961,7 +874,7 @@
             </div>
         </div>
         <div class="row">
-            <div class="12">
+            <div class="col-12">
                 <h3 id="levelTitle">Level Descriptions</h3>
                 <div id="levelText">
                     <b>Level 1:</b>
@@ -1001,7 +914,7 @@
     <div *ngFor="let group of detail?.templates_by_group; index as outer">
         <article class="template_pages" *ngFor="let campaign of group; index as inner">
             <div class="row">
-                <div class="col-12">
+                <div class="col-12 template-container">
                     <div *ngIf="inner === 1">
                         <h3 *ngIf="outer === 1" id="dumbPhishTitle">
                             <div class="template-level-header">
@@ -1059,7 +972,6 @@
                     </div>
                 </div>
             </div>
-            <hr style="background-color: green;" />
         </article>
     </div>
 </div>

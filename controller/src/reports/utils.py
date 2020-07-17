@@ -36,8 +36,8 @@ def get_closest_cycle_within_day_range(subscription, start_date, day_range=90):
     for cycle in subscription["cycles"]:
         cycle_start_difference = abs(cycle["start_date"] - start_date)
         if (
-            cycle_start_difference < closest_val
-            and cycle_start_difference < maximum_date_differnce
+            cycle_start_difference < closest_val and
+            cycle_start_difference < maximum_date_differnce
         ):
             closest_cycle = cycle
             closest_val = cycle_start_difference
@@ -49,6 +49,7 @@ def get_closest_cycle_within_day_range(subscription, start_date, day_range=90):
             f"{subscription['subscription_uuid']} does not have a cycle within the specified date range"
         )
         return None
+
 
 def get_cycle_by_date_in_range(subscription, date):
     """
@@ -223,7 +224,8 @@ def calc_ratios(campaign_stats):
             if "opened" in working_vals:
                 opened_ratio = working_vals["opened"] / working_vals["sent"]
             if "submitted" in working_vals:
-                submitted_ratio = working_vals["submitted"] / working_vals["sent"]
+                submitted_ratio = working_vals["submitted"] / \
+                    working_vals["sent"]
             if "reported" in working_vals:
                 reported_ratio = working_vals["reported"] / working_vals["sent"]
     return {
@@ -305,7 +307,8 @@ def get_subscription_stats_for_cycle(subscription, start_date=None):
             if not moment["duplicate"]:
                 append_timeline_moment(moment, campaign_timeline_summary)
         # Get stats and aggregate of all time differences (all times needed for stats like median when consolidated)
-        stats, time_aggregate = generate_campaign_statistics(campaign_timeline_summary)
+        stats, time_aggregate = generate_campaign_statistics(
+            campaign_timeline_summary)
         campaign_results.append(
             {
                 "campaign_id": campaign["campaign_id"],
@@ -320,23 +323,23 @@ def get_subscription_stats_for_cycle(subscription, start_date=None):
         campaign_timeline_summary = []
 
     # generate campaign_group stats based off deception level and oconsolidation of all campaigns
-    #All
+    # All
     consolidated_stats = consolidate_campaign_group_stats(campaign_results)
     consolidated_stats["ratios"] = calc_ratios(consolidated_stats)
 
-    #Low
+    # Low
     low_decp_stats = consolidate_campaign_group_stats(
         list(filter(lambda x: x["deception_level"] == 1, campaign_results))
     )
     low_decp_stats["ratios"] = calc_ratios(low_decp_stats)
 
-    #Moderate
+    # Moderate
     moderate_decp_stats = consolidate_campaign_group_stats(
         list(filter(lambda x: x["deception_level"] == 2, campaign_results))
     )
     moderate_decp_stats["ratios"] = calc_ratios(moderate_decp_stats)
 
-    #High
+    # High
     high_decp_stats = consolidate_campaign_group_stats(
         list(filter(lambda x: x["deception_level"] == 3, campaign_results))
     )
@@ -440,7 +443,8 @@ def get_related_subscription_stats(subscription, start_date):
     customer_subscriptions = []
 
     sector_subscriptions = list(
-        filter(lambda x: x["customer_uuid"] in sector_customer_uuids, subscription_list)
+        filter(lambda x: x["customer_uuid"]
+               in sector_customer_uuids, subscription_list)
     )
     industry_subscriptions = list(
         filter(
@@ -487,19 +491,20 @@ def get_statistic_from_group(subscription_stats, deception_level, category, stat
     Get a specific stat if it exists off of the subscription stats consolidation.
 
     Stats : Average, Count, Maximum, Median, Minimum
-    """ 
+    """
     try:
-        return subscription_stats[deception_level][category][stat] 
+        return subscription_stats[deception_level][category][stat]
     except Exception:
         if zeroIfNone:
             return 0
         return None
 
+
 def get_statistic_from_region_group(region_stats, group, stat):
     """
     Get a specific stat if it exists off of the region stats consolidation.
-    """ 
-    if stat in ( 'sent', 'opened', 'clicked', 'submitted', 'reported'):
+    """
+    if stat in ('sent', 'opened', 'clicked', 'submitted', 'reported'):
         try:
             return region_stats[group]["consolidated_values"][stat]
         except:
@@ -509,18 +514,20 @@ def get_statistic_from_region_group(region_stats, group, stat):
     except Exception:
         return None
 
-def ratio_to_percent(ratio,round_val=2):    
-    if ratio:  
-        return "{:.{prec}f}".format(ratio*100,prec=round_val)
+
+def ratio_to_percent(ratio, round_val=2):
+    if ratio:
+        return "{:.{prec}f}".format(ratio * 100, prec=round_val)
     else:
         return "N/A"
+
 
 def format_timedelta(timedelta):
     ret_val = ""
     if timedelta:
         if timedelta.days:
             ret_val += f"{timedelta.days} Days "
-        if timedelta.seconds/3600 > 1:
+        if timedelta.seconds / 3600 > 1:
             ret_val += f"{int(round(timedelta.seconds/3600,0))} Hours "
         if int(timedelta.seconds % 60) != 0:
             ret_val += f"{int(timedelta.seconds % 60)} Minutes"
@@ -531,8 +538,8 @@ def get_reports_to_click(subscription_stats):
     """Helper function to get reports to click ratio, ensuring division by zero does not happen."""
     try:
         return (
-            subscription_stats["stats_all"]["reported"]["count"]
-            / subscription_stats["stats_all"]["clicked"]["count"]
+            subscription_stats["stats_all"]["reported"]["count"] /
+            subscription_stats["stats_all"]["clicked"]["count"]
         )
     except:
         return None
@@ -555,8 +562,8 @@ def get_most_successful_campaigns(subscription_stats, category):
             for current_campaign in most_succesful_campaigns:
                 if campaign["ratios"][category_ratio]:
                     if (
-                        campaign["ratios"][category_ratio]
-                        > current_campaign["ratios"][category_ratio]
+                        campaign["ratios"][category_ratio] >
+                        current_campaign["ratios"][category_ratio]
                     ):
                         most_succesful_campaigns = []
                         most_succesful_campaigns.append(campaign)
@@ -585,9 +592,9 @@ def get_template_details(campaign_results):
         "sender": 1,
         "relevancy": 1,
         "behavior": 1,
-        "subject":1,
-        "from_address":1,
-        "html":1,
+        "subject": 1,
+        "from_address": 1,
+        "html": 1,
     }
     template_list = get_list(
         parameters, "template", TemplateModel, validate_template, fields
@@ -598,15 +605,15 @@ def get_template_details(campaign_results):
             total_sent += camp["campaign_stats"]["sent"]["count"]
         except:
             pass
-    
+
     percent_of_camps = 0
     for camp in campaign_results:
         try:
-            percent_of_camps = ratio_to_percent(camp["campaign_stats"]["sent"]["count"] / total_sent)
+            percent_of_camps = ratio_to_percent(
+                camp["campaign_stats"]["sent"]["count"] / total_sent)
             camp["campaign_stats"]["percent_of_campaigns"] = percent_of_camps
         except:
             camp["campaign_stats"]["percent_of_campaigns"] = 0
-            
 
     # Possible large performance hit here. Break out repository to use built in mongo $in functionallity to fix
     for template in template_list:
@@ -616,36 +623,52 @@ def get_template_details(campaign_results):
                 for key in template:
                     campaign["template_details"][key] = template[key]
 
+
 def get_stats_low_med_high_by_level(subscription_stats):
     data = []
-    v = get_statistic_from_group(subscription_stats, 'stats_low_deception', 'sent', 'count')
+    v = get_statistic_from_group(
+        subscription_stats, 'stats_low_deception', 'sent', 'count')
     data.append(0 if v is None else v)
-    v = get_statistic_from_group(subscription_stats, 'stats_mid_deception', 'sent', 'count')
+    v = get_statistic_from_group(
+        subscription_stats, 'stats_mid_deception', 'sent', 'count')
     data.append(0 if v is None else v)
-    v = get_statistic_from_group(subscription_stats, 'stats_high_deception', 'sent', 'count')
+    v = get_statistic_from_group(
+        subscription_stats, 'stats_high_deception', 'sent', 'count')
     data.append(0 if v is None else v)
-    v = get_statistic_from_group(subscription_stats, 'stats_low_deception', 'opened', 'count')
+    v = get_statistic_from_group(
+        subscription_stats, 'stats_low_deception', 'opened', 'count')
     data.append(0 if v is None else v)
-    v = get_statistic_from_group(subscription_stats, 'stats_mid_deception', 'opened', 'count')
+    v = get_statistic_from_group(
+        subscription_stats, 'stats_mid_deception', 'opened', 'count')
     data.append(0 if v is None else v)
-    v = get_statistic_from_group(subscription_stats, 'stats_high_deception', 'opened', 'count')
+    v = get_statistic_from_group(
+        subscription_stats, 'stats_high_deception', 'opened', 'count')
     data.append(0 if v is None else v)
-    v = get_statistic_from_group(subscription_stats, 'stats_low_deception', 'clicked', 'count')
+    v = get_statistic_from_group(
+        subscription_stats, 'stats_low_deception', 'clicked', 'count')
     data.append(0 if v is None else v)
-    v = get_statistic_from_group(subscription_stats, 'stats_mid_deception', 'clicked', 'count')
+    v = get_statistic_from_group(
+        subscription_stats, 'stats_mid_deception', 'clicked', 'count')
     data.append(0 if v is None else v)
-    v = get_statistic_from_group(subscription_stats, 'stats_high_deception', 'clicked', 'count')
-    data.append(0 if v is None else v)    
-    v = get_statistic_from_group(subscription_stats, 'stats_low_deception', 'submitted', 'count')
-    data.append(0 if v is None else v)    
-    v = get_statistic_from_group(subscription_stats, 'stats_mid_deception', 'submitted', 'count')
+    v = get_statistic_from_group(
+        subscription_stats, 'stats_high_deception', 'clicked', 'count')
     data.append(0 if v is None else v)
-    v = get_statistic_from_group(subscription_stats, 'stats_high_deception', 'submitted', 'count')
+    v = get_statistic_from_group(
+        subscription_stats, 'stats_low_deception', 'submitted', 'count')
     data.append(0 if v is None else v)
-    v = get_statistic_from_group(subscription_stats, 'stats_low_deception', 'reported', 'count')
+    v = get_statistic_from_group(
+        subscription_stats, 'stats_mid_deception', 'submitted', 'count')
     data.append(0 if v is None else v)
-    v = get_statistic_from_group(subscription_stats, 'stats_mid_deception', 'reported', 'count')
-    data.append(0 if v is None else v)    
-    v = get_statistic_from_group(subscription_stats, 'stats_high_deception', 'reported', 'count')
+    v = get_statistic_from_group(
+        subscription_stats, 'stats_high_deception', 'submitted', 'count')
+    data.append(0 if v is None else v)
+    v = get_statistic_from_group(
+        subscription_stats, 'stats_low_deception', 'reported', 'count')
+    data.append(0 if v is None else v)
+    v = get_statistic_from_group(
+        subscription_stats, 'stats_mid_deception', 'reported', 'count')
+    data.append(0 if v is None else v)
+    v = get_statistic_from_group(
+        subscription_stats, 'stats_high_deception', 'reported', 'count')
     data.append(0 if v is None else v)
     return data
