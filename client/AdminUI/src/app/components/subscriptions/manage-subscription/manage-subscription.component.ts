@@ -70,7 +70,6 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
   }
 
   setPageForEdit(s: Subscription){
-    console.log("this here");
     this.subscriptionSvc.setSubBhaviorSubject(s)
         this.subscription = s as Subscription;
         this.subscriptionSvc.subscription = this.subscription;
