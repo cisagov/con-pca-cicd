@@ -12,6 +12,7 @@ from api.models.subscription_models import SubscriptionModel
 from api.models.template_models import TemplateModel
 from database.service import Service
 from django.conf import settings
+import os
 
 logger = logging.getLogger(__name__)
 
@@ -23,12 +24,20 @@ def __db_service(collection_name, model, validate_model):
     This is a method for handling db connection in api.
     Might refactor this into database lib.
     """
-    mongo_uri = "mongodb://{}:{}@{}:{}/".format(
-        settings.DB_CONFIG["DB_USER"],
-        settings.DB_CONFIG["DB_PW"],
-        settings.DB_CONFIG["DB_HOST"],
-        settings.DB_CONFIG["DB_PORT"],
-    )
+    if os.environ.get("MONGO_TYPE", "MONGO") == "DOCUMENTDB":
+        mongo_uri = "mongodb://{}:{}@{}:{}/?ssl=true&ssl_ca_certs=rds-combined-ca-bundle.pem&retryWrites=false".format(
+            settings.DB_CONFIG["DB_USER"],
+            settings.DB_CONFIG["DB_PW"],
+            settings.DB_CONFIG["DB_HOST"],
+            settings.DB_CONFIG["DB_PORT"],
+        )
+    else:
+        mongo_uri = "mongodb://{}:{}@{}:{}/".format(
+            settings.DB_CONFIG["DB_USER"],
+            settings.DB_CONFIG["DB_PW"],
+            settings.DB_CONFIG["DB_HOST"],
+            settings.DB_CONFIG["DB_PORT"],
+        )
 
     service = Service(
         mongo_uri,

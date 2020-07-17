@@ -13,6 +13,10 @@ from api.models.subscription_models import SubscriptionModel, validate_subscript
 from api.models.customer_models import CustomerModel, validate_customer
 from api.models.dhs_models import DHSContactModel, validate_dhs_contact
 from api.utils.db_utils import get_list, get_single
+
+from rest_framework import status
+from rest_framework.response import Response
+from rest_framework.views import APIView
 from django.views.generic import TemplateView
 
 
@@ -31,7 +35,8 @@ from .utils import (
     ratio_to_percent,
     format_timedelta,
     get_statistic_from_region_group,
-    get_stats_low_med_high_by_level
+    get_stats_low_med_high_by_level,
+    get_cycle_by_date_in_range
 )
 
 logger = logging.getLogger(__name__)
@@ -42,33 +47,20 @@ campaign_manager = CampaignManager()
 generate_chart = ChartGenerator()
 
 
-class MonthlyReportsView(TemplateView):
+class MonthlyReportsView(APIView):
     """
     Monthly reports
     """
 
     template_name = "reports/monthly.html"
 
-    def calculateSvgCircles(self, numerator, denominator):
-        # given the numerator and total calculate and
-        # return the svg circle
-        ratio = round(
-            float(numerator or 0) / float(1 if denominator is None else denominator), 2
-        )
-        percentage = ratio * 100
-        remaining_percentage = 100 - percentage
-        svgstring = """<svg width="100%" height="100%" viewBox="0 0 42 42" class="donut" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-                    <circle class="donut-hole" cx="21" cy="21" r="14" fill="#fff"></circle>
-                    <circle class="donut-ring" cx="21" cy="21" r="14" fill="transparent" stroke="#cecece" stroke-width="6"></circle><circle class="donut-segment" cx="21" cy="21" r="14" fill="transparent" stroke="#164A91" stroke-width="6" stroke-dasharray="{} {}" stroke-dashoffset="25"></circle>
-                    </svg>""".format(
-            percentage, remaining_percentage
-        )
-        return svgstring
 
     def getMonthlyStats(self, subscription):
         start_date = subscription["start_date"]
         # Get statistics for the specified subscription during the specified cycle
-        subscription_stats = get_subscription_stats_for_cycle(subscription, start_date)
+        subscription_stats = get_subscription_stats_for_cycle(
+            subscription, start_date
+        )
         opened = get_statistic_from_group(
             subscription_stats, "stats_all", "opened", "count"
         )
@@ -85,19 +77,17 @@ class MonthlyReportsView(TemplateView):
             subscription_stats, "stats_all", "reported", "count"
         )
 
-        total = len(subscription["target_email_list"])        
-        low_mid_high_bar_data = get_stats_low_med_high_by_level(subscription_stats)        
-        chart_instance = ChartGenerator()
-        zerodefault = [0]*15
-        low_mid_high_bar_data = low_mid_high_bar_data if low_mid_high_bar_data is not None else zerodefault        
-        svg_string =  chart_instance.get_svg(low_mid_high_bar_data)
-           
+        total = len(subscription["target_email_list"])
+        low_mid_high_bar_data = get_stats_low_med_high_by_level(
+            subscription_stats)
+        zerodefault = [0] * 15
+        low_mid_high_bar_data = low_mid_high_bar_data if low_mid_high_bar_data is not None else zerodefault
 
         metrics = {
             "total_users_targeted": total,
             "number_of_email_sent_overall": sent,
             "number_of_clicked_emails": clicked,
-            "percent_of_clicked_emails": round(
+            "percent_of_clicked_emails": 0 if sent == 0 else round(
                 float(clicked or 0) / float(1 if sent is None else sent), 2
             ),
             "number_of_opened_emails": opened,
@@ -106,7 +96,7 @@ class MonthlyReportsView(TemplateView):
                 float(clicked or 0) / float(1 if total is None else total), 2
             ),
             "number_of_reports_to_helpdesk": reported,
-            "percent_report_rate": round(
+            "percent_report_rate": 0 if opened == 0 else round(
                 float(reported or 0) / float(1 if opened is None else opened), 2
             ),
             "reports_to_clicks_ratio": get_reports_to_click(subscription_stats),
@@ -116,16 +106,15 @@ class MonthlyReportsView(TemplateView):
             "avg_time_to_first_report": get_statistic_from_group(
                 subscription_stats, "stats_all", "reported", "average"
             ),
-            "ratio_reports_to_clicks": round(
-                float(reported or 0) / float(1 if clicked is None else clicked), 2
-            ),
-            "levels_bar_chart": base64.b64encode(
-                svg_string.encode("ascii")                
-            ).decode("ascii")
+            "ratio_reports_to_clicks": 0 if clicked == 0 else round(
+                float(reported or 0) /
+                float(1 if clicked is None else clicked), 2
+            )            
         }
-        return metrics
 
-    def get_context_data(self, **kwargs):
+        return metrics, subscription_stats
+
+    def get(self, request, **kwargs):
         subscription_uuid = self.kwargs["subscription_uuid"]
         subscription = get_single(
             subscription_uuid, "subscription", SubscriptionModel, validate_subscription
@@ -146,20 +135,23 @@ class MonthlyReportsView(TemplateView):
 
         campaigns = subscription.get("gophish_campaign_list")
         summary = [
-            campaign_manager.get("summary", campaign_id=campaign.get("campaign_id"))
+            campaign_manager.get(
+                "summary", campaign_id=campaign.get("campaign_id"))
             for campaign in campaigns
         ]
 
-        target_count = sum([targets.get("stats").get("total") for targets in summary])
+        target_count = sum([targets.get("stats").get("total")
+                            for targets in summary])
 
-        metrics = self.getMonthlyStats(subscription)
+        metrics, subscription_stats = self.getMonthlyStats(subscription)
 
         customer_address = """{},\n{}""".format(
             customer.get("address_1"), customer.get("address_2")
         )
 
         customer_address_2 = """{}, {} {} USA""".format(
-            customer.get("city"), customer.get("state"), customer.get("zip_code"),
+            customer.get("city"), customer.get(
+                "state"), customer.get("zip_code"),
         )
 
         dhs_contact_name = "{} {}".format(
@@ -172,15 +164,7 @@ class MonthlyReportsView(TemplateView):
         )
 
         total_users_targeted = len(subscription["target_email_list"])
-        svg_circle_sent = self.calculateSvgCircles(
-            metrics["number_of_email_sent_overall"], total_users_targeted
-        )
-        svg_circle_opened = self.calculateSvgCircles(
-            metrics["number_of_opened_emails"], total_users_targeted
-        )
-        svg_circle_clicked = self.calculateSvgCircles(
-            metrics["number_of_clicked_emails"], total_users_targeted
-        )
+
         context = {
             # Customer info
             "customer_name": customer.get("name"),
@@ -200,28 +184,20 @@ class MonthlyReportsView(TemplateView):
             "end_date": subscription.get("end_date"),
             "target_count": target_count,
             "metrics": metrics,
-            "sent_circle_svg": base64.b64encode(svg_circle_sent.encode("ascii")).decode(
-                "ascii"
-            ),
-            "opened_circle_svg": base64.b64encode(
-                svg_circle_opened.encode("ascii")
-            ).decode("ascii"),
-            "clicked_circle_svg": base64.b64encode(
-                svg_circle_clicked.encode("ascii")
-            ).decode("ascii")
-            
+            "subscription_stats": subscription_stats 
         }
-        return context
+
+        return Response(context, status=status.HTTP_202_ACCEPTED)
 
 
-class YearlyReportsView(TemplateView):
+class YearlyReportsView(APIView):
     """
     Yearly Reports
     """
 
     template_name = "reports/yearly.html"
 
-    def get_context_data(self, **kwargs):
+    def get(self, request, **kwargs):
         subscription_uuid = self.kwargs["subscription_uuid"]
         subscription = get_single(
             subscription_uuid, "subscription", SubscriptionModel, validate_subscription
@@ -241,10 +217,12 @@ class YearlyReportsView(TemplateView):
         )
         campaigns = subscription.get("gophish_campaign_list")
         summary = [
-            campaign_manager.get("summary", campaign_id=campaign.get("campaign_id"))
+            campaign_manager.get(
+                "summary", campaign_id=campaign.get("campaign_id"))
             for campaign in campaigns
         ]
-        target_count = sum([targets.get("stats").get("total") for targets in summary])
+        target_count = sum([targets.get("stats").get("total")
+                            for targets in summary])
 
         customer_address = """
         {} {},
@@ -276,19 +254,23 @@ class YearlyReportsView(TemplateView):
             "target_count": target_count,
         }
 
-        return context
+        return Response(context, status=status.HTTP_202_ACCEPTED)
 
 
-class CycleReportsView(TemplateView):
+class CycleReportsView(APIView):
     template_name = "reports/cycle.html"
 
-    def get_context_data(self, **kwargs):
+    def get(self, request, **kwargs):
         """
         Generate the cycle report based off of the provided start date
         """
-
+        print(request)
         # Get Args from url
         subscription_uuid = self.kwargs["subscription_uuid"]
+        start_date_param = self.kwargs["start_date"]
+        start_date = datetime.strptime(
+            start_date_param, '%Y-%m-%dT%H:%M:%S.%f%z')
+        print(start_date)
 
         # Get targeted subscription and associated customer data
         subscription = get_single(
@@ -307,7 +289,7 @@ class CycleReportsView(TemplateView):
             "address": f"{_customer.get('address_1')} {_customer.get('address_2')}",
         }
 
-        start_date = subscription["start_date"]
+        # start_date = subscription["start_date"]
 
         subscription_primary_contact = subscription.get("primary_contact")
 
@@ -348,7 +330,8 @@ class CycleReportsView(TemplateView):
         }
 
         # Get statistics for the specified subscription during the specified cycle
-        subscription_stats = get_subscription_stats_for_cycle(subscription, start_date)
+        subscription_stats = get_subscription_stats_for_cycle(
+            subscription, start_date)
         region_stats = get_related_subscription_stats(subscription, start_date)
         previous_cycle_stats = get_cycles_breakdown(subscription["cycles"])
 
@@ -387,7 +370,7 @@ class CycleReportsView(TemplateView):
             "number_of_reports_to_helpdesk": get_statistic_from_group(
                 subscription_stats, "stats_all", "reported", "count"
             ),
-            "reports_to_clicks_ratio": round(
+            "reports_to_clicks_ratio": ratio_to_percent(
                 get_reports_to_click(subscription_stats), 2
             ),
             "avg_time_to_first_click": format_timedelta(
@@ -405,9 +388,10 @@ class CycleReportsView(TemplateView):
             ),
             "emails_sent_over_target_count": round(
                 get_statistic_from_group(
-                    subscription_stats, "stats_all", "sent", "count"
-                )
-                / len(subscription["target_email_list"]),
+                    subscription_stats, "stats_all", "sent", "count",
+                    zeroIfNone=True
+                ) /
+                len(subscription["target_email_list"]),
                 0,
             ),
             "customer_clicked_avg": ratio_to_percent(
@@ -534,4 +518,4 @@ class CycleReportsView(TemplateView):
         context["click_time_vs_report_time"] = click_time_vs_report_time
         context["templates_by_group"] = templates_by_group
 
-        return context
+        return Response(context, status=status.HTTP_202_ACCEPTED)

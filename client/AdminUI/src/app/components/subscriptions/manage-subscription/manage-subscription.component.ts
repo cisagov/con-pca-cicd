@@ -54,7 +54,7 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
   }
   setPageTitle() {
     if(this.subscription){
-      let title = `Manage Subscription: ${this.subscription.name}`;
+      let title = `Edit Subscription: ${this.subscription.name}`;
       if (this.subscription.status.toLowerCase() === 'stopped') {
         title += ' (stopped)';
       }

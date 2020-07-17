@@ -213,6 +213,24 @@ class SubscriptionsCustomerListView(APIView):
         serializer = SubscriptionGetSerializer(subscription_list, many=True)
         return Response(serializer.data)
 
+    @swagger_auto_schema(
+        request_body=SubscriptionPostSerializer,
+        responses={"200": SubscriptionGetSerializer, "400": "Bad Request"},
+        security=[],
+        operation_id="Get list of Subs with customer id and primary contact via customer_uuid",
+        operation_description="This handles the API for the Get a Substription with customer_uuid and primary contact.",
+    )
+    def post(self, request, customer_uuid):
+        """Post method."""
+        search_data = request.data.copy()
+        cust_arch = {"customer_uuid": customer_uuid, "archived": False}
+        parameters = {**search_data, **cust_arch}
+        subscription_list = get_list(
+            parameters, "subscription", SubscriptionModel, validate_subscription
+        )
+        serializer = SubscriptionGetSerializer(subscription_list, many=True)
+        return Response(serializer.data)
+
 
 class SubscriptionsTemplateListView(APIView):
     """
@@ -260,11 +278,11 @@ class SubscriptionStopView(APIView):
         resp = stop_subscription(subscription)
 
         # Cancel scheduled subscription emails
-        if "tasks" in subscription:
-            [
-                revoke(task["task_uuid"], terminate=True)
-                for task in subscription["tasks"]
-            ]
+        [
+            revoke(task["task_uuid"], terminate=True)
+            for task in subscription.get("tasks", [])
+            if task.get("task_uuid")
+        ]
 
         # Return updated subscriptions
         serializer = SubscriptionPatchResponseSerializer(resp)
