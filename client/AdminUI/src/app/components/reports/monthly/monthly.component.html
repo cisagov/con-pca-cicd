@@ -27,35 +27,35 @@
                     <!-- Left side bar -->
                     <aside>
                         <div id="reportDate">
-                            <h3>{{ detail.start_date|date:"M d, Y" }} - {{ detail.end_date|date:"M d, Y" }}</h3>
+                            <h3>{{ detail?.start_date|date:"M d, Y" }} - {{ detail?.end_date|date:"M d, Y" }}</h3>
                         </div>
                         <div id="gonePhishingImage">
                             <img src="/assets/gone_phishing.jpg" alt="Gone Phishing">
                         </div>
                         <div id="primaryContact">
                             <span>Primary Contact Information</span><br>
-                            <h2>{{ detail.primary_contact_name }}</h2>
-                            {{ detail.customer_address }}<br>
-                            {{ detail.customer_address_2 }}<br>
-                            {{ detail.primary_contact_email }}<br>
+                            <h2>{{ detail?.primary_contact_name }}</h2>
+                            {{ detail?.customer_address }}<br>
+                            {{ detail?.customer_address_2 }}<br>
+                            {{ detail?.primary_contact_email }}<br>
                             <br>
                             CISA Contact Information:<br>
-                            {{ detail.dhs_contact_email }}<br>
-                            {{ detail.dhs_contact_mobile_phone }}<br>
+                            {{ detail?.dhs_contact_email }}<br>
+                            {{ detail?.dhs_contact_mobile_phone }}<br>
                         </div>
                         <div id="numbersTitle">
                             <h2>Overall Campaign Numbers</h2>
                         </div>
                         <div id="campaignNumbers">
-                            Total Emails Sent: {{detail.metrics?.number_of_email_sent_overall}}<br>
-                            Email Click Rate: {{detail.metrics?.number_of_clicked_emails}}
-                            ({{detail.metrics?.percent_of_clicked_emails | number:'1.0-2'}}%)<br>
-                            Reported Emails: {{detail.metrics?.number_of_reported_emails}} 
-                            ({{detail.metrics?.percent_of_reported_emails | number:'1.0-2'}}%)<br>
+                            Total Emails Sent: {{detail?.metrics?.number_of_email_sent_overall}}<br>
+                            Email Click Rate: {{detail?.metrics?.number_of_clicked_emails}}
+                            ({{detail?.metrics?.percent_of_clicked_emails | number:'1.0-2'}}%)<br>
+                            Reported Emails: {{detail?.metrics?.number_of_reported_emails}}
+                            ({{detail?.metrics?.percent_of_reported_emails | number:'1.0-2'}}%)<br>
                         </div>
                         <div id="preparedFor">
                             Prepared for<br>
-                            <span>{{detail.customer_name}}</span>
+                            <span>{{detail?.customer_name}}</span>
                         </div>
                     </aside>
 
@@ -106,9 +106,9 @@
                                         <ul>
                                             <li>This Report has been generated in Q1 of your phishing subscription
                                             </li>
-                                            <li>Of the total {{detail.metrics?.total_users_targeted}} targets in this
+                                            <li>Of the total {{detail?.metrics?.total_users_targeted}} targets in this
                                                 quarter
-                                                cycle, {{detail.metrics?.number_of_email_sent_overall}} targets have had
+                                                cycle, {{detail?.metrics?.number_of_email_sent_overall}} targets have had
                                                 emails
                                                 sent.</li>
                                         </ul>
@@ -141,15 +141,17 @@
                                 <div class="col-10 container-fluid">
                                     <div class="bar-chart m-2">
                                         <h2>STATISTICS BY LEVEL</h2>
-                                        <app-stats-by-level 
-                                            [metrics]="detail.metrics"
-                                            [chartHeight]="100"
-                                        ></app-stats-by-level>
-                                        <ul class="legend">
-                                            <li>Low</li>
-                                            <li>Moderate</li>
-                                            <li>High</li>
-                                        </ul>
+                                        <div class="d-flex" style="height: 15rem">
+                                            <ngx-charts-bar-vertical-2d *ngIf="chart.chartResults"
+                                                [results]="chart.chartResults" [scheme]="chart.colorScheme"
+                                                [barPadding]="5" [groupPadding]="8" [gradient]="chart.gradient"
+                                                [xAxis]="chart.showXAxis" [showXAxisLabel]="chart.showXAxisLabel"
+                                                [xAxisLabel]="chart.xAxisLabel" [yAxis]="chart.showYAxis"
+                                                [showYAxisLabel]="chart.showYAxisLabel" [yAxisLabel]="chart.yAxisLabel"
+                                                [legend]="chart.showLegend" [legendPosition]="chart.legendPosition"
+                                                [legendTitle]="''" [roundEdges]="false">
+                                            </ngx-charts-bar-vertical-2d>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
