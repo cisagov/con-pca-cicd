@@ -27,7 +27,9 @@ export class MonthlyComponent implements OnInit {
     domain: ['#064875', '#fcbf10', '#007bc1']
   };
 
-
+  /**
+   *
+   */
   constructor(
     public sanitizer: DomSanitizer,
     public reportsSvc: ReportsService,
@@ -35,42 +37,38 @@ export class MonthlyComponent implements OnInit {
     private route: ActivatedRoute,
   ) { }
 
+  /**
+   *
+   */
   ngOnInit(): void {
-
     this.routeSub = this.route.params.subscribe(params => {
       this.subscriptionUuid = params.id;
-      this.loadPage();
-    });
-  }
+      this.reportsSvc.getMonthlyReport(this.subscriptionUuid, new Date()).subscribe(resp => {
+        this.detail = resp;
 
-  loadPage() {
-
-    // RKW -- When API is ready call this....
-    this.reportsSvc.getMonthlyReport(this.subscriptionUuid, new Date()).subscribe(resp => {
-      this.detail = resp;
-
-      // build statistics by level chart
-      this.chart.showXAxis = true;
-      this.chart.showYAxis = true;
-      this.chart.showXAxisLabel = true;
-      this.chart.xAxisLabel = '';
-      this.chart.showYAxisLabel = true;
-      this.chart.yAxisLabel = '';
-      this.chart.showDataLabel = true;
-      this.chart.showLegend = true;
-      this.chart.legendPosition = 'right';
-      this.chart.colorScheme = this.schemeLowMedHigh;
-
-      this.chart.chartResults = this.chartsSvc.formatReportStatsForChart(resp);
-
-      this.renderReport();
+        this.renderReport();
+      });
     });
   }
 
   /**
-   * 
+   *
    */
   renderReport() {
+    // build statistics by level chart
+    this.chart.showXAxis = true;
+    this.chart.showYAxis = true;
+    this.chart.showXAxisLabel = true;
+    this.chart.xAxisLabel = '';
+    this.chart.showYAxisLabel = true;
+    this.chart.yAxisLabel = '';
+    this.chart.showDataLabel = true;
+    this.chart.showLegend = true;
+    this.chart.legendPosition = 'right';
+    this.chart.colorScheme = this.schemeLowMedHigh;
+    this.chart.chartResults = this.chartsSvc.formatReportStatsForChart(this.detail);
+
+
     // draw circles
     this.sentCircleSvg = drawSvgCircle(this.detail.metrics.number_of_email_sent_overall, this.detail.metrics.total_users_targeted);
     this.openedCircleSvg = drawSvgCircle(this.detail.metrics.number_of_opened_emails, this.detail.metrics.total_users_targeted);

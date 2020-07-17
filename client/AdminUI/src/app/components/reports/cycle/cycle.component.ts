@@ -43,20 +43,6 @@ export class CycleComponent implements OnInit {
       this.reportsSvc.getCycleReport(this.subscriptionUuid, new Date()).subscribe(resp => {
         this.detail = resp;
 
-        // build statistics by level chart
-        this.chart.showXAxis = true;
-        this.chart.showYAxis = true;
-        this.chart.showXAxisLabel = true;
-        this.chart.xAxisLabel = '';
-        this.chart.showYAxisLabel = true;
-        this.chart.yAxisLabel = '';
-        this.chart.showDataLabel = true;
-        this.chart.showLegend = true;
-        this.chart.legendPosition = 'right';
-        this.chart.colorScheme = this.schemeLowMedHigh;
-
-        this.chart.chartResults = this.chartsSvc.formatReportStatsForChart(resp);
-
         this.renderReport();
       });
     });
@@ -66,5 +52,18 @@ export class CycleComponent implements OnInit {
    *
    */
   renderReport() {
+    // build statistics by level chart
+    this.chart.showXAxis = true;
+    this.chart.showYAxis = true;
+    this.chart.showXAxisLabel = true;
+    this.chart.xAxisLabel = '';
+    this.chart.showYAxisLabel = true;
+    this.chart.yAxisLabel = '';
+    this.chart.showDataLabel = true;
+    this.chart.showLegend = true;
+    this.chart.legendPosition = 'right';
+    this.chart.colorScheme = this.schemeLowMedHigh;
+
+    this.chart.chartResults = this.chartsSvc.formatReportStatsForChart(this.detail);
   }
 }
