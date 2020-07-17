@@ -1,24 +1,22 @@
-FROM node:alpine3.10
 
-RUN apt-get update && apt-get install -y wget --no-install-recommends \
+FROM node:13-buster-slim
+
+RUN  apt-get update \
+    && apt-get install -y wget gnupg ca-certificates \
     && wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - \
     && sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google.list' \
     && apt-get update \
-    && apt-get install -y google-chrome-unstable fonts-ipafont-gothic fonts-wqy-zenhei fonts-thai-tlwg fonts-kacst ttf-freefont \
-    --no-install-recommends \
+    && apt-get install -y google-chrome-stable \
     && rm -rf /var/lib/apt/lists/* \
-    && apt-get purge --auto-remove -y curl \
-    && rm -rf /src/*.deb
+    && wget --quiet https://raw.githubusercontent.com/vishnubob/wait-for-it/master/wait-for-it.sh -O /usr/sbin/wait-for-it.sh \
+    && chmod +x /usr/sbin/wait-for-it.sh
 
-ADD https://github.com/Yelp/dumb-init/releases/download/v1.2.0/dumb-init_1.2.0_amd64 /usr/local/bin/dumb-init
-RUN chmod +x /usr/local/bin/dumb-init
+# Install Puppeteer under /node_modules so it's available system-wide
+ADD package.json package-lock.json /
 
 WORKDIR /app
-COPY . .
+COPY ./src .
 
-RUN npm install
-RUN npm install puppeteer
-EXPOSE 3000
-
-ENTRYPOINT ["dumb-init", "--"]
-CMD npm run start
+RUN npm install --loglevel=error
+RUN npm install express --save
+CMD ["node server.js"]
