@@ -1,0 +1,19 @@
+version: "3.5"
+services:
+  reports:
+    build:
+      context: .
+    stdin_open: true
+    tty: true
+    container_name: pca-pdf-report
+    hostname: pca-report
+    restart: unless-stopped
+    volumes:
+      - .:/app
+    ports:
+      - "3000:3000"
+    networks:
+      - frontend
+networks:
+  frontend:
+    name: pca_frontend
