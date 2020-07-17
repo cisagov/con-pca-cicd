@@ -1,4 +1,4 @@
-require('./generate_pdf')
+var pdf = require('./generate_pdf')
 
 class ReportRequest{
 	subscription_uuid; 
@@ -15,9 +15,9 @@ class ReportRequest{
 module.exports = function(app) {
 	app.get('/api/reportpdf', function(req, res) {
 		
-		_id : req.params.subscription_uuid		
-		convertHTMLToPDF(html, callback, {printBackground: true});
-		res.json(new ReportRequest("uuid","startdate","Monthly")); // return all todos in JSON format		
+		//_id : req.params.subscription_uuid;
+		pdf.PdfReportUrl(req, res);				
+		//res.json(new ReportRequest("uuid","startdate","Monthly")); // return all todos in JSON format		
 	});
 
 	// application -------------------------------------------------------------

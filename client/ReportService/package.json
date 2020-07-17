@@ -1,14 +1,14 @@
 {
-  "name": "node-todo",
-  "version": "0.0.0",
-  "description": "Simple todo application.",
+  "name": "ReportPDFGenerator",
+  "version": "0.0.1",
+  "description": "Simple API to Generate PDF Reports",
   "main": "server.js",
-  "author": "Scotch",
+  "author": "INLGuy",
   "dependencies": {
     "body-parser": "^1.5.2",
     "express": "^4.7.4",
     "method-override": "~2.1.2",
-    "mongoose": "~3.6.2",
-    "morgan": "^1.2.3"
+    "morgan": "^1.2.3",
+    "puppeteer": "^5.1.0"
   }
 }
