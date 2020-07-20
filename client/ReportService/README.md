@@ -7,4 +7,4 @@ Build:
 
 Run:
 - `make up`
-- Visit: `localhost:3333`
+- Visit: `localhost:3030`
