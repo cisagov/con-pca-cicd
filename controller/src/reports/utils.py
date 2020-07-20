@@ -194,13 +194,15 @@ def consolidate_campaign_group_stats(campaign_data_list,reported_override_value=
         "submitted": [],
         "reported": [],
     }
+    if not reported_override_value:
+        reported_override_value = -1
     for campaign in campaign_data_list:
         for key in campaign["times"]:
             consolidated_times[key] += campaign["times"][key]
     consolidated_stats = {}
     for key in consolidated_times:
         if reported_override_value >= 0 and key == "reported":
-            consolidated_stats[key] = reported_override_value
+                consolidated_stats[key] = reported_override_value
         elif len(consolidated_times[key]) > 0 and key != "sent":
             consolidated_stats[key] = generate_time_difference_stats(
                 consolidated_times[key]
