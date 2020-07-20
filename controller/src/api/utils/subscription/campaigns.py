@@ -110,13 +110,27 @@ def stop_campaign(campaign):
 
     Returns updated Campaign
     """
-    campaign_manager.complete_campaign(campaign_id=campaign["campaign_id"])
+    # Complete Campaign
+    try:
+        campaign_manager.complete_campaign(campaign_id=campaign["campaign_id"])
+    except Exception as e:
+        logging.exception(e)
     campaign["status"] = "stopped"
     campaign["completed_date"] = datetime.now()
+
     # Delete Campaign
-    campaign_manager.delete_campaign(campaign_id=campaign["campaign_id"])
+    try:
+        campaign_manager.delete_campaign(campaign_id=campaign["campaign_id"])
+    except Exception as e:
+        logging.exception(e)
+
     # Delete Templates
-    campaign_manager.delete("email_template", template_id=campaign["email_template_id"])
+    try:
+        campaign_manager.delete(
+            "email_template", template_id=campaign["email_template_id"]
+        )
+    except Exception as e:
+        logging.exception(e)
 
     return campaign
 

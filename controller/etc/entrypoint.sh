@@ -9,6 +9,9 @@ python scripts/init.py &
 echo "start nginx service"
 service nginx start
 
+echo "Scheduling Jobs"
+python manage.py crontab add
+
 
 if [[ $DEBUG -eq 1 ]]
 then

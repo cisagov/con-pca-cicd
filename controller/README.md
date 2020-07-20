@@ -135,11 +135,6 @@ checked into github and will remain on a devs system.
 
 Django base app located at [localhost:8000](http://localhost:8000)
 
-### To access the Celery Flower dashboard
-
-- visit:
-  - `localhost:5555/dashboard`
-
 ## Api Usage
 
 To run the containers, use:
@@ -152,10 +147,7 @@ Your output will look like:
 -> % make up
 docker-compose up -d
 Creating network "controller_default" with the default driver
-Creating pca-rabbitmq ... done
 Creating pca-mongodb  ... done
-Creating pca-worker   ... done
-Creating pca-flower     ... done
 Creating pca-api      ... done
 ```
 
@@ -327,11 +319,6 @@ X-Content-Type-Options: nosniff
 Notes: see
 [additional docker refs](https://linuxize.com/post/how-to-remove-docker-images-containers-volumes-and-networks/)
 for trouble shooting Docker
-
-### Celery Flower Dashboard
-
-If you can't get Flower dashbaord to run,
-make sure to delete `celerybeat.pid` file found in `controller/src/`
 
 ## Testing
 
