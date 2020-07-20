@@ -6,7 +6,7 @@ let convertToPDf = async (reportUrl) => {
   const page = await browser.newPage();
   await page.goto(reportUrl, { waitUntil: 'networkidle2' });
   await page.emulateMediaType('screen');
-  const pdfContent = await page.pdf({ format: 'A4' });
+  const pdfContent = await page.pdf({ format: 'Letter' });
 
 
   // res.on(, function(chunk) {
@@ -23,16 +23,12 @@ let convertToPDf = async (reportUrl) => {
 };
 
 module.exports = {
-  PdfReport: function () {
-    const html = fs.readFileSync("./public/test.html").toString('utf-8')
-    convertHTMLToPDF(html, callback, { printBackground: true });
-  },
   PdfReportUrl: async function (req, res) {
     //GRR how do we deal with this api configuration. 
     //I'm not pleased with the idea of putting it in the .env.
     //this should not have to be configured it should be determined
 
-    const reportUrl = "http://localhost:4200/reports/monthly/0";
+    const reportUrl = "http://pca-web:4200/reports/monthly/0";
     const pdfContent = await convertToPDf(reportUrl);
     //res.contentType("application/pdf");
     res.setHeader("Content-Type", "application/pdf");
