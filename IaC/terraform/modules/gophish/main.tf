@@ -9,10 +9,78 @@ module "label" {
   tags       = {}
 }
 
+locals {
+  gophish_port = 3333
+  landingpage_port = 8080
+}
+
 # Cloudwatch Logs Group
 resource "aws_cloudwatch_log_group" "_" {
   name              = module.label.id
   retention_in_days = var.log_retention
+}
+
+# Load Balancer Target Group
+resource "aws_lb_target_group" "gophish" {
+  name        = module.label.id
+  port        = local.gophish_port
+  protocol    = "HTTP"
+  target_type = "ip"
+  vpc_id      = var.vpc_id
+
+  health_check {
+    healthy_threshold   = var.health_check_healthy_threshold
+    interval            = var.health_check_interval
+    matcher             = var.health_check_codes
+    path                = var.health_check_path
+    port                = local.gophish_port
+    protocol            = "HTTP"
+    unhealthy_threshold = var.health_check_unhealthy_threshold
+  }
+}
+
+# Load Balancer Listener
+resource "aws_lb_listener" "gophish" {
+  load_balancer_arn = var.load_balancer_arn
+  port              = var.gophish_alb_port
+  protocol          = "HTTPS"
+  ssl_policy        = "ELBSecurityPolicy-2016-08"
+  certificate_arn   = var.iam_server_cert_arn
+
+  default_action {
+    target_group_arn = aws_lb_target_group.gophish.arn
+    type             = "forward"
+  }
+}
+
+resource "aws_lb_target_group" "landing" {
+  name        = "${module.label.id}-landing"
+  port        = local.landingpage_port
+  protocol    = "HTTP"
+  target_type = "ip"
+  vpc_id      = var.vpc_id
+
+  health_check {
+    healthy_threshold   = var.health_check_healthy_threshold
+    interval            = var.health_check_interval
+    matcher             = var.health_check_codes
+    path                = var.health_check_path
+    port                = local.gophish_port
+    protocol            = "HTTP"
+    unhealthy_threshold = var.health_check_unhealthy_threshold
+  }
+}
+
+# Load Balancer Listener
+resource "aws_lb_listener" "landing" {
+  load_balancer_arn = var.load_balancer_arn
+  port              = var.landingpage_alb_port
+  protocol          = "HTTP"
+
+  default_action {
+    target_group_arn = aws_lb_target_group.landing.arn
+    type             = "forward"
+  }
 }
 
 # ECS Cluster
@@ -36,8 +104,13 @@ module "container" {
   }
   port_mappings = [
     {
-      containerPort = var.container_port
-      hostPort      = var.container_port
+      containerPort = local.gophish_port
+      hostPort      = local.gophish_port
+      protocol      = "tcp"
+    },
+    {
+      containerPort = local.landingpage_port
+      hostPort      = local.landingpage_port
       protocol      = "tcp"
     }
   ]
@@ -76,6 +149,18 @@ resource "aws_ecs_service" "_" {
   task_definition = aws_ecs_task_definition._.arn
   desired_count   = var.desired_count
   launch_type     = "FARGATE"
+
+  load_balancer {
+    target_group_arn = aws_lb_target_group.landing.arn
+    container_name   = module.label.id
+    container_port   = local.landingpage_port
+  }
+
+  load_balancer {
+    target_group_arn = aws_lb_target_group.gophish.arn
+    container_name   = module.label.id
+    container_port   = local.gophish_port
+  }
 
   network_configuration {
     subnets          = var.subnet_ids
