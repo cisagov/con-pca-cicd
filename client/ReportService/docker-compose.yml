@@ -11,9 +11,19 @@ services:
     volumes:
       - .:/app
     ports:
+      - "3030:3030"
+    networks:
+      - frontend
+  browserless:
+    image: browserless/chrome:latest
+    container_name: pca-browserless
+    environment:
+      - "MAX_CONCURRENT_SESSIONS=10"
+    ports:
       - "3000:3000"
     networks:
       - frontend
+
 networks:
   frontend:
     name: pca_frontend
