@@ -20,7 +20,6 @@ from api.serializers.subscriptions_serializers import (
 )
 from api.utils.db_utils import delete_single, get_list, get_single, update_single
 from api.utils.subscription.actions import start_subscription, stop_subscription
-from celery.task.control import revoke
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status
@@ -171,13 +170,6 @@ class SubscriptionView(APIView):
             except Exception as error:
                 logger.debug("error stopping subscription: {}".format(error))
 
-        # Remove subscription tasks from the scheduler
-        if "tasks" in subscription:
-            [
-                revoke(task["task_uuid"], terminate=True)
-                for task in subscription["tasks"]
-            ]
-
         # Delete Subscription
         delete_response = delete_single(
             uuid=subscription_uuid,
@@ -278,13 +270,6 @@ class SubscriptionStopView(APIView):
 
         # Stop subscription
         resp = stop_subscription(subscription)
-
-        # Cancel scheduled subscription emails
-        [
-            revoke(task["task_uuid"], terminate=True)
-            for task in subscription.get("tasks", [])
-            if task.get("task_uuid")
-        ]
 
         # Return updated subscriptions
         serializer = SubscriptionPatchResponseSerializer(resp)

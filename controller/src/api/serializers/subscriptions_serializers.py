@@ -157,6 +157,9 @@ class SubscriptionTasksSerializer(serializers.Serializer):
 
     task_uuid = serializers.CharField(required=False)
     message_type = serializers.CharField(required=False)
+    scheduled_date = serializers.DateTimeField(required=False)
+    executed = serializers.BooleanField(required=False)
+    executed_date = serializers.DateTimeField(required=False)
 
 
 # class GoPhishTemplateSerializer(serializers.Serializer):
