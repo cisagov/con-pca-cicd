@@ -13,7 +13,7 @@ import { MatDialog } from '@angular/material/dialog';
   styleUrls: ['./manage-subscription.component.scss']
 })
 export class ManageSubscriptionComponent implements OnInit, OnDestroy {
- 
+
   private routeSub: any;
   subscription: Subscription
 
@@ -23,22 +23,22 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private router: Router,
     public dialog: MatDialog
-    ) {
+  ) {
   }
 
   ngOnInit() {
 
-      this.routeSub = this.route.params.subscribe(params => {
-        if (!params.id) {
-          //this.loadPageForCreate(params);
-        } else {
-          this.loadPageForEdit(params);
+    this.routeSub = this.route.params.subscribe(params => {
+      if (!params.id) {
+        //this.loadPageForCreate(params);
+      } else {
+        this.loadPageForEdit(params);
 
-        }
-      });
+      }
+    });
   }
 
-  onTabChanged(event){
+  onTabChanged(event) {
     window.dispatchEvent(new Event('resize'));
   }
 
@@ -50,7 +50,7 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
     this.subscriptionSvc
       .getSubscription(sub.subscription_uuid)
       .subscribe(
-        (success) =>{
+        (success: Subscription) => {
           this.setPageForEdit(success);
         },
         (error) => {
@@ -69,15 +69,15 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
       );
   }
 
-  setPageForEdit(s: Subscription){
+  setPageForEdit(s: Subscription) {
     this.subscriptionSvc.setSubBhaviorSubject(s)
-        this.subscription = s as Subscription;
-        this.subscriptionSvc.subscription = this.subscription;
-        this.setPageTitle()
+    this.subscription = s as Subscription;
+    this.subscriptionSvc.subscription = this.subscription;
+    this.setPageTitle()
   }
 
   setPageTitle() {
-    if(this.subscription){
+    if (this.subscription) {
       let title = `Edit Subscription: ${this.subscription.name}`;
       if (this.subscription.status.toLowerCase() === 'stopped') {
         title += ' (stopped)';
