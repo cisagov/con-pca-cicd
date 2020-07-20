@@ -15,6 +15,7 @@ export class MonthlyComponent implements OnInit {
 
   private routeSub: any;
   subscriptionUuid: string;
+  reportStartDate: Date;
   detail: any;
 
   avgTTFC: string;
@@ -47,11 +48,21 @@ export class MonthlyComponent implements OnInit {
   ngOnInit(): void {
     this.routeSub = this.route.params.subscribe(params => {
       this.subscriptionUuid = params.id;
-      this.reportsSvc.getMonthlyReport(this.subscriptionUuid, new Date()).subscribe(resp => {
+
+      const isDate = new Date(params.start_date);
+      if (isDate.getTime()) {
+        this.reportStartDate = isDate;
+      } else {
+        console.log('Invalid Date time provided, defaulting to now');
+        this.reportStartDate = new Date();
+      }
+
+      this.reportsSvc.getMonthlyReport(this.subscriptionUuid, this.reportStartDate).subscribe(resp => {
         this.detail = resp;
 
         this.renderReport();
       });
+
     });
   }
 
@@ -60,7 +71,6 @@ export class MonthlyComponent implements OnInit {
    */
   renderReport() {
     // format the 'time to first X' text
-    this.detail.metrics.avg_time_to_first_click = '3 days 14 hours';
     this.avgTTFC = this.formatTTF(this.detail.metrics.avg_time_to_first_click);
     this.avgTTFR = this.formatTTF(this.detail.metrics.avg_time_to_first_report);
 
@@ -100,7 +110,7 @@ export class MonthlyComponent implements OnInit {
       if (isNumeric(pieces[i]) && i > 0) {
         output += '<br>' + pieces[i];
       } else {
-        output +=  ' ' + pieces[i];
+        output += ' ' + pieces[i];
       }
     }
 

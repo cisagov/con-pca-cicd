@@ -27,7 +27,7 @@
                     <!-- Left side bar -->
                     <aside>
                         <div id="reportDate">
-                            <h3>{{ detail?.start_date|date:"MMM d, yyyy" }} - {{ detail?.end_date|date:"MMM d, yyyy" }}</h3>
+                            <h3>{{ detail?.start_date|date }} - {{ detail?.metrics?.monthly_report_target_date|date}}</h3>
                         </div>
                         <div id="gonePhishingImage">
                             <img src="/assets/gone_phishing.jpg" alt="Gone Phishing">
@@ -50,7 +50,7 @@
                             Total Emails Sent: {{detail?.metrics?.number_of_email_sent_overall}}<br>
                             Email Click Rate: {{detail?.metrics?.number_of_clicked_emails}}
                             ({{detail?.metrics?.percent_of_clicked_emails | number:'1.0-2'}}%)<br>
-                            Reported Emails: {{detail?.metrics?.number_of_reported_emails}}
+                            Reported Emails: {{detail?.metrics?.number_of_reports_to_helpdesk}}
                             ({{detail?.metrics?.percent_of_reported_emails | number:'1.0-2'}}%)<br>
                         </div>
                         <div id="preparedFor">
