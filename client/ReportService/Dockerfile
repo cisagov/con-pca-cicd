@@ -19,4 +19,4 @@ COPY ./src .
 
 RUN npm install --loglevel=error
 RUN npm install express --save
-CMD ["node server.js"]
+CMD ["node", "src/server.js"]

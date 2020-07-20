@@ -13,9 +13,4 @@ export class UserAdminComponent implements OnInit {
   }
 
   ngOnInit() { }
-
-  launchFlower() {
-    const url = this.settingsSvc.settings.flowerUrl;
-    window.open(url, '_blank');
-  }
 }

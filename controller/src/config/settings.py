@@ -61,6 +61,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django_crontab",
     "corsheaders",
     "storages",
     # third party
@@ -174,15 +175,6 @@ REST_FRAMEWORK = {
     "DEFAULT_RENDERER_CLASSES": ("rest_framework.renderers.JSONRenderer",),
 }
 
-# Celery
-
-CELERY_BROKER_URL = os.environ.get("CELERY_BROKER", "amqp://rabbitmq:5672")
-CELERY_RESULT_BACKEND = os.environ.get("CELERY_BROKER", "amqp://rabbitmq:5672")
-CELERY_ACCEPT_CONTENT = ["json"]
-CELERY_TASK_SERIALIZER = "json"
-CELERY_RESULT_SERIALIZER = "json"
-CELERY_IGNORE_RESULT = False
-
 # GoPhish
 GP_URL = os.environ.get("GP_URL", "")
 GP_API_KEY = os.environ.get("GP_API_KEY", "")
@@ -204,3 +196,9 @@ EMAIL_USE_TLS = True
 
 # API Key for running local scripts
 LOCAL_API_KEY = os.environ.get("LOCAL_API_KEY")
+
+# Execute cron job every hour
+CRONJOBS = [("0 * * * *", "tasks.cron.execute_tasks")]
+CRONTAB_PYTHON_EXECUTABLE = os.environ.get(
+    "CRONTAB_PYTHON_EXECUTABLE", "/usr/local/bin/python3"
+)
