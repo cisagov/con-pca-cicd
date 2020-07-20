@@ -1,11 +1,9 @@
 FROM node:14-alpine
 
-ADD package*.json ./
-
 WORKDIR /app
+COPY ./package.json ./
 COPY ./src .
 
-USER node
 
 RUN npm install
 

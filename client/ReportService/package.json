@@ -1,0 +1,19 @@
+{
+  "name": "reportservice",
+  "version": "1.0.0",
+  "description": "Build:\r - `make build`",
+  "main": "index.js",
+  "dependencies": {
+    "body-parser": "^1.5.2",
+    "express": "^4.7.4",
+    "method-override": "~2.1.2",
+    "morgan": "^1.2.3",
+    "puppeteer-core": "^5.1.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}
