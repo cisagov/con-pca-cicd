@@ -4,6 +4,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { ReportsService } from 'src/app/services/reports.service';
 import { ActivatedRoute } from '@angular/router';
 import { ChartsService } from 'src/app/services/charts.service';
+import { isNumeric } from 'rxjs/util/isNumeric';
 
 @Component({
   selector: 'app-monthly',
@@ -15,6 +16,9 @@ export class MonthlyComponent implements OnInit {
   private routeSub: any;
   subscriptionUuid: string;
   detail: any;
+
+  avgTTFC: string;
+  avgTTFR: string;
 
 
   sentCircleSvg: any;
@@ -55,6 +59,12 @@ export class MonthlyComponent implements OnInit {
    *
    */
   renderReport() {
+    // format the 'time to first X' text
+    this.detail.metrics.avg_time_to_first_click = '3 days 14 hours';
+    this.avgTTFC = this.formatTTF(this.detail.metrics.avg_time_to_first_click);
+    this.avgTTFR = this.formatTTF(this.detail.metrics.avg_time_to_first_report);
+
+
     // build statistics by level chart
     this.chart.showXAxis = true;
     this.chart.showYAxis = true;
@@ -73,5 +83,27 @@ export class MonthlyComponent implements OnInit {
     this.sentCircleSvg = drawSvgCircle(this.detail.metrics.number_of_email_sent_overall, this.detail.metrics.total_users_targeted);
     this.openedCircleSvg = drawSvgCircle(this.detail.metrics.number_of_opened_emails, this.detail.metrics.total_users_targeted);
     this.clickedCircleSvg = drawSvgCircle(this.detail.metrics.number_of_clicked_emails, this.detail.metrics.total_users_targeted);
+  }
+
+  /**
+   * Formats a "time to first X" string, breaking the units up with <br> tags.
+   * A null value is returned as "~".
+   */
+  formatTTF(s: any) {
+    if (!s) {
+      return '~';
+    }
+
+    let output = '';
+    const pieces = s.split(' ');
+    for (let i = 0; i < pieces.length; i++) {
+      if (isNumeric(pieces[i]) && i > 0) {
+        output += '<br>' + pieces[i];
+      } else {
+        output +=  ' ' + pieces[i];
+      }
+    }
+
+    return output;
   }
 }

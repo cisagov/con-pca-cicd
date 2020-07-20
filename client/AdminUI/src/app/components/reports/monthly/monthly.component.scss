@@ -202,8 +202,11 @@ h1 strong {
   color: #174A91;
   font-size: 1.95em;
   line-height: 0.9em;
-  margin-top: 100px;
   text-align: center;
+  height: 230px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 #averageClickTime span, #averageReportTime span {
@@ -213,8 +216,16 @@ h1 strong {
   line-height: 1em;
 }
 
+.yellow-circle-container {
+  display: flex;
+  flex-direction: row; 
+  align-items: center;
+  justify-content: center;
+  z-index: 10; 
+  margin-top: -240px;
+}
+
 .circles {
-  margin-top: -160px;
   text-align: center;
   transform: scale(0.8);
 }
