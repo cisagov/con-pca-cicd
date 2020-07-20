@@ -17,6 +17,10 @@ from api.models.template_models import (
     TemplateModel,
     validate_template,
 )
+from api.models.recommendations_models import (
+    RecommendationsModel,
+    validate_recommendations,
+)
 from api.serializers.reports_serializers import (
     EmailReportsGetSerializer,
     ReportsGetSerializer,
@@ -128,6 +132,15 @@ class ReportsView(APIView):
         # Get template details for each campaign template
         get_template_details(subscription_stats["campaign_results"])
 
+        # Get recommendations for campaign
+        recommendations_list = get_list(
+            None, "recommendations", RecommendationsModel, validate_recommendations,
+        )
+        recommendations = [
+            recommendation.get("recommendations_uuid")
+            for recommendation in recommendations_list
+        ]
+
         metrics = {
             "total_users_targeted": len(subscription["target_email_list"]),
             "number_of_email_sent_overall": get_statistic_from_group(
@@ -166,6 +179,7 @@ class ReportsView(APIView):
             "sent": sent,
             "target_count": target_count,
             "metrics": metrics,
+            "recommendations": recommendations,
         }
         serializer = ReportsGetSerializer(context)
         return Response(serializer.data)
@@ -245,8 +259,8 @@ class CycleReportsEmailView(APIView):
         message_type = "cycle_report"
 
         # Send email
-        #sender = ReportsEmailSender(subscription, message_type)
-        #sender.send()
+        # sender = ReportsEmailSender(subscription, message_type)
+        # sender.send()
 
         dhs_contact_uuid = subscription.get("dhs_contact_uuid")
         dhs_contact = get_single(
