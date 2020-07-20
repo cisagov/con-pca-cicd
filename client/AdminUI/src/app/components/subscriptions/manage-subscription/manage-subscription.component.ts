@@ -3,6 +3,8 @@ import { LayoutMainService } from 'src/app/services/layout-main.service';
 import { SubscriptionService } from 'src/app/services/subscription.service';
 import { Subscription } from 'src/app/models/subscription.model';
 import { Router, ActivatedRoute } from '@angular/router';
+import { AlertComponent } from '../../dialogs/alert/alert.component';
+import { MatDialog } from '@angular/material/dialog';
 
 
 @Component({
@@ -11,7 +13,7 @@ import { Router, ActivatedRoute } from '@angular/router';
   styleUrls: ['./manage-subscription.component.scss']
 })
 export class ManageSubscriptionComponent implements OnInit, OnDestroy {
- 
+
   private routeSub: any;
   subscription: Subscription
 
@@ -19,22 +21,24 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
     private layoutSvc: LayoutMainService,
     private subscriptionSvc: SubscriptionService,
     private route: ActivatedRoute,
-    ) {
+    private router: Router,
+    public dialog: MatDialog
+  ) {
   }
 
   ngOnInit() {
 
-      this.routeSub = this.route.params.subscribe(params => {
-        if (!params.id) {
-          //this.loadPageForCreate(params);
-        } else {
-          this.loadPageForEdit(params);
+    this.routeSub = this.route.params.subscribe(params => {
+      if (!params.id) {
+        //this.loadPageForCreate(params);
+      } else {
+        this.loadPageForEdit(params);
 
-        }
-      });
+      }
+    });
   }
 
-  onTabChanged(event){
+  onTabChanged(event) {
     window.dispatchEvent(new Event('resize'));
   }
 
@@ -45,15 +49,35 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
 
     this.subscriptionSvc
       .getSubscription(sub.subscription_uuid)
-      .subscribe((s: Subscription) => {
-        this.subscriptionSvc.setSubBhaviorSubject(s)
-        this.subscription = s as Subscription;
-        this.subscriptionSvc.subscription = this.subscription;
-        this.setPageTitle()
-      })
+      .subscribe(
+        (success: Subscription) => {
+          this.setPageForEdit(success);
+        },
+        (error) => {
+          console.log(error);
+          this.router.navigate(['/subscriptions']);
+          if (error.status === 404) {
+            this.dialog.open(AlertComponent, {
+              // Parse error here
+              data: {
+                title: 'Not Found',
+                messageText: 'Subscription Not Found.'
+              }
+            });
+          }
+        }
+      );
   }
+
+  setPageForEdit(s: Subscription) {
+    this.subscriptionSvc.setSubBhaviorSubject(s)
+    this.subscription = s as Subscription;
+    this.subscriptionSvc.subscription = this.subscription;
+    this.setPageTitle()
+  }
+
   setPageTitle() {
-    if(this.subscription){
+    if (this.subscription) {
       let title = `Edit Subscription: ${this.subscription.name}`;
       if (this.subscription.status.toLowerCase() === 'stopped') {
         title += ' (stopped)';

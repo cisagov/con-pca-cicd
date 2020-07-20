@@ -32,6 +32,7 @@ class ReportsGetSerializer(serializers.Serializer):
     sent = serializers.IntegerField()
     target_count = serializers.IntegerField()
     metrics = serializers.DictField()
+    recommendations = serializers.ListField()
 
 
 class EmailReportsGetSerializer(serializers.Serializer):
