@@ -6,6 +6,7 @@ These are utils for creating reports.
 # Standard Python Libraries
 from datetime import timedelta
 import statistics
+import pprint
 
 # Third-Party Libraries
 from api.models.customer_models import (
@@ -22,6 +23,9 @@ from api.models.recommendations_models import (
 )
 from api.utils.db_utils import get_list, get_single
 
+def pprintItem(item):
+    pp = pprint.PrettyPrinter(indent=4)
+    pp.pprint(item)
 
 def get_closest_cycle_within_day_range(subscription, start_date, day_range=90):
     """
@@ -125,7 +129,7 @@ def generate_time_difference_stats(list_of_times):
     }
 
 
-def generate_campaign_statistics(campaign_timeline_summary):
+def generate_campaign_statistics(campaign_timeline_summary,reported_override_value=-1):
     """
     Generate campaign statistics based off a campaign_timeline_summary.
 
@@ -147,7 +151,7 @@ def generate_campaign_statistics(campaign_timeline_summary):
             clicked_times.append(moment["clicked_difference"])
         if "submitted" in moment:
             submitted_times.append(moment["submitted_difference"])
-        if "reported" in moment:
+        if "reported" in moment and reported_override_value == -1:
             reported_times.append(moment["reported_difference"])
 
     stats = {}
@@ -164,13 +168,24 @@ def generate_campaign_statistics(campaign_timeline_summary):
         stats["submitted"] = generate_time_difference_stats(submitted_times)
         time_aggregate["submitted"] = submitted_times
     if len(reported_times):
-        stats["reported"] = generate_time_difference_stats(reported_times)
-        time_aggregate["reported"] = reported_times
+        if reported_override_value == -1:
+            stats["reported"] = generate_time_difference_stats(reported_times)
+            time_aggregate["reported"] = reported_times
+        else:
+            stats["reported"] = generate_time_difference_stats(reported_times)
+            stats["reported"] = {
+                'count': reported_override_value,
+                'average': timedelta(),
+                'minimum': timedelta(),
+                'median': timedelta(),
+                'maximum':timedelta()
+            }
+            time_aggregate["reported"] = reported_times
 
     return stats, time_aggregate
 
 
-def consolidate_campaign_group_stats(campaign_data_list):
+def consolidate_campaign_group_stats(campaign_data_list,reported_override_value=-1):
     """Consolidate a group of campaign results."""
     consolidated_times = {
         "sent": [],
@@ -179,20 +194,28 @@ def consolidate_campaign_group_stats(campaign_data_list):
         "submitted": [],
         "reported": [],
     }
+    if not reported_override_value:
+        reported_override_value = -1
     for campaign in campaign_data_list:
         for key in campaign["times"]:
             consolidated_times[key] += campaign["times"][key]
     consolidated_stats = {}
     for key in consolidated_times:
-        if len(consolidated_times[key]) > 0 and key != "sent":
+        if reported_override_value >= 0 and key == "reported":
+                consolidated_stats[key] = reported_override_value
+        elif len(consolidated_times[key]) > 0 and key != "sent":
             consolidated_stats[key] = generate_time_difference_stats(
                 consolidated_times[key]
             )
         elif len(consolidated_times[key]) > 0 and key == "sent":
-            consolidated_stats[key] = {"count": len(consolidated_times[key])}
+            consolidated_stats[key] = {"count": len(consolidated_times[key])}        
         else:
             consolidated_stats[key] = {"count": 0}
+            
+    if reported_override_value >= 0:
+        consolidated_stats["reported"] = {"count":reported_override_value}
     return consolidated_stats
+
 
 
 def calc_ratios(campaign_stats):
@@ -286,6 +309,67 @@ def get_clicked_time_period_breakdown(campaign_results):
 
     return clicked_ratios
 
+def date_in_range(date,min_date,max_date):
+    if date >= min_date and date <= max_date:
+        return True
+    return False
+
+def filter_campaign_timeline_by_date_range(campaign_timeline_summary, start_date, end_date):
+    keys_to_remove = []
+    for moment in campaign_timeline_summary:
+        for key in moment:
+            if key in ("sent", "opened", "clicked", "submitted", "reported"):
+                if not date_in_range(moment[key],start_date,end_date):
+                    keys_to_remove.append(key)
+        for del_key in keys_to_remove:
+            del moment[del_key]
+        keys_to_remove = []
+    
+
+def get_subscription_stats_for_month(subscription, end_date):
+    """
+    Generate statistics for a subscriptions given month.
+
+    Determine the month by the provided start_date, goes x amount of days past that depending on month_length.
+    """
+    # Get the correct cycle based on the provided start_date
+    active_cycle = get_cycle_by_date_in_range(subscription, end_date)
+
+    start_date = active_cycle["start_date"]
+    # Get all the campaigns for the specified cycle from the gophish_campaign_list
+    campaigns_in_cycle = []
+    for campaign in subscription["gophish_campaign_list"]:
+        if campaign["campaign_id"] in active_cycle["campaigns_in_cycle"]:
+            campaigns_in_cycle.append(campaign)
+
+    # Loop through all campaigns in cycle. Check for unique moments, and appending to campaign_timeline_summary
+    campaign_timeline_summary = []
+    campaign_results = []
+    for campaign in campaigns_in_cycle:
+        for moment in campaign["timeline"]:
+            if not moment["duplicate"]:
+                append_timeline_moment(moment, campaign_timeline_summary)
+        #filter the timeline moments to only those within the given date range
+        filter_campaign_timeline_by_date_range(campaign_timeline_summary,start_date,end_date)
+        # Get stats and aggregate of all time differences (all times needed for stats like median when consolidated)
+        stats, time_aggregate = generate_campaign_statistics(campaign_timeline_summary,active_cycle["override_total_reported"])
+        campaign_results.append(
+            {
+                "campaign_id": campaign["campaign_id"],
+                "deception_level": campaign["deception_level"],
+                "campaign_stats": stats,
+                "times": time_aggregate,
+                "ratios": calc_ratios(stats),
+                "template_name": campaign["email_template"],
+                "template_uuid": campaign["template_uuid"],
+            }
+        )
+        campaign_timeline_summary = []
+
+    return generate_subscription_stat_details(campaign_results,active_cycle)
+
+    
+
 
 def get_subscription_stats_for_cycle(subscription, start_date=None):
     """
@@ -294,7 +378,7 @@ def get_subscription_stats_for_cycle(subscription, start_date=None):
     Determine the cycle by the provided start_date.
     """
     # Get the correct cycle based on the provided start_date
-    active_cycle = get_closest_cycle_within_day_range(subscription, start_date)
+    active_cycle = get_cycle_by_date_in_range(subscription, start_date)
 
     # Get all the campaigns for the specified cycle from the gophish_campaign_list
     campaigns_in_cycle = []
@@ -310,7 +394,7 @@ def get_subscription_stats_for_cycle(subscription, start_date=None):
             if not moment["duplicate"]:
                 append_timeline_moment(moment, campaign_timeline_summary)
         # Get stats and aggregate of all time differences (all times needed for stats like median when consolidated)
-        stats, time_aggregate = generate_campaign_statistics(campaign_timeline_summary)
+        stats, time_aggregate = generate_campaign_statistics(campaign_timeline_summary,active_cycle["override_total_reported"])
         campaign_results.append(
             {
                 "campaign_id": campaign["campaign_id"],
@@ -323,27 +407,36 @@ def get_subscription_stats_for_cycle(subscription, start_date=None):
             }
         )
         campaign_timeline_summary = []
+    
+    return generate_subscription_stat_details(campaign_results,active_cycle)
 
+
+def generate_subscription_stat_details(campaign_results,active_cycle):
     # generate campaign_group stats based off deception level and oconsolidation of all campaigns
     # All
-    consolidated_stats = consolidate_campaign_group_stats(campaign_results)
+    consolidated_stats = consolidate_campaign_group_stats(campaign_results,active_cycle["override_total_reported"])
+    
     consolidated_stats["ratios"] = calc_ratios(consolidated_stats)
+
+    reported_override_val = -1
+    if active_cycle["override_total_reported"] >= 0:
+        reported_override_val = 0
 
     # Low
     low_decp_stats = consolidate_campaign_group_stats(
-        list(filter(lambda x: x["deception_level"] == 1, campaign_results))
+        list(filter(lambda x: x["deception_level"] == 1, campaign_results)),reported_override_val
     )
     low_decp_stats["ratios"] = calc_ratios(low_decp_stats)
 
     # Moderate
     moderate_decp_stats = consolidate_campaign_group_stats(
-        list(filter(lambda x: x["deception_level"] == 2, campaign_results))
+        list(filter(lambda x: x["deception_level"] == 2, campaign_results)),reported_override_val
     )
     moderate_decp_stats["ratios"] = calc_ratios(moderate_decp_stats)
 
     # High
     high_decp_stats = consolidate_campaign_group_stats(
-        list(filter(lambda x: x["deception_level"] == 3, campaign_results))
+        list(filter(lambda x: x["deception_level"] == 3, campaign_results)),reported_override_val
     )
     high_decp_stats["ratios"] = calc_ratios(high_decp_stats)
 
@@ -357,7 +450,6 @@ def get_subscription_stats_for_cycle(subscription, start_date=None):
         "stats_high_deception": high_decp_stats,
         "clicks_over_time": clicks_over_time,
     }
-
 
 def generate_region_stats(subscription_list, cycle_date=None):
     """

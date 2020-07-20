@@ -24,6 +24,7 @@ from . import views
 from .charts import ChartGenerator
 from .utils import (
     get_subscription_stats_for_cycle,
+    get_subscription_stats_for_month,
     get_related_subscription_stats,
     get_cycles_breakdown,
     get_template_details,
@@ -36,7 +37,8 @@ from .utils import (
     format_timedelta,
     get_statistic_from_region_group,
     get_stats_low_med_high_by_level,
-    get_cycle_by_date_in_range
+    get_cycle_by_date_in_range,
+    pprintItem
 )
 
 logger = logging.getLogger(__name__)
@@ -56,11 +58,18 @@ class MonthlyReportsView(APIView):
 
 
     def getMonthlyStats(self, subscription):
-        start_date = subscription["start_date"]
+        start_date_param = self.kwargs["start_date"]
+        target_report_date = datetime.strptime(
+            start_date_param, '%Y-%m-%dT%H:%M:%S.%f%z')
+
         # Get statistics for the specified subscription during the specified cycle
-        subscription_stats = get_subscription_stats_for_cycle(
-            subscription, start_date
+        
+        subscription_stats = get_subscription_stats_for_month(
+            subscription, target_report_date
         )
+        # subscription_stats = get_subscription_stats_for_cycle(
+        #     subscription, start_date
+        # )
         opened = get_statistic_from_group(
             subscription_stats, "stats_all", "opened", "count"
         )
@@ -82,6 +91,8 @@ class MonthlyReportsView(APIView):
             subscription_stats)
         zerodefault = [0] * 15
         low_mid_high_bar_data = low_mid_high_bar_data if low_mid_high_bar_data is not None else zerodefault
+        
+
 
         metrics = {
             "total_users_targeted": total,
@@ -109,8 +120,10 @@ class MonthlyReportsView(APIView):
             "ratio_reports_to_clicks": 0 if clicked == 0 else round(
                 float(reported or 0) /
                 float(1 if clicked is None else clicked), 2
-            )            
+            ),
+            "monthly_report_target_date": target_report_date,
         }
+        
 
         return metrics, subscription_stats
 
@@ -264,14 +277,11 @@ class CycleReportsView(APIView):
         """
         Generate the cycle report based off of the provided start date
         """
-        print(request)
         # Get Args from url
         subscription_uuid = self.kwargs["subscription_uuid"]
         start_date_param = self.kwargs["start_date"]
         start_date = datetime.strptime(
             start_date_param, '%Y-%m-%dT%H:%M:%S.%f%z')
-        print(start_date)
-
         # Get targeted subscription and associated customer data
         subscription = get_single(
             subscription_uuid, "subscription", SubscriptionModel, validate_subscription

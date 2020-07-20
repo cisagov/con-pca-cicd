@@ -31,9 +31,9 @@ const routes: Routes = [
     path: 'reports',
     component: LayoutBlankComponent,
     children: [
-      { path: 'monthly/:id', component: MonthlyComponent },
-      { path: 'cycle/:id', component: CycleComponent },
-      { path: 'yearly/:id', component: YearlyComponent }
+      { path: 'monthly/:id/:start_date', component: MonthlyComponent },
+      { path: 'cycle/:id/:start_date', component: CycleComponent },
+      { path: 'yearly/:id/:start_date', component: YearlyComponent }
     ]
   },
   {

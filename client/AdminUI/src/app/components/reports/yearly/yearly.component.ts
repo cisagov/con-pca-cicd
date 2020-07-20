@@ -12,7 +12,7 @@ export class YearlyComponent implements OnInit {
 
   private routeSub: any;
   subscriptionUuid: string;
-
+  reportStartDate: Date;
   detail: any;
 
   dateFormat = AppSettings.DATE_FORMAT;
@@ -31,7 +31,14 @@ export class YearlyComponent implements OnInit {
   ngOnInit(): void {
     this.routeSub = this.route.params.subscribe(params => {
       this.subscriptionUuid = params.id;
-      this.reportsSvc.getCycleReport(this.subscriptionUuid, new Date()).subscribe(resp => {
+      let isDate = new Date(params.start_date)
+      if(isDate.getTime()){
+        this.reportStartDate = isDate
+      } else {
+        console.log("Invalid Date time provided, defaulting to now")
+        this.reportStartDate = new Date()        
+      }
+      this.reportsSvc.getCycleReport(this.subscriptionUuid, this.reportStartDate).subscribe(resp => {
         this.detail = resp;
         this.renderReport();
       });
