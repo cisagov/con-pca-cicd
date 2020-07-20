@@ -1,0 +1,35 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: Core Resources for Application (terraform-backend, ecr repositories)
+Parameters:
+    ENV:
+        Type: String
+        AllowedValues:
+            - dev
+            - stage
+            - prod
+        Description: Environment
+Resources:
+    WebRepo:
+        Type: AWS::ECR::Repository
+        Properties:
+            RepositoryName: con-pca-web
+
+    GophishRepo:
+        Type: AWS::ECR::Repository
+        Properties:
+            RepositoryName: con-pca-gophish
+
+    ApiRepo:
+        Type: AWS::ECR::Repository
+        Properties:
+            RepositoryName: con-pca-api
+
+    TerraformBackend:
+        Type: AWS::S3::Bucket
+        Properties:
+            AccessControl: Private
+            BucketEncryption:
+                ServerSideEncryptionConfiguration:
+                    - ServerSideEncryptionByDefault:
+                        SSEAlgorithm: AES256
+            BucketName: !Sub "con-pca-${ENV}-tf-backend"
