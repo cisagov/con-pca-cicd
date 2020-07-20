@@ -14,6 +14,7 @@ export class MonthlyComponent implements OnInit {
 
   private routeSub: any;
   subscriptionUuid: string;
+  reportStartDate: Date;
   detail: any;
 
 
@@ -39,6 +40,13 @@ export class MonthlyComponent implements OnInit {
 
     this.routeSub = this.route.params.subscribe(params => {
       this.subscriptionUuid = params.id;
+      let isDate = new Date(params.start_date)
+      if(isDate.getTime()){
+        this.reportStartDate = isDate
+      } else {
+        console.log("Invalid Date time provided, defaulting to now")
+        this.reportStartDate = new Date()        
+      }
       this.loadPage();
     });
   }
@@ -46,7 +54,7 @@ export class MonthlyComponent implements OnInit {
   loadPage() {
 
     // RKW -- When API is ready call this....
-    this.reportsSvc.getMonthlyReport(this.subscriptionUuid, new Date()).subscribe(resp => {
+    this.reportsSvc.getMonthlyReport(this.subscriptionUuid, this.reportStartDate).subscribe(resp => {
       this.detail = resp;
 
       // build statistics by level chart
