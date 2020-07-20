@@ -15,7 +15,6 @@ services:
       - frontend
     env_file:
       - .env
-
 networks:
   frontend:
     name: pca_frontend

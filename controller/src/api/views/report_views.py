@@ -245,8 +245,8 @@ class CycleReportsEmailView(APIView):
         message_type = "cycle_report"
 
         # Send email
-        sender = ReportsEmailSender(subscription, message_type)
-        sender.send()
+        #sender = ReportsEmailSender(subscription, message_type)
+        #sender.send()
 
         dhs_contact_uuid = subscription.get("dhs_contact_uuid")
         dhs_contact = get_single(

@@ -20,3 +20,14 @@ export function dateOnly(d) {
     return moment(d).hours(0).minutes(0).seconds(0).milliseconds(0);
 }
 
+/**
+ * Converts a string to Title Case.
+ */
+export function toTitleCase(str) {
+    return str.replace(
+        /\w\S*/g,
+        (txt) => {
+            return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+        }
+    );
+}
