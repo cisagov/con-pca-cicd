@@ -25,7 +25,6 @@ module "fargate" {
 
   environment = {
     "API_URL" : "https://${data.aws_lb.public.dns_name}:8043",
-    "FLOWER_URL" : "https://${data.aws_lb.public.dns_name}:5555",
     "AWS_PROJECT_REGION" : var.region,
     "AWS_USER_POOLS_ID" : element(tolist(data.aws_cognito_user_pools.users.ids), 0),
 

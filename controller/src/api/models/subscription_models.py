@@ -199,11 +199,14 @@ class ScheduledTaskModel(Model):
     """
     This is the Scheduled Task Model.
 
-    This keeps track of a list of active tasks by their Celery task ID
+    This keeps track of a list of active tasks.
     """
 
     task_uuid = StringType()
     message_type = StringType()
+    scheduled_date = DateTimeType()
+    executed = BooleanType()
+    executed_date = DateTimeType()
 
 
 class SubscriptionModel(Model):

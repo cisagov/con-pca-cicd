@@ -55,11 +55,8 @@ Your output will look like:
 
 ```shell
 -> % make up
-Creating pca-rabbitmq ... done
 Creating pca-mongodb  ... done
 Creating pca-web      ... done
-Creating pca-worker   ... done
-Creating pca-beat     ... done
 Creating pca-api      ... done
 ```
 
@@ -103,10 +100,7 @@ Your output will look like:
 -> % make up
 docker-compose up -d
 Creating network "controller_default" with the default driver
-Creating pca-rabbitmq ... done
 Creating pca-mongodb  ... done
-Creating pca-worker   ... done
-Creating pca-beat     ... done
 Creating pca-api      ... done
 ```
 

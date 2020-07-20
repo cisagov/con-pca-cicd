@@ -26,7 +26,6 @@ from api.utils.subscription.subscriptions import (
 from api.utils.subscription.targets import batch_targets
 from api.utils.subscription.template_selector import personalize_template_batch
 from api.utils.template.templates import deception_level
-from celery.task.control import revoke
 from django.conf import settings
 
 logger = logging.getLogger(__name__)
@@ -139,43 +138,43 @@ def start_subscription(data=None, subscription_uuid=None):
 
     # Schedule client side reports emails
     if not settings.DEBUG:
-        tasks = create_scheduled_email_tasks(response)
-        cycle_task = create_scheduled_cycle_tasks(response)
+        tasks = create_scheduled_email_tasks()
+        cycle_task = create_scheduled_cycle_tasks()
 
         tasks.append(cycle_task)
         subscription["tasks"] = tasks
     else:
         subscription["tasks"] = []
 
-    send_start_notification(subscription, start_date)
+    try:
+        send_start_notification(subscription, start_date)
+        dhs_contact_uuid = subscription.get("dhs_contact_uuid")
+        dhs_contact = db.get_single(
+            dhs_contact_uuid, "dhs_contact", DHSContactModel, validate_dhs_contact
+        )
+        recipient_copy = dhs_contact.get("email") if dhs_contact else None
 
-    dhs_contact_uuid = subscription.get("dhs_contact_uuid")
-    dhs_contact = db.get_single(
-        dhs_contact_uuid, "dhs_contact", DHSContactModel, validate_dhs_contact
-    )
-    recipient_copy = dhs_contact.get("email") if dhs_contact else None
+        email_report = {
+            "report_type": "Cycle Start Notification",
+            "sent": datetime.now(),
+            "email_to": subscription.get("primary_contact").get("email"),
+            "email_from": settings.SERVER_EMAIL,
+            "bbc": recipient_copy,
+            "manual": False,
+        }
 
-    email_report = {
-        "report_type": "Cycle Start Notification",
-        "sent": datetime.now(),
-        "email_to": subscription.get("primary_contact").get("email"),
-        "email_from": settings.SERVER_EMAIL,
-        "bbc": recipient_copy,
-        "manual": False,
-    }
-
-    subscription["email_report_history"].append(email_report)
+        subscription["email_report_history"].append(email_report)
+    except Exception as e:
+        logging.exception(e)
 
     serialized_data = SubscriptionPatchSerializer(subscription)
-    update_rep = db.update_single(
+    response = db.update_single(
         uuid=response["subscription_uuid"],
         put_data=serialized_data.data,
         collection="subscription",
         model=SubscriptionModel,
         validation_model=validate_subscription,
     )
-
-    logging.info(f"udpated rep={update_rep}")
 
     return response
 
@@ -276,39 +275,40 @@ def new_subscription_cycle(subscription_uuid):
 
     # Schedule client side reports emails
     if not settings.DEBUG:
-        tasks = create_scheduled_email_tasks(response)
+        tasks = create_scheduled_email_tasks()
         subscription["tasks"] = tasks
     else:
         subscription["tasks"] = []
 
-    send_start_notification(subscription, start_date)
+    try:
+        send_start_notification(subscription, start_date)
 
-    dhs_contact_uuid = subscription.get("dhs_contact_uuid")
-    dhs_contact = db.get_single(
-        dhs_contact_uuid, "dhs_contact", DHSContactModel, validate_dhs_contact
-    )
-    recipient_copy = dhs_contact.get("email") if dhs_contact else None
+        dhs_contact_uuid = subscription.get("dhs_contact_uuid")
+        dhs_contact = db.get_single(
+            dhs_contact_uuid, "dhs_contact", DHSContactModel, validate_dhs_contact
+        )
+        recipient_copy = dhs_contact.get("email") if dhs_contact else None
 
-    subscription["email_report_history"].append(
-        {
-            "report_type": "Cycle Start Notification",
-            "sent": datetime.now(),
-            "email_to": subscription.get("primary_contact").get("email"),
-            "email_from": settings.SERVER_EMAIL,
-            "bbc": recipient_copy,
-            "manual": False,
-        }
-    )
+        subscription["email_report_history"].append(
+            {
+                "report_type": "Cycle Start Notification",
+                "sent": datetime.now(),
+                "email_to": subscription.get("primary_contact").get("email"),
+                "email_from": settings.SERVER_EMAIL,
+                "bbc": recipient_copy,
+                "manual": False,
+            }
+        )
+    except Exception as e:
+        logging.exception(e)
 
-    update_rep = db.update_single(
+    response = db.update_single(
         uuid=subscription["subscription_uuid"],
         put_data=SubscriptionPatchSerializer(subscription).data,
         collection="subscription",
         model=SubscriptionModel,
         validation_model=validate_subscription,
     )
-
-    logger.info(update_rep)
 
     return response
 
@@ -326,11 +326,7 @@ def stop_subscription(subscription):
     __delete_subscription_user_groups(subscription["gophish_campaign_list"])
 
     # Remove subscription tasks from the scheduler
-    if subscription.get("tasks"):
-        [
-            revoke(task["task_uuid"], terminate=True)
-            for task in subscription.get("tasks", [])
-        ]
+    subscription["tasks"] = []
 
     # Update subscription
     subscription["gophish_campaign_list"] = updated_campaigns
@@ -339,7 +335,10 @@ def stop_subscription(subscription):
 
     subscription["status"] = "stopped"
 
-    send_stop_notification(subscription)
+    try:
+        send_stop_notification(subscription)
+    except Exception as e:
+        logging.exception(e)
 
     dhs_contact_uuid = subscription.get("dhs_contact_uuid")
     dhs_contact = db.get_single(
