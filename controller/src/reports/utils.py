@@ -697,9 +697,26 @@ def get_relevant_recommendations(subscription_stats):
     recommendations_list = get_list(
         None, "recommendations", RecommendationsModel, validate_recommendations,
     )
-    recommendations_uuid = [
-        recommendation.get("recommendations_uuid")
-        for recommendation in recommendations_list
-    ]
-    return recommendations_uuid
+    if not recommendations_list:
+        return None
 
+    template_performance = [
+        (i.get("template_uuid"), i.get("ratios"), i.get("template_details"))
+        for i in subscription_stats.get("campaign_results")
+    ]
+    # Sort the top five performing templates from high to low open ratio
+    sorted_templates = sorted(template_performance, key=lambda x: x[0], reverse=True)[
+        :5
+    ]
+    recommendations_set = set(recommendations_list[0])
+    templates_set = set([template[2] for template in sorted_templates][0])
+
+    recommendations_uuid = []
+    for matching_key in recommendations_set.intersection(templates_set):
+        for index, recommendation in enumerate(recommendations_list):
+            if recommendation.get(matching_key) == sorted_templates[index][2].get(
+                matching_key
+            ):
+                recommendations_uuid.append(recommendation.get("recommendations_uuid"))
+
+    return recommendations_uuid
