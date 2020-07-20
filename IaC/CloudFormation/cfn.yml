@@ -8,21 +8,32 @@ Parameters:
             - stage
             - prod
         Description: Environment
+
+    LIFECYCLE:
+        Type: String
+        Description: Lifecycle policy for repositories
+        Default: "{\"rules\": [ { \"rulePriority\": 1, \"description\": \"Keep only one untagged image, expire all others\", \"selection\": { \"tagStatus\": \"untagged\", \"countType\": \"imageCountMoreThan\", \"countNumber\": 1 }, \"action\": { \"type\": \"expire\" } } ]\r\n}"
 Resources:
     WebRepo:
         Type: AWS::ECR::Repository
         Properties:
             RepositoryName: con-pca-web
+            LifecyclePolicy:
+                LifecyclePolicyText: !Ref LIFECYCLE
 
     GophishRepo:
         Type: AWS::ECR::Repository
         Properties:
             RepositoryName: con-pca-gophish
+            LifecyclePolicy:
+                LifecyclePolicyText: !Ref LIFECYCLE
 
     ApiRepo:
         Type: AWS::ECR::Repository
         Properties:
             RepositoryName: con-pca-api
+            LifecyclePolicy:
+                LifecyclePolicyText: !Ref LIFECYCLE
 
     TerraformBackend:
         Type: AWS::S3::Bucket

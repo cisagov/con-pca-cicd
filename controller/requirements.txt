@@ -12,7 +12,6 @@ boto3==1.13.10
 botocore==1.16.18
 cairocffi==1.1.0
 CairoSVG==2.4.2
-celery==4.4.2
 certifi==2020.4.5.1
 cffi==1.14.0
 cfgv==3.1.0
@@ -32,6 +31,7 @@ django-braces==1.14.0
 django-cognito-jwt==0.0.3
 django-cors-headers==3.2.1
 django-crispy-forms==1.9.0
+django-crontab==0.7.1
 django-extensions==2.2.9
 django-storages==1.9.1
 django-warrant==0.1.0
@@ -45,7 +45,6 @@ filelock==3.0.12
 flake8==3.8.3
 flake8-polyfill==1.0.2
 future==0.18.2
-flower==0.9.4
 gevent==20.6.2
 gophish==0.4.0
 gunicorn==20.0.4

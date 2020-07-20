@@ -109,6 +109,7 @@ resource "aws_ecs_service" "_" {
   task_definition = aws_ecs_task_definition._.arn
   desired_count   = var.desired_count
   launch_type     = "FARGATE"
+
   load_balancer {
     target_group_arn = aws_lb_target_group._.arn
     container_name   = module.label.id

@@ -95,16 +95,11 @@ resource "random_password" "basic_auth_password" {
 locals {
   api_container_port        = 80
   api_load_balancer_port    = 8043
-  flower_container_port     = 5555
-  flower_load_balancer_port = 5555
 
   environment = {
     "SECRET_KEY" : random_string.django_secret_key.result,
     "DEBUG" : 0,
     "DJANGO_ALLOWED_HOSTS" : "localhost 127.0.0.1 [::1] ${data.aws_lb.public.dns_name}",
-    "CELERY_BROKER" : "amqp://${module.rabbitmq.lb_dns_name}:5672",
-    "BASIC_AUTH_USERNAME" : random_string.basic_auth_username.result,
-    "BASIC_AUTH_PASSWORD" : random_password.basic_auth_password.result,
     "DB_HOST" : module.documentdb.endpoint,
     "DB_PORT" : 27017,
     "GP_URL" : "https://${data.aws_lb.public.dns_name}:3333/"
@@ -176,106 +171,6 @@ resource "aws_lb_listener" "api_http" {
   }
 }
 
-
-# ===========================
-# FLOWER CREDENTIALS
-# ===========================
-resource "random_string" "flower_username" {
-  length  = 8
-  number  = false
-  special = false
-  upper   = false
-}
-
-resource "random_password" "flower_password" {
-  length           = 32
-  number           = true
-  special          = false
-  override_special = "!_#&"
-}
-
-resource "aws_ssm_parameter" "flower_username" {
-  name        = "/${var.env}/${var.app}/flower/username"
-  description = "The username for flower"
-  type        = "SecureString"
-  value       = random_string.flower_username.result
-}
-
-resource "aws_ssm_parameter" "flower_password" {
-  name        = "/${var.env}/${var.app}/flower/password"
-  description = "The password for flower"
-  type        = "SecureString"
-  value       = random_password.flower_password.result
-}
-
-module "flower" {
-  source                = "../modules/fargate"
-  namespace             = "${var.app}"
-  stage                 = "${var.env}"
-  name                  = "flower"
-  log_retention         = 7
-  iam_server_cert_arn   = data.aws_iam_server_certificate.self.arn
-  container_port        = local.flower_container_port
-  vpc_id                = data.aws_vpc.vpc.id
-  health_check_interval = 60
-  health_check_path     = "/"
-  health_check_codes    = "307,202,200,401,404"
-  load_balancer_arn     = data.aws_lb.public.arn
-  load_balancer_port    = local.flower_load_balancer_port
-  container_image       = "780016325729.dkr.ecr.us-east-1.amazonaws.com/con-pca-api:1.0"
-  aws_region            = var.region
-  cpu                   = 512
-  memory                = 1024
-  environment           = local.environment
-  secrets               = local.secrets
-  desired_count         = 1
-  subnet_ids            = data.aws_subnet_ids.private.ids
-  security_group_ids    = [aws_security_group.flower.id]
-  entrypoint = [
-    "flower", "-A", "config",
-    "--address=0.0.0.0",
-    "--port=${local.flower_container_port}",
-    "--broker=amqp://${module.rabbitmq.lb_dns_name}:5672",
-    "--basic_auth=${random_string.flower_username.result}:${random_password.flower_password.result}"
-  ]
-}
-
-module "celery" {
-  source             = "../modules/fargate-no-alb"
-  namespace          = "${var.app}"
-  stage              = "${var.env}"
-  name               = "celery"
-  log_retention      = 7
-  container_port     = 80
-  vpc_id             = data.aws_vpc.vpc.id
-  container_image    = "780016325729.dkr.ecr.us-east-1.amazonaws.com/con-pca-api:1.0"
-  aws_region         = var.region
-  cpu                = 2048
-  memory             = 4096
-  environment        = local.environment
-  secrets            = local.secrets
-  desired_count      = 1
-  subnet_ids         = data.aws_subnet_ids.private.ids
-  security_group_ids = [aws_security_group.flower.id]
-  entrypoint = [
-    "celery", "worker",
-    "--app=config.celery:app",
-    "--loglevel=info"
-  ]
-}
-
-module "rabbitmq" {
-  source             = "../modules/rabbitmq"
-  namespace          = "${var.app}"
-  stage              = "${var.env}"
-  name               = "rabbitmq"
-  private_subnet_ids = data.aws_subnet_ids.private.ids
-  vpc_id             = data.aws_vpc.vpc.id
-  aws_region         = var.region
-  environment        = local.environment
-  secrets            = local.secrets
-}
-
 # ===========================
 # SECURITY GROUP
 # ===========================
@@ -306,51 +201,3 @@ resource "aws_security_group" "api" {
   }
 
 }
-
-resource "aws_security_group" "flower" {
-  name        = "${var.app}-${var.env}-flower-alb"
-  description = "Allow traffic for flower from alb"
-  vpc_id      = data.aws_vpc.vpc.id
-
-  ingress {
-    description     = "Allow container port from ALB"
-    from_port       = local.flower_container_port
-    to_port         = local.flower_container_port
-    protocol        = "tcp"
-    security_groups = [data.aws_security_group.alb.id]
-    self            = true
-  }
-
-  egress {
-    description = "Allow outbound traffic"
-    from_port   = 0
-    to_port     = 0
-    protocol    = -1
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  tags = {
-    "Name" = "${var.app}-${var.env}-flower-alb"
-  }
-
-}
-
-resource "aws_security_group" "celery" {
-  name        = "${var.app}-${var.env}-celery"
-  description = "Celery Traffic"
-  vpc_id      = data.aws_vpc.vpc.id
-
-  egress {
-    description = "Allow outbound traffic"
-    from_port   = 0
-    to_port     = 0
-    protocol    = -1
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  tags = {
-    "Name" = "${var.app}-${var.env}-celery"
-  }
-
-}
-

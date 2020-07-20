@@ -54,20 +54,20 @@ module "rds" {
 # ===========================
 # FARGATE
 # ===========================
-module "fargate" {
-  source                = "../modules/fargate"
+module "gophish" {
+  source                = "../modules/gophish"
   namespace             = "${var.app}"
   stage                 = "${var.env}"
   name                  = "gophish"
   log_retention         = 7
   iam_server_cert_arn   = data.aws_iam_server_certificate.self.arn
-  container_port        = 3333
+  gophish_alb_port      = 3333
+  landingpage_alb_port  = 80
   vpc_id                = data.aws_vpc.vpc.id
   health_check_interval = 60
   health_check_path     = "/"
   health_check_codes    = "307,202,200,404"
   load_balancer_arn     = data.aws_lb.public.arn
-  load_balancer_port    = 3333
   container_image       = "780016325729.dkr.ecr.us-east-1.amazonaws.com/con-pca-gophish:1.0"
   aws_region            = var.region
   cpu                   = 512
@@ -88,17 +88,6 @@ module "fargate" {
   security_group_ids = [aws_security_group.gophish.id]
 }
 
-resource "aws_lb_listener" "landing_page_listener" {
-  load_balancer_arn = data.aws_lb.public.arn
-  port              = 80
-  protocol          = "HTTP"
-
-  default_action {
-    target_group_arn = module.fargate.target_group_arn
-    type             = "forward"
-  }
-}
-
 # ===========================
 # SECURITY GROUP
 # ===========================
@@ -111,6 +100,15 @@ resource "aws_security_group" "gophish" {
     description     = "Allow container port from ALB"
     from_port       = 3333
     to_port         = 3333
+    protocol        = "tcp"
+    security_groups = [data.aws_security_group.alb.id]
+    self            = true
+  }
+
+  ingress {
+    description     = "Allow container port from ALB"
+    from_port       = 8080
+    to_port         = 8080
     protocol        = "tcp"
     security_groups = [data.aws_security_group.alb.id]
     self            = true

@@ -2,12 +2,12 @@
 # Standard Python Libraries
 from datetime import datetime, timedelta
 import logging
+from uuid import uuid4
 
 # Third-Party Libraries
 from api.models.subscription_models import SubscriptionModel, validate_subscription
 from api.utils import db_utils as db
 from notifications.views import SubscriptionNotificationEmailSender
-from tasks.tasks import email_subscription_report, start_subscription_cycle
 
 logger = logging.getLogger()
 
@@ -130,16 +130,12 @@ def send_stop_notification(subscription):
     sender.send()
 
 
-def create_scheduled_email_tasks(created_response):
+def create_scheduled_email_tasks():
     """Create Scheduled Email Tasks.
-
-    Args:
-        created_response (dict): created_response data
 
     Returns:
         list: list of tasks and message types
     """
-    subscription_uuid = created_response.get("subscription_uuid")
     message_types = {
         "monthly_report": datetime.utcnow() + timedelta(days=30),
         "cycle_report": datetime.utcnow() + timedelta(days=90),
@@ -148,31 +144,24 @@ def create_scheduled_email_tasks(created_response):
 
     context = []
     for message_type, send_date in message_types.items():
-        try:
-            task = email_subscription_report.apply_async(
-                args=[subscription_uuid, message_type, send_date],
-                eta=send_date,
-                retry=True,
-            )
-            context.append({"task_uuid": task.id, "message_type": message_type})
-        except task.OperationalError as exc:
-            logger.exception("Subscription task raised: %r", exc)
+        context.append(
+            {
+                "task_uuid": uuid4(),
+                "message_type": message_type,
+                "scheduled_date": send_date,
+                "executed": False,
+            }
+        )
 
     return context
 
 
-def create_scheduled_cycle_tasks(created_response):
-    subscription_uuid = created_response.get("subscription_uuid")
+def create_scheduled_cycle_tasks():
     send_date = datetime.utcnow() + timedelta(days=90)
 
-    try:
-        task = start_subscription_cycle.apply_async(
-            args=[subscription_uuid], eta=send_date, retry=True,
-        )
-        context = {"task_uuid": task.id, "message_type": "start_new_cycle"}
-
-    except task.OperationalError as exc:
-        logger.exception("Subscription task raised: %r", exc)
-        return
-
-    return context
+    return {
+        "task_uuid": uuid4(),
+        "message_type": "start_new_cycle",
+        "scheduled_date": send_date,
+        "executed": False,
+    }
