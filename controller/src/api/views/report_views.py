@@ -17,10 +17,6 @@ from api.models.template_models import (
     TemplateModel,
     validate_template,
 )
-from api.models.recommendations_models import (
-    RecommendationsModel,
-    validate_recommendations,
-)
 from api.serializers.reports_serializers import (
     EmailReportsGetSerializer,
     ReportsGetSerializer,
@@ -39,6 +35,7 @@ from reports.utils import (
     get_statistic_from_group,
     get_subscription_stats_for_cycle,
     get_template_details,
+    get_relevant_recommendations,
 )
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -133,13 +130,7 @@ class ReportsView(APIView):
         get_template_details(subscription_stats["campaign_results"])
 
         # Get recommendations for campaign
-        recommendations_list = get_list(
-            None, "recommendations", RecommendationsModel, validate_recommendations,
-        )
-        recommendations = [
-            recommendation.get("recommendations_uuid")
-            for recommendation in recommendations_list
-        ]
+        recommendations = get_relevant_recommendations(subscription_stats)
 
         metrics = {
             "total_users_targeted": len(subscription["target_email_list"]),
