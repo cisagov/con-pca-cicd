@@ -119,6 +119,8 @@ class SubscriptionView(APIView):
         subscription = get_single(
             subscription_uuid, "subscription", SubscriptionModel, validate_subscription
         )
+        if subscription is None:
+            return Response(status=status.HTTP_404_NOT_FOUND)
         serializer = SubscriptionGetSerializer(subscription)
         return Response(serializer.data)
 
