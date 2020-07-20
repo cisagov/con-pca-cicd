@@ -35,6 +35,7 @@ from reports.utils import (
     get_statistic_from_group,
     get_subscription_stats_for_cycle,
     get_template_details,
+    get_relevant_recommendations,
 )
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -128,6 +129,9 @@ class ReportsView(APIView):
         # Get template details for each campaign template
         get_template_details(subscription_stats["campaign_results"])
 
+        # Get recommendations for campaign
+        recommendations = get_relevant_recommendations(subscription_stats)
+
         metrics = {
             "total_users_targeted": len(subscription["target_email_list"]),
             "number_of_email_sent_overall": get_statistic_from_group(
@@ -166,6 +170,7 @@ class ReportsView(APIView):
             "sent": sent,
             "target_count": target_count,
             "metrics": metrics,
+            "recommendations": recommendations,
         }
         serializer = ReportsGetSerializer(context)
         return Response(serializer.data)
@@ -245,8 +250,8 @@ class CycleReportsEmailView(APIView):
         message_type = "cycle_report"
 
         # Send email
-        #sender = ReportsEmailSender(subscription, message_type)
-        #sender.send()
+        # sender = ReportsEmailSender(subscription, message_type)
+        # sender.send()
 
         dhs_contact_uuid = subscription.get("dhs_contact_uuid")
         dhs_contact = get_single(

@@ -16,6 +16,10 @@ from api.models.customer_models import (
 )
 from api.models.subscription_models import SubscriptionModel, validate_subscription
 from api.models.template_models import TemplateModel, validate_template
+from api.models.recommendations_models import (
+    RecommendationsModel,
+    validate_recommendations,
+)
 from api.utils.db_utils import get_list, get_single
 
 
@@ -36,8 +40,8 @@ def get_closest_cycle_within_day_range(subscription, start_date, day_range=90):
     for cycle in subscription["cycles"]:
         cycle_start_difference = abs(cycle["start_date"] - start_date)
         if (
-            cycle_start_difference < closest_val and
-            cycle_start_difference < maximum_date_differnce
+            cycle_start_difference < closest_val
+            and cycle_start_difference < maximum_date_differnce
         ):
             closest_cycle = cycle
             closest_val = cycle_start_difference
@@ -56,7 +60,7 @@ def get_cycle_by_date_in_range(subscription, date):
     Get the cycle that contains the given date
     """
     for cycle in subscription["cycles"]:
-        if(cycle["start_date"] <= date and cycle["end_date"] > date):
+        if cycle["start_date"] <= date and cycle["end_date"] > date:
             return cycle
     return subscription["cycles"][0]
 
@@ -187,7 +191,7 @@ def consolidate_campaign_group_stats(campaign_data_list):
         elif len(consolidated_times[key]) > 0 and key == "sent":
             consolidated_stats[key] = {"count": len(consolidated_times[key])}
         else:
-            consolidated_stats[key] = {"count":0}
+            consolidated_stats[key] = {"count": 0}
     return consolidated_stats
 
 
@@ -224,8 +228,7 @@ def calc_ratios(campaign_stats):
             if "opened" in working_vals:
                 opened_ratio = working_vals["opened"] / working_vals["sent"]
             if "submitted" in working_vals:
-                submitted_ratio = working_vals["submitted"] / \
-                    working_vals["sent"]
+                submitted_ratio = working_vals["submitted"] / working_vals["sent"]
             if "reported" in working_vals:
                 reported_ratio = working_vals["reported"] / working_vals["sent"]
     return {
@@ -307,8 +310,7 @@ def get_subscription_stats_for_cycle(subscription, start_date=None):
             if not moment["duplicate"]:
                 append_timeline_moment(moment, campaign_timeline_summary)
         # Get stats and aggregate of all time differences (all times needed for stats like median when consolidated)
-        stats, time_aggregate = generate_campaign_statistics(
-            campaign_timeline_summary)
+        stats, time_aggregate = generate_campaign_statistics(campaign_timeline_summary)
         campaign_results.append(
             {
                 "campaign_id": campaign["campaign_id"],
@@ -443,8 +445,7 @@ def get_related_subscription_stats(subscription, start_date):
     customer_subscriptions = []
 
     sector_subscriptions = list(
-        filter(lambda x: x["customer_uuid"]
-               in sector_customer_uuids, subscription_list)
+        filter(lambda x: x["customer_uuid"] in sector_customer_uuids, subscription_list)
     )
     industry_subscriptions = list(
         filter(
@@ -486,7 +487,9 @@ def get_cycles_breakdown(cycles):
     return cycle_stats
 
 
-def get_statistic_from_group(subscription_stats, deception_level, category, stat, zeroIfNone=False):
+def get_statistic_from_group(
+    subscription_stats, deception_level, category, stat, zeroIfNone=False
+):
     """
     Get a specific stat if it exists off of the subscription stats consolidation.
 
@@ -504,7 +507,7 @@ def get_statistic_from_region_group(region_stats, group, stat):
     """
     Get a specific stat if it exists off of the region stats consolidation.
     """
-    if stat in ('sent', 'opened', 'clicked', 'submitted', 'reported'):
+    if stat in ("sent", "opened", "clicked", "submitted", "reported"):
         try:
             return region_stats[group]["consolidated_values"][stat]
         except:
@@ -538,8 +541,8 @@ def get_reports_to_click(subscription_stats):
     """Helper function to get reports to click ratio, ensuring division by zero does not happen."""
     try:
         return (
-            subscription_stats["stats_all"]["reported"]["count"] /
-            subscription_stats["stats_all"]["clicked"]["count"]
+            subscription_stats["stats_all"]["reported"]["count"]
+            / subscription_stats["stats_all"]["clicked"]["count"]
         )
     except:
         return None
@@ -562,8 +565,8 @@ def get_most_successful_campaigns(subscription_stats, category):
             for current_campaign in most_succesful_campaigns:
                 if campaign["ratios"][category_ratio]:
                     if (
-                        campaign["ratios"][category_ratio] >
-                        current_campaign["ratios"][category_ratio]
+                        campaign["ratios"][category_ratio]
+                        > current_campaign["ratios"][category_ratio]
                     ):
                         most_succesful_campaigns = []
                         most_succesful_campaigns.append(campaign)
@@ -610,7 +613,8 @@ def get_template_details(campaign_results):
     for camp in campaign_results:
         try:
             percent_of_camps = ratio_to_percent(
-                camp["campaign_stats"]["sent"]["count"] / total_sent)
+                camp["campaign_stats"]["sent"]["count"] / total_sent
+            )
             camp["campaign_stats"]["percent_of_campaigns"] = percent_of_camps
         except:
             camp["campaign_stats"]["percent_of_campaigns"] = 0
@@ -627,48 +631,92 @@ def get_template_details(campaign_results):
 def get_stats_low_med_high_by_level(subscription_stats):
     data = []
     v = get_statistic_from_group(
-        subscription_stats, 'stats_low_deception', 'sent', 'count')
+        subscription_stats, "stats_low_deception", "sent", "count"
+    )
     data.append(0 if v is None else v)
     v = get_statistic_from_group(
-        subscription_stats, 'stats_mid_deception', 'sent', 'count')
+        subscription_stats, "stats_mid_deception", "sent", "count"
+    )
     data.append(0 if v is None else v)
     v = get_statistic_from_group(
-        subscription_stats, 'stats_high_deception', 'sent', 'count')
+        subscription_stats, "stats_high_deception", "sent", "count"
+    )
     data.append(0 if v is None else v)
     v = get_statistic_from_group(
-        subscription_stats, 'stats_low_deception', 'opened', 'count')
+        subscription_stats, "stats_low_deception", "opened", "count"
+    )
     data.append(0 if v is None else v)
     v = get_statistic_from_group(
-        subscription_stats, 'stats_mid_deception', 'opened', 'count')
+        subscription_stats, "stats_mid_deception", "opened", "count"
+    )
     data.append(0 if v is None else v)
     v = get_statistic_from_group(
-        subscription_stats, 'stats_high_deception', 'opened', 'count')
+        subscription_stats, "stats_high_deception", "opened", "count"
+    )
     data.append(0 if v is None else v)
     v = get_statistic_from_group(
-        subscription_stats, 'stats_low_deception', 'clicked', 'count')
+        subscription_stats, "stats_low_deception", "clicked", "count"
+    )
     data.append(0 if v is None else v)
     v = get_statistic_from_group(
-        subscription_stats, 'stats_mid_deception', 'clicked', 'count')
+        subscription_stats, "stats_mid_deception", "clicked", "count"
+    )
     data.append(0 if v is None else v)
     v = get_statistic_from_group(
-        subscription_stats, 'stats_high_deception', 'clicked', 'count')
+        subscription_stats, "stats_high_deception", "clicked", "count"
+    )
     data.append(0 if v is None else v)
     v = get_statistic_from_group(
-        subscription_stats, 'stats_low_deception', 'submitted', 'count')
+        subscription_stats, "stats_low_deception", "submitted", "count"
+    )
     data.append(0 if v is None else v)
     v = get_statistic_from_group(
-        subscription_stats, 'stats_mid_deception', 'submitted', 'count')
+        subscription_stats, "stats_mid_deception", "submitted", "count"
+    )
     data.append(0 if v is None else v)
     v = get_statistic_from_group(
-        subscription_stats, 'stats_high_deception', 'submitted', 'count')
+        subscription_stats, "stats_high_deception", "submitted", "count"
+    )
     data.append(0 if v is None else v)
     v = get_statistic_from_group(
-        subscription_stats, 'stats_low_deception', 'reported', 'count')
+        subscription_stats, "stats_low_deception", "reported", "count"
+    )
     data.append(0 if v is None else v)
     v = get_statistic_from_group(
-        subscription_stats, 'stats_mid_deception', 'reported', 'count')
+        subscription_stats, "stats_mid_deception", "reported", "count"
+    )
     data.append(0 if v is None else v)
     v = get_statistic_from_group(
-        subscription_stats, 'stats_high_deception', 'reported', 'count')
+        subscription_stats, "stats_high_deception", "reported", "count"
+    )
     data.append(0 if v is None else v)
     return data
+
+
+def get_relevant_recommendations(subscription_stats):
+    recommendations_list = get_list(
+        None, "recommendations", RecommendationsModel, validate_recommendations,
+    )
+    if not recommendations_list:
+        return None
+
+    template_performance = [
+        (i.get("template_uuid"), i.get("ratios"), i.get("template_details"))
+        for i in subscription_stats.get("campaign_results")
+    ]
+    # Sort the top five performing templates from high to low open ratio
+    sorted_templates = sorted(template_performance, key=lambda x: x[0], reverse=True)[
+        :5
+    ]
+    recommendations_set = set(recommendations_list[0])
+    templates_set = set([template[2] for template in sorted_templates][0])
+
+    recommendations_uuid = []
+    for matching_key in recommendations_set.intersection(templates_set):
+        for index, recommendation in enumerate(recommendations_list):
+            if recommendation.get(matching_key) == sorted_templates[index][2].get(
+                matching_key
+            ):
+                recommendations_uuid.append(recommendation.get("recommendations_uuid"))
+
+    return recommendations_uuid
