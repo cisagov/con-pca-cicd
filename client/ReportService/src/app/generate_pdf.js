@@ -28,7 +28,7 @@ module.exports = {
     //I'm not pleased with the idea of putting it in the .env.
     //this should not have to be configured it should be determined
 
-    const reportUrl = "http://pca-web:4200/reports/monthly/0";
+    const reportUrl = "http://pca-web:4200/reports/monthly/dacf7576-6fc8-4a06-bf61-0dc90993c30e/2020-07-17";
     const pdfContent = await convertToPDf(reportUrl);
     //res.contentType("application/pdf");
     res.setHeader("Content-Type", "application/pdf");
