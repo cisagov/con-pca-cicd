@@ -74,6 +74,7 @@ import { MonthlyComponent } from './components/reports/monthly/monthly.component
 import { CycleComponent } from './components/reports/cycle/cycle.component';
 import { YearlyComponent } from './components/reports/yearly/yearly.component';
 import { StatsByLevelComponent } from './components/reports/stats-by-level/stats-by-level.component';
+import { AggregateStatsComponent } from './components/user-admin/aggregate-stats/aggregate-stats.component';
 
 export function app_Init(settingsHttpService: SettingsHttpService) {
   return () => settingsHttpService.initializeApp();
@@ -129,6 +130,7 @@ export function app_Init(settingsHttpService: SettingsHttpService) {
     CycleComponent,
     YearlyComponent,
     StatsByLevelComponent,
+    AggregateStatsComponent,
   ],
   imports: [
     BrowserModule,
