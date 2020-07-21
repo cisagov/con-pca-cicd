@@ -18,15 +18,16 @@ import { LayoutBlankComponent } from './components/layout/layout-blank/layout-bl
 import { LayoutMainComponent } from './components/layout/layout-main/layout-main.component';
 import { SearchPanelComponent } from './components/search-panel/search-panel.component';
 import { ManageSubscriptionComponent } from './components/subscriptions/manage-subscription/manage-subscription.component';
-import { SubscriptionConfigTab } from './components/subscriptions/manage-subscription/subscription-config-tab/subscription-config-tab.component'
-import { SubscriptionStatsTab } from './components/subscriptions/manage-subscription/subscription-stats-tab/subscription-stats-tab.component'
-import { SubscriptionReportTab } from './components/subscriptions/manage-subscription/subscription-report-tab/subscription-report-tab.component'
+import { SubscriptionConfigTab } from './components/subscriptions/manage-subscription/subscription-config-tab/subscription-config-tab.component';
+import { SubscriptionStatsTab } from './components/subscriptions/manage-subscription/subscription-stats-tab/subscription-stats-tab.component';
+import { SubscriptionReportTab } from './components/subscriptions/manage-subscription/subscription-report-tab/subscription-report-tab.component';
+import { SubscriptionTasksTabComponent } from './components/subscriptions/manage-subscription/subscription-tasks-tab/subscription-tasks-tab.component';
 import { DeceptionCalculatorComponent } from './components/deception-calculator/deception-calculator.component';
 import { UserAuthService } from './services/user-auth.service';
 import { DeceptionCalculatorService } from './services/deception-calculator.service';
 import { TemplateManagerComponent } from './components/template-manager/template-manager.component';
 import { TemplateManagerService } from './services/template-manager.service';
-import { RecommendationsManagerComponent } from './components/recommendations/recommendations-manager/recommendations-manager.component'
+import { RecommendationsManagerComponent } from './components/recommendations/recommendations-manager/recommendations-manager.component';
 import { ListFilterPipe } from './pipes/list-filter.pipe';
 import { NullishCoalescePipe } from './pipes/nullish-coalesce.pipe';
 import { AutosizeModule } from 'node_modules/ngx-autosize';
@@ -75,6 +76,7 @@ import { CycleComponent } from './components/reports/cycle/cycle.component';
 import { YearlyComponent } from './components/reports/yearly/yearly.component';
 import { StatsByLevelComponent } from './components/reports/stats-by-level/stats-by-level.component';
 
+
 export function app_Init(settingsHttpService: SettingsHttpService) {
   return () => settingsHttpService.initializeApp();
 }
@@ -91,6 +93,7 @@ export function app_Init(settingsHttpService: SettingsHttpService) {
     ManageSubscriptionComponent,
     SubscriptionConfigTab,
     SubscriptionReportTab,
+    SubscriptionTasksTabComponent,
     SubscriptionStatsTab,
     DeceptionCalculatorComponent,
     TemplateManagerComponent,

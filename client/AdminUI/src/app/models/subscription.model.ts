@@ -31,27 +31,28 @@ export class CampaignTimelineItem {
 //     office_phone: string;
 // }
 
-export interface SubscriptionClicksModel {}
+export interface SubscriptionClicksModel { }
 
 export class Subscription {
-    active: boolean;
-    archived: boolean;
-    customer_uuid: string;
-    cycles: []
-    keywords: string;
-    lub_timestamp: Date;
-    manually_stopped: boolean;
-    name: string;
-    primary_contact: Contact;
-    dhs_contact_uuid: string;
-    start_date: Date;
-    end_date: Date;
-    status: string;
-    subscription_uuid: string;
-    url: string;
-    target_email_list: Target[] = [];
-    gophish_campaign_list: GoPhishCampaignModel[];
-    sending_profile_name: string;
+  active: boolean;
+  archived: boolean;
+  customer_uuid: string;
+  cycles: []
+  keywords: string;
+  lub_timestamp: Date;
+  manually_stopped: boolean;
+  name: string;
+  primary_contact: Contact;
+  dhs_contact_uuid: string;
+  start_date: Date;
+  end_date: Date;
+  status: string;
+  subscription_uuid: string;
+  tasks: Task[] = [];
+  url: string;
+  target_email_list: Target[] = [];
+  gophish_campaign_list: GoPhishCampaignModel[];
+  sending_profile_name: string;
 }
 
 /**
@@ -68,6 +69,15 @@ export class Target {
  * A point in time during the life of a subscription.
  */
 export class TimelineItem {
-    title: string;
-    date: moment.Moment;
-  }
+  title: string;
+  date: moment.Moment;
+}
+
+export class Task {
+  task_uuid: string;
+  message_type: string;
+  schedule_date: Date;
+  executed: boolean;
+  executed_date: Date;
+  error: string;
+}

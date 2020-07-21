@@ -160,6 +160,7 @@ class SubscriptionTasksSerializer(serializers.Serializer):
     scheduled_date = serializers.DateTimeField(required=False)
     executed = serializers.BooleanField(required=False)
     executed_date = serializers.DateTimeField(required=False)
+    error = serializers.CharField(required=False)
 
 
 # class GoPhishTemplateSerializer(serializers.Serializer):
