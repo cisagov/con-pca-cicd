@@ -12,9 +12,9 @@ from email.mime.image import MIMEImage
 import logging
 
 # Third-Party Libraries
-# Local Libraries
-# Django Libraries
-# Local Libraries
+from django.conf import settings
+from pathlib import Path
+import requests
 from api.models.dhs_models import DHSContactModel, validate_dhs_contact
 from api.utils.db_utils import get_single
 from django.conf import settings
@@ -24,6 +24,7 @@ from django.core.mail.message import EmailMultiAlternatives
 from django.template.loader import render_to_string
 from notifications.utils import get_notification
 from weasyprint import HTML
+
 
 logger = logging.getLogger()
 
@@ -36,11 +37,15 @@ class ReportsEmailSender:
         self.subscription = subscription
         self.message_type = message_type
 
-    def get_attachment(self, subscription_uuid, link):
+    def get_attachment(self, subscription_uuid, link, cycle):
         """Get_attachment method."""
-        html = HTML(f"http://localhost:8000/reports/{subscription_uuid}/{link}/")
-        html.write_pdf("/tmp/subscription_report.pdf")
+        url = (
+            f"http://{settings.REPORTS_API}/api/{link}/{subscription_uuid}/{cycle}/pdf/"
+        )
+        resp = requests.get(url, stream=True)
         fs = FileSystemStorage("/tmp")
+        filename = Path("/tmp/subscription_report.pdf")
+        filename.write_bytes(resp.content)
         return fs.open("subscription_report.pdf")
 
     def send(self):
@@ -88,7 +93,11 @@ class ReportsEmailSender:
         message.attach_alternative(html_content, "text/html")
 
         # add pdf attachment
-        attachment = self.get_attachment(subscription_uuid, link)
+        current_cycle = self.subscription.get("cycles")[-1]
+        cycle_date = datetime.strftime(
+            current_cycle.get("start_date"), format="%Y-%m-%d"
+        )
+        attachment = self.get_attachment(subscription_uuid, link, cycle_date)
         message.attach("subscription_report.pdf", attachment.read(), "application/pdf")
         try:
             message.send(fail_silently=False)

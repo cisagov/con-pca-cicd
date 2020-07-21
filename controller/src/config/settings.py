@@ -175,6 +175,9 @@ REST_FRAMEWORK = {
     "DEFAULT_RENDERER_CLASSES": ("rest_framework.renderers.JSONRenderer",),
 }
 
+# Reports Service API
+REPORTS_API = os.environ.get("REPORTS_API", "pca-pdf-report:3030")
+
 # GoPhish
 GP_URL = os.environ.get("GP_URL", "")
 GP_API_KEY = os.environ.get("GP_API_KEY", "")

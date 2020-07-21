@@ -6,7 +6,10 @@ let convertToPDf = async (reportUrl) => {
   const page = await browser.newPage();
   await page.goto(reportUrl, { waitUntil: 'networkidle2' });
   await page.emulateMediaType('screen');
-  const pdfContent = await page.pdf({ format: 'Letter' });
+  const pdfContent = await page.pdf({
+    format: 'Letter',
+    printBackground: true
+  });
 
 
   // res.on(, function(chunk) {
@@ -27,8 +30,12 @@ module.exports = {
     //GRR how do we deal with this api configuration. 
     //I'm not pleased with the idea of putting it in the .env.
     //this should not have to be configured it should be determined
-    const reportUrl = "http://pca-web:4200/reports/"+ req.params.type +"/"+req.params.subcription_uuid+"/"+req.params.start_date;        
-    console.log(reportUrl);
+    const uuid = req.params.subscriptionUUID
+    const type = req.params.type
+    const cycle = req.params.cycle
+
+    const reportUrl = `http://pca-web:4200/reports/${type}/${uuid}/${cycle}`;
+
     const pdfContent = await convertToPDf(reportUrl);
     //res.contentType("application/pdf");
     res.setHeader("Content-Type", "application/pdf");
