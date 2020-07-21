@@ -20,7 +20,7 @@ export class ReportsService {
    */
   public getCycleReport(subscriptionUuid: string, date: Date) {
     const m = moment(date);
-    const url = `${this.settingsService.settings.apiUrl}`
+    const url = `${this.settingsService.settings.apiUrlDocker}`
       + `/reports/${subscriptionUuid}/cycle/${m.format(AppSettings.MOMENT_ISO_DATE_FORMAT)}Z/`;
     return this.http.get(url);
   }
@@ -30,7 +30,7 @@ export class ReportsService {
    */
   public getMonthlyReport(subscriptionUuid: string, date: Date) {
     const m = moment(date);
-    const url = `${this.settingsService.settings.apiUrl}`
+    const url = `${this.settingsService.settings.apiUrlDocker}`
       + `/reports/${subscriptionUuid}/monthly/${m.format(AppSettings.MOMENT_ISO_DATE_FORMAT)}Z/`;
     return this.http.get(url);
   }

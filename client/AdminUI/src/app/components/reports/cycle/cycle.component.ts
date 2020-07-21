@@ -41,28 +41,15 @@ export class CycleComponent implements OnInit {
   ngOnInit(): void {
     this.routeSub = this.route.params.subscribe(params => {
       this.subscriptionUuid = params.id;
-      let isDate = new Date(params.start_date)
-      if(isDate.getTime()){
-        this.reportStartDate = isDate
+      const isDate = new Date(params.start_date);
+      if (isDate.getTime()) {
+        this.reportStartDate = isDate;
       } else {
-        console.log("Invalid Date time provided, defaulting to now")
-        this.reportStartDate = new Date()        
+        console.log('Invalid Date time provided, defaulting to now');
+        this.reportStartDate = new Date();
       }
-      this.reportsSvc.getCycleReport(this.subscriptionUuid,this.reportStartDate).subscribe(resp => {
+      this.reportsSvc.getCycleReport(this.subscriptionUuid, this.reportStartDate).subscribe(resp => {
         this.detail = resp;
-        // build statistics by level chart
-        this.chart.showXAxis = true;
-        this.chart.showYAxis = true;
-        this.chart.showXAxisLabel = true;
-        this.chart.xAxisLabel = '';
-        this.chart.showYAxisLabel = true;
-        this.chart.yAxisLabel = '';
-        this.chart.showDataLabel = true;
-        this.chart.showLegend = true;
-        this.chart.legendPosition = 'right';
-        this.chart.colorScheme = this.schemeLowMedHigh;
-
-        this.chart.chartResults = this.chartsSvc.formatReportStatsForChart(resp);
 
         this.renderReport();
       });
@@ -73,5 +60,18 @@ export class CycleComponent implements OnInit {
    *
    */
   renderReport() {
+    // build statistics by level chart
+    this.chart.showXAxis = true;
+    this.chart.showYAxis = true;
+    this.chart.showXAxisLabel = true;
+    this.chart.xAxisLabel = '';
+    this.chart.showYAxisLabel = true;
+    this.chart.yAxisLabel = '';
+    this.chart.showDataLabel = true;
+    this.chart.showLegend = true;
+    this.chart.legendPosition = 'right';
+    this.chart.colorScheme = this.schemeLowMedHigh;
+
+    this.chart.chartResults = this.chartsSvc.formatReportStatsForChart(this.detail);
   }
 }
