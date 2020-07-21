@@ -26,7 +26,7 @@ urlpatterns = [
         name="yearly-reports-page",
     ),
     path(
-        "<subscription_uuid>/system/",
+        "aggregate/",
         system_view.SystemReportsView.as_view(),
         name="system-reports-page",
     ),
