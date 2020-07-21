@@ -564,6 +564,94 @@ def get_related_subscription_stats(subscription, start_date):
         "customer": customer_stats,
     }
 
+def get_gov_group_stats():
+    """Get base stats for all related subscriptions (national, sector, industry, and customer)."""
+
+    fields = {
+        "customer_uuid": 1,
+        "sector": 1,
+        "industry": 1,
+        "customer_type": 1,
+    }
+    customers = get_list(
+            {},
+            "customer",
+            CustomerModel,
+            validate_customer
+        )
+
+    fed_customer_uuids = []
+    state_customer_uuids = []
+    local_customer_uuids = []
+    tribal_customer_uuids = []
+    private_customer_uuids = []
+
+    for cust in customers:
+        if cust["customer_type"] == "FED":
+            fed_customer_uuids.append(cust["customer_uuid"])
+        if cust["customer_type"] == "State":
+            state_customer_uuids.append(cust["customer_uuid"])
+        if cust["customer_type"] == "Local":
+            local_customer_uuids.append(cust["customer_uuid"])
+        if cust["customer_type"] == "Tribal":
+            tribal_customer_uuids.append(cust["customer_uuid"])
+        if cust["customer_type"] == "Private":
+            private_customer_uuids.append(cust["customer_uuid"])
+            
+    parameters = {
+        "active": True,
+    }
+    subscription_fields = {
+        "customer_uuid": 1,
+        "subscription_uuid": 1,
+        "cycles": 1,
+        "name": 1,
+    }
+    subscription_list = get_list(
+        parameters,
+        "subscription",
+        SubscriptionModel,
+        validate_subscription,
+        subscription_fields,
+    )
+
+    fed_subscriptions = []
+    state_subscriptions = []
+    local_subscriptions = []
+    tribal_subscriptions = []
+    private_subscriptions = []
+
+    fed_subscriptions = list(
+        filter(lambda x: x["customer_uuid"] in fed_customer_uuids, subscription_list)
+    )
+    state_subscriptions = list(
+        filter(lambda x: x["customer_uuid"] in state_customer_uuids, subscription_list)
+    )
+    local_subscriptions = list(
+        filter(lambda x: x["customer_uuid"] in local_customer_uuids, subscription_list)
+    )
+    tribal_subscriptions = list(
+        filter(lambda x: x["customer_uuid"] in tribal_customer_uuids, subscription_list)
+    )
+    private_subscriptions = list(
+        filter(lambda x: x["customer_uuid"] in private_customer_uuids, subscription_list)
+    )
+
+    # Generate region stats, use all cycles. Get cycle specific query for customer data
+    fed_stats = generate_region_stats(fed_subscriptions)
+    state_stats = generate_region_stats(state_subscriptions)
+    local_stats = generate_region_stats(local_subscriptions)
+    tribal_stats = generate_region_stats(tribal_subscriptions)
+    private_stats = generate_region_stats(private_subscriptions)
+
+    return {
+        "fed_stats": fed_stats,
+        "state_stats" : state_stats,
+        "local_stats" : local_stats,
+        "tribal_stats" : tribal_stats,
+        "private_stats" : private_stats,
+    }
+
 
 def get_cycles_breakdown(cycles):
     """Get a breakdown of all cycles for a given subscription."""
