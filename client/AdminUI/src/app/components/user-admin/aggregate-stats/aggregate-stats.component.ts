@@ -19,30 +19,23 @@ export class AggregateStatsComponent implements OnInit {
     layoutSvc.setTitle('Aggregate Statistics');
   }
 
+  /**
+   *
+   */
   ngOnInit(): void {
     this.statsSvc.getAggregateStats().subscribe(result => {
       this.detail = result;
+
+      if (!this.detail.click_rate_across_all_customers) {
+        this.detail.click_rate_across_all_customers = '(none)';
+      }
+
+      if (!this.detail.average_time_to_click_all_customers) {
+        this.detail.average_time_to_click_all_customers = '(none)';
+      }
     },
       error => {
-        this.fake();
+        console.log(error);
       });
-  }
-
-  /**
-   * Drop in some dummy data until the API is ready
-   */
-  fake() {
-    this.detail = {};
-    this.detail.total_customers_enrolled = 42;
-    this.detail.total_monthly_reports_sent = 211;
-    this.detail.total_completed_cycle_reports_sent = 170;
-    this.detail.total_yearly_reports_sent = 12;
-    this.detail.total_federal = 22;
-    this.detail.total_state = 41;
-    this.detail.total_local = 17;
-    this.detail.total_tribal = 28;
-    this.detail.total_private = 10;
-    this.detail.average_click_rate = '37 minutes';
-    this.detail.average_time_to_click = '1 day 42 minutes';
   }
 }
