@@ -3,6 +3,8 @@ import { SubscriptionService } from 'src/app/services/subscription.service';
 import { Subscription } from 'src/app/models/subscription.model';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatSort } from '@angular/material/sort';
+import { ReportsService } from 'src/app/services/reports.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 
 @Component({
@@ -27,6 +29,8 @@ export class SubscriptionReportTab implements OnInit {
 
   constructor(
       private subscriptionSvc: SubscriptionService,
+      private reportSvc: ReportsService,
+      private router: Router
   ) {}
 
   ngOnInit() {
@@ -65,22 +69,27 @@ export class SubscriptionReportTab implements OnInit {
       console.log(event.value)
   }
   
-  viewMonthlyReport() {
-    this.subscriptionSvc.getMonthlyReport(this.subscription).subscribe(blob => {
-      this.downloadObject('monthly_subscription_report.pdf', blob);
-    });
+  viewMonthlyReport() {    
+    this.router.navigate(['/reports/monthly', this.subscription.subscription_uuid,this.subscription.start_date,"true"]);
+  
+    // this.reportSvc.getCycleReportLocal(this.subscription.subscription_uuid,this.subscription.start_date).subscribe();
+    // this.subscriptionSvc.getMonthlyReport(this.subscription).subscribe(blob => {
+    //   this.downloadObject('monthly_subscription_report.pdf', blob);
+    // });
   }
 
   viewCycleReport() {
-    this.subscriptionSvc.getCycleReport(this.subscription).subscribe(blob => {
-      this.downloadObject('cycle_subscription_report.pdf', blob);
-    });
+    this.router.navigate(['/reports/cycle', this.subscription.subscription_uuid,this.subscription.start_date,"true"]);
+    // this.subscriptionSvc.getCycleReport(this.subscription).subscribe(blob => {
+    //   this.downloadObject('cycle_subscription_report.pdf', blob);
+    // });
   }
 
   viewYearlyReport() {
-    this.subscriptionSvc.getYearlyReport(this.subscription).subscribe(blob => {
-      this.downloadObject('yearly_subscription_report.pdf', blob);
-    });
+    this.router.navigate(['/reports/yearly', this.subscription.subscription_uuid,this.subscription.start_date,"true"]);
+    // this.subscriptionSvc.getYearlyReport(this.subscription).subscribe(blob => {
+    //   this.downloadObject('yearly_subscription_report.pdf', blob);
+    // });
   }
 
   sendMonthlyReport() {

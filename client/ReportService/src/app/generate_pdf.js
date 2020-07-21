@@ -27,8 +27,8 @@ module.exports = {
     //GRR how do we deal with this api configuration. 
     //I'm not pleased with the idea of putting it in the .env.
     //this should not have to be configured it should be determined
-
-    const reportUrl = "http://pca-web:4200/reports/monthly/d89a72b0-254f-40fb-a37c-6e6654cd5265/2020-08-17";
+    const reportUrl = "http://pca-web:4200/reports/"+ req.params.type +"/"+req.params.subcription_uuid+"/"+req.params.start_date;        
+    console.log(reportUrl);
     const pdfContent = await convertToPDf(reportUrl);
     //res.contentType("application/pdf");
     res.setHeader("Content-Type", "application/pdf");

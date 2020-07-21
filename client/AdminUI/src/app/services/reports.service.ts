@@ -34,4 +34,24 @@ export class ReportsService {
       + `/reports/${subscriptionUuid}/monthly/${m.format(AppSettings.MOMENT_ISO_DATE_FORMAT)}Z/`;
     return this.http.get(url);
   }
+
+    /**
+   * Returns a promise with the Cycle report for the specified subscription and date.
+   */
+  public getCycleReportLocal(subscriptionUuid: string, date: Date) {
+    const m = moment(date);
+    const url = `${this.settingsService.settings.apiUrl}`
+      + `/reports/${subscriptionUuid}/cycle/${m.format(AppSettings.MOMENT_ISO_DATE_FORMAT)}Z/`;
+    return this.http.get(url);
+  }
+
+  /**
+   * Returns a promise with the Monthly report for the specified subscription and date.
+   */
+  public getMonthlyReportLocal(subscriptionUuid: string, date: Date) {
+    const m = moment(date);
+    const url = `${this.settingsService.settings.apiUrl}`
+      + `/reports/${subscriptionUuid}/monthly/${m.format(AppSettings.MOMENT_ISO_DATE_FORMAT)}Z/`;
+    return this.http.get(url);
+  }
 }

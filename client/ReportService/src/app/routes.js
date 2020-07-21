@@ -13,7 +13,7 @@ class ReportRequest{
 
 
 module.exports = function(app) {
-	app.get('/api/reportpdf', function(req, res) {
+	app.get('/api/:type/:subcription_uuid/:start_date/pdf', function(req, res) {
 		
 		//_id : req.params.subscription_uuid;
 		pdf.PdfReportUrl(req, res);				

@@ -42,17 +42,27 @@ export class CycleComponent implements OnInit {
     this.routeSub = this.route.params.subscribe(params => {
       this.subscriptionUuid = params.id;
       const isDate = new Date(params.start_date);
+      const isLocal = params.local;
+      console.log(isLocal);
+      
       if (isDate.getTime()) {
         this.reportStartDate = isDate;
       } else {
         console.log('Invalid Date time provided, defaulting to now');
         this.reportStartDate = new Date();
       }
-      this.reportsSvc.getCycleReport(this.subscriptionUuid, this.reportStartDate).subscribe(resp => {
-        this.detail = resp;
-
-        this.renderReport();
-      });
+      if(isLocal){
+        this.reportsSvc.getCycleReportLocal(this.subscriptionUuid, this.reportStartDate).subscribe(resp => {
+          this.detail = resp;
+          this.renderReport();
+        });
+      }
+      else{
+        this.reportsSvc.getCycleReport(this.subscriptionUuid, this.reportStartDate).subscribe(resp => {
+          this.detail = resp;
+          this.renderReport();
+        });
+      }
     });
   }
 
