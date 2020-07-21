@@ -1,0 +1,60 @@
+<div style="max-width: 25rem">
+    <table class="table">
+        <tr>
+            <td>
+                Total customers enrolled
+            </td>
+            <td class="text-right">{{detail?.total_customers_enrolled}}</td>
+        </tr>
+        <tr>
+            <td>Total monthly reports sent out</td>
+            <td class="text-right">{{detail?.total_monthly_reports_sent}}</td>
+        </tr>
+        <tr>
+            <td>Total completed cycle reports sent out</td>
+            <td class="text-right">{{detail?.total_completed_cycle_reports_sent}}</td>
+        </tr>
+        <tr>
+            <td>Total yearly reports sent out</td>
+            <td class="text-right">{{detail?.total_yearly_reports_sent}}</td>
+        </tr>
+    </table>
+
+    <h3>Customer Totals By Category</h3>
+
+    <table class="table">
+        <tr>
+            <td>Federal</td>
+            <td class="text-right">{{detail?.total_federal}}</td>
+        </tr>
+        <tr>
+            <td>State</td>
+            <td class="text-right">{{detail?.total_state}}</td>
+        </tr>
+        <tr>
+            <td>Local</td>
+            <td class="text-right">{{detail?.total_local}}</td>
+        </tr>
+        <tr>
+            <td>Tribal/Territorial</td>
+            <td class="text-right">{{detail?.total_tribal}}</td>
+        </tr>
+        <tr>
+            <td>Critical Infrastructure (private sector)</td>
+            <td class="text-right">{{detail?.total_private}}</td>
+        </tr>
+    </table>
+
+    <h3>Responses</h3>
+
+    <table class="table">
+        <tr>
+            <td>Average click rate across all customers</td>
+            <td class="text-right">{{detail?.average_click_rate}}</td>
+        </tr>
+        <tr>
+            <td>Average time to click across all customers</td>
+            <td class="text-right">{{detail?.average_time_to_click}}</td>
+        </tr>
+    </table>
+</div>
