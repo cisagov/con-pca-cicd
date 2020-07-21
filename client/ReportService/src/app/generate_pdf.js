@@ -35,7 +35,7 @@ module.exports = {
     const cycle = req.params.cycle
 
     const reportUrl = `http://pca-web:4200/reports/${type}/${uuid}/${cycle}`;
-    console.log(reportUrl)
+
     const pdfContent = await convertToPDf(reportUrl);
     //res.contentType("application/pdf");
     res.setHeader("Content-Type", "application/pdf");
