@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ChartsService } from 'src/app/services/charts.service';
 import { SubscriptionService } from 'src/app/services/subscription.service';
+import { humanTiming } from 'src/app/helper/utilities';
 
 @Component({
   selector: 'app-sub-dashboard',
@@ -9,7 +10,7 @@ import { SubscriptionService } from 'src/app/services/subscription.service';
 export class SubDashboardComponent implements OnInit {
   @Input()
   subscriptionUuid: string;
-  dataAvailable: boolean = false
+  dataAvailable = false;
 
   chart: any = {};
   chartSent: any = {};
@@ -43,12 +44,12 @@ export class SubDashboardComponent implements OnInit {
    */
   ngOnInit(): void {
     this.subscriptionSvc.subBehaviorSubject.subscribe(data => {
-      if("subscription_uuid" in data && !this.subscriptionUuid){
+      if ('subscription_uuid' in data && !this.subscriptionUuid) {
         this.subscriptionUuid = data.subscription_uuid;
         this.dataAvailable = true;
         this.drawGraphs();
       }
-    })    
+    });
   }
 
 
@@ -98,7 +99,7 @@ export class SubDashboardComponent implements OnInit {
         if (!this.avgTTFC) {
           this.avgTTFC = '(no emails clicked yet)';
         } else {
-          this.avgTTFC = this.humanTiming(stats.metrics.avg_time_to_first_click);
+          this.avgTTFC = humanTiming(stats.metrics.avg_time_to_first_click);
         }
 
         this.avgTTFR = stats.metrics.avg_time_to_first_report;
@@ -106,7 +107,6 @@ export class SubDashboardComponent implements OnInit {
           this.avgTTFR = '(no emails reported yet)';
         }
       });
-    
   }
 
   /**
@@ -118,29 +118,5 @@ export class SubDashboardComponent implements OnInit {
     } else {
       return '';
     }
-  }
-
-  /**
-   * Converts a quantity of seconds into human-readable pieces:
-   * days, hours, minutes, seconds.
-   */
-  humanTiming(seconds: number) {
-    const tokens = [
-      { s: 86400, label1: 'day', label: 'days' },
-      { s: 3600, label1: 'hour', label: 'hours' },
-      { s: 60, label1: 'minute', label: 'minutes' },
-      { s: 1, label1: 'second', label: 'seconds' }
-    ];
-
-    let s = '';
-    for (const token of tokens) {
-      const numberOfUnits = Math.floor(seconds / token.s);
-      seconds = seconds - token.s * numberOfUnits;
-      if (numberOfUnits !== 0) {
-        s += `${numberOfUnits} ${numberOfUnits === 1 ? token.label1 : token.label} `;
-      }
-    }
-
-    return s;
   }
 }

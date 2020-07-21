@@ -18,7 +18,7 @@ export class StatisticsService {
   public getAggregateStats() {
     console.log('getAggregateStats');
     const url = `${this.settingsService.settings.apiUrl}`
-      + `/statistics`;
+      + `/reports/aggregate`;
     return this.http.get(url);
   }
 }

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { LayoutMainService } from 'src/app/services/layout-main.service';
 import { SettingsService } from 'src/app/services/settings.service';
 import { StatisticsService } from 'src/app/services/statistics.service';
+import { humanTiming } from 'src/app/helper/utilities';
 
 @Component({
   selector: 'app-aggregate-stats',
@@ -10,6 +11,8 @@ import { StatisticsService } from 'src/app/services/statistics.service';
 export class AggregateStatsComponent implements OnInit {
 
   detail: any;
+  click_rate: string;
+  avg_time_to_click: string;
 
   constructor(
     public layoutSvc: LayoutMainService,
@@ -27,11 +30,15 @@ export class AggregateStatsComponent implements OnInit {
       this.detail = result;
 
       if (!this.detail.click_rate_across_all_customers) {
-        this.detail.click_rate_across_all_customers = '(none)';
+        this.click_rate = '(none)';
+      } else {
+        this.click_rate = humanTiming(this.detail.click_rate_across_all_customers);
       }
 
       if (!this.detail.average_time_to_click_all_customers) {
-        this.detail.average_time_to_click_all_customers = '(none)';
+        this.avg_time_to_click = '(none)';
+      } else {
+        this.avg_time_to_click = humanTiming(this.detail.average_time_to_click_all_customers);
       }
     },
       error => {
