@@ -8,13 +8,13 @@ services:
     container_name: pca-pdf-report
     hostname: pca-report
     restart: unless-stopped
-    volumes:
-      - .:/app
     ports:
       - "3030:3030"
     networks:
       - frontend
       - backend
+    env_file:
+      - .env
   browserless:
     image: browserless/chrome:latest
     container_name: pca-browserless
