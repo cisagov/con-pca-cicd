@@ -6,7 +6,10 @@ let convertToPDf = async (reportUrl) => {
   const page = await browser.newPage();
   await page.goto(reportUrl, { waitUntil: 'networkidle2' });
   await page.emulateMediaType('screen');
-  const pdfContent = await page.pdf({ format: 'Letter' });
+  const pdfContent = await page.pdf({ 
+    format: 'Letter',
+    printBackground: true
+   });
 
 
   // res.on(, function(chunk) {
