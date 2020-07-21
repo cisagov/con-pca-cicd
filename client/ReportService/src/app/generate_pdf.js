@@ -32,7 +32,9 @@ module.exports = {
     //this should not have to be configured it should be determined
     const uuid = req.params.subscriptionUUID
     const type = req.params.type
-    const reportUrl = `http://pca-web:4200/reports/${type}/${uuid}/2020-07-17`;
+    const cycle = req.params.cycle
+
+    const reportUrl = `http://pca-web:4200/reports/${type}/${uuid}/${cycle}`;
     console.log(reportUrl)
     const pdfContent = await convertToPDf(reportUrl);
     //res.contentType("application/pdf");

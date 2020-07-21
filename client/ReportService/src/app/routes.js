@@ -13,9 +13,8 @@ class ReportRequest {
 
 
 module.exports = function (app) {
-	app.get('/api/:type/:subscriptionUUID/pdf/', function (req, res) {
+	app.get('/api/:type/:subscriptionUUID/:cycle/pdf/', function (req, res) {
 		pdf.PdfReportUrl(req, res);
-		//res.json(new ReportRequest("uuid","startdate","Monthly")); // return all todos in JSON format		
 	});
 
 	// application -------------------------------------------------------------
