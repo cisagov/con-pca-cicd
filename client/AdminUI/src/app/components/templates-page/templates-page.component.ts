@@ -12,7 +12,7 @@ import { MatSort } from '@angular/material/sort';
   styleUrls: ['./templates-page.component.scss']
 })
 export class TemplatesPageComponent implements OnInit, AfterViewInit {
-  displayedColumns = ['name', 'deception_score', 'template_type', 'created_by'];
+  displayedColumns = ['name', 'deception_score', 'template_type', 'created_by','select'];
   templatesData = new MatTableDataSource<Template>();
   search_input = '';
   @ViewChild(MatSort) sort: MatSort;
