@@ -10,7 +10,7 @@ def get_notification(message_type):
     Parses out the type of notificartion.
     """
     if message_type == "monthly_report":
-        subject = "DHS CISA Phishing Subscription Monthly Report"
+        subject = "DHS CISA Phishing Subscription Status Report"
         path = "monthly_report"
         link = "monthly"
     elif message_type == "cycle_report":
