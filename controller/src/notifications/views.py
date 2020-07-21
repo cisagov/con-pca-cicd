@@ -12,9 +12,8 @@ from email.mime.image import MIMEImage
 import logging
 
 # Third-Party Libraries
-# Local Libraries
-# Django Libraries
-# Local Libraries
+from pathlib import Path
+import requests
 from api.models.dhs_models import DHSContactModel, validate_dhs_contact
 from api.utils.db_utils import get_single
 from django.conf import settings
@@ -38,9 +37,11 @@ class ReportsEmailSender:
 
     def get_attachment(self, subscription_uuid, link):
         """Get_attachment method."""
-        html = HTML(f"http://localhost:8000/reports/{subscription_uuid}/{link}/")
-        html.write_pdf("/tmp/subscription_report.pdf")
+        url = "http://pca-pdf-report:3030/api/reportpdf"
+        resp = requests.get(url, stream=True)
         fs = FileSystemStorage("/tmp")
+        filename = Path("/tmp/subscription_report.pdf")
+        filename.write_bytes(resp.content)
         return fs.open("subscription_report.pdf")
 
     def send(self):

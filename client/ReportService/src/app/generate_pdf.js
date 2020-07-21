@@ -6,10 +6,10 @@ let convertToPDf = async (reportUrl) => {
   const page = await browser.newPage();
   await page.goto(reportUrl, { waitUntil: 'networkidle2' });
   await page.emulateMediaType('screen');
-  const pdfContent = await page.pdf({ 
+  const pdfContent = await page.pdf({
     format: 'Letter',
     printBackground: true
-   });
+  });
 
 
   // res.on(, function(chunk) {
@@ -31,7 +31,7 @@ module.exports = {
     //I'm not pleased with the idea of putting it in the .env.
     //this should not have to be configured it should be determined
 
-    const reportUrl = "http://pca-web:4200/reports/monthly/d89a72b0-254f-40fb-a37c-6e6654cd5265/2020-08-17";
+    const reportUrl = "http://pca-web:4200/reports/monthly/dacf7576-6fc8-4a06-bf61-0dc90993c30e/2020-07-17";
     const pdfContent = await convertToPDf(reportUrl);
     //res.contentType("application/pdf");
     res.setHeader("Content-Type", "application/pdf");
