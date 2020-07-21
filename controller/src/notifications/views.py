@@ -37,9 +37,11 @@ class ReportsEmailSender:
         self.subscription = subscription
         self.message_type = message_type
 
-    def get_attachment(self, subscription_uuid, link):
+    def get_attachment(self, subscription_uuid, link, cycle):
         """Get_attachment method."""
-        url = f"http://{settings.REPORTS_API}/api/{link}/{subscription_uuid}/pdf/"
+        url = (
+            f"http://{settings.REPORTS_API}/api/{link}/{subscription_uuid}/{cycle}/pdf/"
+        )
         resp = requests.get(url, stream=True)
         fs = FileSystemStorage("/tmp")
         filename = Path("/tmp/subscription_report.pdf")
@@ -91,7 +93,11 @@ class ReportsEmailSender:
         message.attach_alternative(html_content, "text/html")
 
         # add pdf attachment
-        attachment = self.get_attachment(subscription_uuid, link)
+        current_cycle = self.subscription.get("cycles")[-1]
+        cycle_date = datetime.strftime(
+            current_cycle.get("start_date"), format="%Y-%m-%d"
+        )
+        attachment = self.get_attachment(subscription_uuid, link, cycle_date)
         message.attach("subscription_report.pdf", attachment.read(), "application/pdf")
         try:
             message.send(fail_silently=False)
