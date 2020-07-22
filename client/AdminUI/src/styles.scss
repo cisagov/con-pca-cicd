@@ -285,12 +285,7 @@ $altTheme: mat-dark-theme($theme-primary, $theme-accent, $theme-warn);
     th,
     td {
       border: 0 !important;
-    }
-    thead th {
-      border: 0 !important;
-    }
-    tbody + tbody {
-      border: 0 !important;
+      padding: .2rem;
     }
   }
 }
