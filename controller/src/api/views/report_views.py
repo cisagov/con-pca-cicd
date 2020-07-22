@@ -7,8 +7,11 @@ This handles the api for all the Reports urls.
 import datetime
 import io
 import logging
+from pathlib import Path
 
 # Third-Party Libraries
+import requests
+from django.conf import settings
 from api.manager import CampaignManager
 from api.models.dhs_models import DHSContactModel, validate_dhs_contact
 from api.models.subscription_models import SubscriptionModel, validate_subscription
