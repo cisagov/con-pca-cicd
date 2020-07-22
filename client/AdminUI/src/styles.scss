@@ -252,6 +252,47 @@ $altTheme: mat-dark-theme($theme-primary, $theme-accent, $theme-warn);
   .ngx-charts text {
     fill: map-get($foreground, 'text') !important;
   }
+
+  $table-border-width: 1px;
+  $table-border-color: rgba(map-get($foreground, 'text'), 0.2) !important;
+  $table-padding: .5rem;
+  $table-bg: none;
+
+  .table {
+    width: 100%;
+    margin-bottom: 2rem;
+    color: map-get($foreground, 'text') !important;
+    background-color: $table-bg; // Reset for nesting within parents with `background-color`.
+  
+    th,
+    td {
+      padding: $table-padding;
+      vertical-align: top;
+      border-top: $table-border-width solid $table-border-color;
+    }
+  
+    thead th {
+      vertical-align: bottom;
+      border-bottom: (2 * $table-border-width) solid $table-border-color;
+    }
+  
+    tbody + tbody {
+      border-top: (2 * $table-border-width) solid $table-border-color;
+    }
+  }
+
+  table.no-borders {
+    th,
+    td {
+      border: 0 !important;
+    }
+    thead th {
+      border: 0 !important;
+    }
+    tbody + tbody {
+      border: 0 !important;
+    }
+  }
 }
 
 // Theme Init
