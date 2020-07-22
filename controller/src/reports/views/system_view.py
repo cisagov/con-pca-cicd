@@ -142,11 +142,11 @@ class SystemReportsView(APIView):
         gov_group_stats["private_stats"]["customer_count"] = private_customers
             
         context = {
-            "total_customers_enrolled" : len(customers),
-            "total_monthly_reports_sent" : monthly_reports_sent,
-            "total_completed_cycle_reports_sent" : cycle_reports_sent,
-            "total_yearly_reports_sent" : yearly_reports_sent,
-            "total_federal" : gov_group_stats["fed_stats"],
+            "customers_enrolled" : len(customers),
+            "monthly_reports_sent" : monthly_reports_sent,
+            "completed_cycle_reports_sent" : cycle_reports_sent,
+            "yearly_reports_sent" : yearly_reports_sent,
+            "federal" : gov_group_stats["fed_stats"],
             "state_stats" :  gov_group_stats["state_stats"],
             "local_stats" :  gov_group_stats["local_stats"],
             "tribal_territorial_stats" :  gov_group_stats["tribal_stats"],
