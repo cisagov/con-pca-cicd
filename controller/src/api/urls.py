@@ -88,17 +88,17 @@ urlpatterns = [
         name="reports_get_api",
     ),
     path(
-        "v1/reports/<subscription_uuid>/pdf/monthly/",
+        "v1/reports/<subscription_uuid>/pdf/monthly/<cycle>/",
         report_views.monthly_reports_pdf_view,
         name="reports_get_pdf_monthly_api",
     ),
     path(
-        "v1/reports/<subscription_uuid>/pdf/cycle/",
+        "v1/reports/<subscription_uuid>/pdf/cycle/<cycle>/",
         report_views.cycle_reports_pdf_view,
         name="reports_get_pdf_cycle_api",
     ),
     path(
-        "v1/reports/<subscription_uuid>/pdf/yearly/",
+        "v1/reports/<subscription_uuid>/pdf/yearly/<cycle>/",
         report_views.yearly_reports_pdf_view,
         name="reports_get_pdf_yearly_api",
     ),
