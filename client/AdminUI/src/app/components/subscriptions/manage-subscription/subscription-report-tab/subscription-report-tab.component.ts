@@ -70,7 +70,7 @@ export class SubscriptionReportTab implements OnInit {
   }
   
   viewMonthlyReport() {    
-    this.router.navigate(['/reports/monthly', this.subscription.subscription_uuid,this.subscription.start_date,"true"]);
+    this.router.navigate(['/reports/monthly', this.subscription.subscription_uuid,this.subscription.start_date,false]);
   
     // this.reportSvc.getCycleReportLocal(this.subscription.subscription_uuid,this.subscription.start_date).subscribe();
     // this.subscriptionSvc.getMonthlyReport(this.subscription).subscribe(blob => {
@@ -79,14 +79,14 @@ export class SubscriptionReportTab implements OnInit {
   }
 
   viewCycleReport() {
-    this.router.navigate(['/reports/cycle', this.subscription.subscription_uuid,this.subscription.start_date,"true"]);
+    this.router.navigate(['/reports/cycle', this.subscription.subscription_uuid,this.subscription.start_date,false]);
     // this.subscriptionSvc.getCycleReport(this.subscription).subscribe(blob => {
     //   this.downloadObject('cycle_subscription_report.pdf', blob);
     // });
   }
 
   viewYearlyReport() {
-    this.router.navigate(['/reports/yearly', this.subscription.subscription_uuid,this.subscription.start_date,"true"]);
+    this.router.navigate(['/reports/yearly', this.subscription.subscription_uuid,this.subscription.start_date,false]);
     // this.subscriptionSvc.getYearlyReport(this.subscription).subscribe(blob => {
     //   this.downloadObject('yearly_subscription_report.pdf', blob);
     // });

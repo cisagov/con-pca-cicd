@@ -32,7 +32,7 @@ export class YearlyComponent implements OnInit {
     this.routeSub = this.route.params.subscribe(params => {
       this.subscriptionUuid = params.id;
       let isDate = new Date(params.start_date)
-      const isLocal = params.local;
+      const isHeadless = params.isHeadless;
   
       if(isDate.getTime()){
         this.reportStartDate = isDate
@@ -40,18 +40,10 @@ export class YearlyComponent implements OnInit {
         console.log("Invalid Date time provided, defaulting to now")
         this.reportStartDate = new Date()        
       }
-
-      if(isLocal){
-        this.reportsSvc.getCycleReportLocal(this.subscriptionUuid, this.reportStartDate).subscribe(resp => {
+        this.reportsSvc.getYearlyReport(this.subscriptionUuid, this.reportStartDate, isHeadless).subscribe(resp => {
           this.detail = resp;
           this.renderReport();
-        });
-      }else{
-        this.reportsSvc.getCycleReport(this.subscriptionUuid, this.reportStartDate).subscribe(resp => {
-          this.detail = resp;
-          this.renderReport();
-        });
-      }      
+        });      
     });
   }
 
