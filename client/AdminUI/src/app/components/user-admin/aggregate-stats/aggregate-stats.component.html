@@ -4,19 +4,19 @@
             <td>
                 Total customers enrolled
             </td>
-            <td class="text-right">{{detail?.total_customers_enrolled}}</td>
+            <td class="text-right">{{detail?.customers_enrolled}}</td>
         </tr>
         <tr>
             <td>Total monthly reports sent out</td>
-            <td class="text-right">{{detail?.total_monthly_reports_sent}}</td>
+            <td class="text-right">{{detail?.monthly_reports_sent}}</td>
         </tr>
         <tr>
             <td>Total completed cycle reports sent out</td>
-            <td class="text-right">{{detail?.total_completed_cycle_reports_sent}}</td>
+            <td class="text-right">{{detail?.cycle_reports_sent}}</td>
         </tr>
         <tr>
             <td>Total yearly reports sent out</td>
-            <td class="text-right">{{detail?.total_yearly_reports_sent}}</td>
+            <td class="text-right">{{detail?.yearly_reports_sent}}</td>
         </tr>
     </table>
 
@@ -25,23 +25,23 @@
     <table class="table">
         <tr>
             <td>Federal</td>
-            <td class="text-right">{{detail?.total_federal}}</td>
+            <td class="text-right">{{detail?.federal_stats.subscription_count}}</td>
         </tr>
         <tr>
             <td>State</td>
-            <td class="text-right">{{detail?.total_state}}</td>
+            <td class="text-right">{{detail?.state_stats.subscription_count}}</td>
         </tr>
         <tr>
             <td>Local</td>
-            <td class="text-right">{{detail?.total_local}}</td>
+            <td class="text-right">{{detail?.local_stats.subscription_count}}</td>
         </tr>
         <tr>
             <td>Tribal/Territorial</td>
-            <td class="text-right">{{detail?.total_tribal}}</td>
+            <td class="text-right">{{detail?.tribal_territorial_stats.subscription_count}}</td>
         </tr>
         <tr>
             <td>Critical Infrastructure (private sector)</td>
-            <td class="text-right">{{detail?.total_private}}</td>
+            <td class="text-right">{{detail?.critical_infrastructure_private_stats.subscription_count}}</td>
         </tr>
     </table>
 
@@ -50,11 +50,11 @@
     <table class="table">
         <tr>
             <td>Average click rate across all customers</td>
-            <td class="text-right">{{detail?.average_click_rate}}</td>
+            <td class="text-right">{{this.detail.click_rate_across_all_customers | nullishCoalesce: 0 | percent: '0.2'}}</td>
         </tr>
         <tr>
             <td>Average time to click across all customers</td>
-            <td class="text-right">{{detail?.average_time_to_click}}</td>
+            <td class="text-right">{{avg_time_to_click}}</td>
         </tr>
     </table>
 </div>
