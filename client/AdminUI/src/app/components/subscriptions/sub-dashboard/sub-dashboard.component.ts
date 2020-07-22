@@ -24,11 +24,14 @@ export class SubDashboardComponent implements OnInit, OnDestroy {
   avgTTFR: string;
 
   //Total stats
-  sent
-  opened
-  clicked
-  submitted
-  reported
+  aggregateCounts = {
+    "sent": {"count":null},
+    "opened": {"count":null},
+    "clicked": {"count":null},
+    "submitted": {"count":null},
+    "reported": {"count":null}
+  };
+  campaignsDetails;
 
   schemeLowMedHigh = {
     domain: ['#064875', '#fcbf10', '#007bc1']
@@ -140,7 +143,9 @@ export class SubDashboardComponent implements OnInit, OnDestroy {
             if (!this.avgTTFR) {
               this.avgTTFR = '(no emails reported yet)';
             }
-            
+            this.aggregateCounts = stats["aggregate_stats"]
+            this.campaignsDetails = stats["campaign_details"]
+            console.log(this.campaignsDetails)
 
           });
       }
