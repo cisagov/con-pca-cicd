@@ -459,6 +459,7 @@ def generate_region_stats(subscription_list, cycle_date=None):
     """
     region_stats = {}
     campaign_count = 0
+    cycle_count = 0
     for subscription in subscription_list:
         target_cycles = []
         if cycle_date:
@@ -468,6 +469,7 @@ def generate_region_stats(subscription_list, cycle_date=None):
         else:
             target_cycles = subscription["cycles"]
         for target_cycle in target_cycles:
+            cycle_count += 1
             campaign_count += len(target_cycle["campaigns_in_cycle"])
             if not region_stats:
                 region_stats = target_cycle["phish_results"].copy()
@@ -480,6 +482,7 @@ def generate_region_stats(subscription_list, cycle_date=None):
         "consolidated_values": region_stats,
         "subscription_count": len(subscription_list),
         "campaign_count": campaign_count,
+        "cycle_count": cycle_count,
         "clicked_ratio": ratios["clicked_ratio"],
         "opened_ratio": ratios["opened_ratio"],
         "submitted_ratio": ratios["submitted_ratio"],
@@ -900,3 +903,28 @@ def get_relevant_recommendations(subscription_stats):
                 recommendations_uuid.append(recommendation.get("recommendations_uuid"))
 
     return recommendations_uuid
+
+def deception_stats_to_graph_format(stats):
+    levels = []
+    if stats["stats_high_deception"]:
+        levels.append(
+            detail_deception_to_simple(stats["stats_high_deception"],"high",3)
+        )
+    if stats["stats_mid_deception"]:
+        levels.append(
+            detail_deception_to_simple(stats["stats_mid_deception"],"moderate",2)
+        )
+    if stats["stats_low_deception"]:
+        levels.append(
+            detail_deception_to_simple(stats["stats_low_deception"],"low",1)
+        )
+    return levels
+
+def detail_deception_to_simple(decep_stats,level_name,level_num):
+    return {
+        "level": level_name,
+        "clicked": decep_stats["clicked"]["count"],
+        "level_number": level_num,
+        "opened": decep_stats["opened"]["count"],
+        "sent": decep_stats["sent"]["count"],
+    }
