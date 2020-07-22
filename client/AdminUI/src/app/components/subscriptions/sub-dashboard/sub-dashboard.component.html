@@ -51,7 +51,21 @@
 
       <h4>Response Statistics</h4>
       <div>Average Time to First Click: {{ avgTTFC }}</div>
-      <div *ngIf="false">Average Time to First Report: {{ avgTTFR }}</div>
+      <div>Average Time to First Report: {{ avgTTFR }}</div>
+      <div>Aggregate Count:
+        <ul>
+          <li>Sent: {{aggregateCounts.sent.count}}</li>
+          <li>Opened: {{aggregateCounts.opened.count}}</li>
+          <li>Clicked: {{aggregateCounts.clicked.count}}</li>
+          <li>Submitted: {{aggregateCounts.submitted.count}}</li>
+          <li>Reported: {{aggregateCounts.reported.count}}</li>
+        </ul>
+      </div>
+      <div>Template Deception Breakdown:
+        <ul>
+          <li *ngFor="let campaign of campaignsDetails">Deception Score: {{campaign.template_details.deception_score}} - Template Name: {{campaign.template_details.name}}</li>
+        </ul>
+      </div>
     </div>
   </mat-card-content>
 </mat-card>

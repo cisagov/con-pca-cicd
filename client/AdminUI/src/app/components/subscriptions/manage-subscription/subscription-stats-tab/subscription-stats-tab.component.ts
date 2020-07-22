@@ -69,6 +69,7 @@ export class SubscriptionStatsTab implements OnInit {
           this.subscriptionSvc.getReportValuesForSubscription(this.subscription_uuid)
             .subscribe((data) => {
               this.reportsData = data
+              
               this.setReportsForCycle()    
               this.reportedStatsForm.controls["overRiderNumber"].setValidators([this.maxReports(this.subscription.target_email_list.length)]) 
               this.reportedStatsForm.controls["reportedItems"]
@@ -87,6 +88,9 @@ export class SubscriptionStatsTab implements OnInit {
           this.subscription = data
           //@ts-ignore
           this.selectedCycle = this.subscription.cycles[0]
+          this.subscriptionSvc.getCycleBehaviorSubject().subscribe(data => {
+            this.selectedCycle = data
+          })
         }
       })    
   }
@@ -307,6 +311,7 @@ export class SubscriptionStatsTab implements OnInit {
   }
 
   cycleChange(event) {
+    this.subscriptionSvc.setCycleBhaviorSubject(event.value)
     this.setReportsForCycle(event.value);
   }
 

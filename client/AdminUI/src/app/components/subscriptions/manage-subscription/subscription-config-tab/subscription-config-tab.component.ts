@@ -1,6 +1,7 @@
 import {
   Component,
   OnInit,
+  OnDestroy,
 } from '@angular/core';
 import {
   MatDialogConfig,
@@ -35,7 +36,7 @@ import { SettingsService } from 'src/app/services/settings.service';
   templateUrl: './subscription-config-tab.component.html',
   styleUrls: ['./subscription-config-tab.component.scss']
 })
-export class SubscriptionConfigTab implements OnInit {
+export class SubscriptionConfigTab implements OnInit, OnDestroy {
   private routeSub: any;
   dialogRefConfirm: MatDialogRef<ConfirmComponent>;
 
@@ -67,6 +68,8 @@ export class SubscriptionConfigTab implements OnInit {
 
   launchSubmitted = false;
 
+  angular_subs = []
+
   /**
    *
    */
@@ -83,6 +86,11 @@ export class SubscriptionConfigTab implements OnInit {
   ) {
     this.loadDhsContacts();
     this.loadSendingProfiles();
+  }
+  ngOnDestroy(): void {
+    this.angular_subs.forEach(element => {
+      element.unsubscribe()
+    });
   }
 
   /**
@@ -140,32 +148,32 @@ export class SubscriptionConfigTab implements OnInit {
    * Setup handlers for form field updates
    */
   onChanges(): void {
-    this.f.startDate.valueChanges.subscribe(val => {
+    this.angular_subs.push(this.f.startDate.valueChanges.subscribe(val => {
       this.subscription.start_date = val;
       this.persistChanges();
-    });
-    this.f.url.valueChanges.subscribe(val => {
+    }));
+    this.angular_subs.push(this.f.url.valueChanges.subscribe(val => {
       this.subscription.url = val;
       this.persistChanges();
-    });
-    this.f.keywords.valueChanges.subscribe(val => {
+    }));
+    this.angular_subs.push(this.f.keywords.valueChanges.subscribe(val => {
       this.subscription.keywords = val;
       this.persistChanges();
-    });
-    this.f.sendingProfile.valueChanges.subscribe(val => {
+    }));
+    this.angular_subs.push(this.f.sendingProfile.valueChanges.subscribe(val => {
       this.subscription.sending_profile_name = val;
-    });
-    this.f.csvText.valueChanges.subscribe(val => {
+    }));
+    this.angular_subs.push(this.f.csvText.valueChanges.subscribe(val => {
       this.evaluateTargetList(false);
       this.persistChanges();
-    });
+    }));
   }
 
   /**
    * Sends the model to the API if the subscription is in edit mode.
    */
   persistChanges() {
-    if (this.subscribeForm.invalid) {
+    if (this.subscribeForm.invalid || !this.subscribeForm.dirty) {
       return;
     }
 

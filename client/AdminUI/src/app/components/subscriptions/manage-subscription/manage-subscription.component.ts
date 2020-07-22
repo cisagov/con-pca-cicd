@@ -17,6 +17,8 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
   private routeSub: any;
   subscription: Subscription
 
+  sub_subscription: any;
+
   constructor(
     private layoutSvc: LayoutMainService,
     private subscriptionSvc: SubscriptionService,
@@ -47,7 +49,7 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
     const sub = this.subscriptionSvc.subscription;
     sub.subscription_uuid = params.id;
 
-    this.subscriptionSvc
+    this.sub_subscription = this.subscriptionSvc
       .getSubscription(sub.subscription_uuid)
       .subscribe(
         (success: Subscription) => {
@@ -73,6 +75,8 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
     this.subscriptionSvc.setSubBhaviorSubject(s)
     this.subscription = s as Subscription;
     this.subscriptionSvc.subscription = this.subscription;
+    //@ts-ignore
+    this.subscriptionSvc.setCycleBhaviorSubject(s["cycles"][0])
     this.setPageTitle()
   }
 
@@ -88,5 +92,7 @@ export class ManageSubscriptionComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.routeSub.unsubscribe();
+    this.sub_subscription.unsubscribe();
+    this.subscriptionSvc.clearSubBehaviorSubject();
   }
 }

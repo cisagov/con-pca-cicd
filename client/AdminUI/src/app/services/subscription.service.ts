@@ -15,6 +15,7 @@ export class SubscriptionService {
 
   subscription: Subscription
   subBehaviorSubject = new BehaviorSubject<Subscription>(new Subscription());
+  cycleBehaviorSubject = new BehaviorSubject<any>({});
   customer: Customer;
   customers: Array<Customer> = [];
   cameFromSubscription: boolean;
@@ -33,6 +34,16 @@ export class SubscriptionService {
   }
   public setSubBhaviorSubject(sub) {
     this.subBehaviorSubject.next(sub);
+  }
+  public clearSubBehaviorSubject(){
+    this.subBehaviorSubject = new BehaviorSubject<Subscription>(new Subscription())
+  }
+
+  public getCycleBehaviorSubject() {
+    return this.cycleBehaviorSubject;
+  }
+  public setCycleBhaviorSubject(cycle) {
+    this.cycleBehaviorSubject.next(cycle);
   }
 
   /**
@@ -112,6 +123,7 @@ export class SubscriptionService {
    * @param subscription
    */
   patchSubscription(subscription: Subscription) {
+    console.log("PATCH ISSUE")
     return this.http.patch(
       `${this.settingsService.settings.apiUrl}/api/v1/subscription/${subscription.subscription_uuid}/`,
       subscription
