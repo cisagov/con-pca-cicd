@@ -205,5 +205,111 @@
 
 
     
+  ],
+  "recommendations_data": [
+    {
+      "name": "Recommendation 1",
+      "description": "Recommendation with deception level of 1",
+      "deception_level": 1,
+      "appearance": {
+        "link_domain": 0,
+        "logo_graphics": 0,
+        "grammar": 1
+      },
+      "sender": {
+        "authoritative": 0,
+        "internal": 0,
+        "external": 1
+      },
+      "relevancy": {
+        "organization": 1,
+        "public_news": 0
+      },
+      "behavior": {
+        "duty_obligation": 0,
+        "fear": 0,
+        "curiosity": 1,
+        "greed": 1
+      },
+      "complexity": 1
+    },
+    {
+      "name": "Recommendation 2",
+      "description": "Recommendation with deception level of 2",
+      "deception_level": 2,
+      "appearance": {
+        "link_domain": 0,
+        "logo_graphics": 0,
+        "grammar": 1
+      },
+      "sender": {
+        "authoritative": 0,
+        "internal": 0,
+        "external": 1
+      },
+      "relevancy": {
+        "organization": 1,
+        "public_news": 0
+      },
+      "behavior": {
+        "duty_obligation": 0,
+        "fear": 0,
+        "curiosity": 1,
+        "greed": 1
+      },
+      "complexity": 1
+    },
+    {
+      "name": "Recommendation 3",
+      "description": "Recommendation with deception level of 3",
+      "deception_level": 3,
+      "appearance": {
+        "link_domain": 0,
+        "logo_graphics": 0,
+        "grammar": 1
+      },
+      "sender": {
+        "authoritative": 0,
+        "internal": 0,
+        "external": 1
+      },
+      "relevancy": {
+        "organization": 1,
+        "public_news": 0
+      },
+      "behavior": {
+        "duty_obligation": 0,
+        "fear": 0,
+        "curiosity": 1,
+        "greed": 1
+      },
+      "complexity": 3
+    },
+    {
+      "name": "Recommendation 4",
+      "description": "Recommendation with deception level of 1",
+      "deception_level": 1,
+      "appearance": {
+        "link_domain": 0,
+        "logo_graphics": 0,
+        "grammar": 1
+      },
+      "sender": {
+        "authoritative": 0,
+        "internal": 0,
+        "external": 1
+      },
+      "relevancy": {
+        "organization": 1,
+        "public_news": 0
+      },
+      "behavior": {
+        "duty_obligation": 0,
+        "fear": 0,
+        "curiosity": 1,
+        "greed": 1
+      },
+      "complexity": 1
+    }
   ]
 }
