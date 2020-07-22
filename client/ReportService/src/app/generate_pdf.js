@@ -2,7 +2,7 @@ const fs = require("fs");
 const puppeteer = require('puppeteer-core');
 
 let convertToPDf = async (reportUrl) => {
-  const browser = await puppeteer.connect({ browserWSEndpoint: 'ws://__BROWSERLESS_ENDPOINT__' });
+  const browser = await puppeteer.connect({ browserWSEndpoint: `ws://${process.env.BROWSERLESS_ENDPOINT}` });
   const page = await browser.newPage();
   await page.goto(reportUrl, { waitUntil: 'networkidle2' });
   await page.emulateMediaType('screen');
@@ -34,7 +34,7 @@ module.exports = {
     const type = req.params.type
     const cycle = req.params.cycle
 
-    const reportUrl = `http://__WEB_ENDPOINT__/reports/${type}/${uuid}/${cycle}`;
+    const reportUrl = `http://${process.env.WEB_ENDPOINT}/reports/${type}/${uuid}/${cycle}`;
 
     const pdfContent = await convertToPDf(reportUrl);
     //res.contentType("application/pdf");
