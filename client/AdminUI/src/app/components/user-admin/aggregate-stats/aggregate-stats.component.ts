@@ -28,7 +28,6 @@ export class AggregateStatsComponent implements OnInit {
     this.statsSvc.getAggregateStats().subscribe(result => {
       this.detail = result;
 
-      this.detail.federal_stats.cycle_count = 222;
       if (!this.detail.average_time_to_click_all_customers) {
         this.avgTimeToClick = '(none)';
       } else {
