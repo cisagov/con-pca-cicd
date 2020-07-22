@@ -15,6 +15,9 @@ export class YearlyComponent implements OnInit {
   reportStartDate: Date;
   detail: any;
 
+  improvingTrend = false;
+  degradingTrend = false;
+
   dateFormat = AppSettings.DATE_FORMAT;
 
   /**
@@ -31,20 +34,42 @@ export class YearlyComponent implements OnInit {
   ngOnInit(): void {
     this.routeSub = this.route.params.subscribe(params => {
       this.subscriptionUuid = params.id;
-      let isDate = new Date(params.start_date)
+      const isDate = new Date(params.start_date);
       const isHeadless = params.isHeadless;
-  
-      if(isDate.getTime()){
-        this.reportStartDate = isDate
+
+      if (isDate.getTime()) {
+        this.reportStartDate = isDate;
       } else {
-        console.log("Invalid Date time provided, defaulting to now")
-        this.reportStartDate = new Date()        
+        console.log('Invalid Date time provided, defaulting to now');
+        this.reportStartDate = new Date();
       }
-        this.reportsSvc.getYearlyReport(this.subscriptionUuid, this.reportStartDate, isHeadless).subscribe(resp => {
-          this.detail = resp;
+      this.reportsSvc.getYearlyReport(this.subscriptionUuid, this.reportStartDate, isHeadless).subscribe(resp => {
+        this.detail = resp;
+
+        this.fake();
+
+        this.renderReport();
+      },
+        error => {
+          console.log(error);
+
+
+          this.fake();
           this.renderReport();
-        });      
+        });
     });
+  }
+
+  /**
+   * FAKE
+   */
+  fake() {
+    this.detail = {
+      target_year: {
+        start_date: '2019-01-31',
+        end_date: '2020-01-31'
+      }
+    };
   }
 
   /**
