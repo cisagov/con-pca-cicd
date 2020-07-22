@@ -144,9 +144,9 @@ class SystemReportsView(APIView):
         context = {
             "customers_enrolled" : len(customers),
             "monthly_reports_sent" : monthly_reports_sent,
-            "completed_cycle_reports_sent" : cycle_reports_sent,
+            "cycle_reports_sent" : cycle_reports_sent,
             "yearly_reports_sent" : yearly_reports_sent,
-            "federal" : gov_group_stats["fed_stats"],
+            "federal_stats" : gov_group_stats["fed_stats"],
             "state_stats" :  gov_group_stats["state_stats"],
             "local_stats" :  gov_group_stats["local_stats"],
             "tribal_territorial_stats" :  gov_group_stats["tribal_stats"],
