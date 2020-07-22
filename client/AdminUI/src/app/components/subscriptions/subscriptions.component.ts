@@ -162,7 +162,6 @@ export class SubscriptionsComponent implements OnInit {
     return status.toUpperCase() === 'STOPPED';
   }
   public editSubscription(row) {
-    console.log(row.subscription)
     this.router.navigate(['/view-subscription', row.subscription.subscription_uuid]);
   }
   
