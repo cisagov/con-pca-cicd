@@ -71,16 +71,8 @@ def create_dhs_contacts(dhs_contacts):
 
         try:
             resp_json = resp.json()
-            uuid = resp_json["dhs_contact_uuid"]
-            print(f"created dhs contact uuid: {uuid}")
-        except Exception as e:
-            print(e)
-            pass
-
-        try:
-            resp_json = resp.json()
             created_dhs_contact_uuid = resp_json["dhs_contact_uuid"]
-            print("created customer_uuid: {}".format(created_dhs_contact_uuid))
+            print("created dhs_contact_uuid: {}".format(created_dhs_contact_uuid))
             created_dhs_contacts_uuids.append(created_dhs_contact_uuid)
         except Exception as err:
             print(err)
@@ -114,23 +106,36 @@ def create_subscriptions(subscriptions, customer, dhs_contact):
     return created_subcription_uuids
 
 
+def create_recommendations(recommendations):
+    created_recommendations_uuids = []
+    for rec in recommendations:
+        resp = requests.post("http://localhost:8000/api/v1/recommendations/", json=rec)
+        resp.raise_for_status()
+
+        try:
+            resp_json = resp.json()
+            created_recommendations_uuid = resp_json["recommendations_uuid"]
+            print("created recommendations_uuid: {}".format(created_recommendations_uuid))
+            created_recommendations_uuids.append(created_recommendations_uuid)
+        except Exception as err:
+            print(err)
+            pass
+
+    return created_recommendations_uuids
+
+
 def main():
     """This if the main def that runs creating data."""
-    print("Step 1/5: Loading Json Data")
+    print("Step 1/6: Loading Json Data")
     json_data = load_file("data/dummy_data.json")
     print("Done loading data")
-    print("Step 2/5: Creating Customers")
-
-    # customers = json_data["customer_data"]
+    print("Step 2/6: Creating Customers")
     created_customer_uuids = create_customers(json_data["customer_data"])
-
-    print("Step 3/5: Creating DHS Contacts")
-    # dhs_contacts = json_data["dhs_contacts_data"]
+    print("Step 3/6: Creating DHS Contacts")
     created_dhs_contacts_uuids = create_dhs_contacts(json_data["dhs_contacts_data"])
-
-    print("Step 4/5: Create Subscriptions")
-
-    subscriptions = json_data["subscription_data"]
+    print("Step 4/6: Create Recommendations")
+    created_recommendations_uuids = create_recommendations(json_data["recommendations_data"])
+    print("Step 5/6: Create Subscriptions")
 
     if not created_customer_uuids:
         print("customers already exist.. skipping")
@@ -156,7 +161,7 @@ def main():
         except requests.exceptions.HTTPError as err:
             raise err
 
-    created_subcription_uuids = create_subscriptions(subscriptions, created_customer_uuids[0], created_dhs_contacts_uuids[0])
+    created_subcription_uuids = create_subscriptions(json_data["subscription_data"], created_customer_uuids[0], created_dhs_contacts_uuids[0])
 
     print("created subcription_list: {}".format(created_subcription_uuids))
 
@@ -172,12 +177,13 @@ def main():
         print(sub_id)
 
 
-    print("Step 5/5: Writing values to file: {}".format(output_file))
+    print("Step 6/6: Writing values to file: {}".format(output_file))
 
     with open(output_file, "w") as outfile:
         data = {
             "created_customers": created_customer_uuids,
             "created_subcription_uuids": created_subcription_uuids,
+            "created_recommendations_uuids": created_recommendations_uuids,
         }
         json.dump(data, outfile, indent=2)
     print("Finished.....")
