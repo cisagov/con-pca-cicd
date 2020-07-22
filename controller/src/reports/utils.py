@@ -900,3 +900,27 @@ def get_relevant_recommendations(subscription_stats):
                 recommendations_uuid.append(recommendation.get("recommendations_uuid"))
 
     return recommendations_uuid
+
+def deception_stats_to_graph_format(stats):
+        levels = []
+        if stats["stats_high_deception"]:
+            levels.append(
+                detail_deception_to_simple(stats["stats_high_deception"],"high",3)
+            )
+        if stats["stats_mid_deception"]:
+            levels.append(
+                detail_deception_to_simple(stats["stats_mid_deception"],"moderate",2)
+            )
+        if stats["stats_low_deception"]:
+            levels.append(
+                detail_deception_to_simple(stats["stats_low_deception"],"low",1)
+            )
+        return levels
+def detail_deception_to_simple(decep_stats,level_name,level_num):
+    return {
+        "level": level_name,
+        "clicked": decep_stats["clicked"]["count"],
+        "level_number": level_num,
+        "opened": decep_stats["opened"]["count"],
+        "sent": decep_stats["sent"]["count"],
+    }

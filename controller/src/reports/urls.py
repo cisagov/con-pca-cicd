@@ -30,5 +30,10 @@ urlpatterns = [
         system_view.SystemReportsView.as_view(),
         name="system-reports-page",
     ),
+    path(
+        "<subscription_uuid>/subscription-stats-page/<start_date>/",
+        cycle_view.CycleStatusView.as_view(),
+        name="cycle-status",
+    )   
       
 ]

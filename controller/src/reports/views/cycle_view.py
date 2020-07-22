@@ -38,6 +38,7 @@ from reports.utils import (
     get_statistic_from_region_group,
     get_stats_low_med_high_by_level,
     get_cycle_by_date_in_range,
+    deception_stats_to_graph_format,
     pprintItem
 )
 
@@ -49,7 +50,7 @@ campaign_manager = CampaignManager()
 generate_chart = ChartGenerator()
 
 class CycleReportsView(APIView):
-    template_name = "reports/cycle.html"
+    # template_name = "reports/cycle.html"
 
     def get(self, request, **kwargs):
         """
@@ -307,3 +308,50 @@ class CycleReportsView(APIView):
         context["templates_by_group"] = templates_by_group
 
         return Response(context, status=status.HTTP_202_ACCEPTED)
+
+class CycleStatusView(APIView):
+    # template_name = "reports/cycle.html"
+
+    def get(self, request, **kwargs):
+
+        start_date_param = self.kwargs["start_date"]
+        start_date = datetime.strptime(
+            start_date_param, '%Y-%m-%dT%H:%M:%S.%f%z')
+
+        # Get targeted subscription and associated customer data
+        subscription_uuid = self.kwargs["subscription_uuid"]
+        subscription = get_single(
+            subscription_uuid, "subscription", SubscriptionModel, validate_subscription
+        )
+
+        # Get statistics for the specified subscription during the specified cycle
+        subscription_stats = get_subscription_stats_for_cycle(
+            subscription, start_date)
+        get_template_details(subscription_stats["campaign_results"])
+        
+
+        context = {
+            "avg_time_to_first_click": format_timedelta(
+                get_statistic_from_group(
+                    subscription_stats, "stats_all", "clicked", "average"
+                )
+            ),
+            "avg_time_to_first_report": format_timedelta(
+                get_statistic_from_group(
+                    subscription_stats, "stats_all", "reported", "average"
+                )
+            ),
+            "sent":get_statistic_from_group(
+                    subscription_stats, "stats_all", "sent", "count"
+                ),
+            "target_count":len(subscription["target_email_list"]),
+            "campaign_details": subscription_stats["campaign_results"],
+            "aggregate_stats": subscription_stats["stats_all"],
+            # "stats": subscription_stats,
+            "levels":deception_stats_to_graph_format(subscription_stats)
+
+        }
+
+        return Response(context, status=status.HTTP_202_ACCEPTED)
+
+    
