@@ -41,6 +41,17 @@ def load_file(data_file):
 # client = MongoClient(mongo_uri)
 
 def create_customers(customers):
+    """Create Customers.
+
+    Args:
+        customers (list[dict]): Customer Post Dict
+
+    Raises:
+        err: Error from API, Non-200
+
+    Returns:
+        list: list of created uuid's
+    """
     created_customer_uuids = []
     for customer in customers:
         try:
@@ -64,6 +75,14 @@ def create_customers(customers):
 
 
 def create_dhs_contacts(dhs_contacts):
+    """Create DHS Contacts.
+
+    Args:
+        dhs_contacts (list[Dict]): DHS Post DICT
+
+    Returns:
+        list: Created Customer uuid
+    """
     created_dhs_contacts_uuids = []
     for c in dhs_contacts:
         resp = requests.post("http://localhost:8000/api/v1/dhscontacts/", json=c)
@@ -82,6 +101,16 @@ def create_dhs_contacts(dhs_contacts):
 
 
 def create_subscriptions(subscriptions, customer, dhs_contact):
+    """Create Subscriptions.
+
+    Args:
+        subscriptions (list[dict]): List of subscription Post Dicts
+        customer (dict): Customer data
+        dhs_contact (dict): DHS Dict
+
+    Returns:
+        list: List of created uuid's
+    """
     created_subcription_uuids = []
     for subscription in subscriptions:
         subscription["customer_uuid"] = customer
@@ -107,6 +136,14 @@ def create_subscriptions(subscriptions, customer, dhs_contact):
 
 
 def create_recommendations(recommendations):
+    """Create Recommendations.
+
+    Args:
+        recommendations (list[dict]): List of Recommendation Post Dicts
+
+    Returns:
+        list: List of created Recommendation uuid's
+    """
     created_recommendations_uuids = []
     for rec in recommendations:
         resp = requests.post("http://localhost:8000/api/v1/recommendations/", json=rec)
