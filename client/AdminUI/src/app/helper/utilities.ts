@@ -31,3 +31,27 @@ export function toTitleCase(str) {
         }
     );
 }
+
+/**
+ * Converts a quantity of seconds into human-readable pieces:
+ * days, hours, minutes, seconds.
+ */
+export function humanTiming(seconds: number) {
+    const tokens = [
+        { s: 86400, label1: 'day', label: 'days' },
+        { s: 3600, label1: 'hour', label: 'hours' },
+        { s: 60, label1: 'minute', label: 'minutes' },
+        { s: 1, label1: 'second', label: 'seconds' }
+    ];
+
+    let s = '';
+    for (const token of tokens) {
+        const numberOfUnits = Math.floor(seconds / token.s);
+        seconds = seconds - token.s * numberOfUnits;
+        if (numberOfUnits !== 0) {
+            s += `${numberOfUnits} ${numberOfUnits === 1 ? token.label1 : token.label} `;
+        }
+    }
+
+    return s;
+}

@@ -30,20 +30,26 @@ def execute_tasks():
                 ):
                     logging.info(f"Executing task {t}")
                     # Create new task in future
-                    updated_tasks.append(
-                        get_new_task(
-                            s["subscription_uuid"],
-                            t["scheduled_date"],
-                            t["message_type"],
-                        )
-                    )
 
                     # Execute Task
-                    execute_task(s, t["message_type"])
-                    t["executed"] = True
-                    t["executed_date"] = datetime.now()
+                    try:
+                        execute_task(s, t["message_type"])
+                        t["executed"] = True
+                        t["error"] = ""
+                        updated_tasks.append(
+                            get_new_task(
+                                s["subscription_uuid"],
+                                t["scheduled_date"],
+                                t["message_type"],
+                            )
+                        )
+                    except BaseException as e:
+                        t["error"] = str(e)
+                    finally:
+                        t["executed_date"] = datetime.now()
 
-            updated_tasks.append(t)
+                logging.info(t)
+                updated_tasks.append(t)
 
         # Update Database with tasks
         put_data = SubscriptionPatchSerializer({"tasks": updated_tasks}).data

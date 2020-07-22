@@ -2,22 +2,33 @@
 from django.conf.urls import url
 from django.urls import include, path
 
-from . import views
+from reports.views import (
+    cycle_view,
+    monthly_view,
+    yearly_view,
+    system_view,
+)
 
 urlpatterns = [
     path(
         "<subscription_uuid>/monthly/<start_date>/",
-        views.MonthlyReportsView.as_view(),
+        monthly_view.MonthlyReportsView.as_view(),
         name="monthly-reports-page",
     ),
     path(
         "<subscription_uuid>/cycle/<start_date>/",
-        views.CycleReportsView.as_view(),
+        cycle_view.CycleReportsView.as_view(),
         name="cycle-reports-page",
     ),
     path(
         "<subscription_uuid>/yearly/<start_date>/",
-        views.YearlyReportsView.as_view(),
+        yearly_view.YearlyReportsView.as_view(),
         name="yearly-reports-page",
-    )  
+    ),
+    path(
+        "aggregate/",
+        system_view.SystemReportsView.as_view(),
+        name="system-reports-page",
+    ),
+      
 ]

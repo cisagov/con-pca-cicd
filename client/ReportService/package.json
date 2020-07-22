@@ -6,8 +6,9 @@
   "dependencies": {
     "body-parser": "^1.5.2",
     "express": "^4.7.4",
-    "method-override": "~2.1.2",
-    "morgan": "^1.2.3",
+    "method-override": "~2.3.10",
+    "morgan": "^1.9.1",
+    "nodeman": "^1.1.2",
     "puppeteer-core": "^5.1.0"
   },
   "devDependencies": {},

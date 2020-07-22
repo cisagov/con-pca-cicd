@@ -137,14 +137,11 @@ def start_subscription(data=None, subscription_uuid=None):
         response["name"] = subscription["name"]
 
     # Schedule client side reports emails
-    if not settings.DEBUG:
-        tasks = create_scheduled_email_tasks()
-        cycle_task = create_scheduled_cycle_tasks()
+    tasks = create_scheduled_email_tasks()
+    cycle_task = create_scheduled_cycle_tasks()
 
-        tasks.append(cycle_task)
-        subscription["tasks"] = tasks
-    else:
-        subscription["tasks"] = []
+    tasks.append(cycle_task)
+    subscription["tasks"] = tasks
 
     try:
         send_start_notification(subscription, start_date)
@@ -274,11 +271,8 @@ def new_subscription_cycle(subscription_uuid):
     )
 
     # Schedule client side reports emails
-    if not settings.DEBUG:
-        tasks = create_scheduled_email_tasks()
-        subscription["tasks"] = tasks
-    else:
-        subscription["tasks"] = []
+    tasks = create_scheduled_email_tasks()
+    subscription["tasks"] = tasks
 
     try:
         send_start_notification(subscription, start_date)

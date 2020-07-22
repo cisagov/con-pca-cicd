@@ -207,6 +207,7 @@ class ScheduledTaskModel(Model):
     scheduled_date = DateTimeType()
     executed = BooleanType()
     executed_date = DateTimeType()
+    error = StringType()
 
 
 class SubscriptionModel(Model):

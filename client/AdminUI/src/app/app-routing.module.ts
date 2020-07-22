@@ -23,6 +23,7 @@ import { LayoutBlankComponent } from './components/layout/layout-blank/layout-bl
 import { MonthlyComponent } from './components/reports/monthly/monthly.component';
 import { CycleComponent } from './components/reports/cycle/cycle.component';
 import { YearlyComponent } from './components/reports/yearly/yearly.component';
+import { AggregateStatsComponent } from './components/user-admin/aggregate-stats/aggregate-stats.component';
 
 
 
@@ -165,6 +166,13 @@ const routes: Routes = [
     canActivate: [AuthGuard],
     children: [
       { path: '', component: DhsPocComponent }
+    ]
+  },
+  {
+    path: 'aggreg-stats', component: LayoutMainComponent,
+    canActivate: [AuthGuard],
+    children: [
+      { path: '', component: AggregateStatsComponent }
     ]
   },
   {
