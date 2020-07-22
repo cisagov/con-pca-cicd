@@ -76,7 +76,7 @@ export class TimelineItem {
 export class Task {
   task_uuid: string;
   message_type: string;
-  schedule_date: Date;
+  scheduled_date: Date;
   executed: boolean;
   executed_date: Date;
   error: string;
