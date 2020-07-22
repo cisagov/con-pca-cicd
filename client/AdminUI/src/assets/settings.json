@@ -1,4 +1,4 @@
 {
   "apiUrl": "http://localhost:8000",
-  "apiUrlDocker": "http://pca-api:8000"
+  "apiUrlHeadless": "http://pca-api:8000"
 }

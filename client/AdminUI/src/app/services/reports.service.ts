@@ -8,7 +8,7 @@ import { AppSettings } from 'src/app/AppSettings';
   providedIn: 'root'
 })
 export class ReportsService {
-  
+
 
   constructor(
     private http: HttpClient,
@@ -17,10 +17,10 @@ export class ReportsService {
 
 
   getYearlyReport(subscriptionUuid: string, date: Date, isHeadless: any) {
-    const m = moment(date);    
-    
-    const urlRoot =  isHeadless === 'false'? this.settingsService.settings.apiUrl: this.settingsService.settings.apiUrlDocker;
-      
+    const m = moment(date);
+
+    const urlRoot = isHeadless === 'false' ? this.settingsService.settings.apiUrl : this.settingsService.settings.apiUrlHeadless;
+
     const url = urlRoot
       + `/reports/${subscriptionUuid}/yearly/${m.format(AppSettings.MOMENT_ISO_DATE_FORMAT)}Z/`;
     return this.http.get(url);
@@ -30,8 +30,8 @@ export class ReportsService {
    * Returns a promise with the Cycle report for the specified subscription and date.
    */
   public getCycleReport(subscriptionUuid: string, date: Date, isHeadless: any) {
-    const m = moment(date);    
-    const urlRoot =  isHeadless === 'false'? this.settingsService.settings.apiUrl : this.settingsService.settings.apiUrlDocker;      
+    const m = moment(date);
+    const urlRoot = isHeadless === 'false' ? this.settingsService.settings.apiUrl : this.settingsService.settings.apiUrlHeadless;
     const url = urlRoot
       + `/reports/${subscriptionUuid}/cycle/${m.format(AppSettings.MOMENT_ISO_DATE_FORMAT)}Z/`;
     return this.http.get(url);
@@ -42,8 +42,8 @@ export class ReportsService {
    */
   public getMonthlyReport(subscriptionUuid: string, date: Date, isHeadless: any) {
     const m = moment(date);
-    const urlRoot =  isHeadless === 'false'? this.settingsService.settings.apiUrl : this.settingsService.settings.apiUrlDocker ;
-      
+    const urlRoot = isHeadless === 'false' ? this.settingsService.settings.apiUrl : this.settingsService.settings.apiUrlHeadless;
+
     const url = urlRoot + `/reports/${subscriptionUuid}/monthly/${m.format(AppSettings.MOMENT_ISO_DATE_FORMAT)}Z/`;
     return this.http.get(url);
   }
