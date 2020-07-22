@@ -117,6 +117,7 @@ class SystemReportsView(APIView):
         state_customers = 0
         local_customers = 0
         tribal_customers = 0
+        private_customers = 0
 
         for customer in customers:
             if customer["customer_type"]:
@@ -127,17 +128,25 @@ class SystemReportsView(APIView):
                 if customer["customer_type"] == "Local":
                     local_customers += 1
                 if customer["customer_type"] == "Tribal":
-                    tribal_customers += 1
-            
+                    tribal_customers += 1   
+                if customer["customer_type"] == "Private":
+                    private_customers += 1   
+                
 
 
         gov_group_stats = get_gov_group_stats()
+        gov_group_stats["fed_stats"]["customer_count"] = federal_customers
+        gov_group_stats["state_stats"]["customer_count"] = state_customers
+        gov_group_stats["local_stats"]["customer_count"] = local_customers
+        gov_group_stats["tribal_stats"]["customer_count"] = tribal_customers
+        gov_group_stats["private_stats"]["customer_count"] = private_customers
+            
         context = {
-            "customers_enrolled" : len(customers),
-            "monthly_reports_sent" : monthly_reports_sent,
-            "cycle_reports_sent" : cycle_reports_sent,
-            "yearly_reports_sent" : yearly_reports_sent,
-            "federal_stats" : gov_group_stats["fed_stats"],
+            "total_customers_enrolled" : len(customers),
+            "total_monthly_reports_sent" : monthly_reports_sent,
+            "total_completed_cycle_reports_sent" : cycle_reports_sent,
+            "total_yearly_reports_sent" : yearly_reports_sent,
+            "total_federal" : gov_group_stats["fed_stats"],
             "state_stats" :  gov_group_stats["state_stats"],
             "local_stats" :  gov_group_stats["local_stats"],
             "tribal_territorial_stats" :  gov_group_stats["tribal_stats"],
