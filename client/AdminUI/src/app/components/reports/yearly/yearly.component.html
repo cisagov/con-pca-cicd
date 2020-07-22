@@ -159,30 +159,29 @@
                 <h2 id="reportTitle"><span class="smallerTitle">Annual</span><br>Summary</h2>
             </div>
         </div>
-        <div class="col-4">
+        <div id="coverFooter" class="row mb-2">
             <div id="preparationDetails">
                 Prepared for:<br>
-                {{ detail?.customer_name }}<br>
-                {{ detail?.customer_address }}<br>
-                {{ detail?.customer_address_2 }}<br>
-                {{ detail?.primary_contact_email }}
+                {{ detail?.customer.full_name }}<br>
+                {{ detail?.customer.address_1 }} {{ detail?.customer.address_2 }}
             </div>
-        </div>
-        <div class="col-4">
             <div id="dhsContactDetails">
-                Subscription Primary Contact:<br>
-                {{ detail?.dhs_contact_name }}<br>
-                Office: {{ detail?.dhs_contact_office_phone }}<br>
-                Mobile: {{ detail?.dhs_contact_mobile_phone }}<br>
-                Email: {{ detail?.dhs_contact_email }}<br>
-                DHS Contact<br>
-                Phishing Assessment Team<br>
-                vulnerability@cisa.dhs.gov
+                <div class="mb-2">
+                    Subscription Primary Contact<br>
+                    {{detail?.primary_contact.first_name}} {{detail?.primary_contact.last_name}}<br>
+                    {{detail?.primary_contact_email}}<br>
+                </div>
+                <div>
+                    DHS Contact<br>
+                    {{ detail?.dhs_contact_name }}<br>
+                    Phishing Assessment Team<br>
+                    vulnerability@cisa.dhs.gov
+                </div>
             </div>
-        </div>
-        <div id="cisa_logo">
-            <img src="/assets/CISA_Logo.png" style="width: 8rem;"
-            alt="Cybersecurity & Infrastructure Security Agency Logo">
+            <div id="cisa_logo">
+                <img src="/assets/CISA_Logo.png" style="width: 8rem;"
+                    alt="Cybersecurity & Infrastructure Security Agency Logo">
+            </div>
         </div>
     </article>
 
@@ -206,32 +205,39 @@
                     <table id="subscriptionDetailsTable">
                         <tr>
                             <td>Customer Name:</td>
-                            <td>{{ detail?.customer_name }}</td>
+                            <td>{{ detail?.customer.full_name }}</td>
                         </tr>
                         <tr>
                             <td>Customer POC:</td>
-                            <td>{{ detail?.customer_name }}</td>
+                            <td>{{detail?.primary_contact.first_name}} {{detail?.primary_contact.last_name}} </td>
                         </tr>
                         <tr>
-                            <td>Vulnerability Management Team Lead:</td>
-                            <td>{{ detail?.dhs_contact_email }}</td>
+                            <td>Vulnerability Management<br>Team Lead:</td>
+                            <td>Federal Lead, {{ detail?.DHS_contact.first_name }} {{ detail?.DHS_contact.last_name }}
+                            </td>
                         </tr>
                         <tr>
                             <td>Dates:</td>
-                            <td>{{ detail?.start_date }} - {{ detail?.end_date }}</td>
-                            <!--  <td>1/01/2020 – 12/31/2020</td> -->
+                            <td>{{ detail?.target_year.start_date|date:"MMM d, yyyy" }} -
+                                {{ detail?.target_year.end_date|date:"MMM d, yyyy" }}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Test Location:</td>
+                            <td>DHS/VM Lab</td>
                         </tr>
                         <tr>
                             <td>Services:</td>
                             <td>Continuous Phishing Assessment</td>
                         </tr>
                         <tr>
-                            <td>Management ID:</td>
+                            <td>Vulnerability Management ID:</td>
                             <td>XXXXX</td>
                         </tr>
                         <tr>
                             <td>Scope:</td>
-                            <td>1000 users at {{ detail?.customer_identifier }}'s domain</td>
+                            <td>{{detail?.metrics.total_users_targeted}} users within the following domain:
+                                {{ detail?.customer.identifier }}</td>
                         </tr>
                     </table>
                 </div>
@@ -240,19 +246,14 @@
                 <div class="col-12">
                     <table id="datesTable">
                         <tr>
-                            <th>Quarter</th>
+                            <th>Cycle</th>
                             <th>Start Date - End Date</th>
                             <th>Notes</th>
                         </tr>
-                        <tr>
-                            <td>2020 Q1</td>
-                            <td>January 1st, 2020 - March 30th, 2020</td>
-                            <td>Initial Campaign</td>
-                        </tr>
-                        <tr>
-                            <td>2020 Q2</td>
-                            <td>April 1, 2020 - June 30, 2020</td>
-                            <td>Initial Campaign</td>
+                        <tr *ngFor="let cycle of detail?.cycles; index as i">
+                            <td>{{cycle.year}} {{ cycle.quarter}}</td>
+                            <td>{{cycle.start_date | date}} - {{cycle.end_date | date}}</td>
+                            <td>{{cycle.notes}}</td>
                         </tr>
                     </table>
                 </div>
@@ -429,26 +430,35 @@
             <div class="col-12">
                 <h2 id="methodologyTitle">Example Methodology Specifics</h2>
                 <div id="methodologyText">
-                    <p>VM used the methodology documented in Appendix A: Methodology to perform testing EXAMPLE.
-                        Specific phishing templates can be reviewed in Appendix C: Templates with corresponding
-                        complexity calculations. VM divided the 1000 email addresses that EXAMPLE provided into three
-                        groups. Group 1 had 333 addresses and received levels 1 and 4. Group 2 had 333 addresses and
-                        received levels 2 and 5. Group 3 had 334 addresses and received levels 3 and 6. See Table 3 for
-                        descriptions of email levels 1 – 6.</p>
-                    <p>The assessment’s goal was to capture the behavior-based responses of EXAMPLE to email phishing
-                        attempts; and the assessment operated under the scenario that no technical controls were able to
+                    <p>VM used the methodology documented in <u><b>Appendix A: Methodology</b></u> to perform
+                        testing
+                        {{ detail?.customer.full_name }}. Specific phishing templates can be reviewed in
+                        <u><b>Appendix C: Templates</b></u>
+                        with corresponding complexity calculations. VM divided the 1000 email addresses that
+                        {{ detail?.customer.full_name }} provided
+                        into three groups. Group 1 had 333 addresses and received levels 1 and 4. Group 2 had 333
+                        addresses and
+                        received levels 2 and 5. Group 3 had 334 addresses and received levels 3 and 6. See Table 3
+                        for descriptions of email levels 1 – 6.</p>
+                    <p>The assessment’s goal was to capture the behavior-based responses of
+                        {{ detail?.customer.full_name }}
+                        to email phishing
+                        attempts; and the assessment operated under the scenario that no technical controls were
+                        able to
                         detect, report, or stop the email phishing attempts. VM, as an external body conducting this
                         PCA, did not have direct knowledge whether or not emails successfully arrived in targeted
-                        EXAMPLE user inboxes. To allow for a clear determination of click rates (email links clicked
-                        divided by emails sent), EXAMPLE or VM performed the following:</p>
-                    <ul id="exampleMethodologyList">
-                        <li>
-                            EXAMPLE whitelisted the VM domain and IP address during the planning stage.
-                        </li>
-                        <li>
-                            EXAMPLE created specific mail receiving rules to permit the VM emails to land in user
-                            inboxes
-                        </li>
+                        {{ detail?.customer.full_name }} user inboxes. To allow for a clear determination of click
+                        rates
+                        (email links clicked
+                        divided by emails sent), {{ detail?.customer.full_name }} or VM performed the following:</p>
+                    <ul>
+                        <li>{{ detail?.customer.full_name }} whitelisted the VM domain and IP address during the
+                            planning
+                            stage</li>
+                        <li>{{ detail?.customer.full_name }} created specific mail receiving rules to permit the VM
+                            emails
+                            to land in user
+                            inboxes</li>
                     </ul>
                 </div>
             </div>
@@ -515,91 +525,43 @@
                 </p>
             </div>
         </div>
-        
+
         <div class="row">
             <div class="col-12">
                 <h3>Closing</h3>
             </div>
         </div>
-        <div class="row">
-            <div class="col-12">
-                <h5 class="closing-header"><span>Detailed Conclusion 1 </span>- Assessment Summary</h5>
+
+        <div *ngFor="let conc of detail?.conclusions; index as i">
+            <div class="row">
+                <div class="col-12">
+                    <h5 class="closing-header"><span>Detailed Conclusion {{(i + 1)}} </span>- {{conc.category}}</h5>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <p [innerHTML]="conc.description"></p>
+                </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col-12">
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
-                    et
-                    dolore magna
-                    aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-                    commodo
-                    consequat. </p>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-12">
-                <h5 class="closing-header"><span>Detailed Conclusion 2 </span> – Click Rates and Click Times</h5>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-12">
-                <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-                    pariatur.
-                    Excepteur
-                    sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit an aborum Ornare
-                    massa
-                    eget egestas
-                    purus viverra accumsan in nisl nisi. Id interdum velit laoreet id donec ultrices tincidunt.</p>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-12">
-                <h5 class="closing-header"><span>Detailed Conclusion 3 </span> – Reporting Rates and Reporting Times
-                </h5>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-12">
-                <p>Egestas diam in arcu cursus. Facilisis leo vel fringilla est ullamcorper eget nulla. Gravida quis
-                    blandit
-                    turpis cursus
-                    in hac habitasse platea dictumst. Sit amet risus nullam eget felis eget.</p>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-12">
-                <h5 class="closing-header"><span>Detailed Conclusion 4 </span> – Open Source Intelligence</h5>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-12">
-                <p>Elit eget gravida cum sociis natoque penatibus et magnis. Diam maecenas sed enim ut sem viverra
-                    aliquet
-                    eget sit.
-                    Massa ultricies mi quis hendrerit dolor magna eget. Facilisis volutpat est velit egestas dui id.
-                </p>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-12">
-                <p>PCA is a young service with limited but meaningful data made available to EXAMPLE. VM hopes this data
-                    will be
-                    actionable and allow EXAMPLE to reduce some level of risk within their organization. As more PCAs
-                    are
-                    completed
-                    over time, statistical reporting will be enhanced and a non-attributable overview of phishing
-                    results
-                    will be
-                    collected as part of the VM annual service review. </p>
-                <p>As this new service continues to mature, VM looks forward to enhancing the PCA and building new test
-                    capabilities
-                    that include technical control checks. VM appreciates any comments to improve this report or service
-                    as
-                    a whole.
-                    For questions about this report or for future engagements with VM, please send an email to
-                    VM_info@hq.dhs.gov.
-                </p>
-            </div>
-        </div>
+
+        <p>PCA is a young service with limited but meaningful data made available to
+            {{ detail?.customer.full_name }}. VM hopes this
+            data will be actionable and allow {{ detail?.customer.full_name }} to reduce some level of
+            risk
+            within their
+            organization. As more PCAs are completed over time, statistical reporting will be enhanced
+            and a
+            non-attributable overview of phishing results will be collected as part of the VM annual
+            service
+            review.</p>
+
+        <p>As this new service continues to mature, VM looks forward to enhancing the PCA and building
+            new
+            test capabilities that include technical control checks. VM appreciates any comments to
+            improve
+            this report or service as a whole. For questions about this report or for future engagements
+            with VM, please send an email to VM_info@hq.dhs.gov.</p>
+
     </article>
 </div>
