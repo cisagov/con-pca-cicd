@@ -48,20 +48,20 @@ export class MonthlyComponent implements OnInit {
   ngOnInit(): void {
     this.routeSub = this.route.params.subscribe(params => {
       this.subscriptionUuid = params.id;
-
       const isDate = new Date(params.start_date);
+      const isHeadless = params.isHeadless;
+
       if (isDate.getTime()) {
         this.reportStartDate = isDate;
       } else {
         console.log('Invalid Date time provided, defaulting to now');
         this.reportStartDate = new Date();
-      }
-
-      this.reportsSvc.getMonthlyReport(this.subscriptionUuid, this.reportStartDate).subscribe(resp => {
+      }     
+      this.reportsSvc.getMonthlyReport(this.subscriptionUuid, this.reportStartDate, isHeadless).subscribe(resp => {
         this.detail = resp;
-
         this.renderReport();
       });
+      
 
     });
   }
