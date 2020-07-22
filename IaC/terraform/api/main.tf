@@ -93,8 +93,8 @@ resource "random_password" "basic_auth_password" {
 # FARGATE
 # ===========================
 locals {
-  api_container_port        = 80
-  api_load_balancer_port    = 8043
+  api_container_port     = 80
+  api_load_balancer_port = 8043
 
   environment = {
     "SECRET_KEY" : random_string.django_secret_key.result,
@@ -112,7 +112,8 @@ locals {
     "COGNITO_AWS_REGION" : var.region,
     "COGNITO_USER_POOL" : element(tolist(data.aws_cognito_user_pools.users.ids), 0),
     "LOCAL_API_KEY" : random_string.local_api_key.result,
-    "MONGO_TYPE" : "DOCUMENTDB"
+    "MONGO_TYPE" : "DOCUMENTDB",
+    "REPORTS_API" : "https://${data.aws_lb.private.dns_name}:3030/"
   }
 
   secrets = {
@@ -126,32 +127,45 @@ locals {
     "SMTP_HOST" : data.aws_ssm_parameter.smtp_host.arn,
     "SMTP_PORT" : data.aws_ssm_parameter.smtp_port.arn,
     "SMTP_PASS" : data.aws_ssm_parameter.smtp_pass.arn,
-    "SMTP_FROM": data.aws_ssm_parameter.smtp_from.arn,
-    "SMTP_USER": data.aws_ssm_parameter.smtp_user.arn,
+    "SMTP_FROM" : data.aws_ssm_parameter.smtp_from.arn,
+    "SMTP_USER" : data.aws_ssm_parameter.smtp_user.arn,
     "COGNITO_AUDIENCE" : data.aws_ssm_parameter.client_id.arn
   }
 }
 
+module "container" {
+  source    = "../modules/container-definition"
+  namespace = var.app
+  stage     = var.env
+  name      = "api"
+
+  container_name  = "pca-api"
+  container_image = "${var.image_repo}:${var.image_tag}"
+  container_port  = local.api_container_port
+  region          = var.region
+  log_retention   = 7
+  environment     = local.environment
+  secrets         = local.secrets
+}
+
 module "api" {
-  source                = "../modules/fargate"
-  namespace             = "${var.app}"
-  stage                 = "${var.env}"
-  name                  = "api"
-  log_retention         = 7
+  source    = "../modules/fargate"
+  namespace = "${var.app}"
+  stage     = "${var.env}"
+  name      = "api"
+
   iam_server_cert_arn   = data.aws_iam_server_certificate.self.arn
   container_port        = local.api_container_port
+  container_definition  = module.container.json
+  container_name        = "pca-api"
+  cpu                   = 2048
+  memory                = 4096
   vpc_id                = data.aws_vpc.vpc.id
   health_check_interval = 60
   health_check_path     = "/"
   health_check_codes    = "307,202,200,404"
   load_balancer_arn     = data.aws_lb.public.arn
   load_balancer_port    = local.api_load_balancer_port
-  container_image       = "780016325729.dkr.ecr.us-east-1.amazonaws.com/con-pca-api:1.0"
-  aws_region            = var.region
-  cpu                   = 2048
-  memory                = 4096
-  environment           = local.environment
-  secrets               = local.secrets
   desired_count         = 1
   subnet_ids            = data.aws_subnet_ids.private.ids
   security_group_ids    = [aws_security_group.api.id]

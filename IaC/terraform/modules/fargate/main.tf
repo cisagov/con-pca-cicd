@@ -9,13 +9,9 @@ module "label" {
   tags       = {}
 }
 
-# Cloudwatch Logs Group
-resource "aws_cloudwatch_log_group" "_" {
-  name              = module.label.id
-  retention_in_days = var.log_retention
-}
-
-# Load Balancer Target Group
+#=========================
+# TARGET GROUP
+#=========================
 resource "aws_lb_target_group" "_" {
   name        = module.label.id
   port        = var.container_port
@@ -34,7 +30,9 @@ resource "aws_lb_target_group" "_" {
   }
 }
 
-# Load Balancer Listener
+#=========================
+# LISTENER
+#=========================
 resource "aws_lb_listener" "_" {
   load_balancer_arn = var.load_balancer_arn
   port              = var.load_balancer_port
@@ -48,53 +46,20 @@ resource "aws_lb_listener" "_" {
   }
 }
 
-# ECS Cluster
+#=========================
+# CLUSTER
+#=========================
 resource "aws_ecs_cluster" "_" {
   name = module.label.id
 }
 
-module "container" {
-  source          = "github.com/cloudposse/terraform-aws-ecs-container-definition"
-  container_name  = module.label.id
-  container_image = var.container_image
-  entrypoint      = var.entrypoint
-  essential       = "true"
-  log_configuration = {
-    logDriver = "awslogs"
-    options = {
-      awslogs-region        = var.aws_region
-      awslogs-group         = aws_cloudwatch_log_group._.name
-      awslogs-stream-prefix = "/ecs/${var.name}"
-    }
-  }
-  port_mappings = [
-    {
-      containerPort = var.container_port
-      hostPort      = var.container_port
-      protocol      = "tcp"
-    }
-  ]
 
-  environment = [
-    for key in keys(var.environment) :
-    {
-      name  = key
-      value = var.environment[key]
-    }
-  ]
-
-  secrets = [
-    for key in keys(var.secrets) :
-    {
-      name      = key
-      valueFrom = var.secrets[key]
-    }
-  ]
-}
-
+#=========================
+# TASK DEFINITION
+#=========================
 resource "aws_ecs_task_definition" "_" {
   family                   = module.label.id
-  container_definitions    = module.container.json
+  container_definitions    = var.container_definition
   cpu                      = var.cpu
   execution_role_arn       = aws_iam_role.ecs_execution.arn
   memory                   = var.memory
@@ -103,6 +68,10 @@ resource "aws_ecs_task_definition" "_" {
   task_role_arn            = aws_iam_role.ecs_task.arn
 }
 
+
+#=========================
+# SERVICE
+#=========================
 resource "aws_ecs_service" "_" {
   name            = module.label.id
   cluster         = aws_ecs_cluster._.id
@@ -112,7 +81,7 @@ resource "aws_ecs_service" "_" {
 
   load_balancer {
     target_group_arn = aws_lb_target_group._.arn
-    container_name   = module.label.id
+    container_name   = var.container_name
     container_port   = var.container_port
   }
 
@@ -123,8 +92,9 @@ resource "aws_ecs_service" "_" {
   }
 }
 
-
-# IAM
+#=========================
+# IAM ROLES & POLICIES
+#=========================
 data "aws_iam_policy_document" "ecs_assume_role" {
   statement {
     actions = ["sts:AssumeRole"]
