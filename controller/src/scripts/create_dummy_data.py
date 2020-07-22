@@ -40,16 +40,7 @@ def load_file(data_file):
 # )
 # client = MongoClient(mongo_uri)
 
-
-def main():
-    """This if the main def that runs creating data."""
-    print("loading dummy json data")
-    json_data = load_file("data/dummy_data.json")
-    print("done loading data")
-
-    print("Step 2/3: create customers...")
-
-    customers = json_data["customer_data"]
+def create_customers(customers):
     created_customer_uuids = []
     for customer in customers:
         try:
@@ -68,9 +59,11 @@ def main():
         except Exception as err:
             print(err)
             pass
+    
+    return created_customer_uuids
 
-    print("Creating dhs contacts")
-    dhs_contacts = json_data["dhs_contacts_data"]
+
+def create_dhs_contacts(dhs_contacts):
     created_dhs_contacts_uuids = []
     for c in dhs_contacts:
         resp = requests.post("http://localhost:8000/api/v1/dhscontacts/", json=c)
@@ -93,9 +86,52 @@ def main():
             print(err)
             pass
 
-    print("Step 3/3: create subscriptions...")
+    return created_dhs_contacts_uuids
+
+
+def create_subscriptions(subscriptions, customer, dhs_contact):
+    created_subcription_uuids = []
+    for subscription in subscriptions:
+        subscription["customer_uuid"] = customer
+        subscription["dhs_contact_uuid"] = dhs_contact
+        subscription["start_date"] = datetime.today().strftime(
+            "%Y-%m-%dT%H:%M:%S"
+        )  # 2020-03-10T09:30:25"
+        try:
+            print(subscription)
+
+            resp = requests.post(
+                "http://localhost:8000/api/v1/subscriptions/", json=subscription
+            )
+            resp.raise_for_status()
+            resp_json = resp.json()
+            created_subcription_uuids.append(resp_json["subscription_uuid"])
+        except requests.exceptions.HTTPError as err:
+            print(err)
+
+        time.sleep(5)
+    
+    return created_subcription_uuids
+
+
+def main():
+    """This if the main def that runs creating data."""
+    print("Step 1/5: Loading Json Data")
+    json_data = load_file("data/dummy_data.json")
+    print("Done loading data")
+    print("Step 2/5: Creating Customers")
+
+    # customers = json_data["customer_data"]
+    created_customer_uuids = create_customers(json_data["customer_data"])
+
+    print("Step 3/5: Creating DHS Contacts")
+    # dhs_contacts = json_data["dhs_contacts_data"]
+    created_dhs_contacts_uuids = create_dhs_contacts(json_data["dhs_contacts_data"])
+
+    print("Step 4/5: Create Subscriptions")
 
     subscriptions = json_data["subscription_data"]
+
     if not created_customer_uuids:
         print("customers already exist.. skipping")
         try:
@@ -120,31 +156,10 @@ def main():
         except requests.exceptions.HTTPError as err:
             raise err
 
-    customer = created_customer_uuids[0]
-    dhs_contact = created_dhs_contacts_uuids[0]
-    created_subcription_uuids = []
-
-    for subscription in subscriptions:
-        subscription["customer_uuid"] = customer
-        subscription["dhs_contact_uuid"] = dhs_contact
-        subscription["start_date"] = datetime.today().strftime(
-            "%Y-%m-%dT%H:%M:%S"
-        )  # 2020-03-10T09:30:25"
-        try:
-            print(subscription)
-
-            resp = requests.post(
-                "http://localhost:8000/api/v1/subscriptions/", json=subscription
-            )
-            resp.raise_for_status()
-            resp_json = resp.json()
-            created_subcription_uuids.append(resp_json["subscription_uuid"])
-        except requests.exceptions.HTTPError as err:
-            print(err)
-
-        time.sleep(5)
+    created_subcription_uuids = create_subscriptions(subscriptions, created_customer_uuids[0], created_dhs_contacts_uuids[0])
 
     print("created subcription_list: {}".format(created_subcription_uuids))
+
     current_dir = os.path.dirname(os.path.abspath(__file__))
     output_file = os.path.join(
         current_dir,
@@ -157,7 +172,7 @@ def main():
         print(sub_id)
 
 
-    print("writing values to file: {}...".format(output_file))
+    print("Step 5/5: Writing values to file: {}".format(output_file))
 
     with open(output_file, "w") as outfile:
         data = {
