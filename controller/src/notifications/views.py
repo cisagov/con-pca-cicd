@@ -8,12 +8,13 @@ contacts about reports and subscription updates.
 
 # Standard Python Libraries
 from datetime import datetime
+from pathlib import Path
 from email.mime.image import MIMEImage
 import logging
 
 # Third-Party Libraries
 from django.conf import settings
-from pathlib import Path
+
 import requests
 from api.models.dhs_models import DHSContactModel, validate_dhs_contact
 from api.utils.db_utils import get_single
