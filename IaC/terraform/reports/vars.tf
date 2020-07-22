@@ -14,10 +14,9 @@ variable "region" {
 
 variable "image_repo" {
   type    = string
-  default = "780016325729.dkr.ecr.us-east-1.amazonaws.com/con-pca-web"
+  default = "780016325729.dkr.ecr.us-east-1.amazonaws.com/con-pca-reports"
 }
 
 variable "image_tag" {
   type = string
 }
-

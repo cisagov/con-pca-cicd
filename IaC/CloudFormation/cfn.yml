@@ -35,6 +35,13 @@ Resources:
             LifecyclePolicy:
                 LifecyclePolicyText: !Ref LIFECYCLE
 
+    ReportsRepo:
+        Type: AWS::ECR::Repository
+        Properties:
+            RepositoryName: con-pca-reports
+            LifecyclePolicy:
+                LifecyclePolicyText: !Ref LIFECYCLE
+
     TerraformBackend:
         Type: AWS::S3::Bucket
         Properties:

@@ -85,6 +85,18 @@ module "alb" {
   subnet_ids         = module.subnets.public_subnet_ids
 }
 
+module "alb_internal" {
+  source             = "github.com/cloudposse/terraform-aws-alb"
+  namespace          = "${var.app}"
+  stage              = "${var.env}"
+  name               = "private"
+  http_enabled       = false
+  internal           = true
+  vpc_id             = module.vpc.vpc_id
+  security_group_ids = [aws_security_group.alb.id]
+  subnet_ids         = module.subnets.private_subnet_ids
+}
+
 #=================================================
 #  COGNITO
 #=================================================

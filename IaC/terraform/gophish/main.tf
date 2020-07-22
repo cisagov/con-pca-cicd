@@ -68,7 +68,7 @@ module "gophish" {
   health_check_path     = "/"
   health_check_codes    = "307,202,200,404"
   load_balancer_arn     = data.aws_lb.public.arn
-  container_image       = "780016325729.dkr.ecr.us-east-1.amazonaws.com/con-pca-gophish:1.0"
+  container_image       = "${var.image_repo}:${var.image_tag}"
   aws_region            = var.region
   cpu                   = 512
   memory                = 1024
