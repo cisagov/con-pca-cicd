@@ -83,6 +83,6 @@ def get_new_task(subscription_uuid, scheduled_date, message_type):
     return {
         "task_uuid": uuid4(),
         "message_type": message_type,
-        "executed_date": scheduled_date,
+        "scheduled_date": scheduled_date,
         "executed": False,
     }

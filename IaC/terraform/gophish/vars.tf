@@ -12,6 +12,15 @@ variable "region" {
   default = "us-east-1"
 }
 
+variable "image_repo" {
+  type    = string
+  default = "780016325729.dkr.ecr.us-east-1.amazonaws.com/con-pca-gophish"
+}
+
+variable "image_tag" {
+  type = string
+}
+
 variable "mysql_instance_class" {
   type    = string
   default = "db.t3.micro"

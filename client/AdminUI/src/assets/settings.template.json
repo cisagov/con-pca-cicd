@@ -1,3 +1,4 @@
 {
-  "apiUrl": "${API_URL}"
+  "apiUrl": "${API_URL}",
+  "apiUrlHeadless": "${API_URL_HEADLESS}"
 }

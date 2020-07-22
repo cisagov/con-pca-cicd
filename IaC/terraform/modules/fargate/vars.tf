@@ -10,9 +10,12 @@ variable "name" {
   type = string
 }
 
-variable "log_retention" {
-  type    = number
-  default = 7
+variable "container_definition" {
+  type = string
+}
+
+variable "container_name" {
+  type = string
 }
 
 variable "container_port" {
@@ -46,24 +49,6 @@ variable "load_balancer_port" {
   type = number
 }
 
-variable "container_image" {
-  type = string
-}
-
-variable "aws_region" {
-  type = string
-}
-
-variable "environment" {
-  type    = map(string)
-  default = {}
-}
-
-variable "secrets" {
-  type    = map(string)
-  default = {}
-}
-
 variable "desired_count" {
   type    = number
   default = 1
@@ -94,11 +79,6 @@ variable "memory" {
 
 variable "cpu" {
   type = number
-}
-
-variable "entrypoint" {
-  type    = list(string)
-  default = null
 }
 
 variable "container_protocol" {

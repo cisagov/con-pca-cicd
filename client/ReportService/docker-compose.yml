@@ -13,6 +13,8 @@ services:
     networks:
       - frontend
       - backend
+    volumes:
+      - .:/app
     env_file:
       - .env
   browserless:

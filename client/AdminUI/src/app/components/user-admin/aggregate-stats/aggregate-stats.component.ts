@@ -11,7 +11,7 @@ import { humanTiming } from 'src/app/helper/utilities';
 export class AggregateStatsComponent implements OnInit {
 
   detail: any;
-  avg_time_to_click: string;
+  avgTimeToClick: string;
 
   constructor(
     public layoutSvc: LayoutMainService,
@@ -29,9 +29,9 @@ export class AggregateStatsComponent implements OnInit {
       this.detail = result;
 
       if (!this.detail.average_time_to_click_all_customers) {
-        this.avg_time_to_click = '(none)';
+        this.avgTimeToClick = '(none)';
       } else {
-        this.avg_time_to_click = humanTiming(this.detail.average_time_to_click_all_customers);
+        this.avgTimeToClick = humanTiming(this.detail.average_time_to_click_all_customers);
       }
     },
       error => {
