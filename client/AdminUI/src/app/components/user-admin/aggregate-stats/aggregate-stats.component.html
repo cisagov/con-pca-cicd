@@ -50,7 +50,7 @@
     <table class="table">
         <tr>
             <td>Average click rate across all customers</td>
-            <td class="text-right">{{click_rate}}</td>
+            <td class="text-right">{{this.detail.click_rate_across_all_customers | nullishCoalesce: 0 | percent: '0.2'}}</td>
         </tr>
         <tr>
             <td>Average time to click across all customers</td>
