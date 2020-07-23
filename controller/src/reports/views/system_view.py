@@ -21,7 +21,6 @@ from django.views.generic import TemplateView
 
 
 # from . import views
-from reports.charts import ChartGenerator
 from reports.utils import (
     generate_region_stats,
     get_subscription_stats_for_cycle,
@@ -51,8 +50,7 @@ logger = logging.getLogger(__name__)
 
 # GoPhish API Manager
 campaign_manager = CampaignManager()
-# Chart Generator
-generate_chart = ChartGenerator()
+
 
 class SystemReportsView(APIView):
     

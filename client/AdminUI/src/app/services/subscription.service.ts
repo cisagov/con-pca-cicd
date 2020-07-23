@@ -27,7 +27,7 @@ export class SubscriptionService {
   constructor(
     private http: HttpClient,
     private settingsService: SettingsService
-  ) {}
+  ) { }
 
   public getSubBehaviorSubject() {
     return this.subBehaviorSubject;
@@ -35,7 +35,7 @@ export class SubscriptionService {
   public setSubBhaviorSubject(sub) {
     this.subBehaviorSubject.next(sub);
   }
-  public clearSubBehaviorSubject(){
+  public clearSubBehaviorSubject() {
     this.subBehaviorSubject = new BehaviorSubject<Subscription>(new Subscription())
   }
 
@@ -225,19 +225,19 @@ export class SubscriptionService {
 
   public getMonthlyReport(s: Subscription): Observable<Blob> {
     const headers = new HttpHeaders().set('Accept', 'application/pdf');
-    const url = `${this.settingsService.settings.apiUrl}/api/v1/reports/${s.subscription_uuid}/pdf/monthly/`;
+    const url = `${this.settingsService.settings.apiUrl}/api/v1/reports/${s.subscription_uuid}/pdf/monthly/${s.start_date}/`;
     return this.http.get(url, { headers: headers, responseType: 'blob' });
   }
 
   public getCycleReport(s: Subscription) {
     const headers = new HttpHeaders().set('content-type', 'application/pdf');
-    const url = `${this.settingsService.settings.apiUrl}/api/v1/reports/${s.subscription_uuid}/pdf/cycle/`;
+    const url = `${this.settingsService.settings.apiUrl}/api/v1/reports/${s.subscription_uuid}/pdf/cycle/${s.start_date}/`;
     return this.http.get(url, { headers: headers, responseType: 'blob' });
   }
 
   public getYearlyReport(s: Subscription) {
     const headers = new HttpHeaders().set('content-type', 'application/pdf');
-    const url = `${this.settingsService.settings.apiUrl}/api/v1/reports/${s.subscription_uuid}/pdf/yearly/`;
+    const url = `${this.settingsService.settings.apiUrl}/api/v1/reports/${s.subscription_uuid}/pdf/yearly/${s.start_date}/`;
     return this.http.get(url, { headers: headers, responseType: 'blob' });
   }
 
@@ -256,16 +256,16 @@ export class SubscriptionService {
     return this.http.get(url);
   }
 
-  public getReportValuesForSubscription(subscription_uuid){
+  public getReportValuesForSubscription(subscription_uuid) {
     const url = `${this.settingsService.settings.apiUrl}/api/v1/cycleemailreported/${subscription_uuid}/`;
     return this.http.get(url)
   }
-  public postReportValuesForSubscription(data,subscription_uuid){
+  public postReportValuesForSubscription(data, subscription_uuid) {
     console.log(data)
     const url = `${this.settingsService.settings.apiUrl}/api/v1/cycleemailreported/${subscription_uuid}/`;
-    return this.http.post(url,data)
+    return this.http.post(url, data)
   }
-  public getSusbcriptionStatusEmailsSent(subscription_uuid){
+  public getSusbcriptionStatusEmailsSent(subscription_uuid) {
     const url = `${this.settingsService.settings.apiUrl}/api/v1/cycleemailreported/${subscription_uuid}/`;
     return this.http.get(url)
     // return [
