@@ -369,12 +369,6 @@ code complexity.
 
 4. Run Tests. [https://code.visualstudio.com/docs/python/testing#_run-tests](https://code.visualstudio.com/docs/python/testing#_run-tests)
 
-### Windows Issue
-
-One of the libraries, `WeasyPrint` is being used to convert html to pdf. For
-Windows development, additional configuration is needed, otherwise some of
-the tests will fail. The setup for installing on Windows can be found at
-[https://weasyprint.readthedocs.io/en/latest/install.html#windows](https://weasyprint.readthedocs.io/en/latest/install.html#windows)
 
 ### Pytest / Coverage
 

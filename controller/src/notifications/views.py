@@ -24,7 +24,6 @@ from django.core.files.storage import FileSystemStorage
 from django.core.mail.message import EmailMultiAlternatives
 from django.template.loader import render_to_string
 from notifications.utils import get_notification
-from weasyprint import HTML
 
 
 logger = logging.getLogger()
