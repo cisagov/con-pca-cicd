@@ -308,16 +308,16 @@ export class TemplateManagerComponent implements OnInit {
         );
         //POST - new template creation
       } else {
-        this.templateManagerSvc.saveNewTemplate(templateToSave).then(
-          success => {
+        this.templateManagerSvc.saveNewTemplate(templateToSave).subscribe(
+          (resp: any) => {
+            this.dialog.open(AlertComponent, {
+              data: {
+                title: '',
+                messageText: 'Your template was created.'
+              }
+            });
+    
             this.router.navigate(['/templates']);
-            // let retTemplate = new Template({
-            //   'template_uuid': success['template_uuid'],
-            //   'name': templateToSave.name,
-            //   'descriptive_words': templateToSave.descriptive_words,
-            //   'deception_score': 0
-            // })
-            // this.updateTemplateInList(retTemplate)
           },
           error => {
             console.log(error);

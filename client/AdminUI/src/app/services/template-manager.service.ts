@@ -64,22 +64,10 @@ export class TemplateManagerService {
    * @param template
    */
   saveNewTemplate(template: Template) {
-    return new Promise((resolve, reject) => {
-      this.http
-        .post(
-          `${this.settingsService.settings.apiUrl}/api/v1/templates/`,
-          template
-        )
-        .subscribe(
-          success => {
-            resolve(success);
-          },
-          error => {
-            reject(error);
-          },
-          () => {}
-        );
-    });
+    return this.http.post(
+      `${this.settingsService.settings.apiUrl}/api/v1/templates/`,
+      template
+    );
   }
 
   /**
