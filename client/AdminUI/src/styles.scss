@@ -253,6 +253,11 @@ $altTheme: mat-dark-theme($theme-primary, $theme-accent, $theme-warn);
     fill: map-get($foreground, 'text') !important;
   }
 
+  // always use light theme for report chart text, regardless of current app theme
+  .report-chart .ngx-charts text {
+    fill: map-get($mat-light-theme-foreground, 'text') !important;
+  }
+
   $table-border-width: 1px;
   $table-border-color: rgba(map-get($foreground, 'text'), 0.2) !important;
   $table-padding: .5rem;

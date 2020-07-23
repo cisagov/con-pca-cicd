@@ -1,4 +1,4 @@
-<div class="m-5">
+<div style="width: 8.5in" class="p-5">
     <article id="cover">
         <div class="row">
             <div id="blueDateBox">
@@ -155,13 +155,12 @@
                                 <li>Submitted data on malicious site, or</li>
                                 <li>Reported the email</li>
                             </ol>
-                            <p>To track statistics on the reported email, that information must be supplied to DHS in a
+                            <p>To track statistics on the reported email, that information must be supplied to DHS in
                                 the required format or a reporting mailbox must be available and advertised in the
-                                consuming
-                                organization.</p>
+                                consuming organization.</p>
                             <p>Most organizations will setup a reporting mailbox that employees can forward suspicious
-                                emails to
-                                for further investigation. In order to determine some statics such as time to first
+                                emails to for further investigation. In order to determine some statics such as time to
+                                first
                                 report, the email content,
                                 the target email address, and time of first report will be required to determine those
                                 statics.</p>
@@ -409,7 +408,7 @@
             <div class="col-12">
                 <table id="trendStatistics">
                     <tr>
-                        <th>Time from start of Quarterly Campagin until first reported:</th>
+                        <th>Time from start of Quarterly Campaign until first reported:</th>
                         <td>{{detail?.metrics.shortest_time_to_report}}</td>
                     </tr>
                     <tr>
@@ -499,15 +498,8 @@
                 <p>See instructions for description of deception levels and how to read these statistics.</p>
                 <div class="bar-chart m-2">
                     <h4>STATISTICS BY LEVEL</h4>
-                    <div class="d-flex" style="height: 30rem">
-                        <ngx-charts-bar-vertical-2d *ngIf="chart.chartResults" [results]="chart.chartResults"
-                            [scheme]="chart.colorScheme" [barPadding]="5" [groupPadding]="8" [gradient]="chart.gradient"
-                            [xAxis]="chart.showXAxis" [showXAxisLabel]="chart.showXAxisLabel"
-                            [xAxisLabel]="chart.xAxisLabel" [yAxis]="chart.showYAxis"
-                            [showYAxisLabel]="chart.showYAxisLabel" [yAxisLabel]="chart.yAxisLabel"
-                            [legend]="chart.showLegend" [legendPosition]="chart.legendPosition" [legendTitle]="''"
-                            [roundEdges]="false">
-                        </ngx-charts-bar-vertical-2d>
+                    <div style="display: grid;" class="report-chart">
+                        <app-chart-stats-by-level *ngIf="detail" [subscription]="detail"></app-chart-stats-by-level>
                     </div>
                 </div>
             </div>
@@ -680,62 +672,9 @@
                 </div>
                 <div class="bar-chart">
                     <h4>COMPLEXITY LEVEL</h4>
-                    <svg class="chart" width="800" height="310" aria-labelledby="title desc" role="img">
-                        <title id="title">COMPLEXITY LEVEL</title>
-                        <desc id="units-achieved">1; 2; 3; 4; 5; 6</desc>
-                        <g class="measure-line">
-                            <line x1="10" y1="224" x2="10" y2="234" style="stroke:#000;stroke-width:1" />
-                            <line x1="122" y1="224" x2="122" y2="234" style="stroke:#000;stroke-width:1" />
-                            <line x1="267" y1="224" x2="267" y2="234" style="stroke:#000;stroke-width:1" />
-                            <line x1="407" y1="224" x2="407" y2="234" style="stroke:#000;stroke-width:1" />
-                            <line x1="542" y1="224" x2="542" y2="234" style="stroke:#000;stroke-width:1" />
-                            <line x1="687" y1="224" x2="687" y2="234" style="stroke:#000;stroke-width:1" />
-                            <line x1="790" y1="224" x2="790" y2="234" style="stroke:#000;stroke-width:1" />
-                            <line x1="10" y1="225" x2="790" y2="225" style="stroke:#000;stroke-width:1" />
-                            <text x="50" y="270" class="caption" dy=".35em">1</text>
-                            <text x="195" y="270" class="caption" dy=".35em">2</text>
-                            <text x="335" y="270" class="caption" dy=".35em">3</text>
-                            <text x="470" y="270" class="caption" dy=".35em">4</text>
-                            <text x="615" y="270" class="caption" dy=".35em">5</text>
-                            <text x="735" y="270" class="caption" dy=".35em">6</text>
-                        </g>
-                        <g class="bar">
-                            <rect class="yellow-bar" width="15" height="20" x="40" y="205"></rect>
-                            <rect class="blue-bar" width="15" height="70" x="60" y=155></rect>
-                        </g>
-                        <g class="bar">
-                            <rect class="yellow-bar" width="15" height="5" x="180" y="220"></rect>
-                            <rect class="blue-bar" width="15" height="20" x="200" y="205"></rect>
-                        </g>
-                        <g class="bar">
-                            <rect class="yellow-bar" width="15" height="65" x="320" y="160"></rect>
-                            <rect class="blue-bar" width="15" height="60" x="340" y="165"></rect>
-                        </g>
-                        <g class="bar">
-                            <rect class="yellow-bar" width="15" height="70" x="460" y="155"></rect>
-                            <rect class="blue-bar" width="15" height="75" x="480" y="150"></rect>
-                        </g>
-                        <g class="bar">
-                            <rect class="yellow-bar" width="15" height="65" x="600" y="160"></rect>
-                            <rect class="blue-bar" width="15" height="20" x="620" y="205"></rect>
-                        </g>
-                        <g class="bar">
-                            <rect class="yellow-bar" width="15" height="100" x="720" y="125"></rect>
-                            <rect class="blue-bar" width="15" height="15" x="740" y="210"></rect>
-                        </g>
-                        <g class="line-chart">
-                            <line x1="50" y1="10" x2="195" y2="34" style="stroke:#015596;stroke-width:2" />
-                            <line x1="195" y1="34" x2="335" y2="115" style="stroke:#015596;stroke-width:2" />
-                            <line x1="335" y1="115" x2="470" y2="105" style="stroke:#015596;stroke-width:2" />
-                            <line x1="470" y1="105" x2="615" y2="125" style="stroke:#015596;stroke-width:2" />
-                            <line x1="615" y1="125" x2="735" y2="135" style="stroke:#015596;stroke-width:2" />
-                        </g>
-                    </svg>
-                    <ul class="complexityLegend">
-                        <li>Unique Click Rate</li>
-                        <li>User Report Rate</li>
-                        <li>Reporting Ratio</li>
-                    </ul>
+                    <div style="display: grid;" class="report-chart">
+                        <app-chart-complexity-level [subscription]="detail"></app-chart-complexity-level>
+                    </div>
                 </div>
             </div>
         </div>
@@ -783,7 +722,7 @@
                 <p id="intervalGraphDetails">The figures below show the percentage of users who clicked during
                     certain
                     time intervals in the first 24 hours of a campaign, and how quickly each complexity level was
-                    clicked. Overall, nearly [PERCENT] of all clicks occured within one hour of receiving a phishing
+                    clicked. Overall, nearly [PERCENT] of all clicks occurred within one hour of receiving a phishing
                     email. The median time to click was [TIME] across all campaigns.</p>
             </div>
         </div>
@@ -818,7 +757,8 @@
                     <div *ngFor="let conc of detail?.conclusions; index as i">
                         <div class="row">
                             <div class="col-12">
-                                <h5 class="closing-header"><span>Detailed Conclusion {{(i + 1)}} </span>- {{conc.category}}</h5>
+                                <h5 class="closing-header"><span>Detailed Conclusion {{(i + 1)}} </span>-
+                                    {{conc.category}}</h5>
                             </div>
                         </div>
                         <div class="row">
@@ -828,24 +768,19 @@
                         </div>
                     </div>
 
-                    <p>PCA is a young service with limited but meaningful data made available to
+                    <p>Con-PCA is a young service with limited but meaningful data made available to
                         {{ detail?.customer.full_name }}. VM hopes this
                         data will be actionable and allow {{ detail?.customer.full_name }} to reduce some level of
-                        risk
-                        within their
-                        organization. As more PCAs are completed over time, statistical reporting will be enhanced
-                        and a
-                        non-attributable overview of phishing results will be collected as part of the VM annual
-                        service
-                        review.</p>
+                        risk within their organization. As more PCAs are completed over time, statistical reporting will
+                        be enhanced
+                        and a non-attributable overview of phishing results will be collected as part of the VM annual
+                        service review.</p>
 
                     <p>As this new service continues to mature, VM looks forward to enhancing the PCA and building
-                        new
-                        test capabilities that include technical control checks. VM appreciates any comments to
-                        improve
-                        this report or service as a whole. For questions about this report or for future engagements
+                        new test capabilities that include technical control checks. VM appreciates any comments to
+                        improve this report or service as a whole. For questions about this report or for future
+                        engagements
                         with VM, please send an email to VM_info@hq.dhs.gov.</p>
-
                 </div>
             </div>
         </div>
@@ -857,48 +792,15 @@
                 <div class="col-12">
                     <h3 id="levelTitle">Appendix C: Templates</h3>
                     <div id="appendixOneText">
-                        <p>The phishing tempaltes used throughtout this service include six levels of variying
+                        <p>The phishing templates used throughout this service include six levels of varying
                             complexity.
                             Each level is based on a calculation of the factors designed to entice users to click on a
-                            malicious link. An emplanation of four factors used when determining an email’s level of
+                            malicious link. An explanation of four factors used when determining an email’s level of
                             complexity can be found in C1: Complexity. The following defines key differences
-                            between each
-                            level:</p>
+                            between each level:</p>
+
+                        <p>[Level descriptions]</p>
                     </div>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-12">
-                <h3 id="levelTitle">Level Descriptions</h3>
-                <div id="levelText">
-                    <b>Level 1:</b>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-                        labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                        laboris nisi ut aliquip ex ea commodo consequat.</p>
-                    <b>Level 2:</b>
-                    <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-                        pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt
-                        mollit an aborum Ornare massa eget egestas purus viverra accumsan in nisl nisi. Id interdum
-                        velit laoreet id donec ultrices tincidunt.</p>
-                    <b>Level 3:</b>
-                    <p>Egestas diam in arcu cursus. Facilisis leo vel fringilla est ullamcorper eget nulla. Gravida quis
-                        blandit turpis cursus in hac habitasse platea dictumst. Sit amet risus nullam eget felis eget.
-                        Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit an
-                        aborum</p>
-                    <b>Level 4:</b>
-                    <p>Elit eget gravida cum sociis natoque penatibus et magnis. Diam maecenas sed enim ut sem viverra
-                        aliquet eget sit. Massa ultricies mi quis hendrerit dolor magna eget. Facilisis volutpat est
-                        velit egestas dui id.</p>
-                    <b>Level 5:</b>
-                    <p>Ornare massa eget egestas purus viverra accumsan in nisl nisi. Id interdum velit laoreet id donec
-                        ultrices tincidunt. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-                        aliquip ex ea commodo consequat.</p>
-                    <b>Level 6:</b>
-                    <p>Facilisis leo vel fringilla est ullamcorper eget nulla. Gravida quis blandit turpis cursus in hac
-                        habitasse platea dictumst. Sit amet risus nullam eget felis eget. Elit eget gravida cum sociis
-                        natoque penatibus et magnis. Diam maecenas sed enim ut sem viverra aliquet eget sit. Massa
-                        ultricies mi quis hendrerit dolor magna eget. Facilisis volutpat est velit egestas dui id.</p>
                 </div>
             </div>
         </div>

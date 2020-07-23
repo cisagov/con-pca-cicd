@@ -23,6 +23,7 @@ body {
     font-family: Arial, sans-serif;
 }
 
+
 .container-fluid {
   padding: 0;
 }
@@ -491,7 +492,5 @@ table.report-table td {
   font-weight: 600;
 }
 
-// override the light/dark theme of the regular pages
-.theme-alternate .ngx-charts text, .theme-alternate .ngx-charts text {
-  fill: #000000 !important;
-}
+
+

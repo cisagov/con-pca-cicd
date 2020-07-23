@@ -76,6 +76,8 @@ import { CycleComponent } from './components/reports/cycle/cycle.component';
 import { YearlyComponent } from './components/reports/yearly/yearly.component';
 import { StatsByLevelComponent } from './components/reports/stats-by-level/stats-by-level.component';
 import { AggregateStatsComponent } from './components/user-admin/aggregate-stats/aggregate-stats.component';
+import { ChartComplexityLevelComponent } from './components/charts/chart-complexity-level/chart-complexity-level.component';
+import { ChartStatsByLevelComponent } from './components/charts/chart-stats-by-level/chart-stats-by-level.component';
 
 
 export function app_Init(settingsHttpService: SettingsHttpService) {
@@ -134,6 +136,8 @@ export function app_Init(settingsHttpService: SettingsHttpService) {
     YearlyComponent,
     StatsByLevelComponent,
     AggregateStatsComponent,
+    ChartComplexityLevelComponent,
+    ChartStatsByLevelComponent,
   ],
   imports: [
     BrowserModule,
