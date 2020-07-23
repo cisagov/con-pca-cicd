@@ -333,33 +333,6 @@ export class TemplateManagerComponent implements OnInit {
           }
         );
       }
-        /*
-        .then(
-          success => {
-            this.router.navigate(['/templates']);
-            // let retTemplate = new Template({
-            //   'template_uuid': success['template_uuid'],
-            //   'name': templateToSave.name,
-            //   'descriptive_words': templateToSave.descriptive_words,
-            //   'deception_score': 0
-            // })
-            // this.updateTemplateInList(retTemplate)
-          },
-          error => {
-            console.log(error);
-            if (error.status === 409) {
-              this.dialog.open(AlertComponent, {
-                // Parse error here
-                data: {
-                  title: 'Template Name Error',
-                  messageText: 'Template Name alreay exists.'
-                }
-              });
-            }
-          }
-        );
-      }*/
-
     } else {
       //non valid form, collect nonvalid fields and display to user
       const invalid = [];
