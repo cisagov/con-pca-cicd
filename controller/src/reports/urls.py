@@ -35,5 +35,4 @@ urlpatterns = [
         cycle_view.CycleStatusView.as_view(),
         name="cycle-status",
     )   
-      
 ]
