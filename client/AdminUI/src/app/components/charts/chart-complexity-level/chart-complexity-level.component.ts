@@ -37,7 +37,6 @@ export class ChartComplexityLevelComponent implements OnInit, OnChanges {
     this.chart.showLegend = true;
     this.chart.legendPosition = 'bottom';
     this.chart.colorScheme = this.schemeLowMedHigh;
-    console.log('complexity init');
   }
 
   ngOnChanges() {
