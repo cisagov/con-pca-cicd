@@ -308,7 +308,33 @@ export class TemplateManagerComponent implements OnInit {
         );
         //POST - new template creation
       } else {
-        this.templateManagerSvc.saveNewTemplate(templateToSave).then(
+        this.templateManagerSvc.saveNewTemplate(templateToSave).subscribe(
+          (resp: any) => {
+            this.dialog.open(AlertComponent, {
+              data: {
+                title: '',
+                messageText: 'Your template was created.'
+              }
+            });
+    
+            this.router.navigate(['/templates']);
+          },
+          error => {
+            console.log(error);
+            if (error.status === 409) {
+              this.dialog.open(AlertComponent, {
+                // Parse error here
+                data: {
+                  title: 'Template Name Error',
+                  messageText: 'Template Name alreay exists.'
+                }
+              });
+            }
+          }
+        );
+      }
+        /*
+        .then(
           success => {
             this.router.navigate(['/templates']);
             // let retTemplate = new Template({
@@ -332,7 +358,8 @@ export class TemplateManagerComponent implements OnInit {
             }
           }
         );
-      }
+      }*/
+
     } else {
       //non valid form, collect nonvalid fields and display to user
       const invalid = [];

@@ -64,6 +64,12 @@ export class TemplateManagerService {
    * @param template
    */
   saveNewTemplate(template: Template) {
+    return this.http.post(
+      `${this.settingsService.settings.apiUrl}/api/v1/templates/`,
+      template
+    );
+
+    /*
     return new Promise((resolve, reject) => {
       this.http
         .post(
@@ -80,6 +86,7 @@ export class TemplateManagerService {
           () => {}
         );
     });
+    */
   }
 
   /**
