@@ -35,10 +35,10 @@ export class ChartComplexityLevelComponent implements OnInit, OnChanges {
     this.chart.showXAxisLabel = true;
     this.chart.xAxisLabel = '';
     this.chart.showYAxisLabel = true;
-    this.chart.yAxisLabel = '';
+    this.chart.yAxisLabel = 'Percent';
     this.chart.showDataLabel = true;
     this.chart.showLegend = true;
-    this.chart.legendPosition = 'right';
+    this.chart.legendPosition = 'bottom';
     this.chart.colorScheme = this.schemeLowMedHigh;
   }
 

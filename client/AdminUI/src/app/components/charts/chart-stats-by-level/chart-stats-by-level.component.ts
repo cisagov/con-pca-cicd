@@ -37,7 +37,7 @@ export class ChartStatsByLevelComponent implements OnInit, OnChanges {
     this.chart.yAxisLabel = '';
     this.chart.showDataLabel = true;
     this.chart.showLegend = true;
-    this.chart.legendPosition = 'right';
+    this.chart.legendPosition = 'bottom';
     this.chart.colorScheme = this.schemeLowMedHigh;
   }
 
