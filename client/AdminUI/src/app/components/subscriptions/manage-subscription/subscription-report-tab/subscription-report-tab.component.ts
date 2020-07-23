@@ -10,7 +10,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 @Component({
   selector: 'subscription-report-tab',
   templateUrl: './subscription-report-tab.component.html',
-  styleUrls: ['./subscription-report-tab.component.scss'] 
+  styleUrls: ['./subscription-report-tab.component.scss']
 })
 export class SubscriptionReportTab implements OnInit {
 
@@ -28,24 +28,24 @@ export class SubscriptionReportTab implements OnInit {
   ];
 
   constructor(
-      private subscriptionSvc: SubscriptionService,
-      private reportSvc: ReportsService,
-      private router: Router
-  ) {}
+    private subscriptionSvc: SubscriptionService,
+    private reportSvc: ReportsService,
+    private router: Router
+  ) { }
 
   ngOnInit() {
-      this.subscriptionSvc.subBehaviorSubject.subscribe(data => {
-          if("subscription_uuid" in data){
-            this.subscription = data
-            this.emailsSent.sort = this.sort;
-            //@ts-ignore
-            this.selectedCycle = this.subscription.cycles[0]
-            if("email_report_history" in data){
-              //@ts-ignore
-              this.emailsSent.data = data.email_report_history
-            }
-          }
-      })
+    this.subscriptionSvc.subBehaviorSubject.subscribe(data => {
+      if ("subscription_uuid" in data) {
+        this.subscription = data
+        this.emailsSent.sort = this.sort;
+        //@ts-ignore
+        this.selectedCycle = this.subscription.cycles[0]
+        if ("email_report_history" in data) {
+          //@ts-ignore
+          this.emailsSent.data = data.email_report_history
+        }
+      }
+    })
   }
 
   refresh() {
@@ -64,29 +64,29 @@ export class SubscriptionReportTab implements OnInit {
     URL.revokeObjectURL(objectUrl);
   }
 
-  cycleChange(event){
-      console.log("cycle period changed, new Value ready for choosing the correct report")
-      console.log(event.value)
+  cycleChange(event) {
+    console.log("cycle period changed, new Value ready for choosing the correct report")
+    console.log(event.value)
   }
-  
-  viewMonthlyReport() {    
-    this.router.navigate(['/reports/monthly', this.subscription.subscription_uuid,this.subscription.start_date,false]);
-  
+
+  viewMonthlyReport() {
+    // this.router.navigate(['/reports/monthly', this.subscription.subscription_uuid, this.subscription.start_date, false]);
+
     // this.reportSvc.getCycleReportLocal(this.subscription.subscription_uuid,this.subscription.start_date).subscribe();
-    // this.subscriptionSvc.getMonthlyReport(this.subscription).subscribe(blob => {
-    //   this.downloadObject('monthly_subscription_report.pdf', blob);
-    // });
+    this.subscriptionSvc.getMonthlyReport(this.subscription).subscribe(blob => {
+      this.downloadObject('monthly_subscription_report.pdf', blob);
+    });
   }
 
   viewCycleReport() {
-    this.router.navigate(['/reports/cycle', this.subscription.subscription_uuid,this.subscription.start_date,false]);
+    this.router.navigate(['/reports/cycle', this.subscription.subscription_uuid, this.subscription.start_date, false]);
     // this.subscriptionSvc.getCycleReport(this.subscription).subscribe(blob => {
     //   this.downloadObject('cycle_subscription_report.pdf', blob);
     // });
   }
 
   viewYearlyReport() {
-    this.router.navigate(['/reports/yearly', this.subscription.subscription_uuid,this.subscription.start_date,false]);
+    this.router.navigate(['/reports/yearly', this.subscription.subscription_uuid, this.subscription.start_date, false]);
     // this.subscriptionSvc.getYearlyReport(this.subscription).subscribe(blob => {
     //   this.downloadObject('yearly_subscription_report.pdf', blob);
     // });
