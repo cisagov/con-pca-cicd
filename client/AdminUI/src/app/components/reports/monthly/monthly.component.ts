@@ -56,13 +56,11 @@ export class MonthlyComponent implements OnInit {
       } else {
         console.log('Invalid Date time provided, defaulting to now');
         this.reportStartDate = new Date();
-      }     
+      }
       this.reportsSvc.getMonthlyReport(this.subscriptionUuid, this.reportStartDate, isHeadless).subscribe(resp => {
         this.detail = resp;
         this.renderReport();
       });
-      
-
     });
   }
 

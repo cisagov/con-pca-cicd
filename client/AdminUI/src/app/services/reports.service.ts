@@ -16,11 +16,12 @@ export class ReportsService {
   ) { }
 
 
-  getYearlyReport(subscriptionUuid: string, date: Date, isHeadless: any) {
+  /**
+   * Returns a promise with the Yearly report for the specified subscription and date.
+   */
+  public getYearlyReport(subscriptionUuid: string, date: Date, isHeadless: any) {
     const m = moment(date);
-
     const urlRoot = isHeadless === 'false' ? this.settingsService.settings.apiUrl : this.settingsService.settings.apiUrlHeadless;
-
     const url = urlRoot
       + `/reports/${subscriptionUuid}/yearly/${m.format(AppSettings.MOMENT_ISO_DATE_FORMAT)}Z/`;
     return this.http.get(url);
