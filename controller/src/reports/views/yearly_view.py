@@ -51,8 +51,6 @@ class YearlyReportsView(APIView):
     Yearly Reports
     """
 
-    template_name = "reports/yearly.html"
-
     def get(self, request, **kwargs):
         subscription_uuid = self.kwargs["subscription_uuid"]
         subscription = get_single(

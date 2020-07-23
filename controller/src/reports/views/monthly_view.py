@@ -51,9 +51,6 @@ class MonthlyReportsView(APIView):
     Monthly reports
     """
 
-    template_name = "reports/monthly.html"
-
-
     def getMonthlyStats(self, subscription):
         start_date_param = self.kwargs["start_date"]
         target_report_date = datetime.strptime(

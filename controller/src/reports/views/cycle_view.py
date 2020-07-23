@@ -48,7 +48,6 @@ campaign_manager = CampaignManager()
 
 
 class CycleReportsView(APIView):
-    # template_name = "reports/cycle.html"
 
     def get(self, request, **kwargs):
         """
@@ -308,7 +307,6 @@ class CycleReportsView(APIView):
         return Response(context, status=status.HTTP_202_ACCEPTED)
 
 class CycleStatusView(APIView):
-    # template_name = "reports/cycle.html"
 
     def get(self, request, **kwargs):
 
