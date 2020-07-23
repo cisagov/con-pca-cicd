@@ -259,7 +259,7 @@
                         </tr>
                         <tr>
                             <td>Most successful phishing template</td>
-                            <td>Level 6 &quot;Update Paycheck System Policy&quot;</td>
+                            <td>{{detail?.metrics.most_successful_template}}</td>
                         </tr>
                     </table>
                 </div>
@@ -455,7 +455,7 @@
     <article id="pageSix">
         <div class="row">
             <div class="col-12">
-                <div id="successOverview">
+                <div id="successOverview" class="needs-work">
                     <h4>PHISHING SUCCESS OVERVIEW</h4>
                     <svg class="chart" height="210" aria-labelledby="title desc" role="img">
                         <title id="title">STATISTICS BY LEVEL</title>
@@ -519,12 +519,19 @@
                             testing
                             {{ detail?.customer.full_name }}. Specific phishing templates can be reviewed in
                             <u><b>Appendix C: Templates</b></u>
-                            with corresponding complexity calculations. VM divided the 1000 email addresses that
+                            with corresponding complexity calculations. VM divided the
+                            {{detail?.metrics.total_users_targeted}} email addresses that
                             {{ detail?.customer.full_name }} provided
-                            into three groups. Group 1 had 333 addresses and received levels 1 and 4. Group 2 had 333
-                            addresses and
-                            received levels 2 and 5. Group 3 had 334 addresses and received levels 3 and 6. See Table 3
-                            for descriptions of email levels 1 – 6.</p>
+                            into three groups.
+
+                            <span class="needs-work">
+                                Group 1 had 333 addresses and received levels 1 and 4. 
+                                Group 2 had 333 addresses and received levels 2 and 5. 
+                                Group 3 had 334 addresses and received levels 3 and 6.
+                            </span>
+
+
+                            See Table 3 for descriptions of email levels 1 – 6.</p>
                         <p>The assessment’s goal was to capture the behavior-based responses of
                             {{ detail?.customer.full_name }}
                             to email phishing
@@ -720,10 +727,11 @@
         <div class="row mb-5">
             <div class="col-12">
                 <p id="intervalGraphDetails">The figures below show the percentage of users who clicked during
-                    certain
-                    time intervals in the first 24 hours of a campaign, and how quickly each complexity level was
-                    clicked. Overall, nearly [PERCENT] of all clicks occurred within one hour of receiving a phishing
-                    email. The median time to click was [TIME] across all campaigns.</p>
+                    certain time intervals in the first 24 hours of a campaign, and how quickly each complexity level
+                    was
+                    clicked. <span class="needs-work">Overall, nearly [PERCENT] of all clicks occurred within one hour
+                        of receiving a phishing
+                        email. The median time to click was [TIME] across all campaigns.</span></p>
             </div>
         </div>
 
@@ -731,7 +739,7 @@
             <div class="col-12">
                 <div class="timeIntervalGraph">
                     <h4>TIME INTERVALS</h4>
-                    <div id="timeIntervalGraph"></div>
+                    <div id="timeIntervalGraph" class="needs-work"></div>
                 </div>
             </div>
         </div>
@@ -742,7 +750,7 @@
             <div class="col-12">
                 <div class="timeComplexityGraph">
                     <h4>COMPLEXITY LEVEL</h4>
-                    <div id="timeComplexityGraph"></div>
+                    <div id="timeComplexityGraph" class="needs-work"></div>
                 </div>
             </div>
         </div>
@@ -799,7 +807,7 @@
                             complexity can be found in C1: Complexity. The following defines key differences
                             between each level:</p>
 
-                        <p>[Level descriptions]</p>
+                        <p><span class="needs-work">[Level descriptions]</span></p>
                     </div>
                 </div>
             </div>
