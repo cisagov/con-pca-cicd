@@ -231,13 +231,13 @@ export class SubscriptionService {
 
   public getCycleReport(s: Subscription) {
     const headers = new HttpHeaders().set('content-type', 'application/pdf');
-    const url = `${this.settingsService.settings.apiUrl}/api/v1/reports/${s.subscription_uuid}/pdf/cycle/`;
+    const url = `${this.settingsService.settings.apiUrl}/api/v1/reports/${s.subscription_uuid}/pdf/cycle/${s.start_date}/`;
     return this.http.get(url, { headers: headers, responseType: 'blob' });
   }
 
   public getYearlyReport(s: Subscription) {
     const headers = new HttpHeaders().set('content-type', 'application/pdf');
-    const url = `${this.settingsService.settings.apiUrl}/api/v1/reports/${s.subscription_uuid}/pdf/yearly/`;
+    const url = `${this.settingsService.settings.apiUrl}/api/v1/reports/${s.subscription_uuid}/pdf/yearly/${s.start_date}/`;
     return this.http.get(url, { headers: headers, responseType: 'blob' });
   }
 
