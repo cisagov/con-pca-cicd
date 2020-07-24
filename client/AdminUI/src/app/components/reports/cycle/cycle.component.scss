@@ -458,21 +458,28 @@ table.report-table td {
 .template-container {
   border: 2px solid #dddddd; 
   border-radius: 1rem; 
-  padding: 1rem; 
+  // padding: 1rem; 
   margin-bottom: 2rem;
   display: grid;
 }
 
 .template-stat-header {
-  border-radius: 1rem;
+  border-radius: 1rem 1rem 0 0;
   background-color: #B8CFE0;
   padding: 1rem;
-  margin-bottom: 1rem;
 }
 
 .template-stat-header td {
   padding: .2rem;
   padding-right: 2rem;
+}
+
+.template-body {
+  border-left: 2px solid #eeeeee;
+  border-right: 2px solid #eeeeee;
+  border-bottom: 2px solid #eeeeee;
+  border-radius: 0 0 1rem 1rem;
+  padding: 1rem;
 }
 
 .congrats {
