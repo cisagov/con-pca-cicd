@@ -1,6 +1,5 @@
 import { Component, Input, OnChanges, OnInit } from '@angular/core';
-import { ChartsService } from 'src/app/services/charts.service';
-import { toTitleCase } from 'src/app/helper/utilities';
+
 
 @Component({
   selector: 'app-chart-complexity-level',
@@ -21,9 +20,7 @@ export class ChartComplexityLevelComponent implements OnInit, OnChanges {
   /**
    *
    */
-  constructor(
-    public chartsSvc: ChartsService
-  ) { }
+  constructor() { }
 
   /**
    *
@@ -46,6 +43,10 @@ export class ChartComplexityLevelComponent implements OnInit, OnChanges {
     if (!!this.subscription) {
       this.chart.chartResults = this.buildObjectForChart(this.subscription);
     }
+  }
+
+  yAxisTickFormatting(value) {
+    return percentTickFormatting(value);
   }
 
   /**
@@ -89,4 +90,8 @@ export class ChartComplexityLevelComponent implements OnInit, OnChanges {
 
     return obj;
   }
+}
+
+function percentTickFormatting(val: any) {
+  return val.toLocaleString() + '%';
 }

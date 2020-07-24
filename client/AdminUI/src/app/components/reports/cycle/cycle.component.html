@@ -399,7 +399,7 @@
                     <h3>Year Trends</h3>
                     <p>These trends show the effect of phishing training and email filtering investments.</p><br>
                 </div>
-                <div id="yearTrendGraph">
+                <div id="yearTrendGraph" class="needs-work">
                     <p class="pt-20">PERCENTAGE TRENDS</p>
                     <div id="trendLineGraph"></div>
                 </div>
@@ -416,7 +416,7 @@
                         <th style="padding: 0 75px 0 0;">Median Time to open email from first sent:</th>
                         <td>{{detail?.metrics.median_time_to_report}}</td>
                     </tr>
-                    <tr>
+                    <tr class="needs-work">
                         <th><i>Geometric mean.</i></th>
                     </tr>
                     <tr>
@@ -441,8 +441,7 @@
                             <li><sup>*</sup>Comparing median time and first reported time is the attacker window.
                             </li>
                             <li><sup>*</sup>Shortest time to open compared to first report indicates the window of
-                                time the attacker has
-                                before detection.</li>
+                                time the attacker has before detection.</li>
                             <li><sup>*</sup>An indicator of how long a phishing campaign could potentially be
                                 viable.</li>
                             <li><sup>**</sup>based on phishing assessments conducted by CISA VM.</li>
@@ -526,8 +525,8 @@
                             into three groups.
 
                             <span class="needs-work">
-                                Group 1 had 333 addresses and received levels 1 and 4. 
-                                Group 2 had 333 addresses and received levels 2 and 5. 
+                                Group 1 had 333 addresses and received levels 1 and 4.
+                                Group 2 had 333 addresses and received levels 2 and 5.
                                 Group 3 had 334 addresses and received levels 3 and 6.
                             </span>
 
@@ -541,8 +540,7 @@
                             detect, report, or stop the email phishing attempts. VM, as an external body conducting this
                             PCA, did not have direct knowledge whether or not emails successfully arrived in targeted
                             {{ detail?.customer.full_name }} user inboxes. To allow for a clear determination of click
-                            rates
-                            (email links clicked
+                            rates email links clicked
                             divided by emails sent), {{ detail?.customer.full_name }} or VM performed the following:</p>
                         <ul>
                             <li>{{ detail?.customer.full_name }} whitelisted the VM domain and IP address during the
@@ -567,19 +565,15 @@
                             likelihood of being clicked and a lower likelihood of being reported. This assessment also
                             gathered organizational emails through open-source intelligence techniques to determine
                             {{ detail?.customer.full_name }}’s potentially attackable online presence. See
-                            <u><b>Appendix
-                                    B: Detailed Results</b></u>
+                            <u><b>Appendix B: Detailed Results</b></u>
                             for detailed phishing and customer email data and <u><b>Appendix C: Templates</b></u>
-                            for a
-                            detailed explanation on complexity levels.</p>
+                            for a detailed explanation on complexity levels.</p>
                         <p>Over six weeks, {{ detail?.customer.full_name }}’s targeted users received at least two
-                            phishing
-                            emails of increasing
+                            phishing emails of increasing
                             complexity. Levels 1 – 3 were &quot;easier to detect&quot; and levels 4 – 6 were &quot;more
-                            difficult
-                            to detect,&quot; based on the number and type of indicators used. The table below summarizes
-                            the
-                            phishing templates used in this PCA.</p>
+                            difficult to detect,&quot; based on the number and type of indicators used. The table below
+                            summarizes
+                            the phishing templates used in this PCA.</p>
                     </div>
                 </div>
             </div>
@@ -601,14 +595,14 @@
                         <td class="text-right pr-5">{{campaign.deception_level}}</td>
                         <td class="text-right pr-5">{{campaign.template_details.deception_score}}</td>
                         <td>{{campaign.template_details.description}}</td>
-                        <td> TEMPLATE DOMAIN NOT TRACKED</td>
+                        <td><span class="needs-work">TEMPLATE DOMAIN NOT TRACKED</span></td>
                     </tr>
                 </table>
             </div>
         </div>
         <div class="row">
             <div class="col-12">
-                <h3 id="rateComparisonTitle">Click Rate vs. Report Rate</h3>
+                <h2 id="rateComparisonTitle">Click Rate vs. Report Rate</h2>
                 <div id="rateComparisonText">
                     <p>One of the most common measures of an organization’s susceptibility to phishing attacks is
                         targeted-user click rates. If an actual phishing attack is able to bypass technical controls and
@@ -636,48 +630,47 @@
     <article id="pageNine">
         <div class="row">
             <div class="col-12">
-                <p><small>In this report, the percentages shown by the user click rate and user report rate represent,
-                        respectively,
-                        the percentage of targeted people (determined by a unique email address) who have clicked at
-                        least once
-                        on a “malicious” link and those who reported a suspicious email. The number of unique clicks
-                        correlates
-                        to the number of end user devices potentially compromised in each campaign. The number of user
-                        reports
-                        correlates to the number of opportunities the {{ detail?.customer.full_name }} security team had
-                        to
-                        identify a potential breach and
-                        reduce its impact. Table 4 and Figure 1 summarize click and report rates.</small></p>
+                <p>In this report, the percentages shown by the user click rate and user report rate represent,
+                    respectively,
+                    the percentage of targeted people (determined by a unique email address) who have clicked at
+                    least once
+                    on a “malicious” link and those who reported a suspicious email. The number of unique clicks
+                    correlates
+                    to the number of end user devices potentially compromised in each campaign. The number of user
+                    reports
+                    correlates to the number of opportunities the {{ detail?.customer.full_name }} security team had
+                    to
+                    identify a potential breach and
+                    reduce its impact. Table 4 and Figure 1 summarize click and report rates.</p>
             </div>
         </div>
         <div class="row">
             <div class="col-12">
-                <div>
-                    <p class="table-title">Table 4: Unique User Click Rate and Report Rate Results</p>
-                    <table id="rateComparisonTable" class="report-table">
-                        <tr>
-                            <th class="text-right pr-5">Level</th>
-                            <th>Campaign</th>
-                            <th class="text-right">User<br> Click<br> Rate</th>
-                            <th class="text-right">Unique<br> Clicks</th>
-                            <th class="text-right">User<br> Report<br> Rate</th>
-                            <th class="text-right">User<br> Reports</th>
-                            <th class="text-right">Reporting<br> Ratio</th>
-                        </tr>
-                        <tr *ngFor="let campaign of detail?.subscription_stats.campaign_results">
-                            <td class="text-right pr-5">{{campaign.deception_level}}</td>
-                            <td>{{campaign.template_details.name}}</td>
-                            <td class="text-right">
-                                {{campaign.ratios.clicked_ratio | nullishCoalesce: 0 | percent: '0.2'}}</td>
-                            <td class="text-right">{{campaign.campaign_stats.clicked?.count | nullishCoalesce: 0}}</td>
-                            <td class="text-right">
-                                {{campaign.ratios.reported_ratio | nullishCoalesce: 0 | percent: '0.2'}}</td>
-                            <td class="text-right">{{campaign.campaign_stats.reported?.count | nullishCoalesce: 0}}</td>
-                            <td class="text-right">{{campaign.ratios.reported_ratio | number: '0.4'}}</td>
-                            <!-- <td>{{campaign.ratios.reported_ratio | number:1.0-2}}</td> -->
-                        </tr>
-                    </table>
-                </div>
+
+                <p class="table-title">Table 4: Unique User Click Rate and Report Rate Results</p>
+                <table id="rateComparisonTable" class="report-table">
+                    <tr>
+                        <th class="text-right pr-5">Level</th>
+                        <th>Campaign</th>
+                        <th class="text-right">User<br> Click<br> Rate</th>
+                        <th class="text-right">Unique<br> Clicks</th>
+                        <th class="text-right">User<br> Report<br> Rate</th>
+                        <th class="text-right">User<br> Reports</th>
+                        <th class="text-right">Reporting<br> Ratio</th>
+                    </tr>
+                    <tr *ngFor="let campaign of detail?.subscription_stats.campaign_results">
+                        <td class="text-right pr-5">{{campaign.deception_level}}</td>
+                        <td>{{campaign.template_details.name}}</td>
+                        <td class="text-right">
+                            {{campaign.ratios.clicked_ratio | nullishCoalesce: 0 | percent: '0.2'}}</td>
+                        <td class="text-right">{{campaign.campaign_stats.clicked?.count | nullishCoalesce: 0}}</td>
+                        <td class="text-right">
+                            {{campaign.ratios.reported_ratio | nullishCoalesce: 0 | percent: '0.2'}}</td>
+                        <td class="text-right">{{campaign.campaign_stats.reported?.count | nullishCoalesce: 0}}</td>
+                        <td class="text-right">{{campaign.ratios.reported_ratio | number: '0.4'}}</td>
+                    </tr>
+                </table>
+
                 <div class="bar-chart">
                     <h4>COMPLEXITY LEVEL</h4>
                     <div style="display: grid;" class="report-chart">
@@ -689,7 +682,7 @@
     </article>
 
     <article id="pageTen">
-        <div class="row">
+        <div class="row mb-5">
             <div class="col-12">
                 <h2 id="timeComparisonTitle">Click Time vs. Report Time</h2>
                 <div id="timeComparisonText">
@@ -706,7 +699,8 @@
                 </div>
             </div>
         </div>
-        <div class="row">
+
+        <div class="row mb-5">
             <div class="col-12">
                 <p class="table-title">Table 5: Click Time vs. Report Time </p>
                 <table id="timeComparisonTable" class="report-table">
@@ -725,14 +719,15 @@
                 </table>
             </div>
         </div>
+
         <div class="row mb-5">
             <div class="col-12">
                 <p id="intervalGraphDetails">The figures below show the percentage of users who clicked during
                     certain time intervals in the first 24 hours of a campaign, and how quickly each complexity level
-                    was
-                    clicked. <span class="needs-work">Overall, nearly [PERCENT] of all clicks occurred within one hour
-                        of receiving a phishing
-                        email. The median time to click was [TIME] across all campaigns.</span></p>
+                    was clicked.
+                    <span class="needs-work">Overall, nearly [PERCENT] of all clicks occurred within one hour
+                        of receiving a phishing email. The median time to click was [TIME] across all campaigns.</span>
+                </p>
             </div>
         </div>
 
@@ -740,7 +735,10 @@
             <div class="col-12">
                 <div class="timeIntervalGraph">
                     <h4>TIME INTERVALS</h4>
-                    <div id="timeIntervalGraph" class="needs-work"></div>
+                    <div style="display: grid;" class="report-chart">
+                        <app-chart-time-intervals *ngIf="detail" [subscription]="detail" style="height: 30rem;">
+                        </app-chart-time-intervals>
+                    </div>
                 </div>
             </div>
         </div>
@@ -749,9 +747,9 @@
     <article id="pageEleven">
         <div class="row">
             <div class="col-12">
-                <div class="timeComplexityGraph">
+                <div class="timeComplexityGraph needs-work">
                     <h4>COMPLEXITY LEVEL</h4>
-                    <div id="timeComplexityGraph" class="needs-work"></div>
+                    <div id="timeComplexityGraph"></div>
                 </div>
             </div>
         </div>
@@ -804,74 +802,123 @@
                         <p>The phishing templates used throughout this service include six levels of varying
                             complexity.
                             Each level is based on a calculation of the factors designed to entice users to click on a
-                            malicious link. An explanation of four factors used when determining an email’s level of
-                            complexity can be found in C1: Complexity. The following defines key differences
+                            malicious link. An explanation of <span class="needs-work">four factors used when determining an email’s level of
+                            complexity can be found in C1: Complexity.</span> The following defines key differences
                             between each level:</p>
 
-                        <p><span class="needs-work">[Level descriptions]</span></p>
+                        <p>
+                            Deception levels are determined for several factors. These factors are: </p>
+
+                        <ol>
+                            <li><strong>Appearance and Grammar:</strong> Appearance can be professional or poor. Poorly
+                                written emails
+                                should
+                                be easier to identify as a phish or compromise attempt.</li>
+                            <li><strong>Link Domain:</strong> Is the link deceptive in its appearance, such that it
+                                appears similar to an
+                                actual or real domain but is not the real address. Is the link spoofed or does the link
+                                appear hidden to hide the actual intended domain.</li>
+                            <li><strong>Logo / Graphics:</strong> Does the phishing email utilize logos or graphics
+                                stolen from a
+                                legitimate
+                                organization to present itself as legitimate.</li>
+                            <li><strong>Sender External:</strong> Is the sender external to the organization. External
+                                senders are more
+                                likely to be a phish.</li>
+                            <li><strong>Sender Internal:</strong>
+                            <li><strong>Authoritative:</strong> Does the email appeal to an authority or have an
+                                authoritative tone?</li>
+                            <li><strong>Appealing to an
+                                    Relevancy Organization:</strong> Does the email utilize information that is relevant
+                                or timely to
+                                the
+                                organization specifically.</li>
+                            <li><strong>Public News:</strong> Does the email utilize public news or current events to
+                                appear legitimate
+                                or
+                                hide links or other deceptions.</li>
+                            <li><strong>Utilizing Fear:</strong></li>
+                            <li>Appealing to Duty or Obligation</li>
+                            <li>Arousing Curiosity</li>
+                            <li>Appealing to an Individuals Greed</li>
+                        </ol>
+                        <p>Low: A low level template are those which should be easy to identify as a phishing email. The
+                            email may be poorly written. The link domain may be blatantly unrelated, come from an
+                            external sender, or have outlandish and ridiculous claims.</p>
+
+                        <p>Moderate: Moderate level templates are more sophisticated then low level and should be more
+                            difficult to detect. This level of email may have well written prose, be grammatically
+                            correct, and professional in display but be general in nature. </p>
+
+                        <p>High: High level phish templates typically target specific individuals or groups within an
+                            organization and utilize information that generally would not be know by the public at
+                            large. They use this targeted information to provide a feeling of familiarity to better
+                            deceive the target. This level is the most difficult to identify as malicious.</p>
                     </div>
                 </div>
             </div>
         </div>
     </article>
 
-    <article id="pagefourteen"></article>
-
     <div *ngFor="let group of detail?.templates_by_group; index as outer">
         <article class="template_pages" *ngFor="let campaign of group; index as inner">
             <div class="row">
-                <div class="col-12 template-container">
-                    <div *ngIf="inner === 1">
-                        <h3 *ngIf="outer === 1" id="dumbPhishTitle">
+                <div class="col-12">
+                    <div *ngIf="inner === 0">
+                        <h3 *ngIf="(outer + 1) === 1">
                             <div class="template-level-header">
                                 Low Templates/Dumb Phish</div>
                         </h3>
-                        <h3 *ngIf="outer === 2" id="dumbPhishTitle">
+                        <h3 *ngIf="(outer + 1) === 2">
                             <div class="template-level-header">
                                 Medium Templates/Moderate Phish</div>
                         </h3>
-                        <h3 *ngIf="outer === 3" id="dumbPhishTitle">
+                        <h3 *ngIf="(outer + 1) === 3">
                             <div class="template-level-header">
                                 Difficult Templates/Spear Phish</div>
                         </h3>
                     </div>
-                    <table id="dumbPhishTable">
-                        <tr>
-                            <td>Template Name:</td>
-                            <td>{{campaign.template_details.name}}</td>
-                        </tr>
-                        <tr>
-                            <td>Deception Level:</td>
-                            <td>{{campaign.deception_level}}</td>
-                        </tr>
-                        <tr>
-                            <td>Percent of Campaigns:</td>
-                            <td>{{campaign.campaign_stats.percent_of_campaigns}}%</td>
-                        </tr>
-                        <tr>
-                            <td>Total Sent:</td>
-                            <td>{{campaign.campaign_stats.sent?.count | nullishCoalesce: 0}} </td>
-                        </tr>
-                        <tr>
-                            <td>Clicked:</td>
-                            <td>{{campaign.campaign_stats.clicked?.count | nullishCoalesce: 0}} </td>
-                        </tr>
-                        <tr>
-                            <td>Submitted Data:</td>
-                            <td>{{campaign.campaign_stats.submitted?.count | nullishCoalesce: 0}} </td>
-                        </tr>
-                        <tr>
-                            <td>Reported:</td>
-                            <td>{{campaign.campaign_stats.reported?.count | nullishCoalesce: 0}} </td>
-                        </tr>
-                    </table>
-                    <div class="row">
-                        <div class="col-12">
-                            <div>
-                                <b>Subject:</b> {{campaign.template_details.subject | nullishCoalesce: "N/A"}}<br>
-                                <b>From:</b> {{campaign.template_details.from_address | nullishCoalesce: "N/A"}}<br>
-                                <b>Email Body:</b>
-                                <div [innerHTML]="campaign.template_details.html|safe">
+                    <div class="template-container">
+                        <div class="template-stat-header">
+                            <table>
+                                <tr>
+                                    <td>Template Name:</td>
+                                    <td>{{campaign.template_details.name}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Deception Level:</td>
+                                    <td>{{campaign.deception_level}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Percent of Campaigns:</td>
+                                    <td>{{campaign.campaign_stats.percent_of_campaigns}}%</td>
+                                </tr>
+                                <tr>
+                                    <td>Total Sent:</td>
+                                    <td>{{campaign.campaign_stats.sent?.count | nullishCoalesce: 0}} </td>
+                                </tr>
+                                <tr>
+                                    <td>Clicked:</td>
+                                    <td>{{campaign.campaign_stats.clicked?.count | nullishCoalesce: 0}} </td>
+                                </tr>
+                                <tr>
+                                    <td>Submitted Data:</td>
+                                    <td>{{campaign.campaign_stats.submitted?.count | nullishCoalesce: 0}} </td>
+                                </tr>
+                                <tr>
+                                    <td>Reported:</td>
+                                    <td>{{campaign.campaign_stats.reported?.count | nullishCoalesce: 0}} </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="row">
+                            <div class="col-12">
+                                <div>
+                                    <b>Subject:</b> {{campaign.template_details.subject | nullishCoalesce: "N/A"}}<br>
+                                    <b>From:</b> {{campaign.template_details.from_address | nullishCoalesce: "N/A"}}<br>
+                                    <b style="margin-bottom: 1rem;">Email Body:</b>
+                                    <div [innerHTML]="campaign.template_details.html|safe">
+                                    </div>
                                 </div>
                             </div>
                         </div>
