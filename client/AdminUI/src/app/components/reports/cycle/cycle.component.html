@@ -736,7 +736,8 @@
                 <div class="timeIntervalGraph">
                     <h4>TIME INTERVALS</h4>
                     <div style="display: grid;" class="report-chart">
-                        <app-chart-time-intervals *ngIf="detail" [subscription]="detail" style="height: 30rem;"></app-chart-time-intervals>
+                        <app-chart-time-intervals *ngIf="detail" [subscription]="detail" style="height: 30rem;">
+                        </app-chart-time-intervals>
                     </div>
                 </div>
             </div>
@@ -801,11 +802,58 @@
                         <p>The phishing templates used throughout this service include six levels of varying
                             complexity.
                             Each level is based on a calculation of the factors designed to entice users to click on a
-                            malicious link. An explanation of four factors used when determining an email’s level of
-                            complexity can be found in C1: Complexity. The following defines key differences
+                            malicious link. An explanation of <span class="needs-work">four factors used when determining an email’s level of
+                            complexity can be found in C1: Complexity.</span> The following defines key differences
                             between each level:</p>
 
-                        <p><span class="needs-work">[Level descriptions]</span></p>
+                        <p>
+                            Deception levels are determined for several factors. These factors are: </p>
+
+                        <ol>
+                            <li><strong>Appearance and Grammar:</strong> Appearance can be professional or poor. Poorly
+                                written emails
+                                should
+                                be easier to identify as a phish or compromise attempt.</li>
+                            <li><strong>Link Domain:</strong> Is the link deceptive in its appearance, such that it
+                                appears similar to an
+                                actual or real domain but is not the real address. Is the link spoofed or does the link
+                                appear hidden to hide the actual intended domain.</li>
+                            <li><strong>Logo / Graphics:</strong> Does the phishing email utilize logos or graphics
+                                stolen from a
+                                legitimate
+                                organization to present itself as legitimate.</li>
+                            <li><strong>Sender External:</strong> Is the sender external to the organization. External
+                                senders are more
+                                likely to be a phish.</li>
+                            <li><strong>Sender Internal:</strong>
+                            <li><strong>Authoritative:</strong> Does the email appeal to an authority or have an
+                                authoritative tone?</li>
+                            <li><strong>Appealing to an
+                                    Relevancy Organization:</strong> Does the email utilize information that is relevant
+                                or timely to
+                                the
+                                organization specifically.</li>
+                            <li><strong>Public News:</strong> Does the email utilize public news or current events to
+                                appear legitimate
+                                or
+                                hide links or other deceptions.</li>
+                            <li><strong>Utilizing Fear:</strong></li>
+                            <li>Appealing to Duty or Obligation</li>
+                            <li>Arousing Curiosity</li>
+                            <li>Appealing to an Individuals Greed</li>
+                        </ol>
+                        <p>Low: A low level template are those which should be easy to identify as a phishing email. The
+                            email may be poorly written. The link domain may be blatantly unrelated, come from an
+                            external sender, or have outlandish and ridiculous claims.</p>
+
+                        <p>Moderate: Moderate level templates are more sophisticated then low level and should be more
+                            difficult to detect. This level of email may have well written prose, be grammatically
+                            correct, and professional in display but be general in nature. </p>
+
+                        <p>High: High level phish templates typically target specific individuals or groups within an
+                            organization and utilize information that generally would not be know by the public at
+                            large. They use this targeted information to provide a feeling of familiarity to better
+                            deceive the target. This level is the most difficult to identify as malicious.</p>
                     </div>
                 </div>
             </div>
