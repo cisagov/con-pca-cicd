@@ -70,22 +70,34 @@ export class SubscriptionReportTab implements OnInit {
   }
 
   viewMonthlyReport() {
-    this.subscriptionSvc.getMonthlyReport(this.subscription).subscribe(blob => {
-      this.downloadObject('subscription_status_report.pdf', blob);
-    });
+    this.router.navigate(['/reports/monthly', this.subscription.subscription_uuid, this.subscription.start_date, false]);
   }
 
   viewCycleReport() {
-    this.subscriptionSvc.getCycleReport(this.subscription).subscribe(blob => {
-      this.downloadObject('subscription_cycle_report.pdf', blob);
-    });
+    this.router.navigate(['/reports/cycle', this.subscription.subscription_uuid, this.subscription.start_date, false]);
   }
 
   viewYearlyReport() {
-    this.subscriptionSvc.getYearlyReport(this.subscription).subscribe(blob => {
-      this.downloadObject('subscription_yearly_report.pdf', blob);
-    });
+    this.router.navigate(['/reports/yearly', this.subscription.subscription_uuid, this.subscription.start_date, false]);    
   }
+
+  // viewMonthlyReport() {
+  //   this.subscriptionSvc.getMonthlyReport(this.subscription).subscribe(blob => {
+  //     this.downloadObject('subscription_status_report.pdf', blob);
+  //   });
+  // }
+
+  // viewCycleReport() {
+  //   this.subscriptionSvc.getCycleReport(this.subscription).subscribe(blob => {
+  //     this.downloadObject('subscription_cycle_report.pdf', blob);
+  //   });
+  // }
+
+  // viewYearlyReport() {
+  //   this.subscriptionSvc.getYearlyReport(this.subscription).subscribe(blob => {
+  //     this.downloadObject('subscription_yearly_report.pdf', blob);
+  //   });
+  // }
 
   sendMonthlyReport() {
     this.subscriptionSvc.sendMonthlyReport(this.subscription).subscribe(() => {
