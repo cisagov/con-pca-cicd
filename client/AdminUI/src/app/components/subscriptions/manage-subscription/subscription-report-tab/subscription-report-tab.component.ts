@@ -70,15 +70,15 @@ export class SubscriptionReportTab implements OnInit {
   }
 
   viewMonthlyReport() {
-    this.router.navigate(['/reports/monthly', this.subscription.subscription_uuid, this.subscription.start_date, false]);
+    this.router.navigate(['/reports/monthly', this.subscription.subscription_uuid, new Date(), false]);
   }
 
   viewCycleReport() {
-    this.router.navigate(['/reports/cycle', this.subscription.subscription_uuid, this.subscription.start_date, false]);
+    this.router.navigate(['/reports/cycle', this.subscription.subscription_uuid, new Date(), false]);
   }
 
   viewYearlyReport() {
-    this.router.navigate(['/reports/yearly', this.subscription.subscription_uuid, this.subscription.start_date, false]);    
+    this.router.navigate(['/reports/yearly', this.subscription.subscription_uuid, new Date(), false]);
   }
 
   // viewMonthlyReport() {
