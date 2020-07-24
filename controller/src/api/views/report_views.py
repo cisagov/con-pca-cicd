@@ -340,7 +340,7 @@ class YearlyReportsEmailView(APIView):
 def monthly_reports_pdf_view(request, subscription_uuid, cycle):
     """Monthly_reports_pdf_view."""
     filename = "subscription_status_report.pdf"
-    url = f"http://{settings.REPORTS_API}/api/monthly/{subscription_uuid}/{cycle}/pdf/"
+    url = f"{settings.REPORTS_API}/api/monthly/{subscription_uuid}/{cycle}/pdf/"
     fs = FileSystemStorage("/tmp")
     resp = requests.get(url, stream=True)
     pdf_file = Path(f"/tmp/{filename}")
@@ -353,7 +353,7 @@ def monthly_reports_pdf_view(request, subscription_uuid, cycle):
 def cycle_reports_pdf_view(request, subscription_uuid, cycle):
     """Cycle_reports_pdf_view."""
     filename = "subscription_cycle_report.pdf"
-    url = f"http://{settings.REPORTS_API}/api/cycle/{subscription_uuid}/{cycle}/pdf/"
+    url = f"{settings.REPORTS_API}/api/cycle/{subscription_uuid}/{cycle}/pdf/"
     fs = FileSystemStorage("/tmp")
     resp = requests.get(url, stream=True)
     pdf_file = Path(f"/tmp/{filename}")
@@ -367,7 +367,7 @@ def cycle_reports_pdf_view(request, subscription_uuid, cycle):
 def yearly_reports_pdf_view(request, subscription_uuid, cycle):
     """Yearly_reports_pdf_view."""
     filename = "subscription_yearly_report.pdf"
-    url = f"http://{settings.REPORTS_API}/api/yearly/{subscription_uuid}/{cycle}/pdf/"
+    url = f"{settings.REPORTS_API}/api/yearly/{subscription_uuid}/{cycle}/pdf/"
     fs = FileSystemStorage("/tmp")
     resp = requests.get(url, stream=True)
     pdf_file = Path(f"/tmp/{filename}")
