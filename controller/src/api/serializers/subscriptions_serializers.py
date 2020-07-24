@@ -92,6 +92,7 @@ class GoPhishTimelineSerializer(serializers.Serializer):
     time = serializers.DateTimeField()
     message = serializers.CharField(max_length=255)
     details = serializers.CharField(required=False)
+    duplicate = serializers.BooleanField(required=False)
 
 
 class PhishingResultsSerializer(serializers.Serializer):

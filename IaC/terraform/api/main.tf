@@ -113,7 +113,7 @@ locals {
     "COGNITO_USER_POOL" : element(tolist(data.aws_cognito_user_pools.users.ids), 0),
     "LOCAL_API_KEY" : random_string.local_api_key.result,
     "MONGO_TYPE" : "DOCUMENTDB",
-    "REPORTS_API" : "https://${data.aws_lb.private.dns_name}:3030/"
+    "REPORTS_API" : "https://${data.aws_lb.private.dns_name}:3030"
   }
 
   secrets = {
