@@ -342,7 +342,7 @@ def monthly_reports_pdf_view(request, subscription_uuid, cycle):
     filename = "subscription_status_report.pdf"
     url = f"{settings.REPORTS_API}/api/monthly/{subscription_uuid}/{cycle}/pdf/"
     fs = FileSystemStorage("/tmp")
-    resp = requests.get(url, stream=True)
+    resp = requests.get(url, stream=True, verify=False)
     pdf_file = Path(f"/tmp/{filename}")
     pdf_file.write_bytes(resp.content)
     return FileResponse(fs.open(filename), as_attachment=True, filename=filename)
@@ -355,7 +355,7 @@ def cycle_reports_pdf_view(request, subscription_uuid, cycle):
     filename = "subscription_cycle_report.pdf"
     url = f"{settings.REPORTS_API}/api/cycle/{subscription_uuid}/{cycle}/pdf/"
     fs = FileSystemStorage("/tmp")
-    resp = requests.get(url, stream=True)
+    resp = requests.get(url, stream=True, verify=False)
     pdf_file = Path(f"/tmp/{filename}")
     pdf_file.write_bytes(resp.content)
     return FileResponse(fs.open(filename), as_attachment=True, filename=filename)
@@ -369,7 +369,7 @@ def yearly_reports_pdf_view(request, subscription_uuid, cycle):
     filename = "subscription_yearly_report.pdf"
     url = f"{settings.REPORTS_API}/api/yearly/{subscription_uuid}/{cycle}/pdf/"
     fs = FileSystemStorage("/tmp")
-    resp = requests.get(url, stream=True)
+    resp = requests.get(url, stream=True, verify=False)
     pdf_file = Path(f"/tmp/{filename}")
     pdf_file.write_bytes(resp.content)
     return FileResponse(fs.open(filename), as_attachment=True, filename=filename)
