@@ -36,8 +36,8 @@ def create_subscription_name(customer: dict):
         names = [x["name"] for x in subscription_list]
         list_tupe = []
         for name in names:
-            int_ind, sub_id = name.split(".")
-            _, sub = int_ind.split("_")
+            int_ind, sub_id = name.rsplit(".", 1)
+            _, sub = int_ind.rsplit("_", 1)
             list_tupe.append((sub, sub_id))
         # now sort tuple list by second element
         list_tupe.sort(key=lambda tup: tup[1])
