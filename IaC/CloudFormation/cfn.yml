@@ -51,3 +51,18 @@ Resources:
                     - ServerSideEncryptionByDefault:
                         SSEAlgorithm: AES256
             BucketName: !Sub "con-pca-${ENV}-tf-backend"
+
+    TerraformLock:
+        Type: AWS::DynamoDB::Table
+        Properties:
+            TableName: con-pca-tf-lock
+            BillingMode: PAY_PER_REQUEST
+            
+            KeySchema:
+                - AttributeName: "LockID"
+                  KeyType: HASH
+
+            AttributeDefinitions:
+                - AttributeName: "LockID"
+                  AttributeType: "S"
+
