@@ -91,6 +91,7 @@ def get_subscription_cycles(campaigns, start_date, end_date):
     campaigns_in_cycle = [c["campaign_id"] for c in campaigns]
     return [
         {
+            "cycle_uuid": str(uuid4()),
             "start_date": start_date,
             "end_date": end_date,
             "active": True,
