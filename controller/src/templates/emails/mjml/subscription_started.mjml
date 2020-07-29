@@ -3,7 +3,7 @@
     <mj-style>
       ul li {
         background: #cce5ff;
-        margin: 5px;
+        margin: 10px;
       }
     </mj-style>
   </mj-head>
