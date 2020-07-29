@@ -59,7 +59,7 @@ class ReportsEmailSender:
         )
         recipient_copy = dhs_contact.get("email") if dhs_contact else None
         first_name = self.subscription.get("primary_contact").get("first_name")
-        last_name = self.subscription.get("primary_contact").get("last_name")
+        last_name = self.subscription.get("primary_contact").get("last_name")        
 
         # pass context to email templates
         context = {"first_name": first_name, "last_name": last_name}
@@ -117,6 +117,8 @@ class SubscriptionNotificationEmailSender:
         """Create Contect Data Method."""
         first_name = self.subscription.get("primary_contact").get("first_name")
         last_name = self.subscription.get("primary_contact").get("last_name")
+        current_cycle =  current_cycle = self.subscription.get("cycles")[-1]
+        cycle_uuid = current_cycle.get("cycle_uuid")
 
         logger.info(f'start_date={self.subscription.get("start_date")}')
         # Putting .split on the start and end date because sometimes it comes formatted with a float at the end.
@@ -143,6 +145,7 @@ class SubscriptionNotificationEmailSender:
             "last_name": last_name,
             "start_date": start_date,
             "end_date": end_date,
+            "cycle_uuid":cycle_uuid
         }
 
     def send(self):
