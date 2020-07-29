@@ -12,7 +12,7 @@ Parameters:
     LIFECYCLE:
         Type: String
         Description: Lifecycle policy for repositories
-        Default: "{\"rules\": [ { \"rulePriority\": 1, \"description\": \"Keep only one untagged image, expire all others\", \"selection\": { \"tagStatus\": \"untagged\", \"countType\": \"imageCountMoreThan\", \"countNumber\": 1 }, \"action\": { \"type\": \"expire\" } } ]\r\n}"
+        Default: "{\"rules\": [ { \"rulePriority\": 1, \"description\": \"Keep up to 5 images, expire the rest\", \"selection\": { \"tagStatus\": \"any\", \"countType\": \"imageCountMoreThan\", \"countNumber\": 5 }, \"action\": { \"type\": \"expire\" } } ]\r\n}"
 Resources:
     WebRepo:
         Type: AWS::ECR::Repository
