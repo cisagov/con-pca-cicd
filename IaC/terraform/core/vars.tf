@@ -1,7 +1,3 @@
-variable "env" {
-  type = string
-}
-
 variable "app" {
   type    = string
   default = "con-pca"

@@ -1,14 +1,6 @@
 AWSTemplateFormatVersion: "2010-09-09"
 Description: Core Resources for Application (terraform-backend, ecr repositories)
-Parameters:
-    ENV:
-        Type: String
-        AllowedValues:
-            - dev
-            - stage
-            - prod
-        Description: Environment
-
+cleanupParameters:
     LIFECYCLE:
         Type: String
         Description: Lifecycle policy for repositories
@@ -50,7 +42,17 @@ Resources:
                 ServerSideEncryptionConfiguration:
                     - ServerSideEncryptionByDefault:
                         SSEAlgorithm: AES256
-            BucketName: !Sub "con-pca-${ENV}-tf-backend"
+            BucketName: !Sub "con-pca-stage-tf-backend"
+
+    SharedTerraformBackend:
+        Type: AWS::S3::Bucket
+        Properties:
+            AccessControl: Private
+            BucketEncryption:
+                ServerSideEncryptionConfiguration:
+                    - ServerSideEncryptionByDefault:
+                        SSEAlgorithm: AES256
+            BucketName: !Sub "con-pca-terraform"
 
     TerraformLock:
         Type: AWS::DynamoDB::Table

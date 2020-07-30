@@ -1,1 +1,1 @@
-aws cloudformation update-stack --stack-name con-pca-stage --template-body file://cfn.yml --parameters file://stage-params.json
+aws cloudformation update-stack --stack-name con-pca-stage --template-body file://cfn.yml
