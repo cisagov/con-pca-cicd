@@ -1,18 +1,10 @@
 AWSTemplateFormatVersion: "2010-09-09"
 Description: Core Resources for Application (terraform-backend, ecr repositories)
 Parameters:
-    ENV:
-        Type: String
-        AllowedValues:
-            - dev
-            - stage
-            - prod
-        Description: Environment
-
     LIFECYCLE:
         Type: String
         Description: Lifecycle policy for repositories
-        Default: "{\"rules\": [ { \"rulePriority\": 1, \"description\": \"Keep only one untagged image, expire all others\", \"selection\": { \"tagStatus\": \"untagged\", \"countType\": \"imageCountMoreThan\", \"countNumber\": 1 }, \"action\": { \"type\": \"expire\" } } ]\r\n}"
+        Default: "{\"rules\": [ { \"rulePriority\": 1, \"description\": \"Keep up to 10 images, expire the rest\", \"selection\": { \"tagStatus\": \"any\", \"countType\": \"imageCountMoreThan\", \"countNumber\": 10 }, \"action\": { \"type\": \"expire\" } } ]\r\n}"
 Resources:
     WebRepo:
         Type: AWS::ECR::Repository
@@ -42,7 +34,7 @@ Resources:
             LifecyclePolicy:
                 LifecyclePolicyText: !Ref LIFECYCLE
 
-    TerraformBackend:
+    SharedTerraformBackend:
         Type: AWS::S3::Bucket
         Properties:
             AccessControl: Private
@@ -50,4 +42,19 @@ Resources:
                 ServerSideEncryptionConfiguration:
                     - ServerSideEncryptionByDefault:
                         SSEAlgorithm: AES256
-            BucketName: !Sub "con-pca-${ENV}-tf-backend"
+            BucketName: !Sub "con-pca-terraform"
+
+    TerraformLock:
+        Type: AWS::DynamoDB::Table
+        Properties:
+            TableName: con-pca-tf-lock
+            BillingMode: PAY_PER_REQUEST
+            
+            KeySchema:
+                - AttributeName: "LockID"
+                  KeyType: HASH
+
+            AttributeDefinitions:
+                - AttributeName: "LockID"
+                  AttributeType: "S"
+
