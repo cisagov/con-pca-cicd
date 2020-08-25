@@ -2,7 +2,7 @@
 #  SELF-SIGNED CERTS
 #=================================================
 module "certs" {
-  source      = "../modules/certs"
+  source      = "./modules/certs"
   namespace   = var.app
   stage       = "stage"
   name        = "alb"
