@@ -16,7 +16,7 @@ module "certs" {
 resource "aws_security_group" "alb" {
   name        = "${var.app}-stage-alb-sg"
   description = "Allowed ports into alb"
-  vpc_id      = module.vpc.vpc_id
+  vpc_id      = var.vpc_id
 
   ingress {
     from_port   = 0
@@ -37,9 +37,9 @@ module "alb" {
   name               = "public"
   http_enabled       = false
   internal           = false
-  vpc_id             = module.vpc.vpc_id
+  vpc_id             = var.vpc_id
   security_group_ids = [aws_security_group.alb.id]
-  subnet_ids         = module.subnets.public_subnet_ids
+  subnet_ids         = var.public_subnet_ids
 }
 
 module "alb_internal" {
@@ -49,9 +49,9 @@ module "alb_internal" {
   name               = "private"
   http_enabled       = false
   internal           = true
-  vpc_id             = module.vpc.vpc_id
+  vpc_id             = var.vpc_id
   security_group_ids = [aws_security_group.alb.id]
-  subnet_ids         = module.subnets.private_subnet_ids
+  subnet_ids         = var.private_subnet_ids
 }
 
 #=================================================

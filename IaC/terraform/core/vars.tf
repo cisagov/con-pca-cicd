@@ -1,9 +1,19 @@
 variable "app" {
-  type    = string
-  default = "con-pca"
+  type = string
 }
 
 variable "region" {
-  type    = string
-  default = "us-east-1"
+  type = string
+}
+
+variable "vpc_id" {
+  type = string
+}
+
+variable "private_subnet_ids" {
+  type = list(string)
+}
+
+variable "public_subnet_ids" {
+  type = list(string)
 }
