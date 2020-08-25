@@ -6,34 +6,6 @@ Parameters:
         Description: Lifecycle policy for repositories
         Default: "{\"rules\": [ { \"rulePriority\": 1, \"description\": \"Keep up to 10 images, expire the rest\", \"selection\": { \"tagStatus\": \"any\", \"countType\": \"imageCountMoreThan\", \"countNumber\": 10 }, \"action\": { \"type\": \"expire\" } } ]\r\n}"
 Resources:
-    WebRepo:
-        Type: AWS::ECR::Repository
-        Properties:
-            RepositoryName: con-pca-web
-            LifecyclePolicy:
-                LifecyclePolicyText: !Ref LIFECYCLE
-
-    GophishRepo:
-        Type: AWS::ECR::Repository
-        Properties:
-            RepositoryName: con-pca-gophish
-            LifecyclePolicy:
-                LifecyclePolicyText: !Ref LIFECYCLE
-
-    ApiRepo:
-        Type: AWS::ECR::Repository
-        Properties:
-            RepositoryName: con-pca-api
-            LifecyclePolicy:
-                LifecyclePolicyText: !Ref LIFECYCLE
-
-    ReportsRepo:
-        Type: AWS::ECR::Repository
-        Properties:
-            RepositoryName: con-pca-reports
-            LifecyclePolicy:
-                LifecyclePolicyText: !Ref LIFECYCLE
-
     SharedTerraformBackend:
         Type: AWS::S3::Bucket
         Properties:
