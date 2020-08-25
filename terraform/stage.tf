@@ -1,13 +1,45 @@
-#=================================================
-#  SELF-SIGNED CERTS
-#=================================================
-module "certs" {
-  source      = "./modules/certs"
-  namespace   = var.app
-  stage       = "stage"
-  name        = "alb"
-  dns_names   = [module.alb.alb_dns_name]
-  common_name = module.alb.alb_dns_name
+# ===========================
+# ROUTE 53
+# ===========================
+resource "aws_route53_record" "stage" {
+  zone_id = data.aws_route53_zone.zone.zone_id
+  name    = "${var.app}.stage.${data.aws_route53_zone.zone.name}"
+  type    = "CNAME"
+  ttl     = "300"
+  records = [module.alb.alb_dns_name]
+}
+
+# ===========================
+# Certs
+# ===========================
+resource "aws_acm_certificate" "stage" {
+  domain_name       = aws_route53_record.stage.name
+  validation_method = "DNS"
+
+  tags = {
+    Environment = "stage"
+  }
+
+  lifecycle {
+    create_before_destroy = true
+  }
+}
+
+resource "aws_route53_record" "stage_validation" {
+  for_each = {
+    for dvo in aws_acm_certificate.stage.domain_validation_options : dvo.domain_name => {
+      name   = dvo.resource_record_name
+      record = dvo.resource_record_value
+      type   = dvo.resource_record_type
+    }
+  }
+
+  allow_overwrite = true
+  name            = each.value.name
+  records         = [each.value.record]
+  ttl             = 60
+  type            = each.value.type
+  zone_id         = data.aws_route53_zone.zone.zone_id
 }
 
 #=================================================
@@ -42,18 +74,6 @@ module "alb" {
   subnet_ids         = var.public_subnet_ids
 }
 
-module "alb_internal" {
-  source             = "github.com/cloudposse/terraform-aws-alb"
-  namespace          = "${var.app}"
-  stage              = "stage"
-  name               = "private"
-  http_enabled       = false
-  internal           = true
-  vpc_id             = var.vpc_id
-  security_group_ids = [aws_security_group.alb.id]
-  subnet_ids         = var.private_subnet_ids
-}
-
 #=================================================
 #  COGNITO
 #=================================================
@@ -67,9 +87,9 @@ resource "aws_cognito_user_pool_client" "client" {
   allowed_oauth_flows                  = ["code"]
   allowed_oauth_flows_user_pool_client = true
   allowed_oauth_scopes                 = ["aws.cognito.signin.user.admin", "email", "openid", "phone", "profile"]
-  callback_urls                        = ["https://${module.alb.alb_dns_name}"]
+  callback_urls                        = ["https://${module.alb.alb_dns_name}", "https://${aws_route53_record.stage.name}"]
   explicit_auth_flows                  = ["ALLOW_ADMIN_USER_PASSWORD_AUTH", "ALLOW_CUSTOM_AUTH", "ALLOW_REFRESH_TOKEN_AUTH", "ALLOW_USER_PASSWORD_AUTH", "ALLOW_USER_SRP_AUTH"]
-  logout_urls                          = ["https://${module.alb.alb_dns_name}"]
+  logout_urls                          = ["https://${module.alb.alb_dns_name}", "https://${aws_route53_record.stage.name}"]
   supported_identity_providers         = ["COGNITO"]
 }
 

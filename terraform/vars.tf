@@ -17,3 +17,7 @@ variable "private_subnet_ids" {
 variable "public_subnet_ids" {
   type = list(string)
 }
+
+variable "route53_zone_name" {
+  type = string
+}

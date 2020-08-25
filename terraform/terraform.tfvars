@@ -12,3 +12,5 @@ public_subnet_ids = [
 ]
 
 vpc_id = "vpc-074f7db64238a2d16"
+
+route53_zone_name = "inltesting.xyz"
