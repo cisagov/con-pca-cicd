@@ -1,0 +1,10 @@
+name: Deploy
+on:
+  repository_dispatch:
+    types: [test]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Test
+        run: echo "This is a test"
