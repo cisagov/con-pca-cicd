@@ -13,6 +13,8 @@ env:
 jobs:
   build_web:
     runs-on: ubuntu-latest
+    env:
+      IMAGE_NAME: con-pca-web
     steps:
       - uses: actions/checkout@v2
         with:
