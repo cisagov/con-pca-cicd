@@ -11,77 +11,77 @@ env:
   ECR_URI: ${{ secrets.ECR_URI }}
   REGION: us-east-1
 jobs:
-    build_web:
-      runs-on: ubuntu-latest
-      env:
-        IMAGE_REPO: con-pca-web
-      outputs:
-        tag: ${{ steps.vars.outputs.tag}}
-      steps:
-        - uses: actions/checkout@v2
-          with:
-            repository: cisagov/con-pca-web
-        - name: Get Tag
-          id: vars
-          run: echo ::set-output name=tag::$(git rev-parse --short HEAD)
-        - name: Echo payload
-          run: echo ${{ github.event.client_payload.trigger }}
-        - name: Build Docker Image
-          run: docker build -t $IMAGE_REPO:${{steps.vars.outputs.tag}} .
-        - name: Tag Docker Image
-          run: docker tag $IMAGE_REPO:${{steps.vars.outputs.tag}} $ECR_URI:${{steps.vars.outputs.tag}}
-        - name: ECR Login
-          run: aws ecr get-login-password --region $REGION | docker login --username AWS --password-stdin $ECR_URI
-        - name: Push Docker Image
-          run: docker push $ECR_URI:${{steps.vars.outputs.tag}}
+  build_web:
+    runs-on: ubuntu-latest
+    env:
+      IMAGE_REPO: con-pca-web
+    outputs:
+      tag: ${{ steps.vars.outputs.tag}}
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          repository: cisagov/con-pca-web
+      - name: Get Tag
+        id: vars
+        run: echo ::set-output name=tag::$(git rev-parse --short HEAD)
+      - name: Echo payload
+        run: echo ${{ github.event.client_payload.trigger }}
+      - name: Build Docker Image
+        run: docker build -t $IMAGE_REPO:${{steps.vars.outputs.tag}} .
+      - name: Tag Docker Image
+        run: docker tag $IMAGE_REPO:${{steps.vars.outputs.tag}} $ECR_URI:${{steps.vars.outputs.tag}}
+      - name: ECR Login
+        run: aws ecr get-login-password --region $REGION | docker login --username AWS --password-stdin $ECR_URI
+      - name: Push Docker Image
+        run: docker push $ECR_URI:${{steps.vars.outputs.tag}}
 
-    build_api:
-      runs-on: ubuntu-latest
-      env:
-        IMAGE_REPO: con-pca-api
-      outputs:
-        tag: ${{ steps.vars.outputs.tag}}
-      steps:
-        - uses: actions/checkout@v2
-          with:
-            repository: cisagov/con-pca-api
-        - name: Get Tag
-          id: vars
-          run: echo ::set-output name=tag::$(git rev-parse --short HEAD)
-        - name: Echo payload
-          run: echo ${{ github.event.client_payload.trigger }}
-        - name: Build Docker Image
-          run: docker build -t $IMAGE_REPO:${{steps.vars.outputs.tag}} .
-        - name: Tag Docker Image
-          run: docker tag $IMAGE_REPO:${{steps.vars.outputs.tag}} $ECR_URI:${{steps.vars.outputs.tag}}
-        - name: ECR Login
-          run: aws ecr get-login-password --region $REGION | docker login --username AWS --password-stdin $ECR_URI
-        - name: Push Docker Image
-          run: docker push $ECR_URI:${{steps.vars.outputs.tag}}
+  build_api:
+    runs-on: ubuntu-latest
+    env:
+      IMAGE_REPO: con-pca-api
+    outputs:
+      tag: ${{ steps.vars.outputs.tag}}
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          repository: cisagov/con-pca-api
+      - name: Get Tag
+        id: vars
+        run: echo ::set-output name=tag::$(git rev-parse --short HEAD)
+      - name: Echo payload
+        run: echo ${{ github.event.client_payload.trigger }}
+      - name: Build Docker Image
+        run: docker build -t $IMAGE_REPO:${{steps.vars.outputs.tag}} .
+      - name: Tag Docker Image
+        run: docker tag $IMAGE_REPO:${{steps.vars.outputs.tag}} $ECR_URI:${{steps.vars.outputs.tag}}
+      - name: ECR Login
+        run: aws ecr get-login-password --region $REGION | docker login --username AWS --password-stdin $ECR_URI
+      - name: Push Docker Image
+        run: docker push $ECR_URI:${{steps.vars.outputs.tag}}
 
-    build_gophish:
-      runs-on: ubuntu-latest
-      env:
-        IMAGE_REPO: con-pca-gophish
-      outputs:
-        tag: ${{ steps.vars.outputs.tag}}
-      steps:
-        - uses: actions/checkout@v2
-          with:
-            repository: cisagov/con-pca-gophish
-        - name: Get Tag
-          id: vars
-          run: echo ::set-output name=tag::$(git rev-parse --short HEAD)
-        - name: Echo payload
-          run: echo ${{ github.event.client_payload.trigger }}
-        - name: Build Docker Image
-          run: docker build -t $IMAGE_REPO:${{steps.vars.outputs.tag}} .
-        - name: Tag Docker Image
-          run: docker tag $IMAGE_REPO:${{steps.vars.outputs.tag}} $ECR_URI:${{steps.vars.outputs.tag}}
-        - name: ECR Login
-          run: aws ecr get-login-password --region $REGION | docker login --username AWS --password-stdin $ECR_URI
-        - name: Push Docker Image
-          run: docker push $ECR_URI:${{steps.vars.outputs.tag}}
+  build_gophish:
+    runs-on: ubuntu-latest
+    env:
+      IMAGE_REPO: con-pca-gophish
+    outputs:
+      tag: ${{ steps.vars.outputs.tag}}
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          repository: cisagov/con-pca-gophish
+      - name: Get Tag
+        id: vars
+        run: echo ::set-output name=tag::$(git rev-parse --short HEAD)
+      - name: Echo payload
+        run: echo ${{ github.event.client_payload.trigger }}
+      - name: Build Docker Image
+        run: docker build -t $IMAGE_REPO:${{steps.vars.outputs.tag}} .
+      - name: Tag Docker Image
+        run: docker tag $IMAGE_REPO:${{steps.vars.outputs.tag}} $ECR_URI:${{steps.vars.outputs.tag}}
+      - name: ECR Login
+        run: aws ecr get-login-password --region $REGION | docker login --username AWS --password-stdin $ECR_URI
+      - name: Push Docker Image
+        run: docker push $ECR_URI:${{steps.vars.outputs.tag}}
 
   terraform:
     runs-on: ubuntu-latest
