@@ -24,6 +24,8 @@ jobs:
         run: echo ::set-output name=tag::$(echo ${GITHUB_SHA:0:10})
       - name: Print Tag
         run: echo ${{steps.vars.outputs.tag}}
+      - name: Print Env
+        run: env
     #   - name: Build Docker Image
     #     run: docker build -t $IMAGE_REPO:${{steps.vars.outputs.tag}} .
     #   - name: Tag Docker Image
@@ -46,6 +48,8 @@ jobs:
         run: echo ::set-output name=tag::$(echo ${GITHUB_SHA:0:10})
       - name: Print Tag
         run: echo ${{steps.vars.outputs.tag}}
+      - name: Print Env
+        run: env
     #   - name: Build Docker Image
     #     run: docker build -t $IMAGE_REPO:${{steps.vars.outputs.tag}} .
     #   - name: Tag Docker Image
@@ -68,6 +72,8 @@ jobs:
         run: echo ::set-output name=tag::$(echo ${GITHUB_SHA:0:10})
       - name: Print Tag
         run: echo ${{steps.vars.outputs.tag}}
+      - name: Print Env
+        run: env
     #   - name: Build Docker Image
     #     run: docker build -t $IMAGE_REPO:${{steps.vars.outputs.tag}} .
     #   - name: Tag Docker Image
