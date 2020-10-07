@@ -18,7 +18,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
-          repository: cisagov/$IMAGE_REPO
+          repository: cisagov/con-pca-web
       - name: Get Tag
         id: vars
         run: echo ::set-output name=tag::$(echo ${GITHUB_SHA:0:10})
@@ -40,7 +40,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
-          repository: cisagov/$IMAGE_REPO
+          repository: cisagov/con-pca-api
       - name: Get Tag
         id: vars
         run: echo ::set-output name=tag::$(echo ${GITHUB_SHA:0:10})
@@ -62,7 +62,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
-          repository: cisagov/$IMAGE_REPO
+          repository: cisagov/con-pca-gophish
       - name: Get Tag
         id: vars
         run: echo ::set-output name=tag::$(echo ${GITHUB_SHA:0:10})
