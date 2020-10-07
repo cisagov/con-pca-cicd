@@ -14,20 +14,20 @@ jobs:
   build_web:
     runs-on: ubuntu-latest
     env:
-      REPO: con-pca-web
+      IMAGE_REPO: con-pca-web
     steps:
       - uses: actions/checkout@v2
         with:
-          repository: cisagov/$REPO
+          repository: cisagov/$IMAGE_REPO
       - name: Get Tag
         id: vars
         run: echo ::set-output name=tag::$(echo ${GITHUB_SHA:0:10})
       - name: Print Tag
         run: echo ${{steps.vars.outputs.tag}}
     #   - name: Build Docker Image
-    #     run: docker build -t $REPO:${{steps.vars.outputs.tag}} .
+    #     run: docker build -t $IMAGE_REPO:${{steps.vars.outputs.tag}} .
     #   - name: Tag Docker Image
-    #     run: docker tag $REPO:${{steps.vars.outputs.tag}} $ECR_URI:${{steps.vars.outputs.tag}}
+    #     run: docker tag $IMAGE_REPO:${{steps.vars.outputs.tag}} $ECR_URI:${{steps.vars.outputs.tag}}
     #   - name: ECR Login
     #     run: aws ecr get-login-password --region $REGION | docker login --username AWS --password-stdin $ECR_URI
     #   - name: Push Docker Image
@@ -36,20 +36,20 @@ jobs:
   build_api:
     runs-on: ubuntu-latest
     env:
-      REPO: con-pca-api
+      IMAGE_REPO: con-pca-api
     steps:
       - uses: actions/checkout@v2
         with:
-          repository: cisagov/$REPO
+          repository: cisagov/$IMAGE_REPO
       - name: Get Tag
         id: vars
         run: echo ::set-output name=tag::$(echo ${GITHUB_SHA:0:10})
       - name: Print Tag
         run: echo ${{steps.vars.outputs.tag}}
     #   - name: Build Docker Image
-    #     run: docker build -t $REPO:${{steps.vars.outputs.tag}} .
+    #     run: docker build -t $IMAGE_REPO:${{steps.vars.outputs.tag}} .
     #   - name: Tag Docker Image
-    #     run: docker tag $REPO:${{steps.vars.outputs.tag}} $ECR_URI:${{steps.vars.outputs.tag}}
+    #     run: docker tag $IMAGE_REPO:${{steps.vars.outputs.tag}} $ECR_URI:${{steps.vars.outputs.tag}}
     #   - name: ECR Login
     #     run: aws ecr get-login-password --region $REGION | docker login --username AWS --password-stdin $ECR_URI
     #   - name: Push Docker Image
@@ -58,20 +58,20 @@ jobs:
   build_gophish:
     runs-on: ubuntu-latest
     env:
-      REPO: con-pca-gophish
+      IMAGE_REPO: con-pca-gophish
     steps:
       - uses: actions/checkout@v2
         with:
-          repository: cisagov/$REPO
+          repository: cisagov/$IMAGE_REPO
       - name: Get Tag
         id: vars
         run: echo ::set-output name=tag::$(echo ${GITHUB_SHA:0:10})
       - name: Print Tag
         run: echo ${{steps.vars.outputs.tag}}
     #   - name: Build Docker Image
-    #     run: docker build -t $REPO:${{steps.vars.outputs.tag}} .
+    #     run: docker build -t $IMAGE_REPO:${{steps.vars.outputs.tag}} .
     #   - name: Tag Docker Image
-    #     run: docker tag $REPO:${{steps.vars.outputs.tag}} $ECR_URI:${{steps.vars.outputs.tag}}
+    #     run: docker tag $IMAGE_REPO:${{steps.vars.outputs.tag}} $ECR_URI:${{steps.vars.outputs.tag}}
     #   - name: ECR Login
     #     run: aws ecr get-login-password --region $REGION | docker login --username AWS --password-stdin $ECR_URI
     #   - name: Push Docker Image
