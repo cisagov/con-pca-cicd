@@ -72,3 +72,79 @@ variable "gophish_memory" {
 variable "gophish_count" {
   type = number
 }
+
+#=================================================
+#  API
+#=================================================
+variable "api_image_repo" {
+  type = string
+}
+
+variable "api_image_tag" {
+  type = string
+}
+
+
+variable "cycle_minutes" {
+  type    = string
+  default = "129600"
+}
+
+variable "monthly_minutes" {
+  type    = string
+  default = "43200"
+}
+
+variable "yearly_minutes" {
+  type    = string
+  default = "525600"
+}
+
+variable "documentdb_cluster_size" {
+  type = number
+}
+
+
+variable "documentdb_instance_class" {
+  type = string
+}
+
+variable "api_desired_count" {
+  type = number
+}
+
+variable "api_cpu" {
+  type = number
+}
+
+variable "api_memory" {
+  type = number
+}
+
+variable "api_gunicorn_workers" {
+  type = string
+}
+
+variable "tasks_memory" {
+  type = number
+}
+
+variable "tasks_schedule" {
+  type = string
+}
+
+variable "browserless_cpu" {
+  type = number
+}
+
+variable "browserless_memory" {
+  type = number
+}
+
+variable "browserless_count" {
+  type = number
+}
+
+variable "extra_bcc_emails" {
+  type = string
+}

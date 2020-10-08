@@ -6,7 +6,7 @@ locals {
   landingpage_port = 8080
 
   gophish_alb_port     = 3333
-  landingpage_alb_port = 443
+  landingpage_alb_port = 80
 
   gophish_environment = {
     "MYSQL_DATABASE" : "gophish",
@@ -19,6 +19,7 @@ locals {
   }
 
   gophish_container_name = "gophish"
+  gophish_name           = "${var.app}-${var.env}-gophish"
 }
 
 # ===========================
@@ -56,8 +57,8 @@ resource "aws_ssm_parameter" "mysql_password" {
 # ===========================
 module "rds" {
   source    = "github.com/cloudposse/terraform-aws-rds"
-  namespace = "${var.app}"
-  stage     = "${var.env}"
+  namespace = var.app
+  stage     = var.env
   name      = "gophish"
 
   allocated_storage  = var.gophish_mysql_storage
@@ -78,7 +79,7 @@ module "rds" {
 # CLOUDWATCH LOGS
 # ===========================
 resource "aws_cloudwatch_log_group" "gophish" {
-  name              = "${var.app}-${var.env}-gophish"
+  name              = local.gophish_name
   retention_in_days = var.log_retention_days
 }
 
@@ -86,7 +87,7 @@ resource "aws_cloudwatch_log_group" "gophish" {
 # ALB TARGET GROUPS
 # ===========================
 resource "aws_lb_target_group" "gophish" {
-  name        = "${var.app}-${var.env}-gophish"
+  name        = local.gophish_name
   port        = local.gophish_port
   protocol    = "HTTP"
   target_type = "ip"
@@ -140,9 +141,7 @@ resource "aws_lb_listener" "gophish" {
 resource "aws_lb_listener" "landing" {
   load_balancer_arn = module.public_alb.alb_arn
   port              = local.landingpage_alb_port
-  protocol          = "HTTPS"
-  ssl_policy        = "ELBSecurityPolicy-2016-08"
-  certificate_arn   = aws_acm_certificate.cert.arn
+  protocol          = "HTTP"
 
   default_action {
     target_group_arn = aws_lb_target_group.landing.arn
@@ -197,21 +196,21 @@ module "gophish_container" {
 }
 
 # ===========================
-# FARGAGE TASK DEFINITION
+# FARGATE TASK DEFINITION
 # ===========================
 resource "aws_ecs_task_definition" "gophish" {
-  family                   = "${var.env}-${var.app}-gophish"
+  family                   = local.gophish_name
   container_definitions    = module.gophish_container.json_map_encoded_list
   cpu                      = var.gophish_cpu
-  execution_role_arn       = module.gophish_roles.execution_role_arn
+  execution_role_arn       = aws_iam_role.ecs_execution.arn
   memory                   = var.gophish_memory
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
-  task_role_arn            = module.gophish_roles.task_role_arn
+  task_role_arn            = aws_iam_role.ecs_task.arn
 }
 
 # ===========================
-# FARGAGE SERVICE
+# FARGATE SERVICE
 # ===========================
 resource "aws_ecs_service" "gophish" {
   name            = "gophish"
@@ -240,21 +239,10 @@ resource "aws_ecs_service" "gophish" {
 }
 
 # ===========================
-# IAM ROLES
-# ===========================
-module "gophish_roles" {
-  source      = "./fargate_roles"
-  namespace   = var.app
-  stage       = var.env
-  name        = "gophish"
-  permissions = ["s3:*"]
-}
-
-# ===========================
 # SECURITY GROUP
 # ===========================
 resource "aws_security_group" "gophish" {
-  name        = "${var.app}-${var.env}-gophish-alb"
+  name        = "${local.gophish_name}-alb"
   description = "Allow traffic for gophish from alb"
   vpc_id      = var.vpc_id
 
@@ -285,7 +273,7 @@ resource "aws_security_group" "gophish" {
   }
 
   tags = {
-    "Name" = "${var.app}-${var.env}-gophish-alb"
+    "Name" = "${local.gophish_name}-alb"
   }
 
 }

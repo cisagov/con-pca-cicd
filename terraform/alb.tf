@@ -41,3 +41,15 @@ module "internal_alb" {
   security_group_ids = [aws_security_group.alb.id]
   subnet_ids         = var.public_subnet_ids
 }
+
+#=================================================
+#  NETWORK LOAD BALANCER
+#=================================================
+resource "aws_lb" "network" {
+  name                             = "${var.app}-${var.env}-network"
+  enable_cross_zone_load_balancing = true
+  idle_timeout                     = 60
+  internal                         = true
+  load_balancer_type               = "network"
+  subnets                          = var.private_subnet_ids
+}

@@ -21,17 +21,3 @@ resource "aws_cognito_user_pool_domain" "domain" {
   domain       = "${var.app}-${var.env}"
   user_pool_id = aws_cognito_user_pool.pool.id
 }
-
-resource "aws_ssm_parameter" "client_id" {
-  name        = "/${var.env}/${var.app}/cognito/client/id"
-  description = "The client id for the client"
-  type        = "SecureString"
-  value       = aws_cognito_user_pool_client.client.id
-}
-
-resource "aws_ssm_parameter" "domain" {
-  name        = "/${var.env}/${var.app}/cognito/domain"
-  description = "The domain for user pool"
-  type        = "SecureString"
-  value       = aws_cognito_user_pool_domain.domain.domain
-}

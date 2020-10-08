@@ -1,14 +1,3 @@
-module "label" {
-  source     = "github.com/cloudposse/terraform-null-label"
-  enabled    = true
-  attributes = []
-  delimiter  = "-"
-  name       = var.name
-  namespace  = var.namespace
-  stage      = var.stage
-  tags       = {}
-}
-
 data "aws_iam_policy_document" "ecs_assume_role" {
   statement {
     actions = ["sts:AssumeRole"]
@@ -21,7 +10,7 @@ data "aws_iam_policy_document" "ecs_assume_role" {
 }
 
 resource "aws_iam_role" "ecs_execution" {
-  name               = "${module.label.id}-ecs-execution"
+  name               = "${var.app}-${var.env}-ecs-execution"
   assume_role_policy = data.aws_iam_policy_document.ecs_assume_role.json
 }
 
@@ -36,7 +25,7 @@ data "aws_iam_policy_document" "ecs_execution" {
 }
 
 resource "aws_iam_policy" "ecs_execution" {
-  name        = "${module.label.id}-ecs-execution"
+  name        = "${var.app}-${var.env}-ecs-execution"
   description = "Policy for ecs execution"
   policy      = data.aws_iam_policy_document.ecs_execution.json
 }
@@ -52,22 +41,35 @@ resource "aws_iam_role_policy_attachment" "ecs_execution_other" {
 }
 
 resource "aws_iam_role" "ecs_task" {
-  name               = "${module.label.id}-ecs-task"
+  name               = "${var.app}-${var.env}-ecs-task"
   assume_role_policy = data.aws_iam_policy_document.ecs_assume_role.json
 }
 
 data "aws_iam_policy_document" "ecs_task" {
   statement {
-    actions = var.permissions
+    actions = [
+      "s3:*"
+    ]
 
     resources = [
       "*"
     ]
   }
+
+  statement {
+    effect = "Allow"
+    actions = [
+      "sts:AssumeRole"
+    ]
+
+    resources = [
+      data.aws_ssm_parameter.ses_assume_role_arn.value
+    ]
+  }
 }
 
 resource "aws_iam_policy" "ecs_task" {
-  name        = "${module.label.id}-ecs-task"
+  name        = "${var.app}-${var.env}-ecs-task"
   description = "Policy for running ecs tasks"
   policy      = data.aws_iam_policy_document.ecs_task.json
 }
