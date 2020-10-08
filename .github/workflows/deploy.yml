@@ -24,8 +24,6 @@ jobs:
       - name: Get Tag
         id: vars
         run: echo ::set-output name=tag::$(git rev-parse --short HEAD)
-      - name: Echo payload
-        run: echo ${{ github.event.client_payload.trigger }}
       - name: Build Docker Image
         run: docker build -t $IMAGE_REPO:${{steps.vars.outputs.tag}} .
         if: ${{ github.event.client_payload.trigger == env.IMAGE_REPO }}
@@ -52,8 +50,6 @@ jobs:
       - name: Get Tag
         id: vars
         run: echo ::set-output name=tag::$(git rev-parse --short HEAD)
-      - name: Echo payload
-        run: echo ${{ github.event.client_payload.trigger }}
       - name: Build Docker Image
         run: docker build -t $IMAGE_REPO:${{steps.vars.outputs.tag}} .
         if: ${{ github.event.client_payload.trigger == env.IMAGE_REPO }}
@@ -80,8 +76,6 @@ jobs:
       - name: Get Tag
         id: vars
         run: echo ::set-output name=tag::$(git rev-parse --short HEAD)
-      - name: Echo payload
-        run: echo ${{ github.event.client_payload.trigger }}
       - name: Build Docker Image
         run: docker build -t $IMAGE_REPO:${{steps.vars.outputs.tag}} .
         if: ${{ github.event.client_payload.trigger == env.IMAGE_REPO }}
