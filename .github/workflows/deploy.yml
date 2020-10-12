@@ -156,4 +156,4 @@ jobs:
       # Apply terraform
       - name: Terraform Apply
         working-directory: ./con-pca/terraform
-        run: terraform plan -var-file ./vars/$ENVIRONMENT.tfvars -var="gophish_image_tag=${{needs.build_gophish.outputs.tag}}" -var="api_image_tag=${{needs.build_api.outputs.tag}}" -var="web_image_tag=${{needs.build_web.outputs.tag}}"
+        run: terraform apply -var-file ./vars/$ENVIRONMENT.tfvars -var="gophish_image_tag=${{needs.build_gophish.outputs.tag}}" -var="api_image_tag=${{needs.build_api.outputs.tag}}" -var="web_image_tag=${{needs.build_web.outputs.tag}}"
