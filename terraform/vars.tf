@@ -100,15 +100,6 @@ variable "yearly_minutes" {
   default = "525600"
 }
 
-variable "documentdb_cluster_size" {
-  type = number
-}
-
-
-variable "documentdb_instance_class" {
-  type = string
-}
-
 variable "api_desired_count" {
   type = number
 }
@@ -125,14 +116,25 @@ variable "api_gunicorn_workers" {
   type = string
 }
 
-variable "tasks_memory" {
-  type = number
-}
-
-variable "tasks_schedule" {
+variable "extra_bcc_emails" {
   type = string
 }
 
+#=================================================
+#  DOCUMENTDB
+#=================================================
+variable "documentdb_cluster_size" {
+  type = number
+}
+
+
+variable "documentdb_instance_class" {
+  type = string
+}
+
+#=================================================
+#  BROWSERLESS
+#=================================================
 variable "browserless_cpu" {
   type = number
 }
@@ -145,12 +147,19 @@ variable "browserless_count" {
   type = number
 }
 
-variable "extra_bcc_emails" {
+#=================================================
+#  TASKS
+#=================================================
+variable "tasks_memory" {
+  type = number
+}
+
+variable "tasks_schedule" {
   type = string
 }
 
 #=================================================
-#  API
+#  WEB
 #=================================================
 variable "web_image_repo" {
   type = string
