@@ -75,21 +75,21 @@ resource "aws_lambda_function" "tasks" {
 # ===================================
 # Cloudwatch Event rule
 # ===================================
-# resource "aws_cloudwatch_event_rule" "tasks" {
-#   name                = "${var.app}-${var.env}-tasks"
-#   description         = "Every 5 minutes"
-#   schedule_expression = var.tasks_schedule
-# }
-# resource "aws_cloudwatch_event_target" "tasks" {
-#   rule      = aws_cloudwatch_event_rule.tasks.name
-#   target_id = "lambda"
-#   arn       = aws_lambda_function.tasks.arn
-# }
-# resource "aws_lambda_permission" "tasks" {
-#   statement_id  = "AllowExecutionFromCloudWatch"
-#   action        = "lambda:InvokeFunction"
-#   function_name = aws_lambda_function.tasks.function_name
-#   principal     = "events.amazonaws.com"
-#   source_arn    = aws_cloudwatch_event_rule.tasks.arn
-# }
+resource "aws_cloudwatch_event_rule" "tasks" {
+  name                = "${var.app}-${var.env}-tasks"
+  description         = "Tasks schedule"
+  schedule_expression = var.tasks_schedule
+}
+resource "aws_cloudwatch_event_target" "tasks" {
+  rule      = aws_cloudwatch_event_rule.tasks.name
+  target_id = "lambda"
+  arn       = aws_lambda_function.tasks.arn
+}
+resource "aws_lambda_permission" "tasks" {
+  statement_id  = "AllowExecutionFromCloudWatch"
+  action        = "lambda:InvokeFunction"
+  function_name = aws_lambda_function.tasks.function_name
+  principal     = "events.amazonaws.com"
+  source_arn    = aws_cloudwatch_event_rule.tasks.arn
+}
 
