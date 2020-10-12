@@ -59,3 +59,11 @@ browserless_memory = 1024
 browserless_count = 1
 api_desired_count = 1
 extra_bcc_emails = ""
+
+#=================================================
+#  WEB
+#=================================================
+web_image_repo = "780016325729.dkr.ecr.us-east-1.amazonaws.com/con-pca-web"
+web_cpu = 2048
+web_memory = 4096
+web_desired_count = 1

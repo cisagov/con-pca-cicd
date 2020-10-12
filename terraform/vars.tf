@@ -148,3 +148,26 @@ variable "browserless_count" {
 variable "extra_bcc_emails" {
   type = string
 }
+
+#=================================================
+#  API
+#=================================================
+variable "web_image_repo" {
+  type = string
+}
+
+variable "web_image_tag" {
+  type = string
+}
+
+variable "web_cpu" {
+  type = number
+}
+
+variable "web_memory" {
+  type = number
+}
+
+variable "web_desired_count" {
+  type = number
+}
