@@ -145,15 +145,15 @@ jobs:
 
       # Validate Terraform
       - name: Terraform validation
-        working-directory: ./terraform
+        working-directory: ./con-pca/terraform
         run: terraform validate
 
       # Sometimes this just needs run again...
       - name: Terraform init 2
-        working-directory: ./terraform
+        working-directory: ./con-pca/terraform
         run: terraform init -input=false
 
       # Apply terraform
       - name: Terraform Apply
-        working-directory: ./terraform
+        working-directory: ./con-pca/terraform
         run: terraform plan -var-file .\vars\$ENVIRONMENT.tfvars -var="gophish_image_tag=${{needs.build_gophish.outputs.tag}}" -var="api_image_tag=${{needs.build_api.outputs.tag}}" -var="web_image_tag=${{needs.build_web.outputs.tag}}"
