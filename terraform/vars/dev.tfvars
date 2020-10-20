@@ -76,6 +76,6 @@ tasks_schedule = "rate(5 minutes)"
 #  WEB
 #=================================================
 web_image_repo = "780016325729.dkr.ecr.us-east-1.amazonaws.com/con-pca-web"
-web_cpu = 2048
-web_memory = 4096
+web_cpu = 512
+web_memory = 1024
 web_desired_count = 1
