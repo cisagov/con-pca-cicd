@@ -24,6 +24,7 @@ module "public_alb" {
   stage              = var.env
   name               = "public"
   http_enabled       = false
+  idle_timeout       = var.idle_timeout
   internal           = false
   vpc_id             = var.vpc_id
   security_group_ids = [aws_security_group.alb.id]
@@ -36,6 +37,7 @@ module "internal_alb" {
   stage              = var.env
   name               = "internal"
   http_enabled       = false
+  idle_timeout       = var.idle_timeout
   internal           = true
   vpc_id             = var.vpc_id
   security_group_ids = [aws_security_group.alb.id]
