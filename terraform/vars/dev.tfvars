@@ -44,9 +44,9 @@ gophish_count = 1
 #  API
 #=================================================
 api_image_repo = "780016325729.dkr.ecr.us-east-1.amazonaws.com/con-pca-api"
-yearly_minutes = "960"
-cycle_minutes = "240"
-monthly_minutes = "80"
+#yearly_minutes = "960"
+#cycle_minutes = "240"
+#monthly_minutes = "80"
 api_cpu = 2048
 api_memory = 4096
 api_gunicorn_workers = "8"
