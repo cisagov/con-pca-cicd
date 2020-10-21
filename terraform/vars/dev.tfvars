@@ -63,7 +63,7 @@ monthly_minutes = "7200"
 
 api_cpu = 2048
 api_memory = 4096
-api_gunicorn_workers = "8"
+api_gunicorn_workers = "4"
 api_desired_count = 1
 extra_bcc_emails = ""
 
