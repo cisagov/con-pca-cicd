@@ -92,6 +92,10 @@ variable "api_image_tag" {
   type = string
 }
 
+variable "delay_minutes" {
+  type    = string
+  default = "5"
+}
 
 variable "cycle_minutes" {
   type    = string

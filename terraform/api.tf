@@ -31,6 +31,7 @@ locals {
     "EXTRA_BCC_EMAILS" : var.extra_bcc_emails
     "USE_SES" : 1
     "DEFAULT_X_GOPHISH_CONTACT" : "vulnerability@cisa.dhs.gov"
+    "DELAY_MINUTES" : var.delay_minutes
     "CYCLE_MINUTES" : var.cycle_minutes
     "MONTHLY_MINUTES" : var.monthly_minutes
     "YEARLY_MINUTES" : var.yearly_minutes

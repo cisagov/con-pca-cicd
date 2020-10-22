@@ -50,6 +50,8 @@ gophish_count = 1
 #=================================================
 api_image_repo = "780016325729.dkr.ecr.us-east-1.amazonaws.com/con-pca-api"
 
+delay_minutes = 5
+
 # 4 hours duration
 #yearly_minutes = "960"
 #cycle_minutes = "240"
