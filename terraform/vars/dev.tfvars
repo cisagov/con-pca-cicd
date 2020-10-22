@@ -57,10 +57,15 @@ delay_minutes = 5
 #cycle_minutes = "240"
 #monthly_minutes = "80"
 
+# 4 days duration
+yearly_minutes = "5760"
+cycle_minutes = "5760"
+monthly_minutes = "1440"
+
 # 30 days duration
-yearly_minutes = "43200"
-cycle_minutes = "43200"
-monthly_minutes = "7200"
+#yearly_minutes = "43200"
+#cycle_minutes = "43200"
+#monthly_minutes = "7200"
 
 
 api_cpu = 2048
