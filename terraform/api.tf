@@ -270,7 +270,7 @@ resource "aws_appautoscaling_target" "api_scaling_target" {
 }
 
 resource "aws_appautoscaling_policy" "api_out" {
-  name               = "${var.app}-${var.env}-${local.api_name}-out"
+  name               = "${local.api_name}-out"
   service_namespace  = aws_appautoscaling_target.api_scaling_target.service_namespace
   resource_id        = aws_appautoscaling_target.api_scaling_target.resource_id
   scalable_dimension = aws_appautoscaling_target.api_scaling_target.scalable_dimension
@@ -287,7 +287,7 @@ resource "aws_appautoscaling_policy" "api_out" {
 }
 
 resource "aws_appautoscaling_policy" "api_in" {
-  name               = "${var.app}-${var.env}-${local.api_name}-in"
+  name               = "${local.api_name}-in"
   service_namespace  = aws_appautoscaling_target.api_scaling_target.service_namespace
   resource_id        = aws_appautoscaling_target.api_scaling_target.resource_id
   scalable_dimension = aws_appautoscaling_target.api_scaling_target.scalable_dimension
