@@ -13,6 +13,7 @@ locals {
     "SECRET_KEY" : random_string.django_secret_key.result
     "DEBUG" : 0
     "DJANGO_ALLOWED_HOSTS" : "localhost 127.0.0.1 [::1] ${module.internal_alb.alb_dns_name} ${module.public_alb.alb_dns_name} ${aws_route53_record.record.name}"
+    "CORS_ORIGIN_WHITELIST" : "https://${aws_route53_record.record.name},https://${aws_route53_record.record.name}:3333"
     "DB_HOST" : module.documentdb.endpoint
     "DB_PORT" : 27017
     "GP_URL" : "https://${aws_route53_record.record.name}:${local.gophish_alb_port}/"
