@@ -9,7 +9,8 @@ module "api_fargate_alarms" {
   cluster_name = aws_ecs_cluster.cluster.name
   service_name = aws_ecs_service.api.name
 
-  cpu_utilization_high_alarm_actions    = [aws_sns_topic.notifications.arn]
+  cpu_utilization_low_alarm_actions     = [aws_appautoscaling_policy.api_in.arn]
+  cpu_utilization_high_alarm_actions    = [aws_sns_topic.notifications.arn, aws_appautoscaling_policy.api_out.arn]
   cpu_utilization_high_ok_actions       = [aws_sns_topic.notifications.arn]
   memory_utilization_high_alarm_actions = [aws_sns_topic.notifications.arn]
   memory_utilization_high_ok_actions    = [aws_sns_topic.notifications.arn]

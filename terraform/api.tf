@@ -222,6 +222,10 @@ resource "aws_ecs_service" "api" {
     security_groups  = [aws_security_group.api.id]
     assign_public_ip = false
   }
+
+  lifecycle {
+    ignore_changes = [desired_count]
+  }
 }
 
 # ===========================
@@ -251,5 +255,51 @@ resource "aws_security_group" "api" {
 
   tags = {
     "Name" = "${local.api_name}-alb"
+  }
+}
+
+# ===========================
+# SCALING
+# ===========================
+resource "aws_appautoscaling_target" "api_scaling_target" {
+  service_namespace  = "ecs"
+  resource_id        = "service/${aws_ecs_cluster.cluster.name}/${aws_ecs_service.api.name}"
+  scalable_dimension = "ecs:service:DesiredCount"
+  max_capacity       = var.api_max_count
+  min_capacity       = var.api_min_count
+}
+
+resource "aws_appautoscaling_policy" "api_out" {
+  name               = "${var.app}-${var.env}-${local.api_name}-out"
+  service_namespace  = aws_appautoscaling_target.api_scaling_target.service_namespace
+  resource_id        = aws_appautoscaling_target.api_scaling_target.resource_id
+  scalable_dimension = aws_appautoscaling_target.api_scaling_target.scalable_dimension
+
+  step_scaling_policy_configuration {
+    adjustment_type         = "ChangeInCapacity"
+    cooldown                = 60
+    metric_aggregation_type = "Average"
+    step_adjustment {
+      metric_interval_lower_bound = 0
+      scaling_adjustment          = var.api_scale_out_count
+    }
+  }
+}
+
+resource "aws_appautoscaling_policy" "api_in" {
+  name               = "${var.app}-${var.env}-${local.api_name}-out"
+  service_namespace  = aws_appautoscaling_target.api_scaling_target.service_namespace
+  resource_id        = aws_appautoscaling_target.api_scaling_target.resource_id
+  scalable_dimension = aws_appautoscaling_target.api_scaling_target.scalable_dimension
+
+  step_scaling_policy_configuration {
+    adjustment_type         = "ChangeInCapacity"
+    cooldown                = 300
+    metric_aggregation_type = "Average"
+
+    step_adjustment {
+      metric_interval_upper_bound = 0
+      scaling_adjustment          = var.api_scale_in_count
+    }
   }
 }

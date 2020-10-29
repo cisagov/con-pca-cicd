@@ -116,6 +116,22 @@ variable "api_desired_count" {
   type = number
 }
 
+variable "api_max_count" {
+  type = number
+}
+
+variable "api_min_count" {
+  type = number
+}
+
+variable "api_scale_out_count" {
+  type = number
+}
+
+variable "api_scale_in_count" {
+  type = number
+}
+
 variable "api_cpu" {
   type = number
 }
