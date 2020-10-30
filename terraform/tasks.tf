@@ -54,7 +54,7 @@ resource "aws_lambda_function" "tasks" {
   memory_size      = var.tasks_memory
   runtime          = "python3.8"
   source_code_hash = data.archive_file.code.output_base64sha256
-  timeout          = 300
+  timeout          = var.tasks_timeout
 
   layers = [
     "arn:aws:lambda:us-east-1:668099181075:layer:AWSLambda-Python38-SciPy1x:29",

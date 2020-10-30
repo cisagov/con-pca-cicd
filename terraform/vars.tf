@@ -186,6 +186,10 @@ variable "tasks_schedule" {
   type = string
 }
 
+variable "tasks_timeout" {
+  type = number
+}
+
 #=================================================
 #  WEB
 #=================================================
