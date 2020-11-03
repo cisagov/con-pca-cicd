@@ -126,3 +126,10 @@ resource "aws_sqs_queue" "tasks" {
   name                       = "${var.app}-${var.env}-tasks"
   visibility_timeout_seconds = var.tasks_timeout
 }
+
+resource "aws_lambda_event_source_mapping" "tasks" {
+  event_source_arn = aws_sqs_queue.tasks.arn
+  enabled          = true
+  function_name    = aws_lambda_function.process_tasks.arn
+  batch_size       = 1
+}
