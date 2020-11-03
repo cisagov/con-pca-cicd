@@ -51,6 +51,7 @@ locals {
     "COGNITO_AUDIENCE" : aws_cognito_user_pool_client.client.id
     "SES_ASSUME_ROLE_ARN" : data.aws_ssm_parameter.ses_assume_role_arn.value
     "DJANGO_SETTINGS_MODULE" : "config.settings"
+    "TASKS_QUEUE_URL": aws_sqs_queue.tasks.id
   }
 }
 

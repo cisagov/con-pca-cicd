@@ -46,10 +46,36 @@ data "archive_file" "code" {
   output_path = "${path.module}/output/code.zip"
 }
 
-resource "aws_lambda_function" "tasks" {
+resource "aws_lambda_function" "process_tasks" {
   filename         = data.archive_file.code.output_path
-  function_name    = "${var.app}-${var.env}-tasks"
-  handler          = "lambda_functions.tasks.handler.lambda_handler"
+  function_name    = "${var.app}-${var.env}-process-tasks"
+  handler          = "lambda_functions.tasks.process_tasks.lambda_handler"
+  role             = aws_iam_role.lambda_exec_role.arn
+  memory_size      = var.tasks_memory
+  runtime          = "python3.8"
+  source_code_hash = data.archive_file.code.output_base64sha256
+  timeout          = var.tasks_timeout
+
+  layers = [
+    "arn:aws:lambda:us-east-1:668099181075:layer:AWSLambda-Python38-SciPy1x:29",
+    aws_lambda_layer_version.layer.arn,
+    aws_lambda_layer_version.scikit.arn
+  ]
+
+  environment {
+    variables = local.api_environment
+  }
+
+  vpc_config {
+    subnet_ids         = var.private_subnet_ids
+    security_group_ids = [aws_security_group.api.id]
+  }
+}
+
+resource "aws_lambda_function" "queue_tasks" {
+  filename         = data.archive_file.code.output_path
+  function_name    = "${var.app}-${var.env}-queue-tasks"
+  handler          = "lambda_functions.tasks.queue_tasks.lambda_handler"
   role             = aws_iam_role.lambda_exec_role.arn
   memory_size      = var.tasks_memory
   runtime          = "python3.8"
@@ -75,21 +101,28 @@ resource "aws_lambda_function" "tasks" {
 # ===================================
 # Cloudwatch Event rule
 # ===================================
-resource "aws_cloudwatch_event_rule" "tasks" {
-  name                = "${var.app}-${var.env}-tasks"
+resource "aws_cloudwatch_event_rule" "queue_tasks" {
+  name                = "${var.app}-${var.env}-queue-tasks"
   description         = "Tasks schedule"
   schedule_expression = var.tasks_schedule
 }
-resource "aws_cloudwatch_event_target" "tasks" {
-  rule      = aws_cloudwatch_event_rule.tasks.name
+resource "aws_cloudwatch_event_target" "queue_tasks" {
+  rule      = aws_cloudwatch_event_rule.queue_tasks.name
   target_id = "lambda"
-  arn       = aws_lambda_function.tasks.arn
+  arn       = aws_lambda_function.queue_tasks.arn
 }
-resource "aws_lambda_permission" "tasks" {
+resource "aws_lambda_permission" "queue_tasks" {
   statement_id  = "AllowExecutionFromCloudWatch"
   action        = "lambda:InvokeFunction"
-  function_name = aws_lambda_function.tasks.function_name
+  function_name = aws_lambda_function.queue_tasks.function_name
   principal     = "events.amazonaws.com"
-  source_arn    = aws_cloudwatch_event_rule.tasks.arn
+  source_arn    = aws_cloudwatch_event_rule.queue_tasks.arn
 }
 
+# ===================================
+# SQS
+# ===================================
+resource "aws_sqs_queue" "tasks" {
+  name                       = "${var.app}-${var.env}-tasks"
+  visibility_timeout_seconds = var.tasks_timeout
+}
