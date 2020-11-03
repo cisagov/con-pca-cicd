@@ -123,7 +123,7 @@ resource "aws_cloudwatch_metric_alarm" "queue_tasks_error" {
   alarm_actions       = ["${aws_sns_topic.notifications.arn}"]
 
   dimensions = {
-    FunctionName = aws_lambda_function.queue_tasks.name
+    FunctionName = aws_lambda_function.queue_tasks.function_name
   }
 }
 
@@ -140,7 +140,7 @@ resource "aws_cloudwatch_metric_alarm" "process_tasks_error" {
   alarm_actions       = ["${aws_sns_topic.notifications.arn}"]
 
   dimensions = {
-    FunctionName = aws_lambda_function.process_tasks.name
+    FunctionName = aws_lambda_function.process_tasks.function_name
   }
 }
 
