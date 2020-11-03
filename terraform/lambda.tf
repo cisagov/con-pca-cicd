@@ -64,7 +64,8 @@ data "aws_iam_policy_document" "lambda_policy_doc" {
 
   statement {
     actions = [
-      "s3:*"
+      "s3:*",
+      "sqs:*"
     ]
 
     resources = ["*"]
