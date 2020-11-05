@@ -95,7 +95,7 @@ browserless_count = 1
 #  TASKS
 #=================================================
 tasks_memory = 2048
-tasks_schedule = "rate(15 minutes)"
+tasks_schedule = "rate(5 minutes)"
 tasks_timeout = 870
 
 #=================================================
