@@ -144,9 +144,9 @@ jobs:
           terraform workspace show
 
       # Validate Terraform
-      - name: Terraform validation
-        working-directory: ./con-pca/terraform
-        run: terraform validate
+      # - name: Terraform validation
+      #   working-directory: ./con-pca/terraform
+      #   run: terraform validate
 
       # Sometimes this just needs run again...
       - name: Terraform init 2
