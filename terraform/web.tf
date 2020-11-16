@@ -3,11 +3,11 @@
 # ===========================
 
 locals {
-  web_container_port = 443
-  web_container_name = "web"
-  web_container_protocol = "HTTPS"
+  web_container_port     = 80
+  web_container_name     = "web"
+  web_container_protocol = "HTTP"
   web_load_balancer_port = 443
-  web_name = "${var.app}-${var.env}-web"
+  web_name               = "${var.app}-${var.env}-web"
 
   web_environment = {
     "API_URL" : "https://${aws_route53_record.record.name}:${local.api_load_balancer_port}"
