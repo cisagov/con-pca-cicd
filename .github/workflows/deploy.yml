@@ -123,13 +123,9 @@ jobs:
       # Install Lambda Layer
       - name: Install Python Requirements
         run: |
-          mkdir ./con-pca/terraform/layers
-          mkdir ./con-pca/terraform/layers/layer
-          mkdir ./con-pca/terraform/layers/layer/python
-          pip install -r ./con-pca-api/requirements-lambda-other.txt -t ./con-pca/terraform/layers/layer/python
-          mkdir ./con-pca/terraform/layers/scikit
-          mkdir ./con-pca/terraform/layers/scikit/python
-          pip install -r ./con-pca-api/requirements-lambda-scikit.txt -t ./con-pca/terraform/layers/scikit/python --no-deps
+          mkdir ./con-pca/terraform/layer
+          mkdir ./con-pca/terraform/layer/python
+          pip install -r ./con-pca-api/requirements.txt -t ./con-pca/terraform/layer/python
 
       # Initialize Terraform
       - name: Terraform init
