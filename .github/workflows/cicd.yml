@@ -125,7 +125,7 @@ jobs:
         run: |
           mkdir ./con-pca/terraform/layer
           mkdir ./con-pca/terraform/layer/python
-          pip install -r ./con-pca-api/requirements.txt -t ./con-pca/terraform/layer/python
+          pip install -r ./con-pca-api/requirements.txt --no-deps -t ./con-pca/terraform/layer/python
 
       # Initialize Terraform
       - name: Terraform init
