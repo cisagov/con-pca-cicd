@@ -11,7 +11,7 @@ env:
   REGION: us-east-1
 
 jobs:
-  output:
+  setenv:
     runs-on: ubuntu-latest
     outputs:
       ENVIRONMENT: ${{ steps.env.outputs.ENVIRONMENT }}
@@ -31,9 +31,9 @@ jobs:
 
   terraform:
     runs-on: ubuntu-latest
-    needs: [outputs]
+    needs: [setenv]
     env:
-      ENVIRONMENT: ${{ needs.outputs.outputs.ENVIRONMENT }}
+      ENVIRONMENT: ${{ needs.setenv.outputs.ENVIRONMENT }}
     steps:
       - name: Echo Environment
         run: echo $ENVIRONMENT
