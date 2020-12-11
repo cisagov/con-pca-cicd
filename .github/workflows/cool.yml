@@ -15,19 +15,26 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       ENVIRONMENT: ${{ steps.env.outputs.ENVIRONMENT }}
+      AWS_PROVISION_ROLE: ${{ steps.env.outputs.AWS_PROVISION_ROLE }}
+
     steps:
+      - uses: actions/checkout@v2
       - name: Echo Metadata
         run: |
           echo ${{ github.event_name }}
           echo ${{ github.event.action }}
       - name: Set Production
-        run: echo "ENVIRONMENT=production" >> $GITHUB_ENV
+        working-directory: ./cool/
+        run: cat ./vars/production.tfvars >> $GITHUB_ENV # echo "ENVIRONMENT=production" >> $GITHUB_ENV
         if: github.event.action == 'cool_production'
       - name: Set Staging
-        run: echo "ENVIRONMENT=staging" >> $GITHUB_ENV
+        working-directory: ./cool/
+        run: cat ./vars/staging.tfvars >> $GITHUB_ENV #echo "ENVIRONMENT=staging" >> $GITHUB_ENV
         if: github.event_name == 'push' || github.event.action == 'cool_staging'
       - name: Set Environment
-        run: echo ::set-output name=ENVIRONMENT::$ENVIRONMENT
+        run: |
+          echo ::set-output name=ENVIRONMENT::$env
+          echo ::set-output name=AWS_PROVISION_ROLE::$github_actions_role
         id: env
 
   terraform:
