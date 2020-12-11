@@ -21,10 +21,10 @@ jobs:
           echo ${{ github.event_name }}
           echo ${{ github.event.action }}
       - name: Set Production
-        run: ENVIRONMENT=$(echo "production")
+        run: echo "ENVIRONMENT=production" >> $GITHUB_ENV
         if: github.event.action == 'cool_production'
       - name: Set Staging
-        run: ENVIRONMENT=$(echo "staging")
+        run: echo "ENVIRONMENT=staging" >> $GITHUB_ENV
         if: github.event_name == 'push' || github.event.action == 'cool_staging'
       - name: Set Environment
         run: echo ::set-output name=ENVIRONMENT::$ENVIRONMENT
