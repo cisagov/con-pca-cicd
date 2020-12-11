@@ -22,13 +22,13 @@ jobs:
           echo ${{ github.event.action }}
       - name: Set Production on Dispatch
         run: $ENVIRONMENT=production
-        if: ${{ github.event.action == cool_production}}
+        if: github.event.action == 'cool_production'
       - name: Set Staging on Push
         run: $ENVIRONMENT=staging
-        if: ${{ github.event.event_name == push }}
+        if: github.event.event_name == 'push'
       - name: Set Staging on Dispatch
         run: $ENVIRONMENT=staging
-        if: ${{ github.event.action == cool_staging}}
+        if: github.event.action == 'cool_staging'
       - name: Set Environment
         run: echo ::set-output name=ENVIRONMENT::$ENVIRONMENT
         id: env
