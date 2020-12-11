@@ -13,8 +13,8 @@ env:
 jobs:
   output:
     runs-on: ubuntu-latest
-    outputs:
-      ENVIRONMENT: ${{ steps }}
+    # outputs:
+    #   ENVIRONMENT: ${{ steps }}
     steps:
       - name: Set Environment
         id: env
