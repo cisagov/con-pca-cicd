@@ -70,10 +70,10 @@ jobs:
       - name: Assume Provision Account Role
         run: |
           JSON=$(aws sts assume-role --role-arn $ASSUME_ROLE --role-session-name pca-web-github-actions)
-          echo $(AWS_ACCESS_KEY_ID=$(echo ${JSON} | jq --raw-output ".Credentials[\"AccessKeyId\"]")) >> $GITHUB_ENV
-          echo $(AWS_SECRET_ACCESS_KEY=$(echo ${JSON} | jq --raw-output ".Credentials[\"SecretAccessKey\"]")) >> $GITHUB_ENV
-          echo $(AWS_SESSION_TOKEN=$(echo ${JSON} | jq --raw-output ".Credentials[\"SessionToken\"]")) >> $GITHUB_ENV
-          echo $(AWS_EXPIRATION=$(echo ${JSON} | jq --raw-output ".Credentials[\"Expiration\"]")) >> $GITHUB_ENV
+          echo AWS_ACCESS_KEY_ID=$(echo $JSON | jq --raw-output ".Credentials[\"AccessKeyId\"]") >> $GITHUB_ENV
+          echo AWS_SECRET_ACCESS_KEY=$(echo ${JSON} | jq --raw-output ".Credentials[\"SecretAccessKey\"]") >> $GITHUB_ENV
+          echo AWS_SESSION_TOKEN=$(echo ${JSON} | jq --raw-output ".Credentials[\"SessionToken\"]") >> $GITHUB_ENV
+          echo AWS_EXPIRATION=$(echo ${JSON} | jq --raw-output ".Credentials[\"Expiration\"]") >> $GITHUB_ENV
         # if: github.event.client_payload.trigger == env.IMAGE_REPO || github.event.action == 'cool_production'
       - name: Confirm Assumed Role
         run: aws sts get-caller-identity
