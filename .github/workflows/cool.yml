@@ -58,6 +58,12 @@ jobs:
       - uses: actions/checkout@v2
         with:
           repository: cisagov/con-pca-web
+      - name: Print needs
+        run: |
+          echo $ASSUME_ROLE
+          echo $ECR_URI
+          echo $IMAGE_REPO
+          echo $ENVIRONMENT
       - name: Get Tag
         id: vars
         run: echo ::set-output name=tag::$(git rev-parse --short HEAD)
