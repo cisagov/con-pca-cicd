@@ -29,13 +29,13 @@ jobs:
         working-directory: ./cool/
         run: |
           echo "ENVIRONMENT=production" >> $GITHUB_ENV
-          echo "ACCOUNT_ID=$PRODUCTION_ACCOUNT_ID"
+          echo "ACCOUNT_ID=$PRODUCTION_ACCOUNT_ID" >> $GITHUB_ENV
         if: github.event.action == 'cool_production'
       - name: Set Staging
         working-directory: ./cool/
         run: |
           echo "ENVIRONMENT=staging" >> $GITHUB_ENV
-          echo "ACCOUNT_ID=$STAGING_ACCOUNT_ID"
+          echo "ACCOUNT_ID=$STAGING_ACCOUNT_ID" >> $GITHUB_ENV
         if: github.event_name == 'push' || github.event.action == 'cool_staging'
       - name: Set Environment
         run: |
@@ -63,18 +63,19 @@ jobs:
         run: echo ::set-output name=tag::$(git rev-parse --short HEAD)
       - name: Build Docker Image
         run: docker build -t $IMAGE_REPO:${{steps.vars.outputs.tag}} .
-        if: ${{ github.event.client_payload.trigger == env.IMAGE_REPO }}
+        if: github.event.client_payload.trigger == env.IMAGE_REPO || github.event.action == 'cool_production'
       - name: Tag Docker Image
         run: docker tag $IMAGE_REPO:${{steps.vars.outputs.tag}} $ECR_URI/$IMAGE_REPO:${{steps.vars.outputs.tag}}
-        if: ${{ github.event.client_payload.trigger == env.IMAGE_REPO }}
+        if: github.event.client_payload.trigger == env.IMAGE_REPO || github.event.action == 'cool_production'
       - name: Assume Provision Account Role
         run: aws sts assume-role --role-arn $ASSUME_ROLE --role-session-name pca-web-github-actions
+        # if: github.event.client_payload.trigger == env.IMAGE_REPO || github.event.action == 'cool_production'
       - name: ECR Login
         run: aws ecr get-login-password --region $REGION | docker login --username AWS --password-stdin $ECR_URI/$IMAGE_REPO
-        if: ${{ github.event.client_payload.trigger == env.IMAGE_REPO }}
+        if: github.event.client_payload.trigger == env.IMAGE_REPO || github.event.action == 'cool_production'
       - name: Push Docker Image
         run: docker push $ECR_URI/$IMAGE_REPO:${{steps.vars.outputs.tag}}
-        if: ${{ github.event.client_payload.trigger == env.IMAGE_REPO }}
+        if: github.event.client_payload.trigger == env.IMAGE_REPO || github.event.action == 'cool_production'
 
 
   terraform:
