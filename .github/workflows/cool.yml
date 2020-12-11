@@ -33,7 +33,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [outputs]
     env:
-      ENVIRONMENT: ${{ steps.outputs.outputs.ENVIRONMENT }}
+      ENVIRONMENT: ${{ needs.outputs.outputs.ENVIRONMENT }}
     steps:
       - name: Echo Environment
         run: echo $ENVIRONMENT
