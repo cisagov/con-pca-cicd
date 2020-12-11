@@ -58,12 +58,6 @@ jobs:
       - uses: actions/checkout@v2
         with:
           repository: cisagov/con-pca-web
-      - name: Print needs
-        run: |
-          echo $ASSUME_ROLE
-          echo $ECR_URI
-          echo $IMAGE_REPO
-          echo $ENVIRONMENT
       - name: Get Tag
         id: vars
         run: echo ::set-output name=tag::$(git rev-parse --short HEAD)
@@ -74,8 +68,11 @@ jobs:
         run: docker tag $IMAGE_REPO:${{steps.vars.outputs.tag}} $ECR_URI/$IMAGE_REPO:${{steps.vars.outputs.tag}}
         if: github.event.client_payload.trigger == env.IMAGE_REPO || github.event.action == 'cool_production'
       - name: Assume Provision Account Role
-        run: aws sts assume-role --role-arn $ASSUME_ROLE --role-session-name pca-web-github-actions
-        # if: github.event.client_payload.trigger == env.IMAGE_REPO || github.event.action == 'cool_production'
+        run: aws sts assume-role --role-arn $ASSUME_ROLE --role-session-name pca-web-github-actions > /dev/null
+        if: github.event.client_payload.trigger == env.IMAGE_REPO || github.event.action == 'cool_production'
+      - name: Confirm Assumed Role
+        run: aws sts get-caller-identity
+        if: github.event.client_payload.trigger == env.IMAGE_REPO || github.event.action == 'cool_production'
       - name: ECR Login
         run: aws ecr get-login-password --region $REGION | docker login --username AWS --password-stdin $ECR_URI/$IMAGE_REPO
         if: github.event.client_payload.trigger == env.IMAGE_REPO || github.event.action == 'cool_production'
