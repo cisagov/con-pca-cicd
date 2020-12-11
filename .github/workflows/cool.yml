@@ -22,4 +22,6 @@ jobs:
           echo ${{github.event_name}}
           echo ${{github.event.type}}
           echo ${{github.event.event_type}}
+          echo ${{github.event.action}}
+          echo ${{github.event.client_payload}}
         # if: ${{ github.event.client_payload.trigger ==  }}
