@@ -8,15 +8,17 @@ on:
 env:
   AWS_ACCESS_KEY_ID: ${{ secrets.COOL_AWS_ACCESS_KEY_ID }}
   AWS_SECRET_ACCESS_KEY: ${{ secrets.COOL_AWS_SECRET_ACCESS_KEY }}
+  PRODUCTION_ACCOUNT_ID: ${{ secrets.PRODUCTION_ACCOUNT_ID }}
   REGION: us-east-1
+  STAGING_ACCOUNT_ID: ${{ secrets.STAGING_ACCOUNT_ID }}
 
 jobs:
   setenv:
     runs-on: ubuntu-latest
     outputs:
       ENVIRONMENT: ${{ steps.env.outputs.ENVIRONMENT }}
-      AWS_PROVISION_ROLE: ${{ steps.env.outputs.AWS_PROVISION_ROLE }}
-
+      ASSUME_ROLE: ${{ steps.env.outputs.ASSUME_ROLE }}
+      ECR_URI: ${{ steps.env.outputs.ECR_URI }}
     steps:
       - uses: actions/checkout@v2
       - name: Echo Metadata
@@ -25,21 +27,59 @@ jobs:
           echo ${{ github.event.action }}
       - name: Set Production
         working-directory: ./cool/
-        run: cat ./vars/production.tfvars >> $GITHUB_ENV # echo "ENVIRONMENT=production" >> $GITHUB_ENV
+        run: |
+          echo "ENVIRONMENT=production" >> $GITHUB_ENV
+          echo "ACCOUNT_ID=$PRODUCTION_ACCOUNT_ID"
         if: github.event.action == 'cool_production'
       - name: Set Staging
         working-directory: ./cool/
-        run: cat ./vars/staging.tfvars >> $GITHUB_ENV #echo "ENVIRONMENT=staging" >> $GITHUB_ENV
+        run: |
+          echo "ENVIRONMENT=staging" >> $GITHUB_ENV
+          echo "ACCOUNT_ID=$STAGING_ACCOUNT_ID"
         if: github.event_name == 'push' || github.event.action == 'cool_staging'
       - name: Set Environment
         run: |
-          echo ::set-output name=ENVIRONMENT::$env
-          echo ::set-output name=AWS_PROVISION_ROLE::$github_actions_role
+          echo ::set-output name=ENVIRONMENT::$ENVIRONMENT
+          echo ::set-output name=ASSUME_ROLE::$(echo "arn:aws:iam::$ACCOUNT_ID:role/ProvisionAccount")
+          echo ::set-output name=ECR_URI::$(echo "$ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com")
         id: env
+
+  build_web:
+    runs-on: ubuntu-latest
+    needs: [setenv]
+    env:
+      ENVIRONMENT: ${{ needs.setenv.outputs.ENVIRONMENT }}
+      ASSUME_ROLE: ${{ needs.setenv.outputs.ASSUME_ROLE }}
+      ECR_URI: ${{ needs.setenv.outputs.ECR_URI }}
+      IMAGE_REPO: con-pca-web
+    outputs:
+      tag: ${{ steps.vars.outputs.tag}}
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          repository: cisagov/con-pca-web
+      - name: Get Tag
+        id: vars
+        run: echo ::set-output name=tag::$(git rev-parse --short HEAD)
+      - name: Build Docker Image
+        run: docker build -t $IMAGE_REPO:${{steps.vars.outputs.tag}} .
+        if: ${{ github.event.client_payload.trigger == env.IMAGE_REPO }}
+      - name: Tag Docker Image
+        run: docker tag $IMAGE_REPO:${{steps.vars.outputs.tag}} $ECR_URI/$IMAGE_REPO:${{steps.vars.outputs.tag}}
+        if: ${{ github.event.client_payload.trigger == env.IMAGE_REPO }}
+      - name: Assume Provision Account Role
+        run: aws sts assume-role --role-arn $ASSUME_ROLE --role-session-name pca-web-github-actions
+      - name: ECR Login
+        run: aws ecr get-login-password --region $REGION | docker login --username AWS --password-stdin $ECR_URI/$IMAGE_REPO
+        if: ${{ github.event.client_payload.trigger == env.IMAGE_REPO }}
+      - name: Push Docker Image
+        run: docker push $ECR_URI/$IMAGE_REPO:${{steps.vars.outputs.tag}}
+        if: ${{ github.event.client_payload.trigger == env.IMAGE_REPO }}
+
 
   terraform:
     runs-on: ubuntu-latest
-    needs: [setenv]
+    needs: [build_web]
     env:
       ENVIRONMENT: ${{ needs.setenv.outputs.ENVIRONMENT }}
     steps:

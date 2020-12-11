@@ -1,19 +1,19 @@
 #=================================================
 #  PROVIDER
 #=================================================
-github_actions_role="arn:aws:iam::539063400056:role/ProvisionAccount"
+github_actions_role = "arn:aws:iam::539063400056:role/ProvisionAccount"
 
 #=================================================
 #  CORE
 #=================================================
-env = "staging"
-app = "con-pca"
+env    = "staging"
+app    = "con-pca"
 region = "us-east-1"
 
 #=================================================
 #  ROUTE 53
 #=================================================
-hosted_zone_name="con-pca.staging.cool.cyber.dhs.gov"
+hosted_zone_name = "con-pca.staging.cool.cyber.dhs.gov"
 
 #=================================================
 #  COGNITO
@@ -43,12 +43,12 @@ allowed_actions = ["s3:*", "sqs:*"]
 #=================================================
 #  DOCUMENTDB
 #=================================================
-documentdb_cluster_size = 1
+documentdb_cluster_size   = 1
 documentdb_instance_class = "db.r5.large"
 
 #=================================================
 #  BROWSERLESS
 #=================================================
-browserless_cpu = 512
+browserless_cpu    = 512
 browserless_memory = 1024
-browserless_count = 1
+browserless_count  = 1
