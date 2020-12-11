@@ -3,7 +3,7 @@ on:
   push:
     branches: [develop]
   repository_dispatch:
-    types: [cool_stage]
+    types: [cool_staging, cool_production]
 
 env:
   AWS_ACCESS_KEY_ID: ${{ secrets.COOL_AWS_ACCESS_KEY_ID }}
@@ -13,15 +13,27 @@ env:
 jobs:
   output:
     runs-on: ubuntu-latest
-    # outputs:
-    #   ENVIRONMENT: ${{ steps }}
+    outputs:
+      ENVIRONMENT: ${{ steps.env.outputs.ENVIRONMENT }}
     steps:
+      - name: Set Production on Dispatch
+        run: $ENVIRONMENT=production
+        if: ${{ github.event.action == 'cool_production'}}
+      - name: Set Staging on Push
+        run: $ENVIRONMENT=staging
+        if: ${{ github.event.event_name == 'push' }}
+      - name: Set Staging on Dispatch
+        run: $ENVIRONMENT=staging
+        if: ${{ github.event.action == 'cool_staging'}}
       - name: Set Environment
+        run: echo ::set-output name=ENVIRONMENT::$ENVIRONMENT
         id: env
-        run: |
-          echo ${{github.event_name}}
-          echo ${{github.event.type}}
-          echo ${{github.event.event_type}}
-          echo ${{github.event.action}}
-          echo ${{github.event.client_payload}}
-        # if: ${{ github.event.client_payload.trigger ==  }}
+
+  terraform:
+    runs-on: ubuntu-latest
+    needs: [outputs]
+    env:
+      ENVIRONMENT: ${{ steps.outputs.outputs.ENVIRONMENT }}
+    steps:
+      - name: Echo Environment
+        run: echo $ENVIRONMENT
