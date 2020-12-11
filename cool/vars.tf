@@ -36,14 +36,6 @@ variable "hosted_zone_name" {
 }
 
 #=================================================
-#  COGNITO
-#=================================================
-variable "additional_redirect" {
-  type    = string
-  default = ""
-}
-
-#=================================================
 #  LOAD BALANCING
 #=================================================
 variable "idle_timeout" {
@@ -97,5 +89,36 @@ variable "browserless_memory" {
 }
 
 variable "browserless_count" {
+  type = number
+}
+
+#=================================================
+#  GOPHISH
+#=================================================
+variable "gophish_image_repo" {
+  type = string
+}
+
+variable "gophish_image_tag" {
+  type = string
+}
+
+variable "gophish_mysql_instance_class" {
+  type = string
+}
+
+variable "gophish_mysql_storage" {
+  type = number
+}
+
+variable "gophish_cpu" {
+  type = number
+}
+
+variable "gophish_memory" {
+  type = number
+}
+
+variable "gophish_count" {
   type = number
 }
