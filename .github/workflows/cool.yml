@@ -19,6 +19,7 @@ jobs:
       - name: Set Environment
         id: env
         run: |
-          echo ${{github.event}}
           echo ${{github.event_name}}
+          echo ${{github.event.type}}
+          echo ${{github.event.event_type}}
         # if: ${{ github.event.client_payload.trigger ==  }}
