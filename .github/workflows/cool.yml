@@ -68,11 +68,16 @@ jobs:
         run: docker tag $IMAGE_REPO:${{steps.vars.outputs.tag}} $ECR_URI/$IMAGE_REPO:${{steps.vars.outputs.tag}}
         if: github.event.client_payload.trigger == env.IMAGE_REPO || github.event.action == 'cool_production'
       - name: Assume Provision Account Role
-        run: aws sts assume-role --role-arn $ASSUME_ROLE --role-session-name pca-web-github-actions > /dev/null
-        if: github.event.client_payload.trigger == env.IMAGE_REPO || github.event.action == 'cool_production'
+        run: |
+          JSON=$(aws sts assume-role --role-arn $ASSUME_ROLE --role-session-name pca-web-github-actions)
+          AWS_ACCESS_KEY_ID=$(echo ${JSON} | jq --raw-output ".Credentials[\"AccessKeyId\"]")
+          AWS_SECRET_ACCESS_KEY=$(echo ${JSON} | jq --raw-output ".Credentials[\"SecretAccessKey\"]")
+          AWS_SESSION_TOKEN=$(echo ${JSON} | jq --raw-output ".Credentials[\"SessionToken\"]")
+          AWS_EXPIRATION=$(echo ${JSON} | jq --raw-output ".Credentials[\"Expiration\"]")
+        # if: github.event.client_payload.trigger == env.IMAGE_REPO || github.event.action == 'cool_production'
       - name: Confirm Assumed Role
         run: aws sts get-caller-identity
-        if: github.event.client_payload.trigger == env.IMAGE_REPO || github.event.action == 'cool_production'
+        # if: github.event.client_payload.trigger == env.IMAGE_REPO || github.event.action == 'cool_production'
       - name: ECR Login
         run: aws ecr get-login-password --region $REGION | docker login --username AWS --password-stdin $ECR_URI/$IMAGE_REPO
         if: github.event.client_payload.trigger == env.IMAGE_REPO || github.event.action == 'cool_production'
