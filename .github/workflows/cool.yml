@@ -201,38 +201,38 @@ jobs:
 
       # Install Lambda Layer
       - name: Install Python Requirements
-        run: pip install -r ./con-pca-api/requirements.txt --no-deps -t ./con-pca/terraform/layer/python
+        run: pip install -r ./con-pca-api/requirements.txt --no-deps -t ./con-pca/cool/layer/python
 
       # Initialize Terraform
       - name: Terraform init
-        working-directory: ./con-pca/terraform
+        working-directory: ./con-pca/cool
         run: terraform init -input=false
 
       # Select terraform workspace
       - name: Terraform Workspace
-        working-directory: ./con-pca/terraform
+        working-directory: ./con-pca/cool
         run: |
           terraform workspace select $ENVIRONMENT
           terraform workspace show
 
       # Validate Terraform
       - name: Terraform validation
-        working-directory: ./con-pca/terraform
+        working-directory: ./con-pca/cool
         run: terraform validate
 
       # Sometimes this just needs run again...
       - name: Terraform init 2
-        working-directory: ./con-pca/terraform
+        working-directory: ./con-pca/cool
         run: terraform init -input=false
 
       # Apply terraform
       - name: Terraform Plan
-        working-directory: ./con-pca/terraform
+        working-directory: ./con-pca/cool
         run: terraform plan -input=false -var-file ./vars/$ENVIRONMENT.tfvars -var="gophish_image_tag=${{needs.build_gophish.outputs.tag}}" -var="api_image_tag=${{needs.build_api.outputs.tag}}" -var="web_image_tag=${{needs.build_web.outputs.tag}}"
 
 
       # Apply terraform
       # - name: Terraform Apply
-      #   working-directory: ./con-pca/terraform
+      #   working-directory: ./con-pca/cool
       #   run: terraform apply -input=false -auto-approve -var-file ./vars/$ENVIRONMENT.tfvars -var="gophish_image_tag=${{needs.build_gophish.outputs.tag}}" -var="api_image_tag=${{needs.build_api.outputs.tag}}" -var="web_image_tag=${{needs.build_web.outputs.tag}}"
 
