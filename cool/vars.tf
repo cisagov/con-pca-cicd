@@ -160,3 +160,94 @@ variable "web_memory" {
 variable "web_desired_count" {
   type = number
 }
+
+
+#=================================================
+#  API
+#=================================================
+variable "api_image_repo" {
+  type = string
+}
+
+variable "api_image_tag" {
+  type = string
+}
+
+variable "delay_minutes" {
+  type    = string
+  default = "5"
+}
+
+variable "cycle_minutes" {
+  type    = string
+  default = "129600"
+}
+
+variable "monthly_minutes" {
+  type    = string
+  default = "43200"
+}
+
+variable "yearly_minutes" {
+  type    = string
+  default = "525600"
+}
+
+variable "api_desired_count" {
+  type = number
+}
+
+variable "api_max_count" {
+  type = number
+}
+
+variable "api_min_count" {
+  type = number
+}
+
+variable "api_scale_out_count" {
+  type = number
+}
+
+variable "api_scale_in_count" {
+  type = number
+}
+
+variable "api_cpu" {
+  type = number
+}
+
+variable "api_memory" {
+  type = number
+}
+
+variable "api_gunicorn_workers" {
+  type = string
+}
+
+variable "extra_bcc_emails" {
+  type = string
+}
+
+variable "default_x_gophish_contact" {
+  type = string
+}
+
+variable "reports_from_address" {
+  type = string
+}
+
+#=================================================
+#  TASKS
+#=================================================
+variable "tasks_memory" {
+  type = number
+}
+
+variable "tasks_schedule" {
+  type = string
+}
+
+variable "tasks_timeout" {
+  type = number
+}

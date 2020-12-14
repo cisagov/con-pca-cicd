@@ -29,7 +29,7 @@ locals {
 }
 
 # ===========================
-# CREDENTIALS
+# DATABASE CREDENTIALS
 # ===========================
 resource "random_string" "mysql_username" {
   length  = 8
@@ -56,6 +56,42 @@ resource "aws_ssm_parameter" "mysql_password" {
   description = "The password for gophish mysql database"
   type        = "SecureString"
   value       = random_password.mysql_password.result
+}
+
+# ===========================
+# APP CREDENTIALS
+# ===========================
+resource "aws_ssm_parameter" "gophish_username" {
+  name        = "/${var.env}/${var.app}/gophish/username"
+  description = "The username for gophish"
+  type        = "SecureString"
+  value       = "admin"
+
+  lifecycle {
+    ignore_changes = [value]
+  }
+}
+
+resource "aws_ssm_parameter" "gophish_password" {
+  name        = "/${var.env}/${var.app}/gophish/password"
+  description = "The password for gophish"
+  type        = "SecureString"
+  value       = "check_logs_for_initial_value"
+
+  lifecycle {
+    ignore_changes = [value]
+  }
+}
+
+resource "aws_ssm_parameter" "gophish_api_key" {
+  name        = "/${var.env}/${var.app}/gophish/apikey"
+  description = "The apikey for gophish"
+  type        = "SecureString"
+  value       = "get_from_gophish"
+
+  lifecycle {
+    ignore_changes = [value]
+  }
 }
 
 # ===========================

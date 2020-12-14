@@ -15,3 +15,11 @@ resource "aws_route53_record" "record" {
     evaluate_target_health = false
   }
 }
+
+resource "aws_route53_record" "admin" {
+  zone_id = aws_route53_zone.zone.zone_id
+  name    = "admin.${var.hosted_zone_name}"
+  type    = "CNAME"
+  ttl     = "300"
+  records = [module.internal_alb.alb_dns_name]
+}
