@@ -29,6 +29,13 @@ variable "region" {
 }
 
 #=================================================
+#  DOCKER
+#=================================================
+variable "image_url" {
+  type = string
+}
+
+#=================================================
 #  ROUTE 53
 #=================================================
 variable "hosted_zone_name" {
@@ -120,5 +127,28 @@ variable "gophish_memory" {
 }
 
 variable "gophish_count" {
+  type = number
+}
+
+#=================================================
+#  WEB
+#=================================================
+variable "web_image_repo" {
+  type = string
+}
+
+variable "web_image_tag" {
+  type = string
+}
+
+variable "web_cpu" {
+  type = number
+}
+
+variable "web_memory" {
+  type = number
+}
+
+variable "web_desired_count" {
   type = number
 }

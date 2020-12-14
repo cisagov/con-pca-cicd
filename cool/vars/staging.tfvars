@@ -11,6 +11,11 @@ app    = "con-pca"
 region = "us-east-1"
 
 #=================================================
+#  DOCKER
+#=================================================
+image_url = "539063400056.dkr.ecr.us-east-1.amazonaws.com"
+
+#=================================================
 #  ROUTE 53
 #=================================================
 hosted_zone_name = "con-pca.staging.cool.cyber.dhs.gov"
@@ -51,9 +56,17 @@ browserless_count  = 1
 #=================================================
 #  GOPHISH
 #=================================================
-gophish_image_repo = "539063400056.dkr.ecr.us-east-1.amazonaws.com/con-pca-gophish"
+gophish_image_repo = "con-pca-gophish"
 gophish_mysql_instance_class = "db.t3.micro"
 gophish_mysql_storage = 20
 gophish_cpu = 512
 gophish_memory = 1024
 gophish_count = 1
+
+#=================================================
+#  WEB
+#=================================================
+web_image_repo = "con-pca-web"
+web_cpu = 2048
+web_memory = 4096
+web_desired_count = 1

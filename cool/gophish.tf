@@ -163,7 +163,7 @@ resource "aws_lb_listener" "landing" {
 module "gophish_container" {
   source          = "github.com/cloudposse/terraform-aws-ecs-container-definition"
   container_name  = local.gophish_container_name
-  container_image = "${var.gophish_image_repo}:${var.gophish_image_tag}"
+  container_image = "${var.image_url}/${var.gophish_image_repo}:${var.gophish_image_tag}"
   essential       = "true"
   log_configuration = {
     logDriver = "awslogs"
