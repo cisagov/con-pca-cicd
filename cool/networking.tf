@@ -186,9 +186,13 @@ resource "aws_route" "default" {
 # ===========================
 # TRANSIT GATEWAY
 # ===========================
-# data "aws_ec2_transit_gateway" "tgw" {
-#   filter {
-#     name   = "tag:Name"
-#     values = [""]
-#   }
-# }
+locals {
+  transit_gateway_id = data.terraform_remote_state.sharedservices_networking.outputs.transit_gateway.id
+  # transit_gateway_route_table_id = data.terraform_remote_state.sharedservices_networking.outputs.transit_gateway_attachment_route_tables[var.account_id].id
+}
+
+resource "aws_ec2_transit_gateway_vpc_attachment" "tgw" {
+  subnet_ids         = aws_subnet.private.*.id
+  transit_gateway_id = local.transit_gateway_id
+  vpc_id             = aws_vpc.vpc.id
+}

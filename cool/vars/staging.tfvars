@@ -2,6 +2,8 @@
 #  PROVIDER
 #=================================================
 github_actions_role = "arn:aws:iam::539063400056:role/ProvisionAccount"
+workspace_type = "staging"
+account_id = "539063400056"
 
 #=================================================
 #  CORE

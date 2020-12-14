@@ -102,7 +102,7 @@ resource "aws_lb_target_group" "gophish" {
   health_check {
     healthy_threshold   = 3
     interval            = 60
-    matcher             = "200,307"
+    matcher             = "200,307,404"
     path                = "/"
     port                = local.gophish_port
     protocol            = local.gophish_protocol
@@ -120,7 +120,7 @@ resource "aws_lb_target_group" "landing" {
   health_check {
     healthy_threshold   = 3
     interval            = 60
-    matcher             = "200,307"
+    matcher             = "200,307,404"
     path                = "/"
     port                = local.landingpage_port
     protocol            = local.landingpage_protocol
