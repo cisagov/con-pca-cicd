@@ -3,7 +3,7 @@ on:
   push:
     branches: [develop]
   repository_dispatch:
-    types: [cool_staging, cool_production]
+    types: [deploy, cool_staging, cool_production]
 
 env:
   AWS_ACCESS_KEY_ID: ${{ secrets.COOL_AWS_ACCESS_KEY_ID }}
