@@ -90,66 +90,66 @@ jobs:
         run: docker push $ECR_URI/$IMAGE_REPO:${{steps.vars.outputs.tag}}
         if: ${{ github.event.client_payload.trigger == env.IMAGE_REPO }}
 
-  terraform:
-    runs-on: ubuntu-latest
-    needs: [build_web, build_api, build_gophish]
+  # terraform:
+  #   runs-on: ubuntu-latest
+  #   needs: [build_web, build_api, build_gophish]
 
-    steps:
-      # Checkout api for building lambda function
-      - uses: actions/checkout@v2
-        with:
-          repository: cisagov/con-pca-api
-          path: con-pca-api
+  #   steps:
+  #     # Checkout api for building lambda function
+  #     - uses: actions/checkout@v2
+  #       with:
+  #         repository: cisagov/con-pca-api
+  #         path: con-pca-api
 
-      # Checkout con-pca repo for running terraform
-      - uses: actions/checkout@v2
-        with:
-          path: con-pca
+  #     # Checkout con-pca repo for running terraform
+  #     - uses: actions/checkout@v2
+  #       with:
+  #         path: con-pca
 
-      # Install python 3.8 for installing lambda layer
-      - uses: actions/setup-python@v2
-        with:
-          python-version: 3.8
-      - name: Upgrade Pip
-        run: pip install --upgrade pip
+  #     # Install python 3.8 for installing lambda layer
+  #     - uses: actions/setup-python@v2
+  #       with:
+  #         python-version: 3.8
+  #     - name: Upgrade Pip
+  #       run: pip install --upgrade pip
 
-      # Install Terraform
-      - uses: hashicorp/setup-terraform@v1
-        with:
-          terraform_version: 0.13.3
-      - name: Verify Terraform version
-        run: terraform --version
+  #     # Install Terraform
+  #     - uses: hashicorp/setup-terraform@v1
+  #       with:
+  #         terraform_version: 0.13.3
+  #     - name: Verify Terraform version
+  #       run: terraform --version
 
-      # Install Lambda Layer
-      - name: Install Python Requirements
-        run: |
-          mkdir ./con-pca/terraform/layer
-          mkdir ./con-pca/terraform/layer/python
-          pip install -r ./con-pca-api/requirements.txt --no-deps -t ./con-pca/terraform/layer/python
+  #     # Install Lambda Layer
+  #     - name: Install Python Requirements
+  #       run: |
+  #         mkdir ./con-pca/terraform/layer
+  #         mkdir ./con-pca/terraform/layer/python
+  #         pip install -r ./con-pca-api/requirements.txt --no-deps -t ./con-pca/terraform/layer/python
 
-      # Initialize Terraform
-      - name: Terraform init
-        working-directory: ./con-pca/terraform
-        run: terraform init -input=false
+  #     # Initialize Terraform
+  #     - name: Terraform init
+  #       working-directory: ./con-pca/terraform
+  #       run: terraform init -input=false
 
-      # Select terraform workspace
-      - name: Terraform Workspace
-        working-directory: ./con-pca/terraform
-        run: |
-          terraform workspace select $ENVIRONMENT
-          terraform workspace show
+  #     # Select terraform workspace
+  #     - name: Terraform Workspace
+  #       working-directory: ./con-pca/terraform
+  #       run: |
+  #         terraform workspace select $ENVIRONMENT
+  #         terraform workspace show
 
-      # Validate Terraform
-      - name: Terraform validation
-        working-directory: ./con-pca/terraform
-        run: terraform validate
+  #     # Validate Terraform
+  #     - name: Terraform validation
+  #       working-directory: ./con-pca/terraform
+  #       run: terraform validate
 
-      # Sometimes this just needs run again...
-      - name: Terraform init 2
-        working-directory: ./con-pca/terraform
-        run: terraform init -input=false
+  #     # Sometimes this just needs run again...
+  #     - name: Terraform init 2
+  #       working-directory: ./con-pca/terraform
+  #       run: terraform init -input=false
 
-      # Apply terraform
-      - name: Terraform Apply
-        working-directory: ./con-pca/terraform
-        run: terraform apply -auto-approve -var-file ./vars/$ENVIRONMENT.tfvars -var="gophish_image_tag=${{needs.build_gophish.outputs.tag}}" -var="api_image_tag=${{needs.build_api.outputs.tag}}" -var="web_image_tag=${{needs.build_web.outputs.tag}}"
+  #     # Apply terraform
+  #     - name: Terraform Apply
+  #       working-directory: ./con-pca/terraform
+  #       run: terraform apply -auto-approve -var-file ./vars/$ENVIRONMENT.tfvars -var="gophish_image_tag=${{needs.build_gophish.outputs.tag}}" -var="api_image_tag=${{needs.build_api.outputs.tag}}" -var="web_image_tag=${{needs.build_web.outputs.tag}}"
