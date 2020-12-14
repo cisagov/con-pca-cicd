@@ -148,6 +148,8 @@ resource "aws_lb_listener" "landing" {
   load_balancer_arn = module.public_alb.alb_arn
   port              = local.landingpage_alb_port
   protocol          = local.landingpage_alb_protocol
+  ssl_policy        = "ELBSecurityPolicy-2016-08"
+  certificate_arn   = module.acm.this_acm_certificate_arn
 
   default_action {
     target_group_arn = aws_lb_target_group.landing.arn
