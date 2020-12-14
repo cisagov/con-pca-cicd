@@ -173,5 +173,64 @@ jobs:
     env:
       ENVIRONMENT: ${{ needs.setenv.outputs.ENVIRONMENT }}
     steps:
-      - name: Echo Environment
-        run: echo $ENVIRONMENT
+      - uses: actions/checkout@v2
+        with:
+          repository: cisagov/con-pca-api
+          path: con-pca-api
+
+      # Checkout con-pca repo for running terraform
+      - uses: actions/checkout@v2
+        with:
+          path: con-pca
+
+      # Install python 3.8 for installing lambda layer
+      - uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+      - name: Upgrade Pip
+        run: pip install --upgrade pip
+
+      # Install Terraform
+      - uses: hashicorp/setup-terraform@v1
+        with:
+          terraform_version: 0.12.29
+      - name: Verify Terraform version
+        run: terraform --version
+
+      # Install Lambda Layer
+      - name: Install Python Requirements
+        run: pip install -r ./con-pca-api/requirements.txt --no-deps -t ./con-pca/terraform/layer/python
+
+      # Initialize Terraform
+      - name: Terraform init
+        working-directory: ./con-pca/terraform
+        run: terraform init -input=false
+
+      # Select terraform workspace
+      - name: Terraform Workspace
+        working-directory: ./con-pca/terraform
+        run: |
+          terraform workspace select $ENVIRONMENT
+          terraform workspace show
+
+      # Validate Terraform
+      - name: Terraform validation
+        working-directory: ./con-pca/terraform
+        run: terraform validate
+
+      # Sometimes this just needs run again...
+      - name: Terraform init 2
+        working-directory: ./con-pca/terraform
+        run: terraform init -input=false
+
+      # Apply terraform
+      - name: Terraform Plan
+        working-directory: ./con-pca/terraform
+        run: terraform plan -input=false -var-file ./vars/$ENVIRONMENT.tfvars -var="gophish_image_tag=${{needs.build_gophish.outputs.tag}}" -var="api_image_tag=${{needs.build_api.outputs.tag}}" -var="web_image_tag=${{needs.build_web.outputs.tag}}"
+
+
+      # Apply terraform
+      # - name: Terraform Apply
+      #   working-directory: ./con-pca/terraform
+      #   run: terraform apply -input=false -auto-approve -var-file ./vars/$ENVIRONMENT.tfvars -var="gophish_image_tag=${{needs.build_gophish.outputs.tag}}" -var="api_image_tag=${{needs.build_api.outputs.tag}}" -var="web_image_tag=${{needs.build_web.outputs.tag}}"
+
