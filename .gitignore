@@ -2,3 +2,5 @@
 .vscode/
 .terraform
 terraform/layers
+cool/output
+terraform/output

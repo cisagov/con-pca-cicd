@@ -16,6 +16,7 @@ data "aws_iam_policy_document" "policy" {
       "ecr:*",
       "ecs:*",
       "elasticloadbalancing:*",
+      "events:*",
       "iam:*",
       "lambda:*",
       "logs:*",
