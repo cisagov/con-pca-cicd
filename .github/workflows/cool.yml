@@ -172,6 +172,8 @@ jobs:
     needs: [build_web, build_api, build_gophish]
     env:
       ENVIRONMENT: ${{ needs.setenv.outputs.ENVIRONMENT }}
+      AWS_ACCESS_KEY_ID: ${{ secrets.COOL_AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.COOL_AWS_SECRET_ACCESS_KEY }}
     steps:
       - uses: actions/checkout@v2
         with:

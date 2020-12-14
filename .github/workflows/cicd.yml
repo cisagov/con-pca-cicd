@@ -1,7 +1,7 @@
 name: Deploy
 on:
-  push:
-    branches: [develop]
+  # push:
+  #   branches: [develop]
   repository_dispatch:
     types: [deploy]
 
