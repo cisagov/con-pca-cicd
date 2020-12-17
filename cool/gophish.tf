@@ -113,8 +113,8 @@ module "rds" {
   engine_version     = "5.7"
   instance_class     = var.gophish_mysql_instance_class
   security_group_ids = [aws_security_group.gophish.id]
-  subnet_ids         = aws_subnet.private.*.id
-  vpc_id             = aws_vpc.vpc.id
+  subnet_ids         = local.private_subnet_ids
+  vpc_id             = local.vpc_id
 }
 
 # ===========================
@@ -133,7 +133,7 @@ resource "aws_lb_target_group" "gophish" {
   port        = local.gophish_port
   protocol    = local.gophish_protocol
   target_type = "ip"
-  vpc_id      = aws_vpc.vpc.id
+  vpc_id      = local.vpc_id
 
   health_check {
     healthy_threshold   = 3
@@ -151,7 +151,7 @@ resource "aws_lb_target_group" "landing" {
   port        = local.landingpage_port
   protocol    = local.landingpage_protocol
   target_type = "ip"
-  vpc_id      = aws_vpc.vpc.id
+  vpc_id      = local.vpc_id
 
   health_check {
     healthy_threshold   = 3
@@ -172,7 +172,7 @@ resource "aws_lb_listener" "gophish" {
   port              = local.gophish_alb_port
   protocol          = local.gophish_alb_protocol
   ssl_policy        = "ELBSecurityPolicy-2016-08"
-  certificate_arn   = module.acm.this_acm_certificate_arn
+  certificate_arn   = module.internal_certs.this_acm_certificate_arn
 
   default_action {
     target_group_arn = aws_lb_target_group.gophish.arn
@@ -185,7 +185,7 @@ resource "aws_lb_listener" "landing" {
   port              = local.landingpage_alb_port
   protocol          = local.landingpage_alb_protocol
   ssl_policy        = "ELBSecurityPolicy-2016-08"
-  certificate_arn   = module.acm.this_acm_certificate_arn
+  certificate_arn   = module.public_certs.this_acm_certificate_arn
 
   default_action {
     target_group_arn = aws_lb_target_group.landing.arn
@@ -276,7 +276,7 @@ resource "aws_ecs_service" "gophish" {
   }
 
   network_configuration {
-    subnets          = aws_subnet.private.*.id
+    subnets          = local.private_subnet_ids
     security_groups  = [aws_security_group.gophish.id]
     assign_public_ip = false
   }
@@ -288,7 +288,7 @@ resource "aws_ecs_service" "gophish" {
 resource "aws_security_group" "gophish" {
   name        = "${local.gophish_name}-alb"
   description = "Allow traffic for gophish from alb"
-  vpc_id      = aws_vpc.vpc.id
+  vpc_id      = local.vpc_id
 
   ingress {
     description     = "Allow container port from ALB"

@@ -2,27 +2,17 @@
 # VPC
 # ===========================
 locals {
-  cidr_block         = "10.223.248.0/22" # 10.223.248.0 - 10.223.251.255
-  availability_zones = ["${var.region}a", "${var.region}b"]
-  az_count           = length(local.availability_zones)
-}
-
-# ===========================
-# VPC
-# ===========================
-resource "aws_vpc" "vpc" {
-  cidr_block = local.cidr_block
-
-  tags = {
-    Name = "${var.app}-${var.env}-vpc"
-  }
+  vpc_id             = data.terraform_remote_state.cool_pca_networking.outputs.vpc.id
+  private_subnet_ids = values(data.terraform_remote_state.cool_pca_networking.outputs.private_subnets).*.id
+  public_subnet_ids  = values(data.terraform_remote_state.cool_pca_networking.outputs.public_subnets).*.id
+  cool_cidr_block    = "10.128.0.0/16"
 }
 
 # ===========================
 # INTERNET GATEWAY
 # ===========================
 resource "aws_internet_gateway" "gateway" {
-  vpc_id = aws_vpc.vpc.id
+  vpc_id = local.vpc_id
 
   tags = {
     Name = "${var.app}-${var.env}-igw"
@@ -30,25 +20,10 @@ resource "aws_internet_gateway" "gateway" {
 }
 
 # ===========================
-# PUBLIC SUBNET
+# PUBLIC ROUTE
 # ===========================
-resource "aws_subnet" "public" {
-  count             = local.az_count
-  vpc_id            = aws_vpc.vpc.id
-  availability_zone = element(local.availability_zones, count.index)
-  cidr_block = cidrsubnet(
-    local.cidr_block,
-    ceil(log(local.az_count * 2, 2)),
-    count.index
-  )
-
-  tags = {
-    Name = "${var.app}-${var.env}-public-${count.index}"
-  }
-}
-
 resource "aws_route_table" "public" {
-  vpc_id = aws_vpc.vpc.id
+  vpc_id = local.vpc_id
 
   tags = {
     Name = "${var.app}-${var.env}-public"
@@ -62,14 +37,14 @@ resource "aws_route" "public" {
 }
 
 resource "aws_route_table_association" "public" {
-  count          = local.az_count
-  subnet_id      = element(aws_subnet.public.*.id, count.index)
+  count          = length(local.public_subnet_ids)
+  subnet_id      = element(local.public_subnet_ids, count.index)
   route_table_id = aws_route_table.public.id
 }
 
 resource "aws_network_acl" "public" {
-  vpc_id     = aws_vpc.vpc.id
-  subnet_ids = aws_subnet.public.*.id
+  vpc_id     = local.vpc_id
+  subnet_ids = local.public_subnet_ids
 
   egress {
     rule_no    = 100
@@ -93,39 +68,32 @@ resource "aws_network_acl" "public" {
 # ===========================
 # PRIVATE SUBNET
 # ===========================
-resource "aws_subnet" "private" {
-  count             = local.az_count
-  vpc_id            = aws_vpc.vpc.id
-  availability_zone = element(local.availability_zones, count.index)
-  cidr_block = cidrsubnet(
-    local.cidr_block,
-    ceil(log(local.az_count * 2, 2)),
-    local.az_count + count.index
-  )
+
+resource "aws_route_table" "private" {
+  count  = length(local.public_subnet_ids)
+  vpc_id = local.vpc_id
 
   tags = {
     Name = "${var.app}-${var.env}-private-${count.index}"
   }
 }
 
-resource "aws_route_table" "private" {
-  count  = local.az_count
-  vpc_id = aws_vpc.vpc.id
-
-  tags = {
-    Name = "${var.app}-${var.env}-private-${element(local.availability_zones, count.index)}"
-  }
-}
-
 resource "aws_route_table_association" "private" {
-  count          = local.az_count
-  subnet_id      = element(aws_subnet.private.*.id, count.index)
+  count          = length(local.public_subnet_ids)
+  subnet_id      = element(local.private_subnet_ids, count.index)
   route_table_id = element(aws_route_table.private.*.id, count.index)
 }
 
+# resource "aws_route" "cool" {
+#   count = length(local.private_subnet_ids)
+#   route_table_id = element(aws_route_table.private.*.id, count.index)
+#   destination_cidr_block = local.cool_cidr_block
+#   transit_gateway_id =
+# }
+
 resource "aws_network_acl" "private" {
-  vpc_id     = aws_vpc.vpc.id
-  subnet_ids = aws_subnet.private.*.id
+  vpc_id     = local.vpc_id
+  subnet_ids = local.private_subnet_ids
 
   egress {
     rule_no    = 100
@@ -150,11 +118,11 @@ resource "aws_network_acl" "private" {
 # NAT GATEWAY
 # ===========================
 resource "aws_eip" "default" {
-  count = local.az_count
+  count = length(local.public_subnet_ids)
   vpc   = true
 
   tags = {
-    Name = "${var.app}-${var.env}-${element(local.availability_zones, count.index)}"
+    Name = "${var.app}-${var.env}-${count.index}"
   }
 
   lifecycle {
@@ -163,12 +131,12 @@ resource "aws_eip" "default" {
 }
 
 resource "aws_nat_gateway" "default" {
-  count         = local.az_count
+  count         = length(local.public_subnet_ids)
   allocation_id = element(aws_eip.default.*.id, count.index)
-  subnet_id     = element(aws_subnet.public.*.id, count.index)
+  subnet_id     = element(local.public_subnet_ids, count.index)
 
   tags = {
-    Name = "${var.app}-${var.env}-${element(local.availability_zones, count.index)}"
+    Name = "${var.app}-${var.env}-${count.index}"
   }
 
   lifecycle {
@@ -177,22 +145,8 @@ resource "aws_nat_gateway" "default" {
 }
 
 resource "aws_route" "default" {
-  count                  = local.az_count
+  count                  = length(local.public_subnet_ids)
   route_table_id         = element(aws_route_table.private.*.id, count.index)
   nat_gateway_id         = element(aws_nat_gateway.default.*.id, count.index)
   destination_cidr_block = "0.0.0.0/0"
-}
-
-# ===========================
-# TRANSIT GATEWAY
-# ===========================
-locals {
-  transit_gateway_id = data.terraform_remote_state.sharedservices_networking.outputs.transit_gateway.id
-  # transit_gateway_route_table_id = data.terraform_remote_state.sharedservices_networking.outputs.transit_gateway_attachment_route_tables[var.account_id].id
-}
-
-resource "aws_ec2_transit_gateway_vpc_attachment" "tgw" {
-  subnet_ids         = aws_subnet.private.*.id
-  transit_gateway_id = local.transit_gateway_id
-  vpc_id             = aws_vpc.vpc.id
 }

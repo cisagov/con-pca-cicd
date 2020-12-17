@@ -10,12 +10,12 @@ locals {
   web_name               = "${var.app}-${var.env}-web"
 
   web_environment = {
-    "API_URL" : "https://${aws_route53_record.record.name}:${local.api_load_balancer_port}"
-    "API_URL_HEADLESS" : "https://${aws_route53_record.record.name}:${local.api_load_balancer_port}"
+    "API_URL" : "https://${aws_route53_record.internal.name}:${local.api_load_balancer_port}"
+    "API_URL_HEADLESS" : "https://${aws_route53_record.internal.name}:${local.api_load_balancer_port}"
     "AWS_PROJECT_REGION" : var.region
     "AWS_USER_POOLS_ID" : aws_cognito_user_pool.pool.id
     "OAUTH_DOMAIN" : "${aws_cognito_user_pool_domain.domain.domain}.auth.${var.region}.amazoncognito.com"
-    "OAUTH_REDIRECT_URL" : "https://${aws_route53_record.record.name}"
+    "OAUTH_REDIRECT_URL" : "https://${aws_route53_record.internal.name}"
     "AWS_USER_POOLS_WEB_CLIENT_ID" : aws_cognito_user_pool_client.client.id
   }
 }
@@ -28,7 +28,7 @@ resource "aws_lb_target_group" "web" {
   port        = local.web_container_port
   protocol    = local.web_container_protocol
   target_type = "ip"
-  vpc_id      = aws_vpc.vpc.id
+  vpc_id      = local.vpc_id
 
   health_check {
     healthy_threshold   = 3
@@ -49,7 +49,7 @@ resource "aws_lb_listener" "web" {
   port              = local.web_load_balancer_port
   protocol          = "HTTPS"
   ssl_policy        = "ELBSecurityPolicy-2016-08"
-  certificate_arn   = module.acm.this_acm_certificate_arn
+  certificate_arn   = module.internal_certs.this_acm_certificate_arn
 
   default_action {
     target_group_arn = aws_lb_target_group.web.arn
@@ -129,7 +129,7 @@ resource "aws_ecs_service" "web" {
   }
 
   network_configuration {
-    subnets          = aws_subnet.private.*.id
+    subnets          = local.private_subnet_ids
     security_groups  = [aws_security_group.web.id]
     assign_public_ip = false
   }
@@ -141,7 +141,7 @@ resource "aws_ecs_service" "web" {
 resource "aws_security_group" "web" {
   name        = "${local.web_name}-alb"
   description = "Allow traffic for web from alb"
-  vpc_id      = aws_vpc.vpc.id
+  vpc_id      = local.vpc_id
 
   ingress {
     description     = "Allow container port from ALB"

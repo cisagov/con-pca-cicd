@@ -15,7 +15,7 @@ resource "aws_lb_target_group" "browserless" {
   port        = local.browserless_port
   protocol    = "TCP"
   target_type = "ip"
-  vpc_id      = aws_vpc.vpc.id
+  vpc_id      = local.vpc_id
 
   health_check {
     healthy_threshold   = 2
@@ -46,7 +46,7 @@ resource "aws_lb_listener" "browserless" {
 resource "aws_security_group" "browserless" {
   name        = local.browserless_name
   description = "Allow traffic for browserless chrome from alb"
-  vpc_id      = aws_vpc.vpc.id
+  vpc_id      = local.vpc_id
 
   ingress {
     description = "Allow traffic to containers"
@@ -142,7 +142,7 @@ resource "aws_ecs_service" "browserless" {
   }
 
   network_configuration {
-    subnets          = aws_subnet.private.*.id
+    subnets          = local.private_subnet_ids
     security_groups  = [aws_security_group.browserless.id]
     assign_public_ip = false
   }

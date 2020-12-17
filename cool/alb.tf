@@ -4,7 +4,7 @@
 resource "aws_security_group" "alb" {
   name        = "${var.app}-${var.env}-alb-sg"
   description = "Allowed ports into alb"
-  vpc_id      = aws_vpc.vpc.id
+  vpc_id      = local.vpc_id
 
   ingress {
     from_port   = 0
@@ -27,9 +27,9 @@ module "public_alb" {
   http_enabled        = false
   idle_timeout        = var.idle_timeout
   internal            = false
-  vpc_id              = aws_vpc.vpc.id
+  vpc_id              = local.vpc_id
   security_group_ids  = [aws_security_group.alb.id]
-  subnet_ids          = aws_subnet.private.*.id
+  subnet_ids          = local.private_subnet_ids
 }
 
 module "internal_alb" {
@@ -41,9 +41,9 @@ module "internal_alb" {
   http_enabled        = false
   idle_timeout        = var.idle_timeout
   internal            = true
-  vpc_id              = aws_vpc.vpc.id
+  vpc_id              = local.vpc_id
   security_group_ids  = [aws_security_group.alb.id]
-  subnet_ids          = aws_subnet.private.*.id
+  subnet_ids          = local.private_subnet_ids
 }
 
 #=================================================
@@ -55,5 +55,5 @@ resource "aws_lb" "network" {
   idle_timeout                     = 60
   internal                         = true
   load_balancer_type               = "network"
-  subnets                          = aws_subnet.private.*.id
+  subnets                          = local.private_subnet_ids
 }

@@ -41,8 +41,8 @@ module "documentdb" {
   master_username         = random_string.docdb_username.result
   master_password         = random_password.docdb_password.result
   instance_class          = var.documentdb_instance_class
-  vpc_id                  = aws_vpc.vpc.id
-  subnet_ids              = aws_subnet.private.*.id
+  vpc_id                  = local.vpc_id
+  subnet_ids              = local.private_subnet_ids
   allowed_security_groups = [aws_security_group.api.id]
   skip_final_snapshot     = true
 }

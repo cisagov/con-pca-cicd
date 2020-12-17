@@ -45,7 +45,7 @@ resource "aws_lambda_function" "process_tasks" {
   }
 
   vpc_config {
-    subnet_ids         = aws_subnet.private.*.id
+    subnet_ids         = local.private_subnet_ids
     security_group_ids = [aws_security_group.api.id]
   }
 }
@@ -67,7 +67,7 @@ resource "aws_lambda_function" "queue_tasks" {
   }
 
   vpc_config {
-    subnet_ids         = aws_subnet.private.*.id
+    subnet_ids         = local.private_subnet_ids
     security_group_ids = [aws_security_group.api.id]
   }
 }

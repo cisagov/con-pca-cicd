@@ -4,7 +4,7 @@ resource "aws_route53_zone" "zone" {
   depends_on = [aws_iam_role_policy_attachment.policy]
 }
 
-resource "aws_route53_record" "record" {
+resource "aws_route53_record" "public" {
   zone_id = aws_route53_zone.zone.zone_id
   name    = var.hosted_zone_name
   type    = "A"
@@ -16,7 +16,7 @@ resource "aws_route53_record" "record" {
   }
 }
 
-resource "aws_route53_record" "admin" {
+resource "aws_route53_record" "internal" {
   zone_id = aws_route53_zone.zone.zone_id
   name    = "admin.${var.hosted_zone_name}"
   type    = "CNAME"
