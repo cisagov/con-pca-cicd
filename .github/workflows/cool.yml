@@ -36,7 +36,7 @@ jobs:
         run: |
           echo "ENVIRONMENT=staging" >> $GITHUB_ENV
           echo "ACCOUNT_ID=$STAGING_ACCOUNT_ID" >> $GITHUB_ENV
-        if: github.event_name == 'push' || github.event.action == 'cool_staging'
+        if: github.event_name == 'push' || github.event.action == 'cool_staging' || github.event.action == 'deploy'
       - name: Set Environment
         run: |
           echo ::set-output name=ENVIRONMENT::$ENVIRONMENT
