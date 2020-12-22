@@ -10,12 +10,12 @@ locals {
   web_name               = "${var.app}-${var.env}-web"
 
   web_environment = {
-    "API_URL" : "https://${aws_route53_record.internal.name}:${local.api_load_balancer_port}"
-    "API_URL_HEADLESS" : "https://${aws_route53_record.internal.name}:${local.api_load_balancer_port}"
+    "API_URL" : "https://${aws_route53_record.sharedservices_internal.name}:${local.api_load_balancer_port}"
+    "API_URL_HEADLESS" : "https://${aws_route53_record.sharedservices_internal.name}:${local.api_load_balancer_port}"
     "AWS_PROJECT_REGION" : var.region
     "AWS_USER_POOLS_ID" : aws_cognito_user_pool.pool.id
     "OAUTH_DOMAIN" : "${aws_cognito_user_pool_domain.domain.domain}.auth.${var.region}.amazoncognito.com"
-    "OAUTH_REDIRECT_URL" : "https://${aws_route53_record.internal.name}"
+    "OAUTH_REDIRECT_URL" : "https://${aws_route53_record.sharedservices_internal.name}"
     "AWS_USER_POOLS_WEB_CLIENT_ID" : aws_cognito_user_pool_client.client.id
   }
 }

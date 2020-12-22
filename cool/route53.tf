@@ -1,9 +1,5 @@
-resource "aws_route53_zone" "private_zone" {
-  name = var.hosted_zone_name
-
-  vpc {
-    vpc_id = local.vpc_id
-  }
+locals {
+  cool_dns_private_zone = data.terraform_remote_state.sharedservices_networking.outputs.private_zone
 }
 
 resource "aws_route53_zone" "public_zone" {
@@ -22,16 +18,10 @@ resource "aws_route53_record" "public" {
   }
 }
 
-resource "aws_route53_record" "internal" {
-  zone_id = aws_route53_zone.public_zone.zone_id
-  name    = "admin.${var.hosted_zone_name}"
-  type    = "CNAME"
-  ttl     = "300"
-  records = [module.internal_alb.alb_dns_name]
-}
+resource "aws_route53_record" "sharedservices_internal" {
+  provider = aws.dns_sharedservices
 
-resource "aws_route53_record" "internal_private" {
-  zone_id = aws_route53_zone.private_zone.zone_id
+  zone_id = local.cool_dns_private_zone.zone_id
   name    = "admin.${var.hosted_zone_name}"
   type    = "CNAME"
   ttl     = "300"

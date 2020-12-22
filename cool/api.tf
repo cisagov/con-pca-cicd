@@ -12,13 +12,13 @@ locals {
   api_environment = {
     "SECRET_KEY" : random_string.django_secret_key.result
     "DEBUG" : 0
-    "DJANGO_ALLOWED_HOSTS" : "localhost 127.0.0.1 [::1] ${module.internal_alb.alb_dns_name} ${aws_route53_record.internal.name}"
-    "CORS_ORIGIN_WHITELIST" : "https://${aws_route53_record.internal.name},https://${aws_route53_record.internal.name}:3333"
+    "DJANGO_ALLOWED_HOSTS" : "localhost 127.0.0.1 [::1] ${module.internal_alb.alb_dns_name} ${aws_route53_record.sharedservices_internal.name}"
+    "CORS_ORIGIN_WHITELIST" : "https://${aws_route53_record.sharedservices_internal.name},https://${aws_route53_record.sharedservices_internal.name}:3333"
     "DB_HOST" : module.documentdb.endpoint
     "DB_PORT" : 27017
-    "GP_URL" : "https://${aws_route53_record.internal.name}:${local.gophish_alb_port}/"
+    "GP_URL" : "https://${aws_route53_record.sharedservices_internal.name}:${local.gophish_alb_port}/"
     "PHISH_URL" : "https://${aws_route53_record.public.name}/"
-    "WEBHOOK_URL" : "http://${aws_route53_record.internal.name}:8000/api/v1/inboundwebhook/"
+    "WEBHOOK_URL" : "http://${aws_route53_record.sharedservices_internal.name}:8000/api/v1/inboundwebhook/"
     "AWS_S3_IMAGE_BUCKET" : aws_s3_bucket.images.id
     "DEFAULT_FILE_STORAGE" : "storages.backends.s3boto3.S3Boto3Storage"
     "WORKERS" : var.api_gunicorn_workers
@@ -27,7 +27,7 @@ locals {
     "COGNITO_USER_POOL" : aws_cognito_user_pool.pool.id
     "LOCAL_API_KEY" : random_string.local_api_key.result
     "MONGO_TYPE" : "DOCUMENTDB"
-    "REPORTS_ENDPOINT" : "https://${aws_route53_record.internal.name}"
+    "REPORTS_ENDPOINT" : "https://${aws_route53_record.sharedservices_internal.name}"
     "BROWSERLESS_ENDPOINT" : "${aws_lb.network.dns_name}:${local.browserless_port}"
     "EXTRA_BCC_EMAILS" : var.extra_bcc_emails
     "USE_SES" : 1
