@@ -29,7 +29,7 @@ module "public_alb" {
   internal            = false
   vpc_id              = local.vpc_id
   security_group_ids  = [aws_security_group.alb.id]
-  subnet_ids          = local.private_subnet_ids
+  subnet_ids          = concat(local.public_subnet_ids)
 }
 
 module "internal_alb" {
