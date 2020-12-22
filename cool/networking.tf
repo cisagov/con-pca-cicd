@@ -5,6 +5,7 @@ locals {
   vpc_id             = data.terraform_remote_state.cool_pca_networking.outputs.vpc.id
   private_subnet_ids = values(data.terraform_remote_state.cool_pca_networking.outputs.private_subnets).*.id
   public_subnet_ids  = values(data.terraform_remote_state.cool_pca_networking.outputs.public_subnets).*.id
+  transit_gateway_id = data.terraform_remote_state.cool_pca_networking.outputs.transit_gateway_id
   cool_cidr_block    = "10.128.0.0/16"
 }
 
@@ -84,12 +85,12 @@ resource "aws_route_table_association" "private" {
   route_table_id = element(aws_route_table.private.*.id, count.index)
 }
 
-# resource "aws_route" "cool" {
-#   count = length(local.private_subnet_ids)
-#   route_table_id = element(aws_route_table.private.*.id, count.index)
-#   destination_cidr_block = local.cool_cidr_block
-#   transit_gateway_id =
-# }
+resource "aws_route" "cool" {
+  count                  = length(local.private_subnet_ids)
+  route_table_id         = element(aws_route_table.private.*.id, count.index)
+  destination_cidr_block = local.cool_cidr_block
+  transit_gateway_id     = local.transit_gateway_id
+}
 
 resource "aws_network_acl" "private" {
   vpc_id     = local.vpc_id
