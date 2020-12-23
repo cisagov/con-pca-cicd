@@ -23,7 +23,11 @@ resource "aws_route53_record" "sharedservices_internal" {
 
   zone_id = local.cool_dns_private_zone.zone_id
   name    = "admin.${var.hosted_zone_name}"
-  type    = "CNAME"
-  ttl     = "300"
-  records = [module.internal_alb.alb_dns_name]
+  type    = "A"
+
+  alias {
+    name                   = module.internal_alb.alb_dns_name
+    zone_id                = module.internal_alb.alb_zone_id
+    evaluate_target_health = false
+  }
 }
