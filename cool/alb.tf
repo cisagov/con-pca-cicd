@@ -36,7 +36,7 @@ module "web_alb" {
   source              = "github.com/cloudposse/terraform-aws-alb"
   namespace           = var.app
   stage               = var.env
-  name                = "internal"
+  name                = "web-alb"
   access_logs_enabled = false
   http_enabled        = false
   idle_timeout        = var.idle_timeout
@@ -50,7 +50,7 @@ module "gophish_alb" {
   source              = "github.com/cloudposse/terraform-aws-alb"
   namespace           = var.app
   stage               = var.env
-  name                = "internal"
+  name                = "gophish-alb"
   access_logs_enabled = false
   http_enabled        = false
   idle_timeout        = var.idle_timeout
@@ -64,7 +64,7 @@ module "api_alb" {
   source              = "github.com/cloudposse/terraform-aws-alb"
   namespace           = var.app
   stage               = var.env
-  name                = "internal"
+  name                = "api-alb"
   access_logs_enabled = false
   http_enabled        = false
   idle_timeout        = var.idle_timeout
