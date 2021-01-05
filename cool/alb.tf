@@ -50,7 +50,7 @@ module "gophish_alb" {
   source              = "github.com/cloudposse/terraform-aws-alb"
   namespace           = var.app
   stage               = var.env
-  name                = "gophish"
+  name                = "gp"
   access_logs_enabled = false
   http_enabled        = false
   idle_timeout        = var.idle_timeout
