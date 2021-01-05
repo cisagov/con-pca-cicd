@@ -8,7 +8,7 @@ locals {
   landingpage_port     = 8080
   landingpage_protocol = "HTTP"
 
-  gophish_alb_port     = 3333
+  gophish_alb_port     = 443
   gophish_alb_protocol = "HTTPS"
 
   landingpage_alb_port     = 443
@@ -168,11 +168,11 @@ resource "aws_lb_target_group" "landing" {
 # ALB LISTENERS
 # ===========================
 resource "aws_lb_listener" "gophish" {
-  load_balancer_arn = module.internal_alb.alb_arn
+  load_balancer_arn = module.gophish_alb.alb_arn
   port              = local.gophish_alb_port
   protocol          = local.gophish_alb_protocol
   ssl_policy        = "ELBSecurityPolicy-2016-08"
-  certificate_arn   = module.internal_certs.this_acm_certificate_arn
+  certificate_arn   = module.gophish_certs.this_acm_certificate_arn
 
   default_action {
     target_group_arn = aws_lb_target_group.gophish.arn
@@ -292,8 +292,8 @@ resource "aws_security_group" "gophish" {
 
   ingress {
     description     = "Allow container port from ALB"
-    from_port       = 3333
-    to_port         = 3333
+    from_port       = local.gophish_port
+    to_port         = local.gophish_port
     protocol        = "tcp"
     security_groups = [aws_security_group.alb.id]
     self            = true
@@ -301,8 +301,8 @@ resource "aws_security_group" "gophish" {
 
   ingress {
     description     = "Allow container port from ALB"
-    from_port       = 8080
-    to_port         = 8080
+    from_port       = local.landingpage_port
+    to_port         = local.landingpage_port
     protocol        = "tcp"
     security_groups = [aws_security_group.alb.id]
     self            = true

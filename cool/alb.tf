@@ -32,7 +32,35 @@ module "public_alb" {
   subnet_ids          = concat(local.public_subnet_ids)
 }
 
-module "internal_alb" {
+module "web_alb" {
+  source              = "github.com/cloudposse/terraform-aws-alb"
+  namespace           = var.app
+  stage               = var.env
+  name                = "internal"
+  access_logs_enabled = false
+  http_enabled        = false
+  idle_timeout        = var.idle_timeout
+  internal            = true
+  vpc_id              = local.vpc_id
+  security_group_ids  = [aws_security_group.alb.id]
+  subnet_ids          = local.private_subnet_ids
+}
+
+module "gophish_alb" {
+  source              = "github.com/cloudposse/terraform-aws-alb"
+  namespace           = var.app
+  stage               = var.env
+  name                = "internal"
+  access_logs_enabled = false
+  http_enabled        = false
+  idle_timeout        = var.idle_timeout
+  internal            = true
+  vpc_id              = local.vpc_id
+  security_group_ids  = [aws_security_group.alb.id]
+  subnet_ids          = local.private_subnet_ids
+}
+
+module "api_alb" {
   source              = "github.com/cloudposse/terraform-aws-alb"
   namespace           = var.app
   stage               = var.env

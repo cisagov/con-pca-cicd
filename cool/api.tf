@@ -4,21 +4,21 @@
 locals {
   api_container_port          = 80
   api_container_protocol      = "HTTP"
-  api_load_balancer_port      = 8043
-  api_load_balancer_http_port = 8000
+  api_load_balancer_port      = 443
+  api_load_balancer_http_port = 80
   api_name                    = "${var.app}-${var.env}-api"
   api_container_name          = "api"
 
   api_environment = {
     "SECRET_KEY" : random_string.django_secret_key.result
     "DEBUG" : 0
-    "DJANGO_ALLOWED_HOSTS" : "localhost 127.0.0.1 [::1] ${module.internal_alb.alb_dns_name} ${aws_route53_record.sharedservices_internal.name}"
-    "CORS_ORIGIN_WHITELIST" : "https://${aws_route53_record.sharedservices_internal.name},https://${aws_route53_record.sharedservices_internal.name}:3333"
+    "DJANGO_ALLOWED_HOSTS" : "localhost 127.0.0.1 [::1] ${module.api_alb.alb_dns_name} ${aws_route53_record.sharedservices_internal_api.name}"
+    "CORS_ORIGIN_WHITELIST" : "https://${aws_route53_record.sharedservices_internal_web.name},https://${aws_route53_record.sharedservices_internal_gophish.name}"
     "DB_HOST" : module.documentdb.endpoint
     "DB_PORT" : 27017
-    "GP_URL" : "https://${aws_route53_record.sharedservices_internal.name}:${local.gophish_alb_port}/"
+    "GP_URL" : "https://${aws_route53_record.sharedservices_internal_gophish.name}/"
     "PHISH_URL" : "https://${aws_route53_record.public.name}/"
-    "WEBHOOK_URL" : "http://${aws_route53_record.sharedservices_internal.name}:8000/api/v1/inboundwebhook/"
+    "WEBHOOK_URL" : "http://${aws_route53_record.sharedservices_internal_api.name}/api/v1/inboundwebhook/"
     "AWS_S3_IMAGE_BUCKET" : aws_s3_bucket.images.id
     "DEFAULT_FILE_STORAGE" : "storages.backends.s3boto3.S3Boto3Storage"
     "WORKERS" : var.api_gunicorn_workers
@@ -27,7 +27,7 @@ locals {
     "COGNITO_USER_POOL" : aws_cognito_user_pool.pool.id
     "LOCAL_API_KEY" : random_string.local_api_key.result
     "MONGO_TYPE" : "DOCUMENTDB"
-    "REPORTS_ENDPOINT" : "https://${aws_route53_record.sharedservices_internal.name}"
+    "REPORTS_ENDPOINT" : "https://${aws_route53_record.sharedservices_internal_web.name}"
     "BROWSERLESS_ENDPOINT" : "${aws_lb.network.dns_name}:${local.browserless_port}"
     "EXTRA_BCC_EMAILS" : var.extra_bcc_emails
     "USE_SES" : 1
@@ -98,11 +98,11 @@ resource "aws_lb_target_group" "api" {
 # ALB LISTENERS
 #=========================
 resource "aws_lb_listener" "api_https" {
-  load_balancer_arn = module.internal_alb.alb_arn
+  load_balancer_arn = module.api_alb.alb_arn
   port              = local.api_load_balancer_port
   protocol          = "HTTPS"
   ssl_policy        = "ELBSecurityPolicy-2016-08"
-  certificate_arn   = module.internal_certs.this_acm_certificate_arn
+  certificate_arn   = module.api_certs.this_acm_certificate_arn
 
   default_action {
     target_group_arn = aws_lb_target_group.api.arn
@@ -111,7 +111,7 @@ resource "aws_lb_listener" "api_https" {
 }
 
 resource "aws_lb_listener" "api_http" {
-  load_balancer_arn = module.internal_alb.alb_arn
+  load_balancer_arn = module.api_alb.alb_arn
   port              = local.api_load_balancer_http_port
   protocol          = "HTTP"
 
