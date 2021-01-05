@@ -18,7 +18,7 @@ locals {
     "DB_PORT" : 27017
     "GP_URL" : "https://${module.gophish_alb.alb_dns_name}/"
     "PHISH_URL" : "https://${aws_route53_record.public.name}/"
-    "WEBHOOK_URL" : "http://${aws_route53_record.sharedservices_internal_api.name}/api/v1/inboundwebhook/"
+    "WEBHOOK_URL" : "http://${module.api_alb.alb_dns_name}/api/v1/inboundwebhook/"
     "AWS_S3_IMAGE_BUCKET" : aws_s3_bucket.images.id
     "DEFAULT_FILE_STORAGE" : "storages.backends.s3boto3.S3Boto3Storage"
     "WORKERS" : var.api_gunicorn_workers
