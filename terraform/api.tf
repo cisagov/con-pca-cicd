@@ -17,7 +17,6 @@ locals {
     "DB_HOST" : module.documentdb.endpoint
     "DB_PORT" : 27017
     "GP_URL" : "https://${aws_route53_record.record.name}:${local.gophish_alb_port}/"
-    "PHISH_URL" : "http://${aws_route53_record.record.name}/"
     "WEBHOOK_URL" : "http://${module.internal_alb.alb_dns_name}:8000/api/v1/inboundwebhook/"
     "AWS_S3_IMAGE_BUCKET" : aws_s3_bucket.images.id
     "DEFAULT_FILE_STORAGE" : "storages.backends.s3boto3.S3Boto3Storage"
@@ -43,6 +42,7 @@ locals {
     "GP_SMTP_FROM" : data.aws_ssm_parameter.gp_smtp_from.value
     "GP_SMTP_USER" : data.aws_ssm_parameter.gp_smtp_user.value
     "GP_SMTP_PASS" : data.aws_ssm_parameter.gp_smtp_pass.value
+    "GP_LANDING_SUBDOMAIN" : var.gophish_landing_subdomain
     "SMTP_HOST" : data.aws_ssm_parameter.smtp_host.value
     "SMTP_PORT" : data.aws_ssm_parameter.smtp_port.value
     "SMTP_PASS" : data.aws_ssm_parameter.smtp_pass.value
@@ -51,7 +51,7 @@ locals {
     "COGNITO_AUDIENCE" : aws_cognito_user_pool_client.client.id
     "SES_ASSUME_ROLE_ARN" : data.aws_ssm_parameter.ses_assume_role_arn.value
     "DJANGO_SETTINGS_MODULE" : "config.settings"
-    "TASKS_QUEUE_URL": aws_sqs_queue.tasks.id
+    "TASKS_QUEUE_URL" : aws_sqs_queue.tasks.id
   }
 }
 

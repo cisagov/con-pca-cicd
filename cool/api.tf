@@ -17,7 +17,6 @@ locals {
     "DB_HOST" : module.documentdb.endpoint
     "DB_PORT" : 27017
     "GP_URL" : "https://${aws_route53_record.sharedservices_internal_gophish.name}/"
-    "PHISH_URL" : "https://${aws_route53_record.public.name}/"
     "WEBHOOK_URL" : "http://${aws_route53_record.sharedservices_internal_api.name}/api/v1/inboundwebhook/"
     "AWS_S3_IMAGE_BUCKET" : aws_s3_bucket.images.id
     "DEFAULT_FILE_STORAGE" : "storages.backends.s3boto3.S3Boto3Storage"
@@ -39,6 +38,7 @@ locals {
     "DB_USER" : aws_ssm_parameter.docdb_username.value
     "DB_PW" : aws_ssm_parameter.docdb_password.value
     "GP_API_KEY" : aws_ssm_parameter.gophish_api_key.value
+    "GP_LANDING_SUBDOMAIN" : "gp"
     "SMTP_FROM" : var.reports_from_address
     "COGNITO_AUDIENCE" : aws_cognito_user_pool_client.client.id
     "SES_ASSUME_ROLE_ARN" : var.ses_assume_role_arn

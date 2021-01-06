@@ -89,6 +89,10 @@ variable "gophish_count" {
   type = number
 }
 
+variable "gophish_landing_subdomain" {
+  type = string
+}
+
 #=================================================
 #  API
 #=================================================
