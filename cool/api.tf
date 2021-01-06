@@ -39,6 +39,7 @@ locals {
     "DB_PW" : aws_ssm_parameter.docdb_password.value
     "GP_API_KEY" : aws_ssm_parameter.gophish_api_key.value
     "GP_LANDING_SUBDOMAIN" : "gp"
+    "GP_LANDING_PROTOCOL" : var.gophish_landing_protocol
     "SMTP_FROM" : var.reports_from_address
     "COGNITO_AUDIENCE" : aws_cognito_user_pool_client.client.id
     "SES_ASSUME_ROLE_ARN" : var.ses_assume_role_arn
