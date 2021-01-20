@@ -142,10 +142,6 @@ variable "gophish_landing_subdomain" {
   type = string
 }
 
-variable "gophish_landing_protocol" {
-  type = string
-}
-
 #=================================================
 #  WEB
 #=================================================

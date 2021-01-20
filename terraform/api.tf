@@ -43,7 +43,6 @@ locals {
     "GP_SMTP_USER" : data.aws_ssm_parameter.gp_smtp_user.value
     "GP_SMTP_PASS" : data.aws_ssm_parameter.gp_smtp_pass.value
     "GP_LANDING_SUBDOMAIN" : var.gophish_landing_subdomain
-    "GP_LANDING_PROTOCOL" : var.gophish_landing_protocol
     "SMTP_HOST" : data.aws_ssm_parameter.smtp_host.value
     "SMTP_PORT" : data.aws_ssm_parameter.smtp_port.value
     "SMTP_PASS" : data.aws_ssm_parameter.smtp_pass.value

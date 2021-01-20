@@ -65,7 +65,6 @@ gophish_cpu = 512
 gophish_memory = 1024
 gophish_count = 1
 gophish_landing_subdomain = "prgp"
-gophish_landing_protocol = "https"
 
 #=================================================
 #  WEB
