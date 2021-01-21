@@ -80,18 +80,10 @@ web_desired_count = 1
 #=================================================
 api_image_repo = "con-pca-api"
 delay_minutes = 5
-# 45 minutes duration
-yearly_minutes = "30"
-cycle_minutes="30"
-monthly_minutes="15"
-# 4 hours duration
-#yearly_minutes = "960"
-#cycle_minutes = "240"
-#monthly_minutes = "80"
-# 4 days duration
-#yearly_minutes = "5760"
-#cycle_minutes = "5760"
-#monthly_minutes = "1440"
+# 1.5 days duration
+yearly_minutes = "4320"
+cycle_minutes = "2160"
+monthly_minutes = "1080"
 # 30 days duration
 #yearly_minutes = "43200"
 #cycle_minutes = "43200"
