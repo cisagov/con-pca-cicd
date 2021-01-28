@@ -64,7 +64,7 @@ gophish_mysql_storage = 20
 gophish_cpu = 512
 gophish_memory = 1024
 gophish_count = 1
-gophish_landing_subdomain = "prgp"
+gophish_landing_subdomain = "gp.pr"
 
 #=================================================
 #  WEB
@@ -80,10 +80,10 @@ web_desired_count = 1
 #=================================================
 api_image_repo = "con-pca-api"
 delay_minutes = 5
-# 4 hours duration
-yearly_minutes = "960"
-cycle_minutes = "240"
-monthly_minutes = "80"
+# 30 days duration
+yearly_minutes = "86400"
+cycle_minutes = "43200"
+monthly_minutes = "21600"
 api_cpu = 2048
 api_memory = 4096
 api_gunicorn_workers = "12"
