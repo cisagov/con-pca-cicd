@@ -83,14 +83,14 @@ api_image_repo = "con-pca-api"
 delay_minutes = 5
 
 # 16 hours duration
-yearly_minutes = "86400"
-cycle_minutes = "960"
-monthly_minutes = "480"
+#yearly_minutes = "86400"
+#cycle_minutes = "960"
+#monthly_minutes = "480"
 
 # 30 days duration
-#yearly_minutes = "86400"
-#cycle_minutes = "43200"
-#monthly_minutes = "21600"
+yearly_minutes = "86400"
+cycle_minutes = "43200"
+monthly_minutes = "21600"
 
 api_cpu = 2048
 api_memory = 4096
