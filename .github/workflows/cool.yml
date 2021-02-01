@@ -67,10 +67,11 @@ jobs:
       - name: Tag Docker Image
         run: docker tag $IMAGE_REPO:${{steps.vars.outputs.tag}} $ECR_URI/$IMAGE_REPO:${{steps.vars.outputs.tag}}
         if: github.event.client_payload.trigger == env.IMAGE_REPO || github.event.action == 'cool_production'
+      - name: Test
+        run: echo $(aws sts assume-role --role-arn $ASSUME_ROLE --role-session-name $IMAGE_REPO-github-actions --duration 900)
       - name: Assume Provision Account Role
         run: |
           JSON=$(aws sts assume-role --role-arn $ASSUME_ROLE --role-session-name $IMAGE_REPO-github-actions --duration 900)
-          echo $JSON
           echo AWS_ACCESS_KEY_ID=$(echo ${JSON} | jq --raw-output ".Credentials[\"AccessKeyId\"]") >> $GITHUB_ENV
           echo AWS_SECRET_ACCESS_KEY=$(echo ${JSON} | jq --raw-output ".Credentials[\"SecretAccessKey\"]") >> $GITHUB_ENV
           echo AWS_SESSION_TOKEN=$(echo ${JSON} | jq --raw-output ".Credentials[\"SessionToken\"]") >> $GITHUB_ENV
@@ -109,10 +110,11 @@ jobs:
       - name: Tag Docker Image
         run: docker tag $IMAGE_REPO:${{steps.vars.outputs.tag}} $ECR_URI/$IMAGE_REPO:${{steps.vars.outputs.tag}}
         if: github.event.client_payload.trigger == env.IMAGE_REPO || github.event.action == 'cool_production'
+      - name: Test
+        run: echo $(aws sts assume-role --role-arn $ASSUME_ROLE --role-session-name $IMAGE_REPO-github-actions --duration 900)
       - name: Assume Provision Account Role
         run: |
           JSON=$(aws sts assume-role --role-arn $ASSUME_ROLE --role-session-name $IMAGE_REPO-github-actions --duration 900)
-          echo $JSON
           echo AWS_ACCESS_KEY_ID=$(echo ${JSON} | jq --raw-output ".Credentials[\"AccessKeyId\"]") >> $GITHUB_ENV
           echo AWS_SECRET_ACCESS_KEY=$(echo ${JSON} | jq --raw-output ".Credentials[\"SecretAccessKey\"]") >> $GITHUB_ENV
           echo AWS_SESSION_TOKEN=$(echo ${JSON} | jq --raw-output ".Credentials[\"SessionToken\"]") >> $GITHUB_ENV
@@ -151,10 +153,11 @@ jobs:
       - name: Tag Docker Image
         run: docker tag $IMAGE_REPO:${{steps.vars.outputs.tag}} $ECR_URI/$IMAGE_REPO:${{steps.vars.outputs.tag}}
         if: github.event.client_payload.trigger == env.IMAGE_REPO || github.event.action == 'cool_production'
+      - name: Test
+        run: echo $(aws sts assume-role --role-arn $ASSUME_ROLE --role-session-name $IMAGE_REPO-github-actions --duration 900)
       - name: Assume Provision Account Role
         run: |
           JSON=$(aws sts assume-role --role-arn $ASSUME_ROLE --role-session-name $IMAGE_REPO-github-actions --duration 900)
-          echo $JSON
           echo AWS_ACCESS_KEY_ID=$(echo ${JSON} | jq --raw-output ".Credentials[\"AccessKeyId\"]") >> $GITHUB_ENV
           echo AWS_SECRET_ACCESS_KEY=$(echo ${JSON} | jq --raw-output ".Credentials[\"SecretAccessKey\"]") >> $GITHUB_ENV
           echo AWS_SESSION_TOKEN=$(echo ${JSON} | jq --raw-output ".Credentials[\"SessionToken\"]") >> $GITHUB_ENV
