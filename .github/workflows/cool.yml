@@ -11,6 +11,8 @@ env:
   PRODUCTION_ACCOUNT_ID: "579365464107"
   STAGING_ACCOUNT_ID: "539063400056"
   REGION: us-east-1
+  AWS_REGION: us-east-1
+  AWS_DEFAULT_REGION: us-east-1
 
 jobs:
   setenv:
