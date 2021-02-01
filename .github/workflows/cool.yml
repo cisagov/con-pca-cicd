@@ -67,8 +67,6 @@ jobs:
       - name: Tag Docker Image
         run: docker tag $IMAGE_REPO:${{steps.vars.outputs.tag}} $ECR_URI/$IMAGE_REPO:${{steps.vars.outputs.tag}}
         if: github.event.client_payload.trigger == env.IMAGE_REPO || github.event.action == 'cool_production'
-      - name: Test
-        run: echo $(aws sts assume-role --role-arn $ASSUME_ROLE --role-session-name $IMAGE_REPO-github-actions --duration 900)
       - name: Assume Provision Account Role
         run: |
           JSON=$(aws sts assume-role --role-arn $ASSUME_ROLE --role-session-name $IMAGE_REPO-github-actions --duration 900)
@@ -111,7 +109,7 @@ jobs:
         run: docker tag $IMAGE_REPO:${{steps.vars.outputs.tag}} $ECR_URI/$IMAGE_REPO:${{steps.vars.outputs.tag}}
         if: github.event.client_payload.trigger == env.IMAGE_REPO || github.event.action == 'cool_production'
       - name: Test
-        run: echo $(aws sts assume-role --role-arn $ASSUME_ROLE --role-session-name $IMAGE_REPO-github-actions --duration 900)
+        run: aws sts assume-role --role-arn $ASSUME_ROLE --role-session-name $IMAGE_REPO-github-actions --duration 900 --output json
       - name: Assume Provision Account Role
         run: |
           JSON=$(aws sts assume-role --role-arn $ASSUME_ROLE --role-session-name $IMAGE_REPO-github-actions --duration 900)
@@ -153,8 +151,6 @@ jobs:
       - name: Tag Docker Image
         run: docker tag $IMAGE_REPO:${{steps.vars.outputs.tag}} $ECR_URI/$IMAGE_REPO:${{steps.vars.outputs.tag}}
         if: github.event.client_payload.trigger == env.IMAGE_REPO || github.event.action == 'cool_production'
-      - name: Test
-        run: echo $(aws sts assume-role --role-arn $ASSUME_ROLE --role-session-name $IMAGE_REPO-github-actions --duration 900)
       - name: Assume Provision Account Role
         run: |
           JSON=$(aws sts assume-role --role-arn $ASSUME_ROLE --role-session-name $IMAGE_REPO-github-actions --duration 900)
