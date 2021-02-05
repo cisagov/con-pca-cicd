@@ -98,7 +98,7 @@ resource "aws_ssm_parameter" "gophish_api_key" {
 # RDS (MySQL Database)
 # ===========================
 module "rds" {
-  source    = "github.com/cloudposse/terraform-aws-rds?ref=tags/0.31.0"
+  source    = "git::https://github.com/cloudposse/terraform-aws-rds.git?ref=tags/0.31.0"
   namespace = var.app
   stage     = var.env
   name      = "gophish"

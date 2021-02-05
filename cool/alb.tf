@@ -19,7 +19,7 @@ resource "aws_security_group" "alb" {
 }
 
 module "public_alb" {
-  source              = "github.com/cloudposse/terraform-aws-alb?ref=tags/0.28.0"
+  source              = "git::https://github.com/cloudposse/terraform-aws-alb.git?ref=tags/0.28.0"
   namespace           = var.app
   stage               = var.env
   name                = "public"
@@ -33,7 +33,7 @@ module "public_alb" {
 }
 
 module "web_alb" {
-  source              = "github.com/cloudposse/terraform-aws-alb?ref=tags/0.28.0"
+  source              = "git::https://github.com/cloudposse/terraform-aws-alb.git?ref=tags/0.28.0"
   namespace           = var.app
   stage               = var.env
   name                = "web"
@@ -47,7 +47,7 @@ module "web_alb" {
 }
 
 module "gophish_alb" {
-  source              = "github.com/cloudposse/terraform-aws-alb?ref=tags/0.28.0"
+  source              = "git::https://github.com/cloudposse/terraform-aws-alb.git?ref=tags/0.28.0"
   namespace           = var.app
   stage               = var.env
   name                = "gp"
@@ -61,7 +61,7 @@ module "gophish_alb" {
 }
 
 module "api_alb" {
-  source              = "github.com/cloudposse/terraform-aws-alb?ref=tags/0.28.0"
+  source              = "git::https://github.com/cloudposse/terraform-aws-alb.git?ref=tags/0.28.0"
   namespace           = var.app
   stage               = var.env
   name                = "api"
