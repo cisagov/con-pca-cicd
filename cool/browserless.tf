@@ -82,7 +82,7 @@ resource "aws_cloudwatch_log_group" "browserless" {
 # CONTAINER DEFINITION
 # ===========================
 module "browserless_container" {
-  source          = "github.com/cloudposse/terraform-aws-ecs-container-definition"
+  source          = "git::https://github.com/cloudposse/terraform-aws-ecs-container-definition.git?ref=tags/0.47.0"
   container_name  = local.browserless_container_name
   container_image = "browserless/chrome:latest"
   essential       = "true"
