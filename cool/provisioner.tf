@@ -485,7 +485,7 @@ data "aws_iam_policy_document" "policy3" {
       "sqs:ReceiveMessage",
       "sqs:RemovePermission",
       "sqs:SetQueueAttributes",
-      "ssm:*Tags*",
+      "ssm:AddTagsToResource",
       "ssm:DeleteParameter",
       "ssm:DeleteParameters",
       "ssm:DescribeDocumentParameters",
@@ -495,7 +495,9 @@ data "aws_iam_policy_document" "policy3" {
       "ssm:GetParameters",
       "ssm:GetParametersByPath",
       "ssm:LabelParameterVersion",
+      "ssm:ListTagsForResource",
       "ssm:PutParameter",
+      "ssm:RemoveTagsFromResource",
       "sts:AssumeRole",
       "sts:GetCallerIdentity"
     ]
