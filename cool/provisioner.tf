@@ -400,17 +400,6 @@ data "aws_iam_policy_document" "policy2" {
       "rds:StartDBInstance",
       "rds:StopDBCluster",
       "rds:StopDBInstance",
-      "route53:ChangeResourceRecordSets",
-      "route53:ChangeTagsForResource",
-      "route53:CreateHostedZone",
-      "route53:DeleteHostedZone",
-      "route53:GetHostedZone",
-      "route53:GetHostedZoneCount",
-      "route53:ListHostedZones",
-      "route53:ListHostedZonesByName",
-      "route53:ListResourceRecordSets",
-      "route53:ListTagsForResource",
-      "route53:ListTagsForResources"
     ]
 
     resources = [
@@ -421,7 +410,7 @@ data "aws_iam_policy_document" "policy2" {
 
 resource "aws_iam_policy" "policy2" {
   description = "Provisions Resources for the following services - (ELBv2, Events, Lambda, Logs, RDS, Route53)"
-  name        = "${var.app}-${var.env}-provision-elb-events-lambda-logs-rds-r53"
+  name        = "${var.app}-${var.env}-provision-elb-events-lambda-logs-rds"
   policy      = data.aws_iam_policy_document.policy2.json
 }
 
@@ -431,6 +420,17 @@ resource "aws_iam_policy" "policy2" {
 data "aws_iam_policy_document" "policy3" {
   statement {
     actions = [
+      "route53:ChangeResourceRecordSets",
+      "route53:ChangeTagsForResource",
+      "route53:CreateHostedZone",
+      "route53:DeleteHostedZone",
+      "route53:GetHostedZone",
+      "route53:GetHostedZoneCount",
+      "route53:ListHostedZones",
+      "route53:ListHostedZonesByName",
+      "route53:ListResourceRecordSets",
+      "route53:ListTagsForResource",
+      "route53:ListTagsForResources",
       "s3:CreateBucket",
       "s3:DeleteBucket",
       "s3:DeleteBucketPolicy",
@@ -507,8 +507,8 @@ data "aws_iam_policy_document" "policy3" {
 }
 
 resource "aws_iam_policy" "policy3" {
-  description = "Provisions Resources for the following services - (S3, SNS, SQS, SSM, STS)"
-  name        = "${var.app}-${var.env}-provision-s3-sns-sqs-ssm-sts"
+  description = "Provisions Resources for the following services - (R53, S3, SNS, SQS, SSM, STS)"
+  name        = "${var.app}-${var.env}-provision-r53-s3-sns-sqs-ssm-sts"
   policy      = data.aws_iam_policy_document.policy3.json
 }
 
