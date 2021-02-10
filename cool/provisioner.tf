@@ -197,7 +197,7 @@ data "aws_iam_policy_document" "policy" {
 }
 
 resource "aws_iam_policy" "policy" {
-  description = "Policy for running terraform against account."
+  description = "Provisions Resources for the following services - (ACM, Scaling, CloudWatch, Cognito, EC2, ECR, ECS)"
   name        = "${var.app}-${var.env}-provision-acm-scaling-cw-cognito-ec2-ecr-ecs"
   policy      = data.aws_iam_policy_document.policy.json
 }
@@ -420,7 +420,7 @@ data "aws_iam_policy_document" "policy2" {
 }
 
 resource "aws_iam_policy" "policy2" {
-  description = "Policy for running terraform against account."
+  description = "Provisions Resources for the following services - (ELBv2, Events, Lambda, Logs, RDS, Route53)"
   name        = "${var.app}-${var.env}-provision-elb-events-lambda-logs-rds-r53"
   policy      = data.aws_iam_policy_document.policy2.json
 }
@@ -507,7 +507,7 @@ data "aws_iam_policy_document" "policy3" {
 }
 
 resource "aws_iam_policy" "policy3" {
-  description = "Policy for running terraform against account."
+  description = "Provisions Resources for the following services - (S3, SNS, SQS, SSM, STS)"
   name        = "${var.app}-${var.env}-provision-s3-sns-sqs-ssm-sts"
   policy      = data.aws_iam_policy_document.policy3.json
 }
