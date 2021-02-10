@@ -342,6 +342,26 @@ data "aws_iam_policy_document" "policy2" {
       "logs:PutRetentionPolicy",
       "logs:TagLogGroup",
       "logs:UntagLogGroup",
+    ]
+
+    resources = [
+      "*"
+    ]
+  }
+}
+
+resource "aws_iam_policy" "policy2" {
+  description = "Provisions Resources for the following services - (ELBv2, Events, Lambda, Logs)"
+  name        = "${var.app}-${var.env}-provision-elb-events-lambda-logs"
+  policy      = data.aws_iam_policy_document.policy2.json
+}
+
+# ------------------------------------------------------------------------------
+# S3, SNS, SQS, SSM, STS
+# ------------------------------------------------------------------------------
+data "aws_iam_policy_document" "policy3" {
+  statement {
+    actions = [
       "rds:AddTagsToResource",
       "rds:AuthorizeDBSecurityGroupIngress",
       "rds:CopyDBClusterSnapshot",
@@ -419,26 +439,6 @@ data "aws_iam_policy_document" "policy2" {
       "rds:StartDBInstance",
       "rds:StopDBCluster",
       "rds:StopDBInstance",
-    ]
-
-    resources = [
-      "*"
-    ]
-  }
-}
-
-resource "aws_iam_policy" "policy2" {
-  description = "Provisions Resources for the following services - (ELBv2, Events, Lambda, Logs, RDS, Route53)"
-  name        = "${var.app}-${var.env}-provision-elb-events-lambda-logs-rds"
-  policy      = data.aws_iam_policy_document.policy2.json
-}
-
-# ------------------------------------------------------------------------------
-# S3, SNS, SQS, SSM, STS
-# ------------------------------------------------------------------------------
-data "aws_iam_policy_document" "policy3" {
-  statement {
-    actions = [
       "route53:ChangeResourceRecordSets",
       "route53:ChangeTagsForResource",
       "route53:CreateHostedZone",
@@ -550,8 +550,8 @@ data "aws_iam_policy_document" "policy3" {
 }
 
 resource "aws_iam_policy" "policy3" {
-  description = "Provisions Resources for the following services - (R53, S3, SNS, SQS, SSM, STS)"
-  name        = "${var.app}-${var.env}-provision-r53-s3-sns-sqs-ssm-sts"
+  description = "Provisions Resources for the following services - (RDS, R53, S3, SNS, SQS, SSM, STS)"
+  name        = "${var.app}-${var.env}-provision-rds-r53-s3-sns-sqs-ssm-sts"
   policy      = data.aws_iam_policy_document.policy3.json
 }
 
