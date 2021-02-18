@@ -72,6 +72,28 @@ resource "aws_lambda_function" "queue_tasks" {
   }
 }
 
+resource "aws_lambda_function" "export" {
+  filename         = data.archive_file.code.output_path
+  function_name    = "${var.app}-${var.env}-export"
+  handler          = "lambda_functions.export.lambda_handler"
+  role             = aws_iam_role.lambda_exec_role.arn
+  memory_size      = var.tasks_memory
+  runtime          = "python3.8"
+  source_code_hash = data.archive_file.code.output_base64sha256
+  timeout          = var.tasks_timeout
+
+  layers = [aws_lambda_layer_version.layer.arn]
+
+  environment {
+    variables = local.api_environment
+  }
+
+  vpc_config {
+    subnet_ids         = local.private_subnet_ids
+    security_group_ids = [aws_security_group.api.id]
+  }
+}
+
 # ===================================
 # Cloudwatch Event rule
 # ===================================
