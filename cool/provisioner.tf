@@ -286,6 +286,7 @@ data "aws_iam_policy_document" "policy2" {
       "lambda:DeleteFunctionEventInvokeConfig",
       "lambda:DeleteLayerVersion",
       "lambda:DeleteProvisionedConcurrencyConfig",
+      "lambda:GetAccountSettings",
       "lambda:GetCodeSigningConfig",
       "lambda:GetEventSourceMapping",
       "lambda:GetFunction",
