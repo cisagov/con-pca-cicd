@@ -444,6 +444,7 @@ data "aws_iam_policy_document" "policy3" {
       "route53:ChangeTagsForResource",
       "route53:CreateHostedZone",
       "route53:DeleteHostedZone",
+      "route53:GetChange",
       "route53:GetHostedZone",
       "route53:GetHostedZoneCount",
       "route53:ListHostedZones",
