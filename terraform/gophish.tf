@@ -61,18 +61,19 @@ module "rds" {
   stage     = var.env
   name      = "gophish"
 
-  allocated_storage  = var.gophish_mysql_storage
-  database_name      = "gophish"
-  database_user      = random_string.mysql_username.result
-  database_password  = random_password.mysql_password.result
-  database_port      = 3306
-  db_parameter_group = "mysql5.7"
-  engine             = "mysql"
-  engine_version     = "5.7"
-  instance_class     = var.gophish_mysql_instance_class
-  security_group_ids = [aws_security_group.gophish.id]
-  subnet_ids         = var.public_subnet_ids
-  vpc_id             = var.vpc_id
+  allocated_storage   = var.gophish_mysql_storage
+  database_name       = "gophish"
+  database_user       = random_string.mysql_username.result
+  database_password   = random_password.mysql_password.result
+  database_port       = 3306
+  db_parameter_group  = "mysql5.7"
+  engine              = "mysql"
+  engine_version      = "5.7"
+  instance_class      = var.gophish_mysql_instance_class
+  security_group_ids  = [aws_security_group.gophish.id]
+  snapshot_identifier = null
+  subnet_ids          = var.public_subnet_ids
+  vpc_id              = var.vpc_id
 }
 
 # ===========================
