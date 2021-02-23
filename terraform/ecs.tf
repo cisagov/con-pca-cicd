@@ -58,7 +58,8 @@ resource "aws_iam_role" "ecs_task" {
 data "aws_iam_policy_document" "ecs_task" {
   statement {
     actions = [
-      "s3:*"
+      "s3:*",
+      "cognito-idp:*"
     ]
 
     resources = [

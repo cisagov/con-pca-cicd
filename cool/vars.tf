@@ -81,7 +81,7 @@ variable "ses_assume_role_arn" {
 #=================================================
 variable "allowed_actions" {
   type    = list(string)
-  default = ["s3:*", "sqs:*"]
+  default = ["s3:*", "sqs:*", "cognito-idp:*"]
 }
 
 #=================================================
