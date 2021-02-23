@@ -43,6 +43,7 @@ module "documentdb" {
   instance_class          = var.documentdb_instance_class
   vpc_id                  = var.vpc_id
   subnet_ids              = var.public_subnet_ids
+  allowed_cidr_blocks     = ["10.0.0.0/8"]
   allowed_security_groups = [aws_security_group.api.id]
   skip_final_snapshot     = true
 }
