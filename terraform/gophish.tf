@@ -154,7 +154,7 @@ resource "aws_lb_listener" "landing" {
 # CONTAINER DEFINITION
 # ===========================
 module "gophish_container" {
-  source          = "github.com/cloudposse/terraform-aws-ecs-container-definition"
+  source          = "git::https://github.com/cloudposse/terraform-aws-ecs-container-definition.git?ref=tags/0.47.0"
   container_name  = local.gophish_container_name
   container_image = "${var.gophish_image_repo}:${var.gophish_image_tag}"
   essential       = "true"
