@@ -1,5 +1,7 @@
 # con-pca-cicd
 
+This repository holds the automated pipeline for con-pca. The automated pipeline is a must so less time is spent on building/deploying manually and more time can be spent developing/testing and providing a valuable product.
+
 ## Github Actions
 
 Github actions is used to run builds of the docker images, pushing them to AWS ECR and runs the terraform for the AWS deployments.
