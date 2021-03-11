@@ -1,142 +1,32 @@
-# Con-PCA
+# con-pca-cicd
 
-## Continuous Phishing Assessment
+## Github Actions
 
-### Project Directory
+Github actions is used to run builds of the docker images, pushing them to AWS ECR and runs the terraform for the AWS deployments.
 
-- [Client](https://github.com/cisagov/con-pca/tree/develop/client)
-- [Controller](https://github.com/cisagov/con-pca/tree/develop/controller)
-- [GoPhish](https://github.com/cisagov/con-pca/tree/develop/gophish)
-- [AWS](https://github.com/cisagov/con-pca/tree/develop/aws)
+## Terraform
 
-### Requirements
+Terraform is used for deployments of resources to the INL and COOL environment.
 
-For local setup, Get the right flavor of Docker for your OS...
+## Environments
 
-- [Docker for Mac](https://docs.docker.com/docker-for-mac/install/)
-- [Docker for Ubuntu](https://docs.docker.com/install/linux/docker-ce/ubuntu/)
-- [Docker for Windows](https://docs.docker.com/docker-for-windows/install/)
+At the moment there are two different environments that we deploy to - INL (dev), COOL (staging, production). Two separate sets of terraform is required as the environments have different requirements. Hopefully at some point, this can be reduced to just the COOL environment.
 
-**Note:** The recommended requirement for deployment of this project is 4 GB RAM.
-For Docker for Mac, this can be set by following these steps:
+### INL
 
-Open Docker > Preferences > Advanced tab, then set memory to 4.0 GiB
+There is currently an INL account that is used as a development environment. The terraform for that account is located [here](terraform/). The workflow for the INL environment is defined [here](.github/workflows/cicd.yml).
 
-## Local Install and Deployment
+### COOL
 
-### Git Clone Project
+Staging and production environments are deployed to the cool and the terraform for that is located [here](cool/). The workflow for the deployment to the COOL environment is defined [here](.github/workflows/cool.yml).
 
-Make sure you have a github account and access to the correct repo.
+## Pipeline
 
-To install project run
-
-```shell
-git clone git@github.com:cisagov/con-pca.git
-```
-
-Use `Makefile` to install and run all services.
-
-### Setup and Build
-
-Create your .env files
-
-- `make env`
-- **note**: reach out to someone to update your `.env` files with project secrets
-
-Build containers:
-
-- `make build`
-
-To run the containers, use:
-
-- `make local`
-
-Your output will look like:
-
-```shell
--> % make up
-Creating pca-mongodb  ... done
-Creating pca-web      ... done
-Creating pca-api      ... done
-```
-
-To run containers including aws, use:
-
-- `make up`
-
-Stop containers
-
-- `make stop`
-
-Remove containers
-
-- `make down`
-
-## Project Components
-
-For more information regarding each component,
-
-- Please see [here](client/README.md) for the client service
-- Please see [here](controller/README.md) for the controller service
-- Please see [here](gophish/README.md) for the gophish service
-
-## Dev Access
-
-You can use these enpoints to debug and develop, suggested access:
-
-- [curl](https://curl.haxx.se/docs/manpage.html)
-
-- [PostMan](https://www.postman.com/)
-
-## Api
-
-To run the containers, use:
-
-- `make up`
-
-Your output will look like:
-
-```shell
--> % make up
-docker-compose up -d
-Creating network "controller_default" with the default driver
-Creating pca-mongodb  ... done
-Creating pca-api      ... done
-```
-
-Dev Access
-
-You can use these endpoints to debug and develop, suggested access:
-
-- [drf-yasg - Yet another Swagger generator](https://drf-yasg.readthedocs.io/en/latest/)
-
-- [curl](https://curl.haxx.se/docs/manpage.html)
-
-- [PostMan](https://www.postman.com/)
-
-### drf-yasg / Swagger
-
-Here we are using genrated docs via swagger that also give us a
-few ways of viewing them.
-
-Once running, navigate to the
-[Api Swagger UI](http://localhost:8000/api/v1/swagger/)
-located at: `http://localhost:8000/api/v1/swagger/`
-
-You can also see the redoc version of the api at, navigate to the
-[Api redoc UI](http://localhost:8000/api/v1/redoc/)
-located at: `http://localhost:8000/api/v1/redoc/`
-
-To download the api docs as yaml or json, use the following enpoints:
-[Api Swagger json](http://localhost:8000/api/v1/swagger.json)
-[Api Swagger YAML](http://localhost:8000/api/v1/swagger.yaml)
-
-Here you can see how the calls are defined. These objects are defined under `api.serializers.*`
-When created, it is genrated from those files and is validated when sending.
+As Github Actions does not have a good way to handle multi-repository pipelines, all the builds are in this repository, so credentials don't need added to be added to other repositories and the workflow can be defined in a single place with multiple triggers for that. Repository dispatch events are sent from the con-pca-api, con-pca-web, and con-pca-gophish repositories to build the respective docker container, push it to AWS ECR and then run the terraform to deploy the new containers.
 
 ## Contributing
 
-We welcome contributions!  Please see [here](CONTRIBUTING.md) for
+We welcome contributions! Please see [here](CONTRIBUTING.md) for
 details.
 
 ## License
