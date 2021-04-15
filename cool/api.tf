@@ -33,9 +33,6 @@ locals {
     "USE_SES" : 1
     "DEFAULT_X_GOPHISH_CONTACT" : var.default_x_gophish_contact
     "DELAY_MINUTES" : var.delay_minutes
-    "CYCLE_MINUTES" : var.cycle_minutes
-    "MONTHLY_MINUTES" : var.monthly_minutes
-    "YEARLY_MINUTES" : var.yearly_minutes
     "DB_USER" : aws_ssm_parameter.docdb_username.value
     "DB_PW" : aws_ssm_parameter.docdb_password.value
     "GP_API_KEY" : aws_ssm_parameter.gophish_api_key.value

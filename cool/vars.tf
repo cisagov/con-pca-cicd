@@ -186,21 +186,6 @@ variable "delay_minutes" {
   default = "5"
 }
 
-variable "cycle_minutes" {
-  type    = string
-  default = "129600"
-}
-
-variable "monthly_minutes" {
-  type    = string
-  default = "43200"
-}
-
-variable "yearly_minutes" {
-  type    = string
-  default = "525600"
-}
-
 variable "api_desired_count" {
   type = number
 }

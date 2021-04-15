@@ -76,13 +76,6 @@ web_desired_count = 1
 #=================================================
 api_image_repo = "con-pca-api"
 delay_minutes = 5
-yearly_minutes = "40320"
-cycle_minutes = "10080"
-monthly_minutes = "5040"
-# 30 days duration
-#yearly_minutes = "43200"
-#cycle_minutes = "43200"
-#monthly_minutes = "7200"
 api_cpu = 2048
 api_memory = 4096
 api_gunicorn_workers = "12"
