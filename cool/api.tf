@@ -22,9 +22,10 @@ locals {
     "AWS_S3_EXPORT_BUCKET" : aws_s3_bucket.exports.id
     "DEFAULT_FILE_STORAGE" : "storages.backends.s3boto3.S3Boto3Storage"
     "WORKERS" : var.api_gunicorn_workers
-    "COGNITO_DEPLOYMENT_MODE" : "Production"
-    "COGNITO_AWS_REGION" : var.region
-    "COGNITO_USER_POOL" : aws_cognito_user_pool.pool.id
+    "AWS_COGNITO_ENABLED": 1
+    "AWS_COGNITO_USER_POOL_ID": aws_cognito_user_pool.pool.id
+    "AWS_COGNITO_USER_POOL_CLIENT_ID": aws_cognito_user_pool_client.client.id
+    "AWS_COGNITO_REGION": var.region
     "LOCAL_API_KEY" : random_string.local_api_key.result
     "MONGO_TYPE" : "DOCUMENTDB"
     "REPORTS_ENDPOINT" : "https://${aws_route53_record.sharedservices_internal_web.name}"
@@ -38,7 +39,6 @@ locals {
     "GP_API_KEY" : aws_ssm_parameter.gophish_api_key.value
     "GP_LANDING_SUBDOMAIN" : var.gophish_landing_subdomain
     "SMTP_FROM" : var.reports_from_address
-    "COGNITO_AUDIENCE" : aws_cognito_user_pool_client.client.id
     "SES_ASSUME_ROLE_ARN" : var.ses_assume_role_arn
     "DJANGO_SETTINGS_MODULE" : "config.settings"
     "TASKS_QUEUE_URL" : aws_sqs_queue.tasks.id,
