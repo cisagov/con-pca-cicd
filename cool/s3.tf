@@ -20,7 +20,3 @@ resource "aws_s3_bucket" "images" {
 POLICY
 }
 
-resource "aws_s3_bucket" "exports" {
-  bucket = "${var.app}-${var.env}-exports"
-  acl    = "private"
-}
