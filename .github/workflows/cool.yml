@@ -38,6 +38,7 @@ jobs:
         run: |
           echo ${{ github.event_name }}
           echo ${{ github.event.action }}
+
       # Sets staging environment if it's not meant for production
       - name: Set staging environment
         run: echo "environment=staging" >> $GITHUB_ENV
@@ -82,7 +83,7 @@ jobs:
   # Build and push image repositories
   build:
     runs-on: ubuntu-latest
-    needs: [setenv, lambda]
+    needs: [setenv]
 
     # Set environment and environment variables
     env:
@@ -108,6 +109,7 @@ jobs:
         run: |
           echo "assume_role=arn:aws:iam::$ACCOUNT_ID:role/ProvisionAccount" >> $GITHUB_ENV
           echo "ecr_uri=$ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com" >> $GITHUB_ENV
+
       # Store tag in an environment variable
       - name: Get Tag
         run: echo "tag=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
@@ -170,7 +172,7 @@ jobs:
   # Runs terraform
   deploy:
     runs-on: ubuntu-latest
-    needs: [setenv, build]
+    needs: [setenv, build, lambda]
 
     # Run in the cool directory where terraform is defined
     defaults:
