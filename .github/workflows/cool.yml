@@ -74,7 +74,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        repo: [con-pca-api, con-pca-web]
+        repo: [con-pca-api, con-pca-web, con-pca-gophish]
     steps:
       # Checkout repo to build against
       - uses: actions/checkout@v2
