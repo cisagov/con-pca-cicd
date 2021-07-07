@@ -159,7 +159,6 @@ jobs:
     env:
       ACCOUNT_ID: ${{ secrets.ACCOUNT_ID }}
       ENVIRONMENT: ${{ needs.setenv.outputs.environment }}
-      SES_FROM: ${{ secrets.SES_FROM }}
       SES_ARN: ${{ secrets.SES_ROLE_ARN }}
       SHARED_SERVICES_ACCOUNT_ID: ${{ secrets.SHARED_SERVICES_ACCOUNT_ID }}
     environment:
@@ -222,17 +221,18 @@ jobs:
             -var="shared_services_account_id=$SHARED_SERVICES_ACCOUNT_ID" \
             -var="ses_arn=$SES_ARN" \
             -var="deployed_date=$(date)"
-      # # Applies terraform if it's not a pull request.
-      # - name: Terraform apply
-      #   run: |
-      #     terraform apply \
-      #       -input=false \
-      #       -auto-approve \
-      #       -var-file ./vars/$ENVIRONMENT.tfvars \
-      #       -var="api_image_tag=$api_tag" \
-      #       -var="ui_image_tag=$ui_tag" \
-      #       -var="account_id=$ACCOUNT_ID" \
-      #       -var="shared_services_account_id=$SHARED_SERVICES_ACCOUNT_ID" \
-      #       -var="ses_arn=$SES_ARN" \
-      #       -var="deployed_date=$(date)"
-      #   if: ${{ github.event_name != 'pull_request' }}
+
+      # Applies terraform if it's not a pull request.
+      - name: Terraform apply
+        run: |
+          terraform apply \
+            -input=false \
+            -auto-approve \
+            -var-file ./vars/$ENVIRONMENT.tfvars \
+            -var="api_image_tag=$api_tag" \
+            -var="ui_image_tag=$ui_tag" \
+            -var="account_id=$ACCOUNT_ID" \
+            -var="shared_services_account_id=$SHARED_SERVICES_ACCOUNT_ID" \
+            -var="ses_arn=$SES_ARN" \
+            -var="deployed_date=$(date)"
+        if: ${{ github.event_name != 'pull_request' }}
