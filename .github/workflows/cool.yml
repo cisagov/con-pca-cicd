@@ -63,6 +63,11 @@ jobs:
     outputs:
       environment: ${{ steps.env.outputs.environment }}
     steps:
+      - uses: actions/checkout@v2
+        with:
+          repository: cisagov/con-pca-api
+          path: con-pca-api
+
       # Install python 3.8 for installing lambda layer
       - uses: actions/setup-python@v2
         with:
@@ -70,6 +75,7 @@ jobs:
       - name: Upgrade Pip
         run: pip install --upgrade pip
 
+        # Install reqs
       - name: Install Python Requirements
         run: pip install -r ./con-pca-api/requirements.txt --no-deps -t ./con-pca/cool/layer/python
 
