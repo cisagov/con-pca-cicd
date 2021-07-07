@@ -74,7 +74,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        repo: [domain-manager-api, domain-manager-ui]
+        repo: [con-pca-api, con-pca-web]
     steps:
       # Checkout repo to build against
       - uses: actions/checkout@v2
@@ -183,8 +183,9 @@ jobs:
       # Gets tags for images and stores in environment variables
       - name: Store tags in environment variables
         run: |
-          echo "ui_tag=$(cat artifacts/domain-manager-ui/tag.txt)" >> $GITHUB_ENV
-          echo "api_tag=$(cat artifacts/domain-manager-api/tag.txt)" >> $GITHUB_ENV
+          echo "ui_tag=$(cat artifacts/con-pca-web/tag.txt)" >> $GITHUB_ENV
+          echo "api_tag=$(cat artifacts/con-pca-api/tag.txt)" >> $GITHUB_ENV
+
       # Verifies terraform is installed properly
       - name: Verify Terraform version
         run: terraform --version
