@@ -57,10 +57,19 @@ jobs:
         id: env
         run: echo ::set-output name=environment::$environment
 
+  # Install Lambda Layer
+  lambda:
+    runs-on: ubuntu-latest
+    outputs:
+      environment: ${{ steps.env.outputs.environment }}
+    steps:
+      - name: Install Python Requirements
+        run: pip install -r ./con-pca-api/requirements.txt --no-deps -t ./con-pca/cool/layer/python
+
   # Build and push image repositories
   build:
     runs-on: ubuntu-latest
-    needs: [setenv]
+    needs: [setenv, lambda]
 
     # Set environment and environment variables
     env:
