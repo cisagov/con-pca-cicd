@@ -182,8 +182,9 @@ jobs:
       # Gets tags for images and stores in environment variables
       - name: Store tags in environment variables
         run: |
-          echo "ui_tag=$(cat artifacts/con-pca-web/tag.txt)" >> $GITHUB_ENV
+          echo "web_tag=$(cat artifacts/con-pca-web/tag.txt)" >> $GITHUB_ENV
           echo "api_tag=$(cat artifacts/con-pca-api/tag.txt)" >> $GITHUB_ENV
+          echo "gophish_tag=$(cat artifacts/con-pca-gophish/tag.txt)" >> $GITHUB_ENV
 
       # Verifies terraform is installed properly
       - name: Verify Terraform version
@@ -230,7 +231,8 @@ jobs:
             -auto-approve \
             -var-file ./vars/$ENVIRONMENT.tfvars \
             -var="api_image_tag=$api_tag" \
-            -var="ui_image_tag=$ui_tag" \
+            -var="web_image_tag=$web_tag" \
+            -var="gophish_image_tag=$gophish_tag" \
             -var="account_id=$ACCOUNT_ID" \
             -var="shared_services_account_id=$SHARED_SERVICES_ACCOUNT_ID" \
             -var="ses_arn=$SES_ARN" \
