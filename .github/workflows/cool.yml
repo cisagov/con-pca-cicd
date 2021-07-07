@@ -187,14 +187,16 @@ jobs:
       name: ${{ needs.setenv.outputs.environment }}
 
     steps:
-      # Checkout this repository
-      - uses: actions/checkout@v2
-
-      # Checkout api repository
+      # Checkout con-pca api repo
       - uses: actions/checkout@v2
         with:
           repository: cisagov/con-pca-api
           path: con-pca-api
+
+      # Checkout con-pca repo for running terraform
+      - uses: actions/checkout@v2
+        with:
+          path: con-pca
 
       # Install and setup terraform
       - uses: hashicorp/setup-terraform@v1
