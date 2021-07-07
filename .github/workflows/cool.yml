@@ -190,6 +190,12 @@ jobs:
       # Checkout this repository
       - uses: actions/checkout@v2
 
+      # Checkout api repository
+      - uses: actions/checkout@v2
+        with:
+          repository: cisagov/con-pca-api
+          path: con-pca-api
+
       # Install and setup terraform
       - uses: hashicorp/setup-terraform@v1
         with:
