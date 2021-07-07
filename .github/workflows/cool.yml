@@ -239,10 +239,10 @@ jobs:
             -input=false \
             -var-file ./vars/$ENVIRONMENT.tfvars \
             -var="api_image_tag=$api_tag" \
-            -var="ui_image_tag=$ui_tag" \
+            -var="web_image_tag=$web_tag" \
             -var="account_id=$ACCOUNT_ID" \
             -var="shared_services_account_id=$SHARED_SERVICES_ACCOUNT_ID" \
-            -var="ses_arn=$SES_ARN" \
+            -var="ses_assume_role_arn=$SES_ARN" \
             -var="deployed_date=$(date)"
 
       # Applies terraform if it's not a pull request.
@@ -257,6 +257,6 @@ jobs:
             -var="gophish_image_tag=$gophish_tag" \
             -var="account_id=$ACCOUNT_ID" \
             -var="shared_services_account_id=$SHARED_SERVICES_ACCOUNT_ID" \
-            -var="ses_arn=$SES_ARN" \
+            -var="ses_assume_role_arn=$SES_ARN" \
             -var="deployed_date=$(date)"
         if: ${{ github.event_name != 'pull_request' }}
