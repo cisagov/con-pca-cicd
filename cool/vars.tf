@@ -5,6 +5,10 @@ variable "github_actions_role" {
   type = string
 }
 
+variable "shared_services_account_id" {
+  type = string
+}
+
 variable "shared_services_role" {
   type = string
 }
@@ -243,4 +247,11 @@ variable "tasks_schedule" {
 
 variable "tasks_timeout" {
   type = number
+}
+
+#=================================================
+#  ABOUT
+#=================================================
+variable "deployed_date" {
+  type = string
 }

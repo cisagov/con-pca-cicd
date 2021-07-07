@@ -26,6 +26,21 @@ Staging and production environments are deployed to the cool and the terraform f
 
 As Github Actions does not have a good way to handle multi-repository pipelines, all the builds are in this repository, so credentials don't need added to be added to other repositories and the workflow can be defined in a single place with multiple triggers for that. Repository dispatch events are sent from the con-pca-api, con-pca-web, and con-pca-gophish repositories to build the respective docker container, push it to AWS ECR and then run the terraform to deploy the new containers.
 
+## Deploying Manually
+
+There is a [deploy](deploy.py) script that allows you to deploy manually. On configure, it will ask for a Github access token. You can find the instructions for creating one [here](https://docs.github.com/en/github/authenticating-to-github/keeping-your-account-and-data-secure/creating-a-personal-access-token). The following permissions are required.
+
+- [ ] repo
+  - [x] public_repo
+
+After creating an access token, you can simply run the following for a deployment.
+
+```python
+pip install -r requirements.txt
+python deploy.py configure
+python deploy.py deploy --environment staging|production
+```
+
 ## Contributing
 
 We welcome contributions! Please see [here](CONTRIBUTING.md) for

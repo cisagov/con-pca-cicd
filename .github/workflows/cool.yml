@@ -240,6 +240,7 @@ jobs:
             -var-file ./vars/$ENVIRONMENT.tfvars \
             -var="api_image_tag=$api_tag" \
             -var="web_image_tag=$web_tag" \
+            -var="gophish_image_tag=$gophish_tag" \
             -var="account_id=$ACCOUNT_ID" \
             -var="shared_services_account_id=$SHARED_SERVICES_ACCOUNT_ID" \
             -var="ses_assume_role_arn=$SES_ARN" \
