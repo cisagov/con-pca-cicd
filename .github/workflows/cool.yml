@@ -177,7 +177,7 @@ jobs:
     # Run in the cool directory where terraform is defined
     defaults:
       run:
-        working-directory: cool
+        working-directory: con-pca-cicd/cool
 
     # Set environment and environment variables
     env:
@@ -198,7 +198,7 @@ jobs:
       # Checkout con-pca repo for running terraform
       - uses: actions/checkout@v2
         with:
-          path: con-pca
+          path: con-pca-cicd
 
       # Install and setup terraform
       - uses: hashicorp/setup-terraform@v1
