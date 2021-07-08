@@ -10,10 +10,6 @@ variable "shared_services_account_id" {
   description = "Account ID for DNS shared services role."
 }
 
-variable "shared_services_role" {
-  type = string
-}
-
 variable "workspace_type" {
   type = string
 }
