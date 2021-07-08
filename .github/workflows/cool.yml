@@ -80,6 +80,17 @@ jobs:
       - name: Install Python Requirements
         run: pip install -r ./con-pca-api/requirements.txt --no-deps -t ./con-pca/cool/layer/python
 
+      # Uploads the tag to an artifact to be used in the terraform job
+      # Can't define as an output, as it's not really supported when
+      # using the matrix strategy.
+      - name: Create Tag Artifact
+        run: echo "$tag" > tag.txt
+      - name: Upload Tag Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: ${{ matrix.repo }}
+          path: tag.txt
+
   # Build and push image repositories
   build:
     runs-on: ubuntu-latest
