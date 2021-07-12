@@ -1,30 +1,20 @@
 # con-pca-cicd
 
-This repository holds the automated pipeline for con-pca. The automated pipeline is a must so less time is spent on building/deploying manually and more time can be spent developing/testing and providing a valuable product.
+## Description
 
-## Github Actions
+CICD repo for con-pca. Contains terraform for deployments and github actions jobs for building.
 
-Github actions is used to run builds of the docker images, pushing them to AWS ECR and runs the terraform for the AWS deployments.
+## Source Repositories
 
-## Terraform
+There are three different repositories that can trigger this pipeline to run via a [repository dispatch event](https://docs.github.com/en/actions/reference/events-that-trigger-workflows#repository_dispatch).
 
-Terraform is used for deployments of resources to the INL and COOL environment.
+- [con-pca-api](https://github.com/cisagov/con-pca-api)
+- [con-pca-web](https://github.com/cisagov/con-pca-web)
+- [con-pca-gophish](https://github.com/cisagov/con-pca-gophish)
 
-## Environments
+This pipeline can also be triggered on push to the develop branch on this repository via a [push event])
 
-At the moment there are two different environments that we deploy to - INL (dev), COOL (staging, production). Two separate sets of terraform is required as the environments have different requirements. Hopefully at some point, this can be reduced to just the COOL environment.
-
-### INL
-
-There is currently an INL account that is used as a development environment. The terraform for that account is located [here](terraform/). The workflow for the INL environment is defined [here](.github/workflows/cicd.yml).
-
-### COOL
-
-Staging and production environments are deployed to the cool and the terraform for that is located [here](cool/). The workflow for the deployment to the COOL environment is defined [here](.github/workflows/cool.yml).
-
-## Pipeline
-
-As Github Actions does not have a good way to handle multi-repository pipelines, all the builds are in this repository, so credentials don't need added to be added to other repositories and the workflow can be defined in a single place with multiple triggers for that. Repository dispatch events are sent from the con-pca-api, con-pca-web, and con-pca-gophish repositories to build the respective docker container, push it to AWS ECR and then run the terraform to deploy the new containers.
+The source repositories access dispatch the CICD repository through the using of a [Github access token](https://docs.github.com/en/github/authenticating-to-github/keeping-your-account-and-data-secure/creating-a-personal-access-token). This access token is loaded into the secret called "CON_PCA_ACCESS_TOKEN".
 
 ## Deploying Manually
 
@@ -35,7 +25,7 @@ There is a [deploy](deploy.py) script that allows you to deploy manually. On con
 
 After creating an access token, you can simply run the following for a deployment.
 
-```python
+```basg
 pip install -r requirements.txt
 python deploy.py configure
 python deploy.py deploy --environment staging|production
