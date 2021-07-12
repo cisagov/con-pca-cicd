@@ -58,39 +58,6 @@ jobs:
         id: env
         run: echo ::set-output name=environment::$environment
 
-  # Install Lambda Layer
-  lambda:
-    runs-on: ubuntu-latest
-    outputs:
-      environment: ${{ steps.env.outputs.environment }}
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          repository: cisagov/con-pca-api
-          path: con-pca-api
-
-      # Install python 3.8 for installing lambda layer
-      - uses: actions/setup-python@v2
-        with:
-          python-version: 3.8
-      - name: Upgrade Pip
-        run: pip install --upgrade pip
-
-        # Install reqs
-      - name: Install Python Requirements
-        run: pip install -r ./con-pca-api/requirements.txt --no-deps -t ./con-pca/cool/layer/python
-
-      # Uploads the tag to an artifact to be used in the terraform job
-      # Can't define as an output, as it's not really supported when
-      # using the matrix strategy.
-      - name: Create Tag Artifact
-        run: echo "$tag" > tag.txt
-      - name: Upload Tag Artifact
-        uses: actions/upload-artifact@v2
-        with:
-          name: con-pca-api
-          path: tag.txt
-
   # Build and push image repositories
   build:
     runs-on: ubuntu-latest
@@ -183,7 +150,7 @@ jobs:
   # Runs terraform
   deploy:
     runs-on: ubuntu-latest
-    needs: [setenv, build, lambda]
+    needs: [setenv, build]
 
     # Run in the cool directory where terraform is defined
     defaults:
@@ -216,11 +183,22 @@ jobs:
         with:
           terraform_version: ${{ env.TF_VERSION }}
 
+      # Install python 3.8 for installing lambda layer
+      - uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+      - name: Upgrade Pip
+        run: pip install --upgrade pip
+
+        # Install reqs
+      - name: Install Python Requirements
+        run: pip install -r ./con-pca-api/requirements.txt --no-deps -t ./layer/python
+
       # Downloads all artifacts to an artifacts directory
-      - name: Download API Tag Files
+      - name: Download All Tag Files
         uses: actions/download-artifact@v2
         with:
-          path: cool/artifacts
+          path: con-pca-cicd/cool/artifacts
 
       # Gets tags for images and stores in environment variables
       - name: Store tags in environment variables
