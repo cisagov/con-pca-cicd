@@ -192,8 +192,7 @@ jobs:
 
         # Install reqs
       - name: Install Python Requirements
-        run: pip install -r con-pca-api/requirements.txt --no-deps -t ./con-pca-cicd/cool/layer/python
-        working-directory: /
+        run: pip install -r ../../con-pca-api/requirements.txt --no-deps -t ./layer/python
 
       # Downloads all artifacts to an artifacts directory
       - name: Download All Tag Files
