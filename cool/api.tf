@@ -127,7 +127,7 @@ resource "aws_lb_listener" "api_http" {
 module "api_container" {
   source          = "git::https://github.com/cloudposse/terraform-aws-ecs-container-definition.git?ref=tags/0.47.0"
   container_name  = local.api_container_name
-  container_image = "${var.image_url}/${var.api_image_repo}:${var.api_image_tag}"
+  container_image = "${var.account_id}.dkr.ecr.us-east-1.amazonaws.com/${var.api_image_repo}:${var.api_image_tag}"
   essential       = "true"
   log_configuration = {
     logDriver = "awslogs"
