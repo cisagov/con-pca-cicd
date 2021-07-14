@@ -62,7 +62,7 @@ web_desired_count = 1
 #  API
 #=================================================
 api_image_repo            = "con-pca-api"
-delay_minutes             = 5
+delay_minutes             = 20
 api_cpu                   = 2048
 api_memory                = 4096
 api_gunicorn_workers      = "12"
