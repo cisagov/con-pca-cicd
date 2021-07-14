@@ -46,7 +46,7 @@ gophish_mysql_instance_class = "db.t3.large"
 gophish_mysql_storage        = 20
 gophish_cpu                  = 2048
 gophish_memory               = 4096
-gophish_count                = 1
+gophish_count                = 2
 gophish_landing_subdomain    = "gp.pr"
 
 #=================================================
