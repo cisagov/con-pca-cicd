@@ -1,10 +1,7 @@
 #=================================================
 #  PROVIDER
 #=================================================
-github_actions_role = "arn:aws:iam::539063400056:role/ProvisionAccount"
-shared_services_role = "arn:aws:iam::767583904664:role/ProvisionPrivateDNSRecords"
 workspace_type = "staging"
-account_id = "539063400056"
 
 #=================================================
 #  CORE
@@ -12,11 +9,6 @@ account_id = "539063400056"
 env    = "staging"
 app    = "con-pca"
 region = "us-east-1"
-
-#=================================================
-#  DOCKER
-#=================================================
-image_url = "539063400056.dkr.ecr.us-east-1.amazonaws.com"
 
 #=================================================
 #  ROUTE 53
@@ -32,11 +24,6 @@ log_retention_days = 7
 #  LOAD BALANCING
 #=================================================
 idle_timeout = 600
-
-#=================================================
-#  SES
-#=================================================
-ses_assume_role_arn = "arn:aws:iam::246048611598:role/SesSendEmail-cyber.dhs.gov"
 
 #=================================================
 #  DOCUMENTDB

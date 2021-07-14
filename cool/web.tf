@@ -71,7 +71,7 @@ resource "aws_cloudwatch_log_group" "web" {
 module "web_container" {
   source          = "git::https://github.com/cloudposse/terraform-aws-ecs-container-definition.git?ref=tags/0.47.0"
   container_name  = local.web_container_name
-  container_image = "${var.image_url}/${var.web_image_repo}:${var.web_image_tag}"
+  container_image = "${var.account_id}.dkr.ecr.us-east-1.amazonaws.com/${var.web_image_repo}:${var.web_image_tag}"
   essential       = "true"
   log_configuration = {
     logDriver = "awslogs"

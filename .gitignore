@@ -3,3 +3,4 @@
 .terraform
 cool/output
 debug.log
+.venv/

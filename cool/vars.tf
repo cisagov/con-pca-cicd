@@ -1,12 +1,9 @@
 #=================================================
 #  PROVIDER
 #=================================================
-variable "github_actions_role" {
+variable "shared_services_account_id" {
   type = string
-}
-
-variable "shared_services_role" {
-  type = string
+  description = "Account ID for DNS shared services role."
 }
 
 variable "workspace_type" {
@@ -37,13 +34,6 @@ variable "app" {
 }
 
 variable "region" {
-  type = string
-}
-
-#=================================================
-#  DOCKER
-#=================================================
-variable "image_url" {
   type = string
 }
 
@@ -243,4 +233,11 @@ variable "tasks_schedule" {
 
 variable "tasks_timeout" {
   type = number
+}
+
+#=================================================
+#  ABOUT
+#=================================================
+variable "deployed_date" {
+  type = string
 }
