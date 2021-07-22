@@ -260,9 +260,3 @@ jobs:
             -var="ses_assume_role_arn=$SES_ARN" \
             -var="deployed_date=$(date)"
         if: ${{ github.event_name != 'pull_request' }}
-
-      - name: Terraform Destroy
-        run: |
-          terraform destroy \
-          -target=aws_s3_bucket.images
-        if: ${{ github.event_name != 'pull_request' }}
