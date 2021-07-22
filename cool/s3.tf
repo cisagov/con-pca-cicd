@@ -4,6 +4,7 @@
 resource "aws_s3_bucket" "images" {
   bucket = "${var.app}-${var.env}-template-images"
   acl    = "public-read"
+  force_destroy = true
   policy = <<POLICY
 {
   "Version": "2012-10-17",
