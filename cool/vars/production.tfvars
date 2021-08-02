@@ -74,10 +74,4 @@ api_desired_count         = 1
 extra_bcc_emails          = ""
 default_x_gophish_contact = "vulnerability@cisa.dhs.gov"
 reports_from_address      = "reports@cyber.dhs.gov"
-
-#=================================================
-#  TASKS
-#=================================================
-tasks_memory   = 4096
-tasks_schedule = "rate(5 minutes)"
-tasks_timeout  = 900
+cron_minutes              = 15

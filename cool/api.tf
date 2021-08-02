@@ -20,10 +20,10 @@ locals {
     "WEBHOOK_URL" : "http://${aws_route53_record.sharedservices_internal_api.name}/api/v1/inboundwebhook/"
     "DEFAULT_FILE_STORAGE" : "storages.backends.s3boto3.S3Boto3Storage"
     "WORKERS" : var.api_gunicorn_workers
-    "AWS_COGNITO_ENABLED": 1
-    "AWS_COGNITO_USER_POOL_ID": aws_cognito_user_pool.pool.id
-    "AWS_COGNITO_USER_POOL_CLIENT_ID": aws_cognito_user_pool_client.client.id
-    "AWS_COGNITO_REGION": var.region
+    "AWS_COGNITO_ENABLED" : 1
+    "AWS_COGNITO_USER_POOL_ID" : aws_cognito_user_pool.pool.id
+    "AWS_COGNITO_USER_POOL_CLIENT_ID" : aws_cognito_user_pool_client.client.id
+    "AWS_COGNITO_REGION" : var.region
     "LOCAL_API_KEY" : random_string.local_api_key.result
     "MONGO_TYPE" : "DOCUMENTDB"
     "REPORTS_ENDPOINT" : "https://${aws_route53_record.sharedservices_internal_web.name}"
@@ -40,8 +40,9 @@ locals {
     "SES_ASSUME_ROLE_ARN" : var.ses_assume_role_arn
     "DJANGO_SETTINGS_MODULE" : "config.settings"
     "TASKS_QUEUE_URL" : aws_sqs_queue.tasks.id,
-    "MAXMIND_USER_ID": aws_ssm_parameter.maxmind_user_id.value
-    "MAXMIND_LICENSE_KEY": aws_ssm_parameter.maxmind_license_key.value
+    "MAXMIND_USER_ID" : aws_ssm_parameter.maxmind_user_id.value
+    "MAXMIND_LICENSE_KEY" : aws_ssm_parameter.maxmind_license_key.value
+    "CRON_MINUTES" : var.cron_minutes
   }
 }
 
