@@ -155,7 +155,7 @@ jobs:
     # Run in the cool directory where terraform is defined
     defaults:
       run:
-        working-directory: con-pca-cicd/cool
+        working-directory: cool
 
     # Set environment and environment variables
     env:
@@ -167,38 +167,19 @@ jobs:
       name: ${{ needs.setenv.outputs.environment }}
 
     steps:
-      # Checkout con-pca api repo
+      # Checkout con-pca-cicd repo for running terraform
       - uses: actions/checkout@v2
-        with:
-          repository: cisagov/con-pca-api
-          path: con-pca-api
-
-      # Checkout con-pca repo for running terraform
-      - uses: actions/checkout@v2
-        with:
-          path: con-pca-cicd
 
       # Install and setup terraform
       - uses: hashicorp/setup-terraform@v1
         with:
           terraform_version: ${{ env.TF_VERSION }}
 
-      # Install python 3.8 for installing lambda layer
-      - uses: actions/setup-python@v2
-        with:
-          python-version: 3.8
-      - name: Upgrade Pip
-        run: pip install --upgrade pip
-
-        # Install reqs
-      - name: Install Python Requirements
-        run: pip install -r ../../con-pca-api/requirements.txt --no-deps -t ./layer/python
-
       # Downloads all artifacts to an artifacts directory
       - name: Download All Tag Files
         uses: actions/download-artifact@v2
         with:
-          path: con-pca-cicd/cool/artifacts
+          path: cool/artifacts
 
       # Gets tags for images and stores in environment variables
       - name: Store tags in environment variables
