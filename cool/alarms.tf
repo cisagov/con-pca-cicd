@@ -85,43 +85,6 @@ resource "aws_cloudwatch_metric_alarm" "gophish_rds_free_storage_space_too_low" 
 }
 
 #=========================
-# Lambda
-#=========================
-resource "aws_cloudwatch_metric_alarm" "queue_tasks_error" {
-  alarm_name          = "${var.app}-${var.env}-queue_tasks-error"
-  comparison_operator = "GreaterThanOrEqualToThreshold"
-  evaluation_periods  = "1"
-  metric_name         = "Errors"
-  namespace           = "AWS/Lambda"
-  period              = "60"
-  statistic           = "Sum"
-  threshold           = "1"
-  alarm_description   = "Queue Tasks Lambda Function Errored"
-  alarm_actions       = ["${aws_sns_topic.notifications.arn}"]
-
-  dimensions = {
-    FunctionName = aws_lambda_function.queue_tasks.function_name
-  }
-}
-
-resource "aws_cloudwatch_metric_alarm" "process_tasks_error" {
-  alarm_name          = "${var.app}-${var.env}-process_tasks-error"
-  comparison_operator = "GreaterThanOrEqualToThreshold"
-  evaluation_periods  = "1"
-  metric_name         = "Errors"
-  namespace           = "AWS/Lambda"
-  period              = "60"
-  statistic           = "Sum"
-  threshold           = "1"
-  alarm_description   = "Process Tasks Lambda Function Errored"
-  alarm_actions       = ["${aws_sns_topic.notifications.arn}"]
-
-  dimensions = {
-    FunctionName = aws_lambda_function.process_tasks.function_name
-  }
-}
-
-#=========================
 # DOCUMENT DB
 #=========================
 resource "aws_cloudwatch_metric_alarm" "docdb_cpu_high" {

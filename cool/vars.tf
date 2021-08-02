@@ -2,7 +2,7 @@
 #  PROVIDER
 #=================================================
 variable "shared_services_account_id" {
-  type = string
+  type        = string
   description = "Account ID for DNS shared services role."
 }
 
@@ -220,18 +220,7 @@ variable "reports_from_address" {
   type = string
 }
 
-#=================================================
-#  TASKS
-#=================================================
-variable "tasks_memory" {
-  type = number
-}
-
-variable "tasks_schedule" {
-  type = string
-}
-
-variable "tasks_timeout" {
+variable "cron_minutes" {
   type = number
 }
 
