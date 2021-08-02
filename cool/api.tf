@@ -39,7 +39,6 @@ locals {
     "SMTP_FROM" : var.reports_from_address
     "SES_ASSUME_ROLE_ARN" : var.ses_assume_role_arn
     "DJANGO_SETTINGS_MODULE" : "config.settings"
-    "TASKS_QUEUE_URL" : aws_sqs_queue.tasks.id,
     "MAXMIND_USER_ID" : aws_ssm_parameter.maxmind_user_id.value
     "MAXMIND_LICENSE_KEY" : aws_ssm_parameter.maxmind_license_key.value
     "CRON_MINUTES" : var.cron_minutes
