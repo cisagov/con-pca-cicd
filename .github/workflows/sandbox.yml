@@ -23,7 +23,7 @@ jobs:
   build_ui:
     runs-on: ubuntu-latest
     env:
-      IMAGE_REPO: domain-manager-ui
+      IMAGE_REPO: con-pca-web
     environment:
       name: develop
     outputs:
@@ -31,7 +31,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
-          repository: cisagov/domain-manager-ui
+          repository: cisagov/con-pca-web
       - name: Get Tag
         id: vars
         run: echo ::set-output name=tag::$(git rev-parse --short HEAD)
@@ -51,7 +51,7 @@ jobs:
   build_api:
     runs-on: ubuntu-latest
     env:
-      IMAGE_REPO: domain-manager-api
+      IMAGE_REPO: con-pca-api
     environment:
       name: develop
     outputs:
@@ -59,7 +59,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
-          repository: cisagov/domain-manager-api
+          repository: cisagov/con-pca-api
       - name: Get Tag
         id: vars
         run: echo ::set-output name=tag::$(git rev-parse --short HEAD)
