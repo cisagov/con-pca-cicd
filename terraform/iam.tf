@@ -50,17 +50,13 @@ resource "aws_iam_role" "ecs_task" {
 
 data "aws_iam_policy_document" "ecs_task" {
   statement {
-    actions = local.allowed_actions
-
-    resources = [
-      "acm:*",
-      "s3:*",
-      "route53:*",
-      "cloudfront:*",
+    actions = [
       "cognito-identity:*",
       "cognito-idp:*",
       "sts:AssumeRole",
     ]
+
+    resources = ["*"]
   }
 }
 
