@@ -48,6 +48,7 @@ resource "aws_iam_role" "ecs_task" {
   assume_role_policy = data.aws_iam_policy_document.ecs_assume_role.json
 }
 
+# Permissions for ecs 
 data "aws_iam_policy_document" "ecs_task" {
   statement {
     actions = [
