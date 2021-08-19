@@ -51,12 +51,12 @@ resource "aws_security_group" "service" {
   }
 
   ingress {
-    description = "Allow traffic to containers"
-    from_port   = local.landing_container_port
-    to_port     = local.landing_container_port
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-    self        = true
+    description     = "Allow traffic to containers"
+    from_port       = local.landing_container_port
+    to_port         = local.landing_container_port
+    protocol        = "tcp"
+    security_groups = [aws_security_group.alb.id]
+    self            = true
   }
 
   egress {
