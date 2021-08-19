@@ -27,6 +27,11 @@ module "api_container" {
       containerPort = local.api_container_port
       hostPort      = local.api_container_port
       protocol      = "tcp"
+    },
+    {
+      containerPort = local.landing_container_port
+      hostPort      = local.landing_container_port
+      protocol      = "tcp"
     }
   ]
 
