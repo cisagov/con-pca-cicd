@@ -28,7 +28,7 @@ module "alb" {
   internal           = false
   vpc_id             = var.vpc_id
   security_group_ids = [aws_security_group.alb.id]
-  subnet_ids         = var.private_subnet_ids
+  subnet_ids         = var.public_subnet_ids
   target_group_name  = "${var.app}-${var.env}-tg"
 }
 
