@@ -34,6 +34,7 @@ locals {
   # Landing Locals
   landing_container_port     = 8000
   landing_container_protocol = "HTTP"
+  landing_name               = "${var.app}-${var.env}-landing"
 
   # UI LOCALS
   ui_container_port     = 80

@@ -20,7 +20,7 @@ resource "aws_lb_target_group" "api" {
 }
 
 resource "aws_lb_target_group" "landing" {
-  name        = local.api_name
+  name        = local.landing_name
   port        = local.landing_container_port
   protocol    = local.landing_container_protocol
   target_type = "ip"
