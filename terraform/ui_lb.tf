@@ -18,3 +18,22 @@ resource "aws_lb_target_group" "ui" {
     unhealthy_threshold = 5
   }
 }
+
+#=========================
+# ALB LISTENER RULE
+#=========================
+resource "aws_lb_listener_rule" "ui" {
+  listener_arn = aws_lb_listener.https.arn
+  priority     = 200
+
+  action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.ui.arn
+  }
+
+  condition {
+    path_pattern {
+      values = ["/", "/*", "*"]
+    }
+  }
+}
