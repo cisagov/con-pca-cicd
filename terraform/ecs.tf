@@ -22,7 +22,6 @@ resource "aws_ecs_task_definition" "task" {
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
   task_role_arn            = aws_iam_role.ecs_task.arn
-  tags                     = local.tags
 }
 
 # ===========================
@@ -74,13 +73,12 @@ resource "aws_security_group" "service" {
 # SERVICE
 #=========================
 resource "aws_ecs_service" "service" {
-  name                  = "${var.app}-${var.env}"
-  cluster               = aws_ecs_cluster.cluster.id
-  task_definition       = aws_ecs_task_definition.task.arn
-  desired_count         = var.desired_count
-  force_new_deployment  = true
-  launch_type           = "FARGATE"
-  tags                  = local.tags
+  name                 = "${var.app}-${var.env}"
+  cluster              = aws_ecs_cluster.cluster.id
+  task_definition      = aws_ecs_task_definition.task.arn
+  desired_count        = var.desired_count
+  force_new_deployment = true
+  launch_type          = "FARGATE"
 
   load_balancer {
     target_group_arn = aws_lb_target_group.api.arn
