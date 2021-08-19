@@ -33,7 +33,7 @@ locals {
 
   # Landing Locals
   landing_container_port     = 8000
-  landing_container_protocol = "http"
+  landing_container_protocol = "HTTP"
 
   # UI LOCALS
   ui_container_port     = 80
