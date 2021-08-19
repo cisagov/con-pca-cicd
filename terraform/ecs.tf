@@ -93,7 +93,7 @@ resource "aws_ecs_service" "service" {
   }
 
   load_balancer {
-    target_group_arn = aws_lb_target_group.landing
+    target_group_arn = aws_lb_target_group.landing.arn
     container_name   = local.api_container_name
     container_port   = local.landing_container_port
   }
