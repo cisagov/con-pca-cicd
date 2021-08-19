@@ -7,7 +7,6 @@ locals {
   api_container_name     = "${var.app}-api"
   api_container_port     = 5000
   api_container_protocol = "HTTP"
-  api_load_balancer_port = 443
 
   api_environment = {
     "FLASK_APP" : "main"
@@ -19,7 +18,6 @@ locals {
     "DB_PORT" : 27017
     "MONGO_TYPE" : "DOCUMENTDB"
     "WORKERS" : 6
-    "API_KEY" : aws_ssm_parameter.api_key.value
     "AWS_COGNITO_ENABLED" : 1
     "AWS_COGNITO_USER_POOL_ID" : aws_cognito_user_pool.pool.id
     "AWS_COGNITO_USER_POOL_CLIENT_ID" : aws_cognito_user_pool_client.client.id
@@ -30,13 +28,17 @@ locals {
     "UI_COMMIT_ID" : var.ui_image_tag
     "AWS_REGION" : var.region
     "AWS_DEFAULT_REGION" : var.region
+    "LANDING_SUBDOMAIN" : var.landing_subdomain
   }
+
+  # Landing Locals
+  landing_container_port     = 8000
+  landing_container_protocol = "http"
 
   # UI LOCALS
   ui_container_port     = 80
   ui_container_name     = "ui"
   ui_container_protocol = "HTTP"
-  ui_load_balancer_port = 443
   ui_name               = "${var.app}-${var.env}-ui"
 
   ui_environment = {
