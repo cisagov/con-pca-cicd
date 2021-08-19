@@ -47,17 +47,19 @@ documentdb_cluster_size   = 1
 documentdb_instance_class = "db.t3.medium"
 
 #=================================================
+#  FARGATE
+#=================================================
+cpu           = 2048
+memory        = 4096
+desired_count = 1
+
+#=================================================
 #  API
 #=================================================
 api_image_repo    = "con-pca-api"
-api_cpu           = 2048
-api_memory        = 4096
-api_desired_count = 1
+landing_subdomain = "gp.dev"
 
 #=================================================
 #  UI
 #=================================================
-ui_image_repo    = "con-pca-web"
-ui_cpu           = 2048
-ui_memory        = 4096
-ui_desired_count = 1
+ui_image_repo = "con-pca-web"
