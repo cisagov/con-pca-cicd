@@ -130,7 +130,9 @@ jobs:
             -var="api_image_tag=${{needs.build_api.outputs.tag}}" \
             -var="ui_image_tag=${{needs.build_ui.outputs.tag}}" \
             -var="ses_arn=$SES_ARN" \
-            -var="deployed_date=$(date)"
+            -var="deployed_date=$(date)" \ 
+            -var="maxmind_user_id"=${{secrets.MAXMIND_USER_ID}} \
+            -var="maxmind_license_key=${{secrets.MAXMIND_LICENSE_KEY}}"
 
       # Apply terraform
       - name: Terraform Apply
@@ -143,4 +145,6 @@ jobs:
             -var="ui_image_tag=${{needs.build_ui.outputs.tag}}" \
             -var="ses_arn=$SES_ARN" \
             -var="deployed_date=$(date)"
+            -var="maxmind_user_id"=${{secrets.MAXMIND_USER_ID}} \
+            -var="maxmind_license_key=${{secrets.MAXMIND_LICENSE_KEY}}"
         if: ${{ github.event_name != 'pull_request' }}

@@ -29,6 +29,8 @@ locals {
     "AWS_REGION" : var.region
     "AWS_DEFAULT_REGION" : var.region
     "LANDING_SUBDOMAIN" : var.landing_subdomain
+    "MAXMIND_USER_ID" : var.maxmind_user_id
+    "MAXMIND_LICENSE_KEY" : var.maxmind_license_key
   }
 
   # Landing Locals

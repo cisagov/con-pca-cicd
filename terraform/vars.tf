@@ -133,3 +133,14 @@ variable "ses_arn" {
 variable "deployed_date" {
   type = string
 }
+
+#=================================================
+#  MAXMIND
+#=================================================
+variable "maxmind_user_id" {
+  type = string
+}
+
+variable "maxmind_license_key" {
+  type = string
+}
