@@ -92,7 +92,7 @@ jobs:
       # Install Terraform
       - uses: hashicorp/setup-terraform@v1
         with:
-          terraform_version: 0.13.3
+          terraform_version: ~0.13.0
       - name: Verify Terraform version
         run: terraform --version
 
