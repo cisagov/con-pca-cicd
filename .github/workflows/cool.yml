@@ -24,7 +24,7 @@ env:
   REGION: us-east-1
   AWS_ACCESS_KEY_ID: ${{ secrets.COOL_AWS_ACCESS_KEY_ID }}
   AWS_SECRET_ACCESS_KEY: ${{ secrets.COOL_AWS_SECRET_ACCESS_KEY }}
-  TF_VERSION: 0.12.31
+  TF_VERSION: ~0.13.0
 
 jobs:
   # Set Environment
