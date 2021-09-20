@@ -42,6 +42,7 @@ browserless_count  = 1
 #  GOPHISH
 #=================================================
 gophish_image_repo           = "con-pca-gophish"
+gophish_image_tag            = "dc3c89c"
 gophish_mysql_instance_class = "db.t3.micro"
 gophish_mysql_storage        = 20
 gophish_cpu                  = 512
@@ -53,6 +54,7 @@ gophish_landing_subdomain    = "gp.staging"
 #  WEB
 #=================================================
 web_image_repo    = "con-pca-web"
+web_image_tag     = "6e6ebd8"
 web_cpu           = 2048
 web_memory        = 4096
 web_desired_count = 1
@@ -62,6 +64,7 @@ web_desired_count = 1
 #  API
 #=================================================
 api_image_repo            = "con-pca-api"
+api_image_tag             = "ee310f1"
 delay_minutes             = 5
 api_cpu                   = 2048
 api_memory                = 4096

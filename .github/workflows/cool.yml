@@ -17,7 +17,8 @@ on:
   # Will deploy to production if event is cool_production,
   # otherwise deploy to staging environment.
   repository_dispatch:
-    types: [deploy, cool_staging, cool_production]
+    # add 'deploy' to types to enable automated deploys
+    types: [cool_staging, cool_production]
 
 # Sets environment variables to be used by every job.
 env:
@@ -107,45 +108,45 @@ jobs:
           name: ${{ matrix.repo }}
           path: tag.txt
 
-      # Some of the following steps will only run if not a pull request -
-      # (Build, Tag, Push)
-      # The others run so we can be more proactive about catching issues
-      # in pull requests before they are an issue on deployment.
-      - name: Set TO_BUILD
-        run: echo "build=true" >> $GITHUB_ENV
-        if: ${{ github.event.client_payload.trigger == matrix.repo || github.event.action == 'cool_production'}}
+      # # Some of the following steps will only run if not a pull request -
+      # # (Build, Tag, Push)
+      # # The others run so we can be more proactive about catching issues
+      # # in pull requests before they are an issue on deployment.
+      # - name: Set TO_BUILD
+      #   run: echo "build=true" >> $GITHUB_ENV
+      #   if: ${{ github.event.client_payload.trigger == matrix.repo || github.event.action == 'cool_production'}}
 
-      # Build image if not a pull request
-      - name: Build
-        run: docker build -t ${{ matrix.repo }}:$tag .
-        if: ${{ env.build == 'true' }}
+      # # Build image if not a pull request
+      # - name: Build
+      #   run: docker build -t ${{ matrix.repo }}:$tag .
+      #   if: ${{ env.build == 'true' }}
 
-      # Tag image if not a pull request
-      - name: Tag
-        run: docker tag ${{ matrix.repo }}:$tag $ecr_uri/${{ matrix.repo }}:$tag
-        if: ${{ env.build == 'true' }}
+      # # Tag image if not a pull request
+      # - name: Tag
+      #   run: docker tag ${{ matrix.repo }}:$tag $ecr_uri/${{ matrix.repo }}:$tag
+      #   if: ${{ env.build == 'true' }}
 
-      # Assume role to push images to ECR
-      - name: Assume provision account role
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-region: ${{ env.REGION }}
-          role-duration-seconds: 1200
-          role-to-assume: ${{ env.assume_role }}
-          role-skip-session-tagging: true
+      # # Assume role to push images to ECR
+      # - name: Assume provision account role
+      #   uses: aws-actions/configure-aws-credentials@v1
+      #   with:
+      #     aws-region: ${{ env.REGION }}
+      #     role-duration-seconds: 1200
+      #     role-to-assume: ${{ env.assume_role }}
+      #     role-skip-session-tagging: true
 
-      # Verify the role has been assumed
-      - name: Confirm Assumed Role
-        run: aws sts get-caller-identity
+      # # Verify the role has been assumed
+      # - name: Confirm Assumed Role
+      #   run: aws sts get-caller-identity
 
-      # Login to ECR
-      - name: Login to ECR
-        run: aws ecr get-login-password --region $REGION | docker login --username AWS --password-stdin $ecr_uri
+      # # Login to ECR
+      # - name: Login to ECR
+      #   run: aws ecr get-login-password --region $REGION | docker login --username AWS --password-stdin $ecr_uri
 
-      # Push to ECR if not a pull request
-      - name: Push to ECR
-        run: docker push $ecr_uri/${{ matrix.repo }}:$tag
-        if: ${{ env.build == 'true' }}
+      # # Push to ECR if not a pull request
+      # - name: Push to ECR
+      #   run: docker push $ecr_uri/${{ matrix.repo }}:$tag
+      #   if: ${{ env.build == 'true' }}
 
   # Runs terraform
   deploy:
@@ -218,9 +219,6 @@ jobs:
           terraform plan \
             -input=false \
             -var-file ./vars/$ENVIRONMENT.tfvars \
-            -var="api_image_tag=$api_tag" \
-            -var="web_image_tag=$web_tag" \
-            -var="gophish_image_tag=$gophish_tag" \
             -var="account_id=$ACCOUNT_ID" \
             -var="shared_services_account_id=$SHARED_SERVICES_ACCOUNT_ID" \
             -var="ses_assume_role_arn=$SES_ARN" \
@@ -233,11 +231,41 @@ jobs:
             -input=false \
             -auto-approve \
             -var-file ./vars/$ENVIRONMENT.tfvars \
-            -var="api_image_tag=$api_tag" \
-            -var="web_image_tag=$web_tag" \
-            -var="gophish_image_tag=$gophish_tag" \
             -var="account_id=$ACCOUNT_ID" \
             -var="shared_services_account_id=$SHARED_SERVICES_ACCOUNT_ID" \
             -var="ses_assume_role_arn=$SES_ARN" \
             -var="deployed_date=$(date)"
         if: ${{ github.event_name != 'pull_request' }}
+
+      # # Output plan
+      # # This occurs in all steps as the plan output
+      # # is a lot more descriptive than the apply output
+      # # when it is set to auto approve.
+      # - name: Terraform plan
+      #   run: |
+      #     terraform plan \
+      #       -input=false \
+      #       -var-file ./vars/$ENVIRONMENT.tfvars \
+      #       -var="api_image_tag=$api_tag" \
+      #       -var="web_image_tag=$web_tag" \
+      #       -var="gophish_image_tag=$gophish_tag" \
+      #       -var="account_id=$ACCOUNT_ID" \
+      #       -var="shared_services_account_id=$SHARED_SERVICES_ACCOUNT_ID" \
+      #       -var="ses_assume_role_arn=$SES_ARN" \
+      #       -var="deployed_date=$(date)"
+
+      # # Applies terraform if it's not a pull request.
+      # - name: Terraform apply
+      #   run: |
+      #     terraform apply \
+      #       -input=false \
+      #       -auto-approve \
+      #       -var-file ./vars/$ENVIRONMENT.tfvars \
+      #       -var="api_image_tag=$api_tag" \
+      #       -var="web_image_tag=$web_tag" \
+      #       -var="gophish_image_tag=$gophish_tag" \
+      #       -var="account_id=$ACCOUNT_ID" \
+      #       -var="shared_services_account_id=$SHARED_SERVICES_ACCOUNT_ID" \
+      #       -var="ses_assume_role_arn=$SES_ARN" \
+      #       -var="deployed_date=$(date)"
+      #   if: ${{ github.event_name != 'pull_request' }}
