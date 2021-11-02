@@ -12,8 +12,8 @@ resource "aws_route53_record" "public" {
   type    = "A"
 
   alias {
-    name                   = module.public_alb.alb_dns_name
-    zone_id                = module.public_alb.alb_zone_id
+    name                   = aws_lb.public.dns_name
+    zone_id                = aws_lb.public.zone_id
     evaluate_target_health = false
   }
 }
@@ -26,8 +26,8 @@ resource "aws_route53_record" "sharedservices_public" {
   type    = "A"
 
   alias {
-    name                   = module.public_alb.alb_dns_name
-    zone_id                = module.public_alb.alb_zone_id
+    name                   = aws_lb.public.dns_name
+    zone_id                = aws_lb.public.zone_id
     evaluate_target_health = false
   }
 }
