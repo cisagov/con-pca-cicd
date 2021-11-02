@@ -22,7 +22,7 @@ module "documentdb" {
   name      = "db"
 
   allowed_security_groups = [aws_security_group.service.id]
-  cluster_family          = "docdb4.0"
+  cluster_family          = "docdb3.6"
   cluster_size            = 1
   instance_class          = var.documentdb_instance_class
   master_username         = random_string.docdb_username.result
