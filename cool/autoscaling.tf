@@ -9,7 +9,7 @@ resource "aws_appautoscaling_target" "target" {
 
 # CPU Scaling
 resource "aws_appautoscaling_policy" "cpu" {
-  name               = "${var.app}-${var.name}-cpu"
+  name               = "${var.app}-${var.env}-cpu"
   policy_type        = "TargetTrackingScaling"
   service_namespace  = aws_appautoscaling_target.target.service_namespace
   resource_id        = aws_appautoscaling_target.target.resource_id
