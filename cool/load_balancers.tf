@@ -11,8 +11,6 @@ resource "aws_lb" "internal" {
   load_balancer_type = "application"
   security_groups    = [aws_security_group.alb_internal.id]
   subnets            = local.private_subnet_ids
-
-  enable_deletion_protection = true
 }
 
 # Public Load Balancer
@@ -23,8 +21,6 @@ resource "aws_lb" "public" {
   load_balancer_type = "application"
   security_groups    = [aws_security_group.alb_public.id]
   subnets            = local.public_subnet_ids
-
-  enable_deletion_protection = true
 }
 
 # Internal Listener
