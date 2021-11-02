@@ -47,8 +47,7 @@ resource "aws_iam_role" "ecs_task" {
 
 data "aws_iam_policy_document" "ecs_task" {
   statement {
-    actions = var.allowed_actions
-
+    actions = ["cognito-idp:*"]
     resources = [
       "*"
     ]
@@ -61,7 +60,7 @@ data "aws_iam_policy_document" "ecs_task" {
     ]
 
     resources = [
-      var.ses_assume_role_arn
+      var.ses_arn
     ]
   }
 }

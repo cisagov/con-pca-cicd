@@ -1,30 +1,15 @@
-# ===========================
-# Certs
-# ===========================
-module "web_certs" {
+# Certs for internal load balancer
+module "internal_certs" {
   source      = "terraform-aws-modules/acm/aws"
-  version     = "~> v2.14.0"
-  domain_name = aws_route53_record.sharedservices_internal_web.name
+  version     = "3.2.0"
+  domain_name = aws_route53_record.sharedservices_internal.name
   zone_id     = aws_route53_zone.public_zone.zone_id
 }
 
-module "gophish_certs" {
-  source      = "terraform-aws-modules/acm/aws"
-  version     = "~> v2.14.0"
-  domain_name = aws_route53_record.sharedservices_internal_gophish.name
-  zone_id     = aws_route53_zone.public_zone.zone_id
-}
-
-module "api_certs" {
-  source      = "terraform-aws-modules/acm/aws"
-  version     = "~> v2.14.0"
-  domain_name = aws_route53_record.sharedservices_internal_api.name
-  zone_id     = aws_route53_zone.public_zone.zone_id
-}
-
+# Certs for public load balancer
 module "public_certs" {
   source      = "terraform-aws-modules/acm/aws"
-  version     = "~> v2.14.0"
+  version     = "3.2.0"
   domain_name = aws_route53_record.public.name
   zone_id     = aws_route53_zone.public_zone.zone_id
 }
