@@ -8,11 +8,11 @@ resource "aws_lb_target_group" "web" {
 
   health_check {
     healthy_threshold   = 3
-    interval            = 60
+    interval            = 120
     matcher             = "202,200,307,404,302"
     path                = "/"
     port                = local.web_container_port
     protocol            = "HTTP"
-    unhealthy_threshold = 3
+    unhealthy_threshold = 5
   }
 }
