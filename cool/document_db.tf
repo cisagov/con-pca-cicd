@@ -20,7 +20,7 @@ resource "aws_docdb_subnet_group" "docdb" {
 
 # Document DB Parameter Group
 resource "aws_docdb_cluster_parameter_group" "docdb" {
-  family = "docdb3.6"
+  family = "docdb4.0"
   name   = "${var.env}-${var.app}-docdb"
 }
 

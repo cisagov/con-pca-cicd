@@ -32,7 +32,7 @@ resource "aws_route53_record" "sharedservices_public" {
   }
 }
 
-resource "aws_route53_record" "sharedservices_internal" {
+resource "aws_route53_record" "sharedservices_internal_web" {
   provider = aws.dns_sharedservices
 
   zone_id = local.cool_dns_private_zone.zone_id

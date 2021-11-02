@@ -17,7 +17,7 @@ resource "aws_lb" "internal" {
 
 # Public Load Balancer
 resource "aws_lb" "public" {
-  name               = "${var.app}-${var.env}-public"
+  name               = "${var.app}-${var.env}-public-lb"
   idle_timeout       = 600
   internal           = false
   load_balancer_type = "application"
