@@ -47,9 +47,11 @@ module "api_container" {
     AWS_REGION         = var.region
     AWS_DEFAULT_REGION = var.region
 
-    # Flask
+    # Base Settings
     FLASK_APP = "api.main:app"
     FLASK_ENV = "production"
+    DEBUG     = 0
+    WORKERS   = 6
 
     # Mongo
     MONGO_TYPE = "mongodb"
@@ -57,9 +59,6 @@ module "api_container" {
     DB_PORT    = 27017
     DB_USER    = random_string.docdb_username.result
     DB_PW      = random_password.docdb_password.result
-
-    # Gunicorn
-    WORKERS = 6
 
     # Cognito
     AWS_COGNITO_ENABLED             = 1
