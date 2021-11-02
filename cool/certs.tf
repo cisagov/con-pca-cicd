@@ -2,7 +2,7 @@
 module "internal_certs" {
   source      = "terraform-aws-modules/acm/aws"
   version     = "3.2.0"
-  domain_name = aws_route53_record.sharedservices_internal.name
+  domain_name = aws_route53_record.sharedservices_internal_web.name
   zone_id     = aws_route53_zone.public_zone.zone_id
 }
 
