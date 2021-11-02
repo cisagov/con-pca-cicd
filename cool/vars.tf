@@ -54,7 +54,7 @@ variable "hosted_zone_name" {
 #=================================================
 #  SES
 #=================================================
-variable "ses_assume_role_arn" {
+variable "ses_arn" {
   type        = string
   description = "The role to assume for sending reports via SES."
 }

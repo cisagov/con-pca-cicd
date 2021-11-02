@@ -60,7 +60,7 @@ data "aws_iam_policy_document" "ecs_task" {
     ]
 
     resources = [
-      var.ses_assume_role_arn
+      var.ses_arn
     ]
   }
 }
