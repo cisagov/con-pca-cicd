@@ -28,6 +28,6 @@ module "documentdb" {
   master_username         = random_string.docdb_username.result
   master_password         = random_password.docdb_password.result
   skip_final_snapshot     = true
-  subnet_ids              = var.private_subnet_ids
+  subnet_ids              = local.private_subnet_ids
   vpc_id                  = local.vpc_id
 }
