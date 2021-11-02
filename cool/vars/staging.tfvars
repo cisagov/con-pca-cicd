@@ -14,6 +14,7 @@ region = "us-east-1"
 #  DOCUMENTDB
 #=================================================
 documentdb_instance_class = "db.t3.medium"
+documentdb_cluster_size   = 1
 
 #=================================================
 #  ECS Service

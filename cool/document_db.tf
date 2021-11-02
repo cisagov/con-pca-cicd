@@ -12,37 +12,22 @@ resource "random_password" "docdb_password" {
   override_special = "!_#&"
 }
 
-# Document DB Subnet Group
-resource "aws_docdb_subnet_group" "docdb" {
-  name       = "${var.app}-${var.env}-docdb"
-  subnet_ids = local.private_subnet_ids
+# Document DB Module
+module "documentdb" {
+  source  = "cloudposse/documentdb-cluster/aws"
+  version = "0.14.1"
+
+  namespace = var.app
+  stage     = var.env
+  name      = "db"
+
+  allowed_security_groups = [aws_security_group.service.id]
+  cluster_family          = "docdb4.0"
+  cluster_size            = 1
+  instance_class          = var.documentdb_instance_class
+  master_username         = random_string.docdb_username.result
+  master_password         = random_password.docdb_password.result
+  skip_final_snapshot     = true
+  subnet_ids              = var.private_subnet_ids
+  vpc_id                  = local.vpc_id
 }
-
-# Document DB Parameter Group
-resource "aws_docdb_cluster_parameter_group" "docdb" {
-  family = "docdb4.0"
-  name   = "${var.env}-${var.app}-docdb"
-}
-
-# Document DB Cluster
-resource "aws_docdb_cluster" "docdb" {
-  cluster_identifier              = "${var.app}-${var.env}-docdb"
-  db_cluster_parameter_group_name = aws_docdb_cluster_parameter_group.docdb.name
-  db_subnet_group_name            = aws_docdb_subnet_group.docdb.name
-  engine                          = "docdb"
-  master_username                 = random_string.docdb_username.result
-  master_password                 = random_password.docdb_password.result
-  skip_final_snapshot             = true
-}
-
-# Document DB Instance
-resource "aws_docdb_cluster_instance" "docdb" {
-  count              = 1
-  identifier         = "${var.app}-${var.env}-docdb-${count.index}"
-  cluster_identifier = aws_docdb_cluster.docdb.id
-  instance_class     = var.documentdb_instance_class
-}
-
-
-
-

@@ -14,6 +14,7 @@ region = "us-east-1"
 #  DOCUMENTDB
 #=================================================
 documentdb_instance_class = "db.r5.large"
+documentdb_cluster_size   = 1
 
 #=================================================
 #  ECS Service

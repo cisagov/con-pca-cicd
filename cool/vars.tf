@@ -67,6 +67,11 @@ variable "documentdb_instance_class" {
   description = "Instance class for DocumentDB."
 }
 
+variable "documentdb_cluster_size" {
+  type        = string
+  description = "Cluster size for document db."
+}
+
 #=================================================
 #  ECS Service
 #=================================================
