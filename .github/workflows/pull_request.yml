@@ -62,10 +62,6 @@ jobs:
             ${{ hashFiles('**/.pre-commit-config.yaml') }}"
           restore-keys: |
             ${{ env.BASE_CACHE_KEY }}
-      # A .env file is required in the base directory for
-      # docker-compose-check pre-commit hook to pass.
-      - name: Copy env.dist
-        run: cp etc/env.dist .env
       - name: Setup curl cache
         run: mkdir -p ${{ env.CURL_CACHE_DIR }}
       - name: Install Packer
