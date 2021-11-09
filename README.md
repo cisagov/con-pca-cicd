@@ -1,24 +1,32 @@
-# con-pca-cicd
+# con-pca-cicd #
 
-## Description
+## Description ##
 
-CICD repo for con-pca. Contains terraform for deployments and github actions jobs for building.
+CICD repo for con-pca. Contains terraform for deployments and
+github actions jobs for building.
 
-## Source Repositories
+## Source Repositories ##
 
-There are three different repositories that can trigger this pipeline to run via a [repository dispatch event](https://docs.github.com/en/actions/reference/events-that-trigger-workflows#repository_dispatch).
+There are three different repositories that can trigger this pipeline to
+run via a [repository dispatch event](https://docs.github.com/en/actions/reference/events-that-trigger-workflows#repository_dispatch).
 
 - [con-pca-api](https://github.com/cisagov/con-pca-api)
 - [con-pca-web](https://github.com/cisagov/con-pca-web)
 - [con-pca-gophish](https://github.com/cisagov/con-pca-gophish)
 
-This pipeline can also be triggered on push to the develop branch on this repository via a [push event])
+This pipeline can also be triggered on push to the develop branch on
+this repository via a [push event])
 
-The source repositories access dispatch the CICD repository through the using of a [Github access token](https://docs.github.com/en/github/authenticating-to-github/keeping-your-account-and-data-secure/creating-a-personal-access-token). This access token is loaded into the secret called "CON_PCA_ACCESS_TOKEN".
+The source repositories access dispatch the CICD repository through the
+using of a [Github access token](https://docs.github.com/en/github/authenticating-to-github/keeping-your-account-and-data-secure/creating-a-personal-access-token).
+This access token is loaded into the secret called "CON_PCA_ACCESS_TOKEN".
 
-## Deploying Manually
+## Deploying Manually ##
 
-There is a [deploy](deploy.py) script that allows you to deploy manually. On configure, it will ask for a Github access token. You can find the instructions for creating one [here](https://docs.github.com/en/github/authenticating-to-github/keeping-your-account-and-data-secure/creating-a-personal-access-token). The following permissions are required.
+There is a [deploy](deploy.py) script that allows you to deploy manually.
+On configure, it will ask for a Github access token. You can find the
+instructions for creating one [here](https://docs.github.com/en/github/authenticating-to-github/keeping-your-account-and-data-secure/creating-a-personal-access-token).
+The following permissions are required.
 
 - [ ] repo
   - [x] public_repo
@@ -31,12 +39,12 @@ python deploy.py configure
 python deploy.py deploy --environment staging|production
 ```
 
-## Contributing
+## Contributing ##
 
 We welcome contributions! Please see [here](CONTRIBUTING.md) for
 details.
 
-## License
+## License ##
 
 This project is in the worldwide [public domain](LICENSE).
 

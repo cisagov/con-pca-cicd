@@ -52,4 +52,3 @@ resource "aws_cloudwatch_metric_alarm" "docdb_free_local_storage_too_low" {
     DBClusterIdentifier = module.documentdb.cluster_name
   }
 }
-

@@ -47,4 +47,3 @@ resource "aws_lb_listener" "public_http" {
     target_group_arn = aws_lb_target_group.landing.arn
   }
 }
-

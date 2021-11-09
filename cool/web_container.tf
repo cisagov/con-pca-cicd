@@ -1,4 +1,4 @@
-# Locals 
+# Locals
 locals {
   web_container_port = 80
 }
