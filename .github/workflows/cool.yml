@@ -1,3 +1,4 @@
+---
 # For this workflow, github environments are being utilized.
 # For more information on how environments work, view this
 # documentation - https://docs.github.com/en/actions/reference/environments
@@ -230,8 +231,8 @@ jobs:
             -var="reports_from_address=$REPORTS_FROM_ADDRESS" \
             -var="ses_arn=$SES_ARN" \
             -var="shared_services_account_id=$SHARED_SERVICES_ACCOUNT_ID" \
-            -var="web_image_tag=$web_tag" 
-            
+            -var="web_image_tag=$web_tag"
+
       # Applies terraform if it's not a pull request.
       - name: Terraform apply
         run: |
@@ -248,5 +249,5 @@ jobs:
             -var="reports_from_address=$REPORTS_FROM_ADDRESS" \
             -var="ses_arn=$SES_ARN" \
             -var="shared_services_account_id=$SHARED_SERVICES_ACCOUNT_ID" \
-            -var="web_image_tag=$web_tag" 
+            -var="web_image_tag=$web_tag"
         if: ${{ github.event_name != 'pull_request' }}

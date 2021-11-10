@@ -1,0 +1,14 @@
+---
+extends: default
+
+rules:
+  # yamllint doesn't like when we use yes and no for true and false,
+  # but that's pretty standard in Ansible.
+  truthy: disable
+
+  line-length:
+    # Ignore these files as keeping to the line length makes the files
+    # look worse.
+    ignore: |
+      .github/workflows/cool.yml
+      .github/workflows/sandbox.yml
