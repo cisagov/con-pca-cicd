@@ -25,6 +25,6 @@ resource "aws_cloudwatch_event_target" "stopped_tasks_target" {
       stoppedReason = "$.detail.stoppedReason"
     }
 
-    input_template = "${var.app}-${var.env} task stopped - <stoppedReason>"
+    input_template = "\"${var.app}-${var.env} task stopped - <stoppedReason>\""
   }
 }
