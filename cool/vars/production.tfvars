@@ -15,7 +15,7 @@ region = "us-east-1"
 #=================================================
 documentdb_instance_class      = "db.r5.large"
 documentdb_cluster_size        = 1
-documentdb_snapshot_identifier = "rds:con-pca-prod-db-2022-01-06-07-18"
+documentdb_snapshot_identifier = "january-6th"
 
 #=================================================
 #  ECS Service
