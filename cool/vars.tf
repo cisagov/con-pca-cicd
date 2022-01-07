@@ -72,6 +72,12 @@ variable "documentdb_cluster_size" {
   description = "Cluster size for document db."
 }
 
+variable "documentdb_snapshot_identifier" {
+  type        = string
+  description = "Snapshot to create documentdb cluster off of."
+  default     = ""
+}
+
 #=================================================
 #  ECS Service
 #=================================================
