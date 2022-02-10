@@ -42,7 +42,6 @@ jobs:
           BASE_CACHE_KEY: "${{ github.job }}-${{ runner.os }}-\
             py${{ steps.setup-python.outputs.python-version }}-\
             go${{ env.GO_VERSION }}-\
-            packer${{ env.PACKER_VERSION }}-\
             tf${{ env.TERRAFORM_VERSION }}-"
         with:
           # Note that the .terraform directory IS NOT included in the
@@ -64,17 +63,6 @@ jobs:
             ${{ env.BASE_CACHE_KEY }}
       - name: Setup curl cache
         run: mkdir -p ${{ env.CURL_CACHE_DIR }}
-      - name: Install Packer
-        run: |
-          PACKER_ZIP="packer_${PACKER_VERSION}_linux_amd64.zip"
-          curl --output ${{ env.CURL_CACHE_DIR }}/"${PACKER_ZIP}" \
-            --time-cond ${{ env.CURL_CACHE_DIR }}/"${PACKER_ZIP}" \
-            --location \
-            "https://releases.hashicorp.com/packer/${PACKER_VERSION}/${PACKER_ZIP}"
-          sudo unzip -d /opt/packer \
-            ${{ env.CURL_CACHE_DIR }}/"${PACKER_ZIP}"
-          sudo mv /usr/local/bin/packer /usr/local/bin/packer-default
-          sudo ln -s /opt/packer/packer /usr/local/bin/packer
       - uses: hashicorp/setup-terraform@v1
         with:
           terraform_version: ${{ env.TERRAFORM_VERSION }}
