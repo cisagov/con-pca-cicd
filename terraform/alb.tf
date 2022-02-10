@@ -19,7 +19,7 @@ resource "aws_security_group" "alb" {
 }
 
 resource "aws_lb" "alb" {
-  name               = "${var.app}-${var.env}-alb"
+  name               = "${var.app}-${var.env}-public"
   idle_timeout       = 600
   internal           = false
   load_balancer_type = "application"
