@@ -2,5 +2,6 @@
 .vscode/
 .terraform
 cool/output
+config.ini
 debug.log
 .venv/
