@@ -20,7 +20,7 @@ resource "aws_security_group" "alb" {
 
 module "alb" {
   source             = "cloudposse/alb/aws"
-  version            = "0.36.0"
+  version            = "0.35.3"
   namespace          = var.app
   stage              = var.env
   name               = "alb"
