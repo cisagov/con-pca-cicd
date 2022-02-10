@@ -66,8 +66,6 @@ jobs:
       - uses: hashicorp/setup-terraform@v1
         with:
           terraform_version: ${{ env.TERRAFORM_VERSION }}
-      - name: Install shfmt
-        run: go install mvdan.cc/sh/v3/cmd/shfmt@${SHFMT_VERSION}
       - name: Install Terraform-docs
         run: |
           go install \
