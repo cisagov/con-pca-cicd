@@ -18,26 +18,20 @@ resource "aws_security_group" "alb" {
   }
 }
 
-module "alb" {
-  source             = "cloudposse/alb/aws"
-  version            = "0.35.3"
-  namespace          = var.app
-  stage              = var.env
-  name               = "alb"
-  http_enabled       = false
-  idle_timeout       = var.idle_timeout
+resource "aws_lb" "alb" {
+  name               = "${var.app}-${var.env}-alb"
+  idle_timeout       = 600
   internal           = false
-  vpc_id             = var.vpc_id
-  security_group_ids = [aws_security_group.alb.id]
-  subnet_ids         = var.public_subnet_ids
-  target_group_name  = "${var.app}-${var.env}-tg"
+  load_balancer_type = "application"
+  security_groups    = [aws_security_group.alb.id]
+  subnets            = var.public_subnet_ids
 }
 
 # ===================================
 # Listener
 # ===================================
 resource "aws_lb_listener" "https" {
-  load_balancer_arn = module.alb.alb_arn
+  load_balancer_arn = aws_lb.alb.arn
   port              = 443
   protocol          = "HTTPS"
   certificate_arn   = module.acm.this_acm_certificate_arn
@@ -53,7 +47,7 @@ resource "aws_lb_listener" "https" {
 }
 
 resource "aws_lb_listener" "http" {
-  load_balancer_arn = module.alb.alb_arn
+  load_balancer_arn = aws_lb.alb.arn
   port              = 80
   protocol          = "HTTP"
   default_action {
