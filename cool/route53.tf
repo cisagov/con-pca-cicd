@@ -12,13 +12,13 @@ resource "aws_route53_record" "public" {
   type    = "A"
 
   alias {
-    name                   = module.public_alb.alb_dns_name
-    zone_id                = module.public_alb.alb_zone_id
+    name                   = aws_lb.public.dns_name
+    zone_id                = aws_lb.public.zone_id
     evaluate_target_health = false
   }
 }
 
-resource "aws_route53_record" "sharedservices_internal" {
+resource "aws_route53_record" "sharedservices_public" {
   provider = aws.dns_sharedservices
 
   zone_id = local.cool_dns_private_zone.zone_id
@@ -26,8 +26,8 @@ resource "aws_route53_record" "sharedservices_internal" {
   type    = "A"
 
   alias {
-    name                   = module.public_alb.alb_dns_name
-    zone_id                = module.public_alb.alb_zone_id
+    name                   = aws_lb.public.dns_name
+    zone_id                = aws_lb.public.zone_id
     evaluate_target_health = false
   }
 }
@@ -40,36 +40,8 @@ resource "aws_route53_record" "sharedservices_internal_web" {
   type    = "A"
 
   alias {
-    name                   = module.web_alb.alb_dns_name
-    zone_id                = module.web_alb.alb_zone_id
-    evaluate_target_health = false
-  }
-}
-
-resource "aws_route53_record" "sharedservices_internal_gophish" {
-  provider = aws.dns_sharedservices
-
-  zone_id = local.cool_dns_private_zone.zone_id
-  name    = "gophish.${var.hosted_zone_name}"
-  type    = "A"
-
-  alias {
-    name                   = module.gophish_alb.alb_dns_name
-    zone_id                = module.gophish_alb.alb_zone_id
-    evaluate_target_health = false
-  }
-}
-
-resource "aws_route53_record" "sharedservices_internal_api" {
-  provider = aws.dns_sharedservices
-
-  zone_id = local.cool_dns_private_zone.zone_id
-  name    = "api.${var.hosted_zone_name}"
-  type    = "A"
-
-  alias {
-    name                   = module.api_alb.alb_dns_name
-    zone_id                = module.api_alb.alb_zone_id
+    name                   = aws_lb.internal.dns_name
+    zone_id                = aws_lb.internal.zone_id
     evaluate_target_health = false
   }
 }

@@ -1,3 +1,6 @@
+# ===========================
+# ECS
+# ===========================
 data "aws_iam_policy_document" "ecs_assume_role" {
   statement {
     actions = ["sts:AssumeRole"]
@@ -45,23 +48,16 @@ resource "aws_iam_role" "ecs_task" {
   assume_role_policy = data.aws_iam_policy_document.ecs_assume_role.json
 }
 
+# Permissions for ecs
 data "aws_iam_policy_document" "ecs_task" {
   statement {
-    actions = ["cognito-idp:*"]
-    resources = [
-      "*"
-    ]
-  }
-
-  statement {
-    effect = "Allow"
     actions = [
-      "sts:AssumeRole"
+      "cognito-identity:*",
+      "cognito-idp:*",
+      "sts:AssumeRole",
     ]
 
-    resources = [
-      var.ses_arn
-    ]
+    resources = ["*"]
   }
 }
 

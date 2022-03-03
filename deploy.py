@@ -1,16 +1,19 @@
 """Script to deploy to staging or production COOL environments."""
-import click
 import configparser
-import requests
+
+import click
+import requests  # type: ignore
 
 
 @click.group()
 @click.pass_context
 def cli(ctx):
+    """Create cli."""
     return
 
 
 def main():
+    """Execute main."""
     cli.add_command(deploy)
     cli.add_command(configure)
     cli()

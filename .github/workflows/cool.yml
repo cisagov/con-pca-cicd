@@ -1,3 +1,4 @@
+---
 # For this workflow, github environments are being utilized.
 # For more information on how environments work, view this
 # documentation - https://docs.github.com/en/actions/reference/environments
@@ -24,7 +25,7 @@ env:
   REGION: us-east-1
   AWS_ACCESS_KEY_ID: ${{ secrets.COOL_AWS_ACCESS_KEY_ID }}
   AWS_SECRET_ACCESS_KEY: ${{ secrets.COOL_AWS_SECRET_ACCESS_KEY }}
-  TF_VERSION: 0.12.31
+  TF_VERSION: ~1.0.0
 
 jobs:
   # Set Environment
@@ -75,7 +76,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        repo: [con-pca-api, con-pca-web, con-pca-gophish]
+        repo: [con-pca-api, con-pca-web]
     steps:
       # Checkout repo to build against
       - uses: actions/checkout@v2
@@ -161,6 +162,10 @@ jobs:
     env:
       ACCOUNT_ID: ${{ secrets.ACCOUNT_ID }}
       ENVIRONMENT: ${{ needs.setenv.outputs.environment }}
+      HOSTED_ZONE_NAME: ${{ secrets.HOSTED_ZONE_NAME }}
+      MAXMIND_USER_ID: ${{ secrets.MAXMIND_USER_ID }}
+      MAXMIND_LICENSE_KEY: ${{ secrets.MAXMIND_LICENSE_KEY }}
+      REPORTS_FROM_ADDRESS: ${{ secrets.REPORTS_FROM_ADDRESS }}
       SES_ARN: ${{ secrets.SES_ROLE_ARN }}
       SHARED_SERVICES_ACCOUNT_ID: ${{ secrets.SHARED_SERVICES_ACCOUNT_ID }}
     environment:
@@ -186,7 +191,6 @@ jobs:
         run: |
           echo "web_tag=$(cat artifacts/con-pca-web/tag.txt)" >> $GITHUB_ENV
           echo "api_tag=$(cat artifacts/con-pca-api/tag.txt)" >> $GITHUB_ENV
-          echo "gophish_tag=$(cat artifacts/con-pca-gophish/tag.txt)" >> $GITHUB_ENV
 
       # Verifies terraform is installed properly
       - name: Verify Terraform version
@@ -218,13 +222,16 @@ jobs:
           terraform plan \
             -input=false \
             -var-file ./vars/$ENVIRONMENT.tfvars \
-            -var="api_image_tag=$api_tag" \
-            -var="web_image_tag=$web_tag" \
-            -var="gophish_image_tag=$gophish_tag" \
             -var="account_id=$ACCOUNT_ID" \
+            -var="api_image_tag=$api_tag" \
+            -var="deployed_date=$(date)" \
+            -var="hosted_zone_name=$HOSTED_ZONE_NAME" \
+            -var="maxmind_license_key=$MAXMIND_LICENSE_KEY" \
+            -var="maxmind_user_id=$MAXMIND_USER_ID" \
+            -var="reports_from_address=$REPORTS_FROM_ADDRESS" \
+            -var="ses_arn=$SES_ARN" \
             -var="shared_services_account_id=$SHARED_SERVICES_ACCOUNT_ID" \
-            -var="ses_assume_role_arn=$SES_ARN" \
-            -var="deployed_date=$(date)"
+            -var="web_image_tag=$web_tag"
 
       # Applies terraform if it's not a pull request.
       - name: Terraform apply
@@ -233,11 +240,14 @@ jobs:
             -input=false \
             -auto-approve \
             -var-file ./vars/$ENVIRONMENT.tfvars \
-            -var="api_image_tag=$api_tag" \
-            -var="web_image_tag=$web_tag" \
-            -var="gophish_image_tag=$gophish_tag" \
             -var="account_id=$ACCOUNT_ID" \
+            -var="api_image_tag=$api_tag" \
+            -var="deployed_date=$(date)" \
+            -var="hosted_zone_name=$HOSTED_ZONE_NAME" \
+            -var="maxmind_license_key=$MAXMIND_LICENSE_KEY" \
+            -var="maxmind_user_id=$MAXMIND_USER_ID" \
+            -var="reports_from_address=$REPORTS_FROM_ADDRESS" \
+            -var="ses_arn=$SES_ARN" \
             -var="shared_services_account_id=$SHARED_SERVICES_ACCOUNT_ID" \
-            -var="ses_assume_role_arn=$SES_ARN" \
-            -var="deployed_date=$(date)"
+            -var="web_image_tag=$web_tag"
         if: ${{ github.event_name != 'pull_request' }}
