@@ -1,4 +1,11 @@
 terraform {
+  required_providers {
+    aws = {
+      source = "hashicorp/aws"
+      version = "= 4.11.0"
+    }
+  }
+
   backend "s3" {
     encrypt        = true
     bucket         = "cisa-cool-terraform-state"
