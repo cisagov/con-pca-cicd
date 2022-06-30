@@ -12,7 +12,6 @@ run via a [repository dispatch event](https://docs.github.com/en/actions/referen
 
 - [con-pca-api](https://github.com/cisagov/con-pca-api)
 - [con-pca-web](https://github.com/cisagov/con-pca-web)
-- [con-pca-gophish](https://github.com/cisagov/con-pca-gophish)
 
 This pipeline can also be triggered on push to the develop branch on
 this repository via a [push event])
