@@ -7,7 +7,7 @@ github actions jobs for building.
 
 ## Source Repositories ##
 
-There are three different repositories that can trigger this pipeline to
+There are two different repositories that can trigger this pipeline to
 run via a [repository dispatch event](https://docs.github.com/en/actions/reference/events-that-trigger-workflows#repository_dispatch).
 
 - [con-pca-api](https://github.com/cisagov/con-pca-api)
