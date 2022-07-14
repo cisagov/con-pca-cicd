@@ -5,6 +5,20 @@
 CICD repo for con-pca. Contains terraform for deployments and
 github actions jobs for building.
 
+## Environments ##
+
+There are three environments:
+
+- Development
+  - Managed in the [terraform](/terraform) folder.
+  - Environment variables are managed by aws ssm.
+- Staging
+  - Managed in the [cool](/cool) folder.
+  - The environment variables are managed by github secrets
+- Production
+  - Managed in the [cool](/cool) folder.
+  - The environment variables are managed by github secrets
+
 ## Source Repositories ##
 
 There are two different repositories that can trigger this pipeline to
