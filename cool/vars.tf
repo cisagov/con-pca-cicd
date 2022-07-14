@@ -137,6 +137,16 @@ variable "reports_from_address" {
   description = "The email address to receive reports from."
 }
 
+
+#=================================================
+#  MAILGUN
+#=================================================
+variable "mailgun_api_key" {
+  type        = string
+  description = "The api key for Mailgun."
+}
+
+
 #=================================================
 #  MAXMIND
 #=================================================

@@ -74,6 +74,9 @@ module "api_container" {
     TASK_MINUTES  = 5
     DELAY_MINUTES = 5
 
+    # Mailgun
+    MAILGUN_API_KEY = var.mailgun_api_key
+
     # Maxmind
     MAXMIND_USER_ID     = var.maxmind_user_id
     MAXMIND_LICENSE_KEY = var.maxmind_license_key
