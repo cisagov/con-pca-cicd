@@ -163,6 +163,7 @@ jobs:
       ACCOUNT_ID: ${{ secrets.ACCOUNT_ID }}
       ENVIRONMENT: ${{ needs.setenv.outputs.environment }}
       HOSTED_ZONE_NAME: ${{ secrets.HOSTED_ZONE_NAME }}
+      MAILGUN_API_KEY: ${{ secrets.MAILGUN_API_KEY }}
       MAXMIND_USER_ID: ${{ secrets.MAXMIND_USER_ID }}
       MAXMIND_LICENSE_KEY: ${{ secrets.MAXMIND_LICENSE_KEY }}
       REPORTS_FROM_ADDRESS: ${{ secrets.REPORTS_FROM_ADDRESS }}
