@@ -48,10 +48,9 @@ module "api_container" {
     AWS_DEFAULT_REGION = var.region
 
     # Base Settings
-    FLASK_APP = "api.main:app"
-    FLASK_ENV = "production"
-    DEBUG     = 0
-    WORKERS   = 6
+    FLASK_APP   = "api.main:app"
+    FLASK_DEBUG = 0
+    WORKERS     = 6
 
     # Mongo
     MONGO_TYPE = "DOCUMENTDB"
