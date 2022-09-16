@@ -222,6 +222,7 @@ jobs:
         run: |
           terraform plan \
             -input=false \
+            -lock=false \
             -var-file ./vars/$ENVIRONMENT.tfvars \
             -var="account_id=$ACCOUNT_ID" \
             -var="api_image_tag=$api_tag" \
