@@ -238,6 +238,7 @@ jobs:
       # Applies terraform if it's not a pull request.
       - name: Terraform apply
         run: |
+          TF_LOG=debug \
           terraform apply \
             -input=false \
             -auto-approve \
