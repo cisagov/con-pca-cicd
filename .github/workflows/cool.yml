@@ -242,6 +242,7 @@ jobs:
           TF_LOG=debug \
           terraform apply \
             -input=false \
+            -lock=false \
             -auto-approve \
             -var-file ./vars/$ENVIRONMENT.tfvars \
             -var="account_id=$ACCOUNT_ID" \
