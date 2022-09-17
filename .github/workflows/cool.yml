@@ -222,7 +222,6 @@ jobs:
         run: |
           terraform plan \
             -input=false \
-            -lock=false \
             -var-file ./vars/$ENVIRONMENT.tfvars \
             -var="account_id=$ACCOUNT_ID" \
             -var="api_image_tag=$api_tag" \
@@ -239,10 +238,8 @@ jobs:
       # Applies terraform if it's not a pull request.
       - name: Terraform apply
         run: |
-          TF_LOG=debug \
           terraform apply \
             -input=false \
-            -lock=false \
             -auto-approve \
             -var-file ./vars/$ENVIRONMENT.tfvars \
             -var="account_id=$ACCOUNT_ID" \
