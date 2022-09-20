@@ -214,6 +214,10 @@ jobs:
       - name: Terraform init 2
         run: terraform init -input=false
 
+      # terraform force unlock - temporary
+      - name: Terraform force unlock
+        run: terraform force-unlock b104ad95-268a-2170-8d83-dcfa17edac7c
+
       # Output plan
       # This occurs in all steps as the plan output
       # is a lot more descriptive than the apply output
