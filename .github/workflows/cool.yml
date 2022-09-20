@@ -216,7 +216,7 @@ jobs:
 
       # terraform force unlock - temporary
       - name: Terraform force unlock
-        run: terraform force-unlock b104ad95-268a-2170-8d83-dcfa17edac7c
+        run: terraform force-unlock --force b104ad95-268a-2170-8d83-dcfa17edac7c
 
       # Output plan
       # This occurs in all steps as the plan output
