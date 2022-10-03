@@ -141,7 +141,7 @@ This collection contains cycle data. This data has a many to one relationship wi
         - label: string
     - recommendation_stats: list
         - recommendation: string
-        - templates: list of [templates](#templates)
+        - templates: list of [templates](#template)
     - time_stats: list
         - opened: list
             - one_minute
