@@ -260,21 +260,212 @@ This collection contains data relating to landing pages.
 
 This collection contains recommendation data
 
+- title: string
+- type: string = [sophisticated, red flag]
+- description: string
+
 ## Report
 
 This collection contains aggregate statistics report data
+
+- customers_enrolled: integer
+- customers_active: integer
+- status_reports_sent: integer
+- cycle_reports_sent: integer
+- yearly_reports_sent: integer
+- new_subscriptions: integer
+- ongoing_subscriptions: integer
+- stopped_subscriptions: integer
+- federal_stats: list
+    - subscription_count: integer
+    - cycle_count: integer
+    - emails_sent: integer
+    - emails_clicked: integer
+    - emails_clicked_ratio: float
+- state_stats: list
+    - subscription_count: integer
+    - cycle_count: integer
+    - emails_sent: integer
+    - emails_clicked: integer
+    - emails_clicked_ratio: float
+- local_stats: list
+    - subscription_count: integer
+    - cycle_count: integer
+    - emails_sent: integer
+    - emails_clicked: integer
+    - emails_clicked_ratio: float
+- tribal_stats: list
+    - subscription_count: integer
+    - cycle_count: integer
+    - emails_sent: integer
+    - emails_clicked: integer
+    - emails_clicked_ratio: float
+- private_stats: list
+    - subscription_count: integer
+    - cycle_count: integer
+    - emails_sent: integer
+    - emails_clicked: integer
+    - emails_clicked_ratio: float
+- all_customer_stats: list
+    - high
+        - sent
+            - count: integer
+            - average: integer
+            - ratio: integer
+        - opened
+            - count: integer
+            - average: integer
+            - ratio: integer
+        - clicked
+            - count: integer
+            - average: integer
+            - ratio: integer
+        - reported
+            - count: integer
+            - average: integer
+            - ratio: integer
+    - moderate
+        - sent
+            - count: integer
+            - average: integer
+            - ratio: integer
+        - opened
+            - count: integer
+            - average: integer
+            - ratio: integer
+        - clicked
+            - count: integer
+            - average: integer
+            - ratio: integer
+        - reported
+            - count: integer
+            - average: integer
+            - ratio: integer
+    - low
+        - sent
+            - count: integer
+            - average: integer
+            - ratio: integer
+        - opened
+            - count: integer
+            - average: integer
+            - ratio: integer
+        - clicked
+            - count: integer
+            - average: integer
+            - ratio: integer
+        - reported
+            - count: integer
+            - average: integer
+            - ratio: integer
+    - all
+        - sent
+            - count: integer
+            - average: integer
+            - ratio: integer
+        - opened
+            - count: integer
+            - average: integer
+            - ratio: integer
+        - clicked
+            - count: integer
+            - average: integer
+            - ratio: integer
+        - reported
+            - count: integer
+            - average: integer
+            - ratio: integer
 
 ## Sending Profile
 
 This collection contains sending profile data
 
+- name: string
+- interface_type: string = [SMTP, MAILGUN, SES]
+- from_address: string
+- sending_ips: string
+
+- smtp_username: string
+- smtp_password: string
+- smtp_host: string
+
+- mailgun_domain: string
+- mailgun_api_key: string
+
+- ses_role_arn: string
+
 ## Subscription
 
 This collection contains top level subscription data
 
+- name: string
+- customer_id: string
+- sending_profile_id: string
+- target_domain: string
+- start_date = DateTimeField()
+- primary_contact: list of [customer](#customer) contacts
+- admin_email: string
+- operator_email: string
+- status: string = [created, queued, running, stopped]
+- target_email_list: list of [targets](#target)
+- templates_selected: list of strings
+- continuous_subscription: boolean
+- buffer_time_minutes: integer
+- cycle_length_minutes: integer
+- cooldown_minutes: integer
+- report_frequency_minutes: integer
+- tasks: list
+    - task_uuid: string
+    - task_type: string
+    - scheduled_date: datetime
+    - executed: boolean
+    - executed_date: datetime
+    - error: string
+- processing: boolean
+- archived: boolean
+- notification_history: list
+    - message_type: string
+    - sent: datetime
+    - email_to: list of strings
+    - emaiL_from: string
+- phish_header: string
+- reporting_password: string
+- test_results: list
+    - test_uuid: string
+    - email: string
+    - template: list of [templates](#template)
+    - opened: boolean
+    - clicked: boolean
+    - timeline: list
+        - time: datetime
+        - message: string
+        - details: string
+    - error: string
+- landing_page_id: string
+- landing_domain: string
+- landing_page_url: string
+
 ## Target
 
 This collection contains phishing target data
+
+- cycle_id: string
+- subscription_id: string
+- template_id: string
+- email: email
+- first_name: string
+- last_name: string
+- position: string
+- deception_level: string = [low, moderate, high]
+- deception_level_int: integer
+- send_date: datetime
+- sent: boolean
+- sent_date: datetime
+- error: string
+- timeline: list
+    - time: datetime
+    - message: string
+    - details: string
 
 ## Template
 
