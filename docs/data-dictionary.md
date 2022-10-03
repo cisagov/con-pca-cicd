@@ -470,3 +470,33 @@ This collection contains phishing target data
 ## Template
 
 This collection contains email template data
+
+- name: string
+- landing_page_id: string
+- sending_profile_id: string
+- deception_score: integer (1-6)
+- from_address: string
+- retired: boolean
+- retired_description: string
+- sophisticated: list of strings
+- red_flag: list of strings
+- subject: string
+- text: string
+- html: string
+- indicators
+    - appearance
+        - grammar: integer
+        - link_domain: integer
+        - logo_graphics: integer
+    - sender
+        - external: integer
+        - internal: integer
+        - authoritative: integer
+    - relevancy
+        - organization: integer
+        - public_news: integer
+    - behavior
+        - fear: integer
+        - duty_obligation: integer
+        - curiosity: integer
+        - greed: integer
