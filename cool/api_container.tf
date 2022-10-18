@@ -69,7 +69,7 @@ module "api_container" {
     SMTP_FROM           = var.reports_from_address
 
     # Tasks
-    EMAIL_MINUTES = 1
+    EMAIL_MINUTES = 5
     TASK_MINUTES  = 5
     DELAY_MINUTES = 5
 
