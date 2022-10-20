@@ -56,7 +56,7 @@ module "api_container" {
     # SES
     SES_ASSUME_ROLE_ARN = var.ses_arn
     SMTP_FROM           = "pca-sandbox@cyber.dhs.gov"
-  
+
     # Tasks
     EMAIL_MINUTES = 5
     TASK_MINUTES  = 5
