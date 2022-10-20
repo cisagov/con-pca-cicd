@@ -35,6 +35,11 @@ module "api_container" {
     }
   ]
 
+  map_environment = {
+    # Mailgun
+    MAILGUN_API_KEY = var.mailgun_api_key
+  }
+
   environment = [
     for key in keys(local.api_environment) :
     {
