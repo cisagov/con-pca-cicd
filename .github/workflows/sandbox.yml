@@ -17,6 +17,9 @@ env:
   AWS_DEFAULT_REGION: us-east-1
   ECR_URI: ${{ secrets.ECR_URI }}
   ENVIRONMENT: dev
+  MAILGUN_API_KEY: ${{ secrets.MAILGUN_API_KEY }}
+  MAXMIND_USER_ID: ${{ secrets.MAXMIND_USER_ID }}
+  MAXMIND_LICENSE_KEY: ${{ secrets.MAXMIND_LICENSE_KEY }}
   REGION: us-east-1
   SES_ARN: ${{ secrets.SES_ROLE_ARN }}
 
@@ -133,8 +136,8 @@ jobs:
             -var="ses_arn=$SES_ARN" \
             -var="deployed_date=$(date)" \
             -var="mailgun_api_key=$MAILGUN_API_KEY" \
-            -var="maxmind_user_id"=${{secrets.MAXMIND_USER_ID}} \
-            -var="maxmind_license_key=${{secrets.MAXMIND_LICENSE_KEY}}"
+            -var="maxmind_user_id"=$MAXMIND_USER_ID \
+            -var="maxmind_license_key=$MAXMIND_LICENSE_KEY"
 
       # Apply terraform
       - name: Terraform Apply
@@ -148,6 +151,6 @@ jobs:
             -var="ses_arn=$SES_ARN" \
             -var="deployed_date=$(date)" \
             -var="mailgun_api_key=$MAILGUN_API_KEY" \
-            -var="maxmind_user_id"=${{secrets.MAXMIND_USER_ID}} \
-            -var="maxmind_license_key=${{secrets.MAXMIND_LICENSE_KEY}}"
+            -var="maxmind_user_id"=$MAXMIND_USER_ID \
+            -var="maxmind_license_key=$MAXMIND_LICENSE_KEY"
         if: ${{ github.event_name != 'pull_request' }}

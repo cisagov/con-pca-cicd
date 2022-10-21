@@ -67,6 +67,19 @@ variable "idle_timeout" {
 }
 
 #=================================================
+#  MAXMIND
+#=================================================
+variable "maxmind_user_id" {
+  type        = string
+  description = "The user ID for Maxmind."
+}
+
+variable "maxmind_license_key" {
+  type        = string
+  description = "The license key for Maxmind."
+}
+
+#=================================================
 #  ROUTE 53
 #=================================================
 variable "route53_zone_name" {
@@ -139,16 +152,5 @@ variable "ses_arn" {
 #  ABOUT
 #=================================================
 variable "deployed_date" {
-  type = string
-}
-
-#=================================================
-#  MAXMIND
-#=================================================
-variable "maxmind_user_id" {
-  type = string
-}
-
-variable "maxmind_license_key" {
   type = string
 }

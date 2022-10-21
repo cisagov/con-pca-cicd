@@ -36,8 +36,38 @@ module "api_container" {
   ]
 
   map_environment = {
+    # Base Settings
+    FLASK_APP   = "api.main:app"
+    FLASK_DEBUG = 0
+    WORKERS     = 6
+
+    # Cognito
+    AWS_COGNITO_ENABLED             = 1
+    AWS_COGNITO_USER_POOL_ID        = aws_cognito_user_pool.pool.id
+    AWS_COGNITO_USER_POOL_CLIENT_ID = aws_cognito_user_pool_client.client.id
+
+    # Mongo
+    MONGO_TYPE = "DOCUMENTDB"
+    DB_HOST    = module.documentdb.endpoint
+    DB_PORT    = 27017
+    DB_USER    = aws_ssm_parameter.docdb_username.value
+    DB_PW      = aws_ssm_parameter.docdb_password.value
+
+    # SES
+    SES_ASSUME_ROLE_ARN = var.ses_arn
+    SMTP_FROM           = "pca-sandbox@cyber.dhs.gov"
+
+    # Tasks
+    EMAIL_MINUTES = 5
+    TASK_MINUTES  = 5
+    DELAY_MINUTES = 5
+
     # Mailgun
     MAILGUN_API_KEY = var.mailgun_api_key
+
+    # Maxmind
+    MAXMIND_USER_ID     = var.maxmind_user_id
+    MAXMIND_LICENSE_KEY = var.maxmind_license_key
   }
 
   environment = [
