@@ -85,7 +85,7 @@ jobs:
     needs: [build_ui, build_api]
     defaults:
       run:
-        working-directory: terraform
+        working-directory: sandbox
     environment:
       name: develop
 
