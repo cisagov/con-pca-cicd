@@ -60,7 +60,7 @@ module "api_container" {
     # Tasks
     EMAIL_MINUTES = 5
     TASK_MINUTES  = 5
-    DELAY_MINUTES = 5
+    DELAY_MINUTES = 0
 
     # Mailgun
     MAILGUN_API_KEY = var.mailgun_api_key
