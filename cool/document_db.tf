@@ -39,7 +39,7 @@ module "docdb" {
 
   namespace = var.app
   stage     = var.env
-  name      = "db"
+  name      = "docdb"
 
   allowed_security_groups = [aws_security_group.service.id]
   cluster_family          = "docdb4.0"
