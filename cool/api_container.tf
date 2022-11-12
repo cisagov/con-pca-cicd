@@ -54,7 +54,7 @@ module "api_container" {
 
     # Mongo
     MONGO_TYPE = "DOCUMENTDB"
-    DB_HOST    = module.documentdb.endpoint
+    DB_HOST    = module.docdb.endpoint
     DB_PORT    = 27017
     DB_USER    = random_string.docdb_username.result
     DB_PW      = random_password.docdb_password.result
