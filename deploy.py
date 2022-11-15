@@ -24,7 +24,7 @@ def main():
     "--environment",
     required=True,
     prompt=True,
-    type=click.Choice(["staging", "production"]),
+    type=click.Choice(["develop", "staging", "production"]),
 )
 def deploy(environment):
     """Deploy to defined environment."""
@@ -40,6 +40,8 @@ def deploy(environment):
         result = deploy_production(token)
     elif environment == "staging":
         result = deploy_staging(token)
+    elif environment == "develop":
+        result = deploy_develop(token)
 
     if result.status_code != 204:
         click.echo(
@@ -64,6 +66,15 @@ def get_token():
     config = configparser.ConfigParser()
     config.read("config.ini")
     return config["DEFAULT"].get("github_access_token")
+
+
+def deploy_develop(token):
+    """Deploy to develop environment."""
+    return requests.post(
+        url="https://api.github.com/repos/cisagov/con-pca-cicd/dispatches",
+        json={"event_type": "deploy", "client_payload": {}},
+        headers=get_auth_header(token),
+    )
 
 
 def deploy_staging(token):
