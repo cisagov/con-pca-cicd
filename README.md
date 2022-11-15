@@ -10,8 +10,8 @@ github actions jobs for building.
 There are three environments:
 
 - Development
-  - Managed in the [terraform](/terraform) folder.
-  - Environment variables are managed by aws ssm.
+  - Managed in the [sandbox](/sandbox) folder.
+  - Environment variables are managed by aws ssm and github secrets
 - Staging
   - Managed in the [cool](/cool) folder.
   - The environment variables are managed by github secrets
