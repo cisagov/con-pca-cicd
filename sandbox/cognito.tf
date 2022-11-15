@@ -3,6 +3,18 @@
 #=================================================
 resource "aws_cognito_user_pool" "pool" {
   name = "${var.app}-${var.env}-users"
+
+  schema {
+    attribute_data_type = "String"
+    name                = "last_login"
+    required            = "false"
+    mutable             = "true"
+
+    string_attribute_constraints {
+      min_length = 1
+      max_length = 256
+    }
+  }
 }
 
 resource "aws_cognito_user_pool_client" "client" {
