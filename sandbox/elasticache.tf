@@ -6,7 +6,6 @@ module "redis" {
   namespace = var.app
   name      = "redis"
 
-  availability_zones         = var.availability_zones
   zone_id                    = data.aws_route53_zone.zone.zone_id
   vpc_id                     = var.vpc_id
   allowed_security_group_ids = [aws_security_group.service.id]
