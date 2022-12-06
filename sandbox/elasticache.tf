@@ -16,7 +16,7 @@ module "redis" {
   apply_immediately          = true
   automatic_failover_enabled = false
   engine_version             = "7.0"
-  family                     = "redis7.x"
+  family                     = "redis7"
   at_rest_encryption_enabled = true
   transit_encryption_enabled = true
 }
