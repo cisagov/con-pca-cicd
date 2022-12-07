@@ -35,6 +35,11 @@ module "memory_db" {
   # Parameter group
   parameter_group_family = "memorydb_redis6"
 
+  # Subnet group
+  subnet_group_name        = "redis-subnet-group"
+  subnet_group_description = "Redis MemoryDB subnet group"
+  subnet_ids               = var.public_subnet_ids
+
   tags = {
     Terraform   = "true"
     Environment = "${var.app}-${var.env}-redis"
