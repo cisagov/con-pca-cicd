@@ -38,7 +38,7 @@ module "memory_db" {
   # Subnet group
   subnet_group_name        = "redis-subnet-group"
   subnet_group_description = "Redis MemoryDB subnet group"
-  subnet_ids               = var.public_subnet_ids
+  subnet_ids               = []
 
   tags = {
     Terraform   = "true"
