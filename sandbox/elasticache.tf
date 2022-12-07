@@ -18,6 +18,5 @@ module "redis" {
   engine_version             = "7.0"
   family                     = "redis7"
   at_rest_encryption_enabled = true
-  transit_encryption_enabled = true
-  auth_token                 = "SecurePassword987!"
+  transit_encryption_enabled = false
 }
