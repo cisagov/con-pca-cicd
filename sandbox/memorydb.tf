@@ -1,12 +1,10 @@
 module "memory_db" {
-  source = "terraform-aws-modules/memory-db/aws"
+  source         = "terraform-aws-modules/memory-db/aws"
+  engine_version = "6.2"
 
   description = "MemoryDB Redis Cluster"
   name        = "redis"
-  namespace   = var.app
-  stage       = var.env
 
-  engine_version             = "6.2"
   auto_minor_version_upgrade = true
   node_type                  = "db.t4g.small"
   num_shards                 = 2
@@ -38,4 +36,9 @@ module "memory_db" {
   subnet_group_name        = "redis-subnet-group"
   subnet_group_description = "Redis MemoryDB subnet group"
   subnet_ids               = var.private_subnet_ids
+
+  tags = {
+    Terraform   = "true"
+    Environment = "${var.app}-${var.env}-redis"
+  }
 }
