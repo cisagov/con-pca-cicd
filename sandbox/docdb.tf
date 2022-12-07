@@ -3,7 +3,7 @@
 # ===========================
 resource "random_string" "docdb_username" {
   length  = 8
-  number  = false
+  numeric = false
   special = false
   upper   = false
 }
