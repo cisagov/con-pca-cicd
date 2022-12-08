@@ -17,6 +17,6 @@ module "redis" {
   automatic_failover_enabled = false
   engine_version             = "7.0"
   family                     = "redis7"
-  at_rest_encryption_enabled = true
+  at_rest_encryption_enabled = false
   transit_encryption_enabled = false
 }
