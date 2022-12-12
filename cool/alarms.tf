@@ -13,7 +13,7 @@ resource "aws_cloudwatch_metric_alarm" "docdb_cpu_high" {
   ok_actions          = ["${aws_sns_topic.notifications.arn}"]
 
   dimensions = {
-    DBClusterIdentifier = module.documentdb.cluster_name
+    DBClusterIdentifier = module.docdb.cluster_name
   }
 }
 
@@ -31,7 +31,7 @@ resource "aws_cloudwatch_metric_alarm" "docdb_freeable_memory_too_low" {
   ok_actions          = ["${aws_sns_topic.notifications.arn}"]
 
   dimensions = {
-    DBClusterIdentifier = module.documentdb.cluster_name
+    DBClusterIdentifier = module.docdb.cluster_name
   }
 }
 
@@ -49,6 +49,6 @@ resource "aws_cloudwatch_metric_alarm" "docdb_free_local_storage_too_low" {
   ok_actions          = ["${aws_sns_topic.notifications.arn}"]
 
   dimensions = {
-    DBClusterIdentifier = module.documentdb.cluster_name
+    DBClusterIdentifier = module.docdb.cluster_name
   }
 }
