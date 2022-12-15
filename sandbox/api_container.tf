@@ -46,10 +46,6 @@ module "api_container" {
     AWS_COGNITO_USER_POOL_ID        = aws_cognito_user_pool.pool.id
     AWS_COGNITO_USER_POOL_CLIENT_ID = aws_cognito_user_pool_client.client.id
 
-    # Redis Elasticache
-    REDIS_HOST = module.redis.host
-    REDIS_PORT = 6379
-
     # Mongo
     MONGO_TYPE = "DOCUMENTDB"
     DB_HOST    = module.documentdb.endpoint

@@ -52,6 +52,18 @@ module "api_container" {
     FLASK_DEBUG = 0
     WORKERS     = 6
 
+    # Cognito
+    AWS_COGNITO_ENABLED             = 1
+    AWS_COGNITO_USER_POOL_ID        = aws_cognito_user_pool.pool.id
+    AWS_COGNITO_USER_POOL_CLIENT_ID = aws_cognito_user_pool_client.client.id
+
+    # Mailgun
+    MAILGUN_API_KEY = var.mailgun_api_key
+
+    # Maxmind
+    MAXMIND_USER_ID     = var.maxmind_user_id
+    MAXMIND_LICENSE_KEY = var.maxmind_license_key
+
     # Mongo
     MONGO_TYPE = "DOCUMENTDB"
     DB_HOST    = module.docdb.endpoint
@@ -59,10 +71,9 @@ module "api_container" {
     DB_USER    = random_string.docdb_username.result
     DB_PW      = random_password.docdb_password.result
 
-    # Cognito
-    AWS_COGNITO_ENABLED             = 1
-    AWS_COGNITO_USER_POOL_ID        = aws_cognito_user_pool.pool.id
-    AWS_COGNITO_USER_POOL_CLIENT_ID = aws_cognito_user_pool_client.client.id
+    # Redis Elasticache
+    REDIS_HOST = module.redis.host
+    REDIS_PORT = 6379
 
     # SES
     SES_ASSUME_ROLE_ARN = var.ses_arn
@@ -71,12 +82,5 @@ module "api_container" {
     # Tasks
     EMAIL_MINUTES = 5
     TASK_MINUTES  = 5
-
-    # Mailgun
-    MAILGUN_API_KEY = var.mailgun_api_key
-
-    # Maxmind
-    MAXMIND_USER_ID     = var.maxmind_user_id
-    MAXMIND_LICENSE_KEY = var.maxmind_license_key
   }
 }
