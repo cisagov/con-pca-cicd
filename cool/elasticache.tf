@@ -8,9 +8,9 @@ module "redis" {
 
   availability_zones         = []
   zone_id                    = data.aws_route53_zone.zone.zone_id
-  vpc_id                     = var.vpc_id
+  vpc_id                     = local.vpc_id
   allowed_security_group_ids = [aws_security_group.service.id]
-  subnets                    = var.private_subnet_ids
+  subnets                    = local.private_subnet_ids
   cluster_size               = 2
   instance_type              = "cache.t3.medium"
   apply_immediately          = true
