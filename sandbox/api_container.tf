@@ -53,6 +53,10 @@ module "api_container" {
     DB_USER    = aws_ssm_parameter.docdb_username.value
     DB_PW      = aws_ssm_parameter.docdb_password.value
 
+    # Redis Elasticache
+    REDIS_HOST = module.redis.host
+    REDIS_PORT = 6379
+
     # SES
     SES_ASSUME_ROLE_ARN = var.ses_arn
     SMTP_FROM           = "pca-sandbox@cyber.dhs.gov"
