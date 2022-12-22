@@ -65,8 +65,8 @@ module "api_container" {
     SMTP_FROM           = "pca-sandbox@cyber.dhs.gov"
 
     # Tasks
-    EMAIL_MINUTES = 5
-    TASK_MINUTES  = 5
+    EMAIL_MINUTES = 1
+    TASK_MINUTES  = 1
 
     # Mailgun
     MAILGUN_API_KEY = var.mailgun_api_key

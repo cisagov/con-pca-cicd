@@ -33,8 +33,8 @@ archival_email_address = "con.pca.reports@gmail.com"
 #=================================================
 #  SCHEDULER
 #=================================================
-email_minutes = 1
-task_minutes  = 1
+email_minutes = 2
+task_minutes  = 2
 
 #=================================================
 #  WEB
