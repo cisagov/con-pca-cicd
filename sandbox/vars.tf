@@ -44,6 +44,14 @@ variable "public_subnet_ids" {
 }
 
 #=================================================
+#  REPORT EMAIL ADDRESS
+#=================================================
+variable "archival_email_address" {
+  type        = string
+  description = "BCC email address for emailed reports."
+}
+
+#=================================================
 #  COGNITO
 #=================================================
 variable "additional_redirect" {
