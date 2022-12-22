@@ -107,6 +107,14 @@ variable "max_count" {
 }
 
 #=================================================
+#  REPORT EMAIL ADDRESS
+#=================================================
+variable "archival_email_address" {
+  type        = string
+  description = "BCC email address for emailed reports."
+}
+
+#=================================================
 #  WEB
 #=================================================
 variable "web_image_repo" {
