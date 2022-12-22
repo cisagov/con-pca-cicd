@@ -115,6 +115,21 @@ variable "archival_email_address" {
 }
 
 #=================================================
+#  SCHEDULER
+#=================================================
+variable "email_minutes" {
+  type        = number
+  description = "scheduled interval in minutes for phishing emails"
+
+}
+
+variable "task_minutes" {
+  type        = number
+  description = "scheduled interval in minutes for notification emails and tasks"
+
+}
+
+#=================================================
 #  WEB
 #=================================================
 variable "web_image_repo" {
