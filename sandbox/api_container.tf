@@ -54,7 +54,7 @@ module "api_container" {
     DB_PW      = aws_ssm_parameter.docdb_password.value
 
     # Redis Elasticache
-    REDIS_HOST = module.redis.host
+    REDIS_HOST = module.redis.endpoint
     REDIS_PORT = 6379
 
     # SES

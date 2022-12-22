@@ -72,7 +72,7 @@ module "api_container" {
     DB_PW      = random_password.docdb_password.result
 
     # Redis Elasticache
-    REDIS_HOST = module.redis.host
+    REDIS_HOST = module.redis.endpoint
     REDIS_PORT = 6379
 
     # Report Email Address
