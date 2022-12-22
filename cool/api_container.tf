@@ -83,7 +83,7 @@ module "api_container" {
     SMTP_FROM           = var.reports_from_address
 
     # Tasks
-    EMAIL_MINUTES = 5
-    TASK_MINUTES  = 5
+    EMAIL_MINUTES = var.email_minutes
+    TASK_MINUTES  = var.task_minutes
   }
 }
