@@ -75,6 +75,9 @@ module "api_container" {
     REDIS_HOST = module.redis.host
     REDIS_PORT = 6379
 
+    # Report Email Address
+    ARCHIVAL_EMAIL_ADDRESS = var.archival_email_address
+
     # SES
     SES_ASSUME_ROLE_ARN = var.ses_arn
     SMTP_FROM           = var.reports_from_address

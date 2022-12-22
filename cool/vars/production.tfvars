@@ -26,6 +26,10 @@ desired_count = 1
 min_count     = 1
 max_count     = 3
 
+#=================================================
+#  REPORT EMAIL ADDRESS
+#=================================================
+archival_email_address = "csd_vm_assessments_cyhy_pca@cisa.dhs.gov"
 
 #=================================================
 #  WEB
