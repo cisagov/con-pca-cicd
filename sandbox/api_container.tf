@@ -57,6 +57,9 @@ module "api_container" {
     REDIS_HOST = module.redis.endpoint
     REDIS_PORT = 6379
 
+    # Report Email Address
+    ARCHIVAL_EMAIL_ADDRESS = var.archival_email_address
+
     # SES
     SES_ASSUME_ROLE_ARN = var.ses_arn
     SMTP_FROM           = "pca-sandbox@cyber.dhs.gov"
