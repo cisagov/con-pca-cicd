@@ -33,8 +33,9 @@ archival_email_address = "con.pca.reports@gmail.com"
 #=================================================
 #  SCHEDULER
 #=================================================
-email_minutes = 2
-task_minutes  = 2
+email_minutes       = 2
+task_minutes        = 2
+failed_task_minutes = 240
 
 #=================================================
 #  WEB
