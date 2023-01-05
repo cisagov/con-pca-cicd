@@ -34,8 +34,9 @@ archival_email_address = "csd_vm_assessments_cyhy_pca@cisa.dhs.gov"
 #=================================================
 #  SCHEDULER
 #=================================================
-email_minutes = 5
-task_minutes  = 5
+email_minutes         = 5
+task_minutes          = 15
+failed_emails_minutes = 1440
 
 #=================================================
 #  WEB
