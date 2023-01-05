@@ -129,6 +129,12 @@ variable "task_minutes" {
 
 }
 
+variable "failed_emails_minutes" {
+  type        = number
+  description = "scheduled interval in minutes for failed emails from mailgun"
+
+}
+
 #=================================================
 #  WEB
 #=================================================
