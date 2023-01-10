@@ -1,3 +1,8 @@
+provider "mongodbatlas" {
+  public_key  = ""
+  private_key = ""
+}
+
 resource "mongodbatlas_cluster" "mongo-cluster" {
   project_id   = "${var.app}-${var.env}"
   name         = "${var.app}-${var.env}-mongo-cluster"

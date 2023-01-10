@@ -29,6 +29,16 @@ variable "mailgun_api_key" {
 }
 
 #=================================================
+#  MONGO ATLAS
+#=================================================
+variable "atlas_public_key" {
+  description = "The public API key for MongoDB Atlas"
+}
+variable "atlas_private_key" {
+  description = "The private API key for MongoDB Atlas"
+}
+
+#=================================================
 #  NETWORK
 #=================================================
 variable "vpc_id" {
