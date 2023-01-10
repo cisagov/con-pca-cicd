@@ -72,15 +72,19 @@ module "api_container" {
     DB_PW      = random_password.docdb_password.result
 
     # Redis Elasticache
-    REDIS_HOST = module.redis.host
+    REDIS_HOST = module.redis.endpoint
     REDIS_PORT = 6379
+
+    # Report Email Address
+    ARCHIVAL_EMAIL_ADDRESS = var.archival_email_address
 
     # SES
     SES_ASSUME_ROLE_ARN = var.ses_arn
     SMTP_FROM           = var.reports_from_address
 
     # Tasks
-    EMAIL_MINUTES = 5
-    TASK_MINUTES  = 5
+    EMAIL_MINUTES        = var.email_minutes
+    TASK_MINUTES         = var.task_minutes
+    FAILED_EMAIL_MINUTES = var.failed_emails_minutes
   }
 }

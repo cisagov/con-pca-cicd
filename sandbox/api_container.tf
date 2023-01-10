@@ -54,16 +54,19 @@ module "api_container" {
     DB_PW      = aws_ssm_parameter.docdb_password.value
 
     # Redis Elasticache
-    REDIS_HOST = module.redis.host
+    REDIS_HOST = module.redis.endpoint
     REDIS_PORT = 6379
+
+    # Report Email Address
+    ARCHIVAL_EMAIL_ADDRESS = var.archival_email_address
 
     # SES
     SES_ASSUME_ROLE_ARN = var.ses_arn
     SMTP_FROM           = "pca-sandbox@cyber.dhs.gov"
 
     # Tasks
-    EMAIL_MINUTES = 5
-    TASK_MINUTES  = 5
+    EMAIL_MINUTES = 1
+    TASK_MINUTES  = 1
 
     # Mailgun
     MAILGUN_API_KEY = var.mailgun_api_key

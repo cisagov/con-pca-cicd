@@ -107,6 +107,35 @@ variable "max_count" {
 }
 
 #=================================================
+#  REPORT EMAIL ADDRESS
+#=================================================
+variable "archival_email_address" {
+  type        = string
+  description = "BCC email address for emailed reports."
+}
+
+#=================================================
+#  SCHEDULER
+#=================================================
+variable "email_minutes" {
+  type        = number
+  description = "scheduled interval in minutes for phishing emails"
+
+}
+
+variable "task_minutes" {
+  type        = number
+  description = "scheduled interval in minutes for notification emails and tasks"
+
+}
+
+variable "failed_emails_minutes" {
+  type        = number
+  description = "scheduled interval in minutes for failed emails from mailgun"
+
+}
+
+#=================================================
 #  WEB
 #=================================================
 variable "web_image_repo" {
