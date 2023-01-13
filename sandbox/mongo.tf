@@ -68,5 +68,5 @@ resource "mongodbatlas_database_user" "db-user" {
     role_name     = "readWrite"
     database_name = "admin"
   }
-  depends_on = [mongodbatlas_project.aws_atlas]
+  depends_on = [mongodbatlas_project.con-pca]
 }
