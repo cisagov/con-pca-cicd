@@ -31,13 +31,13 @@ provider "mongodbatlas" {
   private_key = var.atlas_private_key
 }
 
-resource "mongodbatlas_project" "aws_atlas" {
-  name   = "aws-atlas"
+resource "mongodbatlas_project" "con-pca" {
+  name   = "con-pca"
   org_id = var.atlasorgid
 }
 
 resource "mongodbatlas_cluster" "mongo-cluster" {
-  project_id   = var.atlasprojid
+  project_id   = mongodbatlas_project.con-pca.id
   name         = "${var.app}-${var.env}-cluster"
   cluster_type = "REPLICASET"
   replication_specs {

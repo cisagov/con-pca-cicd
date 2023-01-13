@@ -35,10 +35,6 @@ variable "atlasorgid" {
   description = "Atlas Organization ID"
 }
 
-variable "atlasprojid" {
-  description = "Atlas Project ID"
-}
-
 variable "atlas_public_key" {
   description = "The public API key for MongoDB Atlas"
 }
