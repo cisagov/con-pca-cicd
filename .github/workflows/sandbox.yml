@@ -134,6 +134,8 @@ jobs:
             -var-file ./vars/$ENVIRONMENT.tfvars \
             -var="account_id=$ACCOUNT_ID" \
             -var="api_image_tag=${{needs.build_api.outputs.tag}}" \
+            -var="atlas_public_key=$ATLAS_PUBLIC_KEY" \
+            -var="atlas_private_key=$ATLAS_PRIVATE_KEY" \
             -var="ui_image_tag=${{needs.build_ui.outputs.tag}}" \
             -var="ses_arn=$SES_ARN" \
             -var="deployed_date=$(date)" \
