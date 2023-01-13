@@ -37,7 +37,7 @@ resource "mongodbatlas_project" "aws_atlas" {
 }
 
 resource "mongodbatlas_cluster" "mongo-cluster" {
-  project_id   = "con-pca"
+  project_id   = var.atlasprojid
   name         = "${var.app}-${var.env}-mongo-cluster"
   cluster_type = "REPLICASET"
   replication_specs {

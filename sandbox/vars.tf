@@ -32,7 +32,11 @@ variable "mailgun_api_key" {
 #  MONGO ATLAS
 #=================================================
 variable "atlasorgid" {
-  description = "Atlas Org ID"
+  description = "Atlas Organization ID"
+}
+
+variable "atlasprojid" {
+  description = "Atlas Project ID"
 }
 
 variable "atlas_public_key" {
