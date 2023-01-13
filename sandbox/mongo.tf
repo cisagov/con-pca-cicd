@@ -31,13 +31,13 @@ provider "mongodbatlas" {
   private_key = var.atlas_private_key
 }
 
-resource "mongodbatlas_project" "aws_atlas" {
-  name   = "aws-atlas"
+resource "mongodbatlas_project" "con-pca" {
+  name   = "con-pca"
   org_id = var.atlasorgid
 }
 
 resource "mongodbatlas_cluster" "mongo-cluster" {
-  project_id   = var.atlasprojid
+  project_id   = mongodbatlas_project.con-pca.id
   name         = "${var.app}-${var.env}-cluster"
   cluster_type = "REPLICASET"
   replication_specs {
@@ -63,10 +63,10 @@ resource "mongodbatlas_database_user" "db-user" {
   username           = random_string.mongodb_username.result
   password           = random_password.mongodb_password.result
   auth_database_name = "admin"
-  project_id         = mongodbatlas_project.aws_atlas.id
+  project_id         = mongodbatlas_project.con-pca.id
   roles {
     role_name     = "readWrite"
     database_name = "admin"
   }
-  depends_on = [mongodbatlas_project.aws_atlas]
+  depends_on = [mongodbatlas_project.con-pca]
 }
