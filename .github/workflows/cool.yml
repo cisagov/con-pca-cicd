@@ -25,7 +25,6 @@ env:
   REGION: us-east-1
   AWS_ACCESS_KEY_ID: ${{ secrets.COOL_AWS_ACCESS_KEY_ID }}
   AWS_SECRET_ACCESS_KEY: ${{ secrets.COOL_AWS_SECRET_ACCESS_KEY }}
-  TF_VERSION: ~1.1
 
 jobs:
   # Set Environment
@@ -179,7 +178,7 @@ jobs:
       # Install and setup terraform
       - uses: hashicorp/setup-terraform@v1
         with:
-          terraform_version: ${{ env.TF_VERSION }}
+          terraform_version: ~1.1
 
       # Downloads all artifacts to an artifacts directory
       - name: Download All Tag Files
