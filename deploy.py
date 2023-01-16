@@ -24,7 +24,7 @@ def main():
     "--environment",
     required=True,
     prompt=True,
-    type=click.Choice(["develop", "staging", "production"]),
+    type=click.Choice(["sandbox", "inl-staging", "cool-staging", "production"]),
 )
 def deploy(environment):
     """Deploy to defined environment."""
@@ -36,12 +36,15 @@ def deploy(environment):
 
     click.confirm(f"Are you sure you want to deploy {environment}?", abort=True)
 
+    result = {}
     if environment == "production":
         result = deploy_production(token)
-    elif environment == "staging":
-        result = deploy_staging(token)
-    elif environment == "develop":
-        result = deploy_develop(token)
+    elif environment == "cool-staging":
+        result = deploy_cool_staging(token)
+    elif environment == "inl-staging":
+        result = deploy_inl_staging(token)
+    elif environment == "sandbox":
+        result = deploy_sandbox(token)
 
     if result.status_code != 204:
         click.echo(
@@ -68,8 +71,8 @@ def get_token():
     return config["DEFAULT"].get("github_access_token")
 
 
-def deploy_develop(token):
-    """Deploy to develop environment."""
+def deploy_sandbox(token):
+    """Deploy to INL sandbox environment."""
     return requests.post(
         url="https://api.github.com/repos/cisagov/con-pca-cicd/dispatches",
         json={"event_type": "deploy-sandbox", "client_payload": {}},
@@ -77,8 +80,17 @@ def deploy_develop(token):
     )
 
 
-def deploy_staging(token):
-    """Deploy to staging environment."""
+def deploy_inl_staging(token):
+    """Deploy to INL staging environment."""
+    return requests.post(
+        url="https://api.github.com/repos/cisagov/con-pca-cicd/dispatches",
+        json={"event_type": "deploy-staging", "client_payload": {}},
+        headers=get_auth_header(token),
+    )
+
+
+def deploy_cool_staging(token):
+    """Deploy to COOL staging environment."""
     return requests.post(
         url="https://api.github.com/repos/cisagov/con-pca-cicd/dispatches",
         json={"event_type": "deploy-cool-staging", "client_payload": {}},
@@ -87,7 +99,7 @@ def deploy_staging(token):
 
 
 def deploy_production(token):
-    """Deploy to production environment."""
+    """Deploy to COOL production environment."""
     return requests.post(
         url="https://api.github.com/repos/cisagov/con-pca-cicd/dispatches",
         json={"event_type": "deploy-cool-production", "client_payload": {}},

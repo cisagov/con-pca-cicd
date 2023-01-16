@@ -38,12 +38,12 @@ jobs:
           echo ${{ github.event.action }}
 
       # Sets dev environment
-      - name: Set staging environment
+      - name: Set dev environment
         run: echo "environment=dev" >> $GITHUB_ENV
-        if: ${{ github.event.action == 'deploy-sandbox' }}
+        if: ${{ github.event.action != 'deploy-staging' }}
 
       # Otherwise, set staging environment
-      - name: Set production environment
+      - name: Set staging environment
         run: echo "environment=staging" >> $GITHUB_ENV
         if: ${{ github.event.action == 'deploy-staging' }}
 
