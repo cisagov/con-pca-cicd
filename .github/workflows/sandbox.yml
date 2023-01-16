@@ -125,7 +125,7 @@ jobs:
     env:
       ENVIRONMENT: ${{ needs.setenv.outputs.environment }}
     environment:
-      name: ${{ needs.setenv.outputs.environment }}
+      name: develop
 
     steps:
       # Checkout cicd repo for running terraform
