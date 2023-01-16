@@ -72,7 +72,7 @@ def deploy_develop(token):
     """Deploy to develop environment."""
     return requests.post(
         url="https://api.github.com/repos/cisagov/con-pca-cicd/dispatches",
-        json={"event_type": "deploy", "client_payload": {}},
+        json={"event_type": "deploy-sandbox", "client_payload": {}},
         headers=get_auth_header(token),
     )
 
@@ -81,7 +81,7 @@ def deploy_staging(token):
     """Deploy to staging environment."""
     return requests.post(
         url="https://api.github.com/repos/cisagov/con-pca-cicd/dispatches",
-        json={"event_type": "cool_staging", "client_payload": {}},
+        json={"event_type": "deploy-cool-staging", "client_payload": {}},
         headers=get_auth_header(token),
     )
 
@@ -90,7 +90,7 @@ def deploy_production(token):
     """Deploy to production environment."""
     return requests.post(
         url="https://api.github.com/repos/cisagov/con-pca-cicd/dispatches",
-        json={"event_type": "cool_production", "client_payload": {}},
+        json={"event_type": "deploy-cool-production", "client_payload": {}},
         headers=get_auth_header(token),
     )
 

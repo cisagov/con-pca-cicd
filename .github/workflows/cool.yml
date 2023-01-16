@@ -15,10 +15,10 @@ on:
   push:
     branches: [develop]
 
-  # Will deploy to production if event is cool_production,
+  # Will deploy to production if event is deploy-cool-production,
   # otherwise deploy to staging environment.
   repository_dispatch:
-    types: [cool_staging, cool_production]
+    types: [deploy-cool-staging, deploy-cool-production]
 
 # Sets environment variables to be used by every job.
 env:
@@ -42,12 +42,12 @@ jobs:
       # Sets staging environment if it's not meant for production
       - name: Set staging environment
         run: echo "environment=staging" >> $GITHUB_ENV
-        if: ${{ github.event.action != 'cool_production' }}
+        if: ${{ github.event.action != 'deploy-cool-production' }}
 
       # Otherwise, set production environment
       - name: Set production environment
         run: echo "environment=production" >> $GITHUB_ENV
-        if: ${{ github.event.action == 'cool_production' }}
+        if: ${{ github.event.action == 'deploy-cool-production' }}
 
       # Output selected environment
       - name: Show environment
