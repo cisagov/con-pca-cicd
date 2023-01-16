@@ -54,9 +54,9 @@ jobs:
         run: echo "$environment"
 
       # Set job output
-      - name: Set outputs
+      - name: Set output
         id: env
-        run: echo ::set-output name=environment::$environment
+        run: echo "environment=$environment" >> $GITHUB_OUTPUT
 
   # Build and push image repositories
   build:

@@ -54,7 +54,7 @@ jobs:
       # Set job output
       - name: Set outputs
         id: env
-        run: echo ::set-output name=environment::$environment
+        run: echo "environment=$environment" >> $GITHUB_OUTPUT
 
   build_ui:
     runs-on: ubuntu-latest
@@ -71,7 +71,7 @@ jobs:
           repository: cisagov/con-pca-web
       - name: Get Tag
         id: vars
-        run: echo ::set-output name=tag::$(git rev-parse --short HEAD)
+        run: echo "tag=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
       - name: Build Docker Image
         run: docker build -f Dockerfile -t $IMAGE_REPO:${{steps.vars.outputs.tag}} .
         if: ${{ github.event.client_payload.trigger == env.IMAGE_REPO }}
@@ -100,7 +100,7 @@ jobs:
           repository: cisagov/con-pca-api
       - name: Get Tag
         id: vars
-        run: echo ::set-output name=tag::$(git rev-parse --short HEAD)
+        run: echo "tag=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
       - name: Build Docker Image
         run: docker build -f Dockerfile -t $IMAGE_REPO:${{steps.vars.outputs.tag}} .
         if: ${{ github.event.client_payload.trigger == env.IMAGE_REPO }}
@@ -124,6 +124,8 @@ jobs:
     # Set environment and environment variables
     env:
       ENVIRONMENT: ${{ needs.setenv.outputs.environment }}
+
+    # Set the same environment for all workspaces
     environment:
       name: develop
 
