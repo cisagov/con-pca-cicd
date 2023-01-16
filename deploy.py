@@ -72,7 +72,7 @@ def deploy_develop(token):
     """Deploy to develop environment."""
     return requests.post(
         url="https://api.github.com/repos/cisagov/con-pca-cicd/dispatches",
-        json={"event_type": "deploy", "client_payload": {}},
+        json={"event_type": "deploy-sandbox", "client_payload": {}},
         headers=get_auth_header(token),
     )
 
