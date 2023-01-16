@@ -32,7 +32,7 @@ provider "mongodbatlas" {
 }
 
 resource "mongodbatlas_project" "con-pca" {
-  name   = "con-pca"
+  name   = "con-pca-${var.env}"
   org_id = var.atlasorgid
 }
 
