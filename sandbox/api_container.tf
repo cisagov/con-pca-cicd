@@ -10,10 +10,13 @@ resource "aws_cloudwatch_log_group" "api" {
 # CONTAINER DEFINITION
 # ===========================
 module "api_container" {
-  source          = "github.com/cloudposse/terraform-aws-ecs-container-definition"
+  source  = "cloudposse/ecs-container-definition/aws"
+  version = "0.58.1"
+
   container_name  = local.api_container_name
   container_image = "${var.account_id}.dkr.ecr.us-east-1.amazonaws.com/${var.api_image_repo}:${var.api_image_tag}"
-  essential       = "true"
+  essential       = true
+
   log_configuration = {
     logDriver = "awslogs"
     options = {
@@ -36,6 +39,10 @@ module "api_container" {
   ]
 
   map_environment = {
+    # AWS
+    AWS_REGION         = var.region
+    AWS_DEFAULT_REGION = var.region
+
     # Base Settings
     FLASK_APP   = "api.main:app"
     FLASK_DEBUG = 0
@@ -45,6 +52,13 @@ module "api_container" {
     AWS_COGNITO_ENABLED             = 1
     AWS_COGNITO_USER_POOL_ID        = aws_cognito_user_pool.pool.id
     AWS_COGNITO_USER_POOL_CLIENT_ID = aws_cognito_user_pool_client.client.id
+
+    # Mailgun
+    MAILGUN_API_KEY = var.mailgun_api_key
+
+    # Maxmind
+    MAXMIND_USER_ID     = var.maxmind_user_id
+    MAXMIND_LICENSE_KEY = var.maxmind_license_key
 
     # Mongo
     MONGO_TYPE = "DOCUMENTDB"
@@ -65,22 +79,8 @@ module "api_container" {
     SMTP_FROM           = "pca-sandbox@cyber.dhs.gov"
 
     # Tasks
-    EMAIL_MINUTES = 1
-    TASK_MINUTES  = 1
-
-    # Mailgun
-    MAILGUN_API_KEY = var.mailgun_api_key
-
-    # Maxmind
-    MAXMIND_USER_ID     = var.maxmind_user_id
-    MAXMIND_LICENSE_KEY = var.maxmind_license_key
+    EMAIL_MINUTES        = 1
+    TASK_MINUTES         = 1
+    FAILED_EMAIL_MINUTES = 240
   }
-
-  environment = [
-    for key in keys(local.api_environment) :
-    {
-      name  = key
-      value = local.api_environment[key]
-    }
-  ]
 }
