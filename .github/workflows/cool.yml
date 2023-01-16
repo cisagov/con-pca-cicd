@@ -18,7 +18,7 @@ on:
   # Will deploy to production if event is cool_production,
   # otherwise deploy to staging environment.
   repository_dispatch:
-    types: [deploy, cool_staging, cool_production]
+    types: [cool_staging, cool_production]
 
 # Sets environment variables to be used by every job.
 env:
@@ -148,7 +148,7 @@ jobs:
         if: ${{ env.build == 'true' }}
 
   # Runs terraform
-  deploy:
+  cool_staging:
     runs-on: ubuntu-latest
     needs: [setenv, build]
 
