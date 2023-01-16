@@ -146,7 +146,7 @@ jobs:
         if: ${{ env.build == 'true' }}
 
   # Runs terraform
-  cool_staging:
+  terraform:
     runs-on: ubuntu-latest
     needs: [setenv, build]
 
