@@ -18,7 +18,7 @@ on:
   # Will deploy to production if event is cool_production,
   # otherwise deploy to staging environment.
   repository_dispatch:
-    types: [deploy, cool_staging, cool_production]
+    types: [cool_staging, cool_production]
 
 # Sets environment variables to be used by every job.
 env:
@@ -39,10 +39,10 @@ jobs:
           echo ${{ github.event_name }}
           echo ${{ github.event.action }}
 
-      # Sets sandbox environment
-      - name: Set staging environment
-        run: echo "environment=dev" >> $GITHUB_ENV
-        if: ${{ github.event.action == 'deploy' }}
+      # # Sets sandbox environment
+      # - name: Set sandbox environment
+      #   run: echo "environment=dev" >> $GITHUB_ENV
+      #   if: ${{ github.event.action == 'deploy' }}
 
       # Sets staging environment
       - name: Set staging environment
@@ -133,7 +133,6 @@ jobs:
       # Assume role to push images to ECR
       - name: Assume provision account role
         uses: aws-actions/configure-aws-credentials@v1
-        if: ${{ github.event.action != 'cool_staging' }}
         with:
           aws-region: ${{ env.REGION }}
           role-duration-seconds: 1200
@@ -143,7 +142,6 @@ jobs:
       # Verify the role has been assumed
       - name: Confirm Assumed Role
         run: aws sts get-caller-identity
-        if: ${{ github.event.action != 'cool_staging' }}
 
       # Login to ECR
       - name: Login to ECR
