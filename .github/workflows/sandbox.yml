@@ -7,7 +7,7 @@ on:
   push:
     branches: [develop]
   repository_dispatch:
-    types: [deploy-sandbox]
+    types: [deploy-sandbox, deploy-staging]
 
 env:
   ACCOUNT_ID: ${{ secrets.ACCOUNT_ID }}
@@ -18,7 +18,6 @@ env:
   AWS_REGION: us-east-1
   AWS_DEFAULT_REGION: us-east-1
   ECR_URI: ${{ secrets.ECR_URI }}
-  ENVIRONMENT: dev
   MAILGUN_API_KEY: ${{ secrets.MAILGUN_API_KEY }}
   MAXMIND_USER_ID: ${{ secrets.MAXMIND_USER_ID }}
   MAXMIND_LICENSE_KEY: ${{ secrets.MAXMIND_LICENSE_KEY }}
@@ -26,8 +25,40 @@ env:
   SES_ARN: ${{ secrets.SES_ROLE_ARN }}
 
 jobs:
+  # Set Environment
+  setenv:
+    runs-on: ubuntu-latest
+    outputs:
+      environment: ${{ steps.env.outputs.environment }}
+    steps:
+      # Output what is triggering the workflow to run
+      - name: Output metadata
+        run: |
+          echo ${{ github.event_name }}
+          echo ${{ github.event.action }}
+
+      # Sets dev environment
+      - name: Set dev environment
+        run: echo "environment=dev" >> $GITHUB_ENV
+        if: ${{ github.event.action != 'deploy-staging' }}
+
+      # Otherwise, set staging environment
+      - name: Set staging environment
+        run: echo "environment=staging" >> $GITHUB_ENV
+        if: ${{ github.event.action == 'deploy-staging' }}
+
+      # Output selected environment
+      - name: Show environment
+        run: echo "$environment"
+
+      # Set job output
+      - name: Set outputs
+        id: env
+        run: echo "environment=$environment" >> $GITHUB_OUTPUT
+
   build_ui:
     runs-on: ubuntu-latest
+    needs: [setenv]
     env:
       IMAGE_REPO: con-pca-web
     environment:
@@ -40,7 +71,7 @@ jobs:
           repository: cisagov/con-pca-web
       - name: Get Tag
         id: vars
-        run: echo ::set-output name=tag::$(git rev-parse --short HEAD)
+        run: echo "tag=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
       - name: Build Docker Image
         run: docker build -f Dockerfile -t $IMAGE_REPO:${{steps.vars.outputs.tag}} .
         if: ${{ github.event.client_payload.trigger == env.IMAGE_REPO }}
@@ -56,6 +87,7 @@ jobs:
 
   build_api:
     runs-on: ubuntu-latest
+    needs: [setenv]
     env:
       IMAGE_REPO: con-pca-api
     environment:
@@ -68,7 +100,7 @@ jobs:
           repository: cisagov/con-pca-api
       - name: Get Tag
         id: vars
-        run: echo ::set-output name=tag::$(git rev-parse --short HEAD)
+        run: echo "tag=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
       - name: Build Docker Image
         run: docker build -f Dockerfile -t $IMAGE_REPO:${{steps.vars.outputs.tag}} .
         if: ${{ github.event.client_payload.trigger == env.IMAGE_REPO }}
@@ -84,10 +116,16 @@ jobs:
 
   terraform:
     runs-on: ubuntu-latest
-    needs: [build_ui, build_api]
+    needs: [setenv, build_ui, build_api]
     defaults:
       run:
         working-directory: sandbox
+
+    # Set environment and environment variables
+    env:
+      ENVIRONMENT: ${{ needs.setenv.outputs.environment }}
+
+    # Set the same environment for all workspaces
     environment:
       name: develop
 
