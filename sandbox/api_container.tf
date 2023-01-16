@@ -10,7 +10,7 @@ resource "aws_cloudwatch_log_group" "api" {
 # CONTAINER DEFINITION
 # ===========================
 module "api_container" {
-  source  = "github.com/cloudposse/terraform-aws-ecs-container-definition"
+  source  = "github.com/cloudposse/terraform-aws-ecs-container-definition/aws"
   version = "0.58.1"
 
   container_name  = local.api_container_name
