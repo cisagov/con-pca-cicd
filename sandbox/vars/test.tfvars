@@ -6,7 +6,7 @@ additional_redirect = "http://localhost:4200"
 #=================================================
 #  CORE
 #=================================================
-env    = "staging"
+env    = "test"
 app    = "pca"
 region = "us-east-1"
 
@@ -28,7 +28,7 @@ vpc_id = "vpc-074f7db64238a2d16"
 #=================================================
 #  PROVIDER
 #=================================================
-workspace_type = "staging"
+workspace_type = "test"
 
 #=================================================
 #  REPORT EMAIL ADDRESS
@@ -72,7 +72,7 @@ atlasorgid = "639b5119bc6ecf0c5fde627e"
 #  API
 #=================================================
 api_image_repo    = "con-pca-api"
-landing_subdomain = "gp.staging"
+landing_subdomain = "gp.test"
 
 #=================================================
 #  UI
