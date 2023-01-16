@@ -7,7 +7,7 @@ on:
   push:
     branches: [develop]
   repository_dispatch:
-    types: [deploy]
+    types: [deploy-sandbox]
 
 env:
   ACCOUNT_ID: ${{ secrets.ACCOUNT_ID }}
