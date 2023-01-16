@@ -18,7 +18,7 @@ on:
   # Will deploy to production if event is cool_production,
   # otherwise deploy to staging environment.
   repository_dispatch:
-    types: [cool_staging, cool_production]
+    types: [sandbox, cool_staging, cool_production]
 
 # Sets environment variables to be used by every job.
 env:
@@ -39,12 +39,17 @@ jobs:
           echo ${{ github.event_name }}
           echo ${{ github.event.action }}
 
-      # Sets staging environment if it's not meant for production
+      # Sets sandbox environment
+      - name: Set staging environment
+        run: echo "environment=dev" >> $GITHUB_ENV
+        if: ${{ github.event.action == 'sandbox' }}
+
+      # Sets staging environment
       - name: Set staging environment
         run: echo "environment=staging" >> $GITHUB_ENV
-        if: ${{ github.event.action != 'cool_production' }}
+        if: ${{ github.event.action == 'cool_staging' }}
 
-      # Otherwise, set production environment
+      # Sets production environment
       - name: Set production environment
         run: echo "environment=production" >> $GITHUB_ENV
         if: ${{ github.event.action == 'cool_production' }}
