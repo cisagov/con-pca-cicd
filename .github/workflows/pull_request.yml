@@ -27,7 +27,7 @@ jobs:
       # installation must happen before that.
       - uses: actions/setup-go@v2
         with:
-          go-version: '1.16'
+          go-version: "1.16"
       - name: Store installed Go version
         run: |
           echo "GO_VERSION="\
@@ -36,7 +36,7 @@ jobs:
       - name: Lookup Go cache directory
         id: go-cache
         run: |
-          echo "::set-output name=dir::$(go env GOCACHE)"
+          echo "dir=$(go env GOCACHE)" >> $GITHUB_OUTPUT
       - uses: actions/cache@v2
         env:
           BASE_CACHE_KEY: "${{ github.job }}-${{ runner.os }}-\
