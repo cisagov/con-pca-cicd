@@ -38,6 +38,7 @@ jobs:
         run: |
           echo ${{ github.event_name }}
           echo ${{ github.event.action }}
+
       # Sets staging environment if it's not meant for production
       - name: Set staging environment
         run: echo "environment=staging" >> $GITHUB_ENV
@@ -86,6 +87,7 @@ jobs:
         run: |
           echo "assume_role=arn:aws:iam::$ACCOUNT_ID:role/ProvisionAccount" >> $GITHUB_ENV
           echo "ecr_uri=$ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com" >> $GITHUB_ENV
+
       # Store tag in an environment variable
       - name: Get Tag
         run: echo "tag=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
@@ -189,6 +191,7 @@ jobs:
         run: |
           echo "web_tag=$(cat artifacts/con-pca-web/tag.txt)" >> $GITHUB_ENV
           echo "api_tag=$(cat artifacts/con-pca-api/tag.txt)" >> $GITHUB_ENV
+
       # Verifies terraform is installed properly
       - name: Verify Terraform version
         run: terraform --version
@@ -230,6 +233,7 @@ jobs:
             -var="ses_arn=$SES_ARN" \
             -var="shared_services_account_id=$SHARED_SERVICES_ACCOUNT_ID" \
             -var="web_image_tag=$web_tag"
+
       # Applies terraform if it's not a pull request.
       - name: Terraform apply
         run: |
