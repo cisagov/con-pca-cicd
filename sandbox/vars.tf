@@ -5,6 +5,11 @@ variable "account_id" {
   type = string
 }
 
+variable "workspace_type" {
+  type        = string
+  description = "Terraform Workspace"
+}
+
 #=================================================
 #  CORE
 #=================================================

@@ -6,7 +6,7 @@ additional_redirect = "http://localhost:4200"
 #=================================================
 #  CORE
 #=================================================
-env    = "dev"
+env    = "staging"
 app    = "pca"
 region = "us-east-1"
 
@@ -26,6 +26,11 @@ public_subnet_ids = [
 vpc_id = "vpc-074f7db64238a2d16"
 
 #=================================================
+#  PROVIDER
+#=================================================
+workspace_type = "staging"
+
+#=================================================
 #  REPORT EMAIL ADDRESS
 #=================================================
 archival_email_address = "con.pca.reports@gmail.com"
@@ -39,11 +44,6 @@ log_retention_days = 7
 #  LOAD BALANCING
 #=================================================
 idle_timeout = 600
-
-#=================================================
-#  PROVIDER
-#=================================================
-workspace_type = "dev"
 
 #=================================================
 #  ROUTE 53
@@ -72,7 +72,7 @@ atlasorgid = "639b5119bc6ecf0c5fde627e"
 #  API
 #=================================================
 api_image_repo    = "con-pca-api"
-landing_subdomain = "gp.dev"
+landing_subdomain = "gp.staging"
 
 #=================================================
 #  UI
