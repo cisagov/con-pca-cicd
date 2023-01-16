@@ -7,7 +7,7 @@ on:
   push:
     branches: [develop]
   repository_dispatch:
-    types: [deploy-sandbox]
+    types: [deploy-sandbox, deploy-staging]
 
 env:
   ACCOUNT_ID: ${{ secrets.ACCOUNT_ID }}
@@ -18,7 +18,6 @@ env:
   AWS_REGION: us-east-1
   AWS_DEFAULT_REGION: us-east-1
   ECR_URI: ${{ secrets.ECR_URI }}
-  ENVIRONMENT: dev
   MAILGUN_API_KEY: ${{ secrets.MAILGUN_API_KEY }}
   MAXMIND_USER_ID: ${{ secrets.MAXMIND_USER_ID }}
   MAXMIND_LICENSE_KEY: ${{ secrets.MAXMIND_LICENSE_KEY }}
@@ -37,6 +36,16 @@ jobs:
         run: |
           echo ${{ github.event_name }}
           echo ${{ github.event.action }}
+
+      # Sets dev environment
+      - name: Set staging environment
+        run: echo "environment=dev" >> $GITHUB_ENV
+        if: ${{ github.event.action == 'deploy-sandbox' }}
+
+      # Otherwise, set staging environment
+      - name: Set production environment
+        run: echo "environment=staging" >> $GITHUB_ENV
+        if: ${{ github.event.action == 'deploy-staging' }}
 
       # Output selected environment
       - name: Show environment
@@ -111,8 +120,12 @@ jobs:
     defaults:
       run:
         working-directory: sandbox
+
+    # Set environment and environment variables
+    env:
+      ENVIRONMENT: ${{ needs.setenv.outputs.environment }}
     environment:
-      name: develop
+      name: ${{ needs.setenv.outputs.environment }}
 
     steps:
       # Checkout cicd repo for running terraform
