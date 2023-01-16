@@ -24,7 +24,7 @@ def main():
     "--environment",
     required=True,
     prompt=True,
-    type=click.Choice(["sandbox", "inl-staging", "cool-staging", "production"]),
+    type=click.Choice(["sandbox", "test", "staging", "production"]),
 )
 def deploy(environment):
     """Deploy to defined environment."""
@@ -39,10 +39,10 @@ def deploy(environment):
     result = {}
     if environment == "production":
         result = deploy_production(token)
-    elif environment == "cool-staging":
+    elif environment == "staging":
         result = deploy_cool_staging(token)
-    elif environment == "inl-staging":
-        result = deploy_inl_staging(token)
+    elif environment == "test":
+        result = deploy_test(token)
     elif environment == "sandbox":
         result = deploy_sandbox(token)
 
@@ -80,11 +80,11 @@ def deploy_sandbox(token):
     )
 
 
-def deploy_inl_staging(token):
-    """Deploy to INL staging environment."""
+def deploy_test(token):
+    """Deploy to INL test environment."""
     return requests.post(
         url="https://api.github.com/repos/cisagov/con-pca-cicd/dispatches",
-        json={"event_type": "deploy-staging", "client_payload": {}},
+        json={"event_type": "deploy-test", "client_payload": {}},
         headers=get_auth_header(token),
     )
 

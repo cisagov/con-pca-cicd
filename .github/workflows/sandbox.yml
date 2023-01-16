@@ -7,7 +7,7 @@ on:
   push:
     branches: [develop]
   repository_dispatch:
-    types: [deploy-sandbox, deploy-staging]
+    types: [deploy-sandbox, deploy-test]
 
 env:
   ACCOUNT_ID: ${{ secrets.ACCOUNT_ID }}
@@ -40,12 +40,12 @@ jobs:
       # Sets dev environment
       - name: Set dev environment
         run: echo "environment=dev" >> $GITHUB_ENV
-        if: ${{ github.event.action != 'deploy-staging' }}
+        if: ${{ github.event.action != 'deploy-test' }}
 
-      # Otherwise, set staging environment
+      # Otherwise, set test environment
       - name: Set staging environment
-        run: echo "environment=staging" >> $GITHUB_ENV
-        if: ${{ github.event.action == 'deploy-staging' }}
+        run: echo "environment=test" >> $GITHUB_ENV
+        if: ${{ github.event.action == 'deploy-test' }}
 
       # Output selected environment
       - name: Show environment
