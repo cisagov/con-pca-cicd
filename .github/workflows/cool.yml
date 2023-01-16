@@ -133,7 +133,7 @@ jobs:
       # Assume role to push images to ECR
       - name: Assume provision account role
         uses: aws-actions/configure-aws-credentials@v1
-        if: ${{ github.event.action != 'deploy' }}
+        if: ${{ github.event.action != 'cool_staging' }}
         with:
           aws-region: ${{ env.REGION }}
           role-duration-seconds: 1200
@@ -143,7 +143,7 @@ jobs:
       # Verify the role has been assumed
       - name: Confirm Assumed Role
         run: aws sts get-caller-identity
-        if: ${{ github.event.action != 'deploy' }}
+        if: ${{ github.event.action != 'cool_staging' }}
 
       # Login to ECR
       - name: Login to ECR
