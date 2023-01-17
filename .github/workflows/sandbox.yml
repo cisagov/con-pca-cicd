@@ -198,3 +198,40 @@ jobs:
             -var="maxmind_user_id"=$MAXMIND_USER_ID \
             -var="maxmind_license_key=$MAXMIND_LICENSE_KEY"
         if: ${{ github.event_name != 'pull_request' }}
+
+      # Plan destroy terraform
+      - name: Terraform Destroy Staging Plan
+        run: |
+          terraform plan \
+            -destroy \
+            -input=false \
+            -var-file ./vars/staging.tfvars \
+            -var="account_id=$ACCOUNT_ID" \
+            -var="api_image_tag=${{needs.build_api.outputs.tag}}" \
+            -var="atlas_public_key=$ATLAS_PUBLIC_KEY" \
+            -var="atlas_private_key=$ATLAS_PRIVATE_KEY" \
+            -var="ui_image_tag=${{needs.build_ui.outputs.tag}}" \
+            -var="ses_arn=$SES_ARN" \
+            -var="deployed_date=$(date)" \
+            -var="mailgun_api_key=$MAILGUN_API_KEY" \
+            -var="maxmind_user_id"=$MAXMIND_USER_ID \
+            -var="maxmind_license_key=$MAXMIND_LICENSE_KEY"
+
+      # Apply destroy terraform
+      - name: Terraform Apply Destroy Staging Plan
+        run: |
+          terraform apply \
+            -destroy \
+            -input=false -auto-approve \
+            -var-file ./vars/staging.tfvars \
+            -var="account_id=$ACCOUNT_ID" \
+            -var="atlas_public_key=$ATLAS_PUBLIC_KEY" \
+            -var="atlas_private_key=$ATLAS_PRIVATE_KEY" \
+            -var="api_image_tag=${{needs.build_api.outputs.tag}}" \
+            -var="ui_image_tag=${{needs.build_ui.outputs.tag}}" \
+            -var="ses_arn=$SES_ARN" \
+            -var="deployed_date=$(date)" \
+            -var="mailgun_api_key=$MAILGUN_API_KEY" \
+            -var="maxmind_user_id"=$MAXMIND_USER_ID \
+            -var="maxmind_license_key=$MAXMIND_LICENSE_KEY"
+        if: ${{ github.event_name != 'pull_request' }}
