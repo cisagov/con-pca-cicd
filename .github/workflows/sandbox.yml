@@ -7,7 +7,7 @@ on:
   push:
     branches: [develop]
   repository_dispatch:
-    types: [deploy-sandbox, deploy-test, deploy-staging]
+    types: [deploy-sandbox, deploy-test]
 
 env:
   ACCOUNT_ID: ${{ secrets.ACCOUNT_ID }}
@@ -41,11 +41,6 @@ jobs:
       - name: Set dev environment
         run: echo "environment=dev" >> $GITHUB_ENV
         if: ${{ github.event.action != 'deploy-test' }}
-
-      # Otherwise, set staging environment
-      - name: Set staging environment
-        run: echo "environment=staging" >> $GITHUB_ENV
-        if: ${{ github.event.action == 'deploy-staging' }}
 
       # Otherwise, set test environment
       - name: Set test environment
@@ -169,48 +164,12 @@ jobs:
       - name: Terraform init 2
         run: terraform init -input=false
 
-      # # Plan terraform
-      # - name: Terraform Plan
-      #   run: |
-      #     terraform plan \
-      #       -input=false \
-      #       -var-file ./vars/$ENVIRONMENT.tfvars \
-      #       -var="account_id=$ACCOUNT_ID" \
-      #       -var="api_image_tag=${{needs.build_api.outputs.tag}}" \
-      #       -var="atlas_public_key=$ATLAS_PUBLIC_KEY" \
-      #       -var="atlas_private_key=$ATLAS_PRIVATE_KEY" \
-      #       -var="ui_image_tag=${{needs.build_ui.outputs.tag}}" \
-      #       -var="ses_arn=$SES_ARN" \
-      #       -var="deployed_date=$(date)" \
-      #       -var="mailgun_api_key=$MAILGUN_API_KEY" \
-      #       -var="maxmind_user_id"=$MAXMIND_USER_ID \
-      #       -var="maxmind_license_key=$MAXMIND_LICENSE_KEY"
-
-      # # Apply terraform
-      # - name: Terraform Apply
-      #   run: |
-      #     terraform apply \
-      #       -input=false -auto-approve \
-      #       -var-file ./vars/$ENVIRONMENT.tfvars \
-      #       -var="account_id=$ACCOUNT_ID" \
-      #       -var="atlas_public_key=$ATLAS_PUBLIC_KEY" \
-      #       -var="atlas_private_key=$ATLAS_PRIVATE_KEY" \
-      #       -var="api_image_tag=${{needs.build_api.outputs.tag}}" \
-      #       -var="ui_image_tag=${{needs.build_ui.outputs.tag}}" \
-      #       -var="ses_arn=$SES_ARN" \
-      #       -var="deployed_date=$(date)" \
-      #       -var="mailgun_api_key=$MAILGUN_API_KEY" \
-      #       -var="maxmind_user_id"=$MAXMIND_USER_ID \
-      #       -var="maxmind_license_key=$MAXMIND_LICENSE_KEY"
-      #   if: ${{ github.event_name != 'pull_request' }}
-
-      # Plan destroy terraform
-      - name: Terraform Destroy Staging Plan
+      # Plan terraform
+      - name: Terraform Plan
         run: |
           terraform plan \
-            -destroy \
             -input=false \
-            -var-file ./vars/staging.tfvars \
+            -var-file ./vars/$ENVIRONMENT.tfvars \
             -var="account_id=$ACCOUNT_ID" \
             -var="api_image_tag=${{needs.build_api.outputs.tag}}" \
             -var="atlas_public_key=$ATLAS_PUBLIC_KEY" \
@@ -222,13 +181,12 @@ jobs:
             -var="maxmind_user_id"=$MAXMIND_USER_ID \
             -var="maxmind_license_key=$MAXMIND_LICENSE_KEY"
 
-      # Apply destroy terraform
-      - name: Terraform Apply Destroy Staging Plan
+      # Apply terraform
+      - name: Terraform Apply
         run: |
           terraform apply \
-            -destroy \
             -input=false -auto-approve \
-            -var-file ./vars/staging.tfvars \
+            -var-file ./vars/$ENVIRONMENT.tfvars \
             -var="account_id=$ACCOUNT_ID" \
             -var="atlas_public_key=$ATLAS_PUBLIC_KEY" \
             -var="atlas_private_key=$ATLAS_PRIVATE_KEY" \
