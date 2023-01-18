@@ -7,25 +7,31 @@ github actions jobs for building.
 
 ## Environments ##
 
-There are three environments:
+There are four environments:
 
 - Development
   - Managed in the [sandbox](/sandbox) folder.
-  - Environment variables are managed by aws ssm and github secrets
+  - Purpose: test incoming new features
+- Test
+  - Managed in the [sandbox](/sandbox) folder.
+  - Purpose: load and stress testing
 - Staging
   - Managed in the [cool](/cool) folder.
-  - The environment variables are managed by github secrets
+  - Purpose: CISA cool testing
 - Production
   - Managed in the [cool](/cool) folder.
-  - The environment variables are managed by github secrets
+  - Purpose: live, production application
+
+Env vars for all environments are managed by github secrets
 
 ## Source Repositories ##
 
-There are two different repositories that can trigger this pipeline to
+There are three different repositories that can trigger this pipeline to
 run via a [repository dispatch event](https://docs.github.com/en/actions/reference/events-that-trigger-workflows#repository_dispatch).
 
 - [con-pca-api](https://github.com/cisagov/con-pca-api)
 - [con-pca-web](https://github.com/cisagov/con-pca-web)
+- [con-pca-tasks](https://github.com/cisagov/con-pca-tasks)
 
 This pipeline can also be triggered on push to the develop branch on
 this repository via a [push event])
@@ -49,7 +55,7 @@ After creating an access token, you can simply run the following for a deploymen
 ```basg
 pip install -r requirements.txt
 python deploy.py configure
-python deploy.py deploy --environment staging|production
+python deploy.py deploy --environment sandbox|staging|production
 ```
 
 ## Contributing ##
