@@ -24,7 +24,7 @@ def main():
     "--environment",
     required=True,
     prompt=True,
-    type=click.Choice(["sandbox", "test", "staging", "production"]),
+    type=click.Choice(["sandbox", "staging", "production"]),
 )
 def deploy(environment):
     """Deploy to defined environment."""
@@ -36,22 +36,22 @@ def deploy(environment):
 
     click.confirm(f"Are you sure you want to deploy {environment}?", abort=True)
 
-    result = {}
+    resps = []
     if environment == "production":
-        result = deploy_production(token)
+        resps.append(deploy_production(token))
     elif environment == "staging":
-        result = deploy_cool_staging(token)
-    elif environment == "test":
-        result = deploy_test(token)
+        resps.append(deploy_staging(token))
+        resps.append(deploy_test(token))
     elif environment == "sandbox":
-        result = deploy_sandbox(token)
+        resps.append(deploy_sandbox(token))
 
-    if result.status_code != 204:
-        click.echo(
-            f"There was an error deploying {environment}, please check your token."
-        )
-    else:
-        click.echo(f"Successfully started deployment for {environment}")
+    for environ, result in resps:
+        if result.status_code != 204:
+            click.echo(
+                f"There was an error deploying {environ}, please check your token."
+            )
+        else:
+            click.echo(f"Successfully started deployment for {environ}")
 
 
 @click.command("configure")
@@ -64,50 +64,50 @@ def configure(token):
         config.write(configfile)
 
 
-def get_token():
+def get_token() -> str:
     """Get token from config.ini file."""
     config = configparser.ConfigParser()
     config.read("config.ini")
     return config["DEFAULT"].get("github_access_token")
 
 
-def deploy_sandbox(token):
+def deploy_sandbox(token: str) -> tuple:
     """Deploy to INL sandbox environment."""
-    return requests.post(
+    return "inl sandbox", requests.post(
         url="https://api.github.com/repos/cisagov/con-pca-cicd/dispatches",
         json={"event_type": "deploy-sandbox", "client_payload": {}},
         headers=get_auth_header(token),
     )
 
 
-def deploy_test(token):
+def deploy_test(token: str) -> tuple:
     """Deploy to INL test environment."""
-    return requests.post(
+    return "inl test", requests.post(
         url="https://api.github.com/repos/cisagov/con-pca-cicd/dispatches",
         json={"event_type": "deploy-test", "client_payload": {}},
         headers=get_auth_header(token),
     )
 
 
-def deploy_cool_staging(token):
-    """Deploy to COOL staging environment."""
-    return requests.post(
+def deploy_staging(token: str) -> tuple:
+    """Deploy to INL Test and COOL staging environment."""
+    return "cool staging", requests.post(
         url="https://api.github.com/repos/cisagov/con-pca-cicd/dispatches",
         json={"event_type": "deploy-cool-staging", "client_payload": {}},
         headers=get_auth_header(token),
     )
 
 
-def deploy_production(token):
+def deploy_production(token: str) -> tuple:
     """Deploy to COOL production environment."""
-    return requests.post(
+    return "cool production", requests.post(
         url="https://api.github.com/repos/cisagov/con-pca-cicd/dispatches",
         json={"event_type": "deploy-cool-production", "client_payload": {}},
         headers=get_auth_header(token),
     )
 
 
-def get_auth_header(token):
+def get_auth_header(token: str):
     """Get authorization header."""
     return {"Authorization": f"Bearer {token}"}
 
