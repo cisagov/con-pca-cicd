@@ -24,7 +24,7 @@ def main():
     "--environment",
     required=True,
     prompt=True,
-    type=click.Choice(["sandbox", "staging", "production"]),
+    type=click.Choice(["sandbox", "test", "staging", "production"]),
 )
 def deploy(environment):
     """Deploy to defined environment."""
@@ -40,7 +40,10 @@ def deploy(environment):
     if environment == "production":
         resps.append(deploy_production(token))
     elif environment == "staging":
+        # Deploys to staging and test
         resps.append(deploy_staging(token))
+        resps.append(deploy_test(token))
+    elif environment == "test":
         resps.append(deploy_test(token))
     elif environment == "sandbox":
         resps.append(deploy_sandbox(token))
@@ -71,7 +74,7 @@ def get_token() -> str:
     return config["DEFAULT"].get("github_access_token")
 
 
-def deploy_sandbox(token: str) -> tuple:
+def deploy_sandbox(token: str) -> tuple[str, requests.Response]:  # type: ignore
     """Deploy to INL sandbox environment."""
     return "inl sandbox", requests.post(
         url="https://api.github.com/repos/cisagov/con-pca-cicd/dispatches",
@@ -80,7 +83,7 @@ def deploy_sandbox(token: str) -> tuple:
     )
 
 
-def deploy_test(token: str) -> tuple:
+def deploy_test(token: str) -> tuple[str, requests.Response]:  # type: ignore
     """Deploy to INL test environment."""
     return "inl test", requests.post(
         url="https://api.github.com/repos/cisagov/con-pca-cicd/dispatches",
@@ -89,8 +92,8 @@ def deploy_test(token: str) -> tuple:
     )
 
 
-def deploy_staging(token: str) -> tuple:
-    """Deploy to INL Test and COOL staging environment."""
+def deploy_staging(token: str) -> tuple[str, requests.Response]:  # type: ignore
+    """Deploy to COOL staging environment."""
     return "cool staging", requests.post(
         url="https://api.github.com/repos/cisagov/con-pca-cicd/dispatches",
         json={"event_type": "deploy-cool-staging", "client_payload": {}},
@@ -98,7 +101,7 @@ def deploy_staging(token: str) -> tuple:
     )
 
 
-def deploy_production(token: str) -> tuple:
+def deploy_production(token: str) -> tuple[str, requests.Response]:  # type: ignore
     """Deploy to COOL production environment."""
     return "cool production", requests.post(
         url="https://api.github.com/repos/cisagov/con-pca-cicd/dispatches",
