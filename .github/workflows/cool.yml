@@ -115,8 +115,8 @@ jobs:
         run: echo "build=true" >> $GITHUB_ENV
         if: |
           ${{ github.event.client_payload.trigger == matrix.repo ||
-          github.event.action == 'cool_production' ||
-          github.event.action == 'cool_staging' }}
+          github.event.action == 'deploy-cool-production' ||
+          github.event.action == 'deploy-cool-staging' }}
 
       # Build image if not a pull request
       - name: Build
