@@ -113,7 +113,10 @@ jobs:
       # in pull requests before they are an issue on deployment.
       - name: Set TO_BUILD
         run: echo "build=true" >> $GITHUB_ENV
-        if: ${{ github.event.client_payload.trigger == matrix.repo }}
+        if: |
+          ${{ github.event.client_payload.trigger == matrix.repo ||
+          github.event.action == 'deploy-cool-production' ||
+          github.event.action == 'deploy-cool-staging' }}
 
       # Build image if not a pull request
       - name: Build
