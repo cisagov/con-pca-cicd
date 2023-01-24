@@ -69,11 +69,12 @@ module "api_container" {
     MAXMIND_LICENSE_KEY = var.maxmind_license_key
 
     # Mongo
-    MONGO_TYPE = "DOCUMENTDB"
-    DB_HOST    = module.documentdb.endpoint
-    DB_PORT    = 27017
-    DB_USER    = aws_ssm_parameter.docdb_username.value
-    DB_PW      = aws_ssm_parameter.docdb_password.value
+    MONGO_TYPE        = "DOCUMENTDB"
+    DB_HOST           = module.documentdb.endpoint
+    DB_PORT           = 27017
+    DB_USER           = aws_ssm_parameter.docdb_username.value
+    DB_PW             = aws_ssm_parameter.docdb_password.value
+    MONGO_CLUSTER_URI = mongodbatlas_cluster.mongo-cluster.connection_strings[0].standard_srv
 
     # Redis Elasticache
     REDIS_HOST = module.redis.endpoint
