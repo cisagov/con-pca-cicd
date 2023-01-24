@@ -37,4 +37,9 @@ module "ui_container" {
       value = local.ui_environment[key]
     }
   ]
+  map_environment = {
+    API_URL       = "https://${aws_route53_record.domain.name}"
+    DEPLOYED_DATE = var.deployed_date
+    UI_COMMIT_ID  = var.ui_image_tag
+  }
 }
