@@ -39,6 +39,11 @@ module "api_container" {
   ]
 
   map_environment = {
+    # API Version
+    DEPLOYED_DATE = var.deployed_date
+    API_COMMIT_ID = var.api_image_tag
+    UI_COMMIT_ID  = var.ui_image_tag
+
     # AWS
     AWS_REGION         = var.region
     AWS_DEFAULT_REGION = var.region
@@ -53,6 +58,9 @@ module "api_container" {
     AWS_COGNITO_USER_POOL_ID        = aws_cognito_user_pool.pool.id
     AWS_COGNITO_USER_POOL_CLIENT_ID = aws_cognito_user_pool_client.client.id
 
+    # Landing Domain
+    LANDING_SUBDOMAIN = var.landing_subdomain
+
     # Mailgun
     MAILGUN_API_KEY = var.mailgun_api_key
 
@@ -61,11 +69,12 @@ module "api_container" {
     MAXMIND_LICENSE_KEY = var.maxmind_license_key
 
     # Mongo
-    MONGO_TYPE = "DOCUMENTDB"
-    DB_HOST    = module.documentdb.endpoint
-    DB_PORT    = 27017
-    DB_USER    = aws_ssm_parameter.docdb_username.value
-    DB_PW      = aws_ssm_parameter.docdb_password.value
+    MONGO_TYPE        = "DOCUMENTDB"
+    DB_HOST           = module.documentdb.endpoint
+    DB_PORT           = 27017
+    DB_USER           = aws_ssm_parameter.docdb_username.value
+    DB_PW             = aws_ssm_parameter.docdb_password.value
+    MONGO_CLUSTER_URI = mongodbatlas_cluster.mongo-cluster.connection_strings[0].standard_srv
 
     # Redis Elasticache
     REDIS_HOST = module.redis.endpoint

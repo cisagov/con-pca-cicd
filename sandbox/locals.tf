@@ -8,15 +8,6 @@ locals {
   api_container_port     = 5000
   api_container_protocol = "HTTP"
 
-  api_environment = {
-    "DEPLOYED_DATE" : var.deployed_date
-    "API_COMMIT_ID" : var.api_image_tag
-    "UI_COMMIT_ID" : var.ui_image_tag
-    "AWS_REGION" : var.region
-    "AWS_DEFAULT_REGION" : var.region
-    "LANDING_SUBDOMAIN" : var.landing_subdomain
-  }
-
   # Landing Locals
   landing_container_port     = 8000
   landing_container_protocol = "HTTP"
@@ -28,9 +19,4 @@ locals {
   ui_container_protocol = "HTTP"
   ui_name               = "${var.app}-${var.env}-ui"
 
-  ui_environment = {
-    "API_URL" : "https://${aws_route53_record.domain.name}"
-    "DEPLOYED_DATE" : var.deployed_date
-    "UI_COMMIT_ID" : var.ui_image_tag
-  }
 }
