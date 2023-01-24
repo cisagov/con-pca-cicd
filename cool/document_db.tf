@@ -6,10 +6,24 @@ resource "random_string" "docdb_username" {
   upper   = false
 }
 
+resource "aws_ssm_parameter" "docdb_username" {
+  name        = "/${var.env}/${var.app}/docdb/username/master"
+  description = "The username for document db"
+  type        = "SecureString"
+  value       = random_string.docdb_username.result
+}
+
 resource "random_password" "docdb_password" {
   length           = 32
   special          = true
   override_special = "!_#&"
+}
+
+resource "aws_ssm_parameter" "docdb_password" {
+  name        = "/${var.env}/${var.app}/docdb/password/master"
+  description = "The password for document db"
+  type        = "SecureString"
+  value       = random_password.docdb_password.result
 }
 
 module "docdb" {
