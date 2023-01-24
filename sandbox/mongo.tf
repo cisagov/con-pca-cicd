@@ -37,7 +37,7 @@ resource "mongodbatlas_project" "con-pca" {
 }
 
 resource "mongodbatlas_cluster" "mongo-cluster" {
-  project_id   = mongodbatlas_project.con-pca.id
+  project_id   = "63cf4dc426563d0fc5e9ea70"
   name         = "${var.app}-${var.env}-cluster"
   cluster_type = "REPLICASET"
   replication_specs {
