@@ -30,13 +30,6 @@ module "ui_container" {
     }
   ]
 
-  environment = [
-    for key in keys(local.ui_environment) :
-    {
-      name  = key
-      value = local.ui_environment[key]
-    }
-  ]
   map_environment = {
     API_URL       = "https://${aws_route53_record.domain.name}"
     DEPLOYED_DATE = var.deployed_date
