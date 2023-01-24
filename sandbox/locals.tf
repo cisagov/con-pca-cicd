@@ -8,15 +8,6 @@ locals {
   api_container_port     = 5000
   api_container_protocol = "HTTP"
 
-  api_environment = {
-    "DEPLOYED_DATE" : var.deployed_date
-    "API_COMMIT_ID" : var.api_image_tag
-    "UI_COMMIT_ID" : var.ui_image_tag
-    "AWS_REGION" : var.region
-    "AWS_DEFAULT_REGION" : var.region
-    "LANDING_SUBDOMAIN" : var.landing_subdomain
-  }
-
   # Landing Locals
   landing_container_port     = 8000
   landing_container_protocol = "HTTP"

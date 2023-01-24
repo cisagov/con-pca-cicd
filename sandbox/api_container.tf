@@ -39,6 +39,11 @@ module "api_container" {
   ]
 
   map_environment = {
+    # API Version
+    DEPLOYED_DATE = var.deployed_date
+    API_COMMIT_ID = var.api_image_tag
+    UI_COMMIT_ID  = var.ui_image_tag
+
     # AWS
     AWS_REGION         = var.region
     AWS_DEFAULT_REGION = var.region
@@ -52,6 +57,9 @@ module "api_container" {
     AWS_COGNITO_ENABLED             = 1
     AWS_COGNITO_USER_POOL_ID        = aws_cognito_user_pool.pool.id
     AWS_COGNITO_USER_POOL_CLIENT_ID = aws_cognito_user_pool_client.client.id
+
+    # Landing Domain
+    LANDING_SUBDOMAIN = var.landing_subdomain
 
     # Mailgun
     MAILGUN_API_KEY = var.mailgun_api_key
