@@ -69,7 +69,7 @@ module "api_container" {
     MAXMIND_LICENSE_KEY = var.maxmind_license_key
 
     # Mongo
-    MONGO_TYPE        = "DOCUMENTDB"
+    MONGO_TYPE        = var.mongo_type
     DB_HOST           = module.documentdb.endpoint
     DB_PORT           = 27017
     DB_USER           = aws_ssm_parameter.docdb_username.value
