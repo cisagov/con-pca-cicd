@@ -39,5 +39,6 @@ module "web_container" {
   map_environment = {
     API_URL       = "https://${aws_route53_record.sharedservices_internal_web.name}"
     DEPLOYED_DATE = var.deployed_date
+    ENVIRONMENT   = var.env
   }
 }
