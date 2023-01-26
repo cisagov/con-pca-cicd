@@ -11,6 +11,13 @@ app    = "con-pca"
 region = "us-east-1"
 
 #=================================================
+#  DOCUMENTDB
+#=================================================
+documentdb_instance_class      = "db.r5.xlarge"
+documentdb_cluster_size        = 1
+documentdb_snapshot_identifier = "january-6th"
+
+#=================================================
 #  ECS Service
 #=================================================
 cpu           = 2048

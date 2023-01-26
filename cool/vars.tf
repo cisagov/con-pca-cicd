@@ -60,6 +60,25 @@ variable "ses_arn" {
 }
 
 #=================================================
+#  DOCUMENTDB
+#=================================================
+variable "documentdb_instance_class" {
+  type        = string
+  description = "Instance class for DocumentDB."
+}
+
+variable "documentdb_cluster_size" {
+  type        = string
+  description = "Cluster size for document db."
+}
+
+variable "documentdb_snapshot_identifier" {
+  type        = string
+  description = "Snapshot to create documentdb cluster off of."
+  default     = ""
+}
+
+#=================================================
 #  ECS Service
 #=================================================
 variable "cpu" {
