@@ -12,8 +12,8 @@ on:
 
   # On push to develop, a deployment is kicked off to the
   # staging environment.
-  push:
-    branches: [develop]
+  # push:
+  #   branches: [develop]
 
   # Will deploy to production if event is deploy-cool-production,
   # otherwise deploy to staging environment.

@@ -71,7 +71,7 @@ resource "mongodbatlas_database_user" "db-user" {
   depends_on = [mongodbatlas_project.con-pca]
 }
 
-resource "mongodbatlas_project_ip_access_list" "test" {
+resource "mongodbatlas_project_ip_access_list" "ip-access-list" {
   project_id = mongodbatlas_project.con-pca.id
   cidr_block = "0.0.0.0/0"
   comment    = "cidr block for all"
