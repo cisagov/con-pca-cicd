@@ -51,12 +51,6 @@ idle_timeout = 600
 route53_zone_name = "inltesting.xyz"
 
 #=================================================
-#  DOCUMENTDB
-#=================================================
-documentdb_cluster_size   = 1
-documentdb_instance_class = "db.t3.medium"
-
-#=================================================
 #  FARGATE
 #=================================================
 cpu           = 2048
