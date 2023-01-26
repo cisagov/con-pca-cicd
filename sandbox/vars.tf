@@ -52,10 +52,6 @@ variable "mongo_type" {
   description = "The type of database to use"
 }
 
-variable "connection_string" {
-  description = "The connection string for the database"
-}
-
 #=================================================
 #  NETWORK
 #=================================================

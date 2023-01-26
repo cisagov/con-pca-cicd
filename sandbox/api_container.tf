@@ -74,7 +74,7 @@ module "api_container" {
     DB_PORT           = 27017
     DB_USER           = aws_ssm_parameter.docdb_username.value
     DB_PW             = aws_ssm_parameter.docdb_password.value
-    MONGO_CLUSTER_URI = var.connection_string
+    MONGO_CLUSTER_URI = replace(mongodbatlas_cluster.mongo-cluster.connection_strings[0].standard_srv, "mongodb+srv://", "mongodb+srv://${mongodbatlas_database_user.db-user.username}:${coalesce(nonsensitive(mongodbatlas_database_user.db-user.password), "null")}@")
 
     # Redis Elasticache
     REDIS_HOST = module.redis.endpoint

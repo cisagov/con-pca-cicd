@@ -66,9 +66,8 @@ desired_count = 1
 #=================================================
 #  MONGO ATLAS
 #=================================================
-atlasorgid        = "639b5119bc6ecf0c5fde627e"
-mongo_type        = "ATLAS"
-connection_string = replace(mongodbatlas_cluster.mongo-cluster.connection_strings[0].standard_srv, "mongodb+srv://", "mongodb+srv://${mongodbatlas_database_user.db-user.username}:${coalesce(nonsensitive(mongodbatlas_database_user.db-user.password), "null")}@")
+atlasorgid = "639b5119bc6ecf0c5fde627e"
+mongo_type = "ATLAS"
 
 #=================================================
 #  API
