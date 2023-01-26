@@ -71,8 +71,8 @@ resource "mongodbatlas_database_user" "db-user" {
   depends_on = [mongodbatlas_project.con-pca]
 }
 
-resource "mongodbatlas_project_ip_whitelist" "all" {
-  project_id = mongodbatlas_project.con-pca.id
-  cidr_block = " 0.0.0.0/0"
+resource "mongodbatlas_project_ip_access_list" "test" {
+  project_id = mongodbatlas_project.aws_atlas.id
+  cidr_block = "0.0.0.0/0"
   comment    = "cidr block for all"
 }
