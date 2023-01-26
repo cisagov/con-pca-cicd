@@ -65,8 +65,8 @@ resource "mongodbatlas_database_user" "db-user" {
   auth_database_name = "admin"
   project_id         = mongodbatlas_project.con-pca.id
   roles {
-    role_name     = "readWriteAnyDatabase"
-    database_name = "admin"
+    role_name     = "readWrite"
+    database_name = "pca"
   }
   depends_on = [mongodbatlas_project.con-pca]
 }
