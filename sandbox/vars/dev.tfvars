@@ -67,7 +67,7 @@ desired_count = 1
 #  MONGO ATLAS
 #=================================================
 atlasorgid = "639b5119bc6ecf0c5fde627e"
-mongo_type = "DOCUMENTDB"
+mongo_type = "ATLAS"
 
 #=================================================
 #  API
