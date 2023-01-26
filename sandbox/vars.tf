@@ -119,17 +119,6 @@ variable "route53_zone_name" {
 }
 
 #=================================================
-#  DOCUMENTDB
-#=================================================
-variable "documentdb_cluster_size" {
-  type = number
-}
-
-variable "documentdb_instance_class" {
-  type = string
-}
-
-#=================================================
 #  FARGATE
 #=================================================
 variable "cpu" {
