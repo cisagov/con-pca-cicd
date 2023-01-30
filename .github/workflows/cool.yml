@@ -22,9 +22,11 @@ on:
 
 # Sets environment variables to be used by every job.
 env:
-  REGION: us-east-1
+  ATLAS_PUBLIC_KEY: ${{ secrets.ATLAS_PUBLIC_KEY }}
+  ATLAS_PRIVATE_KEY: ${{ secrets.ATLAS_PRIVATE_KEY }}
   AWS_ACCESS_KEY_ID: ${{ secrets.COOL_AWS_ACCESS_KEY_ID }}
   AWS_SECRET_ACCESS_KEY: ${{ secrets.COOL_AWS_SECRET_ACCESS_KEY }}
+  REGION: us-east-1
 
 jobs:
   # Set Environment
@@ -227,6 +229,8 @@ jobs:
             -var-file ./vars/$ENVIRONMENT.tfvars \
             -var="account_id=$ACCOUNT_ID" \
             -var="api_image_tag=$api_tag" \
+            -var="atlas_public_key=$ATLAS_PUBLIC_KEY" \
+            -var="atlas_private_key=$ATLAS_PRIVATE_KEY" \
             -var="deployed_date=$(date)" \
             -var="hosted_zone_name=$HOSTED_ZONE_NAME" \
             -var="mailgun_api_key=$MAILGUN_API_KEY" \
@@ -246,6 +250,8 @@ jobs:
             -var-file ./vars/$ENVIRONMENT.tfvars \
             -var="account_id=$ACCOUNT_ID" \
             -var="api_image_tag=$api_tag" \
+            -var="atlas_public_key=$ATLAS_PUBLIC_KEY" \
+            -var="atlas_private_key=$ATLAS_PRIVATE_KEY" \
             -var="deployed_date=$(date)" \
             -var="hosted_zone_name=$HOSTED_ZONE_NAME" \
             -var="mailgun_api_key=$MAILGUN_API_KEY" \
