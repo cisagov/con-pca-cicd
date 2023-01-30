@@ -65,11 +65,12 @@ module "api_container" {
     MAXMIND_LICENSE_KEY = var.maxmind_license_key
 
     # Mongo
-    MONGO_TYPE = var.mongo_type
-    DB_HOST    = module.docdb.endpoint
-    DB_PORT    = 27017
-    DB_USER    = random_string.docdb_username.result
-    DB_PW      = random_password.docdb_password.result
+    MONGO_TYPE        = var.mongo_type
+    DB_HOST           = module.docdb.endpoint
+    DB_PORT           = 27017
+    DB_USER           = random_string.docdb_username.result
+    DB_PW             = random_password.docdb_password.result
+    MONGO_CLUSTER_URI = replace(mongodbatlas_cluster.mongo-cluster.connection_strings[0].standard_srv, "mongodb+srv://", "mongodb+srv://${mongodbatlas_database_user.db-user.username}:${coalesce(nonsensitive(mongodbatlas_database_user.db-user.password), "null")}@")
 
     # Redis Elasticache
     REDIS_HOST = module.redis.endpoint
