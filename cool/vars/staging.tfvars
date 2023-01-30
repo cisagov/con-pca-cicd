@@ -30,7 +30,7 @@ max_count     = 2
 #=================================================
 atlasorgid          = "63d4257417628664a6af2891"
 mongo_type          = "DOCUMENTDB"
-mongo_instance_size = "M30"
+mongo_instance_size = "M20"
 
 #=================================================
 #  REPORT EMAIL ADDRESS
