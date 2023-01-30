@@ -189,6 +189,28 @@ variable "maxmind_license_key" {
   description = "The license key for Maxmind."
 }
 
+#=================================================
+#  MONGO ATLAS
+#=================================================
+variable "atlasorgid" {
+  description = "Atlas Organization ID"
+}
+
+variable "atlas_public_key" {
+  description = "The public API key for MongoDB Atlas"
+}
+
+variable "atlas_private_key" {
+  description = "The private API key for MongoDB Atlas"
+}
+
+variable "mongo_instance_size" {
+  description = "The instance size for MongoDB Atlas"
+}
+
+variable "mongo_type" {
+  description = "The type of database to use"
+}
 
 #=================================================
 #  ABOUT

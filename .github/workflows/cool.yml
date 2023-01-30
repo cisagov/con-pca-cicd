@@ -22,9 +22,9 @@ on:
 
 # Sets environment variables to be used by every job.
 env:
-  REGION: us-east-1
   AWS_ACCESS_KEY_ID: ${{ secrets.COOL_AWS_ACCESS_KEY_ID }}
   AWS_SECRET_ACCESS_KEY: ${{ secrets.COOL_AWS_SECRET_ACCESS_KEY }}
+  REGION: us-east-1
 
 jobs:
   # Set Environment
@@ -114,9 +114,10 @@ jobs:
       - name: Set TO_BUILD
         run: echo "build=true" >> $GITHUB_ENV
         if: |
-          ${{ github.event.client_payload.trigger == matrix.repo ||
+          ${{ (github.event.client_payload.trigger == matrix.repo ||
           github.event.action == 'deploy-cool-production' ||
-          github.event.action == 'deploy-cool-staging' }}
+          github.event.action == 'deploy-cool-staging') &&
+          github.event_name != 'pull_request' }}
 
       # Build image if not a pull request
       - name: Build
@@ -163,6 +164,8 @@ jobs:
     # Set environment and environment variables
     env:
       ACCOUNT_ID: ${{ secrets.ACCOUNT_ID }}
+      ATLAS_PUBLIC_KEY: ${{ secrets.ATLAS_PUBLIC_KEY }}
+      ATLAS_PRIVATE_KEY: ${{ secrets.ATLAS_PRIVATE_KEY }}
       ENVIRONMENT: ${{ needs.setenv.outputs.environment }}
       HOSTED_ZONE_NAME: ${{ secrets.HOSTED_ZONE_NAME }}
       MAILGUN_API_KEY: ${{ secrets.MAILGUN_API_KEY }}
@@ -227,6 +230,8 @@ jobs:
             -var-file ./vars/$ENVIRONMENT.tfvars \
             -var="account_id=$ACCOUNT_ID" \
             -var="api_image_tag=$api_tag" \
+            -var="atlas_public_key=$ATLAS_PUBLIC_KEY" \
+            -var="atlas_private_key=$ATLAS_PRIVATE_KEY" \
             -var="deployed_date=$(date)" \
             -var="hosted_zone_name=$HOSTED_ZONE_NAME" \
             -var="mailgun_api_key=$MAILGUN_API_KEY" \
@@ -246,6 +251,8 @@ jobs:
             -var-file ./vars/$ENVIRONMENT.tfvars \
             -var="account_id=$ACCOUNT_ID" \
             -var="api_image_tag=$api_tag" \
+            -var="atlas_public_key=$ATLAS_PUBLIC_KEY" \
+            -var="atlas_private_key=$ATLAS_PRIVATE_KEY" \
             -var="deployed_date=$(date)" \
             -var="hosted_zone_name=$HOSTED_ZONE_NAME" \
             -var="mailgun_api_key=$MAILGUN_API_KEY" \

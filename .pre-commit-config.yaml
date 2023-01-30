@@ -86,7 +86,7 @@ repos:
         additional_dependencies:
           - flake8-docstrings
   - repo: https://github.com/PyCQA/isort
-    rev: 5.9.3
+    rev: 5.12.0
     hooks:
       - id: isort
   - repo: https://github.com/pre-commit/mirrors-mypy

@@ -26,6 +26,13 @@ min_count     = 1
 max_count     = 2
 
 #=================================================
+#  MONGO ATLAS
+#=================================================
+atlasorgid          = "63d4257417628664a6af2891"
+mongo_type          = "DOCUMENTDB"
+mongo_instance_size = "M20"
+
+#=================================================
 #  REPORT EMAIL ADDRESS
 #=================================================
 archival_email_address = "con.pca.reports@gmail.com"
