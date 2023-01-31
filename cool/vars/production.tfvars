@@ -30,7 +30,7 @@ max_count     = 3
 #  MONGO ATLAS
 #=================================================
 atlasorgid          = "63d4257417628664a6af2891"
-mongo_type          = "DOCUMENTDB"
+mongo_type          = "ATLAS"
 mongo_instance_size = "M30"
 
 #=================================================
