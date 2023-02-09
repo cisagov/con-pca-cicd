@@ -43,6 +43,11 @@ module "api_container" {
   ]
 
   map_environment = {
+    # ABOUT
+    DEPLOYED_DATE = var.deployed_date
+    API_COMMIT_ID = var.api_image_tag
+    UI_COMMIT_ID  = var.web_image_tag
+
     # AWS
     AWS_REGION         = var.region
     AWS_DEFAULT_REGION = var.region
