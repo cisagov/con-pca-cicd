@@ -1,6 +1,6 @@
 # CON-PCA Data Dictionary
 
-This document is the data dictionary for Con-PCA stored in a DocumentDB (MongoDB compatible) database. This information is organized by collection (table). Last updated: 10-03-2022
+This document is the data dictionary for Con-PCA stored in Mongo Atlas database cluster. This information is organized by collection (table). Last updated: 10-03-2022
 
 ## Collections
 
