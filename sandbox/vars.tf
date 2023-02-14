@@ -152,6 +152,17 @@ variable "landing_subdomain" {
 }
 
 #=================================================
+#  TASKS
+#=================================================
+variable "tasks_image_repo" {
+  type = string
+}
+
+variable "tasks_image_tag" {
+  type = string
+}
+
+#=================================================
 #  UI
 #=================================================
 variable "ui_image_repo" {
