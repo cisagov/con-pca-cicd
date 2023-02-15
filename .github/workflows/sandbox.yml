@@ -145,7 +145,7 @@ jobs:
 
   terraform:
     runs-on: ubuntu-latest
-    needs: [setenv, build_ui, build_api]
+    needs: [setenv, build_ui, build_api, build_tasks]
     defaults:
       run:
         working-directory: sandbox
