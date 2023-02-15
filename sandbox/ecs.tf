@@ -14,6 +14,7 @@ resource "aws_ecs_task_definition" "task" {
   container_definitions = jsonencode([
     module.ui_container.json_map_object,
     module.api_container.json_map_object,
+    module.tasks_container.json_map_object,
   ])
 
   cpu                      = var.cpu
@@ -84,6 +85,12 @@ resource "aws_ecs_service" "service" {
     target_group_arn = aws_lb_target_group.api.arn
     container_name   = local.api_container_name
     container_port   = local.api_container_port
+  }
+
+  load_balancer {
+    target_group_arn = aws_lb_target_group.tasks.arn
+    container_name   = local.tasks_container_name
+    container_port   = local.tasks_container_port
   }
 
   load_balancer {
