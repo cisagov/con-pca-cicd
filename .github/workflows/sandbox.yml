@@ -21,7 +21,6 @@ env:
   MAILGUN_API_KEY: ${{ secrets.MAILGUN_API_KEY }}
   MAXMIND_USER_ID: ${{ secrets.MAXMIND_USER_ID }}
   MAXMIND_LICENSE_KEY: ${{ secrets.MAXMIND_LICENSE_KEY }}
-  PLATFORMS: "linux/amd64,linux/arm64"
   REGION: us-east-1
   SES_ARN: ${{ secrets.SES_ROLE_ARN }}
 
@@ -103,7 +102,9 @@ jobs:
         id: vars
         run: echo "tag=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
       - name: Build Docker Image
-        run: docker build -f Dockerfile -t $IMAGE_REPO:${{steps.vars.outputs.tag}} .
+        run: docker build -f Dockerfile \
+          -t $IMAGE_REPO:${{steps.vars.outputs.tag}} \
+          --platform amd64 .
         if: ${{ github.event.client_payload.trigger == env.IMAGE_REPO }}
       - name: Tag Docker Image
         run: docker tag $IMAGE_REPO:${{steps.vars.outputs.tag}} $ECR_URI/$IMAGE_REPO:${{steps.vars.outputs.tag}}
