@@ -21,6 +21,7 @@ env:
   MAILGUN_API_KEY: ${{ secrets.MAILGUN_API_KEY }}
   MAXMIND_USER_ID: ${{ secrets.MAXMIND_USER_ID }}
   MAXMIND_LICENSE_KEY: ${{ secrets.MAXMIND_LICENSE_KEY }}
+  PLATFORMS: "linux/amd64,linux/arm64"
   REGION: us-east-1
   SES_ARN: ${{ secrets.SES_ROLE_ARN }}
 
