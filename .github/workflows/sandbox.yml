@@ -119,7 +119,6 @@ jobs:
     needs: [setenv]
     env:
       IMAGE_REPO: con-pca-tasks-docker
-      TARGETARCH: amd64
     environment:
       name: develop
     outputs:
@@ -136,13 +135,13 @@ jobs:
         # if: ${{ github.event.client_payload.trigger == env.IMAGE_REPO }}
       - name: Tag Docker Image
         run: docker tag $IMAGE_REPO:${{steps.vars.outputs.tag}} $ECR_URI/$IMAGE_REPO:${{steps.vars.outputs.tag}}
-        if: ${{ github.event.client_payload.trigger == env.IMAGE_REPO }}
+        # if: ${{ github.event.client_payload.trigger == env.IMAGE_REPO }}
       - name: ECR Login
         run: aws ecr get-login-password --region $REGION | docker login --username AWS --password-stdin $ECR_URI/$IMAGE_REPO
-        if: ${{ github.event.client_payload.trigger == env.IMAGE_REPO }}
+        # if: ${{ github.event.client_payload.trigger == env.IMAGE_REPO }}
       - name: Push Docker Image
         run: docker push $ECR_URI/$IMAGE_REPO:${{steps.vars.outputs.tag}}
-        if: ${{ github.event.client_payload.trigger == env.IMAGE_REPO }}
+        # if: ${{ github.event.client_payload.trigger == env.IMAGE_REPO }}
 
   terraform:
     runs-on: ubuntu-latest
