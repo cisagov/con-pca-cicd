@@ -52,6 +52,15 @@ resource "aws_security_group" "service" {
   }
 
   ingress {
+    description     = "Allow container port from ALB"
+    from_port       = local.tasks_container_port
+    to_port         = local.tasks_container_port
+    protocol        = "tcp"
+    security_groups = [aws_security_group.alb.id]
+    self            = true
+  }
+
+  ingress {
     description     = "Allow traffic to containers"
     from_port       = local.landing_container_port
     to_port         = local.landing_container_port
