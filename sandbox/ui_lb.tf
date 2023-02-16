@@ -24,7 +24,7 @@ resource "aws_lb_target_group" "ui" {
 #=========================
 resource "aws_lb_listener_rule" "ui" {
   listener_arn = aws_lb_listener.https.arn
-  priority     = 500
+  priority     = 200
 
   action {
     type             = "forward"
