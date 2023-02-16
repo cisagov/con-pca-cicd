@@ -25,7 +25,7 @@ resource "aws_lb_target_group" "tasks" {
 #=========================
 resource "aws_lb_listener_rule" "tasks" {
   listener_arn = aws_lb_listener.https.arn
-  priority     = 200
+  priority     = 400
 
   action {
     type             = "forward"
