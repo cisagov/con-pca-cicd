@@ -11,7 +11,7 @@ resource "aws_lb_target_group" "tasks" {
   health_check {
     healthy_threshold   = 3
     interval            = 60
-    matcher             = "200"
+    matcher             = "200,404"
     path                = "/"
     port                = local.tasks_container_port
     protocol            = local.tasks_container_protocol
