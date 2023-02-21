@@ -48,9 +48,6 @@ variable "atlas_private_key" {
   description = "The private API key for MongoDB Atlas"
 }
 
-variable "mongo_type" {
-  description = "The type of database to use"
-}
 
 #=================================================
 #  NETWORK

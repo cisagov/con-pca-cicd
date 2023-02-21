@@ -189,10 +189,6 @@ variable "mongo_instance_size" {
   description = "The instance size for MongoDB Atlas"
 }
 
-variable "mongo_type" {
-  description = "The type of database to use"
-}
-
 #=================================================
 #  ABOUT
 #=================================================
