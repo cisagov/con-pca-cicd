@@ -86,5 +86,9 @@ module "api_container" {
     EMAIL_MINUTES        = 1
     TASK_MINUTES         = 1
     FAILED_EMAIL_MINUTES = 240
+
+    # Tasks API
+    TASKS_API_URL = "https://${aws_route53_record.domain.name}"
+    TASKS_API_KEY = random_password.tasks_api_key.result
   }
 }

@@ -1,3 +1,16 @@
+resource "random_password" "tasks_api_key" {
+  length  = 8
+  numeric = true
+  special = false
+}
+
+resource "aws_ssm_parameter" "tasks_api_key" {
+  name        = "/${var.env}/${var.app}/tasks/api_key/master"
+  description = "The api key for con-pca-tasks"
+  type        = "SecureString"
+  value       = random_password.tasks_api_key.result
+}
+
 # ===========================
 # CLOUDWATCH LOGS
 # ===========================
@@ -34,6 +47,9 @@ module "tasks_container" {
   ]
 
   map_environment = {
+    # API ACCESS KEY
+    API_ACCESS_KEY = random_password.tasks_api_key.result
+
     # AWS
     AWS_DEFAULT_REGION = var.region
 
