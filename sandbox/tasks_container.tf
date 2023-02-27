@@ -55,5 +55,9 @@ module "tasks_container" {
 
     # MongoDB
     MONGO_CLUSTER_URI = replace(mongodbatlas_cluster.mongo-cluster.connection_strings[0].standard_srv, "mongodb+srv://", "mongodb+srv://${mongodbatlas_database_user.db-user.username}:${coalesce(nonsensitive(mongodbatlas_database_user.db-user.password), "null")}@")
+
+    # SES
+    SES_ASSUME_ROLE_ARN = var.ses_arn
+    SMTP_FROM           = "pca-sandbox@cyber.dhs.gov"
   }
 }
