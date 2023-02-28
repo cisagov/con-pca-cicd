@@ -29,7 +29,7 @@ resource "aws_lb_target_group" "landing" {
   health_check {
     healthy_threshold   = 3
     interval            = 60
-    matcher             = "404"
+    matcher             = "200"
     path                = "/"
     port                = local.landing_container_port
     protocol            = local.landing_container_protocol
