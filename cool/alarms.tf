@@ -1,4 +1,4 @@
-# Document DB
+# ECS Metrics
 resource "aws_cloudwatch_metric_alarm" "ecs_cpu_high" {
   alarm_name          = "${var.app}-${var.env}-cpu_high"
   comparison_operator = "GreaterThanThreshold"
