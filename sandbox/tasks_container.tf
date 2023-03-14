@@ -53,6 +53,9 @@ module "tasks_container" {
     # AWS
     AWS_DEFAULT_REGION = var.region
 
+    # Con-PCA API URL
+    API_URL = "https://${aws_route53_record.domain.name}"
+
     # MongoDB
     MONGO_CLUSTER_URI = replace(mongodbatlas_cluster.mongo-cluster.connection_strings[0].standard_srv, "mongodb+srv://", "mongodb+srv://${mongodbatlas_database_user.db-user.username}:${coalesce(nonsensitive(mongodbatlas_database_user.db-user.password), "null")}@")
 
